@@ -821,27 +821,6 @@ def stream_without_analysis(stream, response_placeholder, message_id):
     # Parse rubric assessment from the full response
     rubric_assessment = parse_rubric_assessment(full_response)
 
-    # Debug: Check if rubric assessment was found
-    print("\n" + "="*80)
-    print("DEBUG: Rubric Assessment Parsing")
-    print("="*80)
-    if '<rubric_assessment>' in full_response:
-        print("✓ Found <rubric_assessment> tags in response")
-        if rubric_assessment:
-            print(f"✓ Successfully parsed {len(rubric_assessment)} criteria assessments")
-        else:
-            print("✗ Failed to parse rubric assessment (tags found but parsing failed)")
-            # Print the content between tags for debugging
-            import re
-            pattern = r'<rubric_assessment>(.*?)</rubric_assessment>'
-            match = re.search(pattern, full_response, re.DOTALL)
-            if match:
-                print("Assessment content preview:")
-                print(match.group(1)[:500])
-    else:
-        print("✗ No <rubric_assessment> tags found in response")
-    print("="*80 + "\n")
-
     if rubric_assessment:
         st.session_state.current_rubric_assessment = rubric_assessment
 
@@ -1820,28 +1799,12 @@ with tab1:
                 "display_content": prompt  # Just the user's prompt for display
             })
 
-            # Debug: Print the full message with feedback
-            print("\n" + "="*80)
-            print("DEBUG: Full user message with feedback prepended:")
-            print("="*80)
-            print(full_message)
-            print("="*80 + "\n")
-
             # Clear the feedback after incorporating it
             st.session_state.assessment_feedback = {}
         else:
             # No feedback, but add assessment reminder if enabled
             full_message = prompt + assessment_reminder
             st.session_state.messages.append({"role": "user", "content": full_message})
-
-            # Debug: Print regular user message
-            print("\n" + "="*80)
-            print("DEBUG: User message (no feedback):")
-            print("="*80)
-            print(full_message)
-            if assessment_reminder:
-                print("\n✓ Assessment reminder appended to user message")
-            print("="*80 + "\n")
 
         # Display user message (show the full message with feedback if present)
         with st.chat_message("user"):
@@ -1881,17 +1844,6 @@ with tab1:
                     active_rubric_list,
                     include_assessment=st.session_state.rubric_assessment_enabled
                 )
-
-                # Debug: Print system instruction to console
-                print("\n" + "="*80)
-                print("DEBUG: System Instruction")
-                print("="*80)
-                print(f"Assessment enabled: {st.session_state.rubric_assessment_enabled}")
-                if "RUBRIC ASSESSMENT REQUIREMENT" in system_instruction:
-                    print("✓ System instruction INCLUDES rubric assessment requirement")
-                else:
-                    print("✗ System instruction DOES NOT include rubric assessment requirement")
-                print("="*80 + "\n")
 
                 # Debug: Show which rubric is being used
                 if active_rubric_list:
@@ -2982,9 +2934,7 @@ with tab3:
                             else:
                                 # Create new rubric version
                                 version = next_version_number()
-                                print(f"Creating new version: v{version}")
-                                print(f"Updated rubric has {len(updated_rubric)} criteria")
-
+                                
                                 new_entry = {
                                     "version": version,
                                     "rubric": updated_rubric,
@@ -2998,11 +2948,7 @@ with tab3:
 
                                 # Add new entry at the end of the list
                                 rubric_history.append(new_entry)
-                                print(f"Rubric history now has {len(rubric_history)} entries")
-                                print(f"Last entry version: v{rubric_history[-1].get('version')}")
-
                                 save_rubric_history(rubric_history)
-                                print("Rubric history saved successfully")
 
                                 # Update session state - set active index to the last entry
                                 st.session_state.rubric = updated_rubric
