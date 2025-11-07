@@ -111,16 +111,15 @@ For each final criterion you plan to include:
 - State the criterion name and description
 - Identify which category it belongs to
 - Quote specific conversation evidence that supports it
-- Determine its priority level based on evidence strength
-- Number each criterion (1, 2, 3, etc.) to ensure you stay within the 4-8 total limit
+- Assign a point value between -10 and 10
 
 **Step 7: Final Validation**
-Count your total criteria and ensure you have 4-8 total. If not, adjust accordingly by combining, removing, or splitting criteria.
+Count the number of criterias with positive points and negative points. Make sure there is a balance. 
 
-**Priority Assignment Guidelines:**
-- **High priority**: Explicit statements or repeatedly emphasized preferences
-- **Medium priority**: Clear implicit signals or moderate emphasis
-- **Low priority**: Subtle preferences or single mentions
+**Point Value Guidelines:**
+- Positive values (1-10): Desirable behaviors, with higher values for more important criteria
+- Negative values (-1 to -10): Undesirable behaviors, with lower values for behaviors that should be strongly avoided
+- Consider the relative importance when assigning point values
 
 After completing your analysis, create a JSON rubric following this exact structure:
 
@@ -133,21 +132,20 @@ After completing your analysis, create a JSON rubric following this exact struct
       "category": "style",
       "description": "Writing should use clear, straightforward language that avoids ambiguity and complex jargon.",
       "evidence": "User explicitly stated preference for simple explanations and criticized overly technical language in the conversation.",
-      "priority": "high"
+      "points": 8
     }
   ]
 }
 ```
 
 **JSON Requirements:**
-- Include 4-8 total criteria
 - Set version to 1 if creating new, or increment from previous version if updating
-- Each criterion must have: "name", "category", "description", "evidence", and "priority"
+- Each criterion must have: "name", "category", "description", "evidence", and "points"
 - Names should be short, informative, and topic-neutral
 - Categories should be logical groupings like "structure", "style", "content", "tone", etc.
 - Descriptions should be 1-2 sentences explaining what constitutes good writing for this criterion
 - Evidence should be 1-2 sentences referencing specific conversation signals that support this criterion
-- Priority must be exactly "high", "medium", or "low"
+- Points must be an integer between -10 and 10 inclusive
 
 Provide only the JSON output after your analysis, with no additional text."""
 
@@ -224,7 +222,7 @@ PREFERENCE_ANALYSIS_SYSTEM_PROMPT = """You are a rubric refinement specialist. Y
 and refine rubric criteria to better capture what the user actually values in writing.
 
 You will be given:
-1. An original rubric criterion (name, category, description, priority)
+1. An original rubric criterion (name, category, description, points)
 2. A writing task context
 3. A preference summary showing which text examples the user preferred vs rejected
 
@@ -251,14 +249,14 @@ Return ONLY a valid JSON object with this exact structure:
   "name": "[keep original name]",
   "category": "[keep original category]",
   "description": "[refined description based on preferences]",
-  "priority": "[keep original priority]",
+  "points": "[keep original points]",
   "evidence": ["Example 1", "Example 2", ...]
 }
 """
 
 
 def get_preference_analysis_user_prompt(writing_task, criterion_name, criterion_category,
-                                       criterion_description, criterion_priority, pref_summary):
+                                       criterion_description, criterion_points, pref_summary):
     """Generate user prompt for preference analysis."""
     return f"""
 Writing task: {writing_task}
@@ -268,7 +266,7 @@ Original criterion:
   "name": {criterion_name},
   "category": {criterion_category},
   "description": {criterion_description},
-  "priority": {criterion_priority}
+  "points": {criterion_points}
 }}
 
 Preference summary:
@@ -340,8 +338,10 @@ def build_system_instruction(rubric, include_assessment=True):
 
         Assessment requirements:
         - Include one assessment entry for EACH criterion in the rubric above
-        - Score each criterion on a 0-10 scale (0 = does not meet, 10 = exemplary)
-        - Provide concrete evidence from your output for each score
+        - For each criterion, determine if it was "met" (true/false):
+          * For criteria with POSITIVE points: "met" = true means the draft showed signs of the desirable behavior
+          * For criteria with NEGATIVE points: "met" = true means the draft showed signs of the undesirable behavior that should be avoided
+        - Provide concrete evidence from your output explaining whether the criterion was met
         - Note specific improvement areas for each criterion
 
         **REQUIRED Output Format:**
@@ -358,8 +358,8 @@ def build_system_instruction(rubric, include_assessment=True):
         "rubric_assessment": [
             {{
             "name": "[Exact criterion name from the rubric]",
-            "score": "7",
-            "evidence": "[Quote or reference specific parts of your output]",
+            "met": true,
+            "evidence": "[Quote or reference specific parts of your output explaining why this criterion was or wasn't met]",
             "areas_for_improvement": "[Concrete actionable suggestions]"
             }},
             [... one entry for each rubric criterion ...]

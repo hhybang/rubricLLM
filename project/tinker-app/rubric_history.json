@@ -3,39 +3,60 @@
     "version": 1,
     "rubric": [
       {
-        "name": "Technical Accuracy and Logical Relationships",
-        "category": "accuracy",
-        "description": "Technical concepts must be described accurately with correct logical relationships between ideas. Avoid presenting sequential or complementary processes as competing alternatives.",
-        "evidence": "User corrected 'rubric generation versus RL fine-tuning' and insisted on accurate description of how rubrics capture what users value rather than domain constraints.",
-        "priority": "high"
-      },
-      {
-        "name": "Context-Appropriate Register",
+        "name": "Academic Framing",
         "category": "tone",
-        "description": "Language should match the context—research writing requires academic terminology and framing rather than marketing or commercial language.",
-        "evidence": "User explicitly rejected 'core innovation' stating 'This is my research project, not a product.'",
-        "priority": "high"
+        "description": "Writing should use research-appropriate language that frames work as scholarly investigation rather than product development or commercial innovation.",
+        "evidence": "User explicitly rejected 'core innovation' stating 'This is my research project, not a product,' indicating strong preference for academic rather than marketing language.",
+        "points": 8
       },
       {
-        "name": "Emphasis Aligned with Core Purpose",
-        "category": "focus",
-        "description": "Writing should emphasize what genuinely matters to the user's goals rather than peripheral features, even if those features exist.",
-        "evidence": "User redirected emphasis from 'ability to switch between models' to fine-tuning with LoRA using rubric-based reward functions for user alignment.",
-        "priority": "high"
+        "name": "Technical Precision",
+        "category": "content",
+        "description": "Statements should be technically accurate and precisely describe the actual methods, goals, and relationships between components without oversimplification or misrepresentation.",
+        "evidence": "User made multiple corrections including 'this is not 100% true' and 'why would it be a vs.?' showing the importance of accurate technical descriptions.",
+        "points": 9
       },
       {
-        "name": "Direct Communication",
-        "category": "structure",
-        "description": "Communicate ideas directly without unnecessary formulaic transitions or procedural framing phrases. Start with substance rather than meta-commentary.",
-        "evidence": "User rejected 'The approach works as follows...' in favor of direct description of the system.",
-        "priority": "medium"
+        "name": "Proper Research Emphasis",
+        "category": "content",
+        "description": "Writing should focus on the core research contributions and methods that matter most to the project, rather than tangential features or capabilities.",
+        "evidence": "User corrected focus from model switching to the actual priority: 'I am not focused on ability to switch between models. It's more on being able to fine tune models using LoRA by using rubric as a reward function.'",
+        "points": 7
       },
       {
-        "name": "Precision in Terminology",
-        "category": "accuracy",
-        "description": "Use precisely the right terms and framings even when similar concepts might seem interchangeable. Small differences in meaning matter.",
-        "evidence": "User corrected 'domain constraints' to 'what the user values in their writing' despite the concepts being related.",
-        "priority": "medium"
+        "name": "Concise Expression",
+        "category": "style",
+        "description": "Writing should be condensed and efficient, conveying necessary information without unnecessary elaboration or lengthy exposition.",
+        "evidence": "User explicitly requested condensing content: 'lets make the first paragraph into 2 sentences, combine 2-3 paragraphs into 3-4 sentences.'",
+        "points": 6
+      },
+      {
+        "name": "Direct Presentation",
+        "category": "style",
+        "description": "Information should be presented directly without unnecessary structural scaffolding or meta-commentary about how the explanation will proceed.",
+        "evidence": "User rejected 'The approach works as follows...' and accepted the revision that simply presented the information directly without such framing.",
+        "points": 5
+      },
+      {
+        "name": "Formulaic Transitions",
+        "category": "style",
+        "description": "Writing should avoid standard formulaic transition phrases that create unnecessary structure or signal how information will be presented.",
+        "evidence": "User specifically stated 'I don't like the wording \"The approach works as follows...\"' showing dislike for formulaic transitional phrases.",
+        "points": -6
+      },
+      {
+        "name": "Marketing Language in Research Contexts",
+        "category": "tone",
+        "description": "Writing should avoid promotional or product-oriented language when discussing research projects, such as terms like 'innovation,' 'core value proposition,' or similar commercial framing.",
+        "evidence": "User explicitly rejected 'core innovation' with clear reasoning: 'This is my research project, not a product,' indicating this language is inappropriate for research contexts.",
+        "points": -7
+      },
+      {
+        "name": "Technical Inaccuracies",
+        "category": "content",
+        "description": "Writing should avoid statements that misrepresent technical details, create false dichotomies, or inaccurately describe what the research involves or values.",
+        "evidence": "User made multiple corrections to technical inaccuracies, including corrections about what the rubric captures and the relationship between different components of the research.",
+        "points": -8
       }
     ]
   }
