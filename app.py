@@ -247,7 +247,7 @@ def highlight_text(text, annotations, active_criteria):
 def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None):
     """
     Display rubric criteria in a user-friendly format with headings, descriptions,
-    point values, and expandable evidence sections. Criteria are grouped by category.
+    priority icons, and expandable evidence sections. Criteria are grouped by category.
 
     If comparison_rubric_data is provided, highlights criteria that are added (new) or
     removed (missing in comparison) with different colors.
@@ -282,11 +282,11 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
                 # Completely new criterion
                 criterion['is_new'] = True
             else:
-                # Check if description or points changed
+                # Check if description or priority changed
                 old_criterion = comparison_map[criterion_name]
                 description_changed = criterion.get('description', '') != old_criterion.get('description', '')
-                points_changed = criterion.get('points', 0) != old_criterion.get('points', 0)
-                criterion['is_new'] = description_changed or points_changed
+                priority_changed = criterion.get('priority', '') != old_criterion.get('priority', '')
+                criterion['is_new'] = description_changed or priority_changed
         categories[category].append(criterion)
 
     # Display each category group
@@ -302,19 +302,24 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
             # Determine if this criterion is new (for highlighting)
             is_new = criterion.get('is_new', False)
 
-            # Points value display
-            points = criterion.get('points', 0)
-            points_display = f"**Points: {points:+d}**" if points != 0 else "**Points: 0**"
+            # Priority with icon only
+            priority = criterion.get('priority', 'Medium').lower()
+            priority_icons = {
+                'high': '🔴',
+                'medium': '🟡',
+                'low': '🟢'
+            }
+            priority_icon = priority_icons.get(priority, '🟡')
 
             # Choose label based on whether it's new
             criterion_label = f"{criterion.get('name', 'Unnamed')}"
             if is_new:
                 criterion_label = f"{'‼️'}  {criterion.get('name', 'Unnamed')}"
-
+            
             with container.expander(criterion_label, expanded=False):
                 # Description
                 description = criterion.get('description', 'No description provided')
-                st.markdown(f"{description}\n\n{points_display}")
+                st.markdown(f"{description}\n\nPriority: {priority_icon}")
 
                 # Evidence section (expandable)
                 evidence = criterion.get('evidence', [])
@@ -1096,7 +1101,7 @@ def analyze_preferences_and_generate_rubric(preferences, writing_task, criteria_
     Args:
         preferences: List of preference dictionaries
         writing_task: The writing task description
-        criteria_info: Dict with criterion details (name, category, description, points)
+        criteria_info: Dict with criterion details (name, category, description, priority)
         base_rubric: Optional existing rubric to refine
 
     Returns:
@@ -1119,12 +1124,12 @@ def analyze_preferences_and_generate_rubric(preferences, writing_task, criteria_
     criterion_name = criteria_info.get('name', 'Unknown')
     criterion_category = criteria_info.get('category', 'General')
     criterion_description = criteria_info.get('description', '')
-    criterion_points = criteria_info.get('points', 0)
+    criterion_priority = criteria_info.get('priority', 'medium')
 
     system_prompt = PREFERENCE_ANALYSIS_SYSTEM_PROMPT
     prompt = get_preference_analysis_user_prompt(
         writing_task, criterion_name, criterion_category,
-        criterion_description, criterion_points, pref_summary
+        criterion_description, criterion_priority, pref_summary
     )
 
     try:
@@ -1886,7 +1891,7 @@ with st.sidebar:
             st.session_state.editing_criteria.append({
                 "name": "",
                 "description": "",
-                "points": 0,
+                "priority": "medium",
                 "evidence": ""
             })
             st.rerun()
@@ -1895,36 +1900,25 @@ with st.sidebar:
             criterion_id = str(i + 1)
             
             # Simple layout with just the expander
-            criterion_points = criterion.get('points', 0)
-            points_emoji = ""
-            if criterion_points > 0:
-                points_emoji = "➕"
-            elif criterion_points < 0:
-                points_emoji = "➖"
-            
-            points_str = f" ({criterion_points:+d})" if criterion_points != 0 else " (0)"
-            with st.expander(f"{points_emoji} {criterion.get('name', 'Unnamed Criterion')}", expanded=False):
+            with st.expander(f"📌 {criterion.get('name', 'Unnamed Criterion')}", expanded=False):
                 col1, col2 = st.columns([3, 1])
-
+                
                 with col1:
                     name_key = f"criterion_name_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
                     name = st.text_input(
-                        "Criterion Name",
+                        "Criterion Name", 
                         value=criterion.get("name", ""),
                         key=name_key,
                         placeholder="e.g., Clarity and Conciseness"
                     )
-
+                
                 with col2:
-                    points_key = f"criterion_points_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
-                    points = st.number_input(
-                        "Points (-10 to 10)",
-                        min_value=-10,
-                        max_value=10,
-                        value=int(criterion.get("points", 0)),
-                        step=1,
-                        key=points_key,
-                        help="Positive values reward desired behaviors, negative values penalize undesired behaviors"
+                    priority_key = f"criterion_priority_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
+                    priority = st.selectbox(
+                        "Priority",
+                        options=["high", "medium", "low"],
+                        index=["high", "medium", "low"].index(criterion.get("priority", "medium")),
+                        key=priority_key
                     )
 
                 desc_key = f"criterion_desc_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
@@ -1935,12 +1929,12 @@ with st.sidebar:
                     placeholder="Describe what to look for in this criterion...",
                     height=100
                 )
-
+                
                 # Update the criterion in the session state
                 if name and description:
                     st.session_state.editing_criteria[i]["name"] = name
                     st.session_state.editing_criteria[i]["description"] = description
-                    st.session_state.editing_criteria[i]["points"] = points
+                    st.session_state.editing_criteria[i]["priority"] = priority
                 
                 if st.button("🗑️ Remove", key=f"remove_{i}"):
                     st.session_state.editing_criteria.pop(i)
@@ -2470,7 +2464,7 @@ with tab3:
                                                 'name': criterion.get('name', ''),
                                                 'category': criterion.get('category', ''),
                                                 'description': criterion.get('description', ''),
-                                                'points': criterion.get('points', 0)
+                                                'priority': criterion.get('priority', 'medium')
                                             }
                                             # IMPORTANT: Save a deep copy of the original criterion for comparison
                                             st.session_state.pref_original_criterion = copy.deepcopy(criterion)
@@ -2509,8 +2503,7 @@ with tab3:
                     if original_criterion:
                         st.markdown(f"**{original_criterion.get('name', 'N/A')}**")
                         st.markdown(f"*Category:* {original_criterion.get('category', 'N/A')}")
-                        orig_points = original_criterion.get('points', 0)
-                        st.markdown(f"*Points:* {orig_points:+d}" if orig_points != 0 else f"*Points:* 0")
+                        st.markdown(f"*Priority:* {original_criterion.get('priority', 'N/A')}")
                         st.markdown(f"*Description:*")
                         st.info(original_criterion.get('description', 'N/A'))
                         if original_criterion.get('evidence'):
@@ -2529,8 +2522,7 @@ with tab3:
                     st.markdown("##### ✨ Refined Criterion")
                     st.markdown(f"**{refined_criterion.get('name', 'N/A')}**")
                     st.markdown(f"*Category:* {refined_criterion.get('category', 'N/A')}")
-                    refined_points = refined_criterion.get('points', 0)
-                    st.markdown(f"*Points:* {refined_points:+d}" if refined_points != 0 else f"*Points:* 0")
+                    st.markdown(f"*Priority:* {refined_criterion.get('priority', 'N/A')}")
                     st.markdown(f"*Description:*")
                     st.success(refined_criterion.get('description', 'N/A'))
                     if refined_criterion.get('evidence'):
