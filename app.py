@@ -11,6 +11,7 @@ from pathlib import Path
 from prompts import (
     COMPARE_WRITE_EDIT_PROMPT,
     RUBRIC_INFERENCE_SYSTEM_PROMPT,
+    RUBRIC_SCORING_PROMPT,
     get_rubric_inference_user_prompt,
     CONTRASTIVE_TEXT_GENERATION_SYSTEM_PROMPT,
     get_contrastive_text_generation_user_prompt,
@@ -282,11 +283,10 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
                 # Completely new criterion
                 criterion['is_new'] = True
             else:
-                # Check if description or priority changed
+                # Check if description changed
                 old_criterion = comparison_map[criterion_name]
                 description_changed = criterion.get('description', '') != old_criterion.get('description', '')
-                priority_changed = criterion.get('priority', '') != old_criterion.get('priority', '')
-                criterion['is_new'] = description_changed or priority_changed
+                criterion['is_new'] = description_changed
         categories[category].append(criterion)
 
     # Display each category group
@@ -302,37 +302,43 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
             # Determine if this criterion is new (for highlighting)
             is_new = criterion.get('is_new', False)
 
-            # Priority with icon only
-            priority = criterion.get('priority', 'Medium').lower()
-            priority_icons = {
-                'high': '🔴',
-                'medium': '🟡',
-                'low': '🟢'
-            }
-            priority_icon = priority_icons.get(priority, '🟡')
-
             # Choose label based on whether it's new
             criterion_label = f"{criterion.get('name', 'Unnamed')}"
             if is_new:
                 criterion_label = f"{'‼️'}  {criterion.get('name', 'Unnamed')}"
-            
+
             with container.expander(criterion_label, expanded=False):
                 # Description
                 description = criterion.get('description', 'No description provided')
-                st.markdown(f"{description}\n\nPriority: {priority_icon}")
+                st.markdown(description)
 
-                # Evidence section (expandable)
-                evidence = criterion.get('evidence', [])
-                if evidence:
-                    with st.expander("📚 Evidence", expanded=False):
-                        # Convert evidence list to single string
-                        if isinstance(evidence, list):
-                            evidence_text = ' '.join(str(item) for item in evidence)
-                        else:
-                            evidence_text = str(evidence)
-                        st.markdown(evidence_text)
-                else:
-                    st.markdown("*No evidence examples provided*")
+                # Weight display
+                weight = criterion.get('weight', 0)
+                if weight > 0:
+                    st.markdown(f"*Weight: {weight}%*")
+                    st.markdown("")
+
+                # Achievement Levels section (expandable)
+                with st.expander("📊 Achievement Levels", expanded=False):
+                    exemplary = criterion.get('exemplary', 'Not specified')
+                    proficient = criterion.get('proficient', 'Not specified')
+                    developing = criterion.get('developing', 'Not specified')
+                    beginning = criterion.get('beginning', 'Not specified')
+
+                    st.markdown("**🌟 Exemplary**")
+                    st.markdown(exemplary)
+                    st.markdown("")
+
+                    st.markdown("**✅ Proficient**")
+                    st.markdown(proficient)
+                    st.markdown("")
+
+                    st.markdown("**📈 Developing**")
+                    st.markdown(developing)
+                    st.markdown("")
+
+                    st.markdown("**🔰 Beginning**")
+                    st.markdown(beginning)
 
         # Close the category box
         container.markdown("</div>", unsafe_allow_html=True)
@@ -1257,7 +1263,7 @@ st.title("✍️ AI-Rubric Writer")
 st.markdown("Collaborate with AI to improve your writing!")
 
 # Create tabs
-tab1, tab2, tab3 = st.tabs(["💬 Chat", "🔍 Compare Rubrics", "📝 Build Rubric"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["💬 Chat", "📋 View Rubric", "⭐ Score Draft", "🔍 Compare Rubrics", "📝 Build Rubric"])
 
 with tab1:
     conversations = load_conversations()
@@ -1890,9 +1896,13 @@ with st.sidebar:
         if st.button("➕ Add Criterion", use_container_width=True):
             st.session_state.editing_criteria.append({
                 "name": "",
+                "category": "",
                 "description": "",
-                "priority": "medium",
-                "evidence": ""
+                "exemplary": "",
+                "proficient": "",
+                "developing": "",
+                "beginning": "",
+                "weight": 0
             })
             st.rerun()
         
@@ -1901,40 +1911,39 @@ with st.sidebar:
             
             # Simple layout with just the expander
             with st.expander(f"📌 {criterion.get('name', 'Unnamed Criterion')}", expanded=False):
-                col1, col2 = st.columns([3, 1])
-                
-                with col1:
-                    name_key = f"criterion_name_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
-                    name = st.text_input(
-                        "Criterion Name", 
-                        value=criterion.get("name", ""),
-                        key=name_key,
-                        placeholder="e.g., Clarity and Conciseness"
-                    )
-                
-                with col2:
-                    priority_key = f"criterion_priority_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
-                    priority = st.selectbox(
-                        "Priority",
-                        options=["high", "medium", "low"],
-                        index=["high", "medium", "low"].index(criterion.get("priority", "medium")),
-                        key=priority_key
-                    )
-
                 desc_key = f"criterion_desc_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
                 description = st.text_area(
                     "Description",
                     value=criterion.get("description", ""),
                     key=desc_key,
-                    placeholder="Describe what to look for in this criterion...",
+                    placeholder="User-specific description using conversation language...",
                     height=100
                 )
-                
+
+                weight_key = f"criterion_weight_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
+                weight = st.number_input(
+                    "Weight (%)",
+                    min_value=0,
+                    max_value=100,
+                    value=criterion.get("weight", 0),
+                    key=weight_key,
+                    help="Percentage weight (all weights should sum to 100%)"
+                )
+
+                exemplary_key = f"criterion_exemplary_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
+                exemplary = st.text_area(
+                    "Exemplary",
+                    value=criterion.get("exemplary", ""),
+                    key=exemplary_key,
+                    placeholder="Concrete descriptors for highest achievement...",
+                    height=80
+                )
+
                 # Update the criterion in the session state
-                if name and description:
-                    st.session_state.editing_criteria[i]["name"] = name
+                if description:
                     st.session_state.editing_criteria[i]["description"] = description
-                    st.session_state.editing_criteria[i]["priority"] = priority
+                    st.session_state.editing_criteria[i]["weight"] = weight
+                    st.session_state.editing_criteria[i]["exemplary"] = exemplary
                 
                 if st.button("🗑️ Remove", key=f"remove_{i}"):
                     st.session_state.editing_criteria.pop(i)
@@ -2033,8 +2042,234 @@ with st.sidebar:
 
 # These are duplicate sections that were moved into tab1 - keeping the sections inside tab1 only.
 
-# Compare Rubrics Tab
+# View Rubric Tab
 with tab2:
+    st.subheader("📋 View Rubric")
+    st.markdown("View the active rubric version with all criteria and achievement levels.")
+
+    # Get active rubric
+    active_rubric_dict, active_idx, rubric_history = get_active_rubric()
+
+    if not active_rubric_dict or not active_rubric_dict.get("rubric"):
+        st.warning("No active rubric available. Please create or select a rubric first.")
+    else:
+        # Display version, writing type, and user goals at the top
+        col_meta1, col_meta2 = st.columns([1, 2])
+
+        with col_meta1:
+            version = active_rubric_dict.get("version", 1)
+            st.metric("Version", f"v{version}")
+
+        with col_meta2:
+            writing_type = active_rubric_dict.get("writing_type", "Not specified")
+            st.markdown(f"**Writing Type:** {writing_type}")
+
+        user_goals = active_rubric_dict.get("user_goals_summary", "")
+        if user_goals:
+            st.markdown("**User Goals:**")
+            st.info(user_goals)
+
+        st.markdown("---")
+
+        # Prepare data for pie chart
+        rubric_list = active_rubric_dict.get("rubric", [])
+
+        # Create pie chart for weight distribution
+        if rubric_list:
+            import plotly.graph_objects as go
+
+            criterion_names = [c.get('name', 'Unnamed') for c in rubric_list]
+            weights = [c.get('weight', 0) for c in rubric_list]
+
+            # Only show pie chart if weights are defined
+            if any(w > 0 for w in weights):
+                # Create custom data with criterion indices for click handling
+                customdata = list(range(len(criterion_names)))
+
+                fig = go.Figure(data=[go.Pie(
+                    labels=criterion_names,
+                    values=weights,
+                    hole=0.3,  # Makes it a donut chart
+                    textinfo='label+percent',
+                    textposition='auto',
+                    hovertemplate='<b>%{label}</b><br>Weight: %{value}%<extra></extra>',
+                    customdata=customdata
+                )])
+
+                fig.update_layout(
+                    title_text="Criteria Weight Distribution",
+                    title_x=0.5,
+                    showlegend=True,
+                    height=400,
+                    margin=dict(t=50, b=0, l=0, r=0)
+                )
+
+                # Display chart
+                st.plotly_chart(fig, use_container_width=True, key="rubric_pie_chart")
+                st.markdown("---")
+
+        # Group criteria by category
+        from collections import defaultdict
+        categories = defaultdict(list)
+
+        for criterion in rubric_list:
+            category = criterion.get('category', 'Uncategorized')
+            categories[category].append(criterion)
+
+        # Display each category group
+        for category_name, criteria in categories.items():
+            # Category header box
+            st.markdown(f"""
+                <div style="border: 1px solid #2196F3; border-radius: 6px; padding: 8px; margin-bottom: 16px; background-color: rgba(33, 150, 243, 0.1);">
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #2196F3; text-transform: capitalize; text-align: center;">{category_name}</div>
+            """, unsafe_allow_html=True)
+
+            # Display criteria within this category
+            for criterion in criteria:
+                criterion_name = criterion.get('name', 'Unnamed Criterion')
+                weight = criterion.get('weight', 0)
+                description = criterion.get('description', 'No description provided')
+
+                # Display criterion name, weight, and description
+                st.markdown(f"**{criterion_name}**")
+                st.markdown(f"*Weight: {weight}%*")
+                st.markdown(f"{description}")
+
+                # Expander for achievement levels
+                with st.expander("📊 Achievement Levels", expanded=False):
+                    exemplary = criterion.get('exemplary', 'Not specified')
+                    proficient = criterion.get('proficient', 'Not specified')
+                    developing = criterion.get('developing', 'Not specified')
+                    beginning = criterion.get('beginning', 'Not specified')
+
+                    st.markdown("**🌟 Exemplary**")
+                    st.markdown(exemplary)
+                    st.markdown("")
+
+                    st.markdown("**✅ Proficient**")
+                    st.markdown(proficient)
+                    st.markdown("")
+
+                    st.markdown("**📈 Developing**")
+                    st.markdown(developing)
+                    st.markdown("")
+
+                    st.markdown("**🔰 Beginning**")
+                    st.markdown(beginning)
+
+                st.markdown("<br>", unsafe_allow_html=True)
+
+            # Close the category box
+            st.markdown("</div>", unsafe_allow_html=True)
+
+# Score Draft Tab
+with tab3:
+    st.subheader("⭐ Score Draft")
+    st.markdown("Score a draft of writing using the active rubric to see how well it meets your criteria.")
+
+    # Get active rubric
+    active_rubric_dict, active_idx, rubric_history = get_active_rubric()
+
+    if not active_rubric_dict or not active_rubric_dict.get("rubric"):
+        st.warning("No active rubric available. Please create or select a rubric first.")
+    else:
+        # Display which rubric is being used
+        version = active_rubric_dict.get("version", 1)
+        writing_type = active_rubric_dict.get("writing_type", "Not specified")
+
+        st.info(f"📋 Using Rubric v{version} ({writing_type})")
+
+        # Text area for draft input
+        draft_text = st.text_area(
+            "Enter the draft you want to score:",
+            height=300,
+            placeholder="Paste your draft text here...",
+            key="score_draft_input"
+        )
+
+        # Score button
+        if st.button("Score Draft", type="primary", disabled=not draft_text.strip()):
+            if draft_text.strip():
+                with st.spinner("Scoring your draft..."):
+                    try:
+                        # Prepare the prompt with rubric and draft
+                        rubric_json = json.dumps(active_rubric_dict, indent=2)
+
+                        scoring_prompt = f"""{RUBRIC_SCORING_PROMPT}
+
+## Rubric to Use
+
+{rubric_json}
+
+## Draft to Evaluate
+
+{draft_text}
+
+Please provide your detailed evaluation following the structure specified above."""
+
+                        # Call the API
+                        message = client.messages.create(
+                            model="claude-sonnet-4-5",
+                            max_tokens=8000,
+                            messages=[{"role": "user", "content": scoring_prompt}]
+                        )
+
+                        # Get response
+                        response_text = message.content[0].text
+
+                        # Store in session state
+                        st.session_state.scoring_result = response_text
+
+                    except Exception as e:
+                        st.error(f"Error scoring draft: {str(e)}")
+
+        # Display results if available
+        if hasattr(st.session_state, 'scoring_result') and st.session_state.scoring_result:
+            st.markdown("---")
+            st.markdown("### 📊 Scoring Results")
+
+            result = st.session_state.scoring_result
+
+            # Try to extract and parse JSON from the response
+            json_match = re.search(r'```json\s*(\{.*?\})\s*```', result, re.DOTALL)
+
+            if json_match:
+                try:
+                    score_data = json.loads(json_match.group(1))
+
+                    # Display overall score prominently
+                    col1, col2 = st.columns([1, 2])
+                    with col1:
+                        overall_score = score_data.get("overall_score", 0)
+                        st.metric("Overall Score", f"{overall_score:.1f}/100")
+
+                    with col2:
+                        score_interpretation = score_data.get("score_interpretation", "")
+                        st.markdown(f"**Score Interpretation:** {score_interpretation}")
+
+                    st.markdown("---")
+
+                    # Display detailed evaluation (the text before the JSON)
+                    evaluation_text = result.split('```json')[0].strip()
+                    if evaluation_text:
+                        with st.expander("📝 Detailed Evaluation", expanded=True):
+                            st.markdown(evaluation_text)
+
+                    # Display overall assessment
+                    overall_assessment = score_data.get("overall_assessment", "")
+                    if overall_assessment:
+                        st.markdown("### 📋 Overall Assessment")
+                        st.info(overall_assessment)
+
+                except json.JSONDecodeError:
+                    # If JSON parsing fails, just show the raw result
+                    st.markdown(result)
+            else:
+                # No JSON found, show the raw result
+                st.markdown(result)
+
+# Compare Rubrics Tab
+with tab4:
     st.subheader("🔍 Compare Rubrics")
     st.markdown("Select two different rubric versions to see how they would affect the same writing task.")
     
@@ -2195,7 +2430,7 @@ with tab2:
             """, unsafe_allow_html=True)
 
 # Build Rubric Tab
-with tab3:
+with tab5:
     st.subheader("📝 Build Rubric")
     st.markdown("Build a custom rubric by choosing between pairs of example texts. Your preferences will help refine the rubric criteria.")
 
@@ -2503,7 +2738,6 @@ with tab3:
                     if original_criterion:
                         st.markdown(f"**{original_criterion.get('name', 'N/A')}**")
                         st.markdown(f"*Category:* {original_criterion.get('category', 'N/A')}")
-                        st.markdown(f"*Priority:* {original_criterion.get('priority', 'N/A')}")
                         st.markdown(f"*Description:*")
                         st.info(original_criterion.get('description', 'N/A'))
                         if original_criterion.get('evidence'):
@@ -2522,7 +2756,6 @@ with tab3:
                     st.markdown("##### ✨ Refined Criterion")
                     st.markdown(f"**{refined_criterion.get('name', 'N/A')}**")
                     st.markdown(f"*Category:* {refined_criterion.get('category', 'N/A')}")
-                    st.markdown(f"*Priority:* {refined_criterion.get('priority', 'N/A')}")
                     st.markdown(f"*Description:*")
                     st.success(refined_criterion.get('description', 'N/A'))
                     if refined_criterion.get('evidence'):

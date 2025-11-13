@@ -6,6 +6,114 @@ This module contains all prompts used throughout the application.
 from textwrap import dedent
 import json
 
+RUBRIC_SCORING_PROMPT = """
+You are tasked with evaluating a draft of writing against a personalized rubric that captures what the user values in their writing.
+
+You will receive:
+1. The draft to be evaluated
+2. A rubric with specific criteria, achievement levels, and weights
+
+## Scoring System
+
+Each criterion is scored on achievement levels worth:
+- **Exemplary**: 100% (fully meets user's vision)
+- **Proficient**: 75% (meets core requirements)
+- **Developing**: 50% (shows understanding, needs significant work)
+- **Beginning**: 25% (misses key elements user values)
+
+The overall score is calculated by:
+1. Scoring each criterion (0-100%)
+2. Multiplying by that criterion's weight
+3. Summing all weighted scores for a total out of 100
+
+## Evaluation Process
+
+For each criterion:
+1. **Carefully read the criterion description**: Understand what THIS user specifically values (not generic writing standards)
+2. **Review all four achievement level descriptions**: Note the specific, observable features that distinguish each level
+3. **Evaluate the draft against the descriptors**: Find evidence in the draft for or against each level
+4. **Assign the appropriate level**: Choose the level whose descriptors best match what you observe in the draft
+5. **Provide specific evidence**: Quote passages or cite examples that justify your rating
+
+## Analysis Structure
+
+Wrap your detailed analysis in <evaluation> tags:
+
+### [Criterion Name]
+**Weight**: [X%]
+**Achievement Level**: [Level Name] ([percentage]%)
+**Weighted Score**: [percentage × weight / 100]
+
+**Evidence from draft**:
+- [Specific quote or example 1]
+- [Specific quote or example 2]
+- [etc.]
+
+**Rationale**:
+[Explain why this level was chosen over adjacent levels, referencing the rubric's specific descriptors for this criterion]
+
+**To reach next level**:
+[If not Exemplary: What specific changes would move this to the next achievement level based on the rubric descriptors?]
+
+---
+
+[Repeat for all criteria]
+
+## Scoring Guidelines
+
+**Choosing between adjacent levels:**
+
+*Beginning (25%) vs. Developing (50%):*
+- Beginning: Misses or contradicts what the user has indicated matters to them
+- Developing: Shows awareness of user's goals but execution falls short
+
+*Developing (50%) vs. Proficient (75%):*
+- Developing: Would require significant revision; user would need to substantially rework this
+- Proficient: Would satisfy user with minor polish; the core is right
+
+*Proficient (75%) vs. Exemplary (100%):*
+- Proficient: Meets requirements but doesn't fully realize user's best articulated vision
+- Exemplary: This is what the user was striving for; they'd approve with minimal or no changes
+
+**When in doubt:**
+- Default to the lower level unless strong evidence supports the higher one
+- Ask: "Would the user accept this aspect as-is, or request changes?"
+- Remember: Score against THIS user's values shown in the rubric, not general writing quality
+
+## Summary Output
+
+After your evaluation, provide this JSON:
+```json
+{
+  "overall_score": <sum of all weighted scores, out of 100>,
+  "score_interpretation": "<Exceptional/Strong/Solid/Developing/Emerging based on score bands>",
+  "criteria_scores": [
+    {
+      "name": "<criterion name>",
+      "weight": <percentage as integer>,
+      "achievement_level": "<Exemplary/Proficient/Developing/Beginning>",
+      "level_percentage": <25/50/75/100>,
+      "weighted_score": <level_percentage × weight / 100>,
+      "evidence_summary": "<1-2 sentence summary of key evidence>"
+    },
+  ],
+  "overall_assessment": "<2-3 sentences: Does this draft align with user's demonstrated values? What does the score mean? What's the main focus for revision?>"
+}
+```
+
+## Priority Calculation
+
+To identify revision priorities, calculate potential gain:
+```
+Potential Gain = (Next Level % - Current Level %) × (Weight / 100)
+```
+
+Example: A criterion at Developing (50%) with 25% weight:
+- Moving to Proficient (75%) would gain: (75-50) × 0.25 = 6.25 points
+- Prioritize high-gain opportunities that align with user's weighted priorities
+
+Provide your evaluation following this structure.
+"""
 
 # Prompt for comparing rubrics and generating contrasting revisions
 COMPARE_WRITE_EDIT_PROMPT = r"""
@@ -70,9 +178,372 @@ Return sections in this exact order and headings:
 User Writing Task: {task}
 """
 
+RUBRIC_INFERENCE_SYSTEM_PROMPT = """
+You are tasked with creating a writing rubric based on the conversation history between a user and an LLM who are collaboratively developing a piece of writing. 
+This rubric should capture what this specific user values and wants to achieve in their writing, not generic standards of "good writing."
+
+## Your Goal
+
+Create a rubric that:
+- Makes the user's tacit rhetorical preferences and goals explicit
+- Provides clear criteria that can be linked to specific achievement levels
+- Serves as a coaching tool for future iterations of similar writing
+- Can be used to reverse-engineer the writing process (align future writing to these discovered priorities)
+- Helps produce writing that matches the user's intent, style, and goals
+- **Can be reliably evaluated by an LLM** - achievement levels must be distinguishable through concrete, observable features
+
+## Approach Based on Context
+
+Your approach depends on whether a previous rubric exists:
+- **If no previous rubric exists**: Create a new rubric based on the conversation(s)
+- **If a previous rubric exists**: Update it incrementally, preserving continuity while incorporating new insights. Only modify criteria that have new evidence; don't change criteria that remain stable.
+
+## Analysis Process
+
+Before creating your final rubric, wrap your systematic analysis in <analysis> tags. Follow these steps. This section should be thorough and evidence-based.
+
+### Step 1: Scenario Identification
+- Determine whether you're creating a new rubric or updating an existing one
+- If updating: identify what has changed in the user's priorities or approach since the last version
+
+### Step 2: Analyze the Conversation History
+
+**Extract explicit signals:**
+- Direct statements about goals ("I want this to sound more authoritative")
+- Specific requests for changes ("Can you make this more concise?")
+- Rejections or approvals ("I like this part" / "This doesn't work")
+- Questions that reveal values ("Is this too formal?" suggests they care about formality level)
+- Stated audience, purpose, or constraints
+
+**Extract implicit signals:**
+- Patterns in what the user consistently revises (e.g., always simplifying complex sentences suggests they value clarity)
+- What they never comment on (may indicate lower priority or satisfaction)
+- The direction of their edits (adding detail vs. cutting, being more specific vs. more abstract)
+- Emotional reactions or enthusiasm about certain elements
+- Trade-offs they make when given options
+
+**Document the writing type:**
+Be specific about the genre/format (e.g., "persuasive op-ed for general audience" not just "article")
+
+**Identify constraints and non-negotiables:**
+Note any must-haves mentioned by the user (word limits, required sections, stylistic requirements)
+
+### Step 3: Identify Evidence-Based Criteria
+
+List 4-7 criteria categories based on what the conversation actually reveals, not generic writing standards. 
+
+**For each potential criterion, ask:**
+- Is there clear evidence in the conversation that the user cares about this?
+- Can I point to specific moments where this mattered to the user?
+- Is this distinct from other criteria, or is it overlapping?
+
+**Avoid including criteria if:**
+- The user never mentioned or demonstrated concern about it
+- It's a generic "good writing" principle without user-specific evidence
+- You're making assumptions about what they "should" care about
+
+**Common HIGH-LEVEL categories** (use these to group multiple criteria):
+- **Style**: Tone, voice, word choice, formality, register, concision
+- **Structure**: Organization, argument flow, transitions, paragraph ordering
+- **Content**: Ideas, themes, technical accuracy, depth, evidence
+- **Audience**: Reader awareness, accessibility, context appropriateness
+- **Mechanics**: Grammar, formatting, citations (only if user shows concern)
+
+**IMPORTANT - Category vs. Criterion:**
+- **Category** = broad grouping (there should only be 3-5 unique categories total)
+- **Criterion** = specific aspect the user cares about (there can be 4-7+ criteria)
+- Multiple criteria can share the same category
+
+**Examples of proper categorization:**
+
+✅ **GOOD - Multiple criteria share categories:**
+```json
+[
+  {
+    "name": "Academic Tone & Register",
+    "category": "Style",
+    ...
+  },
+  {
+    "name": "Precision & Concision", 
+    "category": "Style",
+    ...
+  },
+  {
+    "name": "Logical Argument Structure",
+    "category": "Structure",
+    ...
+  },
+  {
+    "name": "Paragraph Transitions",
+    "category": "Structure",
+    ...
+  },
+  {
+    "name": "Thematic Coherence",
+    "category": "Content",
+    ...
+  }
+]
+```
+Result: 5 criteria across 3 categories (Style, Structure, Content)
+
+❌ **BAD - Each criterion gets unique category:**
+```json
+[
+  {
+    "name": "Academic Tone & Register",
+    "category": "Academic Tone",
+    ...
+  },
+  {
+    "name": "Precision & Concision",
+    "category": "Precision",
+    ...
+  },
+  {
+    "name": "Logical Argument Structure", 
+    "category": "Logical Structure",
+    ...
+  }
+]
+```
+Result: 3 criteria with 3 categories - categories aren't serving as groupings
+
+**How to assign categories:**
+1. For each criterion, ask: "What broad aspect of writing does this relate to?"
+   - Is it about HOW the text sounds/reads? → Style
+   - Is it about HOW ideas are organized? → Structure  
+   - Is it about WHAT is being communicated? → Content
+   - Is it about WHO the audience is? → Audience
+
+2. Use the same category label for criteria that relate to the same broad aspect
+3. It's normal and expected for 2-3 criteria to share the same category
+
+### Step 4: Define Each Criterion with User-Specific Language
+
+For each criterion:
+
+**Write a precise description that:**
+- Uses vocabulary and concepts from the actual conversation
+- Specifies what "good" means for THIS user (not generally)
+- Includes observable features when possible
+
+**Examples of user-specific vs. generic:**
+- ❌ Generic: "Uses clear and effective language"
+- ✅ User-specific: "Uses short, declarative sentences with minimal jargon, prioritizing accessibility for non-expert readers"
+
+- ❌ Generic: "Well-organized structure"
+- ✅ User-specific: "Opens with a concrete anecdote before transitioning to broader analysis, using the personal-to-universal pattern the user prefers"
+
+### Step 5: Create Achievement Levels with CONCRETE, OBSERVABLE Features
+
+**CRITICAL REQUIREMENT**: Achievement levels must be distinguishable by an LLM evaluator without human judgment. This means:
+- NO vague quantifiers like "rare," "some," "frequent," "generally," "mostly"
+- YES to specific counts, percentages, or checkable features
+- NO abstract qualities like "flows well" or "engaging"
+- YES to concrete patterns like "every paragraph begins with transition sentence"
+
+**Level naming:** Use consistent labels across all criteria: Exemplary → Proficient → Developing → Beginning
+
+**For each level, you MUST provide:**
+
+1. **Quantifiable thresholds** (choose based on what's measurable):
+   - Exact counts: "0 instances," "1-2 instances per 1000 words," "3-5 instances"
+   - Percentages: "100% of paragraphs," "80%+ of sentences," "less than 50%"
+   - Ratios: "every paragraph," "most paragraphs (4+ out of 5)," "some paragraphs (2-3)"
+   - Binary checks: "all key terms defined," "no metaphorical language," "problem and solution explicitly linked"
+
+2. **Concrete examples** showing what to look for:
+   - Positive examples (what Exemplary looks like)
+   - Negative examples (what Developing/Beginning looks like)
+   - Specific phrases or patterns to identify
+
+3. **Observable patterns** an LLM can check:
+   - Sentence structures to count
+   - Word types to identify (e.g., subjective adjectives, transition words)
+   - Organizational features to verify (e.g., "each paragraph references previous")
+
+**Achievement Level Definition Framework:**
+
+**Exemplary (100%):**
+- Define the HIGHEST standard the user demonstrated wanting
+- Use "zero," "all," "every," "100%," "no instances of [negative feature]"
+- Include specific positive examples from the conversation
+- Example: "Zero instances of subjective adjectives (e.g., 'hard-won,' 'daunting'). Every sentence uses precise, neutral descriptors. All claims supported by specific evidence."
+
+**Proficient (75%):**
+- Define the MINIMUM that would satisfy the user without major revision
+- Use specific small allowances: "1-2 instances," "90%+," "rare (1 per 1000 words)"
+- Example: "1-2 minor subjective terms per 1000 words; these don't appear in key claims. Maintains scholarly register in 90%+ of sentences. No emotional appeals or conversational markers."
+
+**Developing (50%):**
+- Define clear PROBLEMS the user would ask to revise
+- Use medium-range quantifiers: "3-5 instances," "50-70%," "some paragraphs (2-3)"
+- Include specific patterns the user rejected
+- Example: "3-5 subjective descriptors per 1000 words. Tone varies between formal and informal across paragraphs. May include 1-2 metaphors or conversational phrases the user would flag. Some key claims lack precision."
+
+**Beginning (25%):**
+- Define DEALBREAKERS that would require substantial rework
+- Use high-frequency indicators: "6+ instances," "less than 50%," "multiple paragraphs," "frequent"
+- Include patterns that contradict user's core values
+- Example: "6+ instances of informal language, emotional appeals, or subjective adjectives per 1000 words. Conversational tone in multiple sentences. Multiple metaphors. Would require substantial revision to meet user's standards."
+
+**EXAMPLES OF GOOD VS. BAD LEVEL DEFINITIONS:**
+
+❌ **BAD - Too vague:**
+```
+"exemplary": "Transitions are clear and effective"
+"proficient": "Generally good transitions with minor issues"
+"developing": "Some transitions need improvement"
+```
+
+✅ **GOOD - Concrete and countable:**
+```
+"exemplary": "Every paragraph (100%) begins with explicit transition sentence referencing previous paragraph's main point. Uses clear signaling phrases ('This limitation leads to...', 'Building on this insight...', 'As a result...'). No paragraph jumps topics without bridge.",
+
+"proficient": "Most paragraphs (80%+ or 4-5 out of 5) begin with explicit transition. May have 1 paragraph using implicit connection. Problem→solution relationship is signaled with transition language. Reader can follow flow with minimal effort.",
+
+"developing": "Only half of paragraphs (50% or 2-3 out of 5) have explicit transitions. Some paragraphs start new topics without connecting to previous content. Uses weak transitions like 'Additionally' or 'Another point' without explaining relationship. Reader must infer 2+ connections.",
+
+"beginning": "Fewer than half of paragraphs (less than 50%) have transitions. Most paragraphs start abruptly with new topic. No signaling of problem→solution relationship. Reader cannot follow argumentative progression without effort."
+```
+
+❌ **BAD - Unmeasurable:**
+```
+"exemplary": "Writing is concise and precise"
+"proficient": "Mostly concise with some redundancy"
+```
+
+✅ **GOOD - Measurable:**
+```
+"exemplary": "Zero redundant phrases or repeated ideas. Uses parallel structures for lists (e.g., 'models, sessions, and tasks'). Every sentence adds new information. Could not be shortened by more than 5% without losing content.",
+
+"proficient": "Minor redundancy (1-2 repeated concepts could be consolidated). 90%+ of sentences add new information. Could be tightened by 5-10% but maintains clarity.",
+
+"developing": "Notable redundancy present (3-5 concepts repeated or restated). Could be shortened by 20-30% without losing core content. Some vague phrases like 'various things' or 'many aspects' instead of specifics.",
+
+"beginning": "Significant redundancy throughout (same ideas stated 3+ times). Could be shortened by 40%+ without content loss. Verbose phrasing obscures main points. Multiple vague descriptors."
+```
+
+### Step 6: Extract Concrete Patterns from User Feedback
+
+As you define achievement levels, look for these patterns in the conversation:
+
+**For countable features:**
+- Did the user remove/flag specific types of words? (Count these in levels)
+- Did they consistently add/remove certain elements? (Make this a threshold)
+- Did they reject certain phrases or patterns? (List these as "zero instances" in Exemplary)
+
+**For structural features:**
+- Did they consistently request certain organizational patterns? (Make this a requirement)
+- Did they rearrange paragraphs or sections? (Specify the pattern)
+- Did they ask for explicit connections? (Define what "explicit" means)
+
+**For style features:**
+- Did they prefer certain sentence types? (Specify lengths or structures)
+- Did they like/dislike specific tones? (Give examples of acceptable/unacceptable)
+- Did they value particular rhetorical moves? (Describe exactly what these look like)
+
+### Step 7: Determine Weights
+
+Assign weights (as percentages totaling 100%) based on:
+
+**Evidence of importance:**
+- How much conversation time was spent on each criterion
+- How strongly the user reacted to issues in each area
+- Whether the user explicitly stated priorities
+- What they revised most frequently
+
+**Weight distribution patterns:**
+- Equal weights (e.g., 5 criteria at 20% each): Use when user showed balanced concern
+- Dominant criterion (e.g., 40% + 4 others at 15%): Use when one element clearly mattered most
+- Essential + supporting (e.g., 2 at 30% + 3 at ~13%): Use when user indicated non-negotiables
+
+**State your reasoning explicitly:** Connect weights directly to conversation evidence
+
+### Step 8: Self-Validation Check
+
+Before finalizing your rubric, perform this validation on EACH criterion:
+
+**Vagueness Test:**
+- [ ] Can I count or measure this feature in text?
+- [ ] Would two different evaluators reach the same score?
+- [ ] Are the boundaries between levels clear and non-overlapping?
+- [ ] Have I avoided words like "generally," "mostly," "some," "often," "rarely"?
+
+**Concreteness Test:**
+- [ ] Does each level include specific examples or numbers?
+- [ ] Can an LLM identify these features without human judgment?
+- [ ] Would the user recognize these patterns from their feedback?
+
+**Distinctness Test:**
+- [ ] Are all four levels meaningfully different from each other?
+- [ ] Is there a clear threshold between each level?
+- [ ] Could a draft plausibly score at any of the four levels?
+
+If any criterion fails these tests, revise it with more concrete descriptors.
+
+### Step 9: Handling Edge Cases
+
+**Minimal conversation history:**
+If there's limited evidence, create a minimal rubric (3-4 criteria) with a note in coaching_notes that more conversation is needed for refinement.
+
+**Conflicting signals:**
+If the user shows contradictory preferences, note this in coaching_notes and weight toward their most recent or most emphatic signals.
+
+**Overfitting risk:**
+If you have only 1-2 conversations, be cautious about over-specifying. Focus on repeatable patterns, not one-off comments.
+
+## Output Format
+
+After your analysis, provide a JSON rubric with this exact structure:
+```json
+{
+  "version": <number: 1 for new rubric, increment by 1 for updates>,
+  "writing_type": "<specific description of the writing genre/format>",
+  "user_goals_summary": "<2-3 sentence summary of what the user is trying to achieve>",
+  "rubric": [
+    {
+      "name": "<Criterion name>",
+      "category": "<High-level category like Content, Style, Structure, etc.>",
+      "description": "<User-specific description using conversation language>",
+      "exemplary": "<Concrete descriptors with counts/percentages/examples for highest achievement - must be measurable>",
+      "proficient": "<Concrete descriptors with counts/percentages/examples for solid achievement - must be measurable>",
+      "developing": "<Concrete descriptors with counts/percentages/examples for partial achievement - must be measurable>",
+      "beginning": "<Concrete descriptors with counts/percentages/examples for minimal achievement - must be measurable>",
+      "weight": <number: percentage as integer, all weights must sum to 100>
+    }
+  ],
+  "weighting_rationale": "<Explanation connecting weights to conversation evidence>",
+  "coaching_notes": "<2-3 specific, actionable insights about this user's writing priorities, patterns, or areas for growth based on conversation history>"
+}
+```
+
+## Critical Reminders
+
+- **Ground everything in evidence**: Every criterion, descriptor, and weight should trace back to something observable in the conversation
+- **Be specific, not generic**: Avoid rubric language that could apply to any writer or any writing
+- **Respect user priorities**: Don't impose external standards the user hasn't demonstrated caring about
+- **Focus on repeatability**: Capture patterns, not random variations
+- **Make it actionable**: The rubric should provide clear guidance for future writing, not just evaluation
+- **MAKE IT EVALUABLE**: Use counts, percentages, specific examples, and observable patterns - NO vague qualifiers
+- **Avoid judgment calls**: An LLM should be able to score a draft reliably without needing to interpret subjective terms like "effective," "strong," or "clear"
+
+## Final Quality Check
+
+Before outputting your rubric, verify:
+1. Every achievement level has at least one quantifiable measure (count, percentage, or binary check)
+2. Every criterion includes concrete examples at multiple levels
+3. No vague quantifiers remain (rare, some, frequent, generally, mostly)
+4. The differences between adjacent levels are clear and measurable
+5. An LLM could reliably distinguish between levels without human judgment
+
+Provide only the JSON output after your analysis, with no additional text or markdown formatting around the JSON.
+"""
 
 # System prompt for inferring rubrics from conversations
-RUBRIC_INFERENCE_SYSTEM_PROMPT = """You are an expert writing coach and rubric designer.
+RUBRIC_INFERENCE_SYSTEM_PROMPT_OLD = """You are an expert writing coach and rubric designer.
 Your task is to analyze conversations between users and AI writing assistants, then either create a new writing rubric or update an existing one based on the writing preferences and signals you discover.
 
 Your approach will depend on whether a previous rubric exists:
