@@ -30,7 +30,7 @@ class CLIConfig:
     num_substeps: int = 1
     learning_rate: float = 3e-5
     max_tokens: int = 2048
-    kl_penalty_coef: float = 0.01
+    kl_penalty_coef: float = 0.005  # Reduced to allow more exploration
 
     # Evaluator configuration
     evaluator_model: str = "claude-sonnet-4-5"

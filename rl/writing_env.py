@@ -141,10 +141,10 @@ class WritingRevisionEnv(Env):
         self.current_turn += 1
 
         # Determine if episode should end
+        # Only stop if max turns reached or perfect score - don't stop on negative reward
         episode_done = (
-            reward <= 0  # No improvement or got worse
-            or self.current_turn >= self.task.max_turns  # Max turns reached
-            or new_score >= 95.0  # Near-perfect score achieved
+            self.current_turn >= self.task.max_turns  # Max turns reached
+            or new_score >= 99.5  # Near-perfect score achieved
         )
 
         # Prepare next observation if episode not done
