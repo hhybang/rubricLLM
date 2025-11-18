@@ -37,7 +37,7 @@ from tinker_cookbook.rl.types import (
 )
 
 # Import prompts from the existing prompts module
-from prompts import RUBRIC_SCORING_PROMPT, build_system_instruction
+from rl.prompts import RUBRIC_SCORING_PROMPT, build_writing_assistant_prompt
 
 @dataclass
 class WritingTask:
@@ -76,11 +76,8 @@ class WritingRevisionEnv(Env):
         self.current_score = 0.0
         self.score_history: list[float] = []
 
-        # Build system instruction from rubric
-        self.system_instruction = build_system_instruction(
-            rubric=task.rubric,
-            include_assessment=False,
-        )
+        # Use simple writing assistant prompt (no rubric in system instruction)
+        self.system_instruction = build_writing_assistant_prompt(None)
 
     @property
     def stop_condition(self) -> StopCondition:
@@ -184,17 +181,34 @@ class WritingRevisionEnv(Env):
     def _extract_draft(self, generated_text: str) -> str:
         """
         Extract the actual writing draft from the model's response.
-        The model may include analysis, commentary, etc. - we want just the draft.
+        The model may include <analysis>, <questions>, <draft>, <feedback> sections.
+        We only want the <draft> section for evaluation.
         """
-        # Simple heuristic: look for content after analysis tags
-        # or take the whole text if no structure
+        # Try to extract content between <draft> tags
+        draft_match = re.search(r'<draft>(.*?)</draft>', generated_text, re.DOTALL | re.IGNORECASE)
+        if draft_match:
+            draft_content = draft_match.group(1).strip()
+            # Verify we actually got meaningful content (not just whitespace or empty)
+            if len(draft_content) > 0:
+                return draft_content
 
-        # Remove analysis tags if present
-        cleaned = re.sub(r'<analysis>.*?</analysis>', '', generated_text, flags=re.DOTALL)
-        cleaned = re.sub(r'<rubric_assessment>.*?</rubric_assessment>', '', cleaned, flags=re.DOTALL)
+        # Fallback: if no <draft> tags found or draft was empty, remove known structured sections
+        # and return remaining content
+        cleaned = generated_text
+
+        # Remove structured sections
+        cleaned = re.sub(r'<analysis>.*?</analysis>', '', cleaned, flags=re.DOTALL | re.IGNORECASE)
+        cleaned = re.sub(r'<questions>.*?</questions>', '', cleaned, flags=re.DOTALL | re.IGNORECASE)
+        cleaned = re.sub(r'<feedback>.*?</feedback>', '', cleaned, flags=re.DOTALL | re.IGNORECASE)
+        cleaned = re.sub(r'<rubric_assessment>.*?</rubric_assessment>', '', cleaned, flags=re.DOTALL | re.IGNORECASE)
 
         # Clean up whitespace
         cleaned = cleaned.strip()
+
+        # Final check: if we ended up with empty content, return the original text
+        # This handles edge cases where the model doesn't use the structured format
+        if len(cleaned) == 0:
+            return generated_text.strip()
 
         return cleaned
 
@@ -216,6 +230,12 @@ class WritingRevisionEnv(Env):
         Returns:
             Score between 0-100
         """
+        import asyncio
+
+        # Add a small delay to avoid hitting rate limits
+        # This helps prevent API retry spam when running multiple environments in parallel
+        await asyncio.sleep(0.5)
+
         # Format the rubric for the evaluator
         rubric_text = json.dumps(self.task.rubric, indent=2)
 

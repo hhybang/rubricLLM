@@ -1,14 +1,25 @@
 import asyncio
 import json
 import logging
+import os
+import sys
 from datetime import datetime
+from pathlib import Path
+from typing import Literal
+
+# Add parent directory to Python path so we can import tinker_cookbook
+parent_dir = Path(__file__).parent.parent
+if str(parent_dir) not in sys.path:
+    sys.path.insert(0, str(parent_dir))
 
 import chz
-from tinker_cookbook import cli_utils, model_info
 from tinker_cookbook.rl import train
 from writing_env import WritingRLDatasetBuilder
 
 logger = logging.getLogger(__name__)
+
+# Type alias for log directory behavior
+LogdirBehavior = Literal["ask", "overwrite", "fail", "append"]
 
 
 @chz.chz
@@ -21,7 +32,7 @@ class CLIConfig:
 
     # Environment configuration
     rubric_file: str = "rubrics/example_rubric.json"
-    prompts_file: str = "prompts/writing_prompts.txt"
+    prompts_file: str = "prompts/research_intro_prompts.txt"
     max_turns: int = 5
 
     # Training hyperparameters
@@ -42,7 +53,7 @@ class CLIConfig:
     log_path: str | None = None
     wandb_project: str | None = None
     wandb_name: str | None = None
-    behavior_if_log_dir_exists: cli_utils.LogdirBehavior = "ask"
+    behavior_if_log_dir_exists: LogdirBehavior = "ask"
 
 
 def load_rubric(rubric_file: str) -> list[dict]:
@@ -73,6 +84,22 @@ def load_prompts(prompts_file: str) -> list[str]:
     return prompts
 
 
+def check_log_dir(log_path: str, behavior_if_exists: LogdirBehavior = "ask"):
+    """Check and handle log directory existence."""
+    if os.path.exists(log_path):
+        if behavior_if_exists == "fail":
+            raise ValueError(f"Log directory already exists: {log_path}")
+        elif behavior_if_exists == "ask":
+            logger.warning(f"Log directory already exists: {log_path}")
+            logger.warning("Proceeding anyway (use behavior_if_log_dir_exists='fail' to prevent this)")
+        elif behavior_if_exists == "overwrite":
+            logger.info(f"Overwriting existing log directory: {log_path}")
+        # For "append" or any other value, just proceed
+    else:
+        os.makedirs(log_path, exist_ok=True)
+        logger.info(f"Created log directory: {log_path}")
+
+
 async def cli_main(cli_config: CLIConfig):
     """Main training function."""
 
@@ -91,7 +118,7 @@ async def cli_main(cli_config: CLIConfig):
     else:
         log_path = f"/tmp/tinker-examples/rubric_writing_rl/{run_name}"
 
-    cli_utils.check_log_dir(log_path, behavior_if_exists=cli_config.behavior_if_log_dir_exists)
+    check_log_dir(log_path, behavior_if_exists=cli_config.behavior_if_log_dir_exists)
 
     # Load rubric and prompts
     logger.info(f"Loading rubric from {cli_config.rubric_file}")
