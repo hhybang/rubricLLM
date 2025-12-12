@@ -43,9 +43,9 @@ class CLIConfig:
     max_tokens: int = 2048
     kl_penalty_coef: float = 0.005  # Reduced to allow more exploration
 
-    # Evaluator configuration
-    evaluator_model: str = "claude-sonnet-4-5"
-    evaluator_api_key: str | None = None
+    # Evaluator configuration (uses smaller model via Tinker ServiceClient)
+    # evaluator_model_name: str = "Qwen/Qwen2.5-7B-Instruct"
+    evaluator_model_name = "Qwen/Qwen3-235B-A22B-Instruct-2507"
 
     # Logging configuration
     eval_every: int = 5
@@ -137,8 +137,7 @@ async def cli_main(cli_config: CLIConfig):
         group_size=cli_config.group_size,
         max_turns=cli_config.max_turns,
         model_name=cli_config.model_name,  # Pass model name for renderer
-        evaluator_api_key=cli_config.evaluator_api_key,
-        evaluator_model=cli_config.evaluator_model,
+        evaluator_model_name=cli_config.evaluator_model_name,  # Qwen model for evaluation
     )
 
     # Create training configuration

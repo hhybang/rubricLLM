@@ -22,10 +22,13 @@ import re
 from dataclasses import dataclass
 from typing import Any, Sequence
 
-import anthropic
 import chz
 import tinker
 from tinker_cookbook import renderers
+from tinker_cookbook.completers import MessageCompleter, TinkerMessageCompleter
+from tinker_cookbook.renderers import Message, Renderer, get_renderer
+from tinker_cookbook.tokenizer_utils import get_tokenizer
+from tinker_cookbook import model_info
 from tinker_cookbook.rl.types import (
     Env,
     EnvGroupBuilder,
@@ -61,13 +64,11 @@ class WritingRevisionEnv(Env):
         self,
         task: WritingTask,
         renderer: renderers.Renderer,
-        evaluator_client: anthropic.Anthropic,
-        evaluator_model: str = "claude-sonnet-4-5",
+        evaluator: MessageCompleter,
     ):
         self.task = task
         self.renderer = renderer
-        self.evaluator_client = evaluator_client
-        self.evaluator_model = evaluator_model
+        self.evaluator = evaluator
 
         # Episode state
         self.current_turn = 0
@@ -225,46 +226,41 @@ class WritingRevisionEnv(Env):
 
     async def _score_draft(self, draft: str) -> float:
         """
-        Score the draft using Claude 4.5 as an evaluator with the rubric.
+        Score the draft using the evaluator model with the rubric.
 
         Returns:
             Score between 0-100
         """
-        import asyncio
-
-        # Add a small delay to avoid hitting rate limits
-        # This helps prevent API retry spam when running multiple environments in parallel
-        await asyncio.sleep(0.5)
-
         # Format the rubric for the evaluator
         rubric_text = json.dumps(self.task.rubric, indent=2)
 
         # Create evaluation prompt
         eval_prompt = f"""
-            Please evaluate the following draft against the provided rubric.
-
-            ## Draft to Evaluate:
-            {draft}
-
-            ## Rubric:
+            **RUBRIC:**
+            ```json
             {rubric_text}
+            ```
 
-            {RUBRIC_SCORING_PROMPT}
+            **WRITING TASK:**
+            {self.task.prompt}
+
+            **DRAFT TO EVALUATE:**
+            {draft}
             """
 
         try:
-            # Call Claude 4.5 to score the draft
-            response = self.evaluator_client.messages.create(
-                model=self.evaluator_model,
-                max_tokens=4096,
-                messages=[
-                    {"role": "user", "content": eval_prompt}
-                ],
-            )
+            # Format messages for the evaluator
+            messages: list[Message] = [
+                {"role": "system", "content": RUBRIC_SCORING_PROMPT},
+                {"role": "user", "content": eval_prompt}
+            ]
 
+            # Call the evaluator using MessageCompleter
+            response = await self.evaluator(messages)
+            response_text = response["content"]
+            
             # Extract score from response
-            content = response.content[0].text
-            score = self._extract_score_from_evaluation(content)
+            score = self._extract_score_from_evaluation(response_text)
             return score
 
         except Exception as e:
@@ -309,14 +305,12 @@ class WritingEnvGroupBuilder(EnvGroupBuilder):
         task: WritingTask,
         group_size: int,
         renderer: renderers.Renderer,
-        evaluator_client: anthropic.Anthropic,
-        evaluator_model: str = "claude-sonnet-4-5",
+        evaluator: MessageCompleter,
     ):
         self.task = task
         self.group_size = group_size
         self.renderer = renderer
-        self.evaluator_client = evaluator_client
-        self.evaluator_model = evaluator_model
+        self.evaluator = evaluator
 
     async def make_envs(self) -> Sequence[Env]:
         """Create a group of independent environments for the same task."""
@@ -324,8 +318,7 @@ class WritingEnvGroupBuilder(EnvGroupBuilder):
             WritingRevisionEnv(
                 task=self.task,
                 renderer=self.renderer,
-                evaluator_client=self.evaluator_client,
-                evaluator_model=self.evaluator_model,
+                evaluator=self.evaluator,
             )
             for _ in range(self.group_size)
         ]
@@ -347,15 +340,13 @@ class WritingRLDataset(RLDataset):
         groups_per_batch: int,
         group_size: int,
         renderer: renderers.Renderer,
-        evaluator_client: anthropic.Anthropic,
-        evaluator_model: str = "claude-sonnet-4-5",
+        evaluator: MessageCompleter,
     ):
         self.tasks = tasks
         self.groups_per_batch = groups_per_batch
         self.group_size = group_size
         self.renderer = renderer
-        self.evaluator_client = evaluator_client
-        self.evaluator_model = evaluator_model
+        self.evaluator = evaluator
 
     def __len__(self) -> int:
         """Number of batches in the dataset."""
@@ -374,8 +365,7 @@ class WritingRLDataset(RLDataset):
                     task=task,
                     group_size=self.group_size,
                     renderer=self.renderer,
-                    evaluator_client=self.evaluator_client,
-                    evaluator_model=self.evaluator_model,
+                    evaluator=self.evaluator,
                 )
             )
 
@@ -399,51 +389,105 @@ class WritingRLDatasetBuilder(RLDatasetBuilder):
     model_name: str  # Policy model name
     renderer_name: str | None = None  # Override renderer if needed
 
-    # Evaluator configuration
-    evaluator_api_key: str | None = None
-    evaluator_model: str = "claude-sonnet-4-5"
+    # Evaluator configuration - using API-based model via Tinker
+    evaluator_model_name: str = "Qwen/Qwen2.5-7B-Instruct"  # Model for rubric evaluation
+    evaluator_max_tokens: int = 4096  # Max tokens for evaluator responses
+    base_url: str | None = None  # Optional Tinker service base URL
+
+    # Test set configuration
+    test_split: float = 0.2  # Fraction of prompts to use for test set (e.g., 0.2 = 20%)
+    min_test_size: int = 1  # Minimum number of test prompts
+    max_test_size: int = 100  # Maximum number of test prompts
 
     async def __call__(self) -> tuple[RLDataset, RLDataset | None]:
         """Build training and optional evaluation datasets."""
-        import os
-        from tinker_cookbook import model_info
-        from tinker_cookbook.tokenizer_utils import get_tokenizer
-
-        # Initialize evaluator client
-        api_key = self.evaluator_api_key or os.environ.get("ANTHROPIC_API_KEY")
-        if not api_key:
-            raise ValueError("ANTHROPIC_API_KEY must be set or provided")
-
-        evaluator_client = anthropic.Anthropic(api_key=api_key)
-
         # Create renderer for the policy model
         tokenizer = get_tokenizer(self.model_name)
         if self.renderer_name:
-            renderer = renderers.get_renderer(self.renderer_name, tokenizer)
+            renderer = get_renderer(self.renderer_name, tokenizer)
         else:
             renderer_name = model_info.get_recommended_renderer_name(self.model_name)
-            renderer = renderers.get_renderer(renderer_name, tokenizer)
+            renderer = get_renderer(renderer_name, tokenizer)
 
-        # Create tasks from prompts
-        tasks = [
+        # Create evaluator using Tinker ServiceClient
+        print(f"Creating evaluator client for model: {self.evaluator_model_name}")
+        service_client = tinker.ServiceClient(base_url=self.base_url)
+
+        # Determine renderer for evaluator model
+        if self.evaluator_model_name.startswith("Qwen/Qwen3"):
+            evaluator_renderer_name = "qwen3_disable_thinking"
+        else:
+            evaluator_renderer_name = model_info.get_recommended_renderer_name(
+                self.evaluator_model_name
+            )
+
+        evaluator_tokenizer = get_tokenizer(self.evaluator_model_name)
+        evaluator_renderer = get_renderer(evaluator_renderer_name, evaluator_tokenizer)
+
+        # Create sampling client for evaluator
+        evaluator_sampling_client = service_client.create_sampling_client(
+            base_model=self.evaluator_model_name
+        )
+
+        # Create MessageCompleter for the evaluator
+        evaluator = TinkerMessageCompleter(
+            sampling_client=evaluator_sampling_client,
+            renderer=evaluator_renderer,
+            max_tokens=self.evaluator_max_tokens,
+        )
+
+        print("Evaluator client created successfully!")
+
+        # Split prompts into train and test sets
+        num_test = min(
+            max(int(len(self.prompts) * self.test_split), self.min_test_size),
+            self.max_test_size
+        )
+        num_test = min(num_test, len(self.prompts) - 1)  # Ensure at least 1 train prompt
+
+        train_prompts = self.prompts[:-num_test]
+        test_prompts = self.prompts[-num_test:]
+
+        print(f"Split {len(self.prompts)} prompts into {len(train_prompts)} train and {len(test_prompts)} test")
+
+        # Create tasks from train prompts
+        train_tasks = [
             WritingTask(
                 prompt=prompt,
                 rubric=self.rubric,
                 max_turns=self.max_turns,
-                task_id=f"task_{i}",
+                task_id=f"train_task_{i}",
             )
-            for i, prompt in enumerate(self.prompts)
+            for i, prompt in enumerate(train_prompts)
         ]
 
         # Create training dataset
         train_dataset = WritingRLDataset(
-            tasks=tasks,
+            tasks=train_tasks,
             groups_per_batch=self.groups_per_batch,
             group_size=self.group_size,
             renderer=renderer,
-            evaluator_client=evaluator_client,
-            evaluator_model=self.evaluator_model,
+            evaluator=evaluator,
         )
 
-        # No separate eval dataset for now
-        return train_dataset, None
+        # Create tasks from test prompts
+        test_tasks = [
+            WritingTask(
+                prompt=prompt,
+                rubric=self.rubric,
+                max_turns=self.max_turns,
+                task_id=f"test_task_{i}",
+            )
+            for i, prompt in enumerate(test_prompts)
+        ]
+
+        # Create test dataset
+        test_dataset = WritingRLDataset(
+            tasks=test_tasks,
+            groups_per_batch=len(test_tasks),  # Test set is evaluated as a single batch
+            group_size=self.group_size,
+            renderer=renderer,
+            evaluator=evaluator,
+        )
+
+        return train_dataset, test_dataset

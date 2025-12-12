@@ -1,120 +1,565 @@
 [
   {
     "version": 1,
-    "writing_type": "Research paper introduction (technical/HCI domain)",
-    "user_goals_summary": "Create a formal, logically structured research paper introduction that establishes a clear problem→solution argument. The writing must maintain academic tone, integrate core themes (opacity, portability) throughout, and present technical concepts with precision and clarity appropriate for scholarly publication.",
     "rubric": [
       {
-        "name": "Academic Tone & Register",
+        "name": "Academic Register Consistency",
         "category": "Style",
-        "description": "Uses formal, objective language appropriate for research papers; avoids subjective adjectives, metaphorical expressions, and emotional appeals; maintains consistent scholarly distance and register",
-        "exemplary": "Consistently formal and objective throughout; no subjective adjectives (like 'hard-won') or metaphorical language (like 'fragmented landscape'); maintains scholarly register in all sentences; uses precise, neutral descriptors",
-        "proficient": "Generally formal with rare lapses into less formal expressions; maintains objectivity in key claims; occasional subjective language that doesn't undermine scholarly credibility",
-        "developing": "Mix of formal and informal language; some subjective descriptors or metaphors present; tone inconsistency requires revision; academic credibility somewhat compromised",
-        "beginning": "Frequent informal language, emotional appeals, or conversational tone; inappropriate for research writing; would require substantial revision for publication",
-        "weight": 25
+        "description": "Maintains objective, neutral tone appropriate for technical research papers. Avoids informal modifiers, emotional language, and metaphorical phrasing that would appear in popular science writing.",
+        "dimensions": [
+          {
+            "id": "informal_language",
+            "label": "Absence of subjective/emotional modifiers",
+            "importance": 0.6,
+            "original_importance": 0.6
+          },
+          {
+            "id": "metaphor_usage",
+            "label": "Literal vs. metaphorical phrasing",
+            "importance": 0.4,
+            "original_importance": 0.4
+          }
+        ],
+        "exemplary": "Zero instances of informal adjectives (e.g., 'hard-won', 'painstakingly'), emotional intensifiers, or extended metaphors (e.g., 'fragmented landscape'). All descriptions use neutral, precise language (e.g., 'this calibration does not persist' rather than 'calibration evaporates').",
+        "proficient": "No more than one informal modifier per paragraph; any metaphors are conventional technical terms; tone remains predominantly objective.",
+        "developing": "2-3 instances per paragraph of informal language or creative phrasing that would be appropriate for popular writing but not technical papers; inconsistent register.",
+        "beginning": "Frequent use of subjective modifiers, emotional language, or extended metaphors; reads like blog post or popular science article rather than research paper.",
+        "weight": 20.0,
+        "original_weight": 20
       },
       {
-        "name": "Logical Argument Structure",
+        "name": "Logical Flow and Explicit Connections",
         "category": "Structure",
-        "description": "Establishes clear causal relationships and problem→solution progressions; makes connections between paragraphs explicit through transition sentences; ensures each claim builds visibly on previous points",
-        "exemplary": "Each paragraph builds explicitly on previous points; problem→solution arc is clear and well-signaled; transitions make relationships between ideas visible; reader can easily follow argumentative flow",
-        "proficient": "Main argument flow is clear; most connections are explicit though some transitions could be stronger; problem→solution structure is present and understandable",
-        "developing": "Argument structure exists but jumps between ideas without clear connectors; readers must infer relationships; problem and solution connection needs strengthening",
-        "beginning": "Ideas presented without clear logical progression; problem and solution not clearly linked; reader cannot follow the argumentative thread",
-        "weight": 25
+        "description": "Every claim, solution element, or new concept explicitly connects to previously established points. Transitions make logical relationships transparent rather than implicit.",
+        "dimensions": [
+          {
+            "id": "backward_connection",
+            "label": "Explicit references to prior arguments",
+            "importance": 0.7,
+            "original_importance": 0.7
+          },
+          {
+            "id": "transition_clarity",
+            "label": "Clear signaling of logical relationships",
+            "importance": 0.3,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every paragraph's opening or transition sentence explicitly references prior content; solution elements directly map to stated problems using parallel language (e.g., problem mentions 'opacity and portability', solution addresses both by name); 100% of major claims include backward-looking connective phrases.",
+        "proficient": "Most paragraphs connect explicitly to prior content; key solution elements reference their corresponding problems; minor points may lack explicit connection but logical flow remains clear.",
+        "developing": "Some paragraphs introduce new concepts without connecting to prior arguments; solution discussion addresses problems implicitly rather than naming them directly; reader must infer relationships.",
+        "beginning": "Paragraphs feel disconnected; new concepts appear without justification; solution description doesn't reference the specific problems it addresses; logical jumps require significant reader effort.",
+        "weight": 30.0,
+        "original_weight": 30
       },
       {
-        "name": "Precision & Concision",
+        "name": "Conciseness Without Redundancy",
         "category": "Style",
-        "description": "Eliminates redundancy while maintaining completeness; uses specific, concrete language over vague descriptors; employs parallel structures and list-based clarity where appropriate; every word serves a purpose",
-        "exemplary": "No redundancy; every word necessary; uses specific terms consistently; parallel structures enhance clarity (e.g., 'models, sessions, and tasks'); could not be shortened without losing content",
-        "proficient": "Generally concise with minor redundancies; mostly specific language with occasional vague phrases; could be slightly tighter but maintains clarity",
-        "developing": "Notable redundancy present; some vague descriptors; could be 20-30% shorter without losing content; unclear what points are distinct vs. restated",
-        "beginning": "Highly repetitive; verbose phrasing throughout; significant redundancy obscures main points; requires substantial cutting",
-        "weight": 20
+        "description": "Removes repetitive phrasing and redundant explanations while preserving necessary technical detail. Prefers single precise sentence over multiple restatements of same concept.",
+        "dimensions": [
+          {
+            "id": "repetition_elimination",
+            "label": "Removal of redundant formulations",
+            "importance": 0.6,
+            "original_importance": 0.6
+          },
+          {
+            "id": "sentence_efficiency",
+            "label": "Information density per sentence",
+            "importance": 0.4,
+            "original_importance": 0.4
+          }
+        ],
+        "exemplary": "Zero instances where the same concept is restated using different words within a paragraph; each sentence introduces new information or relationships; no phrases like 'dual interpretability and portability' followed by separate explanations of both.",
+        "proficient": "Minimal redundancy (no more than one restated concept per paragraph); most sentences advance the argument; any repetition serves clear rhetorical purpose.",
+        "developing": "Multiple instances of concepts restated with minor word changes; some sentences primarily repackage prior sentences; structure includes both summary statements and detailed explanations of same point.",
+        "beginning": "Extensive redundancy with concepts explained multiple times in similar language; low information density; paragraphs feel padded or circular.",
+        "weight": 30.0,
+        "original_weight": 25
       },
       {
-        "name": "Thematic Coherence",
+        "name": "Problem-Solution Alignment",
         "category": "Content",
-        "description": "Maintains consistent focus on core themes (opacity, portability, interpretability) throughout the text; integrates secondary points into primary narrative rather than treating them as isolated elements; weaves themes together across paragraphs",
-        "exemplary": "Core themes are woven throughout all paragraphs; portability integrated into problem framing and solution; all content clearly connects to central narrative; unified story from start to finish",
-        "proficient": "Main themes are present and mostly consistent; most content connects to core narrative with minor tangents; themes could be more tightly integrated",
-        "developing": "Themes mentioned but not consistently maintained; some content feels disconnected from main argument; portability or opacity treated as separate rather than integrated",
-        "beginning": "Multiple competing themes; unclear central focus; disjointed presentation; themes introduced but not sustained",
-        "weight": 20
-      },
-      {
-        "name": "Clarity of Technical Content",
-        "category": "Content",
-        "description": "Presents technical concepts (rubric generation, reflection mechanisms, system architecture) in well-organized, accessible prose; defines key terms clearly; balances technical specificity with readability for target research audience",
-        "exemplary": "Technical concepts are well-organized and accessible; key terms defined when introduced; appropriate level of detail for research paper introduction; mechanisms are understandable without oversimplification",
-        "proficient": "Technical content is understandable; most concepts clearly explained; appropriate detail level though some areas could be clearer",
-        "developing": "Technical content present but organization makes it hard to follow; some undefined jargon; balance between detail and accessibility needs work",
-        "beginning": "Technical concepts poorly explained or organized; excessive jargon without definitions; readers cannot understand key mechanisms",
-        "weight": 10
+        "description": "Solution descriptions directly address each specific problem dimension introduced earlier. If problem establishes three failure modes, solution explicitly addresses all three using consistent terminology.",
+        "dimensions": [
+          {
+            "id": "dimension_coverage",
+            "label": "Complete addressing of problem dimensions",
+            "importance": 0.6,
+            "original_importance": 0.7
+          },
+          {
+            "id": "terminology_consistency",
+            "label": "Parallel language between problem/solution",
+            "importance": 0.4,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every problem dimension mentioned in problem statement has corresponding solution element in solution paragraph; uses same terminology (e.g., if problem says 'opacity and portability', solution explicitly mentions both terms); 1:1 mapping is transparent to reader.",
+        "proficient": "All major problem dimensions addressed in solution; terminology mostly consistent; mapping is clear even if not perfectly parallel.",
+        "developing": "Solution addresses some but not all problem dimensions; may introduce solution benefits not connected to stated problems; terminology shifts make mapping less obvious.",
+        "beginning": "Solution description feels disconnected from problem; introduces capabilities without showing how they address specific failures; reader cannot easily map solution elements to problems.",
+        "weight": 20.0,
+        "original_weight": 25
       }
     ],
-    "weighting_rationale": "Academic Tone (25%) and Logical Structure (25%) receive highest weight based on the user's most consistent and emphatic feedback—they explicitly rejected informal language multiple times and repeatedly requested explicit connections and transitions. Precision (20%) and Thematic Coherence (20%) receive substantial weight due to consistent acceptance of tightening suggestions and the user's insistence that portability be woven throughout rather than isolated. Clarity of Technical Content (10%) receives lower weight because the user deferred technical depth decisions twice ('not yet'), suggesting this is important but currently lower priority than establishing proper tone and structure.",
-    "coaching_notes": "This user demonstrates strong command of academic writing conventions and has clear, non-negotiable standards for formal tone—flag any subjective language or metaphors immediately. They value explicit connection-making over letting readers infer relationships; always provide transition sentences and make the logical structure visible. They respond well to tightening suggestions and parallel structures. At this stage, they're focused on getting the high-level argument right before diving into technical detail—support structural and thematic work first, then address technical depth when they signal readiness. Their pattern of saying 'make this better' typically means 'make it tighter and more precise while maintaining formal tone.'"
+    "writing_type": "Research paper introduction in HCI/AI domain, presenting novel technical approach with clear problem-solution structure",
+    "user_goals_summary": "Write a research paper introduction that maintains strict academic register while establishing a clear problem-solution arc. Every solution element must explicitly address problems introduced earlier. Prioritize conciseness and logical flow without sacrificing technical precision.",
+    "weighting_rationale": "Weights adjusted in branch mode from v1",
+    "coaching_notes": "Rubric weights were modified in branch mode experimentation"
   },
   {
     "version": 2,
-    "writing_type": "Academic research paper introduction (HCI/AI venue, system paper)",
-    "user_goals_summary": "Write a scholarly research paper introduction that establishes a clear problem-solution narrative about conversational AI memory opacity and rubric-based personalization. Maintain objective, precise language appropriate for academic venues while building a logical argumentative structure that connects problems to proposed solutions.",
     "rubric": [
       {
-        "name": "Academic Tone & Register",
+        "name": "Academic Register Consistency",
         "category": "Style",
-        "description": "Uses objective, neutral language appropriate for research papers. Avoids subjective adjectives, metaphorical phrases, and emotional descriptors. Maintains scholarly distance through verb choice (e.g., 'appear' rather than 'feel') and factual description.",
-        "exemplary": "Zero instances of subjective adjectives (e.g., 'hard-won,' 'daunting,' 'innovative') or metaphorical language (e.g., 'fragmented landscape,' 'navigating waters'). Every sentence uses objective descriptors. All claims framed factually ('this calibration does not persist' vs. 'users lose their hard-won calibration'). Uses scholarly verbs ('appear,' 'demonstrate,' 'indicate') rather than subjective ones ('feel,' 'seem'). No emotional appeals or conversational markers ('clearly,' 'of course').",
-        "proficient": "1-2 minor subjective terms per 1000 words that don't appear in key claims (e.g., acceptable in background context but not in problem statement). Maintains scholarly register in 90%+ of sentences. No metaphors. May include 1 instance of slightly informal verb choice that doesn't compromise academic credibility.",
-        "developing": "3-5 subjective descriptors or metaphorical phrases per 1000 words. Tone varies between formal and informal across paragraphs. Includes 1-2 emotional appeals or conversational phrases. Some key claims use subjective language that would be flagged in peer review. Mix of scholarly and informal verb choices.",
-        "beginning": "6+ instances of informal language, emotional appeals, or subjective adjectives per 1000 words. Multiple metaphors or conversational phrases. Scholarly tone inconsistent throughout. Key arguments rely on subjective characterizations rather than factual description. Would require substantial revision to meet venue standards.",
-        "weight": 30
+        "description": "Maintains objective, neutral tone appropriate for technical research papers. Avoids informal modifiers, emotional language, and metaphorical phrasing that would appear in popular science writing.",
+        "dimensions": [
+          {
+            "id": "informal_language",
+            "label": "Absence of subjective/emotional modifiers",
+            "importance": 0.6,
+            "original_importance": 0.6
+          },
+          {
+            "id": "metaphor_usage",
+            "label": "Literal vs. metaphorical phrasing",
+            "importance": 0.4,
+            "original_importance": 0.4
+          }
+        ],
+        "exemplary": "Zero instances of informal adjectives (e.g., 'hard-won', 'painstakingly'), emotional intensifiers, or extended metaphors (e.g., 'fragmented landscape'). All descriptions use neutral, precise language (e.g., 'this calibration does not persist' rather than 'calibration evaporates').",
+        "proficient": "No more than one informal modifier per paragraph; any metaphors are conventional technical terms; tone remains predominantly objective.",
+        "developing": "2-3 instances per paragraph of informal language or creative phrasing that would be appropriate for popular writing but not technical papers; inconsistent register.",
+        "beginning": "Frequent use of subjective modifiers, emotional language, or extended metaphors; reads like blog post or popular science article rather than research paper.",
+        "weight": 20.0,
+        "original_weight": 20
       },
       {
-        "name": "Precision & Concision",
+        "name": "Logical Flow and Explicit Connections",
+        "category": "Structure",
+        "description": "Every claim, solution element, or new concept explicitly connects to previously established points through strong topic sentences. Transitions make logical relationships transparent rather than implicit. Topic sentences clearly signal paragraph content and its relationship to the broader argument.",
+        "dimensions": [
+          {
+            "id": "backward_connection",
+            "label": "Explicit references to prior arguments",
+            "importance": 0.7,
+            "original_importance": 0.7
+          },
+          {
+            "id": "transition_clarity",
+            "label": "Clear signaling of logical relationships",
+            "importance": 0.3,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every paragraph opens with a strong topic sentence that explicitly references prior content and signals the paragraph's purpose; solution elements directly map to stated problems using parallel language (e.g., problem mentions 'opacity and portability', solution addresses both by name); 100% of major claims include backward-looking connective phrases; topic sentences are immediately comprehensible and guide reader expectations.",
+        "proficient": "Most paragraphs have clear topic sentences that connect to prior content; key solution elements reference their corresponding problems; minor points may lack explicit connection but logical flow remains clear; topic sentences generally indicate paragraph direction.",
+        "developing": "Some paragraphs lack strong topic sentences or introduce new concepts without connecting to prior arguments; solution discussion addresses problems implicitly rather than naming them directly; reader must infer relationships; topic sentences may be vague or buried mid-paragraph.",
+        "beginning": "Paragraphs feel disconnected and lack clear topic sentences; new concepts appear without justification; solution description doesn't reference the specific problems it addresses; logical jumps require significant reader effort; reader cannot predict paragraph content from opening sentences.",
+        "weight": 30.0,
+        "original_weight": 30
+      },
+      {
+        "name": "Conciseness Without Redundancy",
         "category": "Style",
-        "description": "Eliminates redundancy and verbose phrasing. Uses parallel structures for lists. Every phrase adds new information without repetition. Chooses simpler, more direct formulations over elaborate ones.",
-        "exemplary": "Zero redundant phrases or repeated concepts. Uses parallel structure in 100% of lists (e.g., 'models, sessions, and tasks'). Every sentence adds new information. No phrases like 'dual X and Y' where both terms mean similar things. Could not be shortened by more than 5% without losing content. No verbose constructions ('in order to' → 'to', 'due to the fact that' → 'because').",
-        "proficient": "Minor redundancy (1-2 concepts restated for emphasis where rhetorically justified). Parallel structure in 90%+ of lists. Could be tightened by 5-10% but maintains clarity. 1-2 slightly verbose phrases that don't significantly impact readability. No major repetition of ideas across sentences.",
-        "developing": "Notable redundancy (3-5 concepts repeated unnecessarily or restated without adding information). Inconsistent parallel structure (some lists formatted differently). Could be shortened by 15-25% without losing core content. Multiple verbose constructions. Some paragraphs repeat points made earlier without advancing argument.",
-        "beginning": "Significant redundancy throughout (same ideas stated multiple times across paragraphs). Lacks parallel structure in lists. Could be shortened by 30%+ without content loss. Verbose phrasing obscures main points. Reader must work to extract core claims from repetitive text.",
-        "weight": 25
+        "description": "Removes repetitive phrasing and redundant explanations while preserving necessary technical detail. Prefers single precise sentence over multiple restatements of same concept.",
+        "dimensions": [
+          {
+            "id": "repetition_elimination",
+            "label": "Removal of redundant formulations",
+            "importance": 0.6,
+            "original_importance": 0.6
+          },
+          {
+            "id": "sentence_efficiency",
+            "label": "Information density per sentence",
+            "importance": 0.4,
+            "original_importance": 0.4
+          }
+        ],
+        "exemplary": "Zero instances where the same concept is restated using different words within a paragraph; each sentence introduces new information or relationships; no phrases like 'dual interpretability and portability' followed by separate explanations of both.",
+        "proficient": "Minimal redundancy (no more than one restated concept per paragraph); most sentences advance the argument; any repetition serves clear rhetorical purpose.",
+        "developing": "Multiple instances of concepts restated with minor word changes; some sentences primarily repackage prior sentences; structure includes both summary statements and detailed explanations of same point.",
+        "beginning": "Extensive redundancy with concepts explained multiple times in similar language; low information density; paragraphs feel padded or circular.",
+        "weight": 30.0,
+        "original_weight": 25
       },
       {
-        "name": "Logical Argument Structure",
-        "category": "Structure",
-        "description": "Follows clear problem-solution narrative arc. Establishes motivation and problem before introducing approach. Each paragraph builds on previous claims with explicit connections. Problem statement in early paragraphs must directly connect to solution claims in later paragraphs.",
-        "exemplary": "Perfect problem-solution arc: paragraph 1 establishes context, paragraph 2 identifies problem with specific consequences, paragraph 3 introduces solution that directly addresses those consequences. Every solution claim explicitly references a problem from paragraph 2 (e.g., 'addresses the opacity' clearly links back). No solution elements introduced before problem is established. Reader can draw direct line from each problem aspect to its solution.",
-        "proficient": "Clear problem-solution structure with 90%+ of solution elements traceable to stated problems. May have 1 solution aspect introduced without explicit problem grounding, but overall arc is evident. Problem and solution paragraphs are adjacent or clearly linked. Minor gaps in explicit connection (solution addresses problem but link could be more direct).",
-        "developing": "Problem-solution structure exists but with gaps. 60-80% of solution claims connect to stated problems. Some solution elements appear without clear problem motivation. Reader must infer some connections. May introduce solution aspects before establishing why they're needed. Problem paragraph and solution paragraph exist but relationship requires interpretation.",
-        "beginning": "Weak or missing problem-solution structure. Less than 60% of solution elements traceable to problems. Introduces solution before adequately establishing problem. Reader cannot easily map which solution addresses which problem. May present features without motivation. Argumentative arc is unclear or inverted.",
-        "weight": 20
-      },
-      {
-        "name": "Explicit Connection & Signaling",
-        "category": "Structure",
-        "description": "Makes transitions between paragraphs and ideas explicit rather than implicit. Uses clear signaling language when shifting topics or introducing new concepts. Ensures reader can follow progression without inferring connections.",
-        "exemplary": "Every major transition includes explicit signaling ('Our approach addresses...', 'Beyond immediate tasks...', 'This enables...'). When introducing new concepts, explicitly states relationship to previous content (e.g., transition sentence connecting rubric generation to reflection modes). No paragraph begins new topic without bridging from previous. Uses parallel signaling for related concepts (consistent structure when introducing inline vs. standalone reflection).",
-        "proficient": "Most major transitions (80%+) explicitly signaled. May have 1 paragraph that relies on implicit connection but overall flow is clear. Uses transition phrases consistently. When asked, could easily add missing transition without restructuring. Reader follows progression with minimal effort.",
-        "developing": "Only 50-70% of transitions explicitly signaled. Some paragraphs start new topics without connecting to previous content. Inconsistent use of transition language. Reader must occasionally infer relationships between sections. Missing 2-3 clear transition sentences that would improve flow.",
-        "beginning": "Less than 50% of transitions explicitly signaled. Multiple paragraphs start abruptly without connection to previous content. Weak or absent signaling language. Reader frequently must infer relationships. Argumentative progression is unclear without external knowledge of paper structure.",
-        "weight": 15
-      },
-      {
-        "name": "Technical Vocabulary Appropriateness",
+        "name": "Problem-Solution Alignment",
         "category": "Content",
-        "description": "Uses field-appropriate terminology for HCI/AI research venues without over-simplification or under-specification. Maintains technical precision expected in research papers while ensuring terms are used correctly and consistently.",
-        "exemplary": "All technical terms used correctly and consistently ('retrieval-augmented generation,' 'model-agnostic representations,' 'conversational state,' 'interpretability'). No inappropriate simplification of technical concepts. No jargon used without context (terms are either defined or clearly from established literature). Terminology matches what would appear in CHI/UIST/ACL papers. Precision in technical claims (distinguishes 'memory' from 'conversational state' from 'model weights').",
-        "proficient": "90%+ of technical terms used correctly. Minor imprecision in 1-2 technical claims that don't compromise core argument. May over-simplify one concept slightly but maintains overall technical credibility. Terminology is appropriate for venue with rare exceptions.",
-        "developing": "70-85% of technical terms used appropriately. Some inappropriate simplification or imprecision. 2-3 technical concepts could be more precisely specified. May use general terms where field-specific vocabulary exists. Some terminological inconsistency (switching between related terms without establishing relationship).",
-        "beginning": "Less than 70% of technical terms used correctly. Significant over-simplification or misuse of terminology. Multiple imprecise technical claims. Uses generic language where field-specific terms are standard. Would raise concerns in peer review about author's familiarity with literature.",
-        "weight": 10
+        "description": "Solution descriptions directly address each specific problem dimension introduced earlier. If problem establishes three failure modes, solution explicitly addresses all three using consistent terminology.",
+        "dimensions": [
+          {
+            "id": "dimension_coverage",
+            "label": "Complete addressing of problem dimensions",
+            "importance": 0.6,
+            "original_importance": 0.7
+          },
+          {
+            "id": "terminology_consistency",
+            "label": "Parallel language between problem/solution",
+            "importance": 0.4,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every problem dimension mentioned in problem statement has corresponding solution element in solution paragraph; uses same terminology (e.g., if problem says 'opacity and portability', solution explicitly mentions both terms); 1:1 mapping is transparent to reader.",
+        "proficient": "All major problem dimensions addressed in solution; terminology mostly consistent; mapping is clear even if not perfectly parallel.",
+        "developing": "Solution addresses some but not all problem dimensions; may introduce solution benefits not connected to stated problems; terminology shifts make mapping less obvious.",
+        "beginning": "Solution description feels disconnected from problem; introduces capabilities without showing how they address specific failures; reader cannot easily map solution elements to problems.",
+        "weight": 20.0,
+        "original_weight": 25
       }
     ],
-    "weighting_rationale": "Academic Tone receives highest weight (30%) due to explicit, repeated corrections ('this is a research paper,' rejection of 'hard-won' and 'fragmented landscape'). Precision & Concision (25%) reflects consistent pattern throughout conversation - user repeatedly asked for 'better' versions and chose concise alternatives. Logical Argument Structure (20%) weighted for explicit concern about problem-solution arc and portability connection. Explicit Connection (15%) based on specific request for transition sentence. Technical Vocabulary (10%) lowest despite competence because user never corrected technical usage - appears already proficient.",
-    "coaching_notes": "This user highly values scholarly objectivity - flag any subjective adjectives, metaphors, or emotional language immediately. They prefer shorter, clearer alternatives when offered and will eliminate redundancy without prompting. Pay special attention to problem-solution argumentation structure: every solution claim should explicitly connect back to a stated problem. When drafting new sections, always include explicit transition sentences between major topics - don't assume implicit connections are sufficient."
+    "writing_type": "Research paper introduction in HCI/AI domain, presenting novel technical approach with clear problem-solution structure",
+    "user_goals_summary": "Write a research paper introduction that maintains strict academic register while establishing a clear problem-solution arc. Every solution element must explicitly address problems introduced earlier. Prioritize conciseness and logical flow without sacrificing technical precision.",
+    "weighting_rationale": "Weights adjusted in branch mode from v1",
+    "coaching_notes": "Rubric weights were modified in branch mode experimentation"
+  },
+  {
+    "version": 3,
+    "rubric": [
+      {
+        "name": "Academic Register Consistency",
+        "category": "Style",
+        "description": "Maintains objective, neutral tone appropriate for technical research papers. Avoids informal modifiers, emotional language, metaphorical phrasing, and motivational framing that explains why the topic is important or engaging. Presents technical capabilities and problems directly without justifying the domain's relevance.",
+        "dimensions": [
+          {
+            "id": "informal_language",
+            "label": "Absence of subjective/emotional modifiers",
+            "importance": 0.5,
+            "original_importance": 0.6
+          },
+          {
+            "id": "metaphor_usage",
+            "label": "Literal vs. metaphorical phrasing",
+            "importance": 0.3,
+            "original_importance": 0.4
+          },
+          {
+            "id": "motivational_framing",
+            "label": "Absence of domain justification language",
+            "importance": 0.2,
+            "original_importance": 0.0
+          }
+        ],
+        "exemplary": "Zero instances of informal adjectives (e.g., 'hard-won', 'painstakingly'), emotional intensifiers, or extended metaphors (e.g., 'fragmented landscape'). No motivational framing that explains why the topic is 'engaging', 'particularly relevant', or 'naturally aligned'. Avoids comparative claims about importance ('more than ever', 'increasingly critical'). Opens with direct technical statements about system capabilities or problems rather than contextual justifications. All descriptions use neutral, precise language (e.g., 'this calibration does not persist' rather than 'calibration evaporates').",
+        "proficient": "No more than one informal modifier per paragraph; any metaphors are conventional technical terms; minimal motivational framing (at most one statement about domain relevance); tone remains predominantly objective and technical.",
+        "developing": "2-3 instances per paragraph of informal language, creative phrasing, or motivational framing (e.g., 'has emerged as particularly important', 'aligns naturally with'); inconsistent register between technical exposition and domain justification.",
+        "beginning": "Frequent use of subjective modifiers, emotional language, extended metaphors, or extensive framing about why the topic matters; reads like blog post or popular science article rather than research paper; significant space devoted to selling the domain's importance.",
+        "weight": 20.0,
+        "original_weight": 20
+      },
+      {
+        "name": "Logical Flow and Explicit Connections",
+        "category": "Structure",
+        "description": "Every claim, solution element, or new concept explicitly connects to previously established points through strong topic sentences. Transitions make logical relationships transparent rather than implicit. Topic sentences clearly signal paragraph content and its relationship to the broader argument.",
+        "dimensions": [
+          {
+            "id": "backward_connection",
+            "label": "Explicit references to prior arguments",
+            "importance": 0.7,
+            "original_importance": 0.7
+          },
+          {
+            "id": "transition_clarity",
+            "label": "Clear signaling of logical relationships",
+            "importance": 0.3,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every paragraph opens with a strong topic sentence that explicitly references prior content and signals the paragraph's purpose; solution elements directly map to stated problems using parallel language (e.g., problem mentions 'opacity and portability', solution addresses both by name); 100% of major claims include backward-looking connective phrases; topic sentences are immediately comprehensible and guide reader expectations.",
+        "proficient": "Most paragraphs have clear topic sentences that connect to prior content; key solution elements reference their corresponding problems; minor points may lack explicit connection but logical flow remains clear; topic sentences generally indicate paragraph direction.",
+        "developing": "Some paragraphs lack strong topic sentences or introduce new concepts without connecting to prior arguments; solution discussion addresses problems implicitly rather than naming them directly; reader must infer relationships; topic sentences may be vague or buried mid-paragraph.",
+        "beginning": "Paragraphs feel disconnected and lack clear topic sentences; new concepts appear without justification; solution description doesn't reference the specific problems it addresses; logical jumps require significant reader effort; reader cannot predict paragraph content from opening sentences.",
+        "weight": 30.0,
+        "original_weight": 30
+      },
+      {
+        "name": "Conciseness Without Redundancy",
+        "category": "Style",
+        "description": "Removes repetitive phrasing and redundant explanations while preserving necessary technical detail. Prefers single precise sentence over multiple restatements of same concept.",
+        "dimensions": [
+          {
+            "id": "repetition_elimination",
+            "label": "Removal of redundant formulations",
+            "importance": 0.6,
+            "original_importance": 0.6
+          },
+          {
+            "id": "sentence_efficiency",
+            "label": "Information density per sentence",
+            "importance": 0.4,
+            "original_importance": 0.4
+          }
+        ],
+        "exemplary": "Zero instances where the same concept is restated using different words within a paragraph; each sentence introduces new information or relationships; no phrases like 'dual interpretability and portability' followed by separate explanations of both.",
+        "proficient": "Minimal redundancy (no more than one restated concept per paragraph); most sentences advance the argument; any repetition serves clear rhetorical purpose.",
+        "developing": "Multiple instances of concepts restated with minor word changes; some sentences primarily repackage prior sentences; structure includes both summary statements and detailed explanations of same point.",
+        "beginning": "Extensive redundancy with concepts explained multiple times in similar language; low information density; paragraphs feel padded or circular.",
+        "weight": 30.0,
+        "original_weight": 25
+      },
+      {
+        "name": "Problem-Solution Alignment",
+        "category": "Content",
+        "description": "Solution descriptions directly address each specific problem dimension introduced earlier. If problem establishes three failure modes, solution explicitly addresses all three using consistent terminology.",
+        "dimensions": [
+          {
+            "id": "dimension_coverage",
+            "label": "Complete addressing of problem dimensions",
+            "importance": 0.6,
+            "original_importance": 0.7
+          },
+          {
+            "id": "terminology_consistency",
+            "label": "Parallel language between problem/solution",
+            "importance": 0.4,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every problem dimension mentioned in problem statement has corresponding solution element in solution paragraph; uses same terminology (e.g., if problem says 'opacity and portability', solution explicitly mentions both terms); 1:1 mapping is transparent to reader.",
+        "proficient": "All major problem dimensions addressed in solution; terminology mostly consistent; mapping is clear even if not perfectly parallel.",
+        "developing": "Solution addresses some but not all problem dimensions; may introduce solution benefits not connected to stated problems; terminology shifts make mapping less obvious.",
+        "beginning": "Solution description feels disconnected from problem; introduces capabilities without showing how they address specific failures; reader cannot easily map solution elements to problems.",
+        "weight": 20.0,
+        "original_weight": 25
+      }
+    ],
+    "writing_type": "Research paper introduction in HCI/AI domain, presenting novel technical approach with clear problem-solution structure",
+    "user_goals_summary": "Write a research paper introduction that maintains strict academic register while establishing a clear problem-solution arc. Every solution element must explicitly address problems introduced earlier. Prioritize conciseness and logical flow without sacrificing technical precision.",
+    "weighting_rationale": "Updated based on user draft edits (from v2)",
+    "coaching_notes": "The user's edits reveal a specific preference not fully captured in the current rubric: the elimination of motivational/justificatory framing that explains why a topic is important or interesting. The 'Academic Register Consistency' criterion focuses on informal modifiers and metaphorical language, but doesn't explicitly address the removal of domain justifications, importance claims, or 'selling' language. The edits show the user values direct technical exposition over contextual motivation. This warrants updating the criterion description and exemplary level to explicitly include this dimension."
+  },
+  {
+    "version": 4,
+    "rubric": [
+      {
+        "name": "Academic Register Consistency",
+        "category": "Style",
+        "description": "Maintains objective, neutral tone appropriate for technical research papers. Avoids informal modifiers, emotional language, metaphorical phrasing, and motivational framing that explains why the topic is important or engaging. Presents technical capabilities and problems directly without justifying the domain's relevance.",
+        "dimensions": [
+          {
+            "id": "informal_language",
+            "label": "Absence of subjective/emotional modifiers",
+            "importance": 0.5,
+            "original_importance": 0.6
+          },
+          {
+            "id": "metaphor_usage",
+            "label": "Literal vs. metaphorical phrasing",
+            "importance": 0.3,
+            "original_importance": 0.4
+          },
+          {
+            "id": "motivational_framing",
+            "label": "Absence of domain justification language",
+            "importance": 0.2,
+            "original_importance": 0.0
+          }
+        ],
+        "exemplary": "Zero instances of informal adjectives (e.g., 'hard-won', 'painstakingly'), emotional intensifiers, or extended metaphors (e.g., 'fragmented landscape'). No motivational framing that explains why the topic is 'engaging', 'particularly relevant', or 'naturally aligned'. Avoids comparative claims about importance ('more than ever', 'increasingly critical'). Opens with direct technical statements about system capabilities or problems rather than contextual justifications. All descriptions use neutral, precise language (e.g., 'this calibration does not persist' rather than 'calibration evaporates').",
+        "proficient": "No more than one informal modifier per paragraph; any metaphors are conventional technical terms; minimal motivational framing (at most one statement about domain relevance); tone remains predominantly objective and technical.",
+        "developing": "2-3 instances per paragraph of informal language, creative phrasing, or motivational framing (e.g., 'has emerged as particularly important', 'aligns naturally with'); inconsistent register between technical exposition and domain justification.",
+        "beginning": "Frequent use of subjective modifiers, emotional language, extended metaphors, or extensive framing about why the topic matters; reads like blog post or popular science article rather than research paper; significant space devoted to selling the domain's importance.",
+        "weight": 30.0,
+        "original_weight": 20
+      },
+      {
+        "name": "Logical Flow and Explicit Connections",
+        "category": "Structure",
+        "description": "Every claim, solution element, or new concept explicitly connects to previously established points through strong topic sentences. Transitions make logical relationships transparent rather than implicit. Topic sentences clearly signal paragraph content and its relationship to the broader argument.",
+        "dimensions": [
+          {
+            "id": "backward_connection",
+            "label": "Explicit references to prior arguments",
+            "importance": 0.7,
+            "original_importance": 0.7
+          },
+          {
+            "id": "transition_clarity",
+            "label": "Clear signaling of logical relationships",
+            "importance": 0.3,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every paragraph opens with a strong topic sentence that explicitly references prior content and signals the paragraph's purpose; solution elements directly map to stated problems using parallel language (e.g., problem mentions 'opacity and portability', solution addresses both by name); 100% of major claims include backward-looking connective phrases; topic sentences are immediately comprehensible and guide reader expectations.",
+        "proficient": "Most paragraphs have clear topic sentences that connect to prior content; key solution elements reference their corresponding problems; minor points may lack explicit connection but logical flow remains clear; topic sentences generally indicate paragraph direction.",
+        "developing": "Some paragraphs lack strong topic sentences or introduce new concepts without connecting to prior arguments; solution discussion addresses problems implicitly rather than naming them directly; reader must infer relationships; topic sentences may be vague or buried mid-paragraph.",
+        "beginning": "Paragraphs feel disconnected and lack clear topic sentences; new concepts appear without justification; solution description doesn't reference the specific problems it addresses; logical jumps require significant reader effort; reader cannot predict paragraph content from opening sentences.",
+        "weight": 30.0,
+        "original_weight": 30
+      },
+      {
+        "name": "Conciseness Without Redundancy",
+        "category": "Style",
+        "description": "Removes repetitive phrasing and redundant explanations while preserving necessary technical detail. Prefers single precise sentence over multiple restatements of same concept.",
+        "dimensions": [
+          {
+            "id": "repetition_elimination",
+            "label": "Removal of redundant formulations",
+            "importance": 0.6,
+            "original_importance": 0.6
+          },
+          {
+            "id": "sentence_efficiency",
+            "label": "Information density per sentence",
+            "importance": 0.4,
+            "original_importance": 0.4
+          }
+        ],
+        "exemplary": "Zero instances where the same concept is restated using different words within a paragraph; each sentence introduces new information or relationships; no phrases like 'dual interpretability and portability' followed by separate explanations of both.",
+        "proficient": "Minimal redundancy (no more than one restated concept per paragraph); most sentences advance the argument; any repetition serves clear rhetorical purpose.",
+        "developing": "Multiple instances of concepts restated with minor word changes; some sentences primarily repackage prior sentences; structure includes both summary statements and detailed explanations of same point.",
+        "beginning": "Extensive redundancy with concepts explained multiple times in similar language; low information density; paragraphs feel padded or circular.",
+        "weight": 20.0,
+        "original_weight": 25
+      },
+      {
+        "name": "Problem-Solution Alignment",
+        "category": "Content",
+        "description": "Solution descriptions directly address each specific problem dimension introduced earlier. If problem establishes three failure modes, solution explicitly addresses all three using consistent terminology.",
+        "dimensions": [
+          {
+            "id": "dimension_coverage",
+            "label": "Complete addressing of problem dimensions",
+            "importance": 0.6,
+            "original_importance": 0.7
+          },
+          {
+            "id": "terminology_consistency",
+            "label": "Parallel language between problem/solution",
+            "importance": 0.4,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every problem dimension mentioned in problem statement has corresponding solution element in solution paragraph; uses same terminology (e.g., if problem says 'opacity and portability', solution explicitly mentions both terms); 1:1 mapping is transparent to reader.",
+        "proficient": "All major problem dimensions addressed in solution; terminology mostly consistent; mapping is clear even if not perfectly parallel.",
+        "developing": "Solution addresses some but not all problem dimensions; may introduce solution benefits not connected to stated problems; terminology shifts make mapping less obvious.",
+        "beginning": "Solution description feels disconnected from problem; introduces capabilities without showing how they address specific failures; reader cannot easily map solution elements to problems.",
+        "weight": 20.0,
+        "original_weight": 25
+      }
+    ],
+    "writing_type": "Research paper introduction in HCI/AI domain, presenting novel technical approach with clear problem-solution structure",
+    "user_goals_summary": "Write a research paper introduction that maintains strict academic register while establishing a clear problem-solution arc. Every solution element must explicitly address problems introduced earlier. Prioritize conciseness and logical flow without sacrificing technical precision.",
+    "weighting_rationale": "Weights adjusted in branch mode from v3",
+    "coaching_notes": "Rubric weights were modified in branch mode experimentation"
+  },
+  {
+    "version": 5,
+    "rubric": [
+      {
+        "name": "Academic Register Consistency",
+        "category": "Style",
+        "description": "Maintains objective, neutral tone appropriate for technical research papers. Avoids informal modifiers, emotional language, metaphorical phrasing, and motivational framing that explains why the topic is important or engaging. Presents technical capabilities and problems directly without justifying the domain's relevance.",
+        "dimensions": [
+          {
+            "id": "informal_language",
+            "label": "Absence of subjective/emotional modifiers",
+            "importance": 0.5,
+            "original_importance": 0.6
+          },
+          {
+            "id": "metaphor_usage",
+            "label": "Literal vs. metaphorical phrasing",
+            "importance": 0.3,
+            "original_importance": 0.4
+          },
+          {
+            "id": "motivational_framing",
+            "label": "Absence of domain justification language",
+            "importance": 0.2,
+            "original_importance": 0.0
+          }
+        ],
+        "exemplary": "Zero instances of informal adjectives (e.g., 'hard-won', 'painstakingly'), emotional intensifiers, or extended metaphors (e.g., 'fragmented landscape'). No motivational framing that explains why the topic is 'engaging', 'particularly relevant', or 'naturally aligned'. Avoids comparative claims about importance ('more than ever', 'increasingly critical'). Opens with direct technical statements about system capabilities or problems rather than contextual justifications. All descriptions use neutral, precise language (e.g., 'this calibration does not persist' rather than 'calibration evaporates').",
+        "proficient": "No more than one informal modifier per paragraph; any metaphors are conventional technical terms; minimal motivational framing (at most one statement about domain relevance); tone remains predominantly objective and technical.",
+        "developing": "2-3 instances per paragraph of informal language, creative phrasing, or motivational framing (e.g., 'has emerged as particularly important', 'aligns naturally with'); inconsistent register between technical exposition and domain justification.",
+        "beginning": "Frequent use of subjective modifiers, emotional language, extended metaphors, or extensive framing about why the topic matters; reads like blog post or popular science article rather than research paper; significant space devoted to selling the domain's importance.",
+        "weight": 20.0,
+        "original_weight": 20
+      },
+      {
+        "name": "Logical Flow and Explicit Connections",
+        "category": "Structure",
+        "description": "Every claim, solution element, or new concept explicitly connects to previously established points through strong topic sentences. Transitions make logical relationships transparent rather than implicit. Topic sentences clearly signal paragraph content and its relationship to the broader argument.",
+        "dimensions": [
+          {
+            "id": "backward_connection",
+            "label": "Explicit references to prior arguments",
+            "importance": 0.7,
+            "original_importance": 0.7
+          },
+          {
+            "id": "transition_clarity",
+            "label": "Clear signaling of logical relationships",
+            "importance": 0.3,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every paragraph opens with a strong topic sentence that explicitly references prior content and signals the paragraph's purpose; solution elements directly map to stated problems using parallel language (e.g., problem mentions 'opacity and portability', solution addresses both by name); 100% of major claims include backward-looking connective phrases; topic sentences are immediately comprehensible and guide reader expectations.",
+        "proficient": "Most paragraphs have clear topic sentences that connect to prior content; key solution elements reference their corresponding problems; minor points may lack explicit connection but logical flow remains clear; topic sentences generally indicate paragraph direction.",
+        "developing": "Some paragraphs lack strong topic sentences or introduce new concepts without connecting to prior arguments; solution discussion addresses problems implicitly rather than naming them directly; reader must infer relationships; topic sentences may be vague or buried mid-paragraph.",
+        "beginning": "Paragraphs feel disconnected and lack clear topic sentences; new concepts appear without justification; solution description doesn't reference the specific problems it addresses; logical jumps require significant reader effort; reader cannot predict paragraph content from opening sentences.",
+        "weight": 30.0,
+        "original_weight": 30
+      },
+      {
+        "name": "Conciseness Without Redundancy",
+        "category": "Style",
+        "description": "Removes repetitive phrasing and redundant explanations while preserving necessary technical detail. Prefers single precise sentence over multiple restatements of same concept.",
+        "dimensions": [
+          {
+            "id": "repetition_elimination",
+            "label": "Removal of redundant formulations",
+            "importance": 0.6,
+            "original_importance": 0.6
+          },
+          {
+            "id": "sentence_efficiency",
+            "label": "Information density per sentence",
+            "importance": 0.4,
+            "original_importance": 0.4
+          }
+        ],
+        "exemplary": "Zero instances where the same concept is restated using different words within a paragraph; each sentence introduces new information or relationships; no phrases like 'dual interpretability and portability' followed by separate explanations of both.",
+        "proficient": "Minimal redundancy (no more than one restated concept per paragraph); most sentences advance the argument; any repetition serves clear rhetorical purpose.",
+        "developing": "Multiple instances of concepts restated with minor word changes; some sentences primarily repackage prior sentences; structure includes both summary statements and detailed explanations of same point.",
+        "beginning": "Extensive redundancy with concepts explained multiple times in similar language; low information density; paragraphs feel padded or circular.",
+        "weight": 20.0,
+        "original_weight": 25
+      },
+      {
+        "name": "Problem-Solution Alignment",
+        "category": "Content",
+        "description": "Solution descriptions directly address each specific problem dimension introduced earlier. If problem establishes three failure modes, solution explicitly addresses all three using consistent terminology.",
+        "dimensions": [
+          {
+            "id": "dimension_coverage",
+            "label": "Complete addressing of problem dimensions",
+            "importance": 0.6,
+            "original_importance": 0.7
+          },
+          {
+            "id": "terminology_consistency",
+            "label": "Parallel language between problem/solution",
+            "importance": 0.4,
+            "original_importance": 0.3
+          }
+        ],
+        "exemplary": "Every problem dimension mentioned in problem statement has corresponding solution element in solution paragraph; uses same terminology (e.g., if problem says 'opacity and portability', solution explicitly mentions both terms); 1:1 mapping is transparent to reader.",
+        "proficient": "All major problem dimensions addressed in solution; terminology mostly consistent; mapping is clear even if not perfectly parallel.",
+        "developing": "Solution addresses some but not all problem dimensions; may introduce solution benefits not connected to stated problems; terminology shifts make mapping less obvious.",
+        "beginning": "Solution description feels disconnected from problem; introduces capabilities without showing how they address specific failures; reader cannot easily map solution elements to problems.",
+        "weight": 30.0,
+        "original_weight": 25
+      }
+    ],
+    "writing_type": "Research paper introduction in HCI/AI domain, presenting novel technical approach with clear problem-solution structure",
+    "user_goals_summary": "Write a research paper introduction that maintains strict academic register while establishing a clear problem-solution arc. Every solution element must explicitly address problems introduced earlier. Prioritize conciseness and logical flow without sacrificing technical precision.",
+    "weighting_rationale": "Weights adjusted in branch mode from v4",
+    "coaching_notes": "Rubric weights were modified in branch mode experimentation"
   }
 ]
