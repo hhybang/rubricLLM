@@ -925,9 +925,14 @@ def compare_rubrics(task, rubric_a, rubric_b):
         "thinking": thinking_text
     }
 
-# Set the API key
-api_key = os.getenv('ANTHROPIC_API_KEY')
-os.environ['ANTHROPIC_API_KEY'] = api_key
+# Set the API key - check Streamlit secrets first, then environment variable
+try:
+    api_key = st.secrets["ANTHROPIC_API_KEY"]
+except (KeyError, FileNotFoundError):
+    api_key = os.getenv('ANTHROPIC_API_KEY')
+
+if api_key:
+    os.environ['ANTHROPIC_API_KEY'] = api_key
 
 client = anthropic.Anthropic()
 
