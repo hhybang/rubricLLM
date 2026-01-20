@@ -1277,3 +1277,405 @@ Current draft to revise:
 {current_draft}
 
 Analyze the rubric changes and revise the draft to better fulfill the updated criteria."""
+
+
+def extract_decision_pts(conversation_text, rubric_json=None):
+    rubric_context = ""
+    if rubric_json:
+        rubric_context = f"""
+Here is the current rubric that has been inferred from this user's writing preferences:
+
+{rubric_json}
+
+When identifying decision points, PRIORITIZE moments that:
+- Directly relate to criteria in this rubric (validate or contradict them)
+- Could help refine or add nuance to existing rubric criteria
+- Reveal preferences not yet captured in the rubric
+- Show the user's priorities when multiple rubric criteria might conflict
+"""
+
+    return f"""Here is a conversation where a user collaborated with an AI to write a piece. Each message is numbered for reference:
+
+{conversation_text}
+{rubric_context}
+Identify 6–8 moments where the user made an explicit writing choice. Prioritize:
+
+1. **Rubric-relevant decisions**: Choices that directly relate to rubric criteria (if rubric provided)
+2. **User edits**: Places where the model suggested something and the user changed it
+3. **User rejections**: Places where the model offered a direction and user went a different way
+4. **User selections**: Places where the model offered options and user chose one
+5. **Unprompted user changes**: Places where user edited the draft without being prompted
+
+For each moment:
+- Reference the EXACT message numbers involved
+- Quote the model's suggestion or the "before" state (keep quotes short, ~30 words max)
+- Quote the user's change or the "after" state (keep quotes short, ~30 words max)
+- Identify what dimension this choice reflects (tone, structure, detail, etc.)
+- Note whether the user explained their reasoning (if visible in conversation)
+- If a rubric is provided, note which rubric criterion (if any) this decision relates to
+
+Avoid moments that are:
+- Factual corrections (not style preferences)
+- Trivial word changes with no clear pattern
+- Ambiguous (can't tell what user preferred)
+
+Return your analysis as a JSON object with the following structure:
+```json
+{{{{
+  "decision_points": [
+    {{{{
+      "id": 1,
+      "title": "Brief descriptive title of the decision",
+      "dimension": "tone/structure/detail/clarity/voice/etc.",
+      "assistant_message_num": <number of the assistant message with the suggestion>,
+      "user_message_num": <number of the user message with the change>,
+      "before_quote": "Brief quote from assistant's suggestion",
+      "after_quote": "Brief quote showing user's change",
+      "user_reason": "Quote from user explaining why, or null if not stated",
+      "summary": "One sentence explaining what choice the user made and why it matters",
+      "related_rubric_criterion": "Name of the rubric criterion this relates to, or null if none",
+      "rubric_impact": {{{{
+        "type": "validates|refines|contradicts|suggests_new|none",
+        "description": "1 sentence explaining the impact: e.g., 'Validates the Conciseness criterion by showing user prefers shorter sentences' or 'Suggests new criterion around technical terminology preferences'"
+      }}}}
+    }}}}
+  ],
+  "overall_patterns": "2-3 sentences describing any patterns you notice across all decision points (e.g., user consistently prefers formal tone, user values conciseness, etc.)",
+  "rubric_insights": "2-3 sentences about how these decisions relate to the rubric - do they validate it, contradict it, or suggest new criteria? (only if rubric was provided)"
+}}}}
+```
+
+IMPORTANT:
+- Return ONLY valid JSON, no other text before or after
+- Message numbers must be integers that match the [Message #X] labels in the conversation
+- Include 6-8 decision points
+- If a rubric is provided, prioritize decision points that have rubric implications"""
+
+
+def generate_reflection_questions_prompt(conversation_text, decision_points_json):
+    """Generate reflection questions for all decision points to understand user preferences."""
+    return f"""Here is a collaborative writing conversation:
+
+{conversation_text}
+
+Here are decision points where the user made a choice:
+
+{decision_points_json}
+
+For each decision point, I want to understand WHY the user made this choice—not just WHAT they chose.
+
+For each decision point, generate reflection content that:
+1. Reminds the user of the specific change they made
+2. Identifies what quality/dimension the original had vs. what the user's version has
+3. Suggests what underlying preference this might reveal
+
+Return your analysis as JSON:
+```json
+{{{{
+    "reflection_items": [
+        {{{{
+            "decision_point_id": 1,
+            "before_text": "The original text (cleaned up for readability)",
+            "after_text": "What the user changed it to (cleaned up for readability)",
+            "dimension": "The writing dimension this affects (tone, structure, clarity, etc.)",
+            "original_quality": "What quality the original version emphasized (e.g., 'more formal', 'more detailed')",
+            "user_quality": "What quality the user's version emphasizes (e.g., 'more conversational', 'more concise')",
+            "potential_preference": "A hypothesis about what this choice reveals about the user's preferences"
+        }}}}
+    ]
+}}}}
+```
+
+IMPORTANT:
+- Return ONLY valid JSON
+- Include an entry for each decision point
+- Keep before_text and after_text brief but clear (max 50 words each)
+- Be specific about the qualities being traded off"""
+
+
+def extract_preference_dimensions_prompt(user_reflections_json):
+    """Extract underlying preference dimensions from user's reflection responses."""
+    return f"""Here are a user's explanations for why they made certain writing choices:
+
+{user_reflections_json}
+
+Extract the underlying preference dimensions from these responses.
+
+For each response:
+1. Identify the core preference being expressed
+2. Generalize it beyond this specific instance
+3. Name the dimension (e.g., tone, structure, detail level, directness, formality, etc.)
+
+Return your analysis as JSON:
+```json
+{{{{
+    "decision_point_analyses": [
+        {{{{
+            "decision_point_id": 1,
+            "user_motivation": "What the user said motivated the change",
+            "user_reasoning": "What the user said was wrong/better",
+            "core_preference": "The specific preference being expressed",
+            "generalized_preference": "A preference statement that applies broadly to all writing",
+            "dimension": "The writing dimension name"
+        }}}}
+    ],
+    "preference_dimensions": [
+        {{{{
+            "dimension": "Dimension name (e.g., Tone, Structure, Detail Level)",
+            "preference_statement": "Clear statement of what the user prefers",
+            "evidence_count": 1,
+            "confidence": "high/medium/low"
+        }}}}
+    ]
+}}}}
+```
+
+IMPORTANT:
+- Return ONLY valid JSON
+- Group similar preferences into the same dimension
+- Preference statements should be actionable (e.g., "Prefer concise sentences over elaborate ones")
+- Only include dimensions with clear evidence from the user's responses
+- Confidence is based on how explicitly the user stated this preference"""
+
+
+def generate_test_comparisons_prompt(preference_dimensions_json, original_context=""):
+    """Generate test comparisons to validate whether a rubric captures the user's preferences."""
+    context_note = f"\n\nThe user was originally working on: {original_context}" if original_context else ""
+
+    return f"""Here are a user's writing preference dimensions:
+
+{preference_dimensions_json}{context_note}
+
+Generate a set of test comparisons to validate whether a rubric captures these preferences.
+
+For each preference dimension, create:
+1. A brief writing context (e.g., "opening paragraph of a blog post about productivity")
+2. Two versions of that writing that differ ONLY on this dimension
+3. Version A should ALIGN with the user's stated preference
+4. Version B should go AGAINST the user's stated preference
+
+Important guidelines:
+- Keep the content/meaning identical between versions
+- Only vary the dimension being tested
+- Both versions should be competent writing (not "good vs. bad")
+- Make the contrast clear but realistic
+- The writing should be in a similar domain to what the user was working on, but NOT the same text they already wrote
+- Each version should be 2-4 sentences
+
+Return your test comparisons as JSON:
+```json
+{{{{
+    "test_comparisons": [
+        {{{{
+            "test_id": 1,
+            "dimension": "The dimension being tested",
+            "preference_statement": "The user's stated preference",
+            "context": "What this writing is for (brief description)",
+            "version_aligned": {{{{
+                "text": "The text version that aligns with user's preference",
+                "description": "Brief description of why this aligns"
+            }}}},
+            "version_against": {{{{
+                "text": "The text version that goes against user's preference",
+                "description": "Brief description of why this goes against"
+            }}}},
+            "predicted_choice": "aligned"
+        }}}}
+    ]
+}}}}
+```
+
+IMPORTANT:
+- Return ONLY valid JSON
+- Create one test for each preference dimension
+- Make versions similar in length and quality
+- The only difference should be the dimension being tested"""
+
+
+def format_user_tests_prompt(test_comparisons_json):
+    """Format test comparisons for neutral user-facing presentation with randomized order."""
+    return f"""Here are test comparisons to show a user:
+
+{test_comparisons_json}
+
+Reformat these for user testing:
+1. Remove all labels that indicate which version aligns with their preference
+2. Randomly assign which version appears as Version 1 vs Version 2 (vary this across tests)
+3. Create neutral, unbiased presentation
+
+Return the formatted tests and answer key as JSON:
+```json
+{{{{
+    "user_tests": [
+        {{{{
+            "test_id": 1,
+            "context": "What this writing is for",
+            "version_1": {{{{
+                "text": "First version text"
+            }}}},
+            "version_2": {{{{
+                "text": "Second version text"
+            }}}},
+            "questions": [
+                "Which version do you prefer?",
+                "What makes that version better?"
+            ]
+        }}}}
+    ],
+    "answer_key": [
+        {{{{
+            "test_id": 1,
+            "dimension": "The dimension being tested",
+            "preference_predicts": "Version 1 or Version 2",
+            "aligned_version": "Which version number matches the user's preference"
+        }}}}
+    ]
+}}}}
+```
+
+IMPORTANT:
+- Return ONLY valid JSON
+- Randomize the order (don't always put aligned version first)
+- The user_tests should have NO indication of which version is "correct"
+- The answer_key is for researcher use only"""
+
+
+def score_tests_with_rubric_prompt(rubric_json, test_comparisons_json):
+    """Score test writing samples using specific rubric criteria to predict user preferences."""
+    return f"""Here is an inferred rubric:
+
+{rubric_json}
+
+Here are test comparisons, each targeting a specific preference dimension:
+
+{test_comparisons_json}
+
+For each test:
+
+1. Identify which rubric criterion (if any) is most relevant to this dimension
+   - Look for criteria that directly relate to the dimension being tested (e.g., if testing "Tone", find a criterion about tone, formality, voice, etc.)
+   - If no criterion matches, note "No matching criterion"
+
+2. If a criterion matches, determine what it predicts:
+   - Based on that criterion's description/preference, which version should score higher on THIS criterion alone?
+   - Version A is the "aligned" version (matches user's stated preference)
+   - Version B is the "against" version (opposite of user's stated preference)
+
+Return your analysis as JSON:
+```json
+{{{{
+    "test_scores": [
+        {{{{
+            "test_id": 1,
+            "dimension": "The dimension being tested",
+            "preference_statement": "The user's stated preference for this dimension",
+            "context": "The writing context",
+            "matching_criterion": "The rubric criterion name that matches this dimension, or null if none",
+            "matching_criterion_description": "The description/preference from the rubric criterion, or null if none",
+            "has_matching_criterion": true,
+            "rubric_predicts": "Version A",
+            "reasoning": "Why this criterion favors that version based on its description"
+        }}}}
+    ],
+    "summary": {{{{
+        "total_tests": 5,
+        "tests_with_matching_criteria": 4,
+        "tests_without_matching_criteria": 1,
+        "rubric_predicts_aligned": 3,
+        "rubric_predicts_against": 1
+    }}}}
+}}}}
+```
+
+IMPORTANT:
+- Return ONLY valid JSON
+- Focus on finding the SINGLE most relevant criterion for each test dimension
+- Only predict based on that specific criterion, NOT the overall rubric
+- If no criterion matches, set has_matching_criterion to false and rubric_predicts to null
+- The rubric_predicts field should be "Version A" or "Version B" based on what the matching criterion suggests"""
+
+
+ALIGNMENT_SCORING_PROMPT = """
+Please evaluate the provided draft against the rubric criteria.
+
+## Purpose
+
+You are scoring a draft to measure alignment between human and AI interpretation of rubric criteria. Your scores will be compared against a human's scores to assess whether the rubric language is clear and unambiguous.
+
+## Scoring System
+
+Each criterion uses a four-level achievement scale:
+- **Exemplary (4)**: Fully realizes the user's vision for this criterion; they'd approve with minimal or no changes as described in its "exemplary" field
+- **Proficient (3)**: Meets the core requirements; would satisfy user with minor polish as described in its "proficient" field
+- **Developing (2)**:Shows awareness of user's goals but needs significant revision to meet their standards as described in its "developing" field
+- **Beginning (1)**: Misses or contradicts what the user values for this criterion as described in its "beginning" field
+
+## Evaluation Process
+
+For each criterion in the rubric:
+
+1. **Read the criterion carefully**: Understand what THIS specific user values (not generic writing quality), what the criterion description says and review all four achievement level descriptors.
+
+2. **Identify specific evidence in the draft**: Find exact quotes or passages that relate to this criterion. Mark the start and end positions of each piece of evidence.
+
+4. **Choose the best-matching level**: Select the level whose descriptors most accurately describe what you observe in the draft. When between two levels:
+   - **Beginning vs. Developing**: Does it show awareness of the user's goal?
+   - **Developing vs. Proficient**: Would the user need substantial rework, or just polish?
+   - **Proficient vs. Exemplary**: Does it fully realize their vision, or just meet requirements?
+   
+4. **Document your reasoning**: Explain why you chose this level, referencing the rubric's specific language.
+
+## Required Output Format
+
+Return a JSON object with the following structure:
+
+```json
+{{
+    "criteria_scores": [
+        {{
+            "name": "<exact criterion name from rubric>",
+            "achievement_level": "<Exemplary|Proficient|Developing|Beginning>",
+            "level_percentage": <25|50|75|100>,
+            "evidence": [
+                {{
+                    "quote": "<exact text from the draft that serves as evidence>",
+                    "start_index": <character position where quote starts in draft>,
+                    "end_index": <character position where quote ends in draft>,
+                    "relevance": "<brief explanation of how this quote relates to the criterion>"
+                }}
+            ],
+            "evidence_summary": "<1-2 sentence summary of key evidence>",
+            "rationale": "<explanation of why this level was chosen, referencing rubric language>"
+        }}
+    ],
+    "evidence_highlights": [
+        {{
+            "quote": "<exact text from draft>",
+            "start_index": <start position>,
+            "end_index": <end position>,
+            "criteria": ["<criterion name 1>", "<criterion name 2>"]
+        }}
+    ]
+}}
+```
+
+## Important Instructions
+
+1. **Quote exactly**: The "quote" field must contain the EXACT text from the draft, character-for-character.
+
+2. **Accurate positions**: The start_index and end_index must be accurate character positions in the draft (0-indexed). These will be used to highlight the text in the UI.
+
+3. **Evidence can overlap**: A single passage may be evidence for multiple criteria. Include it in each criterion's evidence array and list all relevant criteria in the evidence_highlights array.
+
+4. **Be thorough**: Identify ALL relevant evidence for each criterion, not just one example.
+
+5. **Score EVERY criterion**: Include a score for every criterion in the rubric.
+
+6. **Return ONLY valid JSON**: No additional text before or after the JSON object.
+
+## Scoring Principles
+
+- **Be calibrated to the rubric's language**: Score based on what the rubric says, not general writing quality
+- **Be consistent**: Apply the same standards to similar passages
+- **Default to lower levels when uncertain**: Better to under-score than over-score
+- **Quote specific evidence**: Vague assessments aren't helpful; cite actual text with positions"""
