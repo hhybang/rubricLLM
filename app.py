@@ -6,6 +6,9 @@ import json
 import re
 import time
 import uuid
+import zipfile
+import io
+import shutil
 from datetime import datetime
 from pathlib import Path
 from prompts import (
@@ -2967,6 +2970,80 @@ with st.sidebar:
                     st.error(message)
             else:
                 st.error("Please enter a project name")
+
+    # Export/Import Project section
+    with st.expander("📦 Export / Import Project"):
+        st.markdown("**Export** your project data to save it locally, or **Import** a previously exported project.")
+
+        # Export button
+        if st.session_state.current_project:
+            project_dir = Path("project") / st.session_state.current_project
+
+            if project_dir.exists():
+                # Create zip file in memory
+                zip_buffer = io.BytesIO()
+                with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                    for file_path in project_dir.rglob('*'):
+                        if file_path.is_file():
+                            arcname = file_path.relative_to(project_dir.parent)
+                            zip_file.write(file_path, arcname)
+
+                zip_buffer.seek(0)
+
+                st.download_button(
+                    label=f"📥 Export '{st.session_state.current_project}'",
+                    data=zip_buffer.getvalue(),
+                    file_name=f"{st.session_state.current_project}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip",
+                    mime="application/zip",
+                    use_container_width=True
+                )
+
+        st.markdown("---")
+
+        # Import project
+        uploaded_file = st.file_uploader(
+            "Import Project (ZIP file)",
+            type=['zip'],
+            key="project_import_uploader"
+        )
+
+        if uploaded_file is not None:
+            if st.button("📤 Import Project", use_container_width=True):
+                try:
+                    # Extract zip file
+                    with zipfile.ZipFile(io.BytesIO(uploaded_file.read()), 'r') as zip_file:
+                        # Get the project name from the zip structure
+                        namelist = zip_file.namelist()
+                        if namelist:
+                            # The first part of the path should be the project name
+                            project_name = namelist[0].split('/')[0]
+
+                            # Check if project already exists
+                            target_dir = Path("project") / project_name
+                            if target_dir.exists():
+                                # Add timestamp to make it unique
+                                project_name = f"{project_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                                target_dir = Path("project") / project_name
+
+                            # Extract to project directory
+                            zip_file.extractall(Path("project"))
+
+                            # If we renamed it, we need to rename the extracted folder
+                            original_name = namelist[0].split('/')[0]
+                            if project_name != original_name:
+                                original_dir = Path("project") / original_name
+                                if original_dir.exists():
+                                    shutil.move(str(original_dir), str(target_dir))
+
+                            st.success(f"Project '{project_name}' imported successfully!")
+                            st.session_state.current_project = project_name
+                            st.session_state.messages = []
+                            st.session_state.selected_conversation = None
+                            if 'active_rubric_idx' in st.session_state:
+                                del st.session_state.active_rubric_idx
+                            st.rerun()
+                except Exception as e:
+                    st.error(f"Error importing project: {str(e)}")
 
     st.divider()
 
