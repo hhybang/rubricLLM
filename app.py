@@ -5278,23 +5278,63 @@ with tab4:
 
                 # Export all results
                 st.markdown("---")
+
+                # Get active rubric info for the export
+                coverage_active_rubric, coverage_active_idx, _ = get_active_rubric()
+
                 all_results = {
                     "conversation_file": st.session_state.evaluate_selected_conversation,
                     "timestamp": datetime.now().isoformat(),
-                    "reflections": list(st.session_state.evaluate_user_responses.values()),
-                    "preference_dimensions": st.session_state.evaluate_preference_dimensions,
-                    "test_comparisons": st.session_state.evaluate_test_comparisons,
+                    "rubric_version": coverage_active_rubric.get("version") if coverage_active_rubric else None,
+                    "rubric_used": coverage_active_rubric.get("rubric") if coverage_active_rubric else None,
+                    "decision_points": st.session_state.evaluate_decision_points.get("parsed_data", {}).get("decision_points", []) if st.session_state.evaluate_decision_points else [],
+                    "overall_patterns": st.session_state.evaluate_decision_points.get("parsed_data", {}).get("overall_patterns", "") if st.session_state.evaluate_decision_points else "",
+                    "reflection_items": st.session_state.evaluate_reflection_items.get("reflection_items", []) if st.session_state.evaluate_reflection_items else [],
+                    "user_reflections": list(st.session_state.evaluate_user_responses.values()),
+                    "preference_dimensions": st.session_state.evaluate_preference_dimensions.get("preference_dimensions", []) if st.session_state.evaluate_preference_dimensions else [],
+                    "test_comparisons": st.session_state.evaluate_test_comparisons.get("test_comparisons", []) if st.session_state.evaluate_test_comparisons else [],
+                    "user_tests": st.session_state.evaluate_user_tests.get("user_tests", []) if st.session_state.evaluate_user_tests else [],
                     "user_test_responses": list(st.session_state.evaluate_test_responses.values()),
                     "rubric_scores": st.session_state.evaluate_rubric_scores
                 }
 
-                st.download_button(
-                    label="📥 Export Complete Analysis",
-                    data=json.dumps(all_results, indent=2, ensure_ascii=False),
-                    file_name=f"preference_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                    mime="application/json",
-                    use_container_width=True
-                )
+                col_save, col_download = st.columns(2)
+
+                with col_save:
+                    if st.button("💾 Save to Project", key="save_coverage_to_project", type="primary", use_container_width=True):
+                        project_name = st.session_state.get('current_project')
+                        if not project_name:
+                            st.error("No project selected. Please select a project first.")
+                        else:
+                            project_dir = Path("project") / project_name
+                            coverage_file = project_dir / "evaluate_coverage.json"
+
+                            # Load existing data or create new list
+                            existing_data = []
+                            if coverage_file.exists():
+                                try:
+                                    with open(coverage_file, "r") as f:
+                                        existing_data = json.load(f)
+                                except:
+                                    existing_data = []
+
+                            # Append new results
+                            existing_data.append(all_results)
+
+                            # Save to file
+                            with open(coverage_file, "w") as f:
+                                json.dump(existing_data, f, indent=2, ensure_ascii=False)
+
+                            st.success(f"✅ Coverage analysis saved to project!")
+
+                with col_download:
+                    st.download_button(
+                        label="📥 Download as JSON",
+                        data=json.dumps(all_results, indent=2, ensure_ascii=False),
+                        file_name=f"evaluate_coverage_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                        mime="application/json",
+                        use_container_width=True
+                    )
 
 with tab5:
     st.header("🎯 Evaluate: Alignment")
@@ -5846,6 +5886,91 @@ with tab5:
                                     st.markdown(highlighted_html, unsafe_allow_html=True)
                                 else:
                                     st.markdown(draft_text)
+
+                                # Export/Save section for Alignment
+                                st.markdown("---")
+                                st.markdown("### 💾 Save Results")
+
+                                # Build comprehensive alignment results
+                                level_names = {1: "Beginning", 2: "Developing", 3: "Proficient", 4: "Exemplary"}
+
+                                criteria_comparison = []
+                                for crit_idx, criterion in enumerate(align_rubric_list):
+                                    crit_name = criterion.get("name", f"Criterion {crit_idx + 1}")
+                                    user_score = st.session_state.alignment_user_scores.get(crit_idx)
+                                    llm_data = llm_scores.get(crit_idx, {})
+                                    llm_score = llm_data.get("score")
+
+                                    criteria_comparison.append({
+                                        "criterion_name": crit_name,
+                                        "criterion_description": criterion.get("description", ""),
+                                        "user_score": user_score,
+                                        "user_level": level_names.get(user_score, "N/A"),
+                                        "ai_score": llm_score,
+                                        "ai_level": level_names.get(llm_score, "N/A"),
+                                        "match": user_score == llm_score,
+                                        "difference": abs(user_score - llm_score) if user_score and llm_score else None,
+                                        "ai_rationale": llm_data.get("rationale", ""),
+                                        "ai_evidence": llm_data.get("evidence", [])
+                                    })
+
+                                alignment_results = {
+                                    "conversation_file": st.session_state.alignment_selected_conversation,
+                                    "draft_index": st.session_state.alignment_selected_draft_idx,
+                                    "draft_content": st.session_state.alignment_draft_content,
+                                    "timestamp": datetime.now().isoformat(),
+                                    "rubric_version": align_rubric_dict.get("version"),
+                                    "rubric_used": align_rubric_list,
+                                    "metrics": {
+                                        "total_criteria": results.get("total_comparisons"),
+                                        "exact_matches": results.get("exact_matches"),
+                                        "exact_agreement_percentage": results.get("exact_agreement", 0) * 100,
+                                        "spearman_correlation": results.get("spearman_rho"),
+                                        "spearman_pvalue": results.get("spearman_pvalue"),
+                                        "mean_absolute_difference": results.get("mean_absolute_difference"),
+                                        "systematic_bias": results.get("mean_difference")
+                                    },
+                                    "criteria_comparison": criteria_comparison,
+                                    "evidence_highlights": st.session_state.alignment_evidence_highlights
+                                }
+
+                                col_save_align, col_download_align = st.columns(2)
+
+                                with col_save_align:
+                                    if st.button("💾 Save to Project", key="save_alignment_to_project", type="primary", use_container_width=True):
+                                        project_name = st.session_state.get('current_project')
+                                        if not project_name:
+                                            st.error("No project selected. Please select a project first.")
+                                        else:
+                                            project_dir = Path("project") / project_name
+                                            alignment_file = project_dir / "evaluate_alignment.json"
+
+                                            # Load existing data or create new list
+                                            existing_data = []
+                                            if alignment_file.exists():
+                                                try:
+                                                    with open(alignment_file, "r") as f:
+                                                        existing_data = json.load(f)
+                                                except:
+                                                    existing_data = []
+
+                                            # Append new results
+                                            existing_data.append(alignment_results)
+
+                                            # Save to file
+                                            with open(alignment_file, "w") as f:
+                                                json.dump(existing_data, f, indent=2, ensure_ascii=False)
+
+                                            st.success(f"✅ Alignment analysis saved to project!")
+
+                                with col_download_align:
+                                    st.download_button(
+                                        label="📥 Download as JSON",
+                                        data=json.dumps(alignment_results, indent=2, ensure_ascii=False),
+                                        file_name=f"evaluate_alignment_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                                        mime="application/json",
+                                        use_container_width=True
+                                    )
 
 with tab6:
     st.header("⚡ Evaluate: Utility")
