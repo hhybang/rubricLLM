@@ -1615,7 +1615,11 @@ def infer_rubric_from_conversation(messages):
     user_prompt = get_rubric_inference_user_prompt(conversation_text, previous_rubric_json)
 
     try:
-        response = client.messages.create(
+        # Use streaming to avoid timeout for long-running requests
+        thinking_text = ""
+        response_text = ""
+
+        with client.messages.stream(
             model="claude-opus-4-5-20251101",
             max_tokens=32000,
             system=system_prompt,
@@ -1626,16 +1630,20 @@ def infer_rubric_from_conversation(messages):
                 "type": "enabled",
                 "budget_tokens": 10000
             }
-        )
+        ) as stream:
+            for event in stream:
+                if event.type == "content_block_start":
+                    if hasattr(event.content_block, 'type'):
+                        if event.content_block.type == "thinking":
+                            pass  # Thinking block started
+                        elif event.content_block.type == "text":
+                            pass  # Text block started
+                elif event.type == "content_block_delta":
+                    if hasattr(event.delta, 'thinking'):
+                        thinking_text += event.delta.thinking
+                    elif hasattr(event.delta, 'text'):
+                        response_text += event.delta.text
 
-        # Extract thinking and text from response
-        thinking_text = ""
-        response_text = ""
-        for block in response.content:
-            if block.type == "thinking":
-                thinking_text = block.thinking
-            elif block.type == "text":
-                response_text = block.text
         response_text = response_text.strip()
 
         # Show thinking in an expander
