@@ -6,106 +6,115 @@ You are tasked with evaluating a draft of writing against a personalized rubric 
 
 You will receive:
 1. The draft to be evaluated
-2. A rubric with specific criteria, achievement levels, and weights
+2. A rubric with specific criteria, dimensions (checkable items), and priority rankings (1 = most important)
 
-## Scoring System
+## Dimension-Based Evaluation
 
-Each criterion is scored on werfdesw worth:
-- **Exemplary**: 100% (fully meets user's vision)
-- **Proficient**: 75% (meets core requirements)
-- **Developing**: 50% (shows understanding, needs significant work)
-- **Beginning**: 25% (misses key elements user values)
+Each criterion has **dimensions** — checkable items that can be marked as met (✓) or not met (✗).
 
-The overall score is calculated by:
-1. Scoring each criterion (0-100%)
-2. Multiplying by that criterion's weight
-3. Summing all weighted scores for a total out of 100
+Achievement levels are determined by how many dimensions are met:
+- **⭐⭐⭐ Excellent**: 100% of dimensions met (all checked)
+- **⭐⭐ Good**: 75%+ of dimensions met
+- **⭐ Fair**: 50-74% of dimensions met
+- **☆ Weak**: Less than 50% of dimensions met
 
 ## Evaluation Process
 
 For each criterion:
-1. **Carefully read the criterion description**: Understand what THIS user specifically values (not generic writing standards)
-2. **Review all four achievement level descriptions**: Note the specific, observable features that distinguish each level
-3. **Evaluate the draft against the descriptors**: Find evidence in the draft for or against each level
-4. **Assign the appropriate level**: Choose the level whose descriptors best match what you observe in the draft
-5. **Provide specific evidence**: Quote passages or cite examples that justify your rating
+1. **Read the criterion description**: Understand what THIS user specifically values
+2. **Check each dimension**: For each dimension, determine if the draft meets it (yes/no)
+3. **Provide evidence**: Quote passages that support your check/uncheck decision
+4. **Calculate achievement level**: Based on the percentage of dimensions met
 
 ## Analysis Structure
 
 Wrap your detailed analysis in <evaluation> tags:
 
 ### [Criterion Name]
-**Weight**: [X%]
-**Achievement Level**: [Level Name] ([percentage]%)
-**Weighted Score**: [percentage × weight / 100]
+**Priority**: #[N]
 
-**Evidence from draft**:
-- [Specific quote or example 1]
-- [Specific quote or example 2]
-- [etc.]
+**Dimension Checklist**:
+- [✓/✗] [Dimension label]: [Brief evidence or reason]
+- [✓/✗] [Dimension label]: [Brief evidence or reason]
+- [etc. for all dimensions]
 
-**Rationale**:
-[Explain why this level was chosen over adjacent levels, referencing the rubric's specific descriptors for this criterion]
+**Dimensions Met**: [X] of [Y] ([percentage]%)
+**Achievement Level**: [Excellent/Good/Fair/Weak]
 
-**To reach next level**:
-[If not Exemplary: What specific changes would move this to the next achievement level based on the rubric descriptors?]
+**Key Evidence**:
+- [Specific quote supporting dimension checks]
+- [Specific quote supporting dimension checks]
+
+**To improve**:
+[What specific changes would check off the unchecked dimensions?]
 
 ---
 
-[Repeat for all criteria]
+[Repeat for all criteria, ordered by priority (highest priority first)]
 
-## Scoring Guidelines
+## Dimension Checking Guidelines
 
-**Choosing between adjacent levels:**
-
-*Beginning (25%) vs. Developing (50%):*
-- Beginning: Misses or contradicts what the user has indicated matters to them
-- Developing: Shows awareness of user's goals but execution falls short
-
-*Developing (50%) vs. Proficient (75%):*
-- Developing: Would require significant revision; user would need to substantially rework this
-- Proficient: Would satisfy user with minor polish; the core is right
-
-*Proficient (75%) vs. Exemplary (100%):*
-- Proficient: Meets requirements but doesn't fully realize user's best articulated vision
-- Exemplary: This is what the user was striving for; they'd approve with minimal or no changes
-
-**When in doubt:**
-- Default to the lower level unless strong evidence supports the higher one
-- Ask: "Would the user accept this aspect as-is, or request changes?"
-- Remember: Score against THIS user's values shown in the rubric, not general writing quality
+When checking dimensions:
+- **Be binary**: Each dimension is either met or not met — no partial credit
+- **Look for evidence**: If you can't find clear evidence the dimension is met, mark it as not met
+- **Be consistent**: Apply the same standard to similar features throughout the draft
+- **Quote specifics**: Cite actual text that demonstrates whether the dimension is met
 
 ## Summary Output
 
 After your evaluation, provide this JSON:
 ```json
 {
-  "overall_score": <sum of all weighted scores, out of 100>,
-  "score_interpretation": "<Exceptional/Strong/Solid/Developing/Emerging based on score bands>",
   "criteria_scores": [
     {
       "name": "<criterion name>",
-      "weight": <percentage as integer>,
-      "achievement_level": "<Exemplary/Proficient/Developing/Beginning>",
-      "level_percentage": <25/50/75/100>,
-      "weighted_score": <level_percentage × weight / 100>,
-      "evidence_summary": "<1-2 sentence summary of key evidence>"
-    },
+      "priority": <integer rank, 1 = most important>,
+      "dimensions_met": <count of dimensions checked>,
+      "dimensions_total": <total dimensions>,
+      "dimensions_detail": [
+        {
+          "id": "<dimension id>",
+          "label": "<dimension label>",
+          "met": true/false,
+          "evidence": "<brief quote or reason>"
+        }
+      ],
+      "achievement_level": "<Excellent/Good/Fair/Weak>",
+      "evidence_summary": "<1-2 sentence summary of key evidence>",
+      "improvement_explanation": "<What specific changes would check off the unchecked dimensions? Be concrete and actionable.>"
+    }
   ],
-  "overall_assessment": "<2-3 sentences: Does this draft align with user's demonstrated values? What does the score mean? What's the main focus for revision?>"
+  "level_counts": {
+    "excellent": <count of criteria at excellent>,
+    "good": <count>,
+    "fair": <count>,
+    "weak": <count>
+  },
+  "top_priorities_status": "<Summary of how the draft performs on the top 2-3 priority criteria>",
+  "overall_assessment": "<2-3 sentence narrative: How well does this draft align with what matters most to the user? What's working well? What needs the most attention?>",
+  "priority_improvements": [
+    "<Most important dimension to check off, focusing on highest-priority criteria>",
+    "<Second most important dimension to check off>",
+    "<Third most important dimension to check off>"
+  ],
+  "evidence_highlights": [
+    {
+      "criterion": "<criterion name>",
+      "quote": "<EXACT text from the draft - must match character-for-character>",
+      "dimension_id": "<which dimension this evidence relates to>",
+      "dimension_met": true/false,
+      "relevance": "<brief explanation: if met, why this text demonstrates the dimension; if not met, why this text shows a violation or issue>"
+    }
+  ]
 }
 ```
 
-## Priority Calculation
+## Priority-Weighted Assessment
 
-To identify revision priorities, calculate potential gain:
-```
-Potential Gain = (Next Level % - Current Level %) × (Weight / 100)
-```
-
-Example: A criterion at Developing (50%) with 25% weight:
-- Moving to Proficient (75%) would gain: (75-50) × 0.25 = 6.25 points
-- Prioritize high-gain opportunities that align with user's weighted priorities
+Focus your overall assessment on how the draft performs on the user's highest-priority criteria:
+- If top priorities have most dimensions checked: The draft is strong where it matters most
+- If top priorities have many unchecked dimensions: Key areas need attention
+- Frame improvements around which specific dimensions to check off next
 
 Provide your evaluation following this structure.
 """
@@ -122,59 +131,55 @@ You've been collaborating with the user on their writing. They've now asked for 
 
 Then assess the **final draft** (the most recent assistant message) against each criterion in the rubric.
 
-## Scoring System
+## Dimension-Based Evaluation
 
-Each criterion uses a four-level achievement scale:
-- **Exemplary (100%)**: Fully realizes the user's vision for this criterion; they'd approve with minimal or no changes
-- **Proficient (75%)**: Meets the core requirements; would satisfy user with minor polish
-- **Developing (50%)**: Shows awareness of user's goals but needs significant revision to meet their standards
-- **Beginning (25%)**: Misses or contradicts what the user values for this criterion
+Each criterion has **dimensions** — checkable items that can be marked as met (✓) or not met (✗).
 
-**Overall Score Calculation:**
-1. Assign each criterion a level (25%, 50%, 75%, or 100%)
-2. Multiply by that criterion's weight
-3. Sum all weighted scores for the overall score out of 100
+Achievement levels are determined by how many dimensions are met:
+- **⭐⭐⭐ Excellent**: 100% of dimensions met (all checked)
+- **⭐⭐ Good**: 75%+ of dimensions met
+- **⭐ Fair**: 50-74% of dimensions met
+- **☆ Weak**: Less than 50% of dimensions met
 
 ## Evaluation Process
 
-For each criterion in the rubric:
+For each criterion in the rubric (ordered by priority, highest first):
 
 1. **Read the criterion carefully**: Understand what THIS specific user values (not generic writing quality)
 
-2. **Review the achievement level descriptors**: Each criterion has four levels with specific, observable features. Note what distinguishes each level.
+2. **Check each dimension**: For each dimension listed under the criterion, determine if the draft meets it (yes/no)
 
-3. **Examine the draft**: Look for evidence of the features described in each level. Consider:
-   - Direct quotes that exemplify or violate the criterion
+3. **Examine the draft**: Look for evidence of whether each dimension is met. Consider:
+   - Direct quotes that demonstrate the dimension is met or not met
    - Structural patterns (organization, flow, balance)
    - Tone, style, and rhetorical choices
    - What's present AND what's missing
 
-4. **Choose the best-matching level**: Select the level whose descriptors most accurately describe what you observe in the draft. When between two levels:
-   - **Beginning vs. Developing**: Does it show awareness of the user's goal?
-   - **Developing vs. Proficient**: Would the user need substantial rework, or just polish?
-   - **Proficient vs. Exemplary**: Does it fully realize their vision, or just meet requirements?
+4. **Calculate achievement level**: Based on the percentage of dimensions met
 
-5. **Document your reasoning**: Provide specific evidence and explain why this level fits better than adjacent levels.
+5. **Document your reasoning**: Provide specific evidence for each dimension check
 
 ## Required Output Format
 
-Wrap your detailed evaluation in `<evaluation>` tags, following this structure for EACH criterion:
+Wrap your detailed evaluation in `<evaluation>` tags, following this structure for EACH criterion (ordered by priority):
 
 ### [Criterion Name from Rubric]
-**Weight**: [X%]
-**Achievement Level**: [Level Name] ([percentage]%)
-**Weighted Score**: [percentage × weight / 100]
+**Priority**: #[N]
 
-**Evidence from draft**:
-- [Specific quote, example, or observation from the draft]
+**Dimension Checklist**:
+- [✓/✗] [Dimension label]: [Quote or evidence supporting this check]
+- [✓/✗] [Dimension label]: [Quote or evidence supporting this check]
+- [etc. for all dimensions]
+
+**Dimensions Met**: [X] of [Y] ([percentage]%)
+**Achievement Level**: [Excellent/Good/Fair/Weak]
+
+**Key Evidence**:
+- [Specific quote from draft]
 - [Another piece of concrete evidence]
-- [Continue with all relevant evidence]
 
-**Rationale**:
-[Explain why you chose this level over adjacent levels. Reference the specific descriptors from the rubric's achievement levels. Be concrete about what features you observed or what was missing.]
-
-**To reach next level**:
-[If not Exemplary: Describe the specific, actionable changes needed to reach the next achievement level. Reference what the next level's descriptors require that the current draft lacks.]
+**To improve**:
+[What specific changes would check off the unchecked dimensions?]
 
 ---
 
@@ -186,104 +191,124 @@ After completing the evaluation for all criteria, provide a JSON summary:
 
 ```json
 {
-  "overall_score": <sum of all weighted scores, out of 100>,
-  "score_interpretation": "<Exceptional (90+) | Strong (80-89) | Solid (70-79) | Developing (50-69) | Emerging (<50)>",
   "criteria_scores": [
     {
       "name": "<exact criterion name from rubric>",
-      "weight": <weight as integer>,
-      "achievement_level": "<Exemplary|Proficient|Developing|Beginning>",
-      "level_percentage": <25|50|75|100>,
-      "weighted_score": <level_percentage × weight / 100>,
-      "evidence_summary": "<1-2 sentence summary of key evidence>"
+      "priority": <integer rank, 1 = most important>,
+      "dimensions_met": <count of dimensions checked>,
+      "dimensions_total": <total dimensions>,
+      "dimensions_detail": [
+        {
+          "id": "<dimension id>",
+          "label": "<dimension label>",
+          "met": true/false,
+          "evidence": "<brief quote or reason>"
+        }
+      ],
+      "achievement_level": "<Excellent|Good|Fair|Weak>",
+      "evidence_summary": "<1-2 sentence summary of key evidence>",
+      "improvement_explanation": "<What specific changes would check off the unchecked dimensions? Be concrete and actionable.>"
     }
-    // Include ALL criteria
+    // Include ALL criteria, ordered by priority
   ],
-  "overall_assessment": "<2-3 sentences: Does this draft align with the user's demonstrated values? What does the score mean? What's the main focus for revision?>",
-  "highest_priority_improvements": [
-    "<Criterion with highest potential gain if improved (calculate: (next_level% - current_level%) × weight)>",
-    "<Second highest priority>",
-    "<Third highest priority>"
+  "level_counts": {
+    "excellent": <count of criteria at excellent>,
+    "good": <count>,
+    "fair": <count>,
+    "weak": <count>
+  },
+  "top_priorities_status": "<Summary of how the draft performs on the top 2-3 priority criteria - this is the most important indicator of draft quality>",
+  "overall_assessment": "<2-3 sentence narrative: How well does this draft align with what matters most to the user? What's working well? What needs the most attention?>",
+  "priority_improvements": [
+    "<Most important dimension to check off, focusing on highest-priority criteria>",
+    "<Second most important dimension to check off>",
+    "<Third most important dimension to check off>"
+  ],
+  "evidence_highlights": [
+    {
+      "criterion": "<criterion name>",
+      "quote": "<EXACT text from the draft - must match character-for-character>",
+      "dimension_id": "<which dimension this evidence relates to>",
+      "dimension_met": true/false,
+      "relevance": "<brief explanation: if met, why this text demonstrates the dimension; if not met, why this text shows a violation or issue>"
+    }
   ]
 }
 ```
 
-## Scoring Principles
+## Assessment Principles
 
-- **Be calibrated to THIS user's values**: The rubric reflects what THIS user cares about, not universal writing standards
-- **Default to lower levels when uncertain**: Better to under-promise than over-claim
-- **Quote specific evidence**: Vague assessments aren't helpful; cite actual text
-- **Consider the conversation context**: If the user requested specific changes, check if they were addressed
-- **Prioritize high-impact improvements**: In your JSON summary, identify which criteria offer the biggest score gains if improved (weight × level jump)
+- **Be binary on dimensions**: Each dimension is either met or not — no partial credit
+- **Priority matters most**: A draft that checks off dimensions on priority #1-3 criteria is stronger
+- **Be calibrated to THIS user's values**: The rubric reflects what THIS user cares about
+- **Default to "not met" when uncertain**: If you can't find clear evidence, the dimension is not met
+- **Quote specific evidence**: Cite actual text for each dimension check
+- **Provide EXACT quotes for evidence_highlights**: The quote field must match text in the draft character-for-character so it can be highlighted. Include highlights for BOTH met dimensions (text that demonstrates success) AND unmet dimensions (text that shows violations or issues)
+- **Frame improvements as dimensions to check off**: Focus on specific, actionable items
 
 Provide your complete evaluation now, starting with the `<evaluation>` tags.
 """
 
 # Prompt for comparing rubrics and generating contrasting revisions
-COMPARE_WRITE_EDIT_PROMPT = r"""
-You are an editor comparing how two rubrics influence a piece of writing.
-Your job is to make the effects of each rubric clearly visible to a reader.
+COMPARE_WRITE_EDIT_PROMPT = """You are an editor comparing how two different rubrics influence writing on the same topic.
+
+## PURPOSE
+This tool helps users understand how different rubric versions affect the writing a model produces. You will:
+1. Create a base draft for the given writing task
+2. Revise that same draft twice - once following Rubric A, once following Rubric B
+3. Highlight how each rubric leads to different writing choices
+
+## IMPORTANT
+- You have been provided with all necessary information below: a writing task and two rubrics
+- Do NOT ask for clarification - proceed directly with generating the comparison
+- The rubrics may be similar or very different - your job is to surface how even small differences affect the output
 
 ========================
-GLOBAL RULES
+WRITING TASK
 ========================
-- The two revisions MUST both start from the exact same BASE DRAFT (do not revise A from B or vice versa).
-- Change ONLY what is required to satisfy each rubric. Keep content, argument order, and structure stable unless a rubric explicitly requires otherwise.
-- If a rubric requires additions or deletions, make them, but keep changes localized and intentional.
-- Be explicit and consistent: when words are added, use **bold**; when words are removed relative to the base, use ~~strikethrough~~ inside the revision text.
-- If a whole sentence exists only in one version, show "—" for the missing version in the comparison table.
-- Keep differences attributable to rubric deltas. Avoid unrelated rewrites.
+{task}
 
 ========================
-INSTRUCTIONS
+RUBRIC A
 ========================
-1. Write a **base draft** that fulfills the USER TASK naturally (without following any rubric).
+{rubric_a}
 
-2. Starting from that same base draft:
-- Revise once to meet Rubric A.
-- Revise once to meet Rubric B.
+========================
+RUBRIC B
+========================
+{rubric_b}
 
-3. Focus each change only on the differences between the rubrics.
-- Keep content and meaning constant unless the rubric directly affects it.
-- If a sentence remains the same, repeat it identically in all columns.
+========================
+RULES
+========================
+- Both revisions MUST start from the exact same BASE DRAFT (do not revise A from B or vice versa)
+- Change ONLY what is required to satisfy each rubric. Keep content, argument order, and structure stable unless a rubric explicitly requires otherwise
+- If a rubric requires additions or deletions, make them, but keep changes localized and intentional
+- Mark additions with **bold** and removals with ~~strikethrough~~ relative to the base
+- Keep differences attributable to rubric differences. Avoid unrelated rewrites
 
 ========================
 OUTPUT FORMAT (STRICT)
 ========================
-Return sections in this exact order and headings:
+Return sections in this exact order with these exact headings:
 
 ### Key Rubric Differences
-- ...
+- List the main differences between the two rubrics that will affect the writing
 
 ### Stage 1 – Base Draft
-<paste the full base draft here. No formatting beyond paragraphs.>
+Write a complete draft that fulfills the writing task naturally (without following any rubric).
 
 ### Stage 2 – Revisions
 #### Rubric A Revision (from the base)
-<paste the full revised text here. Mark word-level additions with **bold** and removals with ~~strikethrough~~ relative to the base.>
+The full revised text. Mark word-level additions with **bold** and removals with ~~strikethrough~~ relative to the base.
 
 #### Rubric B Revision (from the base)
-<paste the full revised text here. Mark word-level additions with **bold** and removals with ~~strikethrough~~ relative to the base.>
+The full revised text. Mark word-level additions with **bold** and removals with ~~strikethrough~~ relative to the base.
 
 ### Summary of Impact
-- In 3–5 bullets, explain how Rubric A vs Rubric B affected tone, concision, evidence, structure, or polish.
-- Mention any additions/deletions and why they were necessary for the rubric.
+- In 3-5 bullets, explain how Rubric A vs Rubric B affected tone, concision, evidence, structure, or polish
+- Mention specific additions/deletions and why they were necessary for each rubric
 """
-
-def compare_rubric_user_prompt(task, rubric_a, rubric_b):
-   return f"""
-    ========================
-    RUBRIC A
-    ========================
-    {rubric_a}
-
-    ========================
-    RUBRIC B
-    ========================
-    {rubric_b}
-
-    User Writing Task: {task}
-    """
 
 old_RUBRIC_INFERENCE_SYSTEM_PROMPT = """
 You are tasked with creating a writing rubric based on the conversation history between a user and an LLM who are collaboratively developing a piece of writing. 
@@ -699,8 +724,8 @@ This rubric captures what THIS specific user values — not generic standards of
 
 The rubric will be used to:
 1. Align future writing assistance to this user's goals and preferences
-2. Allow the user to steer behavior by adjusting criteria, weights, or dimensions
-3. Support reliable LLM-based evaluation of drafts
+2. Allow the user to steer behavior by adjusting criteria priorities or dimensions
+3. Support reliable LLM-based evaluation of drafts via dimension checklists
 
 The rubric must be **concise, steerable, and evaluable**.
 
@@ -716,14 +741,13 @@ The rubric must be **concise, steerable, and evaluable**.
   - `name`
   - `category` (from a shared set of 3–5 categories)
   - `description` (1–3 sentences max)
-  - `dimensions` (2–4 per criterion)
-  - Achievement levels: `exemplary`, `proficient`, `developing`, `beginning`
-  - `weight` (integers summing to 100)
+  - `dimensions` (3–5 per criterion) — these are **checkable items** that determine achievement level
+  - `priority` (unique integer rank: 1 = most important, higher = less important)
 - `coaching_notes`
 
 ### ❌ DO NOT INCLUDE
+- Separate achievement level descriptions (excellent, good, fair, weak) — these are now derived from dimension counts
 - Long rationales or justifications
-- Observable-feature checklists
 - Detailed examples within the rubric
 - Generic writing advice unsupported by conversation evidence
 
@@ -735,7 +759,7 @@ Before producing the rubric, write your reasoning inside `<analysis>` tags.
 
 ### Step 1: Determine Scenario
 - **New rubric**: Create from scratch based on conversation evidence.
-- **Update**: Preserve stable criteria; modify only where new evidence appears; adjust weights only when priorities clearly shifted.
+- **Update**: Preserve stable criteria; modify only where new evidence appears; adjust priority rankings only when priorities clearly shifted.
 
 ### Step 2: Extract Signals from Conversation
 
@@ -757,14 +781,45 @@ Before producing the rubric, write your reasoning inside `<analysis>` tags.
 
 ### Step 3: Analyze Feedback on Previous Assessments (CRITICAL)
 
-If the conversation includes user reactions to prior rubric evaluations, treat this as **highest-quality signal**.
+If the conversation includes user reactions to prior rubric evaluations,
+treat this as the **highest-quality signal** for rubric updates. Assessment
+disagreements reveal gaps between what the rubric says and what the user
+actually means.
 
-For each piece of feedback:
-1. Identify the criterion discussed
-2. Classify the disagreement type: score, interpretation, priority, or definition
-3. Extract what features the user emphasized that the criterion missed
-4. Update your understanding of what separates achievement levels for this user
+For each piece of assessment feedback:
 
+1. **Identify the criterion** the user is responding to
+2. **Classify the disagreement type** and apply the corresponding rubric fix:
+
+   **Score disagreement** ("I'd rate this higher/lower"):
+   → The dimensions are miscalibrated. Some dimensions may be too strict
+     or too lenient for this user. Add, remove, or reword dimensions to
+     match what the user considers meeting vs. not meeting the criterion.
+
+   **Interpretation disagreement** ("That's not what I mean by casual"):
+   → The description or dimensions use language the user interprets
+     differently than the model. Replace vague terms with the user's
+     own vocabulary. E.g., change "casual tone" to "conversational
+     and warm but not slangy — like talking to a smart friend."
+
+   **Priority disagreement** ("I don't care about that as much as X"):
+   → Adjust priority rankings to reflect the user's actual hierarchy.
+
+   **Definition disagreement** ("This criterion is missing the point"):
+   → The criterion itself is wrong or incomplete. Rewrite the
+     description and dimensions to capture what the user actually
+     values, using their words from the feedback.
+
+   **Missing dimension** ("You didn't even check whether..."):
+   → The user expected a dimension that doesn't exist. Add it.
+
+   **Irrelevant dimension** ("Why does this matter?"):
+   → A dimension checks for something the user doesn't care about.
+     Remove it.
+
+3. **Preserve the user's exact language** whenever they articulate what
+   they value. Their phrasing is more precise than any paraphrase.
+   
 ---
 
 ## DEFINING CRITERIA
@@ -786,7 +841,7 @@ Use **3–5 shared categories** across all criteria:
 - Style
 - Structure
 - Content
-- Evidence
+- Mechanics
 - Audience
 
 Multiple criteria may share the same category.
@@ -806,47 +861,64 @@ Write **1–3 sentences** per criterion that:
 
 ---
 
-## DIMENSIONS (LEAN INTERNAL KNOBS)
+## DIMENSIONS AS CHECKABLE ITEMS
 
-Each criterion has **2–4 dimensions** representing adjustable sub-aspects.
+**CRITICAL**: Dimensions are now **checkable items** (yes/no checkpoints) that determine the achievement level.
+
+Each criterion has **3–5 dimensions**. Each dimension is a specific, observable feature that can be checked as met or not met.
 
 Each dimension includes:
 - `id`: short, machine-friendly identifier (e.g., `mechanism_first_openings`)
-- `label`: short human-readable phrase
-- `importance`: 0.0–1.0 indicating weight *within the criterion*
+- `label`: short human-readable phrase describing what to check for
 
-Dimensions should:
-- Represent distinct aspects the user might want to strengthen or relax
-- Be interpretable by both user and model
-- Not duplicate the criterion name or restate achievement-level text
+**Dimension Design Principles:**
+- Each dimension should be a **binary check**: either the draft meets it or it doesn't
+- Dimensions should be **observable**: an evaluator can look at the text and determine yes/no
+- Dimensions should be **distinct**: each captures a different aspect of the criterion
+- Dimensions should be **comprehensive**: together, they cover what "meeting this criterion" means
 
----
+**Examples of Good Checkable Dimensions:**
 
-## ACHIEVEMENT LEVELS (MUST BE EVALUABLE)
+For a "Conciseness" criterion:
+- `no_redundant_phrases`: "No redundant phrases or repeated ideas"
+- `active_voice`: "Uses active voice throughout"
+- `no_filler_words`: "Avoids filler words (very, really, just, quite)"
+- `direct_sentences`: "Sentences lead with main point, not qualifiers"
 
-Define four levels: `exemplary`, `proficient`, `developing`, `beginning`
-
-Each level **must**:
-- Use concrete, observable patterns
-- Include counts, percentages, or clear thresholds where possible
-- Avoid vague qualifiers ("generally," "often," "some," "strong," "effective")
-
-✅ Good: "100% of paragraphs open with mechanism-first language; zero instances of jargon without immediate definition."
-
-❌ Avoid: "Topic sentences are strong and engaging."
-
-**Translate subjective judgments into observable behavior.**
+For an "Evidence Quality" criterion:
+- `claims_supported`: "Every claim is supported by specific evidence"
+- `sources_cited`: "Sources are cited for external data"
+- `examples_concrete`: "Examples are concrete, not hypothetical"
+- `data_current`: "Data and statistics are current (within 5 years)"
 
 ---
 
-## WEIGHTS
+## ACHIEVEMENT LEVELS (DERIVED FROM DIMENSIONS)
 
-Assign integer weights summing to **100**.
+Achievement levels are **automatically determined** by how many dimensions are checked:
 
-Base weights on:
+- **⭐⭐⭐ Excellent**: 100% of dimensions met (all checked)
+- **⭐⭐ Good**: 75%+ of dimensions met (most checked)
+- **⭐ Fair**: 50-74% of dimensions met (some checked)
+- **☆ Weak**: Less than 50% of dimensions met (few/none checked)
+
+You do NOT need to write separate achievement level descriptions. The dimensions themselves define what each level looks like.
+
+---
+
+## PRIORITY RANKINGS
+
+Assign a **priority rank** (integer) to each criterion, where:
+- **1 = most important** (highest priority)
+- Higher numbers = lower priority
+- Each criterion gets a unique rank from 1 to N (where N = number of criteria)
+
+Base rankings on:
 - Frequency and intensity of user feedback
-- Non-negotiables vs. preferences
-- Revision patterns
+- Non-negotiables vs. preferences (non-negotiables rank higher)
+- Revision patterns (frequently revised aspects rank higher)
+
+Example: If you have 5 criteria, assign ranks 1, 2, 3, 4, 5 - no ties allowed.
 
 ---
 
@@ -877,20 +949,17 @@ After your `<analysis>` block, output **only** this JSON:
       "dimensions": [
         {
           "id": "<machine-friendly id>",
-          "label": "<short label>",
-          "importance": <0.0–1.0>
+          "label": "<checkable item: what to verify as yes/no>"
         }
       ],
-      "exemplary": "<concrete, evaluable>",
-      "proficient": "<concrete, evaluable>",
-      "developing": "<concrete, evaluable>",
-      "beginning": "<concrete, evaluable>",
-      "weight": <integer>
+      "priority": <integer rank, 1 = most important>
     }
   ],
   "coaching_notes": "<2–3 concise insights>"
 }
 ```
+
+**NOTE**: Do NOT include `excellent`, `good`, `fair`, or `weak` fields. Achievement levels are derived from dimension counts.
 """
 
 def get_rubric_inference_user_prompt(conversation_text, previous_rubric_json=""):
@@ -988,7 +1057,7 @@ Return ONLY a valid JSON object with this exact structure:
   "name": "[keep original name]",
   "category": "[keep original category]",
   "description": "[refined description based on preferences]",
-  "priority": "[keep original priority]",
+  "priority": <keep original priority as integer>,
   "evidence": ["Example 1", "Example 2", ...]
 }
 """
@@ -1052,8 +1121,26 @@ You MUST annotate EVERY response that contains any draft, revision, or substanti
 
 """
 
-def build_system_instruction(rubric):
-    """Build system instruction with rubric (without assessment requirements)."""
+def build_system_instruction(rubric_dict_or_list):
+    """Build system instruction with rubric (without assessment requirements).
+
+    Args:
+        rubric_dict_or_list: Either a full rubric dict (with source, template_name, rubric fields)
+                            or just the rubric criteria list for backwards compatibility.
+    """
+    # Handle both dict and list inputs for backwards compatibility
+    if isinstance(rubric_dict_or_list, dict):
+        rubric = rubric_dict_or_list.get("rubric", [])
+        source = rubric_dict_or_list.get("source", "inferred")
+        template_name = rubric_dict_or_list.get("template_name", "")
+    else:
+        # Backwards compatibility: if a list is passed, treat as criteria list
+        rubric = rubric_dict_or_list if rubric_dict_or_list else []
+        source = "inferred"
+        template_name = ""
+
+    is_template = source == "template"
+
     rubric_block = ""
     if rubric:
         # Number the criteria explicitly for clarity
@@ -1065,50 +1152,47 @@ def build_system_instruction(rubric):
 
         rubric_block = "\nRUBRIC (Always follow these criteria while co-writing):\n" + json.dumps(numbered_rubric, ensure_ascii=False, indent=2)
 
+    # Add template-specific guidance if using a template rubric
+    template_guidance = ""
+    if is_template:
+        template_guidance = f"""
+    **TEMPLATE RUBRIC NOTE:**
+    This rubric is based on the {template_name} template — a general style guide, NOT a personalized rubric inferred from this user's preferences.
+
+    **CRITICAL: Prioritize user preferences over template rules.**
+    - If the user's messages, edits, or feedback conflict with template criteria, ALWAYS follow the user's preferences
+    - The template provides default guidelines, but the user's explicit requests override them
+    - Pay close attention to what the user asks for, how they edit drafts, and any feedback they give
+    - If the user's writing style differs from the template, adapt to THEIR style rather than forcing template conventions
+    - Use the template as a fallback for aspects the user hasn't expressed preferences about
+
+    Think of it this way: Template criteria < User's implicit preferences (from their writing/edits) < User's explicit requests
+"""
+
     system_instruction = dedent(f"""
     You are an AI co-writer designed to collaborate with human users to improve and develop their written pieces. Your role is to work together with the user to enhance their writing—not to write it entirely for them.
     {rubric_block}
+    {template_guidance}
+    **RUBRIC AUTHORITY:**
+    The rubric represents the user's persistent writing preferences. It is your primary guide for tone, style, structure, and approach. Follow it consistently across all turns.
 
-    Your task is to provide helpful, concrete feedback that follows these core interaction principles:
+    - If the user gives a task-specific instruction in conversation (e.g., "expand this paragraph," "add an example here"), follow it for that specific request. These are local instructions, not preference changes.
+    - If the user pushes back on your interpretation of a rubric criterion (e.g., "when I say casual I don't mean slangy"), follow their clarification for the remainder of this conversation. Interpretation mismatches like this will be resolved through rubric updates between sessions — you do not need to silently reinterpret criteria on your own.
+    - If the user's feedback conflicts with the rubric and it is unclear whether they want a one-time exception or a persistent change, ask: "Should I treat this as a one-time adjustment, or is this a preference you'd like going forward?"
+    - Never override or silently deviate from the rubric based on your own judgment about what would be better. If you think a rubric criterion is producing poor results, flag it to the user rather than ignoring it.
 
     **INTERACTION PRINCIPLES:**
-    1. **Ask clarifying questions** to reduce uncertainty about audience, stakes, examples, or constraints when needed
-    2. **Provide concrete, line-level edits** rather than abstract or vague advice whenever possible
-    3. **Respect all stated constraints** and rubric criteria - if conflicts arise, ask before proceeding
-    4. **Do not invent facts** - if claims or data are missing, ask for sources or mark them as `[TODO: ...]`
-    5. **Match the user's style and tone** unless directed otherwise - accept shorthand or partial drafts
-    6. **Balance constraints and values** - consider both what to avoid and what to emphasize when applying any rubric
-    7. **Solicit feedback selectively** - only ask about likes/dislikes after major changes, full drafts, or when user intent is unclear
-    8. **Learn from assessment feedback** - if the conversation contains user feedback on rubric assessments, treat this as the highest-priority signal for how to interpret rubric criteria. User corrections on assessments reveal their true values and should override generic interpretations of criterion descriptors.
-    9. **Don't assess draft with rubric** 
-    10. **Always wrap draft (partial or full) in <draft> </draft> tags**
+    1. **Ask clarifying questions** when you are uncertain about audience, scope, examples, or constraints — but do not ask about preferences that are already specified in the rubric.
+    2. **Provide concrete, line-level edits** rather than abstract advice whenever possible.
+    3. **Respect all stated constraints** — if the rubric and a user instruction conflict, ask before proceeding.
+    4. **Do not invent facts** — if claims or data are missing, ask for sources or mark them as `[TODO: ...]`.
+    5. **Match the rubric's specified style and tone.** If the rubric is silent on a dimension, follow the user's lead from their own writing.
+    6. **Be direct and efficient.** Offer feedback and suggestions without excessive hedging or preamble.
 
-    **RUBRIC INTERPRETATION GUIDANCE:**
+    **OUTPUT FORMAT:**
+    Always wrap any draft content (partial or full) in <draft> </draft> tags.
 
-    When applying rubric criteria, remember that:
-    - Achievement level descriptors (Exemplary, Proficient, etc.) are calibrated to THIS user's standards, not universal writing quality
-    - If the user has provided feedback disagreeing with previous assessments, their corrections define what the criteria actually mean to them
-    - User feedback on assessments > explicit rubric descriptors > general writing best practices
-    - When in doubt about how strictly to interpret a criterion, err on the side of the user's demonstrated preferences in their feedback
-
-    **If you see assessment feedback in the conversation history:**
-    - Note which criteria the user corrected and how
-    - Adjust your interpretation of those criteria accordingly
-    - If they said a score was too harsh, interpret that criterion more generously
-    - If they said a score was too lenient, apply that criterion more strictly
-    - If they clarified what they actually value, prioritize those specific features over the general criterion description
-
-    **INSTRUCTIONS:**
     Provide your feedback in a clear, organized manner. Focus on being maximally useful to the user's specific writing task while strictly adhering to the interaction principles.
-
-    **Example Output Structure:**
-    [Your systematic analysis of the writing task, covering all the points listed above]
-
-    <draft> 
-    [Your draft (if applicable) based on your analysis]
-    </draft>
-
-    [Your concrete feedback, suggestions, and/or clarifying questions based on your analysis]
     """).strip()
 
     return system_instruction
@@ -1139,32 +1223,33 @@ Each criterion in the rubric must have this structure:
   "category": "Category (e.g., Style, Structure, Content)",
   "description": "Description text",
   "dimensions": [
-    {{"id": "dimension_id", "label": "Dimension label", "importance": 0.0-1.0}}
+    {{"id": "dimension_id", "label": "Checkable dimension label (yes/no item)"}}
   ],
-  "exemplary": "Exemplary level description",
-  "proficient": "Proficient level description",
-  "developing": "Developing level description",
-  "beginning": "Beginning level description",
-  "weight": 0.0-100.0
+  "priority": 1-N (unique integer rank, 1 = most important)
 }}
+
+Note: Achievement levels (Excellent/Good/Fair/Weak) are automatically derived from how many dimensions are met:
+- Excellent: 100% of dimensions met
+- Good: 75%+ of dimensions met
+- Fair: 50-74% of dimensions met
+- Weak: Less than 50% of dimensions met
 
 Rules:
 - Preserve all fields unless explicitly changed by the user
-- Maintain weight total of 100% across all criteria
-- Keep dimension importance totals at 1.0 (100%) within each criterion
-- If adding new criteria, use reasonable default values and adjust other weights proportionally
+- Maintain unique priority rankings (1 = most important, each criterion gets a unique rank)
+- If adding new criteria, assign appropriate priority ranking and adjust other priorities as needed
 - If the request is ambiguous or unclear, respond with a clarifying question instead of the JSON
 - Only output JSON if you are confident you understand the user's intent
 
 Examples of requests:
 - "Change the 'Academic Register' description to emphasize formality more"
-- "Add a new criterion for citation quality weighted at 15%"
+- "Add a new criterion for citation quality as priority 2"
 - "The exemplary level for Logical Flow should require explicit transitions"
 - "Remove the metaphor dimension from Academic Register"
-- "Increase the weight of Conciseness to 35%"
+- "Make Conciseness the top priority"
 
 If unclear, ask questions like:
-- "Should I remove weight from other criteria proportionally, or would you like to specify which criteria to adjust?"
+- "What priority rank should the new criterion have?"
 - "What specific aspects of citation quality should this criterion evaluate?"
 - "Should this change apply to the exemplary level only, or all achievement levels?"
 """
@@ -1237,7 +1322,7 @@ You will be given:
 3. The current draft that needs to be revised
 
 Your task:
-1. Identify what changed between the original and updated rubric (weights, descriptions, achievement levels, dimensions)
+1. Identify what changed between the original and updated rubric (priorities, descriptions, dimensions)
 2. Analyze how those changes should affect the draft
 3. Revise the draft to better fulfill the updated rubric criteria
 4. Explain the key changes you made and why
@@ -1247,8 +1332,8 @@ Guidelines:
 - Preserve the overall structure and content where the rubric hasn't changed
 - Make targeted edits rather than complete rewrites
 - Ensure the revised draft still flows naturally
-- If a criterion's weight increased, give more attention to that aspect
-- If achievement level descriptions changed, align the draft to the new standards
+- If a criterion's priority increased (lower number = higher priority), give more attention to that aspect
+- If dimensions were added or changed, ensure the draft meets those specific checkable items
 
 Output format:
 Return ONLY a valid JSON object with this exact structure:
@@ -1438,9 +1523,17 @@ IMPORTANT:
 - Confidence is based on how explicitly the user stated this preference"""
 
 
-def generate_test_comparisons_prompt(preference_dimensions_json, original_context=""):
+def generate_test_comparisons_prompt(preference_dimensions_json, original_context="", writing_type="", user_goals=""):
     """Generate test comparisons to validate whether a rubric captures the user's preferences."""
-    context_note = f"\n\nThe user was originally working on: {original_context}" if original_context else ""
+    context_parts = []
+    if writing_type:
+        context_parts.append(f"Writing type: {writing_type}")
+    if user_goals:
+        context_parts.append(f"User's goals: {user_goals}")
+    if original_context:
+        context_parts.append(f"Original context: {original_context}")
+
+    context_note = "\n\n**DOMAIN CONTEXT (CRITICAL - all test comparisons MUST be in this domain):**\n" + "\n".join(context_parts) if context_parts else ""
 
     return f"""Here are a user's writing preference dimensions:
 
@@ -1449,17 +1542,25 @@ def generate_test_comparisons_prompt(preference_dimensions_json, original_contex
 Generate a set of test comparisons to validate whether a rubric captures these preferences.
 
 For each preference dimension, create:
-1. A brief writing context (e.g., "opening paragraph of a blog post about productivity")
+1. A brief writing context that is DIRECTLY related to the user's writing domain (see DOMAIN CONTEXT above)
 2. Two versions of that writing that differ ONLY on this dimension
 3. Version A should ALIGN with the user's stated preference
 4. Version B should go AGAINST the user's stated preference
 
-Important guidelines:
+**CRITICAL - Domain alignment:**
+- ALL test comparisons MUST be in the SAME domain/genre as the user's rubric
+- If the rubric is for emails, create email examples
+- If the rubric is for technical documentation, create technical documentation examples
+- If the rubric is for creative writing, create creative writing examples
+- Do NOT create generic examples like "blog posts about productivity" unless that's the user's actual domain
+- The test writing should feel like something the user would actually write given their stated goals
+
+Other guidelines:
 - Keep the content/meaning identical between versions
 - Only vary the dimension being tested
 - Both versions should be competent writing (not "good vs. bad")
 - Make the contrast clear but realistic
-- The writing should be in a similar domain to what the user was working on, but NOT the same text they already wrote
+- The writing should NOT be the exact same text they already wrote, but should be a NEW example in the same domain
 - Each version should be 2-4 sentences
 
 Return your test comparisons as JSON:
@@ -1604,11 +1705,11 @@ You are scoring a draft to measure alignment between human and AI interpretation
 
 ## Scoring System
 
-Each criterion uses a four-level achievement scale:
-- **Exemplary (4)**: Fully realizes the user's vision for this criterion; they'd approve with minimal or no changes as described in its "exemplary" field
-- **Proficient (3)**: Meets the core requirements; would satisfy user with minor polish as described in its "proficient" field
-- **Developing (2)**:Shows awareness of user's goals but needs significant revision to meet their standards as described in its "developing" field
-- **Beginning (1)**: Misses or contradicts what the user values for this criterion as described in its "beginning" field
+Achievement levels are determined by how many dimensions are met for each criterion:
+- **Excellent (100%)**: All dimensions are met - fully realizes the user's vision
+- **Good (75%+)**: Most dimensions are met - meets core requirements with minor gaps
+- **Fair (50-74%)**: Some dimensions are met - shows awareness but needs significant work
+- **Weak (<50%)**: Few/no dimensions are met - misses or contradicts what the user values
 
 ## Evaluation Process
 
@@ -1618,10 +1719,10 @@ For each criterion in the rubric:
 
 2. **Identify specific evidence in the draft**: Find exact quotes or passages that relate to this criterion. Mark the start and end positions of each piece of evidence.
 
-4. **Choose the best-matching level**: Select the level whose descriptors most accurately describe what you observe in the draft. When between two levels:
-   - **Beginning vs. Developing**: Does it show awareness of the user's goal?
-   - **Developing vs. Proficient**: Would the user need substantial rework, or just polish?
-   - **Proficient vs. Exemplary**: Does it fully realize their vision, or just meet requirements?
+4. **Calculate the achievement level**: Based on what percentage of dimensions are met:
+   - **Weak vs. Fair**: Are at least half the dimensions met?
+   - **Fair vs. Good**: Are at least 75% of dimensions met?
+   - **Good vs. Excellent**: Are ALL dimensions met?
    
 4. **Document your reasoning**: Explain why you chose this level, referencing the rubric's specific language.
 
@@ -1634,7 +1735,7 @@ Return a JSON object with the following structure:
     "criteria_scores": [
         {{
             "name": "<exact criterion name from rubric>",
-            "achievement_level": "<Exemplary|Proficient|Developing|Beginning>",
+            "achievement_level": "<Excellent|Good|Fair|Weak>",
             "level_percentage": <25|50|75|100>,
             "evidence": [
                 {{

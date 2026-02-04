@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "template_name": "The Chicago Manual of Style, 18th Edition",
+  "source": "template",
+  "writing_type": "Scholarly and trade publishing — books, journals, articles, and long-form nonfiction and fiction — following American English conventions for academic, professional, and literary audiences.",
+  "user_goals_summary": "Produce editorially rigorous text that meets the standard of professional US book and journal publishing. Punctuate with precision (serial comma, em dashes, American quotation style), follow the 'down style' for capitalisation, spell out numbers zero through one hundred, use Merriam-Webster as the spelling authority, cite sources consistently using notes-bibliography or author-date format, and apply inclusive language throughout.",
+  "rubric": [
+    {
+      "name": "Punctuation",
+      "category": "Mechanics",
+      "description": "Follows Chicago's detailed punctuation conventions: serial comma in all series, closed em dashes for parenthetical breaks, double quotation marks with periods and commas always inside, possessive 's on all singular nouns including those ending in s, single space after sentence-ending periods, and capitalize after a colon only when it introduces a complete sentence.",
+      "dimensions": [
+        {
+          "id": "serial_comma",
+          "label": "Uses the serial (Oxford) comma before the conjunction in every series of three or more items"
+        },
+        {
+          "id": "em_dash_closed",
+          "label": "Uses em dashes with no surrounding spaces—like this—for parenthetical breaks, not spaced en dashes"
+        },
+        {
+          "id": "american_quotation_style",
+          "label": "Uses double quotation marks; periods and commas always go inside closing quotation marks"
+        },
+        {
+          "id": "possessive_s_rule",
+          "label": "Forms possessives with 's on all singular nouns, even those ending in s (e.g., 'James's,' 'the boss's')"
+        },
+        {
+          "id": "single_space_after_period",
+          "label": "Uses only one space after a sentence-ending period"
+        }
+      ],
+      "priority": 1
+    },
+    {
+      "name": "Capitalisation & Titles",
+      "category": "Mechanics",
+      "description": "Follows Chicago's 'down style' — use capitals sparingly. Titles of works use title case (capitalising prepositions of five or more letters per 18th edition). Personal/professional titles are capitalised only when directly preceding a name. Capitalise 'Black' and 'Indigenous' when referring to people.",
+      "dimensions": [
+        {
+          "id": "down_style",
+          "label": "Capitalises sparingly — generic references to roles, institutions, and concepts are lowercase"
+        },
+        {
+          "id": "title_case_works",
+          "label": "Titles of works use title case: capitalise major words including prepositions of five or more letters"
+        },
+        {
+          "id": "titles_before_names_only",
+          "label": "Professional/civil titles are capitalised only when directly preceding a name (e.g., 'President Lincoln' but 'the president')"
+        },
+        {
+          "id": "identity_capitalisation",
+          "label": "Capitalises 'Black' and 'Indigenous' when referring to people; follows current best practice for identity terms"
+        },
+        {
+          "id": "colon_capitalisation",
+          "label": "Capitalises after a colon only when what follows is a grammatically complete sentence (or two or more sentences)"
+        }
+      ],
+      "priority": 2
+    },
+    {
+      "name": "Numbers & Dates",
+      "category": "Mechanics",
+      "description": "Spells out whole numbers zero through one hundred and any number beginning a sentence. Uses numerals above one hundred except for large round numbers that can be expressed in words (five thousand, two million). Percentages use numerals with 'percent' spelled out in running text.",
+      "dimensions": [
+        {
+          "id": "spell_out_zero_to_hundred",
+          "label": "Spells out whole numbers from zero through one hundred in running text"
+        },
+        {
+          "id": "numerals_above_hundred",
+          "label": "Uses numerals for numbers above one hundred, except large round numbers expressible in words"
+        },
+        {
+          "id": "no_numeral_sentence_start",
+          "label": "Never begins a sentence with a numeral — spells out the number or restructures the sentence"
+        },
+        {
+          "id": "percent_convention",
+          "label": "Uses numerals with 'percent' spelled out in running text (e.g., '45 percent'); uses % symbol in tables and scientific contexts"
+        }
+      ],
+      "priority": 3
+    },
+    {
+      "name": "Grammar & Usage",
+      "category": "Style",
+      "description": "Follows the grammar chapter authored by Bryan A. Garner. Uses 'that' for restrictive clauses and 'which' (preceded by a comma) for nonrestrictive clauses. Prefers active voice but allows passive when appropriate. Avoids dangling and misplaced modifiers, comma splices, and fused sentences.",
+      "dimensions": [
+        {
+          "id": "that_which_distinction",
+          "label": "Uses 'that' for restrictive (defining) clauses and 'which' with a comma for nonrestrictive (non-defining) clauses"
+        },
+        {
+          "id": "active_voice_preferred",
+          "label": "Defaults to active voice; uses passive only when the agent is unknown, unimportant, or deliberately de-emphasised"
+        },
+        {
+          "id": "no_dangling_modifiers",
+          "label": "Avoids dangling and misplaced modifiers — every modifier clearly attaches to the word it modifies"
+        },
+        {
+          "id": "parallel_construction",
+          "label": "Uses parallel grammatical structure in lists, series, and paired constructions"
+        },
+        {
+          "id": "no_comma_splices",
+          "label": "Does not join independent clauses with just a comma — uses a conjunction, semicolon, or separate sentences"
+        }
+      ],
+      "priority": 4
+    },
+    {
+      "name": "Spelling & Compounds",
+      "category": "Mechanics",
+      "description": "Uses Merriam-Webster as the spelling authority, which means American English -ize spellings. Compounds follow Chicago's hyphenation rules: hyphenate compound modifiers before a noun (well-known author) but often leave them open after (the author is well known). Uses en dashes in compound adjectives involving proper nouns or already-hyphenated elements.",
+      "dimensions": [
+        {
+          "id": "merriam_webster_spelling",
+          "label": "Follows Merriam-Webster for spelling (American English: 'color,' 'organize,' 'center')"
+        },
+        {
+          "id": "compound_modifiers_hyphenated",
+          "label": "Hyphenates compound modifiers before a noun (e.g., 'well-known author,' 'first-rate editor')"
+        },
+        {
+          "id": "en_dash_compounds",
+          "label": "Uses en dashes (not hyphens) in compound adjectives involving proper nouns or open compounds (e.g., 'post–Civil War era,' 'New York–based')"
+        },
+        {
+          "id": "no_hyphen_ly_adverbs",
+          "label": "Does not hyphenate adverb-adjective compounds when the adverb ends in -ly (e.g., 'highly respected tutor')"
+        }
+      ],
+      "priority": 5
+    },
+    {
+      "name": "Source Citations",
+      "category": "Structure",
+      "description": "Uses one of Chicago's two citation systems consistently throughout: notes-bibliography (humanities) or author-date (sciences/social sciences). Notes use superscript numbers after punctuation. Bibliographic entries are properly formatted with inverted author names, title case, and correct punctuation.",
+      "dimensions": [
+        {
+          "id": "consistent_citation_system",
+          "label": "Uses notes-bibliography or author-date consistently — does not mix the two systems"
+        },
+        {
+          "id": "superscript_placement",
+          "label": "Superscript note numbers follow sentence-ending punctuation (after periods, commas, quotation marks) but precede dashes"
+        },
+        {
+          "id": "bibliography_formatting",
+          "label": "Bibliography/reference entries use inverted author names, title case, and correct punctuation per Chicago format"
+        },
+        {
+          "id": "shortened_notes",
+          "label": "Subsequent references to a previously cited source use a consistent shortened form (author-title or author-only)"
+        }
+      ],
+      "priority": 6
+    },
+    {
+      "name": "Inclusive Language",
+      "category": "Audience",
+      "description": "Follows the 18th edition's expanded guidance on diversity and accessibility. Endorses singular 'they' for unknown or nonbinary gender. Avoids gendered generics and bias-laden terms. Uses respectful, current terminology for race, ethnicity, disability, and identity, giving preference to terms chosen by the people described.",
+      "dimensions": [
+        {
+          "id": "singular_they",
+          "label": "Uses singular 'they/them' when a person's gender is unknown, irrelevant, or nonbinary — avoids 'he or she' constructions"
+        },
+        {
+          "id": "no_gendered_generics",
+          "label": "Avoids gendered generics (e.g., uses 'firefighter' not 'fireman,' 'humanity' not 'mankind')"
+        },
+        {
+          "id": "respectful_identity_terms",
+          "label": "Uses respectful, current terminology for race, ethnicity, disability, and identity — defers to terms chosen by the community described"
+        },
+        {
+          "id": "accessible_publishing",
+          "label": "Follows accessibility guidance: provides alt text for images, uses descriptive link text, and structures content for assistive technologies"
+        }
+      ],
+      "priority": 7
+    }
+  ],
+  "coaching_notes": "Non-negotiable: the serial comma and American-style quotation marks (periods/commas inside) are the two most defining Chicago conventions — deviating from either immediately signals non-compliance. Key philosophy: CMOS describes itself as 'guidelines more so than rules,' and the 18th edition explicitly aims to align recommendations with real-world usage; context and editorial judgment are expected to override rigid application. When in doubt on spelling or word division, consult Merriam-Webster first, then CMOS."
+}

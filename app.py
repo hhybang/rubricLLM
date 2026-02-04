@@ -9,8 +9,18 @@ import uuid
 import zipfile
 import io
 import shutil
+import copy
 from datetime import datetime
 from pathlib import Path
+from auth_supabase import (
+    get_supabase_client, init_auth_state, register_user, login_user,
+    logout_user, get_current_user, is_authenticated,
+    get_user_projects, create_project as db_create_project, delete_project,
+    save_conversation, load_conversations as db_load_conversations,
+    load_conversation_by_id, save_rubric_history as db_save_rubric_history,
+    load_rubric_history as db_load_rubric_history, save_project_data,
+    load_project_data, get_schema_sql, delete_rubric_version
+)
 from prompts import (
     COMPARE_WRITE_EDIT_PROMPT,
     RUBRIC_INFERENCE_SYSTEM_PROMPT,
@@ -31,8 +41,8 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
     Display rubric criteria in a user-friendly format with headings, descriptions,
     priority icons, and expandable evidence sections. Criteria are grouped by category.
 
-    If comparison_rubric_data is provided, highlights criteria that are added (new) or
-    removed (missing in comparison) with different colors.
+    If comparison_rubric_data is provided, highlights criteria that differ with ‼️ emoji
+    and bolds the specific elements that are different (name, description, priority, dimensions).
     """
     if not rubric_data or 'rubric' not in rubric_data:
         container.warning("No rubric data available")
@@ -51,24 +61,58 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
             name = c.get('name', '').lower().strip()
             comparison_map[name] = c
 
+    # Helper function to get dimension labels as a set for comparison
+    def get_dimension_labels(dims):
+        return set(d.get('label', '').strip() for d in dims if d.get('label', '').strip())
+
     # Group criteria by category
     from collections import defaultdict
     categories = defaultdict(list)
     for criterion in rubric_list:
         category = criterion.get('category', 'Uncategorized')
-        # Add a flag to indicate if this is new or changed compared to comparison rubric
+
+        # Track specific differences for comparison
+        criterion['_diff'] = {
+            'is_new_criterion': False,
+            'name_changed': False,
+            'description_changed': False,
+            'priority_changed': False,
+            'dimensions_changed': False,
+            'added_dimensions': set(),
+            'removed_dimensions': set()
+        }
+
         if comparison_rubric_data:
             criterion_name = criterion.get('name', '').lower().strip()
 
             if criterion_name not in comparison_map:
                 # Completely new criterion
-                criterion['is_new'] = True
+                criterion['_diff']['is_new_criterion'] = True
             else:
-                # Check if description or weight changed
                 old_criterion = comparison_map[criterion_name]
-                description_changed = criterion.get('description', '') != old_criterion.get('description', '')
-                weight_changed = criterion.get('weight', 0) != old_criterion.get('weight', 0)
-                criterion['is_new'] = description_changed or weight_changed
+
+                # Check name (case-sensitive comparison for display purposes)
+                if criterion.get('name', '') != old_criterion.get('name', ''):
+                    criterion['_diff']['name_changed'] = True
+
+                # Check description
+                if criterion.get('description', '') != old_criterion.get('description', ''):
+                    criterion['_diff']['description_changed'] = True
+
+                # Check priority
+                old_priority = old_criterion.get('priority', old_criterion.get('weight', 0))
+                new_priority = criterion.get('priority', criterion.get('weight', 0))
+                if old_priority != new_priority:
+                    criterion['_diff']['priority_changed'] = True
+
+                # Check dimensions
+                old_dims = get_dimension_labels(old_criterion.get('dimensions', []))
+                new_dims = get_dimension_labels(criterion.get('dimensions', []))
+                if old_dims != new_dims:
+                    criterion['_diff']['dimensions_changed'] = True
+                    criterion['_diff']['added_dimensions'] = new_dims - old_dims
+                    criterion['_diff']['removed_dimensions'] = old_dims - new_dims
+
         categories[category].append(criterion)
 
     # Display each category group
@@ -81,46 +125,60 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
 
         # Display criteria within this category
         for criterion in criteria:
-            # Determine if this criterion is new (for highlighting)
-            is_new = criterion.get('is_new', False)
+            diff = criterion.get('_diff', {})
 
-            # Choose label based on whether it's new
-            criterion_label = f"{criterion.get('name', 'Unnamed')}"
-            if is_new:
-                criterion_label = f"{'‼️'}  {criterion.get('name', 'Unnamed')}"
+            # Check if any difference exists
+            has_any_diff = (
+                diff.get('is_new_criterion') or
+                diff.get('name_changed') or
+                diff.get('description_changed') or
+                diff.get('priority_changed') or
+                diff.get('dimensions_changed')
+            )
+
+            # Build criterion label
+            criterion_name = criterion.get('name', 'Unnamed')
+            if has_any_diff:
+                criterion_label = f"‼️  {criterion_name}"
+            else:
+                criterion_label = criterion_name
 
             with container.expander(criterion_label, expanded=False):
-                # Description
+                # Description - bold if changed
                 description = criterion.get('description', 'No description provided')
-                st.markdown(description)
+                if diff.get('description_changed'):
+                    st.markdown(f"**{description}**")
+                else:
+                    st.markdown(description)
 
-                # Weight display
-                weight = criterion.get('weight', 0)
-                if weight > 0:
-                    st.markdown(f"*Weight: {weight}%*")
+                # Priority display - bold if changed
+                priority = criterion.get('priority', criterion.get('weight', 0))
+                if priority > 0:
+                    if diff.get('priority_changed'):
+                        st.markdown(f"***Priority: #{priority}***")
+                    else:
+                        st.markdown(f"*Priority: #{priority}*")
                     st.markdown("")
 
-                # Achievement Levels section (expandable)
-                with st.expander("📊 Achievement Levels", expanded=False):
-                    exemplary = criterion.get('exemplary', 'Not specified')
-                    proficient = criterion.get('proficient', 'Not specified')
-                    developing = criterion.get('developing', 'Not specified')
-                    beginning = criterion.get('beginning', 'Not specified')
+                # Dimensions section (expandable)
+                dimensions = criterion.get('dimensions', [])
+                added_dims = diff.get('added_dimensions', set())
 
-                    st.markdown("**🌟 Exemplary**")
-                    st.markdown(exemplary)
-                    st.markdown("")
+                if dimensions:
+                    dims_label = f"📊 Dimensions ({len(dimensions)})"
+                    if diff.get('dimensions_changed'):
+                        dims_label = f"**📊 Dimensions ({len(dimensions)})**"
 
-                    st.markdown("**✅ Proficient**")
-                    st.markdown(proficient)
-                    st.markdown("")
-
-                    st.markdown("**📈 Developing**")
-                    st.markdown(developing)
-                    st.markdown("")
-
-                    st.markdown("**🔰 Beginning**")
-                    st.markdown(beginning)
+                    with st.expander(dims_label, expanded=False):
+                        for dim in dimensions:
+                            dim_label = dim.get('label', 'Unnamed dimension')
+                            # Bold dimensions that are new/added
+                            if dim_label.strip() in added_dims:
+                                st.markdown(f"• **{dim_label}**")
+                            else:
+                                st.markdown(f"• {dim_label}")
+                else:
+                    st.caption("No dimensions defined")
 
         # Close the category box
         container.markdown("</div>", unsafe_allow_html=True)
@@ -200,7 +258,25 @@ def parse_draft_content(content: str):
 
     return parts
 
-def render_message_with_draft(content: str, message_id: str, is_branch: bool = False):
+def strip_draft_tags_for_streaming(content: str) -> str:
+    """
+    Strip <draft> tags from content for display during streaming.
+    Replaces <draft>content</draft> with just the content inside the tags.
+    This ensures streaming display matches what's shown in editable text areas after rerun.
+    """
+    # Replace complete <draft>...</draft> with just the inner content
+    pattern = r'<draft>(.*?)</draft>'
+    result = re.sub(pattern, r'\1', content, flags=re.DOTALL)
+
+    # Handle incomplete/partial draft tags during streaming
+    # If there's an opening <draft> without closing, show content up to the tag
+    if '<draft>' in result and '</draft>' not in result:
+        # Keep partial draft content visible during streaming
+        result = result.replace('<draft>', '')
+
+    return result
+
+def render_message_with_draft(content: str, message_id: str):
     """
     Render a message that may contain <draft> tags.
     Draft sections are rendered as editable text areas.
@@ -221,6 +297,15 @@ def render_message_with_draft(content: str, message_id: str, is_branch: bool = F
     if original_key not in st.session_state:
         st.session_state[original_key] = {}
 
+    # Track content hash to detect when source content has changed
+    content_hash_key = f"draft_content_hash_{message_id}"
+    current_content_hash = hash(content)
+
+    # If content has changed since last render, reset the draft to match new content
+    content_changed = (content_hash_key in st.session_state and
+                       st.session_state[content_hash_key] != current_content_hash)
+    st.session_state[content_hash_key] = current_content_hash
+
     draft_idx = 0
     for part in draft_parts:
         # Render text before the draft
@@ -235,16 +320,20 @@ def render_message_with_draft(content: str, message_id: str, is_branch: bool = F
             reset_counter_key = f"reset_counter_{message_id}_{draft_idx}"
 
             # Initialize the draft content in session state if not already there
-            if edit_key not in st.session_state[draft_key]:
+            # OR if the source content has changed (content_changed flag)
+            if edit_key not in st.session_state[draft_key] or content_changed:
                 st.session_state[draft_key][edit_key] = draft_content
 
-            # Store the original draft for comparison
-            if orig_key not in st.session_state[original_key]:
+            # Store the original draft for comparison (also update if content changed)
+            if orig_key not in st.session_state[original_key] or content_changed:
                 st.session_state[original_key][orig_key] = draft_content
 
             # Initialize reset counter (used to force new widget key on reset)
             if reset_counter_key not in st.session_state:
                 st.session_state[reset_counter_key] = 0
+            # Increment counter if content changed to force widget refresh
+            elif content_changed:
+                st.session_state[reset_counter_key] += 1
 
             # Create a container for the draft with visual styling
             with st.container():
@@ -289,10 +378,7 @@ def render_message_with_draft(content: str, message_id: str, is_branch: bool = F
                                 "id": new_message_id
                             }
 
-                            if is_branch:
-                                st.session_state.branch['messages'].append(new_message)
-                            else:
-                                st.session_state.messages.append(new_message)
+                            st.session_state.messages.append(new_message)
 
                             # Reset the old message's text area back to the original draft
                             st.session_state[draft_key][edit_key] = original_draft
@@ -306,7 +392,7 @@ def render_message_with_draft(content: str, message_id: str, is_branch: bool = F
                     # Only enable Update Rubric if there are changes
                     if st.button("🔄 Update Rubric", key=f"update_rubric_{edit_key}", disabled=not has_changes):
                         if has_changes:
-                            update_rubric_from_draft_edit(original_draft, edited_draft, is_branch)
+                            update_rubric_from_draft_edit(original_draft, edited_draft)
 
                 with col3:
                     # Only enable Reset if there are changes
@@ -326,27 +412,19 @@ def render_message_with_draft(content: str, message_id: str, is_branch: bool = F
     return True
 
 
-def update_rubric_from_draft_edit(original_draft: str, edited_draft: str, is_branch: bool = False):
+def update_rubric_from_draft_edit(original_draft: str, edited_draft: str):
     """
     Call the LLM to analyze draft edits and suggest rubric updates.
     Shows analysis in a chat-like format for better readability.
-    Uses branch rubric if in branch mode and branch rubric exists.
     """
-    # Get the appropriate rubric based on mode
-    if is_branch and st.session_state.branch.get('rubric') is not None:
-        # Use branch rubric
-        active_rubric_list = st.session_state.branch['rubric']
-        st.session_state.rubric_update_is_branch = True
-    else:
-        # Use main rubric
-        active_rubric_dict, _, _ = get_active_rubric()
+    # Get the active rubric
+    active_rubric_dict, _, _ = get_active_rubric()
 
-        if not active_rubric_dict:
-            st.warning("No active rubric to update. Please create or select a rubric first.")
-            return
+    if not active_rubric_dict:
+        st.warning("No active rubric to update. Please create or select a rubric first.")
+        return
 
-        active_rubric_list = active_rubric_dict.get("rubric", [])
-        st.session_state.rubric_update_is_branch = False
+    active_rubric_list = active_rubric_dict.get("rubric", [])
 
     if not active_rubric_list:
         st.warning("Active rubric has no criteria to update.")
@@ -621,16 +699,16 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list):
     for criterion in updated_rubric:
         name = criterion.get('name', 'Unnamed')
         name_key = name.lower().strip()
-        weight = criterion.get('weight', 0)
+        priority = criterion.get('priority', criterion.get('weight', 0))
 
         if name_key not in current_map:
             # NEW criterion
             status_html = '<span class="status-badge status-new">NEW</span>'
-            expander_label = f"✅ {name} ({weight}%)"
+            expander_label = f"✅ {name} (Priority #{priority})"
 
             with st.expander(expander_label, expanded=False):
                 st.markdown(status_html, unsafe_allow_html=True)
-                st.markdown(f"**Weight:** {weight}%")
+                st.markdown(f"**Priority:** #{priority}")
 
                 for field in ['description', 'exemplary', 'proficient', 'developing', 'beginning']:
                     value = criterion.get(field, '')
@@ -644,23 +722,23 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list):
         elif _criterion_changed(current_map[name_key], criterion):
             # MODIFIED criterion
             old = current_map[name_key]
-            old_weight = old.get('weight', 0)
+            old_priority = old.get('priority', old.get('weight', 0))
 
             status_html = '<span class="status-badge status-modified">MODIFIED</span>'
-            expander_label = f"🔄 {name} ({weight}%)"
+            expander_label = f"🔄 {name} (Priority #{priority})"
 
             with st.expander(expander_label, expanded=False):
                 st.markdown(status_html, unsafe_allow_html=True)
 
-                # Show weight change if applicable
-                if old_weight != weight:
+                # Show priority change if applicable
+                if old_priority != priority:
                     st.markdown(f"""
-                    <div class="weight-change">
-                        <strong>Weight:</strong> <span class="text-removed">{old_weight}%</span> → <span class="text-added">{weight}%</span>
+                    <div class="priority-change">
+                        <strong>Priority:</strong> <span class="text-removed">#{old_priority}</span> → <span class="text-added">#{priority}</span>
                     </div>
                     """, unsafe_allow_html=True)
                 else:
-                    st.markdown(f"**Weight:** {weight}%")
+                    st.markdown(f"**Priority:** #{priority}")
 
                 # Show field-by-field diff
                 for field in ['description', 'exemplary', 'proficient', 'developing', 'beginning']:
@@ -684,11 +762,11 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list):
         else:
             # UNCHANGED criterion
             status_html = '<span class="status-badge status-unchanged">UNCHANGED</span>'
-            expander_label = f"⚪ {name} ({weight}%)"
+            expander_label = f"⚪ {name} (Priority #{priority})"
 
             with st.expander(expander_label, expanded=False):
                 st.markdown(status_html, unsafe_allow_html=True)
-                st.markdown(f"**Weight:** {weight}%")
+                st.markdown(f"**Priority:** #{priority}")
 
                 for field in ['description', 'exemplary', 'proficient', 'developing', 'beginning']:
                     value = criterion.get(field, '')
@@ -705,13 +783,13 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list):
         name_key = name.lower().strip()
 
         if name_key not in updated_map:
-            weight = criterion.get('weight', 0)
+            priority = criterion.get('priority', criterion.get('weight', 0))
             status_html = '<span class="status-badge status-removed">REMOVED</span>'
-            expander_label = f"❌ {name} ({weight}%) - REMOVED"
+            expander_label = f"❌ {name} (Priority #{priority}) - REMOVED"
 
             with st.expander(expander_label, expanded=False):
                 st.markdown(status_html, unsafe_allow_html=True)
-                st.markdown(f"**Weight:** ~~{weight}%~~")
+                st.markdown(f"**Priority:** ~~#{priority}~~")
 
                 for field in ['description', 'exemplary', 'proficient', 'developing', 'beginning']:
                     value = criterion.get(field, '')
@@ -725,7 +803,7 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list):
 
 def _criterion_changed(old: dict, new: dict) -> bool:
     """Check if a criterion has changed between old and new versions."""
-    fields_to_compare = ['description', 'weight', 'exemplary', 'proficient', 'developing', 'beginning', 'category']
+    fields_to_compare = ['description', 'priority', 'exemplary', 'proficient', 'developing', 'beginning', 'category']
     for field in fields_to_compare:
         if old.get(field) != new.get(field):
             return True
@@ -744,9 +822,6 @@ def display_rubric_update_result():
     rubric_updates = result.get("rubric_updates", {})
     thinking_text = result.get("thinking", "")
 
-    # Check if this update is for branch rubric
-    is_branch_update = st.session_state.get('rubric_update_is_branch', False)
-
     # Display in a chat message style container
     with st.chat_message("assistant"):
         # Show thinking if available
@@ -756,19 +831,14 @@ def display_rubric_update_result():
 
         if rubric_updates.get("has_updates"):
             st.markdown("### ✨ Suggested Rubric Updates")
-            if is_branch_update:
-                st.caption("🌿 Updating Branch Rubric")
             st.markdown(f"**Rationale:** {rubric_updates.get('rationale', '')}")
 
             modified_rubric = rubric_updates.get("modified_rubric", [])
 
             if modified_rubric:
-                # Get current rubric for comparison (branch or main)
-                if is_branch_update and st.session_state.branch.get('rubric') is not None:
-                    current_rubric = st.session_state.branch['rubric']
-                else:
-                    active_rubric_dict, _, _ = get_active_rubric()
-                    current_rubric = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
+                # Get current rubric for comparison
+                active_rubric_dict, _, _ = get_active_rubric()
+                current_rubric = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
 
                 # Show side-by-side comparison
                 display_rubric_comparison(current_rubric, modified_rubric)
@@ -778,60 +848,44 @@ def display_rubric_update_result():
                 with col1:
                     if st.button("✅ Apply Updates", key="apply_rubric_updates", type="primary"):
                         import copy
-                        if is_branch_update:
-                            # Update branch rubric directly
-                            st.session_state.branch['rubric'] = modified_rubric
-                            # Increment counter to force widget refresh
-                            st.session_state.branch_rubric_edit_counter += 1
+                        # Save as new rubric version
+                        active_rubric_dict, _, _ = get_active_rubric()
+                        hist = load_rubric_history()
+                        new_version = next_version_number()
 
-                            # Clear the result
-                            st.session_state.rubric_update_result = None
-                            st.session_state.rubric_update_is_branch = False
+                        new_rubric_entry = {
+                            "version": new_version,
+                            "rubric": modified_rubric,
+                            "writing_type": active_rubric_dict.get("writing_type", "Unknown") if active_rubric_dict else "Unknown",
+                            "user_goals_summary": active_rubric_dict.get("user_goals_summary", "") if active_rubric_dict else "",
+                            "weighting_rationale": f"Updated based on user draft edits (from v{active_rubric_dict.get('version', '?') if active_rubric_dict else '?'})",
+                            "coaching_notes": rubric_updates.get('rationale', 'Rubric updated based on draft edit analysis')
+                        }
 
-                            st.success("✓ Branch rubric updated!")
-                            st.rerun()
-                        else:
-                            # Save as new rubric version (main rubric)
-                            active_rubric_dict, _, _ = get_active_rubric()
-                            hist = load_rubric_history()
-                            new_version = next_version_number()
+                        hist.append(new_rubric_entry)
+                        save_rubric_history(hist)
 
-                            new_rubric_entry = {
-                                "version": new_version,
-                                "rubric": modified_rubric,
-                                "writing_type": active_rubric_dict.get("writing_type", "Unknown") if active_rubric_dict else "Unknown",
-                                "user_goals_summary": active_rubric_dict.get("user_goals_summary", "") if active_rubric_dict else "",
-                                "weighting_rationale": f"Updated based on user draft edits (from v{active_rubric_dict.get('version', '?') if active_rubric_dict else '?'})",
-                                "coaching_notes": rubric_updates.get('rationale', 'Rubric updated based on draft edit analysis')
-                            }
+                        # Update active rubric
+                        st.session_state.active_rubric_idx = len(hist) - 1
+                        st.session_state.rubric = modified_rubric
+                        # Also update editing_criteria so Rubric Configuration shows the new version
+                        st.session_state.editing_criteria = copy.deepcopy(modified_rubric)
 
-                            hist.append(new_rubric_entry)
-                            save_rubric_history(hist)
+                        # Clear the result
+                        st.session_state.rubric_update_result = None
 
-                            # Update active rubric
-                            st.session_state.active_rubric_idx = len(hist) - 1
-                            st.session_state.rubric = modified_rubric
-                            # Also update editing_criteria so Rubric Configuration shows the new version
-                            st.session_state.editing_criteria = copy.deepcopy(modified_rubric)
-
-                            # Clear the result
-                            st.session_state.rubric_update_result = None
-                            st.session_state.rubric_update_is_branch = False
-
-                            st.success(f"✓ Rubric updated to version {new_version}!")
-                            st.rerun()
+                        st.success(f"✓ Rubric updated to version {new_version}!")
+                        st.rerun()
 
                 with col2:
                     if st.button("❌ Dismiss", key="dismiss_rubric_updates"):
                         st.session_state.rubric_update_result = None
-                        st.session_state.rubric_update_is_branch = False
                         st.rerun()
         else:
             st.info(f"**No rubric updates needed.** {rubric_updates.get('rationale', 'Your edits are already well-captured by the current rubric.')}")
 
             if st.button("OK", key="dismiss_no_updates"):
                 st.session_state.rubric_update_result = None
-                st.session_state.rubric_update_is_branch = False
                 st.rerun()
 
 
@@ -996,10 +1050,8 @@ def parse_rubric_assessment(full_text):
 
             # Initialize criterion details
             criterion_data = {
-                'weight': None,
+                'priority': None,
                 'achievement_level': None,
-                'level_percentage': None,
-                'weighted_score': None,
                 'evidence': [],
                 'rationale': None,
                 'to_reach_next_level': None
@@ -1011,17 +1063,18 @@ def parse_rubric_assessment(full_text):
             for line in lines[1:]:
                 line = line.strip()
 
+                # Handle both old format (Weight) and new format (Priority)
                 if line.startswith('**Weight**:'):
                     criterion_data['weight'] = line.replace('**Weight**:', '').strip()
+                elif line.startswith('**Priority**:'):
+                    priority_text = line.replace('**Priority**:', '').strip()
+                    # Extract number from "#N" format
+                    priority_match = re.search(r'#?(\d+)', priority_text)
+                    if priority_match:
+                        criterion_data['priority'] = int(priority_match.group(1))
                 elif line.startswith('**Achievement Level**:'):
                     level_text = line.replace('**Achievement Level**:', '').strip()
                     criterion_data['achievement_level'] = level_text
-                    # Extract percentage if present
-                    pct_match = re.search(r'\((\d+)%\)', level_text)
-                    if pct_match:
-                        criterion_data['level_percentage'] = int(pct_match.group(1))
-                elif line.startswith('**Weighted Score**:'):
-                    criterion_data['weighted_score'] = line.replace('**Weighted Score**:', '').strip()
                 elif line.startswith('**Evidence from draft**:'):
                     current_field = 'evidence'
                     content_buffer = []
@@ -1108,9 +1161,20 @@ def process_rubric_edit_request(user_request, current_rubric):
             role = "USER" if msg['role'] == 'user' else "ASSISTANT"
             edit_history += f"{role}: {msg['content']}\n\n"
 
+    # Clean _diff metadata from rubric before serializing
+    clean_current_rubric = copy.deepcopy(current_rubric)
+    if isinstance(clean_current_rubric, dict) and 'rubric' in clean_current_rubric:
+        for criterion in clean_current_rubric['rubric']:
+            if '_diff' in criterion:
+                del criterion['_diff']
+    elif isinstance(clean_current_rubric, list):
+        for criterion in clean_current_rubric:
+            if isinstance(criterion, dict) and '_diff' in criterion:
+                del criterion['_diff']
+
     # Format the prompt with current rubric and user request
     prompt_text = RUBRIC_EDIT_PROMPT.format(
-        current_rubric=json.dumps(current_rubric, indent=2),
+        current_rubric=json.dumps(clean_current_rubric, indent=2),
         user_request=user_request
     )
 
@@ -1159,22 +1223,12 @@ def process_rubric_edit_request(user_request, current_rubric):
                 # Validate rubric structure
                 modified_rubric = parsed_response['modified_rubric']
 
-                # Check weight totals
-                total_weight = sum(c.get('weight', 0) for c in modified_rubric)
-                if abs(total_weight - 100.0) > 0.1:
+                # Check priority rankings (should be unique integers from 1 to N)
+                priorities = [c.get('priority', i+1) for i, c in enumerate(modified_rubric)]
+                if len(priorities) != len(set(priorities)):
                     return {
-                        'message': f"Error: Total weight is {total_weight}%, but must equal 100%. Please adjust criterion weights."
+                        'message': f"Error: Duplicate priority rankings detected. Each criterion should have a unique rank from 1 to {len(modified_rubric)}."
                     }
-
-                # Check dimension importance for each criterion
-                for criterion in modified_rubric:
-                    dimensions = criterion.get('dimensions', [])
-                    if dimensions:
-                        total_importance = sum(d.get('importance', 0) for d in dimensions)
-                        if abs(total_importance - 1.0) > 0.01:
-                            return {
-                                'message': f"Error: Dimension importance in '{criterion.get('name')}' totals {total_importance:.2f}, but must equal 1.0. Please adjust dimension importance values."
-                            }
 
                 # Return successful response
                 return {
@@ -1202,8 +1256,8 @@ def process_rubric_edit_request(user_request, current_rubric):
             'message': f"Error calling API: {str(e)}"
         }
 
-def display_rubric_assessment(assessment_data, message_id=None):
-    """Display rubric assessment in a card-based layout with collapsible details"""
+def display_rubric_assessment(assessment_data, message_id=None, draft_text=None):
+    """Display rubric assessment in a card-based layout with dimension checklists and evidence highlights"""
     if not assessment_data:
         return
 
@@ -1218,122 +1272,118 @@ def display_rubric_assessment(assessment_data, message_id=None):
     if assessment_key not in st.session_state.assessment_feedback:
         st.session_state.assessment_feedback[assessment_key] = {}
 
-    # Get overall score if available from JSON summary
-    overall_score = None
-    score_interpretation = None
+    # Get assessment summary from JSON
     overall_assessment = None
+    criteria_scores = []
+    evidence_highlights = []
 
     if assessment_data.get('json_summary'):
         json_data = assessment_data['json_summary']
-        overall_score = json_data.get('overall_score')
-        score_interpretation = json_data.get('score_interpretation')
         overall_assessment = json_data.get('overall_assessment')
+        criteria_scores = json_data.get('criteria_scores', [])
+        evidence_highlights = json_data.get('evidence_highlights', [])
 
-    # Display overall score header
+    # Helper function to get level info (star-based system)
+    def get_level_info(achievement_level):
+        if not achievement_level:
+            return "#999", "❓"
+        level_lower = achievement_level.lower()
+        if 'excellent' in level_lower:
+            return "#4CAF50", "⭐⭐⭐"
+        elif 'good' in level_lower:
+            return "#2196F3", "⭐⭐"
+        elif 'fair' in level_lower:
+            return "#FF9800", "⭐"
+        else:  # weak
+            return "#F44336", "☆"
+
+    # Display assessment header
     with st.expander("📊 Rubric Assessment", expanded=False):
         # Show thinking if available
         if assessment_data.get('thinking'):
             with st.expander("🧠 Thinking", expanded=False):
                 st.markdown(assessment_data['thinking'])
 
-        if overall_score is not None:
-            # Color code the score
-            if overall_score >= 85:
-                score_color = "#4CAF50"  # Green
-            elif overall_score >= 70:
-                score_color = "#2196F3"  # Blue
-            elif overall_score >= 50:
-                score_color = "#FF9800"  # Orange
-            else:
-                score_color = "#F44336"  # Red
+        # Sort criteria by priority
+        sorted_criteria = sorted(criteria_scores, key=lambda x: x.get('priority', 99))
 
-            st.markdown(f"""
-                <div style="background: linear-gradient(135deg, {score_color}15 0%, {score_color}05 100%);
-                            border-left: 4px solid {score_color};
-                            padding: 16px;
-                            border-radius: 8px;
-                            margin-bottom: 20px;">
-                    <div style="font-size: 28px; font-weight: 700; color: {score_color};">
-                        {overall_score}/100
-                    </div>
-                    <div style="font-size: 16px; font-weight: 600; color: #555; margin-top: 4px;">
-                        {score_interpretation or 'Overall Score'}
-                    </div>
-                    {f'<div style="font-size: 14px; color: #666; margin-top: 12px; line-height: 1.6;">{overall_assessment}</div>' if overall_assessment else ''}
-                </div>
-            """, unsafe_allow_html=True)
+        # Overall assessment narrative at the top
+        if overall_assessment:
+            st.markdown(f"*{overall_assessment}*")
+            st.markdown("")
 
-        # Display individual criteria cards
-        criteria_details = assessment_data.get('criteria_details', {})
+        # Build a lookup from (criterion, dimension_id) to evidence_highlights quotes
+        # This links the highlighted text to specific dimensions
+        highlight_lookup = {}
+        for ev in evidence_highlights:
+            key = (ev.get('criterion', ''), ev.get('dimension_id', ''))
+            if key not in highlight_lookup:
+                highlight_lookup[key] = []
+            highlight_lookup[key].append({
+                'quote': ev.get('quote', ''),
+                'relevance': ev.get('relevance', '')
+            })
 
-        for criterion_name, data in criteria_details.items():
-            weight = data.get('weight', 'N/A')
-            achievement_level = data.get('achievement_level', 'N/A')
-            level_percentage = data.get('level_percentage')
-            weighted_score = data.get('weighted_score', 'N/A')
-            evidence = data.get('evidence', [])
-            rationale = data.get('rationale', '')
-            to_reach_next_level = data.get('to_reach_next_level', '')
+        # Criteria with Dimension Checklists (sorted by priority)
+        for crit in sorted_criteria:
+            crit_name = crit.get('name', 'Unknown')
+            priority = crit.get('priority', 'N/A')
+            achievement_level = crit.get('achievement_level', 'N/A')
+            dimensions_detail = crit.get('dimensions_detail', [])
+            dims_met = crit.get('dimensions_met', 0)
+            dims_total = crit.get('dimensions_total', 0)
+            improvement_explanation = crit.get('improvement_explanation', '')
 
-            # Color code based on achievement level
-            if 'Exemplary' in achievement_level or level_percentage == 100:
-                level_color = "#4CAF50"
-                level_emoji = "🌟"
-            elif 'Proficient' in achievement_level or level_percentage == 75:
-                level_color = "#2196F3"
-                level_emoji = "✅"
-            elif 'Developing' in achievement_level or level_percentage == 50:
-                level_color = "#FF9800"
-                level_emoji = "📈"
-            else:
-                level_color = "#F44336"
-                level_emoji = "🎯"
+            level_color, level_emoji = get_level_info(achievement_level)
 
-            # Card header (always visible)
-            expander_label = f"{level_emoji} **{criterion_name}** — {achievement_level} (Weight: {weight})"
+            # Criterion header with dimension count
+            expander_label = f"{priority}. {level_emoji} **{crit_name}** ({dims_met}/{dims_total} dimensions)"
 
             with st.expander(expander_label, expanded=False):
-                # Display weighted score prominently
-                st.markdown(f"""
-                    <div style="background: {level_color}10;
-                                border-radius: 6px;
-                                padding: 12px;
-                                margin-bottom: 16px;">
-                        <div style="color: {level_color}; font-weight: 600; font-size: 14px;">
-                            Achievement Level: {achievement_level}
-                        </div>
-                        <div style="color: #666; font-size: 13px; margin-top: 4px;">
-                            Weighted Score: {weighted_score}
-                        </div>
-                    </div>
-                """, unsafe_allow_html=True)
 
-                # Evidence section
-                if evidence:
-                    st.markdown("**Evidence from draft:**")
-                    for ev in evidence:
-                        st.markdown(f"- {ev}")
-                    st.markdown("")
+                for dim in dimensions_detail:
+                    dim_id = dim.get('id', '')
+                    dim_label = dim.get('label', 'Unknown dimension')
+                    dim_met = dim.get('met', False)
+                    dim_evidence = dim.get('evidence', '')
 
-                # Rationale section
-                if rationale:
-                    st.markdown("**Rationale:**")
-                    st.markdown(rationale)
-                    st.markdown("")
+                    # Look up any evidence_highlights for this specific dimension
+                    linked_highlights = highlight_lookup.get((crit_name, dim_id), [])
 
-                # To reach next level section
-                if to_reach_next_level and 'Exemplary' not in achievement_level:
-                    st.markdown("**To reach next level:**")
-                    st.markdown(to_reach_next_level)
+                    if dim_met:
+                        st.success(f"✅ {dim_label}")
+                        # Show linked highlight quote if available, otherwise fall back to evidence field
+                        if linked_highlights:
+                            for hl in linked_highlights:
+                                quote = hl.get('quote', '')
+                                if quote:
+                                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why met:** *\"{quote}\"*")
+                        elif dim_evidence:
+                            st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why met:** *\"{dim_evidence}\"*")
+                    else:
+                        st.error(f"❌ {dim_label}")
+                        # Show linked highlight quote if available, otherwise fall back to evidence field
+                        if linked_highlights:
+                            for hl in linked_highlights:
+                                quote = hl.get('quote', '')
+                                if quote:
+                                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why not met:** *\"{quote}\"*")
+                        elif dim_evidence:
+                            st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why not met:** *\"{dim_evidence}\"*")
+
+                # Improvement explanation (if not Excellent)
+                if improvement_explanation and 'excellent' not in achievement_level.lower():
                     st.markdown("")
+                    st.markdown("**To improve:**")
+                    st.markdown(improvement_explanation)
 
                 # Feedback input for this criterion
                 st.markdown("---")
                 st.markdown("**Your feedback on this assessment:**")
                 feedback_text = st.text_area(
                     "Share your thoughts (optional)",
-                    value=st.session_state.assessment_feedback[assessment_key].get(criterion_name, ""),
-                    key=f"feedback_{assessment_key}_{criterion_name}",
+                    value=st.session_state.assessment_feedback[assessment_key].get(crit_name, ""),
+                    key=f"feedback_{assessment_key}_{crit_name}",
                     placeholder="Disagree with the score? Have additional context? Share it here...",
                     height=80,
                     label_visibility="collapsed"
@@ -1341,12 +1391,141 @@ def display_rubric_assessment(assessment_data, message_id=None):
 
                 # Store feedback in session state
                 if feedback_text:
-                    st.session_state.assessment_feedback[assessment_key][criterion_name] = feedback_text
-                elif criterion_name in st.session_state.assessment_feedback[assessment_key]:
-                    # Remove if emptied
-                    del st.session_state.assessment_feedback[assessment_key][criterion_name]
+                    st.session_state.assessment_feedback[assessment_key][crit_name] = feedback_text
+                elif crit_name in st.session_state.assessment_feedback[assessment_key]:
+                    del st.session_state.assessment_feedback[assessment_key][crit_name]
 
-        # Submit feedback button at the bottom (outside the loop, inside the main expander)
+        # Evidence Highlights Section
+        if evidence_highlights and draft_text:
+            st.markdown("---")
+            st.markdown("### 📄 Draft with Evidence Highlights")
+            st.markdown("*Hover over highlighted text to see the criterion and relevance explanation.*")
+
+            # Build evidence map with actual positions
+            all_evidence = []
+            for ev in evidence_highlights:
+                quote = ev.get("quote", "").strip()
+                if quote:
+                    # Find actual position by searching for the quote
+                    start_idx = draft_text.find(quote)
+                    if start_idx == -1:
+                        # Try finding first 30 chars as a fallback
+                        if len(quote) > 30:
+                            start_idx = draft_text.find(quote[:30])
+
+                    if start_idx != -1:
+                        all_evidence.append({
+                            "criterion": ev.get("criterion", ""),
+                            "quote": quote,
+                            "start_index": start_idx,
+                            "end_index": start_idx + len(quote),
+                            "relevance": ev.get("relevance", ""),
+                            "dimension_id": ev.get("dimension_id", ""),
+                            "dimension_met": ev.get("dimension_met", True)
+                        })
+
+            if all_evidence:
+                # Sort by start_index
+                sorted_evidence = sorted(all_evidence, key=lambda x: x.get("start_index", 0))
+
+                # Remove overlapping highlights
+                non_overlapping = []
+                last_end = 0
+                for ev in sorted_evidence:
+                    if ev["start_index"] >= last_end:
+                        non_overlapping.append(ev)
+                        last_end = ev["end_index"]
+                sorted_evidence = non_overlapping
+
+                # Define colors for different criteria
+                criterion_colors = {}
+                colors = ["#ffeb3b", "#81d4fa", "#a5d6a7", "#ffcc80", "#ce93d8", "#ef9a9a", "#80cbc4"]
+                for i, crit in enumerate(sorted_criteria):
+                    criterion_colors[crit.get("name", f"Criterion {i+1}")] = colors[i % len(colors)]
+
+                # Build dimension label lookup: (criterion_name, dimension_id) -> dimension_label
+                dimension_labels = {}
+                for crit in sorted_criteria:
+                    crit_name = crit.get("name", "")
+                    for dim in crit.get("dimensions_detail", []):
+                        dim_id = dim.get("id", "")
+                        dim_label = dim.get("label", "")
+                        if dim_id:
+                            dimension_labels[(crit_name, dim_id)] = dim_label
+
+                # Legend showing criterion colors with colored boxes
+                st.markdown("**Legend:**")
+                legend_html = '<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">'
+                for crit in sorted_criteria:
+                    crit_name = crit.get("name", "")
+                    color = criterion_colors.get(crit_name, "#ffeb3b")
+                    legend_html += f'<span style="background-color: {color}; padding: 2px 8px; border-radius: 3px; font-size: 0.9em;">{crit_name}</span>'
+                legend_html += '</div>'
+                st.markdown(legend_html, unsafe_allow_html=True)
+
+                # Build inline highlighted draft with tooltips (same as Evaluate: Alignment tab)
+                tooltip_css = """<style>
+.evidence-highlight { position: relative; cursor: help; padding: 1px 2px; border-radius: 2px; }
+.evidence-highlight .tooltip-text { visibility: hidden; background-color: #333; color: #fff; text-align: left; padding: 8px 12px; border-radius: 6px; position: absolute; z-index: 1000; bottom: 125%; left: 50%; transform: translateX(-50%); width: 280px; font-size: 0.85em; line-height: 1.4; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.evidence-highlight .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #333 transparent transparent transparent; }
+.evidence-highlight:hover .tooltip-text { visibility: visible; }
+.tooltip-criterion { font-weight: bold; color: #ffc107; margin-bottom: 5px; }
+</style>"""
+
+                highlighted_html = tooltip_css
+                highlighted_html += '<div style="line-height: 1.8; padding: 10px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #ddd;">'
+
+                last_end = 0
+                for ev in sorted_evidence:
+                    start = ev.get("start_index", 0)
+                    end = ev.get("end_index", 0)
+                    criterion = ev.get("criterion", "")
+                    dimension_id = ev.get("dimension_id", "")
+                    dimension_met = ev.get("dimension_met", True)
+                    relevance = ev.get("relevance", "")
+                    color = criterion_colors.get(criterion, "#ffeb3b")
+
+                    # Look up dimension label
+                    dimension_label = dimension_labels.get((criterion, dimension_id), dimension_id)
+
+                    # Build status indicator
+                    status_icon = "✅" if dimension_met else "❌"
+                    status_color = "#4CAF50" if dimension_met else "#F44336"
+
+                    if start >= last_end and end > start and start < len(draft_text):
+                        # Add unhighlighted text before this highlight
+                        highlighted_html += draft_text[last_end:start].replace("\n", "<br>")
+
+                        # Add highlighted text with tooltip showing criterion + dimension + status
+                        quote_text = draft_text[start:end].replace("\n", "<br>")
+                        tooltip_content = f'<div class="tooltip-criterion">{criterion}</div>'
+                        if dimension_label:
+                            tooltip_content += f'<div style="color: {status_color}; margin-bottom: 5px;">{status_icon} {dimension_label}</div>'
+                        if relevance:
+                            tooltip_content += f'<div style="font-size: 0.9em; opacity: 0.9;">{relevance}</div>'
+
+                        highlighted_html += f'<span class="evidence-highlight" style="background-color: {color};">{quote_text}<span class="tooltip-text">{tooltip_content}</span></span>'
+
+                        last_end = end
+
+                # Add remaining text
+                if last_end < len(draft_text):
+                    highlighted_html += draft_text[last_end:].replace("\n", "<br>")
+
+                highlighted_html += '</div>'
+
+                st.markdown(highlighted_html, unsafe_allow_html=True)
+            else:
+                # No evidence found in draft text - show without highlights
+                st.info("No evidence quotes could be matched to the draft text.")
+                st.markdown(draft_text)
+        elif draft_text and not evidence_highlights:
+            # Show draft without highlights if no evidence_highlights provided
+            st.markdown("---")
+            st.markdown("### 📄 Draft")
+            st.markdown(draft_text)
+
+        # Submit feedback button at the bottom
         st.markdown("---")
         if st.session_state.assessment_feedback[assessment_key]:
             st.markdown(f"**{len(st.session_state.assessment_feedback[assessment_key])} criterion/criteria** have feedback")
@@ -1448,25 +1627,33 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
     during normal chat. Assessments should only be displayed when explicitly requested
     via the 'Assess Draft' button.
 
-    With extended thinking enabled, this also captures thinking content.
+    With extended thinking enabled, this also captures thinking content but does NOT
+    stream it - thinking is buffered silently and only shown in a collapsed expander
+    after the response is complete.
     """
     full_response = ""
     thinking_content = ""
+    started_main_content = False
+
+    # Show a simple thinking indicator while thinking (no streaming of thinking content)
+    if thinking_placeholder:
+        thinking_placeholder.markdown("🧠 *Thinking...*")
 
     # Handle streaming with extended thinking
     for event in stream:
         # Handle thinking events
         if hasattr(event, 'type'):
             if event.type == 'content_block_start':
-                if hasattr(event, 'content_block') and event.content_block.type == 'thinking':
-                    if thinking_placeholder:
-                        thinking_placeholder.markdown("🧠 *Thinking...*")
+                if hasattr(event, 'content_block') and event.content_block.type == 'text':
+                    # Clear thinking indicator when main content starts
+                    if thinking_placeholder and not started_main_content:
+                        thinking_placeholder.empty()
+                        started_main_content = True
             elif event.type == 'content_block_delta':
                 if hasattr(event, 'delta'):
                     if event.delta.type == 'thinking_delta':
+                        # Buffer thinking content silently - don't stream it
                         thinking_content += event.delta.thinking
-                        if thinking_placeholder:
-                            thinking_placeholder.markdown(f"🧠 *Thinking...*\n\n{thinking_content[:500]}..." if len(thinking_content) > 500 else f"🧠 *Thinking...*\n\n{thinking_content}")
                     elif event.delta.type == 'text_delta':
                         full_response += event.delta.text
 
@@ -1475,12 +1662,16 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
                             # Get content before rubric_assessment tag
                             content_before_assessment = full_response.split('<rubric_assessment>')[0]
                             _, main_content = parse_analysis_and_content(content_before_assessment)
-                            response_placeholder.markdown(main_content)
+                            # Strip draft tags for streaming display to match post-rerun appearance
+                            streaming_content = strip_draft_tags_for_streaming(main_content)
+                            response_placeholder.markdown(streaming_content)
                             continue
 
                         # Parse the current accumulated response to filter out analysis
                         _, main_content = parse_analysis_and_content(full_response)
-                        response_placeholder.markdown(main_content + "▌")
+                        # Strip draft tags for streaming display to match post-rerun appearance
+                        streaming_content = strip_draft_tags_for_streaming(main_content)
+                        response_placeholder.markdown(streaming_content + "▌")
 
     # Final parse to ensure clean output
     analysis_content, main_content = parse_analysis_and_content(full_response)
@@ -1491,75 +1682,79 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
         main_content = main_content.split('<rubric_assessment>')[0].strip()
 
     # Display the final content (without assessment)
-    response_placeholder.markdown(main_content)
+    # Strip draft tags for streaming display to match post-rerun appearance
+    streaming_content = strip_draft_tags_for_streaming(main_content)
+    response_placeholder.markdown(streaming_content)
 
     # Return the main content (without analysis or assessment), analysis, None for assessment, and thinking
     return main_content, analysis_content, None, thinking_content
 
 def save_message_log(messages, rubric, analysis=None):
-    """Save all messages to a log file"""
-    # Create logs directory if it doesn't exist
-    project_name = st.session_state.get('current_project')
-    if not project_name:
+    """Save conversation to Supabase database"""
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
         raise ValueError("No project selected. Please select a project first.")
-    log_dir = Path("project") / project_name / "logs"
-    log_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Create filename with timestamp
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    log_file = log_dir / f"conversation-{timestamp}.json"
-    
-    # Prepare log data
-    log_data = {
-        "timestamp": datetime.now().isoformat(),
-        "rubric": rubric,
-        "messages": messages,
-        "analysis": analysis if analysis else ""
-    }
-    
-    # Save to file
-    with open(log_file, 'w', encoding='utf-8') as f:
-        json.dump(log_data, f, ensure_ascii=False, indent=2)
-    
-    return log_file
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        raise ValueError("Database connection not available.")
+
+    # Save to Supabase
+    conv_id = save_conversation(supabase, project_id, messages, rubric, analysis or "")
+    return conv_id
 
 # ========================
 # Rubric Management Functions
 # ========================
-def get_rubric_file():
-    """Get the current rubric file path based on active project"""
-    project_name = st.session_state.get('current_project')
-    if not project_name:
-        return None
-    return Path("project") / project_name / "rubric_history.json"
+def load_rubric_history(force_reload=False):
+    """Load rubric history from Supabase database with caching"""
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
+        return []
 
-def load_rubric_history():
-    """Load rubric history from file"""
-    try:
-        rubric_file = get_rubric_file()
-        if rubric_file is None:
-            return []
-        if rubric_file.exists():
-            with open(rubric_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
+    supabase = st.session_state.get('supabase')
+    if not supabase:
         return []
-    except Exception as e:
-        st.error(f"Error loading rubric history: {e}")
-        return []
+
+    # Use cached version if available and not forcing reload
+    cache_key = f"rubric_history_{project_id}"
+    if not force_reload and cache_key in st.session_state:
+        return st.session_state[cache_key]
+
+    # Load from database and cache
+    history = db_load_rubric_history(supabase, project_id)
+    st.session_state[cache_key] = history
+    return history
+
+
+def invalidate_rubric_cache():
+    """Clear the rubric history cache to force reload on next access"""
+    project_id = st.session_state.get('current_project_id')
+    if project_id:
+        cache_key = f"rubric_history_{project_id}"
+        if cache_key in st.session_state:
+            del st.session_state[cache_key]
 
 def save_rubric_history(history):
-    """Save rubric history to file"""
-    try:
-        rubric_file = get_rubric_file()
-        if rubric_file is None:
-            st.error("No project selected. Please select a project first.")
-            return
-        # Ensure parent directory exists
-        rubric_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(rubric_file, 'w', encoding='utf-8') as f:
-            json.dump(history, f, indent=2, ensure_ascii=False)
-    except Exception as e:
-        st.error(f"Error saving rubric history: {e}")
+    """Save rubric history to Supabase database (saves only the latest version)"""
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
+        st.error("No project selected. Please select a project first.")
+        return
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        st.error("Database connection not available.")
+        return
+
+    # Save the latest rubric version
+    if history:
+        latest = history[-1]
+        db_save_rubric_history(supabase, project_id, latest)
+        # Invalidate cache after saving - force reload to get the database-generated ID
+        invalidate_rubric_cache()
+        # Reload from database to get the proper IDs
+        load_rubric_history(force_reload=True)
 
 def next_version_number():
     """Get the next version number for a new rubric"""
@@ -1567,6 +1762,26 @@ def next_version_number():
     if not hist:
         return 1
     return max(r.get("version", 1) for r in hist) + 1
+
+def load_general_rubrics():
+    """Load general rubrics from the general_rubrics folder.
+    Returns a dict mapping display names to rubric data.
+    """
+    general_rubrics_dir = Path("general_rubrics")
+    rubrics = {}
+
+    if general_rubrics_dir.exists():
+        for rubric_file in general_rubrics_dir.glob("*.json"):
+            try:
+                with open(rubric_file, 'r', encoding='utf-8') as f:
+                    rubric_data = json.load(f)
+                    # Create a friendly display name from the filename
+                    display_name = rubric_file.stem.replace('_', ' ').title()
+                    rubrics[display_name] = rubric_data
+            except Exception as e:
+                st.warning(f"Could not load {rubric_file.name}: {e}")
+
+    return rubrics
 
 def get_active_rubric():
     """Get the active rubric and its index
@@ -1601,82 +1816,129 @@ def infer_rubric_from_conversation(messages):
     previous_rubric = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
     previous_rubric_version = active_rubric_dict.get("version", 1) if active_rubric_dict else 1
     
-    # Debug: Show if previous rubric is being used
+    # Show if previous rubric is being used
     if previous_rubric:
-        st.info(f"🔍 DEBUG: Using previous rubric v{previous_rubric_version}")
+        st.info(f"🔍 Using previous rubric v{previous_rubric_version}")
         previous_rubric_json = json.dumps(previous_rubric, ensure_ascii=False, indent=2)
         # previous_rubric_block = f"\n\nPREVIOUS RUBRIC (use this as a starting point and refine it based on the conversation):\n{previous_rubric_json}\n\nBuild upon this rubric by keeping what's relevant and adding/modifying criteria based on the conversation."
     else:
-        st.info("🔍 DEBUG: No previous rubric found - creating new rubric from scratch")
+        st.info("🔍 No previous rubric found - creating new rubric from scratch")
         previous_rubric_json = ""
         # previous_rubric_block = "\n\nThis is a new rubric - create it from scratch based on the conversation."
     
     system_prompt = RUBRIC_INFERENCE_SYSTEM_PROMPT
     user_prompt = get_rubric_inference_user_prompt(conversation_text, previous_rubric_json)
 
-    try:
-        # Use streaming to avoid timeout for long-running requests
-        thinking_text = ""
-        response_text = ""
+    # Retry logic for overloaded errors
+    max_retries = 3
+    retry_delay = 5  # seconds
 
-        with client.messages.stream(
-            model="claude-opus-4-5-20251101",
-            max_tokens=32000,
-            system=system_prompt,
-            messages=[
-                {"role": "user", "content": user_prompt}
-            ],
-            thinking={
-                "type": "enabled",
-                "budget_tokens": 10000
-            }
-        ) as stream:
-            for event in stream:
-                if event.type == "content_block_start":
-                    if hasattr(event.content_block, 'type'):
-                        if event.content_block.type == "thinking":
-                            pass  # Thinking block started
-                        elif event.content_block.type == "text":
-                            pass  # Text block started
-                elif event.type == "content_block_delta":
-                    if hasattr(event.delta, 'thinking'):
-                        thinking_text += event.delta.thinking
-                    elif hasattr(event.delta, 'text'):
-                        response_text += event.delta.text
+    # Create placeholder once outside the loop
+    progress_placeholder = st.empty()
 
-        response_text = response_text.strip()
+    for attempt in range(max_retries):
+        try:
+            # Use streaming to avoid timeout for long-running requests
+            thinking_text = ""
+            response_text = ""
 
-        # Show thinking in an expander
-        if thinking_text:
-            with st.expander("🧠 Thinking", expanded=False):
-                st.markdown(thinking_text)
-        
-        # Try to parse JSON from the response
-        import re
-        json_match = re.search(r'\{.*"rubric".*\}', response_text, re.DOTALL)
-        if json_match:
-            rubric_data = json.loads(json_match.group())
-            # Add version number
-            rubric_data["version"] = next_version_number()
-            
-            # Save to history
-            hist = load_rubric_history()
-            hist.append(rubric_data)
-            save_rubric_history(hist)
-            st.session_state.active_rubric_idx = len(hist) - 1
-            
-            return rubric_data
-        else:
-            rubric_data = json.loads(response_text)
-            rubric_data["version"] = next_version_number()
-            hist = load_rubric_history()
-            hist.append(rubric_data)
-            save_rubric_history(hist)
-            st.session_state.active_rubric_idx = len(hist) - 1
-            return rubric_data
-    except Exception as e:
-        st.error(f"Error inferring rubric: {str(e)}")
-        return None
+            # Show progress indicator
+            if attempt > 0:
+                progress_placeholder.info(f"Retry attempt {attempt + 1} of {max_retries}...")
+            else:
+                progress_placeholder.info("Inferring rubric from conversation...")
+
+            with client.messages.stream(
+                model="claude-opus-4-5-20251101",
+                max_tokens=32000,
+                system=system_prompt,
+                messages=[
+                    {"role": "user", "content": user_prompt}
+                ],
+                thinking={
+                    "type": "enabled",
+                    "budget_tokens": 10000
+                }
+            ) as stream:
+                for event in stream:
+                    if event.type == "content_block_start":
+                        if hasattr(event.content_block, 'type'):
+                            if event.content_block.type == "thinking":
+                                pass  # Thinking block started
+                            elif event.content_block.type == "text":
+                                pass  # Text block started
+                    elif event.type == "content_block_delta":
+                        if hasattr(event.delta, 'thinking'):
+                            thinking_text += event.delta.thinking
+                        elif hasattr(event.delta, 'text'):
+                            response_text += event.delta.text
+
+            # Clear progress indicator
+            progress_placeholder.empty()
+
+            response_text = response_text.strip()
+
+            # Show thinking in an expander
+            if thinking_text:
+                with st.expander("🧠 Thinking", expanded=False):
+                    st.markdown(thinking_text)
+
+            # Try to parse JSON from the response
+            import re
+            json_match = re.search(r'\{.*"rubric".*\}', response_text, re.DOTALL)
+            if json_match:
+                rubric_data = json.loads(json_match.group())
+                # Add version number and mark as inferred (not a template)
+                rubric_data["version"] = next_version_number()
+                rubric_data["source"] = "inferred"
+
+                # Save to history
+                hist = load_rubric_history()
+                hist.append(rubric_data)
+                save_rubric_history(hist)
+                st.session_state.active_rubric_idx = len(hist) - 1
+
+                return rubric_data
+            else:
+                rubric_data = json.loads(response_text)
+                # Add version number and mark as inferred (not a template)
+                rubric_data["version"] = next_version_number()
+                rubric_data["source"] = "inferred"
+                hist = load_rubric_history()
+                hist.append(rubric_data)
+                save_rubric_history(hist)
+                st.session_state.active_rubric_idx = len(hist) - 1
+                return rubric_data
+
+        except Exception as e:
+            error_str = str(e)
+
+            # Check if it's an overloaded error
+            if 'overloaded' in error_str.lower():
+                if attempt < max_retries - 1:
+                    # Show countdown with retry message
+                    countdown_placeholder = st.empty()
+                    for remaining in range(retry_delay, 0, -1):
+                        countdown_placeholder.warning(
+                            f"Claude's servers are currently experiencing high demand. "
+                            f"Retrying in {remaining} seconds... (Attempt {attempt + 1} of {max_retries})"
+                        )
+                        time.sleep(1)
+                    countdown_placeholder.empty()
+                    continue  # Retry
+                else:
+                    # Final attempt failed
+                    st.error(
+                        "Claude's servers are currently overloaded. "
+                        "Please try again in a few minutes."
+                    )
+                    return None
+            else:
+                # Not an overloaded error, don't retry
+                st.error(f"Error inferring rubric: {error_str}")
+                return None
+
+    return None
 
 # Page configuration
 st.set_page_config(
@@ -1684,6 +1946,102 @@ st.set_page_config(
     page_icon="✍️",
     layout="wide"
 )
+
+# ========================
+# Authentication Setup (Supabase)
+# ========================
+init_auth_state()
+
+# Get Supabase client
+supabase = get_supabase_client()
+
+if supabase is None:
+    st.error("Supabase not configured. Please set SUPABASE_URL and SUPABASE_KEY in your environment or Streamlit secrets.")
+    st.markdown("### Setup Instructions")
+    st.markdown("""
+    1. Create a free account at [supabase.com](https://supabase.com)
+    2. Create a new project
+    3. Go to **Settings > API** to get your URL and anon key
+    4. Add to your `.streamlit/secrets.toml`:
+    ```toml
+    SUPABASE_URL = "your-project-url"
+    SUPABASE_KEY = "your-anon-key"
+    ```
+    5. Run the database schema (click below to copy):
+    """)
+    with st.expander("Database Schema SQL"):
+        st.code(get_schema_sql(), language="sql")
+    st.stop()
+
+# Store supabase client in session state for use throughout the app
+st.session_state.supabase = supabase
+
+# Check if user is authenticated
+if not is_authenticated():
+    st.title("AI-Rubric Writer")
+    st.markdown("Please login or register to continue.")
+
+    tab_login, tab_register = st.tabs(["Login", "Register"])
+
+    with tab_login:
+        with st.form("login_form"):
+            email = st.text_input("Email")
+            password = st.text_input("Password", type="password")
+            submit = st.form_submit_button("Login", use_container_width=True)
+
+            if submit:
+                if email and password:
+                    success, message = login_user(supabase, email, password)
+                    if success:
+                        st.success(message)
+                        # Refresh the supabase client with the new session
+                        st.session_state.supabase = get_supabase_client()
+                        st.rerun()
+                    else:
+                        st.error(message)
+                else:
+                    st.warning("Please enter both email and password.")
+
+    with tab_register:
+        with st.form("register_form"):
+            reg_name = st.text_input("Full Name")
+            reg_email = st.text_input("Email")
+            reg_password = st.text_input("Password", type="password")
+            reg_password_confirm = st.text_input("Confirm Password", type="password")
+            reg_submit = st.form_submit_button("Register", use_container_width=True)
+
+            if reg_submit:
+                if not reg_name or not reg_email or not reg_password:
+                    st.warning("Please fill in all fields.")
+                elif reg_password != reg_password_confirm:
+                    st.error("Passwords do not match.")
+                elif len(reg_password) < 6:
+                    st.error("Password must be at least 6 characters.")
+                else:
+                    success, message = register_user(supabase, reg_email, reg_password, reg_name)
+                    if success:
+                        st.success(message)
+                    else:
+                        st.error(message)
+
+    st.stop()
+
+# User is authenticated - get user info
+current_user = get_current_user()
+st.session_state.auth_username = current_user["id"]
+st.session_state.auth_name = current_user["name"]
+st.session_state.auth_email = current_user["email"]
+
+# Ensure supabase client has the current session
+st.session_state.supabase = get_supabase_client()
+
+# Show logout button in sidebar
+with st.sidebar:
+    st.write(f'Welcome, **{current_user["name"]}**')
+    if st.button("Logout", use_container_width=True):
+        logout_user(supabase)
+        st.rerun()
+    st.markdown("---")
 
 # Inject CSS styles for diff highlighting
 st.markdown("""
@@ -1781,6 +2139,39 @@ main[data-testid="stMain"] {
 .diff-wrap p {
     margin: 0.5em 0;
 }
+
+/* Make tabs horizontally scrollable on small screens */
+div[data-baseweb="tab-list"] {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-wrap: nowrap !important;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+}
+
+div[data-baseweb="tab-list"]::-webkit-scrollbar {
+    height: 6px;
+}
+
+div[data-baseweb="tab-list"]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+div[data-baseweb="tab-list"]::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+div[data-baseweb="tab-list"]::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Prevent tabs from wrapping */
+button[data-baseweb="tab"] {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1799,13 +2190,9 @@ if 'current_rubric_assessment' not in st.session_state:
 
 # Initialize current_project early so other functions can use it
 if 'current_project' not in st.session_state:
-    # Inline logic to get available projects (function defined later)
-    projects_dir = Path("project")
-    if projects_dir.exists():
-        available_projects = sorted([item.name for item in projects_dir.iterdir() if item.is_dir() and not item.name.startswith('.')])
-    else:
-        available_projects = []
-    st.session_state.current_project = available_projects[0] if available_projects else None
+    st.session_state.current_project = None  # Project name
+if 'current_project_id' not in st.session_state:
+    st.session_state.current_project_id = None  # Project UUID from Supabase
 
 if 'selected_conversation' not in st.session_state:
     st.session_state.selected_conversation = None
@@ -1824,15 +2211,11 @@ if 'comparison_rubric_version' not in st.session_state:
 if 'rubric_comparison_results' not in st.session_state:
     st.session_state.rubric_comparison_results = None
 
-# Branch mode for temporary experimentation
-if 'branch' not in st.session_state:
-    st.session_state.branch = {
-        'active': False,           # Whether branch is currently active
-        'messages': [],            # Temporary messages in the branch
-        'rubric': None,            # Temporary rubric modifications (None = use main rubric)
-        'branch_point': None,      # Index in main conversation where branch started
-        'branch_name': None        # Optional name for the branch
-    }
+# Message deletion mode for removing unwanted messages from conversation
+if 'message_delete_mode' not in st.session_state:
+    st.session_state.message_delete_mode = False  # Whether delete mode is active
+if 'messages_to_delete' not in st.session_state:
+    st.session_state.messages_to_delete = set()  # Set of message indices to delete
 
 # Rubric editing mode for conversational rubric content changes
 if 'rubric_editing' not in st.session_state:
@@ -1842,14 +2225,6 @@ if 'rubric_editing' not in st.session_state:
         'proposed_changes': None,  # Parsed changes from AI
         'original_rubric': None    # Snapshot before editing
     }
-
-# Regenerated draft from rubric changes
-if 'regenerated_draft' not in st.session_state:
-    st.session_state.regenerated_draft = None  # Stores {revised_draft, changes_made, original_rubric, updated_rubric}
-
-# Branch rubric chat for AI suggestions
-if 'branch_rubric_chat' not in st.session_state:
-    st.session_state.branch_rubric_chat = []  # List of {role, content} messages
 
 # Evaluate tab state
 if 'evaluate_selected_conversation' not in st.session_state:
@@ -1912,98 +2287,73 @@ def simple_markdown_to_html(text):
     return text
 
 def load_conversations():
-    """Load all conversation files from logs directory"""
-    project_name = st.session_state.get('current_project')
-    if not project_name:
+    """Load all conversations from Supabase database"""
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
         return []
-    log_dir = Path("project") / project_name / "logs"
-    if not log_dir.exists():
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
         return []
-    
-    conversations = []
-    for file in sorted(log_dir.glob("conversation-*.json"), reverse=True):
-        try:
-            with open(file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                # Extract readable date from filename
-                filename = file.stem
-                date_str = filename.replace("conversation-", "")
-                conversations.append({
-                    "filename": file.name,
-                    "timestamp": data.get("timestamp", date_str),
-                    "messages_count": len(data.get("messages", [])),
-                    "data": data
-                })
-        except Exception as e:
-            continue
+
+    conversations = db_load_conversations(supabase, project_id)
+    # Add filename field for compatibility with existing code
+    for conv in conversations:
+        conv["filename"] = conv["id"]
     return conversations
 
-def load_conversation_data(filepath):
-    """Load conversation data from file"""
-    project_name = st.session_state.get('current_project')
-    if not project_name:
+def load_conversation_data(conversation_id):
+    """Load conversation data from Supabase database"""
+    supabase = st.session_state.get('supabase')
+    if not supabase:
         return None
-    log_dir = Path("project") / project_name / "logs"
-    file = log_dir / filepath
-    if file.exists():
-        with open(file, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return None
+
+    return load_conversation_by_id(supabase, conversation_id)
 
 def get_available_projects():
-    """Get list of available project folders from the 'project' directory"""
-    projects_dir = Path("project")
-    if not projects_dir.exists():
-        projects_dir.mkdir(exist_ok=True)
+    """Get list of available projects for the current user from Supabase"""
+    user_id = st.session_state.get('auth_username')
+    if not user_id:
         return []
 
-    projects = []
-    for item in projects_dir.iterdir():
-        if item.is_dir() and not item.name.startswith('.'):
-            projects.append(item.name)
-    return sorted(projects)
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        return []
+
+    projects = get_user_projects(supabase, user_id)
+    return projects  # Returns list of dicts with 'id', 'name', etc.
 
 def create_new_project(project_name):
-    """Create a new project folder with necessary structure inside the 'project' directory"""
-    # Validate project name (alphanumeric, hyphens, underscores only)
+    """Create a new project in Supabase database"""
     import string
-    valid_chars = string.ascii_letters + string.digits + '-_'
+    valid_chars = string.ascii_letters + string.digits + '-_ '
     if not all(c in valid_chars for c in project_name):
-        return False, "Project name can only contain letters, numbers, hyphens, and underscores"
+        return False, "Project name can only contain letters, numbers, hyphens, underscores, and spaces"
 
-    # Ensure project directory exists
-    projects_dir = Path("project")
-    projects_dir.mkdir(exist_ok=True)
+    user_id = st.session_state.get('auth_username')
+    if not user_id:
+        return False, "Not authenticated"
 
-    project_path = projects_dir / project_name
-    if project_path.exists():
-        return False, "Project folder already exists"
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        return False, "Database connection not available"
 
-    try:
-        # Create project folder
-        project_path.mkdir(exist_ok=True)
-
-        # Create logs subfolder
-        logs_path = project_path / "logs"
-        logs_path.mkdir(exist_ok=True)
-
-        # Create empty rubric_history.json
-        rubric_file = project_path / "rubric_history.json"
-        with open(rubric_file, 'w', encoding='utf-8') as f:
-            json.dump([], f, indent=2)
-
-        return True, f"Project '{project_name}' created successfully!"
-    except Exception as e:
-        return False, f"Error creating project: {str(e)}"
+    success, message, project_id = db_create_project(supabase, user_id, project_name)
+    return success, message, project_id
 
 # Title at the top
 st.title("✍️ AI-Rubric Writer")
 st.markdown("Collaborate with AI to improve your writing!")
 
 # Create tabs
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["💬 Chat", "📋 View Rubric", "🔍 Compare Rubrics", "📊 Evaluate: Coverage", "🎯 Evaluate: Alignment", "⚡ Evaluate: Utility"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["💬 Chat", "📋 Evaluate: Survey", "📊 Evaluate: Coverage", "⚡ Evaluate: Utility", "📋 View Rubric", "🔍 Compare Rubrics"])
 
 with tab1:
+    # Show save toast if we just saved (after rerun)
+    if st.session_state.get('show_save_toast'):
+        st.toast("✓ Conversation saved!", icon="✅")
+        st.session_state.show_save_toast = False
+
     conversations = load_conversations()
 
     # Create selection with conversation details
@@ -2082,359 +2432,89 @@ with tab1:
         if message['role'] == 'system':
             st.info(message['content'])
         else:
-            with st.chat_message(message['role']):
-                # Get message_id - prefer stored one, otherwise generate
-                message_id = message.get('message_id', f"{message['role']}_{idx}")
+            # In delete mode, show checkbox alongside message
+            if st.session_state.message_delete_mode:
+                col_check, col_msg = st.columns([0.05, 0.95])
+                with col_check:
+                    is_selected = idx in st.session_state.messages_to_delete
+                    if st.checkbox("", value=is_selected, key=f"delete_msg_{idx}", label_visibility="collapsed"):
+                        st.session_state.messages_to_delete.add(idx)
+                    else:
+                        st.session_state.messages_to_delete.discard(idx)
+                with col_msg:
+                    with st.chat_message(message['role']):
+                        message_id = message.get('message_id', f"{message['role']}_{idx}")
+                        if message['role'] == 'user':
+                            content_to_display = message['content']
+                        else:
+                            content_to_display = message.get('display_content', message['content'])
+                        if message['role'] == 'assistant' and message.get('thinking'):
+                            with st.expander("🧠 Thinking", expanded=False):
+                                st.markdown(message['thinking'])
+                        if message['role'] == 'assistant':
+                            has_draft = render_message_with_draft(content_to_display, message_id)
+                            if not has_draft:
+                                st.markdown(content_to_display)
+                        else:
+                            st.markdown(content_to_display)
+                        if message['role'] == 'assistant' and message.get('rubric_assessment'):
+                            assessment = message['rubric_assessment']
+                            draft_text = assessment.get('draft_text')
+                            display_rubric_assessment(assessment, message_id, draft_text)
+            else:
+                with st.chat_message(message['role']):
+                    # Get message_id - prefer stored one, otherwise generate
+                    message_id = message.get('message_id', f"{message['role']}_{idx}")
 
-                # For user messages, always show the full content (which includes feedback)
-                # For assistant messages, use display_content (clean version without annotations)
-                if message['role'] == 'user':
-                    content_to_display = message['content']
-                else:
-                    content_to_display = message.get('display_content', message['content'])
+                    # For user messages, always show the full content (which includes feedback)
+                    # For assistant messages, use display_content (clean version without annotations)
+                    if message['role'] == 'user':
+                        content_to_display = message['content']
+                    else:
+                        content_to_display = message.get('display_content', message['content'])
 
-                # Show thinking if available (for assistant messages)
-                if message['role'] == 'assistant' and message.get('thinking'):
-                    with st.expander("🧠 Thinking", expanded=False):
-                        st.markdown(message['thinking'])
+                    # Show thinking if available (for assistant messages)
+                    if message['role'] == 'assistant' and message.get('thinking'):
+                        with st.expander("🧠 Thinking", expanded=False):
+                            st.markdown(message['thinking'])
 
-                # Check if content contains <draft> tags and render accordingly
-                # For assistant messages, make drafts editable
-                if message['role'] == 'assistant':
-                    has_draft = render_message_with_draft(content_to_display, message_id, is_branch=False)
-                    if not has_draft:
+                    # Check if content contains <draft> tags and render accordingly
+                    # For assistant messages, make drafts editable
+                    if message['role'] == 'assistant':
+                        has_draft = render_message_with_draft(content_to_display, message_id)
+                        if not has_draft:
+                            st.markdown(content_to_display)
+                    else:
                         st.markdown(content_to_display)
-                else:
-                    st.markdown(content_to_display)
 
-                # Display rubric assessment if available (for assistant messages)
-                if message['role'] == 'assistant' and message.get('rubric_assessment'):
-                    display_rubric_assessment(message['rubric_assessment'], message_id)
+                    # Display rubric assessment if available (for assistant messages)
+                    if message['role'] == 'assistant' and message.get('rubric_assessment'):
+                        assessment = message['rubric_assessment']
+                        draft_text = assessment.get('draft_text')
+                        display_rubric_assessment(assessment, message_id, draft_text)
 
-    # Display branch messages if in branch mode
-    if st.session_state.branch['active'] and st.session_state.branch['messages']:
-        st.markdown("---")
-        st.markdown("### 🌿 **Branch Messages** (Temporary)")
-        st.caption("These messages will not be saved to the main conversation unless you click 'Merge Branch'")
-
-        for idx, message in enumerate(st.session_state.branch['messages']):
-            # Skip assessment messages from display
-            if message.get('is_assessment_message'):
-                continue
-
-            with st.chat_message(message['role']):
-                message_id = message.get('message_id', f"branch_{message['role']}_{idx}")
-
-                if message['role'] == 'user':
-                    content_to_display = message['content']
-                else:
-                    content_to_display = message.get('display_content', message['content'])
-
-                # Show thinking if available (for assistant messages)
-                if message['role'] == 'assistant' and message.get('thinking'):
-                    with st.expander("🧠 Thinking", expanded=False):
-                        st.markdown(message['thinking'])
-
-                # Check if content contains <draft> tags and render accordingly
-                # For assistant messages, make drafts editable
-                if message['role'] == 'assistant':
-                    has_draft = render_message_with_draft(content_to_display, message_id, is_branch=True)
-                    if not has_draft:
-                        st.markdown(content_to_display)
-                else:
-                    st.markdown(content_to_display)
-
-                # Display rubric assessment if available
-                if message['role'] == 'assistant' and message.get('rubric_assessment'):
-                    display_rubric_assessment(message['rubric_assessment'], message_id)
-
-        # Branch control buttons
-        st.markdown("---")
-        branch_col1, branch_col2 = st.columns(2)
-
-        with branch_col1:
-            if st.button("❌ Discard Branch", use_container_width=True, type="secondary"):
-                # Discard all branch messages and exit branch mode
-                st.session_state.branch = {
-                    'active': False,
-                    'messages': [],
-                    'rubric': None,
-                    'branch_point': None,
-                    'branch_name': None
-                }
-                # Reset editing state
-                st.session_state.rubric_editing = {
-                    'active': False,
-                    'edit_messages': [],
-                    'proposed_changes': None,
-                    'original_rubric': None
-                }
-                # Clear branch rubric chat
-                st.session_state.branch_rubric_chat = []
-                st.success("Branch discarded")
+    # Delete mode confirmation bar (shown at the bottom when in delete mode)
+    if st.session_state.message_delete_mode and st.session_state.messages_to_delete:
+        st.warning(f"🗑️ **{len(st.session_state.messages_to_delete)} message(s) selected for deletion**")
+        del_col1, del_col2 = st.columns(2)
+        with del_col1:
+            if st.button("✅ Confirm Delete", use_container_width=True, type="primary"):
+                # Delete selected messages (in reverse order to preserve indices)
+                for idx in sorted(st.session_state.messages_to_delete, reverse=True):
+                    if idx < len(st.session_state.messages):
+                        del st.session_state.messages[idx]
+                st.session_state.messages_to_delete = set()
+                st.session_state.message_delete_mode = False
+                st.success("Messages deleted successfully!")
                 st.rerun()
-
-        with branch_col2:
-            if st.button("✅ Merge Branch to Main", use_container_width=True, type="primary"):
-                import copy
-
-                # Capture the branch rubric BEFORE any modifications
-                # The sidebar code should have already updated this on this rerun
-                branch_rubric_to_save = copy.deepcopy(st.session_state.branch['rubric']) if st.session_state.branch['rubric'] else None
-
-                # Merge branch messages into main conversation
-                st.session_state.messages.extend(st.session_state.branch['messages'])
-
-                # Always save the branch rubric if it exists (it was modified in branch mode)
-                rubric_modified = branch_rubric_to_save is not None
-
-                # If branch rubric was modified, save it as a new version
-                if rubric_modified:
-                    # Get current rubric info for metadata
-                    active_rubric_dict, _, _ = get_active_rubric()
-
-                    # Create new rubric version
-                    new_version = next_version_number()
-                    new_rubric_entry = {
-                        "version": new_version,
-                        "rubric": branch_rubric_to_save,
-                        "writing_type": active_rubric_dict.get("writing_type", "Unknown") if active_rubric_dict else "Unknown",
-                        "user_goals_summary": active_rubric_dict.get("user_goals_summary", "Modified from branch") if active_rubric_dict else "Modified from branch",
-                        "weighting_rationale": f"Weights adjusted in branch mode from v{active_rubric_dict.get('version', '?') if active_rubric_dict else '?'}",
-                        "coaching_notes": "Rubric weights were modified in branch mode experimentation"
-                    }
-
-                    # Add to history
-                    hist = load_rubric_history()
-                    hist.append(new_rubric_entry)
-                    save_rubric_history(hist)
-
-                    # Update active rubric index to the new version
-                    st.session_state.active_rubric_idx = len(hist) - 1
-                    st.session_state.rubric = branch_rubric_to_save
-                    # Also update editing_criteria so Rubric Configuration shows the new version
-                    st.session_state.editing_criteria = copy.deepcopy(branch_rubric_to_save)
-
-                # Clear branch and exit branch mode
-                st.session_state.branch = {
-                    'active': False,
-                    'messages': [],
-                    'rubric': None,
-                    'branch_point': None,
-                    'branch_name': None
-                }
-                # Reset editing state
-                st.session_state.rubric_editing = {
-                    'active': False,
-                    'edit_messages': [],
-                    'proposed_changes': None,
-                    'original_rubric': None
-                }
-                # Clear regenerated draft state and branch rubric chat
-                st.session_state.regenerated_draft = None
-                st.session_state.branch_rubric_chat = []
-
-                if rubric_modified:
-                    st.success("✓ Branch merged! New rubric version created.")
-                else:
-                    st.success("✓ Branch merged successfully!")
+        with del_col2:
+            if st.button("❌ Cancel", use_container_width=True):
+                st.session_state.messages_to_delete = set()
+                st.session_state.message_delete_mode = False
                 st.rerun()
 
     # Display rubric update analysis result if pending
     display_rubric_update_result()
-
-    # Display regenerated draft if available (from branch mode rubric changes)
-    if st.session_state.regenerated_draft:
-        st.divider()
-        st.markdown("### ✨ Regenerated Draft")
-        st.caption("Draft revised based on your rubric changes")
-
-        regen = st.session_state.regenerated_draft
-
-        # Show thinking if available
-        if regen.get('thinking'):
-            with st.expander("🧠 Thinking", expanded=False):
-                st.markdown(regen['thinking'])
-
-        # Show revision strategy
-        if regen.get('revision_strategy'):
-            st.info(f"**Strategy:** {regen['revision_strategy']}")
-
-        # CSS for diff highlighting
-        st.markdown("""
-        <style>
-        .draft-diff-container {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 10px 0;
-            line-height: 1.8;
-        }
-        .draft-text-removed {
-            background-color: #ffcccb;
-            color: #721c24;
-            text-decoration: line-through;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        .draft-text-added {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-weight: 500;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-
-        # Generate word-level diff between original and revised draft
-        original_draft = regen.get('original_draft', '')
-        revised_draft = regen.get('revised_draft', '')
-
-        if original_draft and revised_draft:
-            import difflib
-
-            # Split into paragraphs first, then process each paragraph
-            # This preserves paragraph structure while doing word-level diff
-            old_paragraphs = original_draft.split('\n\n')
-            new_paragraphs = revised_draft.split('\n\n')
-
-            # Process paragraph by paragraph
-            all_diff_html = []
-
-            # Use paragraph-level matching first
-            para_matcher = difflib.SequenceMatcher(None, old_paragraphs, new_paragraphs)
-
-            for tag, i1, i2, j1, j2 in para_matcher.get_opcodes():
-                if tag == 'equal':
-                    # Paragraphs are the same, but still do word-level diff for minor changes
-                    for para in old_paragraphs[i1:i2]:
-                        # Escape HTML in paragraph
-                        para_escaped = para.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                        all_diff_html.append(f'<p>{para_escaped}</p>')
-                elif tag == 'replace':
-                    # Paragraphs changed - do word-level diff within each matched pair
-                    old_paras = old_paragraphs[i1:i2]
-                    new_paras = new_paragraphs[j1:j2]
-
-                    # Match paragraphs by position where possible
-                    max_len = max(len(old_paras), len(new_paras))
-                    for idx in range(max_len):
-                        old_para = old_paras[idx] if idx < len(old_paras) else ''
-                        new_para = new_paras[idx] if idx < len(new_paras) else ''
-
-                        if old_para and new_para:
-                            # Do word-level diff
-                            old_words = old_para.split()
-                            new_words = new_para.split()
-                            word_matcher = difflib.SequenceMatcher(None, old_words, new_words)
-                            para_diff = []
-
-                            for wtag, wi1, wi2, wj1, wj2 in word_matcher.get_opcodes():
-                                if wtag == 'equal':
-                                    text = ' '.join(old_words[wi1:wi2])
-                                    text_escaped = text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                                    para_diff.append(text_escaped)
-                                elif wtag == 'replace':
-                                    if wi1 < wi2:
-                                        text = ' '.join(old_words[wi1:wi2])
-                                        text_escaped = text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                                        para_diff.append(f'<span class="draft-text-removed">{text_escaped}</span>')
-                                    if wj1 < wj2:
-                                        text = ' '.join(new_words[wj1:wj2])
-                                        text_escaped = text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                                        para_diff.append(f'<span class="draft-text-added">{text_escaped}</span>')
-                                elif wtag == 'delete':
-                                    text = ' '.join(old_words[wi1:wi2])
-                                    text_escaped = text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                                    para_diff.append(f'<span class="draft-text-removed">{text_escaped}</span>')
-                                elif wtag == 'insert':
-                                    text = ' '.join(new_words[wj1:wj2])
-                                    text_escaped = text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                                    para_diff.append(f'<span class="draft-text-added">{text_escaped}</span>')
-
-                            all_diff_html.append(f'<p>{" ".join(para_diff)}</p>')
-                        elif old_para:
-                            # Entire paragraph removed
-                            text_escaped = old_para.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                            all_diff_html.append(f'<p><span class="draft-text-removed">{text_escaped}</span></p>')
-                        elif new_para:
-                            # Entire paragraph added
-                            text_escaped = new_para.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                            all_diff_html.append(f'<p><span class="draft-text-added">{text_escaped}</span></p>')
-
-                elif tag == 'delete':
-                    # Paragraphs removed
-                    for para in old_paragraphs[i1:i2]:
-                        text_escaped = para.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                        all_diff_html.append(f'<p><span class="draft-text-removed">{text_escaped}</span></p>')
-                elif tag == 'insert':
-                    # Paragraphs added
-                    for para in new_paragraphs[j1:j2]:
-                        text_escaped = para.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                        all_diff_html.append(f'<p><span class="draft-text-added">{text_escaped}</span></p>')
-
-            diff_html = ''.join(all_diff_html)
-            st.markdown(f'<div class="draft-diff-container">{diff_html}</div>', unsafe_allow_html=True)
-        else:
-            # Fallback to just showing the revised draft with paragraph breaks
-            revised_html = revised_draft.replace('\n\n', '</p><p>').replace('\n', '<br>')
-            st.markdown(f'<div class="draft-diff-container"><p>{revised_html}</p></div>', unsafe_allow_html=True)
-
-        # Show changes made
-        if regen.get('changes_made'):
-            with st.expander("📝 Changes Made", expanded=False):
-                for change in regen['changes_made']:
-                    st.markdown(f"• {change}")
-
-        # Action buttons for the regenerated draft
-        st.markdown("---")
-        action_col1, action_col2 = st.columns(2)
-
-        with action_col1:
-            if st.button("✅ Accept Draft", use_container_width=True, key="accept_regen_draft_chat", type="primary"):
-                # Add a new assistant message with the revised draft
-                new_draft = regen['revised_draft']
-
-                # Create a new message with the revised draft
-                import uuid
-                new_message_id = f"assistant_{uuid.uuid4().hex[:8]}"
-
-                # Build message content with the draft wrapped in tags
-                new_message_content = f"Here's the revised draft based on your rubric changes:\n\n<draft>{new_draft}</draft>"
-
-                # Add changes made as context
-                if regen.get('changes_made'):
-                    new_message_content += "\n\n**Changes made:**\n"
-                    for change in regen['changes_made']:
-                        new_message_content += f"- {change}\n"
-
-                new_message = {
-                    'role': 'assistant',
-                    'content': new_message_content,
-                    'message_id': new_message_id
-                }
-
-                # Add to messages (main or branch depending on mode)
-                if st.session_state.branch['active']:
-                    st.session_state.branch['messages'].append(new_message)
-                else:
-                    st.session_state.messages.append(new_message)
-
-                # Clear the regenerated draft state
-                st.session_state.regenerated_draft = None
-
-                st.success("✓ Draft added to chat!")
-                st.rerun()
-
-        with action_col2:
-            if st.button("❌ Discard", use_container_width=True, key="discard_regen_draft_chat"):
-                # Clear the regenerated draft state
-                st.session_state.regenerated_draft = None
-                st.rerun()
-
-        st.caption("💡 Merge the branch to save your rubric changes as a new version.")
 
     # Display comparison result if it exists
     if st.session_state.comparison_result:
@@ -2473,13 +2553,15 @@ with tab1:
 
             # Display rubric assessment if available
             if comparison_assessment:
-                display_rubric_assessment(comparison_assessment)
+                draft_text = comparison_assessment.get('draft_text')
+                display_rubric_assessment(comparison_assessment, draft_text=draft_text)
+
+    # Create a container for streaming responses BEFORE chat_input
+    # This ensures streaming content appears above the input, not below
+    streaming_container = st.container()
 
     # User input (chat input and buttons)
-    # Change prompt based on branch mode
-    chat_placeholder = "🌿 Branch message (temporary)..." if st.session_state.branch['active'] else "Type your message here..."
-
-    if prompt := st.chat_input(chat_placeholder):
+    if prompt := st.chat_input("Type your message here..."):
         # Clear comparison when starting a new message
         st.session_state.comparison_result = None
         st.session_state.comparison_rubric_version = None
@@ -2487,39 +2569,34 @@ with tab1:
         # Check if there's feedback to incorporate
         feedback_context = format_feedback_for_context()
 
-        # Determine which message list to append to
-        target_messages = st.session_state.branch['messages'] if st.session_state.branch['active'] else st.session_state.messages
-
-        # Prepend feedback to user's message if available
+        # Prepare user message data (but DON'T add to session state yet - wait for successful API response)
         if feedback_context:
             full_message = feedback_context + prompt
-            # Store both the full message (for API) and display version (for UI)
-            target_messages.append({
+            user_message_data = {
                 "role": "user",
                 "content": full_message,  # Full message with feedback for API
                 "display_content": prompt  # Just the user's prompt for display
-            })
-
-            # Clear the feedback after incorporating it
-            st.session_state.assessment_feedback = {}
+            }
         else:
-            # No feedback
             full_message = prompt
-            target_messages.append({"role": "user", "content": full_message})
+            user_message_data = {"role": "user", "content": full_message}
 
-        # Display user message (show the full message with feedback if present)
-        with st.chat_message("user"):
-            if feedback_context:
-                # Show the full message with feedback context
-                st.markdown(full_message)
-            else:
-                st.markdown(prompt)
-        
+        # Create placeholder for user message (so we can clear it on error)
+        with streaming_container:
+            user_message_placeholder = st.empty()
+
+        # Display user message temporarily while waiting for response
+        with user_message_placeholder.container():
+            with st.chat_message("user"):
+                if feedback_context:
+                    st.markdown(full_message)
+                else:
+                    st.markdown(prompt)
+
         # Prepare message history for API
-        # If in branch mode, combine main messages + branch messages
         api_messages = []
 
-        # Always include main conversation messages
+        # Include main conversation messages
         for msg in st.session_state.messages:
             content_to_send = msg.get('content', msg.get('display_content', ''))
             api_messages.append({
@@ -2527,93 +2604,128 @@ with tab1:
                 "content": content_to_send
             })
 
-        # If in branch mode, append branch messages
-        if st.session_state.branch['active']:
-            for msg in st.session_state.branch['messages']:
-                content_to_send = msg.get('content', msg.get('display_content', ''))
-                api_messages.append({
-                    "role": msg['role'],
-                    "content": content_to_send
-                })
+        # Add the new user message to API messages (for the API call)
+        api_messages.append({"role": "user", "content": full_message})
 
-        # Show assistant response with streaming
-        with st.chat_message("assistant"):
-            with st.spinner("Thinking..."):
+        # Show assistant response with streaming (in the streaming container)
+        with streaming_container:
+            with st.chat_message("assistant"):
                 response_placeholder = st.empty()
 
                 # Generate unique message ID for this response (use timestamp to ensure uniqueness)
                 import time
                 message_id = f"assistant_{int(time.time() * 1000000)}"
 
-                # Get rubric to use (branch rubric if set, otherwise main rubric)
-                if st.session_state.branch['active'] and st.session_state.branch['rubric'] is not None:
-                    # Use branch rubric
-                    active_rubric_list = st.session_state.branch['rubric']
+                # Get rubric to use
+                active_rubric_dict, _, _ = get_active_rubric()
+                if active_rubric_dict and isinstance(active_rubric_dict, dict):
+                    active_rubric_list = active_rubric_dict.get("rubric", [])
                 else:
-                    # Use main rubric
-                    active_rubric_dict, _, _ = get_active_rubric()
-                    if active_rubric_dict and isinstance(active_rubric_dict, dict):
-                        active_rubric_list = active_rubric_dict.get("rubric", [])
-                    else:
-                        active_rubric_list = []
+                    active_rubric_dict = None
+                    active_rubric_list = []
 
-                # Build system instruction (without assessment requirements)
-                system_instruction = build_system_instruction(active_rubric_list)
+                # Build system instruction (pass full dict so it can check source)
+                system_instruction = build_system_instruction(active_rubric_dict if active_rubric_dict else [])
 
-                # Debug: Show which rubric is being used
+                # Show which rubric is being used
                 if active_rubric_list:
-                    st.caption(f"🔍 Using rubric with {len(active_rubric_list)} criteria")
+                    source = active_rubric_dict.get("source", "inferred") if active_rubric_dict else "inferred"
+                    template_note = f" (template)" if source == "template" else ""
+                    st.caption(f"🔍 Using rubric with {len(active_rubric_list)} criteria{template_note}")
                 else:
                     st.caption("🔍 No rubric active - system instruction will not include rubric")
 
                 # Create placeholder for thinking display
                 thinking_placeholder = st.empty()
 
-                # Stream the response
-                try:
-                    with client.messages.stream(
-                        max_tokens=32000,
-                        system=system_instruction,
-                        messages=api_messages,
-                        model="claude-opus-4-5-20251101",
-                        thinking={
-                            "type": "enabled",
-                            "budget_tokens": 10000
+                # Status placeholder for retry messages
+                status_placeholder = st.empty()
+
+                # Stream the response with retry logic for overloaded errors
+                max_retries = 3
+                retry_delay = 5  # seconds
+
+                for attempt in range(max_retries):
+                    try:
+                        with client.messages.stream(
+                            max_tokens=32000,
+                            system=system_instruction,
+                            messages=api_messages,
+                            model="claude-opus-4-5-20251101",
+                            thinking={
+                                "type": "enabled",
+                                "budget_tokens": 10000
+                            }
+                        ) as stream:
+                            # Clear any retry status message
+                            status_placeholder.empty()
+
+                            # Stream and filter out analysis tags in real-time
+                            # Returns: (main_content without analysis, analysis_content, None for rubric_assessment, thinking_content)
+                            main_content, analysis_content, _, thinking_content = stream_without_analysis(stream, response_placeholder, message_id, thinking_placeholder)
+
+                        # Clear the thinking placeholder and show final thinking in expander
+                        thinking_placeholder.empty()
+
+                        # Get the currently active rubric version to store with the message
+                        active_rubric_dict, active_idx, _ = get_active_rubric()
+                        rubric_version = active_rubric_dict.get('version', 1) if active_rubric_dict else None
+
+                        # Store message in appropriate location (branch or main)
+                        message_data = {
+                            "role": "assistant",
+                            "content": main_content,
+                            "display_content": main_content,
+                            "message_id": message_id,
+                            "rubric_version": rubric_version,
+                            "rubric_assessment": None,  # Will be filled when user clicks assessment button
+                            "thinking": thinking_content  # Store thinking for display
                         }
-                    ) as stream:
-                        # Stream and filter out analysis tags in real-time
-                        # Returns: (main_content without analysis, analysis_content, None for rubric_assessment, thinking_content)
-                        main_content, analysis_content, _, thinking_content = stream_without_analysis(stream, response_placeholder, message_id, thinking_placeholder)
 
-                    # Clear the thinking placeholder and show final thinking in expander
-                    thinking_placeholder.empty()
+                        # SUCCESS - Now add both user and assistant messages to session state
+                        # Add user message to conversation history
+                        st.session_state.messages.append(user_message_data)
 
-                    # Get the currently active rubric version to store with the message
-                    active_rubric_dict, active_idx, _ = get_active_rubric()
-                    rubric_version = active_rubric_dict.get('version', 1) if active_rubric_dict else None
-
-                    # Store message in appropriate location (branch or main)
-                    message_data = {
-                        "role": "assistant",
-                        "content": main_content,
-                        "display_content": main_content,
-                        "message_id": message_id,
-                        "rubric_version": rubric_version,
-                        "rubric_assessment": None,  # Will be filled when user clicks assessment button
-                        "thinking": thinking_content  # Store thinking for display
-                    }
-
-                    if st.session_state.branch['active']:
-                        st.session_state.branch['messages'].append(message_data)
-                    else:
+                        # Add assistant message to conversation history
                         st.session_state.messages.append(message_data)
 
-                    # Update analysis in session state and rerun to show in sidebar
-                    st.session_state.current_analysis = analysis_content
+                        # Clear the feedback after successful response
+                        if feedback_context:
+                            st.session_state.assessment_feedback = {}
 
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Error occurred: {str(e)}")
+                        # Update analysis in session state and rerun to show in sidebar
+                        st.session_state.current_analysis = analysis_content
+
+                        st.rerun()
+                        break  # Success, exit retry loop
+
+                    except Exception as e:
+                        error_str = str(e)
+
+                        # Check if it's an overloaded error
+                        if 'overloaded' in error_str.lower() or 'Overloaded' in error_str:
+                            if attempt < max_retries - 1:
+                                # Show retry message with countdown
+                                for seconds_left in range(retry_delay, 0, -1):
+                                    status_placeholder.warning(
+                                        f"⏳ Claude's servers are experiencing high demand. "
+                                        f"Retrying in {seconds_left} seconds... (Attempt {attempt + 2}/{max_retries})"
+                                    )
+                                    time.sleep(1)
+                                status_placeholder.info("🔄 Retrying now...")
+                            else:
+                                # Final attempt failed - clear the user message and show error
+                                user_message_placeholder.empty()
+                                status_placeholder.empty()
+                                st.error(
+                                    "Claude's servers are currently overloaded. "
+                                    "Please wait a moment and try again."
+                                )
+                        else:
+                            # Non-overload error, don't retry - clear user message
+                            user_message_placeholder.empty()
+                            st.error(f"Error occurred: {error_str}")
+                            break
     
     # Buttons below chat input
     if st.session_state.messages:
@@ -2623,17 +2735,24 @@ with tab1:
             save_button = st.button("💾 Save Conversation", use_container_width=True)
             if save_button:
                 try:
-                    # Save the conversation to a file
-                    log_file = save_message_log(st.session_state.messages, st.session_state.rubric, st.session_state.current_analysis)
-                    
-                    # Store a flag to indicate we just saved (don't reload)
-                    st.session_state.just_saved = log_file.name
-                    
-                    # Update selected_conversation to the saved file
-                    st.session_state.selected_conversation = log_file.name
-                    st.success(f"✓ Log saved to {log_file.name}")
-                    st.balloons()  # Show celebration
-                    st.rerun()  # Rerun to update the selector
+                    # Save the conversation to Supabase
+                    conv_id = save_message_log(st.session_state.messages, st.session_state.rubric, st.session_state.current_analysis)
+
+                    if conv_id:
+                        # Store a flag to indicate we just saved (don't reload the conversation)
+                        # This flag is checked in the conversation selector logic
+                        st.session_state.just_saved = conv_id
+
+                        # Update selected_conversation to the saved conversation ID
+                        st.session_state.selected_conversation = conv_id
+
+                        # Set a flag to show toast after rerun
+                        st.session_state.show_save_toast = True
+
+                        # Rerun to update the conversation selector list
+                        st.rerun()
+                    else:
+                        st.error("Failed to save conversation")
                 except Exception as e:
                     st.error(f"Error saving log: {str(e)}")
         
@@ -2666,7 +2785,7 @@ with tab1:
                             if active_rubric_dict:
                                 # active_rubric_dict is a dict with "rubric" and "version" fields
                                 rubric_list = active_rubric_dict.get("rubric", [])
-                                st.session_state.editing_criteria = rubric_list.copy()
+                                st.session_state.editing_criteria = copy.deepcopy(rubric_list)
                             
                             st.success(f"✓ Rubric inferred (v{inferred_rubric_data.get('version', '?')})")
                             st.rerun()  # Rerun to update the sidebar
@@ -2681,64 +2800,29 @@ with tab1:
             # Only show assess button if there's an assistant message and active rubric
             active_rubric_dict, _, _ = get_active_rubric()
 
-            # Check for assistant messages in branch or main
-            # In branch mode, check both main messages (always available) and branch messages
-            if st.session_state.branch['active']:
-                has_assistant_message = (
-                    any(msg['role'] == 'assistant' for msg in st.session_state.messages) or
-                    any(msg['role'] == 'assistant' for msg in st.session_state.branch['messages'])
-                )
-            else:
-                has_assistant_message = any(msg['role'] == 'assistant' for msg in st.session_state.messages)
+            has_assistant_message = any(msg['role'] == 'assistant' for msg in st.session_state.messages)
 
-            if has_assistant_message and (active_rubric_dict or st.session_state.branch['rubric']):
+            if has_assistant_message and active_rubric_dict:
                 assess_button = st.button("📊 Assess Draft", use_container_width=True)
                 if assess_button:
-                    # Get the last assistant message with a draft (from branch if in branch mode)
+                    # Get the last assistant message with a draft
                     last_assistant_msg = None
                     last_assistant_idx = None
-                    is_branch_message = False
                     draft_content = None
 
                     # Pattern to extract draft content
                     draft_pattern = r'<draft>(.*?)</draft>'
 
-                    if st.session_state.branch['active']:
-                        # Look in branch messages first (from most recent to oldest)
-                        for i in range(len(st.session_state.branch['messages']) - 1, -1, -1):
-                            if st.session_state.branch['messages'][i]['role'] == 'assistant':
-                                msg_content = st.session_state.branch['messages'][i].get('display_content', st.session_state.branch['messages'][i].get('content', ''))
-                                match = re.search(draft_pattern, msg_content, re.DOTALL)
-                                if match:
-                                    last_assistant_msg = st.session_state.branch['messages'][i]
-                                    last_assistant_idx = i
-                                    is_branch_message = True
-                                    draft_content = match.group(1).strip()
-                                    break
-
-                        # If no draft found in branch, fall back to main messages
-                        if draft_content is None:
-                            for i in range(len(st.session_state.messages) - 1, -1, -1):
-                                if st.session_state.messages[i]['role'] == 'assistant':
-                                    msg_content = st.session_state.messages[i].get('display_content', st.session_state.messages[i].get('content', ''))
-                                    match = re.search(draft_pattern, msg_content, re.DOTALL)
-                                    if match:
-                                        last_assistant_msg = st.session_state.messages[i]
-                                        last_assistant_idx = i
-                                        is_branch_message = False
-                                        draft_content = match.group(1).strip()
-                                        break
-                    else:
-                        # Look in main messages (from most recent to oldest)
-                        for i in range(len(st.session_state.messages) - 1, -1, -1):
-                            if st.session_state.messages[i]['role'] == 'assistant':
-                                msg_content = st.session_state.messages[i].get('display_content', st.session_state.messages[i].get('content', ''))
-                                match = re.search(draft_pattern, msg_content, re.DOTALL)
-                                if match:
-                                    last_assistant_msg = st.session_state.messages[i]
-                                    last_assistant_idx = i
-                                    draft_content = match.group(1).strip()
-                                    break
+                    # Look in main messages (from most recent to oldest)
+                    for i in range(len(st.session_state.messages) - 1, -1, -1):
+                        if st.session_state.messages[i]['role'] == 'assistant':
+                            msg_content = st.session_state.messages[i].get('display_content', st.session_state.messages[i].get('content', ''))
+                            match = re.search(draft_pattern, msg_content, re.DOTALL)
+                            if match:
+                                last_assistant_msg = st.session_state.messages[i]
+                                last_assistant_idx = i
+                                draft_content = match.group(1).strip()
+                                break
 
                     # Alert user if no draft found
                     if draft_content is None:
@@ -2760,20 +2844,12 @@ with tab1:
                                 # Build the conversation history with assessment prompt as the last message
                                 assessment_messages = []
 
-                                # Always include main messages
+                                # Include all messages
                                 for msg in st.session_state.messages:
                                     assessment_messages.append({
                                         "role": msg['role'],
                                         "content": msg['content']
                                     })
-
-                                # If in branch mode, add branch messages
-                                if st.session_state.branch['active']:
-                                    for msg in st.session_state.branch['messages']:
-                                        assessment_messages.append({
-                                            "role": msg['role'],
-                                            "content": msg['content']
-                                        })
 
                                 # Add the assessment prompt as the last user message
                                 assessment_messages.append({
@@ -2781,16 +2857,10 @@ with tab1:
                                     "content": assessment_prompt
                                 })
 
-                                # Get rubric to use (branch rubric if in branch mode and modified, otherwise main)
-                                if st.session_state.branch['active'] and st.session_state.branch['rubric'] is not None:
-                                    active_rubric_list = st.session_state.branch['rubric']
-                                else:
-                                    if active_rubric_dict and isinstance(active_rubric_dict, dict):
-                                        active_rubric_list = active_rubric_dict.get("rubric", [])
-                                    else:
-                                        active_rubric_list = []
+                                # Get rubric for system instruction
+                                rubric_for_system = active_rubric_dict if active_rubric_dict else []
 
-                                system_instruction = build_system_instruction(active_rubric_list)
+                                system_instruction = build_system_instruction(rubric_for_system)
 
                                 # Make API call with full conversation context
                                 assessment_response = client.messages.create(
@@ -2814,29 +2884,24 @@ with tab1:
                                         assessment_text = block.text
 
                                 rubric_assessment = parse_rubric_assessment(assessment_text)
-                                # Store thinking in the assessment
+                                # Store thinking and draft text in the assessment
                                 if rubric_assessment:
                                     rubric_assessment['thinking'] = thinking_text
+                                    rubric_assessment['draft_text'] = draft_content  # Store for evidence highlighting
 
                                 # Update the last assistant message with the assessment (for UI display)
-                                # Use correct message list based on whether it's a branch message
-                                if is_branch_message:
-                                    st.session_state.branch['messages'][last_assistant_idx]['rubric_assessment'] = rubric_assessment
-                                    target_messages = st.session_state.branch['messages']
-                                else:
-                                    st.session_state.messages[last_assistant_idx]['rubric_assessment'] = rubric_assessment
-                                    target_messages = st.session_state.messages
+                                st.session_state.messages[last_assistant_idx]['rubric_assessment'] = rubric_assessment
 
-                                # Add the assessment to conversation history (in appropriate location)
+                                # Add the assessment to conversation history
                                 # First add the assessment prompt as a user message (hidden from display)
-                                target_messages.append({
+                                st.session_state.messages.append({
                                     "role": "user",
                                     "content": assessment_prompt,
                                     "is_assessment_message": True  # Mark for hiding from display
                                 })
 
                                 # Then add the full assessment text as an assistant message (hidden from display)
-                                target_messages.append({
+                                st.session_state.messages.append({
                                     "role": "assistant",
                                     "content": assessment_text,
                                     "display_content": assessment_text,
@@ -2853,78 +2918,62 @@ with tab1:
                                 st.error(f"Error during assessment: {str(e)}")
 
         with btn_col4:
-            # Show different button based on branch mode
-            if st.session_state.branch['active']:
-                exit_branch_button = st.button("🌿 Exit Branch", use_container_width=True, type="secondary")
-                if exit_branch_button:
-                    # Just switch view without discarding - user can discard from branch view
-                    st.session_state.branch['active'] = False
-                    # Reset editing state when exiting branch view
-                    st.session_state.rubric_editing = {
-                        'active': False,
-                        'edit_messages': [],
-                        'proposed_changes': None,
-                        'original_rubric': None
-                    }
+            # Toggle delete mode button
+            if st.session_state.message_delete_mode:
+                if st.button("✖️ Cancel Delete", use_container_width=True, type="secondary"):
+                    st.session_state.message_delete_mode = False
+                    st.session_state.messages_to_delete = set()
                     st.rerun()
             else:
-                branch_button = st.button("🌿 Create Branch", use_container_width=True)
-                if branch_button:
-                    # Create a branch from the current conversation state
-                    st.session_state.branch = {
-                        'active': True,
-                        'messages': [],
-                        'rubric': None,  # Start with main rubric, user can modify
-                        'branch_point': len(st.session_state.messages),
-                        'branch_name': f"Branch from message #{len(st.session_state.messages)}"
-                    }
+                if st.button("🗑️ Delete Messages", use_container_width=True):
+                    st.session_state.message_delete_mode = True
+                    st.session_state.messages_to_delete = set()
                     st.rerun()
 
         with btn_col5:
-            clear_button = st.button("🗑️ Clear Conversation", use_container_width=True)
+            clear_button = st.button("🗑️ Clear All", use_container_width=True)
             if clear_button:
                 st.session_state.messages = []
                 st.session_state.current_analysis = ""
                 st.session_state.selected_conversation = None
                 st.session_state.comparison_result = None
                 st.session_state.comparison_rubric_version = None
-                # Also clear branch if active
-                st.session_state.branch = {
-                    'active': False,
-                    'messages': [],
-                    'rubric': None,
-                    'branch_point': None,
-                    'branch_name': None
-                }
+                st.session_state.message_delete_mode = False
+                st.session_state.messages_to_delete = set()
                 st.rerun()
-                
+
     # Comparison mode UI (only show if there are messages and an assistant response)
 # Sidebar for rubric input
 with st.sidebar:
-    # Branch mode indicator at the very top
-    if st.session_state.branch['active']:
-        st.info(f"🌿 **Branch Mode Active**: {st.session_state.branch['branch_name']}")
-        st.caption("Changes are temporary until merged")
-        st.divider()
 
     # Project Selector at the top
     st.header("📁 Project")
 
-    # Get available projects
+    # Get available projects from Supabase
     available_projects = get_available_projects()
 
     # Project selector
     if available_projects:
-        selected_project = st.selectbox(
+        # Create mapping of names to IDs
+        project_names = [p['name'] for p in available_projects]
+        project_id_map = {p['name']: p['id'] for p in available_projects}
+
+        # Find current index
+        current_idx = 0
+        if st.session_state.current_project in project_names:
+            current_idx = project_names.index(st.session_state.current_project)
+
+        selected_project_name = st.selectbox(
             "Select Project:",
-            options=available_projects,
-            index=available_projects.index(st.session_state.current_project) if st.session_state.current_project in available_projects else 0,
+            options=project_names,
+            index=current_idx,
             key="project_selector"
         )
 
         # Update current_project if selection changed
-        if selected_project != st.session_state.current_project:
-            st.session_state.current_project = selected_project
+        if selected_project_name != st.session_state.current_project:
+            st.session_state.current_project = selected_project_name
+            st.session_state.current_project_id = project_id_map[selected_project_name]
             # Reset session state
             st.session_state.messages = []
             st.session_state.selected_conversation = None
@@ -2936,12 +2985,16 @@ with st.sidebar:
             if active_rubric_dict and active_rubric_dict.get("rubric"):
                 rubric_list = active_rubric_dict.get("rubric", [])
                 st.session_state.rubric = rubric_list
-                st.session_state.editing_criteria = rubric_list.copy()
+                st.session_state.editing_criteria = copy.deepcopy(rubric_list)
             else:
                 st.session_state.rubric = []
                 st.session_state.editing_criteria = []
 
             st.rerun()
+
+        # Ensure current_project_id is set if we have a current project
+        if st.session_state.current_project and not st.session_state.current_project_id:
+            st.session_state.current_project_id = project_id_map.get(st.session_state.current_project)
     else:
         st.info("No projects found. Create one below!")
 
@@ -2959,11 +3012,12 @@ with st.sidebar:
 
         if st.button("Create Project", use_container_width=True):
             if new_project_name.strip():
-                success, message = create_new_project(new_project_name.strip())
+                success, message, project_id = create_new_project(new_project_name.strip())
                 if success:
                     st.success(message)
                     # Update current project
                     st.session_state.current_project = new_project_name.strip()
+                    st.session_state.current_project_id = project_id
                     # Reset session state
                     st.session_state.rubric = []
                     st.session_state.editing_criteria = []
@@ -2979,975 +3033,304 @@ with st.sidebar:
             else:
                 st.error("Please enter a project name")
 
-    # Export/Import Project section
-    with st.expander("📦 Export / Import Project"):
-        st.markdown("**Export** your project data to save it locally, or **Import** a previously exported project.")
-
-        # Export button
-        if st.session_state.current_project:
-            project_dir = Path("project") / st.session_state.current_project
-
-            if project_dir.exists():
-                # Create zip file in memory
-                zip_buffer = io.BytesIO()
-                with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-                    for file_path in project_dir.rglob('*'):
-                        if file_path.is_file():
-                            arcname = file_path.relative_to(project_dir.parent)
-                            zip_file.write(file_path, arcname)
-
-                zip_buffer.seek(0)
-
-                st.download_button(
-                    label=f"📥 Export '{st.session_state.current_project}'",
-                    data=zip_buffer.getvalue(),
-                    file_name=f"{st.session_state.current_project}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip",
-                    mime="application/zip",
-                    use_container_width=True
-                )
-
-        st.markdown("---")
-
-        # Import project
-        uploaded_file = st.file_uploader(
-            "Import Project (ZIP file)",
-            type=['zip'],
-            key="project_import_uploader"
-        )
-
-        if uploaded_file is not None:
-            if st.button("📤 Import Project", use_container_width=True):
-                try:
-                    # Extract zip file
-                    with zipfile.ZipFile(io.BytesIO(uploaded_file.read()), 'r') as zip_file:
-                        # Get the project name from the zip structure
-                        namelist = zip_file.namelist()
-                        if namelist:
-                            # The first part of the path should be the project name
-                            project_name = namelist[0].split('/')[0]
-
-                            # Check if project already exists
-                            target_dir = Path("project") / project_name
-                            if target_dir.exists():
-                                # Add timestamp to make it unique
-                                project_name = f"{project_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-                                target_dir = Path("project") / project_name
-
-                            # Extract to project directory
-                            zip_file.extractall(Path("project"))
-
-                            # If we renamed it, we need to rename the extracted folder
-                            original_name = namelist[0].split('/')[0]
-                            if project_name != original_name:
-                                original_dir = Path("project") / original_name
-                                if original_dir.exists():
-                                    shutil.move(str(original_dir), str(target_dir))
-
-                            st.success(f"Project '{project_name}' imported successfully!")
-                            st.session_state.current_project = project_name
-                            st.session_state.messages = []
-                            st.session_state.selected_conversation = None
-                            if 'active_rubric_idx' in st.session_state:
-                                del st.session_state.active_rubric_idx
-                            st.rerun()
-                except Exception as e:
-                    st.error(f"Error importing project: {str(e)}")
+    # Export/Import Project section - Note: Data is stored in cloud database
+    # with st.expander("📦 Export / Import Project"):
+    #     st.info("Your data is stored securely in the cloud and syncs automatically across devices.")
+    #     st.markdown("**Export** and **Import** features coming soon for cloud storage.")
 
     st.divider()
 
-    # Hide Rubric Configuration when in branch mode (users edit rubric via Branch Rubric section instead)
-    if not st.session_state.branch['active']:
-        st.header("📋 Rubric Configuration")
+    st.header("📋 Rubric Configuration")
 
-        # Get active rubric
-        active_rubric_dict, active_idx, rubric_history = get_active_rubric()
+    # Get active rubric
+    active_rubric_dict, active_idx, rubric_history = get_active_rubric()
 
-        # Initialize editing criteria if needed
-        if "editing_criteria" not in st.session_state:
-            if active_rubric_dict:
-                rubric_list = active_rubric_dict.get("rubric", [])
-                st.session_state.editing_criteria = rubric_list.copy() if rubric_list else []
-            else:
-                st.session_state.editing_criteria = []
+    # Show general rubric selector when no rubric history exists
+    if not rubric_history:
+        general_rubrics = load_general_rubrics()
+        if general_rubrics:
+            st.markdown("### 📚 Start with a Template Rubric")
+            st.caption("Select a pre-built rubric to get started, or have a conversation and use 'Infer Rubric' to create a custom one.")
 
-        # Version selector
-        if rubric_history:
-            version_options = [f"v{r.get('version', 1)}" for r in rubric_history]
-            selected_version = st.selectbox(
-                "Active Rubric Version:",
-                options=version_options,
-                index=active_idx if active_idx is not None else 0,
-                key="rubric_version_selector"
+            rubric_options = ["-- Select a template --"] + list(general_rubrics.keys())
+            selected_template = st.selectbox(
+                "Choose a rubric template:",
+                options=rubric_options,
+                key="general_rubric_selector"
             )
-            if selected_version:
-                new_idx = version_options.index(selected_version)
-                if new_idx != active_idx:
-                    st.session_state.active_rubric_idx = new_idx
-                    # Update session state rubric
-                    active_rubric_dict, _, _ = get_active_rubric()
-                    rubric_list = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
-                    st.session_state.rubric = rubric_list
-                    # Reset editing criteria
-                    if active_rubric_dict:
-                        st.session_state.editing_criteria = rubric_list.copy()
+
+            if selected_template and selected_template != "-- Select a template --":
+                template_data = general_rubrics[selected_template]
+
+                # Show preview of the selected rubric
+                with st.expander("📋 Preview rubric", expanded=False):
+                    writing_type = template_data.get("writing_type", "Not specified")
+                    st.markdown(f"**Writing Type:** {writing_type[:200]}..." if len(writing_type) > 200 else f"**Writing Type:** {writing_type}")
+                    rubric_list = template_data.get("rubric", [])
+                    st.markdown(f"**Criteria:** {len(rubric_list)} items")
+                    for criterion in rubric_list[:5]:  # Show first 5
+                        st.markdown(f"- {criterion.get('name', 'Unnamed')}")
+                    if len(rubric_list) > 5:
+                        st.markdown(f"*... and {len(rubric_list) - 5} more*")
+
+                if st.button("✅ Use this rubric", key="use_general_rubric", type="primary"):
+                    # Add the selected rubric to history with version 1
+                    new_rubric = template_data.copy()
+                    new_rubric["version"] = 1
+                    hist = [new_rubric]
+                    save_rubric_history(hist)
+                    st.session_state.active_rubric_idx = 0
+                    st.session_state.rubric = new_rubric.get("rubric", [])
+                    st.session_state.editing_criteria = copy.deepcopy(new_rubric.get("rubric", []))
+                    st.success(f"✓ '{selected_template}' rubric loaded!")
                     st.rerun()
 
-        # Display current rubric
-        if st.session_state.editing_criteria:
-            st.markdown("### Current Criteria")
+            st.divider()
 
-            for i, criterion in enumerate(st.session_state.editing_criteria):
-                criterion_id = str(i + 1)
+    # Initialize editing criteria if needed
+    if "editing_criteria" not in st.session_state:
+        if active_rubric_dict:
+            rubric_list = active_rubric_dict.get("rubric", [])
+            st.session_state.editing_criteria = copy.deepcopy(rubric_list) if rubric_list else []
+        else:
+            st.session_state.editing_criteria = []
 
-                # Simple layout with just the expander
-                with st.expander(f"📌 {criterion.get('name', 'Unnamed Criterion')}", expanded=False):
-                    desc_key = f"criterion_desc_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
+    # Version selector
+    if rubric_history:
+        version_options = [f"v{r.get('version', 1)}" for r in rubric_history]
+        selected_version = st.selectbox(
+            "Active Rubric Version:",
+            options=version_options,
+            index=active_idx if active_idx is not None else 0,
+            key="rubric_version_selector"
+        )
+        if selected_version:
+            new_idx = version_options.index(selected_version)
+            if new_idx != active_idx:
+                st.session_state.active_rubric_idx = new_idx
+                # Update session state rubric
+                active_rubric_dict, _, _ = get_active_rubric()
+                rubric_list = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
+                st.session_state.rubric = rubric_list
+                # Reset editing criteria with deep copy to avoid modifying original
+                if active_rubric_dict:
+                    st.session_state.editing_criteria = copy.deepcopy(rubric_list)
+                st.rerun()
+
+    # Display current rubric
+    if st.session_state.editing_criteria:
+        st.markdown("### Current Criteria")
+
+        version_key = st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0
+
+        # Sort criteria by priority for display
+        sorted_criteria = sorted(
+            enumerate(st.session_state.editing_criteria),
+            key=lambda x: int(x[1].get("priority", x[1].get("weight", x[0] + 1)))
+        )
+
+        num_criteria = len(sorted_criteria)
+
+        for rank, (original_idx, criterion) in enumerate(sorted_criteria, start=1):
+            criterion_name = criterion.get('name', 'Unnamed Criterion')
+
+            # Row with up arrow, down arrow, and expander
+            up_col, down_col, expander_col = st.columns([0.04, 0.04, 0.92])
+
+            with up_col:
+                up_key = f"move_up_{rank}_{version_key}"
+                up_disabled = (rank == 1)
+                if st.button("▲", key=up_key, disabled=up_disabled, help="Move up"):
+                    if not up_disabled:
+                        # Swap priorities with criterion above
+                        for r, (idx, c) in enumerate(sorted_criteria, start=1):
+                            if r == rank:
+                                c["priority"] = rank - 1
+                            elif r == rank - 1:
+                                c["priority"] = rank
+                        st.rerun()
+
+            with down_col:
+                down_key = f"move_down_{rank}_{version_key}"
+                down_disabled = (rank == num_criteria)
+                if st.button("▼", key=down_key, disabled=down_disabled, help="Move down"):
+                    if not down_disabled:
+                        # Swap priorities with criterion below
+                        for r, (idx, c) in enumerate(sorted_criteria, start=1):
+                            if r == rank:
+                                c["priority"] = rank + 1
+                            elif r == rank + 1:
+                                c["priority"] = rank
+                        st.rerun()
+
+            with expander_col:
+                expander_label = f"#{rank} - {criterion_name}"
+                with st.expander(expander_label, expanded=False):
+                    # Description (editable)
+                    desc_key = f"criterion_desc_{original_idx}_{version_key}"
                     description = st.text_area(
                         "Description",
                         value=criterion.get("description", ""),
                         key=desc_key,
-                        placeholder="User-specific description using conversation language...",
+                        placeholder="Description of this criterion...",
                         height=100
                     )
 
-                    weight_key = f"criterion_weight_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
-                    weight = st.number_input(
-                        "Weight (%)",
-                        min_value=0.0,
-                        max_value=100.0,
-                        value=float(criterion.get("weight", 0)),
-                        key=weight_key,
-                        step=0.1,
-                        format="%.1f",
-                        help="Percentage weight (all weights should sum to 100%)"
-                    )
-
-                    exemplary_key = f"criterion_exemplary_{i}_{st.session_state.active_rubric_idx if st.session_state.active_rubric_idx is not None else 0}"
-                    exemplary = st.text_area(
-                        "Exemplary",
-                        value=criterion.get("exemplary", ""),
-                        key=exemplary_key,
-                        placeholder="Concrete descriptors for highest achievement...",
-                        height=80
-                    )
-
-                    # Update the criterion in the session state
-                    if description:
-                        st.session_state.editing_criteria[i]["description"] = description
-                        st.session_state.editing_criteria[i]["weight"] = weight
-                        st.session_state.editing_criteria[i]["exemplary"] = exemplary
-
-                    if st.button("🗑️ Remove", key=f"remove_{i}"):
-                        st.session_state.editing_criteria.pop(i)
-                        st.rerun()
-
-            # Delete Version button
-            if st.button("🗑️ Delete Version", use_container_width=True, type="secondary"):
-                if len(rubric_history) > 1:
-                    # Delete the current version
-                    deleted_version = rubric_history[active_idx].get("version", "?")
-                    rubric_history.pop(active_idx)
-
-                    # Update active rubric index
-                    if active_idx >= len(rubric_history):
-                        st.session_state.active_rubric_idx = len(rubric_history) - 1
-                    elif active_idx > 0:
-                        st.session_state.active_rubric_idx = active_idx - 1
-
-                    # Save updated history
-                    save_rubric_history(rubric_history)
-
-                    # Update current rubric
-                    new_active_rubric_dict, new_active_idx, _ = get_active_rubric()
-                    rubric_list = new_active_rubric_dict.get("rubric", []) if new_active_rubric_dict else []
-                    st.session_state.rubric = rubric_list
-                    st.session_state.active_rubric_idx = new_active_idx
-
-                    # Update editing criteria
-                    if new_active_rubric_dict:
-                        st.session_state.editing_criteria = rubric_list.copy()
-
-                    st.success(f"✓ Rubric version {deleted_version} deleted")
-                    st.rerun()
-                else:
-                    st.error("Cannot delete the last rubric version")
-
-            # Fallback for when Update button condition is false
-            if active_rubric_dict and active_idx is None:
-                rubric_list = active_rubric_dict.get("rubric", [])
-                st.session_state.rubric = rubric_list
-        else:
-            st.info("No rubric loaded. Use 'Infer Rubric' to create one from your conversation.")
-
-        st.divider()
-
-    # Rubric editing interface (only show if editing mode is active in branch mode)
-    if st.session_state.branch['active'] and st.session_state.rubric_editing['active']:
-        with st.expander("✏️ Edit Rubric Content", expanded=True):
-            st.caption("Describe the changes you want to make to your rubric. The AI will interpret your request and show you proposed changes.")
-
-            # Display current branch rubric
-            st.markdown("**Current Branch Rubric:**")
-            current_rubric = st.session_state.rubric_editing['original_rubric']
-            if current_rubric:
-                # Create a compact display
-                rubric_display = '<div style="max-height: 200px; overflow-y: auto; padding: 10px; background-color: #f5f5f5; border-radius: 5px; margin-bottom: 10px; font-size: 0.9em;">'
-                for i, criterion in enumerate(current_rubric):
-                    rubric_display += f'<div style="margin-bottom: 8px;">'
-                    rubric_display += f'<strong>{i+1}. {criterion.get("name", "Unnamed")}</strong><br>'
-                    rubric_display += f'<span style="color: #666;">{criterion.get("description", "No description")[:150]}...</span>'
-                    rubric_display += f'</div>'
-                rubric_display += '</div>'
-                st.markdown(rubric_display, unsafe_allow_html=True)
-            else:
-                st.caption("No rubric loaded")
-
-            st.divider()
-
-            # Chat interface for editing
-            st.markdown("**Edit Conversation:**")
-
-            # Display edit messages in a scrollable container
-            if st.session_state.rubric_editing['edit_messages']:
-                # Create a scrollable container using custom HTML
-                messages_html = '<div style="max-height: 300px; overflow-y: auto; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;">'
-
-                for msg in st.session_state.rubric_editing['edit_messages']:
-                    if msg['role'] == 'user':
-                        messages_html += f'<p style="margin-bottom: 10px;"><strong>You:</strong> {msg["content"]}</p>'
-                    else:
-                        messages_html += f'<p style="margin-bottom: 10px; color: #0066cc;"><strong>AI:</strong> {msg["content"]}</p>'
-
-                messages_html += '</div>'
-                st.markdown(messages_html, unsafe_allow_html=True)
-            else:
-                st.caption("No conversation yet. Describe your changes below to get started.")
-
-            # Input for new edit request
-            edit_input = st.text_area(
-                "Describe your changes:",
-                placeholder="E.g., 'Change the Academic Register description to emphasize formality' or 'Add a new criterion for citation quality'",
-                key="rubric_edit_input",
-                height=100
-            )
-
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("💬 Send Request", use_container_width=True, key="send_edit_request", type="primary"):
-                    if edit_input.strip():
-                        # Add user message to edit conversation
-                        st.session_state.rubric_editing['edit_messages'].append({
-                            'role': 'user',
-                            'content': edit_input
-                        })
-
-                        # Process the edit request (will implement this function next)
-                        with st.spinner("Understanding your request..."):
-                            try:
-                                response = process_rubric_edit_request(
-                                    edit_input,
-                                    st.session_state.rubric_editing['original_rubric']
-                                )
-
-                                # Add AI response to conversation
-                                st.session_state.rubric_editing['edit_messages'].append({
-                                    'role': 'assistant',
-                                    'content': response.get('message', '')
-                                })
-
-                                # Store proposed changes if present
-                                if 'modified_rubric' in response:
-                                    st.session_state.rubric_editing['proposed_changes'] = response
-
-                                st.rerun()
-                            except Exception as e:
-                                st.error(f"Error processing request: {str(e)}")
-                    else:
-                        st.warning("Please enter a description of your changes.")
-
-            with col2:
-                if st.button("❌ Cancel Editing", use_container_width=True, key="cancel_edit_request"):
-                    # Exit editing mode without applying changes
-                    st.session_state.rubric_editing['active'] = False
-                    st.session_state.rubric_editing['edit_messages'] = []
-                    st.session_state.rubric_editing['proposed_changes'] = None
-                    st.session_state.rubric_editing['original_rubric'] = None
-                    st.rerun()
-
-            # Show proposed changes if available
-            if st.session_state.rubric_editing['proposed_changes']:
-                st.divider()
-                st.markdown("**Proposed Changes:**")
-
-                proposed = st.session_state.rubric_editing['proposed_changes']
-
-                # Show thinking if available
-                if proposed.get('thinking'):
-                    with st.expander("🧠 Thinking", expanded=False):
-                        st.markdown(proposed['thinking'])
-
-                st.info(f"**Summary:** {proposed.get('changes_summary', 'Changes proposed')}")
-
-                # Display diff with detailed comparison
-                modified_rubric = proposed.get('modified_rubric', [])
-                original_rubric = st.session_state.rubric_editing['original_rubric']
-
-                # Create mapping of original criteria by name for comparison
-                original_by_name = {c.get('name'): c for c in original_rubric}
-                modified_names = {c.get('name') for c in modified_rubric}
-                original_names = {c.get('name') for c in original_rubric}
-
-                # Show changes by category
-                added_names = modified_names - original_names
-                removed_names = original_names - modified_names
-                common_names = modified_names & original_names
-
-                # Show added criteria
-                if added_names:
-                    st.success(f"**Added {len(added_names)} criterion/criteria:**")
-                    for criterion in modified_rubric:
-                        if criterion.get('name') in added_names:
-                            st.markdown(f"+ **{criterion.get('name')}** ({criterion.get('weight', 0)}%)")
-                            st.caption(criterion.get('description', 'No description'))
-
-                # Show removed criteria
-                if removed_names:
-                    st.error(f"**Removed {len(removed_names)} criterion/criteria:**")
-                    for name in removed_names:
-                        original_c = original_by_name[name]
-                        st.markdown(f"- **{name}** ({original_c.get('weight', 0)}%)")
-
-                # Show modified criteria with detailed before/after
-                modified_count = 0
-                for criterion in modified_rubric:
-                    name = criterion.get('name')
-                    if name in common_names:
-                        original = original_by_name[name]
-                        has_changes = False
-
-                        # Collect all changes for this criterion
-                        change_details = []
-
-                        # Check for weight change
-                        if criterion.get('weight') != original.get('weight'):
-                            has_changes = True
-                            change_details.append({
-                                'field': 'Weight',
-                                'before': f"{original.get('weight')}%",
-                                'after': f"{criterion.get('weight')}%"
-                            })
-
-                        # Check for description change
-                        if criterion.get('description') != original.get('description'):
-                            has_changes = True
-                            change_details.append({
-                                'field': 'Description',
-                                'before': original.get('description', ''),
-                                'after': criterion.get('description', '')
-                            })
-
-                        # Check for achievement level changes
-                        for level in ['exemplary', 'proficient', 'developing', 'beginning']:
-                            if criterion.get(level) != original.get(level):
-                                has_changes = True
-                                change_details.append({
-                                    'field': f'{level.capitalize()} level',
-                                    'before': original.get(level, ''),
-                                    'after': criterion.get(level, '')
-                                })
-
-                        # Check for dimension changes
-                        orig_dims = {d.get('id'): d for d in original.get('dimensions', [])}
-                        mod_dims = {d.get('id'): d for d in criterion.get('dimensions', [])}
-
-                        # Added dimensions
-                        for dim_id, mod_dim in mod_dims.items():
-                            if dim_id not in orig_dims:
-                                has_changes = True
-                                change_details.append({
-                                    'field': f"Dimension '{mod_dim.get('label')}'",
-                                    'before': '(not present)',
-                                    'after': f"importance: {mod_dim.get('importance')}"
-                                })
-
-                        # Removed dimensions
-                        for dim_id, orig_dim in orig_dims.items():
-                            if dim_id not in mod_dims:
-                                has_changes = True
-                                change_details.append({
-                                    'field': f"Dimension '{orig_dim.get('label')}'",
-                                    'before': f"importance: {orig_dim.get('importance')}",
-                                    'after': '(removed)'
-                                })
-
-                        # Modified dimensions
-                        for dim_id, mod_dim in mod_dims.items():
-                            if dim_id in orig_dims:
-                                orig_dim = orig_dims[dim_id]
-                                if mod_dim.get('importance') != orig_dim.get('importance'):
-                                    has_changes = True
-                                    change_details.append({
-                                        'field': f"Dimension '{mod_dim.get('label')}' importance",
-                                        'before': str(orig_dim.get('importance')),
-                                        'after': str(mod_dim.get('importance'))
-                                    })
-
-                        if has_changes:
-                            modified_count += 1
-                            st.warning(f"**Modified: {name}**")
-
-                            # Display each change with before/after
-                            for change in change_details:
-                                with st.expander(f"📝 {change['field']}", expanded=False):
-                                    st.markdown("**Before:**")
-                                    st.caption(change['before'][:500] + ('...' if len(change['before']) > 500 else ''))
-                                    st.markdown("**After:**")
-                                    st.caption(change['after'][:500] + ('...' if len(change['after']) > 500 else ''))
-
-                if modified_count == 0 and not added_names and not removed_names:
-                    st.info("No changes detected")
-                elif modified_count > 0:
-                    st.info(f"Modified {modified_count} existing criterion/criteria")
-
-                # Apply or discard buttons
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button("✅ Apply Changes", use_container_width=True, key="apply_edit_changes", type="primary"):
-                        # Apply changes to branch rubric
-                        st.session_state.branch['rubric'] = modified_rubric
-
-                        # Add confirmation message
-                        st.session_state.rubric_editing['edit_messages'].append({
-                            'role': 'assistant',
-                            'content': '✓ Changes applied to branch rubric! You can continue editing or merge the branch.'
-                        })
-
-                        # Clear proposed changes but keep editing mode active
-                        st.session_state.rubric_editing['proposed_changes'] = None
-                        st.session_state.rubric_editing['original_rubric'] = modified_rubric  # Update original to new state
-
-                        st.success("✓ Rubric updated successfully!")
-                        st.rerun()
-
-                with col2:
-                    if st.button("🔄 Discard Changes", use_container_width=True, key="discard_edit_changes"):
-                        # Clear proposed changes
-                        st.session_state.rubric_editing['proposed_changes'] = None
-
-                        # Add message
-                        st.session_state.rubric_editing['edit_messages'].append({
-                            'role': 'assistant',
-                            'content': 'Changes discarded. You can make a new request.'
-                        })
-                        st.rerun()
-
-    # Branch rubric editable view (only show if in branch mode)
-    if st.session_state.branch['active']:
-        st.markdown("#### 📝 Branch Rubric")
-        st.caption("Edit weights, dimensions, and text. Changes are temporary until merged.")
-
-        # Get active rubric (or branch rubric if already modified)
-        if st.session_state.branch['rubric'] is not None:
-            current_branch_rubric = st.session_state.branch['rubric']
-        else:
-            active_rubric_dict, _, _ = get_active_rubric()
-            current_branch_rubric = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
-
-        # Initialize branch edit state if needed
-        if 'branch_rubric_edit_counter' not in st.session_state:
-            st.session_state.branch_rubric_edit_counter = 0
-
-        if current_branch_rubric:
-            import copy
-            modified_rubric = []
-            total_weight = 0.0
-
-            for idx, criterion in enumerate(current_branch_rubric):
-                criterion_name = criterion.get("name", criterion.get("criterion", "Unknown"))
-                current_weight = criterion.get("weight", 0)
-
-                # Determine if weight is percentage or decimal
-                if current_weight > 2.0:
-                    default_display_weight = current_weight
-                    is_percentage = True
-                else:
-                    default_display_weight = current_weight * 100
-                    is_percentage = False
-
-                # Check if there's already a value in session state for this weight
-                # This allows the expander title to reflect the current input value
-                weight_key = f"branch_weight_{idx}_{st.session_state.branch_rubric_edit_counter}"
-                if weight_key in st.session_state:
-                    display_weight = st.session_state[weight_key]
-                else:
-                    display_weight = default_display_weight
-
-                # Create expander for each criterion
-                with st.expander(f"📌 {criterion_name} ({display_weight:.0f}%)", expanded=False):
-                    modified_criterion = copy.deepcopy(criterion)
-
-                    # Weight input
-                    st.markdown("**Weight (%)**")
-                    new_weight = st.number_input(
-                        "Weight",
-                        min_value=0.0,
-                        max_value=100.0,
-                        value=float(default_display_weight),
-                        step=1.0,
-                        format="%.1f",
-                        key=weight_key,
-                        label_visibility="collapsed"
-                    )
-
-                    # Store weight back in original format
-                    if is_percentage:
-                        modified_criterion['weight'] = new_weight
-                    else:
-                        modified_criterion['weight'] = new_weight / 100.0
-
-                    total_weight += new_weight
-
-                    st.divider()
-
-                    # Description
-                    st.markdown("**Description**")
-                    new_description = st.text_area(
-                        "Description",
-                        value=criterion.get("description", ""),
-                        height=100,
-                        key=f"branch_desc_{idx}_{st.session_state.branch_rubric_edit_counter}",
-                        label_visibility="collapsed"
-                    )
-                    modified_criterion['description'] = new_description
-
-                    st.divider()
-
-                    # Achievement levels
-                    st.markdown("**Achievement Levels**")
-
-                    # Exemplary
-                    st.markdown("*Exemplary*")
-                    new_exemplary = st.text_area(
-                        "Exemplary",
-                        value=criterion.get("exemplary", ""),
-                        height=80,
-                        key=f"branch_exemplary_{idx}_{st.session_state.branch_rubric_edit_counter}",
-                        label_visibility="collapsed"
-                    )
-                    modified_criterion['exemplary'] = new_exemplary
-
-                    # Proficient
-                    st.markdown("*Proficient*")
-                    new_proficient = st.text_area(
-                        "Proficient",
-                        value=criterion.get("proficient", ""),
-                        height=80,
-                        key=f"branch_proficient_{idx}_{st.session_state.branch_rubric_edit_counter}",
-                        label_visibility="collapsed"
-                    )
-                    modified_criterion['proficient'] = new_proficient
-
-                    # Developing
-                    st.markdown("*Developing*")
-                    new_developing = st.text_area(
-                        "Developing",
-                        value=criterion.get("developing", ""),
-                        height=80,
-                        key=f"branch_developing_{idx}_{st.session_state.branch_rubric_edit_counter}",
-                        label_visibility="collapsed"
-                    )
-                    modified_criterion['developing'] = new_developing
-
-                    # Beginning
-                    st.markdown("*Beginning*")
-                    new_beginning = st.text_area(
-                        "Beginning",
-                        value=criterion.get("beginning", ""),
-                        height=80,
-                        key=f"branch_beginning_{idx}_{st.session_state.branch_rubric_edit_counter}",
-                        label_visibility="collapsed"
-                    )
-                    modified_criterion['beginning'] = new_beginning
-
-                    # Dimensions (if they exist)
-                    dimensions = criterion.get("dimensions", [])
-                    if dimensions:
-                        st.divider()
-                        st.markdown("**Dimensions**")
-
-                        modified_dimensions = []
-                        dimension_total = 0.0
-
-                        for dim_idx, dimension in enumerate(dimensions):
-                            dim_label = dimension.get("label", "Unknown")
-                            dim_importance = dimension.get("importance", 0.5)
-
-                            st.markdown(f"*{dim_label}*")
-                            dim_col1, dim_col2 = st.columns([3, 1])
-
-                            with dim_col1:
-                                new_dim_label = st.text_input(
-                                    "Label",
-                                    value=dim_label,
-                                    key=f"branch_dim_label_{idx}_{dim_idx}_{st.session_state.branch_rubric_edit_counter}",
-                                    label_visibility="collapsed"
-                                )
-
-                            with dim_col2:
-                                new_importance = st.number_input(
-                                    "Importance",
-                                    min_value=0.0,
-                                    max_value=1.0,
-                                    value=float(dim_importance),
-                                    step=0.05,
-                                    format="%.2f",
-                                    key=f"branch_dim_imp_{idx}_{dim_idx}_{st.session_state.branch_rubric_edit_counter}",
-                                    label_visibility="collapsed"
-                                )
-
-                            dimension_total += new_importance
-
-                            modified_dimension = dimension.copy()
-                            modified_dimension['label'] = new_dim_label
-                            modified_dimension['importance'] = new_importance
-                            modified_dimensions.append(modified_dimension)
-
-                        # Show dimension total
-                        if abs(dimension_total - 1.0) < 0.01:
-                            st.caption(f"✓ Dimensions total: {dimension_total * 100:.0f}%")
-                        else:
-                            st.caption(f"⚠ Dimensions total: {dimension_total * 100:.0f}% (Should be 100%)")
-
-                        modified_criterion['dimensions'] = modified_dimensions
-
-                modified_rubric.append(modified_criterion)
-
-            # Show total weight validation
-            if abs(total_weight - 100.0) < 0.1:
-                st.success(f"✓ Total weight: {total_weight:.0f}%")
-            else:
-                st.error(f"⚠ Total weight: {total_weight:.0f}% (Should be 100%)")
-
-            # Chat interface for rubric suggestions
-            st.markdown("---")
-            st.markdown("#### 💬 Ask for Rubric Suggestions")
-            st.caption("Describe what you want to change and get AI suggestions")
-
-            # Scrollable chat container with CSS
-            st.markdown("""
-            <style>
-            .rubric-chat-container {
-                max-height: 300px;
-                overflow-y: auto;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 10px;
-                margin-bottom: 10px;
-                background-color: #f9f9f9;
-            }
-            .rubric-chat-user {
-                background-color: #e3f2fd;
-                padding: 8px 12px;
-                border-radius: 8px;
-                margin-bottom: 8px;
-            }
-            .rubric-chat-ai {
-                background-color: #fff;
-                padding: 8px 12px;
-                border-radius: 8px;
-                margin-bottom: 8px;
-                border: 1px solid #e0e0e0;
-            }
-            .rubric-change-old {
-                background-color: #ffcdd2;
-                text-decoration: line-through;
-                padding: 2px 4px;
-                border-radius: 3px;
-            }
-            .rubric-change-new {
-                background-color: #c8e6c9;
-                padding: 2px 4px;
-                border-radius: 3px;
-            }
-            .rubric-criterion-name {
-                font-weight: bold;
-                color: #1976d2;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-
-            # Display chat history in scrollable container
-            if st.session_state.branch_rubric_chat:
-                chat_html = '<div class="rubric-chat-container">'
-                for msg in st.session_state.branch_rubric_chat:
-                    if msg['role'] == 'user':
-                        chat_html += f'<div class="rubric-chat-user"><strong>You:</strong> {msg["content"]}</div>'
-                    else:
-                        # AI response - already contains HTML formatting
-                        thinking_html = ""
-                        if msg.get('thinking'):
-                            thinking_html = f'<details><summary>🧠 Thinking</summary><div style="font-size: 12px; color: #666; padding: 8px; background: #f5f5f5; border-radius: 4px; margin-top: 4px;">{msg["thinking"][:500]}{"..." if len(msg.get("thinking", "")) > 500 else ""}</div></details>'
-                        chat_html += f'<div class="rubric-chat-ai"><strong>AI:</strong>{thinking_html}<br>{msg["content"]}</div>'
-                chat_html += '</div>'
-                st.markdown(chat_html, unsafe_allow_html=True)
-
-            # Chat input
-            rubric_chat_input = st.text_input(
-                "Ask about rubric changes:",
-                placeholder="e.g., 'Make clarity more important' or 'Add a criterion for creativity'",
-                key="branch_rubric_chat_input"
-            )
-
-            col_send, col_clear = st.columns([3, 1])
-            with col_send:
-                send_clicked = st.button("💡 Get Suggestions", use_container_width=True, key="branch_rubric_chat_send")
-            with col_clear:
-                if st.session_state.branch_rubric_chat:
-                    if st.button("🗑️", use_container_width=True, key="clear_rubric_chat", help="Clear chat"):
-                        st.session_state.branch_rubric_chat = []
-                        st.rerun()
-
-            if send_clicked:
-                if rubric_chat_input.strip():
-                    # Add user message to chat
-                    st.session_state.branch_rubric_chat.append({
-                        'role': 'user',
-                        'content': rubric_chat_input
-                    })
-
-                    # Call AI for suggestions
-                    with st.spinner("Getting suggestions..."):
-                        try:
-                            # Build prompt with current rubric context
-                            rubric_context = json.dumps(modified_rubric, indent=2, ensure_ascii=False)
-
-                            # System prompt with rubric context and formatting instructions
-                            system_prompt = f"""You are a rubric editing assistant. The user wants to modify their writing rubric.
-
-Current rubric:
-{rubric_context}
-
-Provide specific, actionable suggestions for how to modify the rubric. Format your response as a brief summary followed by the specific criteria changes.
-
-IMPORTANT: Show changes INLINE within the text using word-level diffs, NOT as "from X to Y" format.
-- Use <span class="rubric-change-old">removed words</span> for text being removed (will show strikethrough)
-- Use <span class="rubric-change-new">added words</span> for text being added (will show highlight)
-- Use <span class="rubric-criterion-name">Criterion Name</span> for criterion names
-
-Show the FULL updated text with the changes marked inline. Keep unchanged text as plain text.
-
-Example format:
-"To address your request, I recommend updating the following:
-
-<span class="rubric-criterion-name">Clarity</span> (weight: <span class="rubric-change-old">20%</span><span class="rubric-change-new">35%</span>)
-
-<span class="rubric-criterion-name">Structure</span> Description:
-<span class="rubric-change-old">The old phrasing that is being removed</span><span class="rubric-change-new">The new phrasing that replaces it</span> while the unchanged middle part stays as plain text <span class="rubric-change-old">and more removed text</span><span class="rubric-change-new">with its replacement</span>."
-
-Keep your response concise. Focus only on the criteria that need to change."""
-
-                            # Build conversation messages from chat history
-                            conversation_messages = []
-                            for msg in st.session_state.branch_rubric_chat:
-                                conversation_messages.append({
-                                    "role": msg['role'],
-                                    "content": msg['content']
-                                })
-
-                            response = client.messages.create(
-                                max_tokens=8000,
-                                system=system_prompt,
-                                messages=conversation_messages,
-                                model="claude-opus-4-5-20251101",
-                                thinking={
-                                    "type": "enabled",
-                                    "budget_tokens": 4000
-                                }
+                    # Dimensions (editable)
+                    st.markdown("**Dimensions**")
+
+                    # Always read dimensions from session state (not from criterion snapshot)
+                    dimensions = st.session_state.editing_criteria[original_idx].get("dimensions", [])
+                    num_dims = len(dimensions)
+
+                    # Display dimensions with text inputs and delete buttons
+                    dim_labels_updated = {}
+                    dim_to_delete = None
+
+                    for dim_idx in range(num_dims):
+                        dim = st.session_state.editing_criteria[original_idx]["dimensions"][dim_idx]
+                        # Use dimension's unique ID in key, not index
+                        dim_id = dim.get("id", f"generated_{dim_idx}")
+
+                        col1, col2 = st.columns([0.88, 0.12])
+                        with col1:
+                            dim_key = f"criterion_dim_{original_idx}_{dim_id}_{version_key}"
+                            dim_label = st.text_input(
+                                f"Dimension {dim_idx + 1}",
+                                value=dim.get("label", ""),
+                                key=dim_key,
+                                label_visibility="collapsed",
+                                placeholder=f"Dimension {dim_idx + 1} label..."
                             )
+                            dim_labels_updated[dim_idx] = dim_label
+                        with col2:
+                            # Store the dim_id (not index) in the button key
+                            remove_key = f"remove_dim_{original_idx}_{dim_id}_{version_key}"
+                            if st.button("➖", key=remove_key, help="Remove dimension"):
+                                # Mark this dimension ID for deletion
+                                dim_to_delete = dim_id
 
-                            # Extract thinking and text from response
-                            thinking_text = ""
-                            ai_response = ""
-                            for block in response.content:
-                                if block.type == "thinking":
-                                    thinking_text = block.thinking
-                                elif block.type == "text":
-                                    ai_response = block.text
+                    # Update all labels first
+                    for dim_idx, label in dim_labels_updated.items():
+                        if dim_idx < len(st.session_state.editing_criteria[original_idx]["dimensions"]):
+                            st.session_state.editing_criteria[original_idx]["dimensions"][dim_idx]["label"] = label
 
-                            # Add AI response to chat (with thinking)
-                            st.session_state.branch_rubric_chat.append({
-                                'role': 'assistant',
-                                'content': ai_response,
-                                'thinking': thinking_text
-                            })
+                    # Now handle deletion by ID (not by index)
+                    if dim_to_delete is not None:
+                        dims = st.session_state.editing_criteria[original_idx]["dimensions"]
+                        # Find the dimension with matching ID and remove it
+                        for i, d in enumerate(dims):
+                            if d.get("id", f"generated_{i}") == dim_to_delete:
+                                del st.session_state.editing_criteria[original_idx]["dimensions"][i]
+                                break
+                        st.rerun()
 
-                            st.rerun()
+                    # Add dimension button
+                    add_dim_key = f"add_dim_{original_idx}_{version_key}"
+                    if st.button("➕ Add Dimension", key=add_dim_key):
+                        # Generate a unique ID using timestamp
+                        new_dim_id = f"dim_{int(time.time() * 1000)}"
+                        st.session_state.editing_criteria[original_idx]["dimensions"].append({"id": new_dim_id, "label": ""})
+                        st.rerun()
 
-                        except Exception as e:
-                            st.error(f"Error getting suggestions: {str(e)}")
-                else:
-                    st.warning("Please enter a question or request")
+                    # Update the criterion description in the session state
+                    st.session_state.editing_criteria[original_idx]["description"] = description
 
-            # Update Rubric with Suggestions button - only show if there are AI suggestions
-            has_ai_suggestions = any(msg['role'] == 'assistant' for msg in st.session_state.branch_rubric_chat)
-            if has_ai_suggestions:
-                if st.button("✨ Update Rubric with Suggestions", use_container_width=True, key="apply_rubric_suggestions", type="primary"):
-                    with st.spinner("Applying suggestions to rubric..."):
-                        try:
-                            # Get the last AI suggestion
-                            last_ai_msg = None
-                            for msg in reversed(st.session_state.branch_rubric_chat):
-                                if msg['role'] == 'assistant':
-                                    last_ai_msg = msg['content']
-                                    break
+                    # Remove criterion button
+                    if st.button("🗑️ Remove Criterion", key=f"remove_{original_idx}"):
+                        st.session_state.editing_criteria.pop(original_idx)
+                        st.rerun()
 
-                            if last_ai_msg:
-                                # Build prompt to get structured rubric updates
-                                rubric_context = json.dumps(modified_rubric, indent=2, ensure_ascii=False)
-                                apply_prompt = f"""Based on the suggestions you previously provided, generate the updated rubric.
+        # Save and Reset buttons
+        save_col, reset_col = st.columns(2)
+        with save_col:
+            if st.button("💾 Save Changes", use_container_width=True, type="primary"):
+                # Save as a NEW version in rubric history
+                if rubric_history is not None:
+                    # Deep copy the editing criteria to avoid reference issues
+                    saved_criteria = copy.deepcopy(st.session_state.editing_criteria)
 
-Current rubric:
-{rubric_context}
+                    # Create new version entry
+                    new_version = next_version_number()
+                    new_rubric_entry = {
+                        "version": new_version,
+                        "rubric": saved_criteria,
+                        "source": "edited"
+                    }
 
-Your previous suggestions:
-{last_ai_msg}
+                    # Add to history and save
+                    hist = load_rubric_history()
+                    hist.append(new_rubric_entry)
+                    save_rubric_history(hist)
 
-IMPORTANT: Return ONLY a valid JSON array representing the updated rubric. The structure must match the current rubric exactly, with only the suggested changes applied.
+                    # Update session state to point to new version
+                    st.session_state.active_rubric_idx = len(hist) - 1
+                    st.session_state.rubric = saved_criteria
+                    st.session_state.editing_criteria = copy.deepcopy(saved_criteria)
 
-Return the complete rubric array with all criteria, not just the changed ones. Do not include any explanation, just the JSON array."""
-
-                                response = client.messages.create(
-                                    max_tokens=8000,
-                                    messages=[{"role": "user", "content": apply_prompt}],
-                                    model="claude-opus-4-5-20251101",
-                                    thinking={
-                                        "type": "enabled",
-                                        "budget_tokens": 4000
-                                    }
-                                )
-
-                                # Extract thinking and text from response
-                                thinking_text = ""
-                                response_text = ""
-                                for block in response.content:
-                                    if block.type == "thinking":
-                                        thinking_text = block.thinking
-                                    elif block.type == "text":
-                                        response_text = block.text
-                                response_text = response_text.strip()
-
-                                # Show thinking in an expander
-                                if thinking_text:
-                                    with st.expander("🧠 Thinking", expanded=False):
-                                        st.markdown(thinking_text)
-
-                                # Try to parse JSON from response
-                                # Handle case where response might have markdown code blocks
-                                if "```" in response_text:
-                                    # Extract JSON from code block
-                                    import re
-                                    # Match ```json or ``` followed by content and closing ```
-                                    code_block_match = re.search(r'```(?:json)?\s*([\s\S]*?)```', response_text)
-                                    if code_block_match:
-                                        response_text = code_block_match.group(1).strip()
-
-                                # Also handle case where JSON array is embedded in text
-                                if not response_text.startswith('['):
-                                    # Try to find JSON array in the response
-                                    import re
-                                    json_array_match = re.search(r'\[[\s\S]*\]', response_text)
-                                    if json_array_match:
-                                        response_text = json_array_match.group(0)
-
-                                updated_rubric = json.loads(response_text)
-
-                                # Validate it's a list
-                                if isinstance(updated_rubric, list):
-                                    # Update the branch rubric
-                                    st.session_state.branch['rubric'] = updated_rubric
-                                    # Increment counter to force widget refresh
-                                    st.session_state.branch_rubric_edit_counter += 1
-                                    st.success("✓ Rubric updated with suggestions!")
-                                    st.rerun()
-                                else:
-                                    st.error("Invalid rubric format returned. Expected a list of criteria.")
-
-                        except json.JSONDecodeError as e:
-                            st.error(f"Failed to parse rubric update: {str(e)}")
-                        except Exception as e:
-                            st.error(f"Error applying suggestions: {str(e)}")
-
-            st.markdown("---")
-
-            # Action buttons
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("🔄 Reset", use_container_width=True, key="branch_reset_rubric"):
-                    st.session_state.branch['rubric'] = None
-                    st.session_state.regenerated_draft = None
-                    st.session_state.branch_rubric_chat = []  # Also clear chat
-                    st.session_state.branch_rubric_edit_counter += 1
+                    st.toast(f"Saved as v{new_version}!")
+                    st.rerun()
+        with reset_col:
+            if st.button("↩️ Reset", use_container_width=True, type="secondary"):
+                # Reset editing criteria to the original saved version
+                if rubric_history and active_idx is not None:
+                    original_rubric = rubric_history[active_idx].get("rubric", [])
+                    st.session_state.editing_criteria = copy.deepcopy(original_rubric)
+                    st.session_state.rubric = copy.deepcopy(original_rubric)
+                    st.toast("Rubric reset to saved version!")
                     st.rerun()
 
-            with col2:
-                if st.button("✨ Regenerate Draft", use_container_width=True, key="branch_regenerate_draft", type="primary"):
-                    # First, check if there's a draft in the last message
-                    current_draft, draft_msg_idx = get_last_draft_from_messages()
+        # Delete Version button
+        if st.button("🗑️ Delete Version", use_container_width=True, type="secondary"):
+            if len(rubric_history) > 1:
+                # Get the rubric to delete
+                rubric_to_delete = rubric_history[active_idx]
+                deleted_version = rubric_to_delete.get("version", "?")
+                rubric_id = rubric_to_delete.get("id")
 
-                    if current_draft is None:
-                        st.warning("⚠️ No draft found in recent messages. The last assistant message must contain text wrapped in <draft></draft> tags.")
+                # Delete from database
+                supabase = st.session_state.get('supabase')
+                if supabase and rubric_id:
+                    if delete_rubric_version(supabase, rubric_id):
+                        # Invalidate cache and reload
+                        invalidate_rubric_cache()
+
+                        # Update active rubric index before reloading
+                        new_idx = active_idx - 1 if active_idx > 0 else 0
+                        st.session_state.active_rubric_idx = new_idx
+
+                        # Reload history from database
+                        new_history = load_rubric_history(force_reload=True)
+
+                        # Update session state with new active rubric
+                        if new_history and new_idx < len(new_history):
+                            rubric_list = new_history[new_idx].get("rubric", [])
+                            st.session_state.rubric = rubric_list
+                            st.session_state.editing_criteria = copy.deepcopy(rubric_list)
+
+                        st.toast(f"Version {deleted_version} deleted!")
+                        st.rerun()
                     else:
-                        # Get the original rubric (before branch modifications)
-                        active_rubric_dict, _, _ = get_active_rubric()
-                        original_rubric = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
-
-                        # Save the modified rubric first
-                        st.session_state.branch['rubric'] = modified_rubric
-
-                        # Regenerate the draft
-                        result = regenerate_draft_from_rubric_changes(
-                            original_rubric,
-                            modified_rubric,
-                            current_draft
-                        )
-
-                        if result:
-                            # Store the result with additional context
-                            st.session_state.regenerated_draft = {
-                                'revised_draft': result.get('revised_draft', ''),
-                                'changes_made': result.get('changes_made', []),
-                                'rubric_changes_identified': result.get('rubric_changes_identified', []),
-                                'revision_strategy': result.get('revision_strategy', ''),
-                                'original_rubric': original_rubric,
-                                'updated_rubric': modified_rubric,
-                                'original_draft': current_draft,
-                                'draft_msg_idx': draft_msg_idx
-                            }
-                            st.rerun()
-
-            # Auto-save changes to branch rubric as user edits
-            # This ensures the branch rubric is always up-to-date
-            if st.session_state.branch['rubric'] is None:
-                # Initialize branch rubric on first edit
-                st.session_state.branch['rubric'] = copy.deepcopy(current_branch_rubric)
+                        st.error("Failed to delete rubric version")
+                elif not supabase:
+                    st.error("Cannot delete: not connected to database")
+                elif not rubric_id:
+                    st.error("Cannot delete: this version was not saved to database yet")
             else:
-                # Update branch rubric with current edits
-                st.session_state.branch['rubric'] = modified_rubric
+                st.error("Cannot delete the last rubric version")
 
-            # Show indicator if regenerated draft is available (displayed in main chat area)
-            if st.session_state.regenerated_draft:
-                st.divider()
-                st.success("✨ Regenerated draft is ready! View it in the chat area below.")
+        # Fallback for when Update button condition is false
+        if active_rubric_dict and active_idx is None:
+            rubric_list = active_rubric_dict.get("rubric", [])
+            st.session_state.rubric = rubric_list
+    else:
+        st.info("No rubric loaded. Use 'Infer Rubric' to create one from your conversation.")
 
-        else:
-            st.warning("No rubric loaded to edit.")
-
-# These are duplicate sections that were moved into tab1 - keeping the sections inside tab1 only.
-
+    st.divider()
 # View Rubric Tab
-with tab2:
+with tab5:
     st.subheader("📋 View Rubric")
-    st.markdown("View the active rubric version with all criteria and achievement levels.")
+    st.markdown("View the active rubric version with all criteria and checkable dimensions.")
 
     # Get active rubric
     active_rubric_dict, active_idx, rubric_history = get_active_rubric()
@@ -3971,44 +3354,27 @@ with tab2:
             st.markdown("**User Goals:**")
             st.info(user_goals)
 
+        # Achievement level explanation
+        st.markdown("**Achievement Levels** *(based on dimensions met)*")
+        st.markdown("⭐⭐⭐ **Excellent**: 100% | ⭐⭐ **Good**: 75%+ | ⭐ **Fair**: 50-74% | ☆ **Weak**: <50%")
+
         st.markdown("---")
 
-        # Prepare data for pie chart
+        # Prepare rubric list
         rubric_list = active_rubric_dict.get("rubric", [])
 
-        # Create pie chart for weight distribution
+        # Display priority rankings as a simple numbered list
         if rubric_list:
-            import plotly.graph_objects as go
+            # Sort by priority (1 = most important = shown first)
+            sorted_criteria = sorted(rubric_list, key=lambda c: c.get('priority', c.get('weight', 99)))
 
-            criterion_names = [c.get('name', 'Unnamed') for c in rubric_list]
-            weights = [c.get('weight', 0) for c in rubric_list]
+            st.markdown("### Priority Rankings")
+            for criterion in sorted_criteria:
+                priority = criterion.get('priority', criterion.get('weight', 0))
+                name = criterion.get('name', 'Unnamed')
+                st.markdown(f"**{priority}.** {name}")
 
-            # Only show pie chart if weights are defined
-            if any(w > 0 for w in weights):
-                # Create custom data with criterion indices for click handling
-                customdata = list(range(len(criterion_names)))
-
-                fig = go.Figure(data=[go.Pie(
-                    labels=criterion_names,
-                    values=weights,
-                    hole=0.3,  # Makes it a donut chart
-                    textinfo='label+percent',
-                    textposition='auto',
-                    hovertemplate='<b>%{label}</b><br>Weight: %{value}%<extra></extra>',
-                    customdata=customdata
-                )])
-
-                fig.update_layout(
-                    title_text="Criteria Weight Distribution",
-                    title_x=0.5,
-                    showlegend=True,
-                    height=400,
-                    margin=dict(t=50, b=0, l=0, r=0)
-                )
-
-                # Display chart
-                st.plotly_chart(fig, use_container_width=True, key="rubric_pie_chart")
-                st.markdown("---")
+            st.markdown("---")
 
         # Group criteria by category
         from collections import defaultdict
@@ -4029,35 +3395,44 @@ with tab2:
             # Display criteria within this category
             for criterion in criteria:
                 criterion_name = criterion.get('name', 'Unnamed Criterion')
-                weight = criterion.get('weight', 0)
+                priority = criterion.get('priority', criterion.get('weight', 0))
                 description = criterion.get('description', 'No description provided')
 
-                # Display criterion name, weight, and description
+                # Display criterion name, priority, and description
                 st.markdown(f"**{criterion_name}**")
-                st.markdown(f"*Weight: {weight}%*")
+                st.markdown(f"*Priority: #{priority}*")
                 st.markdown(f"{description}")
 
-                # Expander for achievement levels
-                with st.expander("📊 Achievement Levels", expanded=False):
-                    exemplary = criterion.get('exemplary', 'Not specified')
-                    proficient = criterion.get('proficient', 'Not specified')
-                    developing = criterion.get('developing', 'Not specified')
-                    beginning = criterion.get('beginning', 'Not specified')
+                # Expander for dimensions (checkable items)
+                dimensions = criterion.get('dimensions', [])
+                if dimensions:
+                    with st.expander(f"Dimensions", expanded=False):
+                        for dim in dimensions:
+                            dim_label = dim.get('label', 'Unnamed dimension')
+                            st.markdown(f"• {dim_label}")
+                else:
+                    # Fallback for old rubrics with achievement levels
+                    exemplary = criterion.get('exemplary', '')
+                    if exemplary:
+                        with st.expander("📊 Achievement Levels", expanded=False):
+                            proficient = criterion.get('proficient', 'Not specified')
+                            developing = criterion.get('developing', 'Not specified')
+                            beginning = criterion.get('beginning', 'Not specified')
 
-                    st.markdown("**🌟 Exemplary**")
-                    st.markdown(exemplary)
-                    st.markdown("")
+                            st.markdown("**🌟 Exemplary**")
+                            st.markdown(exemplary)
+                            st.markdown("")
 
-                    st.markdown("**✅ Proficient**")
-                    st.markdown(proficient)
-                    st.markdown("")
+                            st.markdown("**✅ Proficient**")
+                            st.markdown(proficient)
+                            st.markdown("")
 
-                    st.markdown("**📈 Developing**")
-                    st.markdown(developing)
-                    st.markdown("")
+                            st.markdown("**📈 Developing**")
+                            st.markdown(developing)
+                            st.markdown("")
 
-                    st.markdown("**🔰 Beginning**")
-                    st.markdown(beginning)
+                            st.markdown("**🔰 Beginning**")
+                            st.markdown(beginning)
 
                 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -4065,7 +3440,7 @@ with tab2:
             st.markdown("</div>", unsafe_allow_html=True)
 
 # Compare Rubrics Tab
-with tab3:
+with tab6:
     st.subheader("🔍 Compare Rubrics")
     st.markdown("Select two different rubric versions to see how they would affect the same writing task.")
     
@@ -4113,7 +3488,18 @@ with tab3:
             else:
                 # Generate comparison
                 with st.spinner("Generating comparison..."):
-                    result = compare_rubrics(compare_input, rubric_history[rubric_a_idx], rubric_history[rubric_b_idx])
+                    # Create clean copies without _diff metadata (which contains non-serializable sets)
+                    def clean_rubric_for_api(rubric_data):
+                        cleaned = copy.deepcopy(rubric_data)
+                        if 'rubric' in cleaned:
+                            for criterion in cleaned['rubric']:
+                                if '_diff' in criterion:
+                                    del criterion['_diff']
+                        return cleaned
+
+                    clean_rubric_a = clean_rubric_for_api(rubric_history[rubric_a_idx])
+                    clean_rubric_b = clean_rubric_for_api(rubric_history[rubric_b_idx])
+                    result = compare_rubrics(compare_input, clean_rubric_a, clean_rubric_b)
 
                     # Store results in session state
                     st.session_state.rubric_comparison_results = {
@@ -4139,11 +3525,30 @@ with tab3:
             with st.expander("🧠 Thinking", expanded=False):
                 st.markdown(results["thinking"])
 
+        # Helper to escape HTML and format paragraphs
+        def escape_and_format(text):
+            if not text:
+                return ""
+            escaped = (text
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;"))
+            # Convert markdown bullet points to HTML
+            lines = escaped.split("\n")
+            formatted_lines = []
+            for line in lines:
+                if line.strip().startswith("- "):
+                    formatted_lines.append(f"<li>{line.strip()[2:]}</li>")
+                elif line.strip():
+                    formatted_lines.append(f"<p>{line}</p>")
+            return "".join(formatted_lines)
+
         # Key differences and summary at the top
         col_diff, col_summary = st.columns(2)
 
         with col_diff:
             st.markdown("### Key Differences")
+            key_diffs_html = escape_and_format(results["key_diffs"])
             st.markdown(f"""
             <div style="
                 height: 200px;
@@ -4153,12 +3558,13 @@ with tab3:
                 background-color: #f9f9f9;
                 border-radius: 5px;
             ">
-            {results["key_diffs"]}
+            {key_diffs_html}
             </div>
             """, unsafe_allow_html=True)
 
         with col_summary:
             st.markdown("### Summary")
+            summary_html = escape_and_format(results["summary"])
             st.markdown(f"""
             <div style="
                 height: 200px;
@@ -4168,7 +3574,7 @@ with tab3:
                 background-color: #f9f9f9;
                 border-radius: 5px;
             ">
-            {results["summary"]}
+            {summary_html}
             </div>
             """, unsafe_allow_html=True)
 
@@ -4182,6 +3588,13 @@ with tab3:
             st.markdown("### Base Draft")
             st.markdown("---")
             # Scrollable container for base draft
+            # Escape HTML to prevent rendering issues
+            base_txt_escaped = (results["base_txt"]
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;"))
+            # Convert paragraphs
+            base_txt_html = "".join(f"<p>{p}</p>" for p in base_txt_escaped.split("\n\n") if p.strip())
             st.markdown(f"""
             <div style="
                 height: 400px;
@@ -4191,7 +3604,7 @@ with tab3:
                 background-color: #f9f9f9;
                 border-radius: 5px;
             ">
-            {results["base_txt"]}
+            {base_txt_html}
             </div>
             """, unsafe_allow_html=True)
 
@@ -4232,7 +3645,7 @@ with tab3:
             """, unsafe_allow_html=True)
 
 # Evaluate: Coverage Tab
-with tab4:
+with tab3:
     st.header("📊 Evaluate: Coverage")
     st.markdown("Test whether your rubric covers your preferences.")
 
@@ -4344,7 +3757,17 @@ with tab4:
                         try:
                             # Get active rubric to pass to the prompt for prioritizing relevant decision points
                             active_rubric_for_extraction, _, _ = get_active_rubric()
-                            rubric_json_for_extraction = json.dumps(active_rubric_for_extraction, indent=2) if active_rubric_for_extraction else None
+
+                            # Clean rubric data to remove _diff metadata (contains non-serializable sets)
+                            if active_rubric_for_extraction:
+                                clean_rubric = copy.deepcopy(active_rubric_for_extraction)
+                                if 'rubric' in clean_rubric:
+                                    for criterion in clean_rubric['rubric']:
+                                        if '_diff' in criterion:
+                                            del criterion['_diff']
+                                rubric_json_for_extraction = json.dumps(clean_rubric, indent=2)
+                            else:
+                                rubric_json_for_extraction = None
 
                             # Build the prompt with rubric context
                             decision_prompt = extract_decision_pts(conversation_text, rubric_json_for_extraction)
@@ -4642,101 +4065,53 @@ with tab4:
                                 # Show content if expanded
                                 if is_expanded:
                                     with st.container():
-                                        st.markdown("---")
+                                        # st.markdown("---")
 
                                         # Show before/after from original decision point
                                         col_before, col_after = st.columns(2)
 
+                                        before_text = original_dp.get('before_quote', item.get('before_text', 'N/A'))
+                                        after_text = original_dp.get('after_quote', item.get('after_text', 'N/A'))
+
                                         with col_before:
                                             st.markdown(f"**📤 Before (Message #{assistant_msg_num}):**")
-                                            st.markdown(f"> {original_dp.get('before_quote', item.get('before_text', 'N/A'))}")
+                                            st.markdown(f"""
+                                            <div style="background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 12px; border-radius: 4px; color: #333; font-size: 0.95em;">
+                                                {before_text}
+                                            </div>
+                                            """, unsafe_allow_html=True)
 
                                         with col_after:
                                             st.markdown(f"**📥 After (Message #{user_msg_num}):**")
-                                            st.markdown(f"> {original_dp.get('after_quote', item.get('after_text', 'N/A'))}")
+                                            st.markdown(f"""
+                                            <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px; border-radius: 4px; color: #333; font-size: 0.95em;">
+                                                {after_text}
+                                            </div>
+                                            """, unsafe_allow_html=True)
 
-                                        # Show summary and user's stated reason (not collapsed)
-                                        if original_dp.get('summary'):
-                                            st.markdown(f"**📝 Summary:** {original_dp.get('summary')}")
-                                        if original_dp.get('user_reason'):
-                                            st.markdown(f"**💬 User's stated reason:** {original_dp.get('user_reason')}")
-
-                                        # Collapsible Reflection Analysis section
-                                        with st.expander("🔍 Reflection Analysis", expanded=False):
-                                            col_orig_q, col_user_q = st.columns(2)
-                                            with col_orig_q:
-                                                st.markdown(f"**Original quality:** *{item.get('original_quality', 'N/A')}*")
-                                            with col_user_q:
-                                                st.markdown(f"**Your quality:** *{item.get('user_quality', 'N/A')}*")
-
-                                            st.markdown(f"**💡 Potential preference:** *{item.get('potential_preference', 'N/A')}*")
-
-                                            # Show rubric impact if available
-                                            rubric_criterion = original_dp.get('related_rubric_criterion')
-                                            rubric_impact = original_dp.get('rubric_impact', {})
-                                            if rubric_criterion or rubric_impact:
-                                                # st.markdown("---")
-                                                # st.markdown("**📊 Rubric Impact:**")
-                                                if rubric_criterion:
-                                                    st.markdown(f"**📊 Rubric Impact:** *{rubric_criterion}*")
-                                                if rubric_impact:
-                                                    # impact_type = rubric_impact.get('type', 'none')
-                                                    impact_desc = rubric_impact.get('description', '')
-                                                    # Icon based on impact type
-                                                    # impact_icons = {
-                                                    #     'validates': '✅',
-                                                    #     'refines': '🔧',
-                                                    #     'contradicts': '⚠️',
-                                                    #     'suggests_new': '➕',
-                                                    #     'none': '⚪'
-                                                    # }
-                                                    # impact_icon = impact_icons.get(impact_type, '⚪')
-                                                    # impact_labels = {
-                                                    #     'validates': 'Validates',
-                                                    #     'refines': 'Refines',
-                                                    #     'contradicts': 'Contradicts',
-                                                    #     'suggests_new': 'Suggests new criterion',
-                                                    #     'none': 'No direct impact'
-                                                    # }
-                                                    # impact_label = impact_labels.get(impact_type, impact_type)
-                                                    # st.markdown(f"*Impact:* {impact_icon} **{impact_label}**")
-                                                    if impact_desc:
-                                                        st.markdown(f"*{impact_desc}*")
-
-                                        st.markdown("---")
-                                        st.markdown("### 📝 Your Reflection")
+                                        st.markdown("")  # Add spacing between messages and questions
 
                                         # Get existing responses or initialize
                                         user_response = st.session_state.evaluate_user_responses.get(dp_id, {})
 
-                                        # Question 1: What made you want to change this?
-                                        st.markdown("**1. What made you want to change this?**")
+                                        # Question 1: What was wrong/better?
+                                        st.markdown("**1. What was wrong with the original, or what was better about your version?**")
                                         q1_response = st.text_area(
-                                            "What motivated this change?",
-                                            value=user_response.get('motivation', ''),
-                                            key=f"q1_{dp_id}",
-                                            placeholder="Describe what prompted you to make this change...",
-                                            label_visibility="collapsed"
-                                        )
-
-                                        # Question 2: What was wrong/better?
-                                        st.markdown("**2. What was wrong with the original, or what was better about your version?**")
-                                        q2_response = st.text_area(
                                             "What was the issue or improvement?",
                                             value=user_response.get('reasoning', ''),
-                                            key=f"q2_{dp_id}",
+                                            key=f"q1_{dp_id}",
                                             placeholder="Explain the specific issues with the original or benefits of your version...",
                                             label_visibility="collapsed"
                                         )
 
-                                        # Question 3: General or specific?
-                                        st.markdown("**3. Is this something you generally prefer in your writing, or was it specific to this situation?**")
-                                        q3_options = ["This is a general preference", "Specific to this situation", "Depends on context"]
-                                        q3_response = st.radio(
+                                        # Question 2: General or specific?
+                                        st.markdown("**2. Is this something you generally prefer in your writing, or was it specific to this situation?**")
+                                        q2_options = ["This is a general preference", "Specific to this situation", "Depends on context"]
+                                        q2_response = st.radio(
                                             "Generalization:",
-                                            options=q3_options,
-                                            index=q3_options.index(user_response.get('generalization', "Depends on context")),
-                                            key=f"q3_{dp_id}",
+                                            options=q2_options,
+                                            index=q2_options.index(user_response.get('generalization', "Depends on context")),
+                                            key=f"q2_{dp_id}",
                                             horizontal=True,
                                             label_visibility="collapsed"
                                         )
@@ -4751,16 +4126,49 @@ with tab4:
                                                 'original_quality': item.get('original_quality', ''),
                                                 'user_quality': item.get('user_quality', ''),
                                                 'potential_preference': item.get('potential_preference', ''),
-                                                'motivation': q1_response,
-                                                'reasoning': q2_response,
-                                                'generalization': q3_response
+                                                'reasoning': q1_response,
+                                                'generalization': q2_response
                                             }
                                             st.success("✅ Reflection saved!")
                                             st.rerun()
 
-                                        # Show if already saved
+                                        # Show if already saved, and reveal the AI analysis
                                         if dp_id in st.session_state.evaluate_user_responses:
                                             st.caption("✅ *Reflection saved*")
+
+                                            # Now show the Reflection Analysis (only after user has saved their reflection)
+                                            with st.expander("🔍 Reflection Analysis (AI-generated)", expanded=False):
+                                                # Summary and user's stated reason
+                                                summary = original_dp.get('summary', '')
+                                                user_reason = original_dp.get('user_reason')
+
+                                                if summary:
+                                                    st.markdown(f"**📝 Summary:** {summary}")
+
+                                                if user_reason:
+                                                    st.markdown(f"**💬 User Reason:** *\"{user_reason}\"*")
+
+                                                if summary or user_reason:
+                                                    st.markdown("---")
+
+                                                col_orig_q, col_user_q = st.columns(2)
+                                                with col_orig_q:
+                                                    st.markdown(f"**Original quality:** *{item.get('original_quality', 'N/A')}*")
+                                                with col_user_q:
+                                                    st.markdown(f"**Your quality:** *{item.get('user_quality', 'N/A')}*")
+
+                                                st.markdown(f"**💡 Potential preference:** *{item.get('potential_preference', 'N/A')}*")
+
+                                                # Show rubric impact if available
+                                                rubric_criterion = original_dp.get('related_rubric_criterion')
+                                                rubric_impact = original_dp.get('rubric_impact', {})
+                                                if rubric_criterion or rubric_impact:
+                                                    if rubric_criterion:
+                                                        st.markdown(f"**📊 Rubric Impact:** *{rubric_criterion}*")
+                                                    if rubric_impact:
+                                                        impact_desc = rubric_impact.get('description', '')
+                                                        if impact_desc:
+                                                            st.markdown(f"*{impact_desc}*")
 
                                         st.markdown("---")
                     else:
@@ -4915,8 +4323,17 @@ with tab4:
                         # Prepare preference dimensions JSON
                         dims_json = json.dumps(st.session_state.evaluate_preference_dimensions.get('preference_dimensions', []), indent=2)
 
-                        # Generate test comparisons prompt
-                        test_prompt = generate_test_comparisons_prompt(dims_json)
+                        # Get rubric context for domain-aligned test generation
+                        active_rubric_dict, _, _ = get_active_rubric()
+                        writing_type = active_rubric_dict.get("writing_type", "") if active_rubric_dict else ""
+                        user_goals = active_rubric_dict.get("user_goals_summary", "") if active_rubric_dict else ""
+
+                        # Generate test comparisons prompt with domain context
+                        test_prompt = generate_test_comparisons_prompt(
+                            dims_json,
+                            writing_type=writing_type,
+                            user_goals=user_goals
+                        )
 
                         response = client.messages.create(
                             model="claude-opus-4-5-20251101",
@@ -5113,8 +4530,13 @@ with tab4:
                     if st.button("📏 Test with Rubric", type="primary", use_container_width=True):
                         with st.spinner("Testing versions with the rubric..."):
                             try:
-                                # Prepare rubric JSON
-                                rubric_json = json.dumps(active_rubric_dict, indent=2)
+                                # Prepare rubric JSON - clean _diff metadata first
+                                clean_rubric = copy.deepcopy(active_rubric_dict)
+                                if 'rubric' in clean_rubric:
+                                    for criterion in clean_rubric['rubric']:
+                                        if '_diff' in criterion:
+                                            del criterion['_diff']
+                                rubric_json = json.dumps(clean_rubric, indent=2)
 
                                 # Prepare test comparisons JSON
                                 test_comparisons_data = st.session_state.evaluate_test_comparisons.get('test_comparisons', [])
@@ -5310,30 +4732,15 @@ with tab4:
 
                 with col_save:
                     if st.button("💾 Save to Project", key="save_coverage_to_project", type="primary", use_container_width=True):
-                        project_name = st.session_state.get('current_project')
-                        if not project_name:
+                        project_id = st.session_state.get('current_project_id')
+                        if not project_id:
                             st.error("No project selected. Please select a project first.")
                         else:
-                            project_dir = Path("project") / project_name
-                            coverage_file = project_dir / "evaluate_coverage.json"
-
-                            # Load existing data or create new list
-                            existing_data = []
-                            if coverage_file.exists():
-                                try:
-                                    with open(coverage_file, "r") as f:
-                                        existing_data = json.load(f)
-                                except:
-                                    existing_data = []
-
-                            # Append new results
-                            existing_data.append(all_results)
-
-                            # Save to file
-                            with open(coverage_file, "w") as f:
-                                json.dump(existing_data, f, indent=2, ensure_ascii=False)
-
-                            st.success(f"✅ Coverage analysis saved to project!")
+                            supabase = st.session_state.get('supabase')
+                            if supabase and save_project_data(supabase, project_id, "evaluate_coverage", all_results):
+                                st.success(f"✅ Coverage analysis saved to project!")
+                            else:
+                                st.error("Failed to save coverage analysis.")
 
                 with col_download:
                     st.download_button(
@@ -5344,7 +4751,9 @@ with tab4:
                         use_container_width=True
                     )
 
-with tab5:
+# === ALIGNMENT TAB COMMENTED OUT ===
+if False:  # Alignment tab disabled
+    # with tab5:
     st.header("🎯 Evaluate: Alignment")
     st.markdown("Test whether you and the AI interpret rubric criteria the same way. ")
 
@@ -5367,6 +4776,7 @@ with tab5:
                 st.session_state.alignment_selected_draft_idx = None
                 st.session_state.alignment_draft_content = None
                 st.session_state.alignment_user_scores = {}
+                st.session_state.alignment_dimension_checks = {}
                 st.session_state.alignment_llm_scores = None
                 st.session_state.alignment_results = None
                 st.session_state.alignment_evidence_highlights = []
@@ -5416,6 +4826,7 @@ with tab5:
             st.session_state.alignment_selected_draft_idx = None
             st.session_state.alignment_draft_content = None
             st.session_state.alignment_user_scores = {}
+            st.session_state.alignment_dimension_checks = {}
             st.session_state.alignment_llm_scores = None
             st.session_state.alignment_results = None
             st.rerun()
@@ -5468,6 +4879,7 @@ with tab5:
                             st.session_state.alignment_selected_draft_idx = selected_draft_idx
                             st.session_state.alignment_draft_content = selected_draft["content"]
                             st.session_state.alignment_user_scores = {}
+                            st.session_state.alignment_dimension_checks = {}
                             st.session_state.alignment_llm_scores = None
                             st.session_state.alignment_results = None
                             st.rerun()
@@ -5477,10 +4889,15 @@ with tab5:
                         with st.expander("View full draft", expanded=False):
                             st.markdown(st.session_state.alignment_draft_content)
 
-                        # Step 2: User scores the draft
+                        # Step 2: User checks dimensions for each criterion
                         st.markdown("---")
-                        st.markdown("## 📊 Score Draft")
-                        st.markdown("Score this draft on each rubric criterion. Use the achievement level descriptions to guide your judgment.")
+                        st.markdown("## ☑️ Check Dimensions")
+                        st.markdown("For each criterion, check off the dimensions that the draft meets. Achievement level is calculated automatically.")
+                        st.markdown("⭐⭐⭐ **Excellent**: 100% | ⭐⭐ **Good**: 75%+ | ⭐ **Fair**: 50-74% | ☆ **Weak**: <50%")
+
+                        # Initialize dimension checks in session state if needed
+                        if "alignment_dimension_checks" not in st.session_state:
+                            st.session_state.alignment_dimension_checks = {}
 
                         # Track completion
                         total_criteria = len(align_rubric_list)
@@ -5489,57 +4906,98 @@ with tab5:
                         st.progress(scored_criteria / total_criteria if total_criteria > 0 else 0,
                                    text=f"Scored {scored_criteria} of {total_criteria} criteria")
 
-                        # Display each criterion for scoring
+                        # Display each criterion for dimension checking
                         for crit_idx, criterion in enumerate(align_rubric_list):
                             crit_name = criterion.get("name", f"Criterion {crit_idx + 1}")
                             crit_desc = criterion.get("description", "")
+                            dimensions = criterion.get("dimensions", [])
 
-                            # Check if scored
+                            # Check if scored (has dimension checks recorded)
                             is_scored = crit_idx in st.session_state.alignment_user_scores
                             crit_status = "✅" if is_scored else ""
 
-                            with st.expander(f"{crit_status} **{crit_name}**", expanded=(crit_idx == 0 and not is_scored)):
+                            # Get current achievement level if scored
+                            current_level = ""
+                            if is_scored:
+                                score = st.session_state.alignment_user_scores.get(crit_idx, 0)
+                                level_names = {1: "Weak", 2: "Fair", 3: "Good", 4: "Excellent"}
+                                current_level = f" — {level_names.get(score, '')}"
+
+                            with st.expander(f"{crit_status} **{crit_name}**{current_level}", expanded=(crit_idx == 0 and not is_scored)):
                                 st.markdown(f"*{crit_desc}*")
 
-                                # Show achievement levels
-                                st.markdown("**Achievement Levels:**")
-                                level_cols = st.columns(4)
-                                levels = [
-                                    ("Exemplary (4)", criterion.get("exemplary", "")),
-                                    ("Proficient (3)", criterion.get("proficient", "")),
-                                    ("Developing (2)", criterion.get("developing", "")),
-                                    ("Beginning (1)", criterion.get("beginning", ""))
-                                ]
-                                for col, (level_name, level_desc) in zip(level_cols, levels):
-                                    with col:
-                                        st.markdown(f"**{level_name}**")
-                                        with st.container(height=150):
-                                            st.caption(level_desc)
+                                if dimensions:
+                                    st.markdown("**Check dimensions that the draft meets:**")
 
-                                st.markdown("---")
+                                    # Initialize dimension checks for this criterion if not exists
+                                    if crit_idx not in st.session_state.alignment_dimension_checks:
+                                        st.session_state.alignment_dimension_checks[crit_idx] = {}
 
-                                # Get current score if exists
-                                current_score = st.session_state.alignment_user_scores.get(crit_idx, None)
+                                    # Display checkboxes for each dimension
+                                    dims_met = 0
+                                    for dim_idx, dim in enumerate(dimensions):
+                                        dim_id = dim.get("id", f"dim_{dim_idx}")
+                                        dim_label = dim.get("label", f"Dimension {dim_idx + 1}")
 
-                                # Score selection
-                                score_options = ["Select score...", "Beginning (1)", "Developing (2)", "Proficient (3)", "Exemplary (4)"]
-                                default_idx = 0
-                                if current_score is not None:
-                                    default_idx = current_score  # 1-4 maps to indices 1-4
+                                        # Get current check state
+                                        current_check = st.session_state.alignment_dimension_checks[crit_idx].get(dim_id, False)
 
-                                selected = st.selectbox(
-                                    f"Score for {crit_name}",
-                                    options=score_options,
-                                    index=default_idx,
-                                    key=f"align_crit_score_{crit_idx}",
-                                    label_visibility="collapsed"
-                                )
+                                        checked = st.checkbox(
+                                            dim_label,
+                                            value=current_check,
+                                            key=f"align_dim_{crit_idx}_{dim_id}"
+                                        )
 
-                                if selected != "Select score...":
-                                    score_val = score_options.index(selected)  # 1-4
-                                    if st.session_state.alignment_user_scores.get(crit_idx) != score_val:
-                                        st.session_state.alignment_user_scores[crit_idx] = score_val
-                                        st.rerun()
+                                        # Update state
+                                        st.session_state.alignment_dimension_checks[crit_idx][dim_id] = checked
+                                        if checked:
+                                            dims_met += 1
+
+                                    # Calculate achievement level based on dimensions
+                                    total_dims = len(dimensions)
+                                    if total_dims > 0:
+                                        pct = (dims_met / total_dims) * 100
+                                        if pct >= 100:
+                                            level_score = 4  # Excellent
+                                            level_name = "⭐⭐⭐ Excellent"
+                                        elif pct >= 75:
+                                            level_score = 3  # Good
+                                            level_name = "⭐⭐ Good"
+                                        elif pct >= 50:
+                                            level_score = 2  # Fair
+                                            level_name = "⭐ Fair"
+                                        else:
+                                            level_score = 1  # Weak
+                                            level_name = "☆ Weak"
+
+                                        st.markdown("---")
+                                        st.markdown(f"**Dimensions met:** {dims_met} of {total_dims} ({pct:.0f}%)")
+                                        st.markdown(f"**Achievement Level:** {level_name}")
+
+                                        # Save the calculated score
+                                        if st.session_state.alignment_user_scores.get(crit_idx) != level_score:
+                                            st.session_state.alignment_user_scores[crit_idx] = level_score
+                                else:
+                                    # Fallback for old rubrics without dimensions - use dropdown
+                                    st.warning("This criterion doesn't have dimensions defined. Using manual scoring.")
+                                    current_score = st.session_state.alignment_user_scores.get(crit_idx, None)
+                                    score_options = ["Select score...", "☆ Weak (1)", "⭐ Fair (2)", "⭐⭐ Good (3)", "⭐⭐⭐ Excellent (4)"]
+                                    default_idx = 0
+                                    if current_score is not None:
+                                        default_idx = current_score
+
+                                    selected = st.selectbox(
+                                        f"Score for {crit_name}",
+                                        options=score_options,
+                                        index=default_idx,
+                                        key=f"align_crit_score_{crit_idx}",
+                                        label_visibility="collapsed"
+                                    )
+
+                                    if selected != "Select score...":
+                                        score_val = score_options.index(selected)
+                                        if st.session_state.alignment_user_scores.get(crit_idx) != score_val:
+                                            st.session_state.alignment_user_scores[crit_idx] = score_val
 
                         # Step 3: LLM scoring and comparison
                         if scored_criteria == total_criteria and total_criteria > 0:
@@ -5554,7 +5012,12 @@ with tab5:
                                             from prompts import ALIGNMENT_SCORING_PROMPT
 
                                             draft_text = st.session_state.alignment_draft_content
-                                            rubric_json = json.dumps(align_rubric_list, indent=2)
+                                            # Clean _diff metadata from rubric list before serializing
+                                            clean_rubric_list = copy.deepcopy(align_rubric_list)
+                                            for criterion in clean_rubric_list:
+                                                if '_diff' in criterion:
+                                                    del criterion['_diff']
+                                            rubric_json = json.dumps(clean_rubric_list, indent=2)
 
                                             # Build the assessment prompt with rubric and draft
                                             assessment_prompt = f"""{ALIGNMENT_SCORING_PROMPT}
@@ -5585,7 +5048,7 @@ with tab5:
 
                                                 # Map level_percentage to 1-4 scale
                                                 level_pct_to_score = {25: 1, 50: 2, 75: 3, 100: 4}
-                                                level_name_to_score = {"beginning": 1, "developing": 2, "proficient": 3, "exemplary": 4}
+                                                level_name_to_score = {"weak": 1, "fair": 2, "good": 3, "excellent": 4}
 
                                                 # Map scores by criterion name to index
                                                 llm_scores = {}
@@ -5603,7 +5066,7 @@ with tab5:
                                                             elif level_name in level_name_to_score:
                                                                 score = level_name_to_score[level_name]
                                                             else:
-                                                                score = 2  # Default to developing if unclear
+                                                                score = 2  # Default to fair if unclear
 
                                                             llm_scores[idx] = {
                                                                 "score": score,
@@ -5680,7 +5143,7 @@ with tab5:
                                 # Display metrics
                                 st.markdown("### 📈 Alignment Metrics")
 
-                                col1, col2, col3, col4 = st.columns(4)
+                                col1, col2 = st.columns(2)
 
                                 with col1:
                                     exact_pct = results.get("exact_agreement", 0) * 100
@@ -5691,20 +5154,14 @@ with tab5:
                                     )
 
                                 with col2:
-                                    spearman = results.get("spearman_rho")
-                                    if spearman is not None:
-                                        st.metric("Rank Correlation (ρ)", f"{spearman:.2f}")
-                                    else:
-                                        st.metric("Rank Correlation (ρ)", "N/A")
-
-                                with col3:
-                                    mad = results.get("mean_absolute_difference", 0)
-                                    st.metric("Avg Score Distance", f"{mad:.2f}")
-
-                                with col4:
                                     bias = results.get("mean_difference", 0)
                                     bias_label = "AI scores higher" if bias > 0 else "AI scores lower" if bias < 0 else "No bias"
-                                    st.metric("Systematic Bias", f"{bias:+.2f}", bias_label)
+                                    st.metric(
+                                        "Systematic Bias ℹ️",
+                                        f"{bias:+.2f}",
+                                        bias_label,
+                                        help="Systematic Bias = average(AI score - Your score) across all criteria.\n\n• Positive (+): AI tends to rate higher than you\n• Negative (-): AI tends to rate lower than you\n• Zero: No consistent bias"
+                                    )
 
                                 # Interpretation
                                 st.markdown("### 📖 Interpretation")
@@ -5720,29 +5177,63 @@ with tab5:
                                 # Detailed comparison by criterion
                                 st.markdown("### 🔍 Detailed Comparison")
 
-                                level_names = {1: "Beginning", 2: "Developing", 3: "Proficient", 4: "Exemplary"}
+                                level_names = {1: "Weak", 2: "Fair", 3: "Good", 4: "Excellent"}
+                                level_emojis = {1: "🔰", 2: "📈", 3: "✅", 4: "🌟"}
 
                                 for crit_idx, criterion in enumerate(align_rubric_list):
                                     crit_name = criterion.get("name", f"Criterion {crit_idx + 1}")
+                                    dimensions = criterion.get("dimensions", [])
 
                                     user_score = st.session_state.alignment_user_scores.get(crit_idx)
+                                    user_dim_checks = st.session_state.alignment_dimension_checks.get(crit_idx, {})
                                     llm_data = llm_scores.get(crit_idx, {})
                                     llm_score = llm_data.get("score")
                                     llm_rationale = llm_data.get("rationale", "")
-                                    llm_evidence = llm_data.get("evidence", [])
+                                    llm_dims_detail = llm_data.get("dimensions_detail", [])
 
                                     match_icon = "✅" if user_score == llm_score else "❌"
 
                                     with st.expander(f"{match_icon} **{crit_name}**"):
                                         col_user, col_llm = st.columns(2)
                                         with col_user:
-                                            st.markdown(f"**Your score:** {level_names.get(user_score, 'N/A')} ({user_score})")
+                                            user_emoji = level_emojis.get(user_score, "")
+                                            st.markdown(f"**Your score:** {user_emoji} {level_names.get(user_score, 'N/A')}")
                                         with col_llm:
-                                            st.markdown(f"**AI score:** {level_names.get(llm_score, 'N/A')} ({llm_score})")
+                                            llm_emoji = level_emojis.get(llm_score, "")
+                                            st.markdown(f"**AI score:** {llm_emoji} {level_names.get(llm_score, 'N/A')}")
 
                                         if user_score != llm_score:
                                             diff = abs(user_score - llm_score) if user_score and llm_score else 0
                                             st.caption(f"*Difference: {diff} level(s)*")
+
+                                        # Show dimension-level comparison if available
+                                        if dimensions and llm_dims_detail:
+                                            st.markdown("---")
+                                            st.markdown("**Dimension-level comparison:**")
+
+                                            # Create lookup for LLM dimension checks
+                                            llm_dim_map = {d.get("id"): d for d in llm_dims_detail}
+
+                                            for dim in dimensions:
+                                                dim_id = dim.get("id", "")
+                                                dim_label = dim.get("label", "")
+
+                                                user_checked = user_dim_checks.get(dim_id, False)
+                                                llm_dim_data = llm_dim_map.get(dim_id, {})
+                                                llm_checked = llm_dim_data.get("met", False)
+
+                                                user_mark = "✓" if user_checked else "✗"
+                                                llm_mark = "✓" if llm_checked else "✗"
+
+                                                if user_checked == llm_checked:
+                                                    dim_match = "✅"
+                                                else:
+                                                    dim_match = "❌"
+
+                                                st.markdown(f"{dim_match} **{dim_label}**: You [{user_mark}] vs AI [{llm_mark}]")
+
+                                                if llm_dim_data.get("evidence"):
+                                                    st.caption(f"   *AI evidence: {llm_dim_data.get('evidence')}*")
 
                                         if llm_rationale:
                                             st.markdown("**AI rationale:**")
@@ -5900,7 +5391,7 @@ with tab5:
                                 st.markdown("### 💾 Save Results")
 
                                 # Build comprehensive alignment results
-                                level_names = {1: "Beginning", 2: "Developing", 3: "Proficient", 4: "Exemplary"}
+                                level_names = {1: "Weak", 2: "Fair", 3: "Good", 4: "Excellent"}
 
                                 criteria_comparison = []
                                 for crit_idx, criterion in enumerate(align_rubric_list):
@@ -5946,30 +5437,15 @@ with tab5:
 
                                 with col_save_align:
                                     if st.button("💾 Save to Project", key="save_alignment_to_project", type="primary", use_container_width=True):
-                                        project_name = st.session_state.get('current_project')
-                                        if not project_name:
+                                        project_id = st.session_state.get('current_project_id')
+                                        if not project_id:
                                             st.error("No project selected. Please select a project first.")
                                         else:
-                                            project_dir = Path("project") / project_name
-                                            alignment_file = project_dir / "evaluate_alignment.json"
-
-                                            # Load existing data or create new list
-                                            existing_data = []
-                                            if alignment_file.exists():
-                                                try:
-                                                    with open(alignment_file, "r") as f:
-                                                        existing_data = json.load(f)
-                                                except:
-                                                    existing_data = []
-
-                                            # Append new results
-                                            existing_data.append(alignment_results)
-
-                                            # Save to file
-                                            with open(alignment_file, "w") as f:
-                                                json.dump(existing_data, f, indent=2, ensure_ascii=False)
-
-                                            st.success(f"✅ Alignment analysis saved to project!")
+                                            supabase = st.session_state.get('supabase')
+                                            if supabase and save_project_data(supabase, project_id, "evaluate_alignment", alignment_results):
+                                                st.success(f"✅ Alignment analysis saved to project!")
+                                            else:
+                                                st.error("Failed to save alignment analysis.")
 
                                 with col_download_align:
                                     st.download_button(
@@ -5980,19 +5456,9 @@ with tab5:
                                         use_container_width=True
                                     )
 
-with tab6:
+with tab4:
     st.header("⚡ Evaluate: Utility")
     st.markdown("Measure how useful your rubric is for improving writing quality through surveys before and after using the rubric.")
-
-    # Reset button
-    col_reset, col_spacer = st.columns([1, 3])
-    with col_reset:
-        if st.button("🔄 Reset Utility Test", use_container_width=True, key="utility_reset"):
-            # Clear survey responses
-            for key in list(st.session_state.keys()):
-                if key.startswith("survey_"):
-                    del st.session_state[key]
-            st.rerun()
 
     # Helper function to render cognitive load survey
     def render_cognitive_load_survey(prefix):
@@ -6177,20 +5643,15 @@ with tab6:
                     "frustration": frustration
                 }
 
-                project_name = st.session_state.get('current_project')
-                if not project_name:
+                project_id = st.session_state.get('current_project_id')
+                if not project_id:
                     st.error("No project selected. Please select a project first.")
                 else:
-                    project_dir = Path("project") / project_name
-                    cognitive_load_file = project_dir / "cognitive_load_responses.json"
-                    existing_responses = []
-                    if cognitive_load_file.exists():
-                        with open(cognitive_load_file, "r") as f:
-                            existing_responses = json.load(f)
-                    existing_responses.append(survey_response)
-                    with open(cognitive_load_file, "w") as f:
-                        json.dump(existing_responses, f, indent=2)
-                    st.success("Cognitive Load Survey (Without Rubric) submitted and saved successfully!")
+                    supabase = st.session_state.get('supabase')
+                    if supabase and save_project_data(supabase, project_id, "cognitive_load_responses", survey_response):
+                        st.success("Cognitive Load Survey (Without Rubric) submitted and saved successfully!")
+                    else:
+                        st.error("Failed to save survey response.")
 
         with wo_writing_tab:
             content_satisfaction, ownership, responsibility, personal_connection, emotional_connection, prompt_difficulty = render_writing_quality_survey("survey_wo_wq")
@@ -6208,20 +5669,15 @@ with tab6:
                     "prompt_difficulty": prompt_difficulty
                 }
 
-                project_name = st.session_state.get('current_project')
-                if not project_name:
+                project_id = st.session_state.get('current_project_id')
+                if not project_id:
                     st.error("No project selected. Please select a project first.")
                 else:
-                    project_dir = Path("project") / project_name
-                    writing_quality_file = project_dir / "writing_quality_responses.json"
-                    existing_responses = []
-                    if writing_quality_file.exists():
-                        with open(writing_quality_file, "r") as f:
-                            existing_responses = json.load(f)
-                    existing_responses.append(survey_response)
-                    with open(writing_quality_file, "w") as f:
-                        json.dump(existing_responses, f, indent=2)
-                    st.success("Writing Quality Survey (Without Rubric) submitted and saved successfully!")
+                    supabase = st.session_state.get('supabase')
+                    if supabase and save_project_data(supabase, project_id, "writing_quality_responses", survey_response):
+                        st.success("Writing Quality Survey (Without Rubric) submitted and saved successfully!")
+                    else:
+                        st.error("Failed to save survey response.")
 
     with with_rubric_tab:
         st.subheader("📋 With Rubric")
@@ -6247,20 +5703,15 @@ with tab6:
                     "frustration": frustration
                 }
 
-                project_name = st.session_state.get('current_project')
-                if not project_name:
+                project_id = st.session_state.get('current_project_id')
+                if not project_id:
                     st.error("No project selected. Please select a project first.")
                 else:
-                    project_dir = Path("project") / project_name
-                    cognitive_load_file = project_dir / "cognitive_load_responses.json"
-                    existing_responses = []
-                    if cognitive_load_file.exists():
-                        with open(cognitive_load_file, "r") as f:
-                            existing_responses = json.load(f)
-                    existing_responses.append(survey_response)
-                    with open(cognitive_load_file, "w") as f:
-                        json.dump(existing_responses, f, indent=2)
-                    st.success("Cognitive Load Survey (With Rubric) submitted and saved successfully!")
+                    supabase = st.session_state.get('supabase')
+                    if supabase and save_project_data(supabase, project_id, "cognitive_load_responses", survey_response):
+                        st.success("Cognitive Load Survey (With Rubric) submitted and saved successfully!")
+                    else:
+                        st.error("Failed to save survey response.")
 
         with w_writing_tab:
             content_satisfaction, ownership, responsibility, personal_connection, emotional_connection, prompt_difficulty = render_writing_quality_survey("survey_w_wq")
@@ -6278,17 +5729,392 @@ with tab6:
                     "prompt_difficulty": prompt_difficulty
                 }
 
-                project_name = st.session_state.get('current_project')
-                if not project_name:
+                project_id = st.session_state.get('current_project_id')
+                if not project_id:
                     st.error("No project selected. Please select a project first.")
                 else:
-                    project_dir = Path("project") / project_name
-                    writing_quality_file = project_dir / "writing_quality_responses.json"
-                    existing_responses = []
-                    if writing_quality_file.exists():
-                        with open(writing_quality_file, "r") as f:
-                            existing_responses = json.load(f)
-                    existing_responses.append(survey_response)
-                    with open(writing_quality_file, "w") as f:
-                        json.dump(existing_responses, f, indent=2)
-                    st.success("Writing Quality Survey (With Rubric) submitted and saved successfully!")
+                    supabase = st.session_state.get('supabase')
+                    if supabase and save_project_data(supabase, project_id, "writing_quality_responses", survey_response):
+                        st.success("Writing Quality Survey (With Rubric) submitted and saved successfully!")
+                    else:
+                        st.error("Failed to save survey response.")
+
+# ============ EVALUATE: SURVEY TAB ============
+with tab2:
+    st.header("📋 Evaluate: Survey")
+    st.caption("Complete surveys after each task to track your experience")
+
+    # Initialize survey session state
+    if "survey_responses" not in st.session_state:
+        st.session_state.survey_responses = {
+            "task_a": {},
+            "task_b": {},
+            "task_c": {},
+            "final": {}
+        }
+
+    # Get active rubric for final survey
+    survey_rubric_dict, _, _ = get_active_rubric()
+
+    # Task selection
+    survey_task = st.radio(
+        "Select which survey to complete:",
+        ["Task A (without rubric)", "Task B (with rubric, hidden)", "Task C (with rubric, visible)", "Final Review"],
+        horizontal=True,
+        key="survey_task_select"
+    )
+
+    st.markdown("---")
+
+    # ============ TASK A SURVEY ============
+    if survey_task == "Task A (without rubric)":
+        st.subheader("Task A: Without Rubric")
+        st.markdown("*Complete this after working on a task without any rubric assistance.*")
+
+        task_a = st.session_state.survey_responses["task_a"]
+
+        # Q1
+        st.markdown("**Q1: How well did the model understand what you wanted from the start?**")
+        q1_options = ["1 - Not at all", "2", "3", "4", "5 - Perfectly"]
+        task_a["q1"] = st.radio(
+            "Understanding rating",
+            q1_options,
+            index=q1_options.index(task_a.get("q1", "3")) if task_a.get("q1") in q1_options else 2,
+            key="task_a_q1",
+            label_visibility="collapsed",
+            horizontal=True
+        )
+
+        # Q2
+        st.markdown("**Q2: How much effort did you spend getting the model to match your style?**")
+        q2_options = ["1 - None", "2", "3", "4", "5 - A lot"]
+        task_a["q2"] = st.radio(
+            "Effort rating",
+            q2_options,
+            index=q2_options.index(task_a.get("q2", "3")) if task_a.get("q2") in q2_options else 2,
+            key="task_a_q2",
+            label_visibility="collapsed",
+            horizontal=True
+        )
+
+        # Q3
+        st.markdown("**Q3: Is there anything the model kept getting wrong?**")
+        task_a["q3"] = st.text_area(
+            "What went wrong",
+            value=task_a.get("q3", ""),
+            placeholder="Describe any recurring issues or misunderstandings...",
+            key="task_a_q3",
+            label_visibility="collapsed",
+            height=100
+        )
+
+        if st.button("Save Task A Survey", type="primary", key="save_task_a"):
+            task_a["completed"] = True
+            task_a["timestamp"] = datetime.now().isoformat()
+            # Save to database
+            project_id = st.session_state.get('current_project_id')
+            if project_id:
+                supabase = st.session_state.get('supabase')
+                if supabase:
+                    try:
+                        save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
+                        st.success("Task A survey saved!")
+                    except Exception as e:
+                        st.error(f"Failed to save: {e}")
+                else:
+                    st.success("Task A survey saved locally!")
+            else:
+                st.success("Task A survey saved locally!")
+
+    # ============ TASK B SURVEY ============
+    elif survey_task == "Task B (with rubric, hidden)":
+        st.subheader("Task B: With Rubric (Hidden)")
+        st.markdown("*Complete this after working on a task where the rubric was active but not shown to you.*")
+
+        task_b = st.session_state.survey_responses["task_b"]
+
+        # Q1
+        st.markdown("**Q1: How well did the model understand what you wanted from the start?**")
+        q1_options = ["1 - Not at all", "2", "3", "4", "5 - Perfectly"]
+        task_b["q1"] = st.radio(
+            "Understanding rating",
+            q1_options,
+            index=q1_options.index(task_b.get("q1", "3")) if task_b.get("q1") in q1_options else 2,
+            key="task_b_q1",
+            label_visibility="collapsed",
+            horizontal=True
+        )
+
+        # Q2
+        st.markdown("**Q2: How much effort did you spend getting the model to match your style?**")
+        q2_options = ["1 - None", "2", "3", "4", "5 - A lot"]
+        task_b["q2"] = st.radio(
+            "Effort rating",
+            q2_options,
+            index=q2_options.index(task_b.get("q2", "3")) if task_b.get("q2") in q2_options else 2,
+            key="task_b_q2",
+            label_visibility="collapsed",
+            horizontal=True
+        )
+
+        # Q3
+        st.markdown("**Q3: Is there anything the model kept getting wrong?**")
+        task_b["q3"] = st.text_area(
+            "What went wrong",
+            value=task_b.get("q3", ""),
+            placeholder="Describe any recurring issues or misunderstandings...",
+            key="task_b_q3",
+            label_visibility="collapsed",
+            height=100
+        )
+
+        # Q4
+        st.markdown("**Q4: Compared to the previous task, how did this one feel?**")
+        q4_options = ["Much better", "Somewhat better", "About the same", "Somewhat worse", "Much worse"]
+        task_b["q4"] = st.radio(
+            "Comparison",
+            q4_options,
+            index=q4_options.index(task_b.get("q4", "About the same")) if task_b.get("q4") in q4_options else 2,
+            key="task_b_q4",
+            label_visibility="collapsed"
+        )
+
+        if st.button("Save Task B Survey", type="primary", key="save_task_b"):
+            task_b["completed"] = True
+            task_b["timestamp"] = datetime.now().isoformat()
+            # Save to database
+            project_id = st.session_state.get('current_project_id')
+            if project_id:
+                supabase = st.session_state.get('supabase')
+                if supabase:
+                    try:
+                        save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
+                        st.success("Task B survey saved!")
+                    except Exception as e:
+                        st.error(f"Failed to save: {e}")
+                else:
+                    st.success("Task B survey saved locally!")
+            else:
+                st.success("Task B survey saved locally!")
+
+    # ============ TASK C SURVEY ============
+    elif survey_task == "Task C (with rubric, visible)":
+        st.subheader("Task C: With Rubric (Visible)")
+        st.markdown("*Complete this after working on a task where you could see and edit the rubric.*")
+
+        task_c = st.session_state.survey_responses["task_c"]
+
+        # Q1
+        st.markdown("**Q1: How well did the model understand what you wanted from the start?**")
+        q1_options = ["1 - Not at all", "2", "3", "4", "5 - Perfectly"]
+        task_c["q1"] = st.radio(
+            "Understanding rating",
+            q1_options,
+            index=q1_options.index(task_c.get("q1", "3")) if task_c.get("q1") in q1_options else 2,
+            key="task_c_q1",
+            label_visibility="collapsed",
+            horizontal=True
+        )
+
+        # Q2
+        st.markdown("**Q2: How much effort did you spend getting the model to match your style?**")
+        q2_options = ["1 - None", "2", "3", "4", "5 - A lot"]
+        task_c["q2"] = st.radio(
+            "Effort rating",
+            q2_options,
+            index=q2_options.index(task_c.get("q2", "3")) if task_c.get("q2") in q2_options else 2,
+            key="task_c_q2",
+            label_visibility="collapsed",
+            horizontal=True
+        )
+
+        # Q3
+        st.markdown("**Q3: Is there anything the model kept getting wrong?**")
+        task_c["q3"] = st.text_area(
+            "What went wrong",
+            value=task_c.get("q3", ""),
+            placeholder="Describe any recurring issues or misunderstandings...",
+            key="task_c_q3",
+            label_visibility="collapsed",
+            height=100
+        )
+
+        # Q4
+        st.markdown("**Q4: Compared to the previous tasks, how did this one feel?**")
+        q4_options = ["Much better", "Somewhat better", "About the same", "Somewhat worse", "Much worse"]
+        task_c["q4"] = st.radio(
+            "Comparison",
+            q4_options,
+            index=q4_options.index(task_c.get("q4", "About the same")) if task_c.get("q4") in q4_options else 2,
+            key="task_c_q4",
+            label_visibility="collapsed"
+        )
+
+        # Q5
+        st.markdown("**Q5: Did you look at the rubric? Was it useful?**")
+        task_c["q5"] = st.text_area(
+            "Rubric usefulness",
+            value=task_c.get("q5", ""),
+            placeholder="Describe whether and how you used the rubric...",
+            key="task_c_q5",
+            label_visibility="collapsed",
+            height=100
+        )
+
+        # Q6
+        st.markdown("**Q6: Did the rubric show you anything about the model's behavior you wouldn't have noticed otherwise?**")
+        task_c["q6"] = st.text_area(
+            "Rubric insights",
+            value=task_c.get("q6", ""),
+            placeholder="Any insights or surprises from seeing the rubric...",
+            key="task_c_q6",
+            label_visibility="collapsed",
+            height=100
+        )
+
+        if st.button("Save Task C Survey", type="primary", key="save_task_c"):
+            task_c["completed"] = True
+            task_c["timestamp"] = datetime.now().isoformat()
+            # Save to database
+            project_id = st.session_state.get('current_project_id')
+            if project_id:
+                supabase = st.session_state.get('supabase')
+                if supabase:
+                    try:
+                        save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
+                        st.success("Task C survey saved!")
+                    except Exception as e:
+                        st.error(f"Failed to save: {e}")
+                else:
+                    st.success("Task C survey saved locally!")
+            else:
+                st.success("Task C survey saved locally!")
+
+    # ============ FINAL REVIEW ============
+    elif survey_task == "Final Review":
+        st.subheader("Final Review: Rubric Accuracy")
+        st.markdown("*Review what the system learned about your preferences.*")
+
+        final = st.session_state.survey_responses["final"]
+
+        if not survey_rubric_dict or not survey_rubric_dict.get("rubric"):
+            st.warning("No active rubric found. Please create or select a rubric first.")
+        else:
+            rubric_list = survey_rubric_dict.get("rubric", [])
+
+            st.markdown("**Q1: This is what the system learned about your preferences. Walk me through it — what's right, what's wrong, what surprises you?**")
+            st.markdown("*For each criterion, rate its accuracy and provide a brief explanation.*")
+
+            st.markdown("---")
+
+            # Initialize criteria responses if needed
+            if "criteria_ratings" not in final:
+                final["criteria_ratings"] = {}
+
+            for idx, criterion in enumerate(rubric_list):
+                crit_name = criterion.get("name", f"Criterion {idx + 1}")
+                crit_desc = criterion.get("description", "")
+                crit_dims = criterion.get("dimensions", [])
+
+                with st.expander(f"**{crit_name}**", expanded=True):
+                    st.markdown(f"*{crit_desc}*")
+
+                    if crit_dims:
+                        st.markdown("**Dimensions:**")
+                        for dim in crit_dims:
+                            st.markdown(f"- {dim.get('label', '')}")
+
+                    st.markdown("---")
+
+                    # Initialize this criterion's response
+                    if crit_name not in final["criteria_ratings"]:
+                        final["criteria_ratings"][crit_name] = {"accuracy": "Partially right", "explanation": ""}
+
+                    # Accuracy rating
+                    accuracy_options = ["Accurate", "Partially right", "Inaccurate"]
+                    final["criteria_ratings"][crit_name]["accuracy"] = st.radio(
+                        "How accurate is this criterion?",
+                        accuracy_options,
+                        index=accuracy_options.index(final["criteria_ratings"][crit_name].get("accuracy", "Partially right")),
+                        key=f"final_accuracy_{idx}",
+                        horizontal=True
+                    )
+
+                    # Brief explanation
+                    final["criteria_ratings"][crit_name]["explanation"] = st.text_input(
+                        "Brief explanation (what's right/wrong):",
+                        value=final["criteria_ratings"][crit_name].get("explanation", ""),
+                        key=f"final_explanation_{idx}",
+                        placeholder="e.g., 'This is spot on' or 'I actually prefer the opposite'"
+                    )
+
+            st.markdown("---")
+
+            # Q2
+            st.markdown("**Q2: Is there anything here you wouldn't have thought to mention yourself?**")
+            final["q2"] = st.text_area(
+                "Unexpected insights",
+                value=final.get("q2", ""),
+                placeholder="Any preferences the system captured that you didn't realize you had, or wouldn't have articulated...",
+                key="final_q2",
+                label_visibility="collapsed",
+                height=100
+            )
+
+            if st.button("Save Final Review", type="primary", key="save_final"):
+                final["completed"] = True
+                final["timestamp"] = datetime.now().isoformat()
+                # Save to database
+                project_id = st.session_state.get('current_project_id')
+                if project_id:
+                    supabase = st.session_state.get('supabase')
+                    if supabase:
+                        try:
+                            save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
+                            st.success("Final review saved!")
+                        except Exception as e:
+                            st.error(f"Failed to save: {e}")
+                    else:
+                        st.success("Final review saved locally!")
+                else:
+                    st.success("Final review saved locally!")
+
+    # ============ SURVEY SUMMARY & EXPORT ============
+    st.markdown("---")
+    st.subheader("Survey Progress")
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        a_done = st.session_state.survey_responses["task_a"].get("completed", False)
+        st.markdown(f"**Task A:** {'✅ Complete' if a_done else '⬜ Incomplete'}")
+    with col2:
+        b_done = st.session_state.survey_responses["task_b"].get("completed", False)
+        st.markdown(f"**Task B:** {'✅ Complete' if b_done else '⬜ Incomplete'}")
+    with col3:
+        c_done = st.session_state.survey_responses["task_c"].get("completed", False)
+        st.markdown(f"**Task C:** {'✅ Complete' if c_done else '⬜ Incomplete'}")
+    with col4:
+        f_done = st.session_state.survey_responses["final"].get("completed", False)
+        st.markdown(f"**Final:** {'✅ Complete' if f_done else '⬜ Incomplete'}")
+
+    # Export option
+    if any([a_done, b_done, c_done, f_done]):
+        survey_json = json.dumps(st.session_state.survey_responses, indent=2, default=str)
+        st.download_button(
+            label="Download Survey Responses (JSON)",
+            data=survey_json,
+            file_name=f"survey_responses_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+            mime="application/json"
+        )
+
+        # Save to database option
+        project_id = st.session_state.get('current_project_id')
+        if project_id:
+            supabase = st.session_state.get('supabase')
+            if supabase:
+                if st.button("Save All Surveys to Database", key="save_all_surveys"):
+                    try:
+                        save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
+                        st.success("All survey responses saved to database!")
+                    except Exception as e:
+                        st.error(f"Failed to save: {e}")
