@@ -162,6 +162,20 @@ def logout_user(supabase: Client):
     if '_supabase_client' in st.session_state:
         del st.session_state._supabase_client
 
+    # Clear all project and rubric related session state
+    keys_to_clear = [
+        'current_project_id', 'current_project', 'rubric', 'active_rubric_idx',
+        'messages', 'survey_responses', 'rubric_comparison_results'
+    ]
+    for key in keys_to_clear:
+        if key in st.session_state:
+            del st.session_state[key]
+
+    # Clear all rubric history caches (keys starting with rubric_history_)
+    keys_to_delete = [k for k in st.session_state.keys() if k.startswith('rubric_history_')]
+    for key in keys_to_delete:
+        del st.session_state[key]
+
 
 def get_current_user() -> Optional[Dict]:
     """Get the current logged-in user"""
