@@ -4332,12 +4332,16 @@ with tab5:
                             if st.button("🎲 Generate Alternatives", use_container_width=True, type="primary", key="gen_alts_btn"):
                                 with st.spinner("Generating alternatives for all decision points..."):
                                     alternatives_data = {}
+                                    # Get writing domain context from rubric
+                                    writing_type = coverage_rubric_dict.get('writing_type', '')
+                                    user_goals = coverage_rubric_dict.get('user_goals_summary', '')
+
                                     for dp in decision_points:
                                         dp_id = dp.get('id')
                                         dimension = dp.get('dimension', 'style')
 
                                         try:
-                                            prompt = generate_novel_alternatives_prompt(dp, dimension)
+                                            prompt = generate_novel_alternatives_prompt(dp, dimension, writing_type, user_goals)
                                             response = client.messages.create(
                                                 model="claude-opus-4-5-20251101",
                                                 max_tokens=8000,
@@ -4361,7 +4365,8 @@ with tab5:
                                                     'alternatives': alts,
                                                     'display_mapping': display_mapping,
                                                     'dimension': dimension,
-                                                    'dimension_description': alt_data.get('dimension_description', '')
+                                                    'dimension_description': alt_data.get('dimension_description', ''),
+                                                    'content_objective': alt_data.get('content_objective', '')
                                                 }
                                         except Exception as e:
                                             st.warning(f"Error generating alternatives for DP#{dp_id}: {str(e)}")
@@ -4390,7 +4395,10 @@ with tab5:
                                 already_ranked = dp_id in st.session_state.evaluate_user_rankings
 
                                 with st.expander(f"{'✅' if already_ranked else '⬜'} Decision Point #{dp_id}: {alt_info['dimension']}", expanded=not already_ranked):
-                                    st.caption(f"Dimension: {alt_info.get('dimension_description', alt_info['dimension'])}")
+                                    # Show context/objective to help user understand what they're ranking
+                                    if alt_info.get('content_objective'):
+                                        st.info(f"**Context:** {alt_info['content_objective']}")
+                                    st.caption(f"**Dimension being varied:** {alt_info.get('dimension_description', alt_info['dimension'])}")
 
                                     for alt in alts:
                                         display_letter = display_map[alt['id']]

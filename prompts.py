@@ -1789,25 +1789,41 @@ Return a JSON object with the following structure:
 # Evaluate: Coverage Tab - 9-Step Workflow Prompts
 # =============================================================================
 
-def generate_novel_alternatives_prompt(decision_point: dict, dimension: str) -> str:
+def generate_novel_alternatives_prompt(decision_point: dict, dimension: str, writing_type: str = "", user_goals: str = "") -> str:
     """
     Step 3: Generate 3 novel text alternatives for a decision point along the identified dimension.
 
     Args:
         decision_point: Dict with 'before_quote', 'after_quote', and context
         dimension: The dimension to vary (e.g., 'conciseness', 'formality', 'tone')
+        writing_type: The type of writing from the rubric (e.g., "professional emails", "academic essays")
+        user_goals: The user's goals summary from the rubric
 
     Returns:
         Prompt string for Claude API
     """
     before_text = decision_point.get('before_quote', '')
     after_text = decision_point.get('after_quote', '')
-    context = decision_point.get('context', '')
+    summary = decision_point.get('summary', '')
+    title = decision_point.get('title', '')
+
+    # Build domain context from rubric
+    domain_context = ""
+    if writing_type or user_goals:
+        domain_context = f"""
+WRITING DOMAIN/CONTEXT (from user's rubric):
+- Type of writing: {writing_type if writing_type else "Not specified"}
+- User's goals: {user_goals if user_goals else "Not specified"}
+
+The alternatives you generate must be appropriate for this domain. Do not generate content that would be out of place for this type of writing.
+"""
 
     return f"""You are generating alternative text versions for preference testing.
-
-CONTEXT OF THE PASSAGE:
-{context if context else "A collaborative writing conversation between a user and an AI assistant."}
+{domain_context}
+WHAT THIS PASSAGE IS ABOUT:
+The user was working on a writing task. At this point in the conversation, the text needed to accomplish the following:
+- Title: {title if title else "N/A"}
+- Summary: {summary if summary else "A piece of text that the user edited to better match their preferences."}
 
 ORIGINAL AI TEXT:
 "{before_text}"
@@ -1818,12 +1834,15 @@ USER'S EDITED VERSION:
 DIMENSION BEING VARIED: {dimension}
 
 YOUR TASK:
-Generate 3 NEW text alternatives that:
-1. Communicate the same core content/meaning as both versions above
-2. Vary ONLY on the "{dimension}" dimension
-3. Are DISTINCTLY different from each other on this dimension
-4. Are NOT identical (or nearly identical) to either the original AI text or user's edited version
-5. Are all competent, reasonable writing (not obviously bad or error-filled)
+First, identify the core CONTENT and OBJECTIVE of this passage (what information is it conveying? what is it trying to accomplish?). Make sure this stays within the writing domain specified above.
+
+Then generate 3 NEW text alternatives that:
+1. Have the SAME content and accomplish the SAME objective as the original passages
+2. Stay within the same writing domain/context (don't generate random or off-topic content)
+3. Vary ONLY on the "{dimension}" dimension (how the content is expressed)
+4. Are DISTINCTLY different from each other on this dimension
+5. Are NOT identical (or nearly identical) to either the original AI text or user's edited version
+6. Are all competent, reasonable writing (not obviously bad or error-filled)
 
 IMPORTANT GUIDELINES:
 - Create a spectrum: one alternative at one extreme of the dimension, one at the other extreme, one in the middle
@@ -1833,11 +1852,12 @@ IMPORTANT GUIDELINES:
   - "tone": warm/enthusiastic, neutral, direct/matter-of-fact
   - "detail": high-level overview, balanced, granular with specifics
   - "structure": simple/flowing, moderately organized, highly structured with headers/bullets
-- Each alternative should be a plausible version someone might actually write
-- Keep the core message/information the same across all alternatives
+- Each alternative should be a plausible version someone might actually write FOR THIS DOMAIN
+- The content/information must be the same across all alternatives - only the expression style changes
 
 Return ONLY valid JSON (no markdown code blocks):
 {{
+    "content_objective": "A SHORT, NEUTRAL description of the task/purpose only (e.g., 'writing an email to set up a meeting', 'explaining how the feature works', 'introducing yourself to a new team'). Do NOT describe style, tone, or how it should be written - just WHAT it is. Keep it under 10 words.",
     "alternatives": [
         {{
             "id": "alt_1",
@@ -1855,8 +1875,7 @@ Return ONLY valid JSON (no markdown code blocks):
             "dimension_position": "Description of opposite extreme (e.g., 'verbose', 'casual', 'direct')"
         }}
     ],
-    "dimension_description": "Brief explanation of what the '{dimension}' dimension means and how these alternatives vary along it",
-    "generation_notes": "Brief notes on how the alternatives were constructed to ensure they differ from original/user versions"
+    "dimension_description": "Brief explanation of what the '{dimension}' dimension means and how these alternatives vary along it"
 }}"""
 
 
