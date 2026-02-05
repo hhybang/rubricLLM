@@ -165,7 +165,8 @@ def logout_user(supabase: Client):
     # Clear all project and rubric related session state
     keys_to_clear = [
         'current_project_id', 'current_project', 'rubric', 'active_rubric_idx',
-        'messages', 'survey_responses', 'rubric_comparison_results', 'editing_criteria'
+        'messages', 'survey_responses', 'rubric_comparison_results', 'editing_criteria',
+        'rubric_chat_messages', 'rubric_chat_suggestion', 'rubric_chat_preview_draft'
     ]
     for key in keys_to_clear:
         if key in st.session_state:
