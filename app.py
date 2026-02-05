@@ -30,11 +30,13 @@ from prompts import (
     get_draft_edit_rubric_update_prompt,
     extract_decision_pts,
     generate_reflection_questions_prompt,
-    extract_preference_dimensions_prompt,
-    generate_test_comparisons_prompt,
-    format_user_tests_prompt,
-    score_tests_with_rubric_prompt
+    generate_novel_alternatives_prompt,
+    score_alternatives_with_rubric_prompt,
+    score_alternatives_with_freetext_prompt,
+    score_alternatives_generic_prompt
 )
+from scipy.stats import kendalltau
+import random
 
 def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None):
     """
@@ -2226,29 +2228,29 @@ if 'rubric_editing' not in st.session_state:
         'original_rubric': None    # Snapshot before editing
     }
 
-# Evaluate tab state
+# Evaluate: Coverage tab state (9-step workflow)
 if 'evaluate_selected_conversation' not in st.session_state:
     st.session_state.evaluate_selected_conversation = None
 if 'evaluate_decision_points' not in st.session_state:
-    st.session_state.evaluate_decision_points = None  # Stores the extracted decision points result (parsed JSON)
-if 'evaluate_selected_decision_point' not in st.session_state:
-    st.session_state.evaluate_selected_decision_point = None  # Index of currently selected decision point
+    st.session_state.evaluate_decision_points = None  # Step 1: Extracted decision points
 if 'evaluate_expanded_dp' not in st.session_state:
-    st.session_state.evaluate_expanded_dp = None  # ID of currently expanded decision point (for highlighting)
-if 'evaluate_reflection_items' not in st.session_state:
-    st.session_state.evaluate_reflection_items = None  # Stores the generated reflection items for all decision points
+    st.session_state.evaluate_expanded_dp = None  # ID of currently expanded decision point
 if 'evaluate_user_responses' not in st.session_state:
-    st.session_state.evaluate_user_responses = {}  # Dict mapping decision point id to user's reflection responses
-if 'evaluate_preference_dimensions' not in st.session_state:
-    st.session_state.evaluate_preference_dimensions = None  # Extracted preference dimensions from reflections
-if 'evaluate_test_comparisons' not in st.session_state:
-    st.session_state.evaluate_test_comparisons = None  # Generated test comparisons
-if 'evaluate_user_tests' not in st.session_state:
-    st.session_state.evaluate_user_tests = None  # Formatted user-facing tests with answer key
-if 'evaluate_test_responses' not in st.session_state:
-    st.session_state.evaluate_test_responses = {}  # User's responses to tests
-if 'evaluate_rubric_scores' not in st.session_state:
-    st.session_state.evaluate_rubric_scores = None  # Rubric-based scores for test comparisons
+    st.session_state.evaluate_user_responses = {}  # Step 2: User's cold reflection responses
+if 'evaluate_novel_alternatives' not in st.session_state:
+    st.session_state.evaluate_novel_alternatives = None  # Step 3: Generated alternatives per decision point
+if 'evaluate_user_rankings' not in st.session_state:
+    st.session_state.evaluate_user_rankings = {}  # Step 4: User's 1st/2nd/3rd rankings
+if 'evaluate_rubric_rankings' not in st.session_state:
+    st.session_state.evaluate_rubric_rankings = None  # Step 5: Rubric-based rankings
+if 'evaluate_freetext_rankings' not in st.session_state:
+    st.session_state.evaluate_freetext_rankings = None  # Step 6: Free-text-based rankings
+if 'evaluate_generic_rankings' not in st.session_state:
+    st.session_state.evaluate_generic_rankings = None  # Step 7: Generic baseline rankings
+if 'evaluate_agreement_scores' not in st.session_state:
+    st.session_state.evaluate_agreement_scores = None  # Step 8: Correlation results
+if 'evaluate_current_step' not in st.session_state:
+    st.session_state.evaluate_current_step = 1  # Track progress (1-9)
 
 # Alignment tab state
 if 'alignment_selected_conversation' not in st.session_state:
@@ -2346,7 +2348,7 @@ st.title("✍️ AI-Rubric Writer")
 st.markdown("Collaborate with AI to improve your writing!")
 
 # Create tabs
-tab1, tab2, tab3, tab4 = st.tabs(["💬 Chat", "📋 Evaluate: Survey", "📁 View Rubric", "🔍 Compare Rubrics"])
+tab1, tab2, tab5, tab3, tab4 = st.tabs(["💬 Chat", "📋 Evaluate: Survey", "📊 Evaluate: Coverage", "📁 View Rubric", "🔍 Compare Rubrics"])
 
 with tab1:
     # Show save toast if we just saved (after rerun)
@@ -3937,918 +3939,192 @@ with tab4:
             </div>
             """, unsafe_allow_html=True)
 
-# Evaluate: Coverage Tab (HIDDEN)
-if False:
+# Evaluate: Coverage Tab - 9-Step Workflow
+with tab5:
     st.header("📊 Evaluate: Coverage")
-    st.markdown("Test whether your rubric covers your preferences.")
+    st.markdown("Test whether your rubric captures your writing preferences through a systematic comparison.")
+
+    # Helper function for rank correlation
+    def compute_rank_correlation(user_rankings, predicted_rankings):
+        """Compute Kendall's tau correlation between user and predicted rankings."""
+        if not user_rankings or not predicted_rankings:
+            return None, None
+
+        all_user_ranks = []
+        all_predicted_ranks = []
+        all_alts = ["alt_1", "alt_2", "alt_3"]
+
+        for dp_id in user_rankings:
+            if dp_id not in predicted_rankings:
+                continue
+            user_rank = user_rankings[dp_id].get("ranking", [])
+            pred_rank = predicted_rankings[dp_id].get("ranking", [])
+
+            for alt_id in all_alts:
+                user_pos = user_rank.index(alt_id) + 1 if alt_id in user_rank else 4
+                pred_pos = pred_rank.index(alt_id) + 1 if alt_id in pred_rank else 4
+                all_user_ranks.append(user_pos)
+                all_predicted_ranks.append(pred_pos)
+
+        if len(all_user_ranks) < 3:
+            return None, None
+
+        tau, p_value = kendalltau(all_user_ranks, all_predicted_ranks)
+        return tau, p_value
 
     # Check for active rubric
     coverage_rubric_dict, coverage_rubric_idx, _ = get_active_rubric()
 
-    if coverage_rubric_dict:
+    if not coverage_rubric_dict:
+        st.warning("No active rubric selected. Please select a rubric version in the sidebar to enable coverage testing.")
+    else:
         coverage_rubric_list = coverage_rubric_dict.get("rubric", [])
         coverage_rubric_version = coverage_rubric_dict.get("version", coverage_rubric_idx + 1)
 
-        st.success(f"Using rubric: **Version {coverage_rubric_version}** ({len(coverage_rubric_list)} criteria)")
-
-        # Reset button
-        col_reset, col_spacer = st.columns([1, 3])
+        # Header with rubric info and reset
+        col_info, col_reset = st.columns([3, 1])
+        with col_info:
+            st.success(f"Using rubric: **Version {coverage_rubric_version}** ({len(coverage_rubric_list)} criteria)")
         with col_reset:
-            if st.button("🔄 Reset Coverage Test", use_container_width=True, key="coverage_reset"):
+            if st.button("🔄 Reset All", use_container_width=True, key="coverage_reset"):
                 st.session_state.evaluate_selected_conversation = None
                 st.session_state.evaluate_decision_points = None
-                st.session_state.evaluate_selected_decision_point = None
                 st.session_state.evaluate_expanded_dp = None
-                st.session_state.evaluate_reflection_items = None
                 st.session_state.evaluate_user_responses = {}
-                st.session_state.evaluate_preference_dimensions = None
-                st.session_state.evaluate_test_comparisons = None
-                st.session_state.evaluate_user_tests = None
-                st.session_state.evaluate_test_responses = {}
-                st.session_state.evaluate_rubric_scores = None
+                st.session_state.evaluate_novel_alternatives = None
+                st.session_state.evaluate_user_rankings = {}
+                st.session_state.evaluate_rubric_rankings = None
+                st.session_state.evaluate_freetext_rankings = None
+                st.session_state.evaluate_generic_rankings = None
+                st.session_state.evaluate_agreement_scores = None
+                st.session_state.evaluate_current_step = 1
                 st.rerun()
-    else:
-        st.warning("No active rubric selected. Please select a rubric version in the sidebar to enable coverage testing.")
 
-    # Load conversations for selector
-    eval_conversations = load_conversations()
+        # Step progress indicator
+        steps = [
+            "1. Extract Decision Points",
+            "2. Reflection",
+            "3. Generate Alternatives",
+            "4. Rank Alternatives",
+            "5. Score & Analyze",
+            "6. View Results"
+        ]
 
-    # Create selection with conversation details
-    eval_conversation_options = [("Select a conversation...", None)]
-    if eval_conversations:
-        for conv in eval_conversations:
-            # Format timestamp for display
+        # Determine current step based on state
+        def get_current_step():
+            if not st.session_state.evaluate_decision_points:
+                return 1
+            if not st.session_state.evaluate_user_responses or len(st.session_state.evaluate_user_responses) == 0:
+                return 2
+            dp_count = len(st.session_state.evaluate_decision_points.get("parsed_data", {}).get("decision_points", []))
+            if len(st.session_state.evaluate_user_responses) < dp_count:
+                return 2
+            if not st.session_state.evaluate_novel_alternatives:
+                return 3
+            if not st.session_state.evaluate_user_rankings or len(st.session_state.evaluate_user_rankings) < dp_count:
+                return 4
+            if not st.session_state.evaluate_agreement_scores:
+                return 5
+            return 6
+
+        current_step = get_current_step()
+        st.progress(current_step / 6)
+        st.markdown(f"**Step {current_step}/6: {steps[current_step - 1]}**")
+
+        st.divider()
+
+        # ==================== STEP 1: EXTRACT DECISION POINTS ====================
+        st.subheader("Step 1: Select Conversation & Extract Decision Points")
+
+        # Load conversations for selector
+        eval_conversations = load_conversations()
+        eval_conversation_options = [("Select a conversation...", None)]
+        if eval_conversations:
+            for conv in eval_conversations:
+                try:
+                    dt = datetime.fromisoformat(conv["timestamp"])
+                    formatted_time = dt.strftime("%m/%d %H:%M")
+                    display = f"{formatted_time} ({conv['messages_count']} msgs)"
+                except:
+                    display = f"{conv['timestamp']} ({conv['messages_count']} msgs)"
+                eval_conversation_options.append((display, conv["filename"]))
+
+        eval_options = [opt[1] for opt in eval_conversation_options]
+        eval_current_index = 0
+        if st.session_state.evaluate_selected_conversation:
             try:
-                dt = datetime.fromisoformat(conv["timestamp"])
-                formatted_time = dt.strftime("%m/%d %H:%M")
-                display = f"{formatted_time} ({conv['messages_count']} msgs)"
-            except:
-                display = f"{conv['timestamp']} ({conv['messages_count']} msgs)"
-            eval_conversation_options.append((display, conv["filename"]))
+                eval_current_index = eval_options.index(st.session_state.evaluate_selected_conversation)
+            except ValueError:
+                eval_current_index = 0
 
-    # Create selectbox
-    eval_options = [opt[1] for opt in eval_conversation_options]
+        eval_selected_file = st.selectbox(
+            "📂 Select conversation:",
+            options=eval_options,
+            format_func=lambda x: next(opt[0] for opt in eval_conversation_options if opt[1] == x) if x is not None else "Select a conversation...",
+            index=eval_current_index,
+            key="evaluate_conversation_selector"
+        )
 
-    # Find index of current selection
-    eval_current_index = 0
-    if st.session_state.evaluate_selected_conversation:
-        try:
-            eval_current_index = eval_options.index(st.session_state.evaluate_selected_conversation)
-        except ValueError:
-            eval_current_index = 0
+        if eval_selected_file != st.session_state.evaluate_selected_conversation:
+            st.session_state.evaluate_selected_conversation = eval_selected_file
+            st.session_state.evaluate_decision_points = None
+            st.session_state.evaluate_user_responses = {}
+            st.session_state.evaluate_novel_alternatives = None
+            st.session_state.evaluate_user_rankings = {}
+            st.session_state.evaluate_rubric_rankings = None
+            st.session_state.evaluate_freetext_rankings = None
+            st.session_state.evaluate_generic_rankings = None
+            st.session_state.evaluate_agreement_scores = None
+            st.rerun()
 
-    eval_selected_file = st.selectbox(
-        "📂 Select conversation:",
-        options=eval_options,
-        format_func=lambda x: next(opt[0] for opt in eval_conversation_options if opt[1] == x) if x is not None else "Select a conversation...",
-        index=eval_current_index,
-        key="evaluate_conversation_selector"
-    )
+        if eval_selected_file:
+            eval_conv_data = load_conversation_data(eval_selected_file)
 
-    # Handle conversation selection change
-    if eval_selected_file != st.session_state.evaluate_selected_conversation:
-        st.session_state.evaluate_selected_conversation = eval_selected_file
-        st.session_state.evaluate_decision_points = None  # Clear previous results
-        st.session_state.evaluate_selected_decision_point = None
-        st.rerun()
+            if eval_conv_data:
+                eval_messages = eval_conv_data.get("messages", [])
 
-    if eval_selected_file:
-        # Load the selected conversation
-        eval_conv_data = load_conversation_data(eval_selected_file)
-
-        if eval_conv_data:
-            eval_messages = eval_conv_data.get("messages", [])
-
-            # Build message number mapping (only count user/assistant messages)
-            msg_num_to_idx = {}  # Maps display message number to actual index in eval_messages
-            msg_num = 1
-            for idx, msg in enumerate(eval_messages):
-                role = msg.get('role', 'unknown')
-                if role in ['user', 'assistant']:
-                    msg_num_to_idx[msg_num] = idx
-                    msg_num += 1
-
-            # Extract Decision Points section
-            col_extract, col_clear = st.columns([3, 1])
-
-            with col_extract:
-                if st.button("🎯 Extract Decision Points & Generate Reflections", use_container_width=True, type="primary"):
-                    # Build conversation text for the prompt with message numbers
-                    conversation_text = ""
+                # Build conversation text for display and API calls
+                def build_conversation_text(messages):
+                    text = ""
                     msg_num = 1
-                    for msg in eval_messages:
+                    for msg in messages:
                         role = msg.get('role', 'unknown')
                         content = msg.get('content', '')
                         if role == 'user':
-                            conversation_text += f"\n\n[Message #{msg_num}] USER:\n{content}"
+                            text += f"\n\n[Message #{msg_num}] USER:\n{content}"
                             msg_num += 1
                         elif role == 'assistant':
-                            conversation_text += f"\n\n[Message #{msg_num}] ASSISTANT:\n{content}"
+                            text += f"\n\n[Message #{msg_num}] ASSISTANT:\n{content}"
                             msg_num += 1
+                    return text
 
-                    with st.spinner("Step 1/2: Analyzing conversation for decision points..."):
-                        try:
-                            # Get active rubric to pass to the prompt for prioritizing relevant decision points
-                            active_rubric_for_extraction, _, _ = get_active_rubric()
+                # Extract Decision Points button (only show if not already extracted)
+                if not st.session_state.evaluate_decision_points:
+                    if st.button("🎯 Extract Decision Points", use_container_width=True, type="primary", key="extract_dp_btn"):
+                        conversation_text = build_conversation_text(eval_messages)
 
-                            # Clean rubric data to remove _diff metadata (contains non-serializable sets)
-                            if active_rubric_for_extraction:
-                                clean_rubric = copy.deepcopy(active_rubric_for_extraction)
-                                if 'rubric' in clean_rubric:
-                                    for criterion in clean_rubric['rubric']:
-                                        if '_diff' in criterion:
-                                            del criterion['_diff']
-                                rubric_json_for_extraction = json.dumps(clean_rubric, indent=2)
-                            else:
-                                rubric_json_for_extraction = None
-
-                            # Build the prompt with rubric context
-                            decision_prompt = extract_decision_pts(conversation_text, rubric_json_for_extraction)
-
-                            # Call Claude API with thinking
-                            response = client.messages.create(
-                                model="claude-opus-4-5-20251101",
-                                max_tokens=16000,
-                                messages=[{"role": "user", "content": decision_prompt}],
-                                thinking={
-                                    "type": "enabled",
-                                    "budget_tokens": 8000
-                                }
-                            )
-
-                            # Extract thinking and text from response
-                            thinking_text = ""
-                            response_text = ""
-                            for block in response.content:
-                                if block.type == "thinking":
-                                    thinking_text = block.thinking
-                                elif block.type == "text":
-                                    response_text = block.text
-
-                            # Parse JSON from response
-                            parsed_data = None
+                        with st.spinner("Analyzing conversation for decision points..."):
                             try:
-                                # Try to extract JSON from response
-                                json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                if json_match:
-                                    parsed_data = json.loads(json_match.group())
-                            except json.JSONDecodeError:
-                                parsed_data = None
-
-                            # Store the result
-                            st.session_state.evaluate_decision_points = {
-                                "thinking": thinking_text,
-                                "raw_response": response_text,
-                                "parsed_data": parsed_data,
-                                "conversation_file": eval_selected_file
-                            }
-                            st.session_state.evaluate_selected_decision_point = None
-
-                        except Exception as e:
-                            st.error(f"Error extracting decision points: {str(e)}")
-                            st.stop()
-
-                    # Now generate reflection questions
-                    if parsed_data and "decision_points" in parsed_data:
-                        with st.spinner("Step 2/2: Generating reflection questions..."):
-                            try:
-                                # Build conversation text for reflection
-                                conv_text = ""
-                                msg_idx = 1
-                                for msg in eval_messages:
-                                    role = msg.get('role', 'unknown')
-                                    if role in ['user', 'assistant']:
-                                        content = msg.get('display_content', msg.get('content', ''))
-                                        conv_text += f"[Message #{msg_idx}] {role.upper()}:\n{content}\n\n"
-                                        msg_idx += 1
-
-                                # Get decision points JSON
-                                dp_json = json.dumps(parsed_data["decision_points"], indent=2)
-
-                                # Generate reflection questions
-                                reflection_prompt = generate_reflection_questions_prompt(conv_text, dp_json)
-
-                                response = client.messages.create(
-                                    model="claude-opus-4-5-20251101",
-                                    max_tokens=8000,
-                                    messages=[{"role": "user", "content": reflection_prompt}],
-                                    thinking={
-                                        "type": "enabled",
-                                        "budget_tokens": 6000
-                                    }
-                                )
-
-                                # Extract response
-                                reflection_thinking = ""
-                                reflection_response = ""
-                                for block in response.content:
-                                    if block.type == "thinking":
-                                        reflection_thinking = block.thinking
-                                    elif block.type == "text":
-                                        reflection_response = block.text
-
-                                # Parse JSON
-                                json_match = re.search(r'\{[\s\S]*\}', reflection_response)
-                                if json_match:
-                                    reflection_data = json.loads(json_match.group())
-                                    reflection_data['thinking'] = reflection_thinking
-                                    st.session_state.evaluate_reflection_items = reflection_data
+                                # Get active rubric for context
+                                active_rubric_for_extraction, _, _ = get_active_rubric()
+                                if active_rubric_for_extraction:
+                                    clean_rubric = copy.deepcopy(active_rubric_for_extraction)
+                                    if 'rubric' in clean_rubric:
+                                        for criterion in clean_rubric['rubric']:
+                                            if '_diff' in criterion:
+                                                del criterion['_diff']
+                                    rubric_json_for_extraction = json.dumps(clean_rubric, indent=2)
                                 else:
-                                    st.warning("Could not parse reflection questions. Decision points extracted successfully.")
+                                    rubric_json_for_extraction = None
 
-                            except Exception as e:
-                                st.warning(f"Error generating reflections: {str(e)}. Decision points extracted successfully.")
-
-                    st.rerun()
-
-            with col_clear:
-                if st.session_state.evaluate_decision_points:
-                    if st.button("🗑️ Clear", use_container_width=True):
-                        # Clear Step 1 data
-                        st.session_state.evaluate_decision_points = None
-                        st.session_state.evaluate_selected_decision_point = None
-                        st.session_state.evaluate_reflection_items = None
-                        st.session_state.evaluate_expanded_dp = None
-                        # Clear user's reflection answers
-                        st.session_state.evaluate_user_responses = {}
-                        # Clear Step 2 data (preference dimensions, tests)
-                        st.session_state.evaluate_preference_dimensions = None
-                        st.session_state.evaluate_test_comparisons = None
-                        st.session_state.evaluate_user_tests = None
-                        st.session_state.evaluate_test_responses = {}
-                        # Clear rubric scores
-                        st.session_state.evaluate_rubric_scores = None
-                        st.rerun()
-
-            # Display decision points and conversation if available
-            if st.session_state.evaluate_decision_points:
-                result = st.session_state.evaluate_decision_points
-                parsed_data = result.get("parsed_data")
-
-                # Show thinking from decision point extraction
-                if result.get("thinking"):
-                    with st.expander("🧠 Decision Point Extraction Thinking", expanded=False):
-                        st.markdown(result["thinking"])
-
-                if parsed_data and "decision_points" in parsed_data:
-                    decision_points = parsed_data["decision_points"]
-                    reflection_items = []
-                    if st.session_state.evaluate_reflection_items:
-                        reflection_items = st.session_state.evaluate_reflection_items.get('reflection_items', [])
-
-                    # Overall patterns summary
-                    if parsed_data.get("overall_patterns"):
-                        st.info(f"**Overall Patterns:** {parsed_data['overall_patterns']}")
-
-                    st.divider()
-
-                    # Build a mapping from decision point ID to message numbers (from original decision points)
-                    dp_to_messages = {}
-                    for dp in decision_points:
-                        dp_id = dp.get('id')
-                        messages = set()
-                        if dp.get("assistant_message_num"):
-                            messages.add(dp["assistant_message_num"])
-                        if dp.get("user_message_num"):
-                            messages.add(dp["user_message_num"])
-                        dp_to_messages[dp_id] = messages
-
-                    # Get highlighted message numbers based on expanded decision point
-                    highlighted_messages = set()
-                    if st.session_state.evaluate_expanded_dp is not None:
-                        highlighted_messages = dp_to_messages.get(st.session_state.evaluate_expanded_dp, set())
-
-                    # CSS for message highlighting
-                    st.markdown("""
-                    <style>
-                    .highlighted-message {
-                        background: linear-gradient(90deg, #fff3cd 0%, #fff9e6 100%);
-                        border-left: 4px solid #ffc107;
-                        padding: 12px 16px;
-                        margin: 8px 0;
-                        border-radius: 0 8px 8px 0;
-                    }
-                    .normal-message {
-                        background: #f8f9fa;
-                        padding: 12px 16px;
-                        margin: 8px 0;
-                        border-radius: 8px;
-                        border-left: 4px solid #dee2e6;
-                    }
-                    .message-user {
-                        border-left-color: #28a745;
-                    }
-                    .message-assistant {
-                        border-left-color: #007bff;
-                    }
-                    .highlighted-message.message-user {
-                        border-left-color: #28a745;
-                        background: linear-gradient(90deg, #d4edda 0%, #e8f5e9 100%);
-                    }
-                    .highlighted-message.message-assistant {
-                        border-left-color: #007bff;
-                        background: linear-gradient(90deg, #cce5ff 0%, #e3f2fd 100%);
-                    }
-                    .message-number {
-                        font-weight: bold;
-                        color: #6c757d;
-                        font-size: 0.85em;
-                    }
-                    .message-role {
-                        font-weight: 600;
-                        margin-bottom: 4px;
-                    }
-                    .message-content {
-                        color: #333;
-                        line-height: 1.6;
-                    }
-                    </style>
-                    """, unsafe_allow_html=True)
-
-                    # Display conversation with highlighting in scrollable container
-                    st.markdown("### 📜 Conversation")
-                    if st.session_state.evaluate_expanded_dp:
-                        st.caption(f"*Highlighting messages for Decision Point #{st.session_state.evaluate_expanded_dp}*")
-
-                    # Use Streamlit's native scrollable container
-                    conversation_container = st.container(height=500)
-
-                    with conversation_container:
-                        msg_num = 1
-                        for idx, msg in enumerate(eval_messages):
-                            role = msg.get('role', 'unknown')
-                            if role not in ['user', 'assistant']:
-                                continue
-
-                            content = msg.get('display_content', msg.get('content', ''))
-                            is_highlighted = msg_num in highlighted_messages
-
-                            # Determine CSS classes
-                            css_class = "highlighted-message" if is_highlighted else "normal-message"
-                            role_class = f"message-{role}"
-
-                            # Role emoji and label
-                            role_label = "👤 User" if role == "user" else "🤖 Assistant"
-
-                            # Escape HTML in content
-                            escaped_content = content.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>")
-
-                            # Render message with HTML styling
-                            st.markdown(f"""
-                            <div class="{css_class} {role_class}">
-                                <div class="message-number">Message #{msg_num}</div>
-                                <div class="message-role">{role_label}</div>
-                                <div class="message-content">{escaped_content}</div>
-                            </div>
-                            """, unsafe_allow_html=True)
-
-                            msg_num += 1
-
-                    # Reflection Questions Section
-                    st.markdown("---")
-                    st.markdown("### 🔍 Reflection Questions")
-                    st.markdown("Click on a decision point to expand it and see the corresponding messages highlighted above.")
-
-                    if st.session_state.evaluate_reflection_items:
-                        reflection_data = st.session_state.evaluate_reflection_items
-
-                        # Show thinking from reflection generation
-                        if reflection_data.get('thinking'):
-                            with st.expander("🧠 Reflection Generation Thinking", expanded=False):
-                                st.markdown(reflection_data['thinking'])
-
-                        if reflection_items:
-                            st.markdown(f"*Found {len(reflection_items)} decision points to reflect on:*")
-
-                            for idx, item in enumerate(reflection_items):
-                                dp_id = item.get('decision_point_id', idx + 1)
-
-                                # Find corresponding decision point from original extraction for message numbers
-                                original_dp = next((dp for dp in decision_points if dp.get('id') == dp_id), {})
-                                assistant_msg_num = original_dp.get('assistant_message_num', '?')
-                                user_msg_num = original_dp.get('user_message_num', '?')
-
-                                # Create expander title with message references
-                                expander_title = f"**Decision Point #{dp_id}**: {item.get('dimension', 'Unknown')} (Messages #{assistant_msg_num} → #{user_msg_num})"
-
-                                # Check if this is the currently expanded one
-                                is_expanded = (st.session_state.evaluate_expanded_dp == dp_id)
-
-                                # Create a button to toggle expansion and update highlighting
-                                col_expand, col_status = st.columns([5, 1])
-                                with col_expand:
-                                    if st.button(
-                                        f"{'📍' if is_expanded else '📌'} Decision Point #{dp_id}: {item.get('dimension', 'Unknown')} (Messages #{assistant_msg_num} → #{user_msg_num})",
-                                        key=f"expand_dp_{dp_id}",
-                                        use_container_width=True,
-                                        type="primary" if is_expanded else "secondary"
-                                    ):
-                                        if st.session_state.evaluate_expanded_dp == dp_id:
-                                            st.session_state.evaluate_expanded_dp = None  # Collapse
-                                        else:
-                                            st.session_state.evaluate_expanded_dp = dp_id  # Expand
-                                        st.rerun()
-
-                                with col_status:
-                                    if dp_id in st.session_state.evaluate_user_responses:
-                                        st.markdown("✅")
-                                    else:
-                                        st.markdown("⬜")
-
-                                # Show content if expanded
-                                if is_expanded:
-                                    with st.container():
-                                        # st.markdown("---")
-
-                                        # Show before/after from original decision point
-                                        col_before, col_after = st.columns(2)
-
-                                        before_text = original_dp.get('before_quote', item.get('before_text', 'N/A'))
-                                        after_text = original_dp.get('after_quote', item.get('after_text', 'N/A'))
-
-                                        with col_before:
-                                            st.markdown(f"**📤 Before (Message #{assistant_msg_num}):**")
-                                            st.markdown(f"""
-                                            <div style="background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 12px; border-radius: 4px; color: #333; font-size: 0.95em;">
-                                                {before_text}
-                                            </div>
-                                            """, unsafe_allow_html=True)
-
-                                        with col_after:
-                                            st.markdown(f"**📥 After (Message #{user_msg_num}):**")
-                                            st.markdown(f"""
-                                            <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px; border-radius: 4px; color: #333; font-size: 0.95em;">
-                                                {after_text}
-                                            </div>
-                                            """, unsafe_allow_html=True)
-
-                                        st.markdown("")  # Add spacing between messages and questions
-
-                                        # Get existing responses or initialize
-                                        user_response = st.session_state.evaluate_user_responses.get(dp_id, {})
-
-                                        # Question 1: What was wrong/better?
-                                        st.markdown("**1. What was wrong with the original, or what was better about your version?**")
-                                        q1_response = st.text_area(
-                                            "What was the issue or improvement?",
-                                            value=user_response.get('reasoning', ''),
-                                            key=f"q1_{dp_id}",
-                                            placeholder="Explain the specific issues with the original or benefits of your version...",
-                                            label_visibility="collapsed"
-                                        )
-
-                                        # Question 2: General or specific?
-                                        st.markdown("**2. Is this something you generally prefer in your writing, or was it specific to this situation?**")
-                                        q2_options = ["This is a general preference", "Specific to this situation", "Depends on context"]
-                                        q2_response = st.radio(
-                                            "Generalization:",
-                                            options=q2_options,
-                                            index=q2_options.index(user_response.get('generalization', "Depends on context")),
-                                            key=f"q2_{dp_id}",
-                                            horizontal=True,
-                                            label_visibility="collapsed"
-                                        )
-
-                                        # Save button for this decision point
-                                        if st.button("💾 Save Reflection", key=f"save_ref_{dp_id}", type="primary"):
-                                            st.session_state.evaluate_user_responses[dp_id] = {
-                                                'decision_point_id': dp_id,
-                                                'dimension': item.get('dimension', ''),
-                                                'before_text': item.get('before_text', ''),
-                                                'after_text': item.get('after_text', ''),
-                                                'original_quality': item.get('original_quality', ''),
-                                                'user_quality': item.get('user_quality', ''),
-                                                'potential_preference': item.get('potential_preference', ''),
-                                                'reasoning': q1_response,
-                                                'generalization': q2_response
-                                            }
-                                            st.success("✅ Reflection saved!")
-                                            st.rerun()
-
-                                        # Show if already saved, and reveal the AI analysis
-                                        if dp_id in st.session_state.evaluate_user_responses:
-                                            st.caption("✅ *Reflection saved*")
-
-                                            # Now show the Reflection Analysis (only after user has saved their reflection)
-                                            with st.expander("🔍 Reflection Analysis (AI-generated)", expanded=False):
-                                                # Summary and user's stated reason
-                                                summary = original_dp.get('summary', '')
-                                                user_reason = original_dp.get('user_reason')
-
-                                                if summary:
-                                                    st.markdown(f"**📝 Summary:** {summary}")
-
-                                                if user_reason:
-                                                    st.markdown(f"**💬 User Reason:** *\"{user_reason}\"*")
-
-                                                if summary or user_reason:
-                                                    st.markdown("---")
-
-                                                col_orig_q, col_user_q = st.columns(2)
-                                                with col_orig_q:
-                                                    st.markdown(f"**Original quality:** *{item.get('original_quality', 'N/A')}*")
-                                                with col_user_q:
-                                                    st.markdown(f"**Your quality:** *{item.get('user_quality', 'N/A')}*")
-
-                                                st.markdown(f"**💡 Potential preference:** *{item.get('potential_preference', 'N/A')}*")
-
-                                                # Show rubric impact if available
-                                                rubric_criterion = original_dp.get('related_rubric_criterion')
-                                                rubric_impact = original_dp.get('rubric_impact', {})
-                                                if rubric_criterion or rubric_impact:
-                                                    if rubric_criterion:
-                                                        st.markdown(f"**📊 Rubric Impact:** *{rubric_criterion}*")
-                                                    if rubric_impact:
-                                                        impact_desc = rubric_impact.get('description', '')
-                                                        if impact_desc:
-                                                            st.markdown(f"*{impact_desc}*")
-
-                                        st.markdown("---")
-                    else:
-                        st.warning("Reflection questions were not generated. Click 'Clear' and try again.")
-
-                else:
-                    # Fallback: show raw response if parsing failed
-                    st.warning("Could not parse decision points as structured data. Showing raw response:")
-                    st.markdown(result.get("raw_response", "No response available."))
-
-            else:
-                # No decision points extracted yet - show conversation preview
-                st.divider()
-                st.markdown("### 📜 Conversation Preview")
-
-                msg_num = 1
-                for idx, msg in enumerate(eval_messages):
-                    role = msg.get('role', 'unknown')
-                    if role not in ['user', 'assistant']:
-                        continue
-
-                    content = msg.get('display_content', msg.get('content', ''))[:500]
-                    role_label = "👤 User" if role == "user" else "💻 Assistant"
-
-                    st.markdown(f"**#{msg_num} {role_label}:** {content}{'...' if len(msg.get('content', '')) > 500 else ''}")
-
-                    msg_num += 1
-
-    else:
-        st.info("👆 Select a conversation above to begin evaluation.")
-
-    # Summary section at the bottom - show all collected responses
-    if st.session_state.evaluate_user_responses:
-        st.markdown("---")
-        # For export calculations
-        responses = list(st.session_state.evaluate_user_responses.values())
-        total_responses = len(responses)
-        general_count = sum(1 for r in responses if "general" in r.get('generalization', '').lower())
-        specific_count = sum(1 for r in responses if "Specific" in r.get('generalization', ''))
-        depends_count = sum(1 for r in responses if "Depends" in r.get('generalization', ''))
-
-        for dp_id, response in st.session_state.evaluate_user_responses.items():
-            with st.expander(f"**Decision Point {response.get('decision_point_id', dp_id)}**: {response.get('dimension', 'N/A')}", expanded=False):
-                col_v1, col_v2 = st.columns(2)
-
-                with col_v1:
-                    st.markdown("**Original (Model's suggestion):**")
-                    before_text = response.get('before_text', 'N/A')
-                    st.caption(before_text[:200] + "..." if len(before_text) > 200 else before_text)
-                    st.caption(f"*Quality: {response.get('original_quality', 'N/A')}*")
-
-                with col_v2:
-                    st.markdown("**Your Version:**")
-                    after_text = response.get('after_text', 'N/A')
-                    st.caption(after_text[:200] + "..." if len(after_text) > 200 else after_text)
-                    st.caption(f"*Quality: {response.get('user_quality', 'N/A')}*")
-
-                st.markdown("---")
-                st.markdown(f"**Potential Preference:** *{response.get('potential_preference', 'N/A')}*")
-                st.markdown(f"**Motivation:** {response.get('motivation', 'N/A') or '*Not provided*'}")
-                st.markdown(f"**Reasoning:** {response.get('reasoning', 'N/A') or '*Not provided*'}")
-                st.markdown(f"**Generalization:** {response.get('generalization', 'N/A')}")
-
-        # Export button
-        # st.markdown("---")
-        col_export, col_clear = st.columns([3, 1])
-
-        with col_export:
-            # Create JSON for download
-            export_data = {
-                "conversation_file": st.session_state.evaluate_selected_conversation,
-                "timestamp": datetime.now().isoformat(),
-                "summary": {
-                    "total_reflections": total_responses,
-                    "general_preferences": general_count,
-                    "situation_specific": specific_count,
-                    "context_dependent": depends_count
-                },
-                "reflections": responses
-            }
-
-            st.download_button(
-                label="📥 Export Reflections as JSON",
-                data=json.dumps(export_data, indent=2, ensure_ascii=False),
-                file_name=f"reflections_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                mime="application/json",
-                use_container_width=True
-            )
-
-        with col_clear:
-            if st.button("🗑️ Clear All", key="clear_all_responses", type="secondary"):
-                st.session_state.evaluate_user_responses = {}
-                st.session_state.evaluate_reflection_items = None
-                st.session_state.evaluate_preference_dimensions = None
-                st.session_state.evaluate_test_comparisons = None
-                st.session_state.evaluate_user_tests = None
-                st.session_state.evaluate_test_responses = {}
-                st.rerun()
-
-        # Choose Preferences
-        st.markdown("---")
-        st.markdown("## 🧪 Choose Preferences")
-        st.markdown("Compare different writing versions side-by-side and select the one you prefer. Your choices help us understand what matters most to you.")
-
-        if not st.session_state.evaluate_user_tests:
-            if st.button("✨ Generate Preference Tests", type="primary", use_container_width=True):
-                # Step 1: Extract preference dimensions
-                with st.spinner("Step 1/3: Extracting preference dimensions..."):
-                    try:
-                        # Prepare reflections JSON
-                        reflections_json = json.dumps(list(st.session_state.evaluate_user_responses.values()), indent=2)
-
-                        # Generate extraction prompt
-                        extract_prompt = extract_preference_dimensions_prompt(reflections_json)
-
-                        response = client.messages.create(
-                            model="claude-opus-4-5-20251101",
-                            max_tokens=8000,
-                            messages=[{"role": "user", "content": extract_prompt}],
-                            thinking={
-                                "type": "enabled",
-                                "budget_tokens": 6000
-                            }
-                        )
-
-                        # Extract response
-                        thinking_text = ""
-                        response_text = ""
-                        for block in response.content:
-                            if block.type == "thinking":
-                                thinking_text = block.thinking
-                            elif block.type == "text":
-                                response_text = block.text
-
-                        # Parse JSON
-                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                        if json_match:
-                            dimensions_data = json.loads(json_match.group())
-                            dimensions_data['thinking'] = thinking_text
-                            st.session_state.evaluate_preference_dimensions = dimensions_data
-                        else:
-                            st.error("Could not parse preference dimensions response.")
-                            st.stop()
-
-                    except Exception as e:
-                        st.error(f"Error extracting preference dimensions: {str(e)}")
-                        st.stop()
-
-                # Step 2: Generate test comparisons
-                with st.spinner("Step 2/3: Generating test writing samples..."):
-                    try:
-                        # Prepare preference dimensions JSON
-                        dims_json = json.dumps(st.session_state.evaluate_preference_dimensions.get('preference_dimensions', []), indent=2)
-
-                        # Get rubric context for domain-aligned test generation
-                        active_rubric_dict, _, _ = get_active_rubric()
-                        writing_type = active_rubric_dict.get("writing_type", "") if active_rubric_dict else ""
-                        user_goals = active_rubric_dict.get("user_goals_summary", "") if active_rubric_dict else ""
-
-                        # Generate test comparisons prompt with domain context
-                        test_prompt = generate_test_comparisons_prompt(
-                            dims_json,
-                            writing_type=writing_type,
-                            user_goals=user_goals
-                        )
-
-                        response = client.messages.create(
-                            model="claude-opus-4-5-20251101",
-                            max_tokens=10000,
-                            messages=[{"role": "user", "content": test_prompt}],
-                            thinking={
-                                "type": "enabled",
-                                "budget_tokens": 8000
-                            }
-                        )
-
-                        # Extract response
-                        thinking_text = ""
-                        response_text = ""
-                        for block in response.content:
-                            if block.type == "thinking":
-                                thinking_text = block.thinking
-                            elif block.type == "text":
-                                response_text = block.text
-
-                        # Parse JSON
-                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                        if json_match:
-                            test_data = json.loads(json_match.group())
-                            test_data['thinking'] = thinking_text
-                            st.session_state.evaluate_test_comparisons = test_data
-                        else:
-                            st.error("Could not parse test comparisons response.")
-                            st.stop()
-
-                    except Exception as e:
-                        st.error(f"Error generating test comparisons: {str(e)}")
-                        st.stop()
-
-                # Step 3: Format for user presentation
-                with st.spinner("Step 3/3: Preparing randomized tests..."):
-                    try:
-                        # Prepare test comparisons JSON
-                        test_json = json.dumps(st.session_state.evaluate_test_comparisons.get('test_comparisons', []), indent=2)
-
-                        # Format user tests prompt
-                        format_prompt = format_user_tests_prompt(test_json)
-
-                        response = client.messages.create(
-                            model="claude-opus-4-5-20251101",
-                            max_tokens=8000,
-                            messages=[{"role": "user", "content": format_prompt}],
-                            thinking={
-                                "type": "enabled",
-                                "budget_tokens": 4000
-                            }
-                        )
-
-                        # Extract response
-                        thinking_text = ""
-                        response_text = ""
-                        for block in response.content:
-                            if block.type == "thinking":
-                                thinking_text = block.thinking
-                            elif block.type == "text":
-                                response_text = block.text
-
-                        # Parse JSON
-                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                        if json_match:
-                            user_tests_data = json.loads(json_match.group())
-                            user_tests_data['thinking'] = thinking_text
-                            st.session_state.evaluate_user_tests = user_tests_data
-                            st.rerun()
-                        else:
-                            st.error("Could not parse user tests response.")
-
-                    except Exception as e:
-                        st.error(f"Error formatting user tests: {str(e)}")
-        else:
-            user_tests_data = st.session_state.evaluate_user_tests
-            user_tests = user_tests_data.get('user_tests', [])
-            answer_key = user_tests_data.get('answer_key', [])
-            dimensions_data = st.session_state.evaluate_preference_dimensions
-
-            # Show thinking and decision point analyses collapsed
-            if dimensions_data:
-                if dimensions_data.get('thinking'):
-                    with st.expander("🧠 Dimension Extraction Thinking", expanded=False):
-                        st.markdown(dimensions_data['thinking'])
-
-                if dimensions_data.get('decision_point_analyses'):
-                    with st.expander("📋 Decision Point Analyses", expanded=False):
-                        for analysis in dimensions_data['decision_point_analyses']:
-                            st.markdown(f"**Decision Point {analysis.get('decision_point_id', '?')}**")
-                            st.markdown(f"- Core preference: {analysis.get('core_preference', 'N/A')}")
-                            st.markdown(f"- Generalized: {analysis.get('generalized_preference', 'N/A')}")
-                            st.markdown(f"- Dimension: {analysis.get('dimension', 'N/A')}")
-                            st.markdown("---")
-
-            col_test_info, col_clear_tests = st.columns([4, 1])
-            with col_test_info:
-                st.markdown(f"*Complete {len(user_tests)} test(s) below:*")
-            with col_clear_tests:
-                if st.button("🗑️ Clear All", key="clear_tests"):
-                    st.session_state.evaluate_preference_dimensions = None
-                    st.session_state.evaluate_test_comparisons = None
-                    st.session_state.evaluate_user_tests = None
-                    st.session_state.evaluate_test_responses = {}
-                    st.session_state.evaluate_rubric_scores = None
-                    st.rerun()
-
-            # Build mappings from test_id to dimension and preference statement from test_comparisons
-            test_comparisons = st.session_state.evaluate_test_comparisons.get('test_comparisons', [])
-            test_id_to_info = {
-                tc.get('test_id'): {
-                    'dimension': tc.get('dimension', 'Unknown'),
-                    'preference_statement': tc.get('preference_statement', '')
-                }
-                for tc in test_comparisons
-            }
-
-            # Build mapping from dimension to confidence from preference_dimensions
-            preference_dims = dimensions_data.get('preference_dimensions', []) if dimensions_data else []
-            dim_to_confidence = {dim.get('dimension', ''): dim.get('confidence', 'low') for dim in preference_dims}
-
-            for test in user_tests:
-                test_id = test.get('test_id', 0)
-                existing_response = st.session_state.evaluate_test_responses.get(test_id, {})
-                test_info = test_id_to_info.get(test_id, {})
-                dimension = test_info.get('dimension', 'Unknown')
-                preference_statement = test_info.get('preference_statement', '')
-                confidence = dim_to_confidence.get(dimension, 'low')
-                confidence_icon = {"high": "🟢", "medium": "🟡", "low": "🔴"}.get(confidence, "⚪")
-
-                # Show dimension with confidence in title
-                with st.expander(f"**Test {test_id}** - {dimension} {confidence_icon}", expanded=test_id not in st.session_state.evaluate_test_responses):
-                    # Show preference statement inside
-                    if preference_statement:
-                        st.info(f"📋 *{preference_statement}*")
-                        # st.markdown("---")
-
-                    col_v1, col_v2 = st.columns(2)
-
-                    with col_v1:
-                        st.markdown("**Version 1:**")
-                        st.info(test.get('version_1', {}).get('text', 'N/A'))
-
-                    with col_v2:
-                        st.markdown("**Version 2:**")
-                        st.info(test.get('version_2', {}).get('text', 'N/A'))
-
-                    # Questions
-                    st.markdown("---")
-
-                    # Q1: Which version do you prefer?
-                    preference = st.radio(
-                        "Which version do you prefer?",
-                        options=["Version 1", "Version 2", "No preference"],
-                        index=["Version 1", "Version 2", "No preference"].index(existing_response.get('preference', "Version 1")),
-                        key=f"test_pref_{test_id}",
-                        horizontal=True
-                    )
-
-                    # Q2: What makes that version better?
-                    reasoning = st.text_area(
-                        "What makes that version better?",
-                        value=existing_response.get('reasoning', ''),
-                        key=f"test_reason_{test_id}",
-                        placeholder="Explain your preference..."
-                    )
-
-                    # Save button
-                    if st.button("💾 Save Response", key=f"save_test_{test_id}"):
-                        st.session_state.evaluate_test_responses[test_id] = {
-                            'test_id': test_id,
-                            'context': test.get('context', ''),
-                            'preference': preference,
-                            'reasoning': reasoning
-                        }
-                        st.success("✅ Response saved!")
-                        st.rerun()
-
-                    if test_id in st.session_state.evaluate_test_responses:
-                        st.caption("✅ *Response saved*")
-
-            # Show rubric scoring if all tests completed (outside the for loop)
-            if len(st.session_state.evaluate_test_responses) == len(user_tests) and len(user_tests) > 0:
-                st.markdown("---")
-                st.markdown("### 📊 Validate Rubric")
-                st.markdown("Check how well your rubric captures your preferences. The rubric will predict which version you'd prefer for each test—accuracy measures correct predictions, and coverage shows how many preference dimensions your rubric addresses.")
-
-                # Check if there's an active rubric
-                active_rubric_dict, active_rubric_name, _ = get_active_rubric()
-
-                if not active_rubric_dict:
-                    st.warning("No active rubric selected. Please select a rubric version in the sidebar to enable rubric scoring.")
-                elif not st.session_state.evaluate_rubric_scores:
-                    if st.button("📏 Test with Rubric", type="primary", use_container_width=True):
-                        with st.spinner("Testing versions with the rubric..."):
-                            try:
-                                # Prepare rubric JSON - clean _diff metadata first
-                                clean_rubric = copy.deepcopy(active_rubric_dict)
-                                if 'rubric' in clean_rubric:
-                                    for criterion in clean_rubric['rubric']:
-                                        if '_diff' in criterion:
-                                            del criterion['_diff']
-                                rubric_json = json.dumps(clean_rubric, indent=2)
-
-                                # Prepare test comparisons JSON
-                                test_comparisons_data = st.session_state.evaluate_test_comparisons.get('test_comparisons', [])
-                                test_json = json.dumps(test_comparisons_data, indent=2)
-
-                                # Generate scoring prompt
-                                scoring_prompt = score_tests_with_rubric_prompt(rubric_json, test_json)
-
+                                decision_prompt = extract_decision_pts(conversation_text, rubric_json_for_extraction)
                                 response = client.messages.create(
                                     model="claude-opus-4-5-20251101",
-                                    max_tokens=12000,
-                                    messages=[{"role": "user", "content": scoring_prompt}],
-                                    thinking={
-                                        "type": "enabled",
-                                        "budget_tokens": 8000
-                                    }
+                                    max_tokens=16000,
+                                    messages=[{"role": "user", "content": decision_prompt}],
+                                    thinking={"type": "enabled", "budget_tokens": 8000}
                                 )
 
-                                # Extract response
                                 thinking_text = ""
                                 response_text = ""
                                 for block in response.content:
@@ -4857,1413 +4133,536 @@ if False:
                                     elif block.type == "text":
                                         response_text = block.text
 
-                                # Parse JSON
-                                json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                if json_match:
-                                    scores_data = json.loads(json_match.group())
-                                    scores_data['thinking'] = thinking_text
-                                    scores_data['rubric_name'] = f"Version {active_rubric_dict.get('version', active_rubric_name + 1)}"
-                                    st.session_state.evaluate_rubric_scores = scores_data
-                                    st.rerun()
-                                else:
-                                    st.error("Could not parse rubric test response.")
-
-                            except Exception as e:
-                                st.error(f"Error testing with rubric: {str(e)}")
-                else:
-                    scores_data = st.session_state.evaluate_rubric_scores
-
-                    st.success(f"Tested using rubric: **{scores_data.get('rubric_name', 'Unknown')}**")
-
-                    # Calculate quantitative metrics
-                    test_scores = scores_data.get('test_scores', [])
-                    user_choices = {resp.get('test_id'): resp.get('preference', '') for resp in st.session_state.evaluate_test_responses.values()}
-                    aligned_versions = {key.get('test_id'): key.get('aligned_version', '') for key in answer_key}
-
-                    correct_predictions = 0
-                    total_with_predictions = 0
-                    dimensions_with_matching = 0
-                    total_dimensions = len(test_scores)
-
-                    for score in test_scores:
-                        test_id = score.get('test_id')
-                        rubric_predicts = score.get('rubric_predicts')
-                        has_matching = score.get('has_matching_criterion', False)
-
-                        if has_matching:
-                            dimensions_with_matching += 1
-
-                        if has_matching and rubric_predicts is not None:
-                            total_with_predictions += 1
-                            user_chose = user_choices.get(test_id, 'Unknown')
-                            aligned_version = aligned_versions.get(test_id, '')
-
-                            if rubric_predicts == "Version A":
-                                rubric_predicts_user_version = aligned_version
-                            else:
-                                rubric_predicts_user_version = "Version 2" if aligned_version == "Version 1" else "Version 1"
-
-                            if rubric_predicts_user_version in user_chose:
-                                correct_predictions += 1
-
-                    # Display metrics
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        accuracy_str = f"{correct_predictions}/{total_with_predictions}" if total_with_predictions > 0 else "N/A"
-                        accuracy_pct = f" ({correct_predictions/total_with_predictions*100:.0f}%)" if total_with_predictions > 0 else ""
-                        st.metric("Prediction Accuracy", f"{accuracy_str}{accuracy_pct}")
-                    with col2:
-                        coverage_str = f"{dimensions_with_matching}/{total_dimensions}" if total_dimensions > 0 else "N/A"
-                        coverage_pct = f" ({dimensions_with_matching/total_dimensions*100:.0f}%)" if total_dimensions > 0 else ""
-                        st.metric("Coverage", f"{coverage_str}{coverage_pct}")
-
-                    # Show thinking
-                    if scores_data.get('thinking'):
-                        with st.expander("🧠 Testing Thinking", expanded=False):
-                            st.markdown(scores_data['thinking'])
-
-                    # Show detailed scores for each test
-                    test_scores = scores_data.get('test_scores', [])
-
-                    # Build mapping from test_id to user's actual choice
-                    user_choices = {resp.get('test_id'): resp.get('preference', '') for resp in st.session_state.evaluate_test_responses.values()}
-
-                    # Build mapping from answer_key to know which version is "aligned"
-                    aligned_versions = {key.get('test_id'): key.get('aligned_version', '') for key in answer_key}
-
-                    for score in test_scores:
-                        test_id = score.get('test_id')
-                        rubric_predicts = score.get('rubric_predicts')  # Can be None if no matching criterion
-                        user_chose = user_choices.get(test_id, 'Unknown')
-                        aligned_version = aligned_versions.get(test_id, '')
-                        has_matching = score.get('has_matching_criterion', False)
-                        matching_criterion = score.get('matching_criterion')
-
-                        # Determine match status
-                        if not has_matching or rubric_predicts is None:
-                            match_icon = "⚪"  # No matching criterion
-                            rubric_predicts_user_version = "N/A"
-                            rubric_matches_user = None
-                        else:
-                            # Map rubric prediction to user-facing version number
-                            if rubric_predicts == "Version A":
-                                rubric_predicts_user_version = aligned_version
-                            else:
-                                rubric_predicts_user_version = "Version 2" if aligned_version == "Version 1" else "Version 1"
-
-                            rubric_matches_user = rubric_predicts_user_version in user_chose
-                            match_icon = "✅" if rubric_matches_user else "❌"
-
-                        with st.expander(f"{match_icon} **Test {test_id}** - {score.get('dimension', 'Unknown')}", expanded=False):
-                            st.markdown(f"*Context: {score.get('context', 'N/A')}*")
-
-                            # Show preference statement being tested
-                            if score.get('preference_statement'):
-                                st.info(f"📋 *Preference: {score.get('preference_statement')}*")
-
-                            st.markdown("---")
-
-                            # Show matching criterion info
-                            if has_matching and matching_criterion:
-                                st.markdown(f"**Matching Rubric Criterion:** {matching_criterion}")
-                                if score.get('matching_criterion_description'):
-                                    st.caption(f"*{score.get('matching_criterion_description')}*")
-                            else:
-                                st.warning("No matching criterion found in rubric for this dimension")
-
-                            st.markdown("---")
-
-                            # Show prediction and user choice
-                            col_pred, col_user = st.columns(2)
-                            with col_pred:
-                                st.markdown(f"**Rubric Predicts:** {rubric_predicts_user_version}")
-                            with col_user:
-                                st.markdown(f"**User Chose:** {user_chose}")
-
-                            # Show match result
-                            if rubric_matches_user is None:
-                                st.info("⚪ No prediction (no matching criterion)")
-                            elif rubric_matches_user:
-                                st.success("✅ Rubric criterion correctly predicted user choice")
-                            else:
-                                st.error("❌ Rubric criterion did not predict user choice")
-
-                            # Show reasoning
-                            if score.get('reasoning'):
-                                st.markdown(f"**Reasoning:** {score.get('reasoning')}")
-
-                    # Clear rubric scores button
-                    col_clear_scores, _ = st.columns([1, 4])
-                    with col_clear_scores:
-                        if st.button("🗑️ Clear Rubric Tests", key="clear_rubric_scores"):
-                            st.session_state.evaluate_rubric_scores = None
-                            st.rerun()
-
-                # Export all results
-                st.markdown("---")
-
-                # Get active rubric info for the export
-                coverage_active_rubric, coverage_active_idx, _ = get_active_rubric()
-
-                all_results = {
-                    "conversation_file": st.session_state.evaluate_selected_conversation,
-                    "timestamp": datetime.now().isoformat(),
-                    "rubric_version": coverage_active_rubric.get("version") if coverage_active_rubric else None,
-                    "rubric_used": coverage_active_rubric.get("rubric") if coverage_active_rubric else None,
-                    "decision_points": st.session_state.evaluate_decision_points.get("parsed_data", {}).get("decision_points", []) if st.session_state.evaluate_decision_points else [],
-                    "overall_patterns": st.session_state.evaluate_decision_points.get("parsed_data", {}).get("overall_patterns", "") if st.session_state.evaluate_decision_points else "",
-                    "reflection_items": st.session_state.evaluate_reflection_items.get("reflection_items", []) if st.session_state.evaluate_reflection_items else [],
-                    "user_reflections": list(st.session_state.evaluate_user_responses.values()),
-                    "preference_dimensions": st.session_state.evaluate_preference_dimensions.get("preference_dimensions", []) if st.session_state.evaluate_preference_dimensions else [],
-                    "test_comparisons": st.session_state.evaluate_test_comparisons.get("test_comparisons", []) if st.session_state.evaluate_test_comparisons else [],
-                    "user_tests": st.session_state.evaluate_user_tests.get("user_tests", []) if st.session_state.evaluate_user_tests else [],
-                    "user_test_responses": list(st.session_state.evaluate_test_responses.values()),
-                    "rubric_scores": st.session_state.evaluate_rubric_scores
-                }
-
-                col_save, col_download = st.columns(2)
-
-                with col_save:
-                    if st.button("💾 Save to Project", key="save_coverage_to_project", type="primary", use_container_width=True):
-                        project_id = st.session_state.get('current_project_id')
-                        if not project_id:
-                            st.error("No project selected. Please select a project first.")
-                        else:
-                            supabase = st.session_state.get('supabase')
-                            if supabase and save_project_data(supabase, project_id, "evaluate_coverage", all_results):
-                                st.success(f"✅ Coverage analysis saved to project!")
-                            else:
-                                st.error("Failed to save coverage analysis.")
-
-                with col_download:
-                    st.download_button(
-                        label="📥 Download as JSON",
-                        data=json.dumps(all_results, indent=2, ensure_ascii=False),
-                        file_name=f"evaluate_coverage_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                        mime="application/json",
-                        use_container_width=True
-                    )
-
-# === ALIGNMENT TAB (HIDDEN) ===
-if False:
-    st.header("🎯 Evaluate: Alignment")
-    st.markdown("Test how well the AI understands your preferences by using a modified rubric.")
-
-    # Initialize alignment study state
-    if "align_study_phase" not in st.session_state:
-        st.session_state.align_study_phase = "setup"  # setup, task_a, survey_a, task_b, survey_b, complete
-    if "align_study_flawed_rubric" not in st.session_state:
-        st.session_state.align_study_flawed_rubric = None
-    if "align_study_original_rubric" not in st.session_state:
-        st.session_state.align_study_original_rubric = None
-    if "align_study_errors" not in st.session_state:
-        st.session_state.align_study_errors = []
-    if "align_study_task_a_messages" not in st.session_state:
-        st.session_state.align_study_task_a_messages = []
-    if "align_study_task_b_messages" not in st.session_state:
-        st.session_state.align_study_task_b_messages = []
-    if "align_study_survey_a" not in st.session_state:
-        st.session_state.align_study_survey_a = {}
-    if "align_study_survey_b" not in st.session_state:
-        st.session_state.align_study_survey_b = {}
-    if "align_study_rubric_review" not in st.session_state:
-        st.session_state.align_study_rubric_review = {}
-    if "align_study_edited_rubric" not in st.session_state:
-        st.session_state.align_study_edited_rubric = None
-    if "align_task_b_rubric_chat" not in st.session_state:
-        st.session_state.align_task_b_rubric_chat = []
-    if "align_task_b_rubric_suggestion" not in st.session_state:
-        st.session_state.align_task_b_rubric_suggestion = None
-
-    # Get active rubric
-    align_rubric_dict, align_rubric_idx, _ = get_active_rubric()
-
-    if not align_rubric_dict:
-        st.warning("No active rubric selected. Please select a rubric version in the sidebar to start the alignment study.")
-    else:
-        align_rubric_list = align_rubric_dict.get("rubric", [])
-        align_rubric_version = align_rubric_dict.get("version", align_rubric_idx + 1)
-
-        # Function to inject errors into rubric
-        def inject_rubric_errors(rubric_list):
-            """Inject two types of errors into the rubric:
-
-            Error 1 (LOUD): Flip the #1 priority criterion's value completely.
-            Reverse the name, description, and dimensions to their opposites.
-            User will notice within 1-2 turns. Expected to catch in Task B.
-
-            Error 2 (SUBTLE): Priority swap and/or dimension removal.
-            Changes balance but doesn't produce obviously wrong output.
-            User might feel something is off but can't pinpoint it.
-            Expected to miss in Task B, catch when viewing rubric.
-            """
-            flawed = copy.deepcopy(rubric_list)
-            errors = []
-
-            # === ERROR 1 (LOUD): Flip the #1 criterion's value ===
-            # Use LLM to intelligently reverse the criterion
-            if len(flawed) >= 1:
-                sorted_by_priority = sorted(flawed, key=lambda x: x.get("priority", 99))
-                top_crit = sorted_by_priority[0]
-                top_crit_idx = next(i for i, c in enumerate(flawed) if c.get("name") == top_crit.get("name"))
-
-                original_name = top_crit.get("name", "")
-                original_desc = top_crit.get("description", "")
-                original_dims = [d.get("label", "") for d in top_crit.get("dimensions", [])]
-
-                # Build prompt to flip the criterion
-                flip_prompt = f"""You need to REVERSE/FLIP a writing criterion to its OPPOSITE meaning.
-
-Original criterion:
-- Name: {original_name}
-- Description: {original_desc}
-- Dimensions: {json.dumps(original_dims)}
-
-Create the OPPOSITE version. Examples of flips:
-- "casual, conversational tone" → "formal, professional tone"
-- "concise and direct" → "thorough and detailed with full context"
-- "friendly warmth" → "neutral, measured distance"
-- "simple language" → "sophisticated, elevated vocabulary"
-- "brief responses" → "comprehensive, exhaustive responses"
-
-Return ONLY valid JSON in this exact format:
-{{
-    "flipped_name": "the opposite name",
-    "flipped_description": "the opposite description",
-    "flipped_dimensions": ["opposite dim 1", "opposite dim 2", ...]
-}}"""
-
-                try:
-                    flip_response = client.messages.create(
-                        model="claude-sonnet-4-20250514",
-                        max_tokens=1000,
-                        messages=[{"role": "user", "content": flip_prompt}]
-                    )
-                    flip_text = flip_response.content[0].text
-
-                    # Parse the flipped values
-                    json_match = re.search(r'\{[\s\S]*\}', flip_text)
-                    if json_match:
-                        flipped = json.loads(json_match.group())
-
-                        # Apply the flip to the criterion
-                        flawed[top_crit_idx]["name"] = flipped.get("flipped_name", original_name)
-                        flawed[top_crit_idx]["description"] = flipped.get("flipped_description", original_desc)
-
-                        # Update dimensions
-                        flipped_dims = flipped.get("flipped_dimensions", [])
-                        new_dimensions = []
-                        for i, dim_label in enumerate(flipped_dims):
-                            dim_id = top_crit.get("dimensions", [{}])[i].get("id", f"dim_{i}") if i < len(top_crit.get("dimensions", [])) else f"dim_{i}"
-                            new_dimensions.append({"id": dim_id, "label": dim_label})
-                        flawed[top_crit_idx]["dimensions"] = new_dimensions
-
-                        errors.append({
-                            "type": "criterion_flipped",
-                            "error_level": "loud",
-                            "criterion_priority": top_crit.get("priority", 1),
-                            "original_name": original_name,
-                            "flipped_name": flipped.get("flipped_name"),
-                            "original_description": original_desc,
-                            "flipped_description": flipped.get("flipped_description"),
-                            "original_dimensions": original_dims,
-                            "flipped_dimensions": flipped_dims,
-                            "description": f"FLIPPED #{top_crit.get('priority', 1)} criterion: '{original_name}' → '{flipped.get('flipped_name')}'"
-                        })
-                except Exception as e:
-                    # Fallback: simple word replacements if LLM fails
-                    errors.append({
-                        "type": "flip_failed",
-                        "error": str(e),
-                        "description": "Failed to flip criterion via LLM"
-                    })
-
-            # === ERROR 2 (SUBTLE): Shift meaning to something adjacent but different ===
-            # This is the most realistic error - the nuance gets lost.
-            # The user reads output and thinks "this isn't quite right" but can't explain why
-            # because the broad strokes are correct. Easy to spot when reading the rubric.
-            if len(flawed) >= 2:
-                sorted_by_priority = sorted(flawed, key=lambda x: x.get("priority", 99))
-
-                # Pick the #2 criterion to shift (not #1 since we already flipped that)
-                target_crit = sorted_by_priority[1] if len(sorted_by_priority) > 1 else sorted_by_priority[0]
-                target_idx = next(i for i, c in enumerate(flawed) if c.get("name") == target_crit.get("name"))
-
-                original_name = target_crit.get("name", "")
-                original_desc = target_crit.get("description", "")
-                original_dims = [d.get("label", "") for d in target_crit.get("dimensions", [])]
-
-                # Build prompt to shift the meaning subtly
-                shift_prompt = f"""You need to SUBTLY SHIFT a writing criterion to something ADJACENT but DIFFERENT in meaning.
-
-The goal is to change the NUANCE while keeping the broad category the same. The user will feel "something is off" but won't be able to pinpoint why from the AI's output alone. However, when they READ the rubric, they'll immediately say "no, that's not what I meant."
-
-Original criterion:
-- Name: {original_name}
-- Description: {original_desc}
-- Dimensions: {json.dumps(original_dims)}
-
-Examples of good shifts:
-- "Concise and direct — get to the point quickly" → "Clear and well-organized — each point is fully explained"
-  (Both sound like "good writing" but one produces short punchy text and the other produces longer structured text)
-
-- "Warm and friendly tone" → "Encouraging and enthusiastic tone"
-  (Both are positive but one is calm-warm and the other is exclamation-mark-peppy)
-
-- "Casual, like talking to a colleague" → "Approachable but polished, like a good manager"
-  (Both are informal-ish but the voice is completely different)
-
-- "Simple, everyday language" → "Accessible but precise language"
-  (Both avoid jargon but one is conversational and the other is more careful/measured)
-
-Create a shifted version that:
-1. Stays in the same general category (tone→tone, length→length, etc.)
-2. Changes the specific quality in a way that will produce noticeably different output
-3. Still sounds like reasonable writing advice (not obviously wrong)
-
-Return ONLY valid JSON in this exact format:
-{{
-    "shifted_name": "the adjacent-but-different name",
-    "shifted_description": "the adjacent-but-different description",
-    "shifted_dimensions": ["shifted dim 1", "shifted dim 2", ...],
-    "shift_explanation": "brief explanation of what changed (e.g., 'warm → enthusiastic changes calm supportive to peppy energetic')"
-}}"""
-
-                try:
-                    shift_response = client.messages.create(
-                        model="claude-sonnet-4-20250514",
-                        max_tokens=1000,
-                        messages=[{"role": "user", "content": shift_prompt}]
-                    )
-                    shift_text = shift_response.content[0].text
-
-                    # Parse the shifted values
-                    json_match = re.search(r'\{[\s\S]*\}', shift_text)
-                    if json_match:
-                        shifted = json.loads(json_match.group())
-
-                        # Apply the shift to the criterion
-                        flawed[target_idx]["name"] = shifted.get("shifted_name", original_name)
-                        flawed[target_idx]["description"] = shifted.get("shifted_description", original_desc)
-
-                        # Update dimensions
-                        shifted_dims = shifted.get("shifted_dimensions", [])
-                        new_dimensions = []
-                        for i, dim_label in enumerate(shifted_dims):
-                            dim_id = target_crit.get("dimensions", [{}])[i].get("id", f"dim_{i}") if i < len(target_crit.get("dimensions", [])) else f"dim_{i}"
-                            new_dimensions.append({"id": dim_id, "label": dim_label})
-                        flawed[target_idx]["dimensions"] = new_dimensions
-
-                        errors.append({
-                            "type": "meaning_shifted",
-                            "error_level": "subtle",
-                            "criterion_priority": target_crit.get("priority", 2),
-                            "original_name": original_name,
-                            "shifted_name": shifted.get("shifted_name"),
-                            "original_description": original_desc,
-                            "shifted_description": shifted.get("shifted_description"),
-                            "original_dimensions": original_dims,
-                            "shifted_dimensions": shifted_dims,
-                            "shift_explanation": shifted.get("shift_explanation", ""),
-                            "description": f"SHIFTED #{target_crit.get('priority', 2)} criterion: '{original_name}' → '{shifted.get('shifted_name')}'"
-                        })
-                except Exception as e:
-                    errors.append({
-                        "type": "shift_failed",
-                        "error": str(e),
-                        "description": "Failed to shift criterion meaning via LLM"
-                    })
-
-            return flawed, errors
-
-        # Reset button
-        col_reset, col_spacer = st.columns([1, 3])
-        with col_reset:
-            if st.button("🔄 Reset Study", use_container_width=True, key="alignment_reset"):
-                st.session_state.align_study_phase = "setup"
-                st.session_state.align_study_flawed_rubric = None
-                st.session_state.align_study_original_rubric = None
-                st.session_state.align_study_errors = []
-                st.session_state.align_study_task_a_messages = []
-                st.session_state.align_study_task_b_messages = []
-                st.session_state.align_study_survey_a = {}
-                st.session_state.align_study_survey_b = {}
-                st.session_state.align_study_rubric_review = {}
-                st.session_state.align_study_edited_rubric = None
-                st.session_state.align_task_b_rubric_chat = []
-                st.session_state.align_task_b_rubric_suggestion = None
-                st.rerun()
-
-        # Show current phase
-        phase = st.session_state.align_study_phase
-        phases = ["setup", "task_a", "survey_a", "task_b", "survey_b", "complete"]
-        phase_labels = ["Setup", "Task A: Chat", "Survey A", "Task B: Chat with Rubric", "Survey B & Review", "Complete"]
-        current_idx = phases.index(phase) if phase in phases else 0
-        st.progress((current_idx) / (len(phases) - 1), text=f"Phase: {phase_labels[current_idx]}")
-
-        # ============ SETUP PHASE ============
-        if phase == "setup":
-            st.markdown("---")
-            st.markdown("## 📋 Study Setup")
-            # st.markdown(f"Using rubric: **Version {align_rubric_version}** ({len(align_rubric_list)} criteria)")
-
-            st.info("""
-            **This study has two tasks:**
-
-            **Task A:** Chat with the AI assistant to complete a writing task. The AI will use your rubric preferences.
-
-            **Task B:** Chat with the AI again on a new task, this time with your rubric visible and editable.
-
-            After each task, you'll answer a few questions about the experience.
-            """)
-
-            if st.button("▶️ Start Study", type="primary", use_container_width=True):
-                # Inject errors and store
-                flawed_rubric, errors = inject_rubric_errors(align_rubric_list)
-                st.session_state.align_study_original_rubric = copy.deepcopy(align_rubric_list)
-                st.session_state.align_study_flawed_rubric = flawed_rubric
-                st.session_state.align_study_errors = errors
-                st.session_state.align_study_phase = "task_a"
-                st.rerun()
-
-        # ============ TASK A: Chat with flawed rubric (hidden) ============
-        elif phase == "task_a":
-            st.markdown("---")
-            st.markdown("## 💬 Task A: Writing Task")
-            st.markdown("Chat with the AI to complete a writing task. Describe what you need and work with the AI to create your content.")
-
-            # Chat interface for Task A
-            # Display messages
-            for msg in st.session_state.align_study_task_a_messages:
-                with st.chat_message(msg["role"]):
-                    st.markdown(msg["content"])
-
-            # Create a container for streaming responses BEFORE chat_input
-            task_a_streaming_container = st.container()
-
-            # Chat input
-            if prompt := st.chat_input("Type your message here...", key="task_a_input"):
-                # Add user message
-                st.session_state.align_study_task_a_messages.append({"role": "user", "content": prompt})
-
-                # Build system prompt with flawed rubric
-                flawed_rubric = st.session_state.align_study_flawed_rubric
-                rubric_json = json.dumps(flawed_rubric, indent=2)
-
-                system_prompt = f"""You are a helpful writing assistant. You help users write content based on their preferences.
-
-The user has the following writing preferences (rubric). Use these to guide your writing suggestions:
-
-{rubric_json}
-
-When writing or giving feedback, follow these preferences closely. Do not mention the rubric explicitly to the user.
-Wrap any draft content in <draft></draft> tags."""
-
-                # Build messages for API
-                api_messages = [{"role": m["role"], "content": m["content"]} for m in st.session_state.align_study_task_a_messages]
-
-                with task_a_streaming_container:
-                    # Show user message
-                    with st.chat_message("user"):
-                        st.markdown(prompt)
-
-                    # Stream assistant response
-                    with st.chat_message("assistant"):
-                        response_placeholder = st.empty()
-                        full_response = ""
-
-                        try:
-                            with client.messages.stream(
-                                model="claude-sonnet-4-20250514",
-                                max_tokens=4000,
-                                system=system_prompt,
-                                messages=api_messages
-                            ) as stream:
-                                for text in stream.text_stream:
-                                    full_response += text
-                                    # Strip draft tags for display during streaming
-                                    display_content = strip_draft_tags_for_streaming(full_response)
-                                    response_placeholder.markdown(display_content + "▌")
-
-                            # Final display without cursor
-                            display_content = strip_draft_tags_for_streaming(full_response)
-                            response_placeholder.markdown(display_content)
-
-                            # Save to session state
-                            st.session_state.align_study_task_a_messages.append({"role": "assistant", "content": full_response})
-                            st.rerun()
-                        except Exception as e:
-                            st.error(f"Error: {str(e)}")
-
-            # End session button
-            st.markdown("---")
-            if len(st.session_state.align_study_task_a_messages) >= 2:
-                if st.button("✅ End Task A", type="primary", use_container_width=True):
-                    st.session_state.align_study_phase = "survey_a"
-                    st.rerun()
-
-        # ============ SURVEY A ============
-        elif phase == "survey_a":
-            st.markdown("---")
-            st.markdown("## 📝 Survey: Task A Feedback")
-            st.markdown("Please answer the following questions about your experience in Task A.")
-
-            # Q1: Understanding (1-5)
-            st.markdown("**Q1: How well did the model understand what you wanted from the start?**")
-            q1 = st.slider("1 = Not at all, 5 = Perfectly", 1, 5,
-                          value=st.session_state.align_study_survey_a.get("q1_understanding", 3),
-                          key="survey_a_q1")
-            st.session_state.align_study_survey_a["q1_understanding"] = q1
-
-            # Q2: Effort (1-5)
-            st.markdown("**Q2: How much effort did you spend getting the model to match your style?**")
-            q2 = st.slider("1 = No effort, 5 = A lot of effort", 1, 5,
-                          value=st.session_state.align_study_survey_a.get("q2_effort", 3),
-                          key="survey_a_q2")
-            st.session_state.align_study_survey_a["q2_effort"] = q2
-
-            # Q3: Problems (open text)
-            st.markdown("**Q3: Is there anything the model kept getting wrong?**")
-            q3 = st.text_area("Describe any issues...",
-                             value=st.session_state.align_study_survey_a.get("q3_problems", ""),
-                             key="survey_a_q3")
-            st.session_state.align_study_survey_a["q3_problems"] = q3
-
-            st.markdown("---")
-            if st.button("▶️ Continue to Task B", type="primary", use_container_width=True):
-                # Initialize edited rubric with the flawed one for Task B
-                st.session_state.align_study_edited_rubric = copy.deepcopy(st.session_state.align_study_flawed_rubric)
-                st.session_state.align_study_phase = "task_b"
-                st.rerun()
-
-        # ============ TASK B: Chat with visible/editable rubric ============
-        elif phase == "task_b":
-            st.markdown("---")
-            st.markdown("## 💬 Task B: Writing Task with Rubric")
-            st.markdown("You can see and edit your rubric above. Use the chat below to complete a new writing task.")
-
-            # Initialize Task B rubric chat state
-            if "align_task_b_rubric_chat" not in st.session_state:
-                st.session_state.align_task_b_rubric_chat = []
-            if "align_task_b_rubric_suggestion" not in st.session_state:
-                st.session_state.align_task_b_rubric_suggestion = None
-
-            # Two-column layout: Rubric on left, Improve Rubric chat on right
-            rubric_col, improve_col = st.columns([1, 1])
-
-            with rubric_col:
-                st.markdown("### 📋 Your Rubric")
-
-                edited_rubric = st.session_state.align_study_edited_rubric
-
-                # Sort criteria by priority for display
-                sorted_criteria = sorted(
-                    enumerate(edited_rubric),
-                    key=lambda x: int(x[1].get("priority", x[0] + 1))
-                )
-
-                num_criteria = len(sorted_criteria)
-
-                for rank, (original_idx, criterion) in enumerate(sorted_criteria, start=1):
-                    criterion_name = criterion.get('name', 'Unnamed Criterion')
-
-                    # Row with up arrow, down arrow, and expander
-                    up_col, down_col, expander_col = st.columns([0.08, 0.08, 0.84])
-
-                    with up_col:
-                        up_key = f"task_b_move_up_{rank}"
-                        up_disabled = (rank == 1)
-                        if st.button("▲", key=up_key, disabled=up_disabled, help="Move up"):
-                            if not up_disabled:
-                                for r, (idx, c) in enumerate(sorted_criteria, start=1):
-                                    if r == rank:
-                                        c["priority"] = rank - 1
-                                    elif r == rank - 1:
-                                        c["priority"] = rank
-                                st.rerun()
-
-                    with down_col:
-                        down_key = f"task_b_move_down_{rank}"
-                        down_disabled = (rank == num_criteria)
-                        if st.button("▼", key=down_key, disabled=down_disabled, help="Move down"):
-                            if not down_disabled:
-                                for r, (idx, c) in enumerate(sorted_criteria, start=1):
-                                    if r == rank:
-                                        c["priority"] = rank + 1
-                                    elif r == rank + 1:
-                                        c["priority"] = rank
-                                st.rerun()
-
-                    with expander_col:
-                        expander_label = f"#{rank} - {criterion_name}"
-                        with st.expander(expander_label, expanded=False):
-                            # Description (editable)
-                            desc_key = f"task_b_crit_desc_{original_idx}"
-                            description = st.text_area(
-                                "Description",
-                                value=criterion.get("description", ""),
-                                key=desc_key,
-                                placeholder="Description of this criterion...",
-                                height=80
-                            )
-                            criterion["description"] = description
-
-                            # Dimensions (editable)
-                            st.markdown("**Dimensions**")
-                            dimensions = criterion.get("dimensions", [])
-
-                            for dim_idx, dim in enumerate(dimensions):
-                                dim_id = dim.get("id", f"dim_{dim_idx}")
-                                col1, col2 = st.columns([0.88, 0.12])
-                                with col1:
-                                    dim_key = f"task_b_dim_{original_idx}_{dim_id}"
-                                    dim_label = st.text_input(
-                                        f"Dimension {dim_idx + 1}",
-                                        value=dim.get("label", ""),
-                                        key=dim_key,
-                                        label_visibility="collapsed",
-                                        placeholder=f"Dimension {dim_idx + 1} label..."
-                                    )
-                                    dim["label"] = dim_label
-                                with col2:
-                                    remove_key = f"task_b_remove_dim_{original_idx}_{dim_id}"
-                                    if st.button("➖", key=remove_key, help="Remove dimension"):
-                                        criterion["dimensions"] = [d for d in dimensions if d.get("id") != dim_id]
-                                        st.rerun()
-
-                            # Add dimension button
-                            add_dim_key = f"task_b_add_dim_{original_idx}"
-                            if st.button("➕ Add Dimension", key=add_dim_key):
-                                new_dim_id = f"dim_{int(time.time() * 1000)}"
-                                criterion["dimensions"].append({"id": new_dim_id, "label": ""})
-                                st.rerun()
-
-            with improve_col:
-                st.markdown("### 💬 Improve Rubric")
-                st.caption("Describe changes you'd like to make to the rubric")
-
-                # Helper function to convert markdown to HTML
-                def md_to_html_task_b(text):
-                    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
-                    text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
-                    return text
-
-                # Display rubric chat history
-                if st.session_state.align_task_b_rubric_chat:
-                    chat_html = """<div style='background-color: white; padding: 10px; border-radius: 5px;
-                                   max-height: 350px; overflow-y: auto; border: 1px solid #ddd;'>"""
-                    for msg in st.session_state.align_task_b_rubric_chat:
-                        content_html = md_to_html_task_b(msg["content"])
-                        if msg["role"] == "user":
-                            chat_html += f'<div style="margin-bottom: 8px;"><strong>You:</strong> {content_html}</div>'
-                        else:
-                            chat_html += f'<div style="margin-bottom: 8px; color: #555;"><strong>AI:</strong> {content_html}</div>'
-                    chat_html += "</div>"
-                    st.markdown(chat_html, unsafe_allow_html=True)
-
-                # Rubric chat input
-                rubric_change_input = st.text_input(
-                    "Describe rubric changes...",
-                    key="task_b_rubric_chat_input",
-                    placeholder="e.g., Make tone more casual, add a dimension for humor..."
-                )
-
-                col_send, col_clear = st.columns([3, 1])
-                with col_send:
-                    if st.button("Send", key="task_b_rubric_send", use_container_width=True):
-                        if rubric_change_input.strip():
-                            st.session_state.align_task_b_rubric_chat.append({
-                                "role": "user",
-                                "content": rubric_change_input.strip()
-                            })
-
-                            # Get AI suggestion for rubric changes
-                            with st.spinner("Getting suggestions..."):
+                                parsed_data = None
                                 try:
-                                    from prompts import RUBRIC_EDIT_PROMPT
-
-                                    current_rubric_json = json.dumps(edited_rubric, indent=2)
-                                    system_prompt = RUBRIC_EDIT_PROMPT.format(
-                                        current_rubric=current_rubric_json,
-                                        user_request="{user_request}"
-                                    )
-
-                                    api_messages = []
-                                    for msg in st.session_state.align_task_b_rubric_chat:
-                                        api_messages.append({"role": msg["role"], "content": msg["content"]})
-
-                                    response = client.messages.create(
-                                        model="claude-sonnet-4-20250514",
-                                        max_tokens=8000,
-                                        system=system_prompt,
-                                        messages=api_messages
-                                    )
-                                    response_text = response.content[0].text
-
-                                    # Try to parse JSON response
                                     json_match = re.search(r'\{[\s\S]*\}', response_text)
                                     if json_match:
-                                        result = json.loads(json_match.group())
-                                        changes_summary = result.get("changes_summary", "Changes applied")
-                                        modified_rubric = result.get("modified_rubric", [])
+                                        parsed_data = json.loads(json_match.group())
+                                except json.JSONDecodeError:
+                                    pass
 
-                                        # Store the suggestion with original rubric for comparison
-                                        original_rubric = copy.deepcopy(edited_rubric)
-                                        st.session_state.align_task_b_rubric_suggestion = {
-                                            "modified_rubric": modified_rubric,
-                                            "original_rubric": original_rubric,
-                                            "summary": changes_summary
-                                        }
+                                st.session_state.evaluate_decision_points = {
+                                    "thinking": thinking_text,
+                                    "raw_response": response_text,
+                                    "parsed_data": parsed_data,
+                                    "conversation_file": eval_selected_file
+                                }
+                                st.rerun()
 
-                                        # Add AI response to chat
-                                        st.session_state.align_task_b_rubric_chat.append({
-                                            "role": "assistant",
-                                            "content": f"✅ **Suggested changes:** {changes_summary}"
-                                        })
+                            except Exception as e:
+                                st.error(f"Error extracting decision points: {str(e)}")
 
-                                        # Build rubric change preview and add as chat message
-                                        original_names = {c.get("name"): c for c in original_rubric}
-                                        modified_names = {c.get("name"): c for c in modified_rubric}
-                                        added = set(modified_names.keys()) - set(original_names.keys())
-                                        removed = set(original_names.keys()) - set(modified_names.keys())
-                                        common = set(original_names.keys()) & set(modified_names.keys())
+                # Display decision points if extracted
+                if st.session_state.evaluate_decision_points:
+                    result = st.session_state.evaluate_decision_points
+                    parsed_data = result.get("parsed_data")
 
-                                        change_lines = []
-                                        # Added criteria
-                                        for name in added:
-                                            crit = modified_names[name]
-                                            change_lines.append(f"➕ **NEW: {name}** (priority #{crit.get('priority', '?')})")
-                                            if crit.get("description"):
-                                                change_lines.append(f"   {crit.get('description')}")
+                    if parsed_data and "decision_points" in parsed_data:
+                        decision_points = parsed_data["decision_points"]
+                        st.success(f"Found {len(decision_points)} decision points")
 
-                                        # Removed criteria
-                                        for name in removed:
-                                            change_lines.append(f"➖ **REMOVED:** ~~{name}~~")
+                        # Show thinking (collapsed)
+                        if result.get("thinking"):
+                            with st.expander("🧠 Extraction Thinking", expanded=False):
+                                st.markdown(result["thinking"])
 
-                                        # Modified criteria
-                                        for name in common:
-                                            orig = original_names[name]
-                                            mod = modified_names[name]
-                                            orig_p = orig.get("priority", 0)
-                                            mod_p = mod.get("priority", 0)
-                                            orig_desc = orig.get("description", "")
-                                            mod_desc = mod.get("description", "")
-                                            orig_dims = [d.get("label", "") for d in orig.get("dimensions", [])]
-                                            mod_dims = [d.get("label", "") for d in mod.get("dimensions", [])]
+                        # ==================== STEP 2: COLD REFLECTION ====================
+                        st.divider()
+                        st.subheader("Step 2: Reflection")
+                        st.markdown("For each decision point, reflect on what was wrong with the original or better about your version.**")
 
-                                            if orig_p != mod_p or orig_desc != mod_desc or orig_dims != mod_dims:
-                                                change_lines.append(f"🔄 **{name}**")
-                                                if orig_p != mod_p:
-                                                    change_lines.append(f"   Priority: #{orig_p} → #{mod_p}")
-                                                if orig_desc != mod_desc:
-                                                    change_lines.append(f"   Description:")
-                                                    change_lines.append(f"   ❌ {orig_desc[:150]}{'...' if len(orig_desc) > 150 else ''}")
-                                                    change_lines.append(f"   ✅ {mod_desc}")
-                                                added_dims = set(mod_dims) - set(orig_dims)
-                                                removed_dims = set(orig_dims) - set(mod_dims)
-                                                if added_dims or removed_dims:
-                                                    change_lines.append(f"   Dimensions:")
-                                                    for d in removed_dims:
-                                                        change_lines.append(f"   ➖ ~~{d}~~")
-                                                    for d in added_dims:
-                                                        change_lines.append(f"   ➕ {d}")
+                        reflections_complete = len(st.session_state.evaluate_user_responses) >= len(decision_points)
+                        st.progress(len(st.session_state.evaluate_user_responses) / max(len(decision_points), 1))
+                        st.caption(f"Completed: {len(st.session_state.evaluate_user_responses)} / {len(decision_points)}")
 
-                                        if change_lines:
-                                            st.session_state.align_task_b_rubric_chat.append({
-                                                "role": "assistant",
-                                                "content": "\n".join(change_lines)
-                                            })
+                        # Build mapping from decision point to message numbers
+                        dp_to_messages = {}
+                        for dp in decision_points:
+                            dp_id = dp.get('id')
+                            messages = set()
+                            if dp.get("assistant_message_num"):
+                                messages.add(dp["assistant_message_num"])
+                            if dp.get("user_message_num"):
+                                messages.add(dp["user_message_num"])
+                            dp_to_messages[dp_id] = messages
 
-                                    else:
-                                        # AI asked a clarifying question
-                                        st.session_state.align_task_b_rubric_chat.append({
-                                            "role": "assistant",
-                                            "content": response_text
-                                        })
+                        # Get highlighted message numbers based on expanded decision point
+                        highlighted_messages = set()
+                        if st.session_state.evaluate_expanded_dp is not None:
+                            highlighted_messages = dp_to_messages.get(st.session_state.evaluate_expanded_dp, set())
+
+                        # CSS for message highlighting
+                        st.markdown("""
+                        <style>
+                        .highlighted-message {
+                            background: linear-gradient(90deg, #fff3cd 0%, #fff9e6 100%);
+                            border-left: 4px solid #ffc107;
+                            padding: 12px 16px;
+                            margin: 8px 0;
+                            border-radius: 0 8px 8px 0;
+                        }
+                        .normal-message {
+                            background: #f8f9fa;
+                            padding: 12px 16px;
+                            margin: 8px 0;
+                            border-radius: 8px;
+                            border-left: 4px solid #dee2e6;
+                        }
+                        .message-user { border-left-color: #28a745; }
+                        .message-assistant { border-left-color: #007bff; }
+                        .highlighted-message.message-user {
+                            border-left-color: #28a745;
+                            background: linear-gradient(90deg, #d4edda 0%, #e8f5e9 100%);
+                        }
+                        .highlighted-message.message-assistant {
+                            border-left-color: #007bff;
+                            background: linear-gradient(90deg, #cce5ff 0%, #e3f2fd 100%);
+                        }
+                        .message-number { font-weight: bold; color: #6c757d; font-size: 0.85em; }
+                        .message-role { font-weight: 600; margin-bottom: 4px; }
+                        .message-content { color: #333; line-height: 1.6; }
+                        </style>
+                        """, unsafe_allow_html=True)
+
+                        # Two-column layout: Conversation on left, Decision points on right
+                        col_conv, col_dp = st.columns([1, 1])
+
+                        with col_conv:
+                            st.markdown("### 📜 Conversation")
+                            if st.session_state.evaluate_expanded_dp:
+                                st.caption(f"*Highlighting messages for Decision Point #{st.session_state.evaluate_expanded_dp}*")
+
+                            conversation_container = st.container(height=500)
+                            with conversation_container:
+                                msg_num = 1
+                                for idx, msg in enumerate(eval_messages):
+                                    role = msg.get('role', 'unknown')
+                                    if role not in ['user', 'assistant']:
+                                        continue
+
+                                    content = msg.get('display_content', msg.get('content', ''))
+                                    is_highlighted = msg_num in highlighted_messages
+
+                                    css_class = "highlighted-message" if is_highlighted else "normal-message"
+                                    role_class = f"message-{role}"
+                                    role_label = "👤 User" if role == "user" else "🤖 Assistant"
+
+                                    escaped_content = content.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>")
+
+                                    st.markdown(f"""
+                                    <div class="{css_class} {role_class}">
+                                        <div class="message-number">Message #{msg_num}</div>
+                                        <div class="message-role">{role_label}</div>
+                                        <div class="message-content">{escaped_content}</div>
+                                    </div>
+                                    """, unsafe_allow_html=True)
+
+                                    msg_num += 1
+
+                        with col_dp:
+                            st.markdown("### 🔍 Decision Points")
+                            st.caption("Click to expand and see highlighted messages")
+
+                            for dp in decision_points:
+                                dp_id = dp.get('id', 0)
+                                is_expanded = st.session_state.evaluate_expanded_dp == dp_id
+                                already_responded = dp_id in st.session_state.evaluate_user_responses
+
+                                # Show message numbers for this decision point
+                                asst_msg = dp.get('assistant_message_num', '?')
+                                user_msg = dp.get('user_message_num', '?')
+
+                                status_icon = "✅" if already_responded else "⬜"
+                                btn_label = f"{status_icon} DP#{dp_id}: {dp.get('dimension', 'Unknown')} (Msgs #{asst_msg}→#{user_msg})"
+
+                                if st.button(btn_label, key=f"dp_btn_{dp_id}", use_container_width=True,
+                                            type="primary" if is_expanded else "secondary"):
+                                    st.session_state.evaluate_expanded_dp = dp_id if not is_expanded else None
                                     st.rerun()
-                                except Exception as e:
-                                    st.error(f"Error: {str(e)}")
-
-                with col_clear:
-                    if st.button("🗑️", key="task_b_rubric_clear", help="Clear chat"):
-                        st.session_state.align_task_b_rubric_chat = []
-                        st.session_state.align_task_b_rubric_suggestion = None
-                        st.rerun()
-
-                # Show accept/reject buttons if there's a suggestion
-                if st.session_state.align_task_b_rubric_suggestion:
-                    col_accept, col_reject = st.columns(2)
-                    with col_accept:
-                        if st.button("✅ Accept", key="task_b_accept_rubric", type="primary", use_container_width=True):
-                            st.session_state.align_study_edited_rubric = st.session_state.align_task_b_rubric_suggestion["modified_rubric"]
-                            st.session_state.align_task_b_rubric_chat.append({
-                                "role": "assistant",
-                                "content": "✅ Changes applied to rubric!"
-                            })
-                            st.session_state.align_task_b_rubric_suggestion = None
-                            st.rerun()
-                    with col_reject:
-                        if st.button("❌ Reject", key="task_b_reject_rubric", use_container_width=True):
-                            st.session_state.align_task_b_rubric_chat.append({
-                                "role": "assistant",
-                                "content": "Changes rejected. What would you like instead?"
-                            })
-                            st.session_state.align_task_b_rubric_suggestion = None
-                            st.rerun()
-
-            # Writing Chat section (full width below the two columns)
-            st.markdown("---")
-            st.markdown("### ✍️ Writing Chat")
-
-            # Scrollable chat container with streaming inside
-            chat_container = st.container(height=400)
-
-            # Track if we need to stream
-            task_b_prompt = st.chat_input("Type your message here...", key="task_b_input")
-
-            with chat_container:
-                # Display existing messages
-                for msg in st.session_state.align_study_task_b_messages:
-                    with st.chat_message(msg["role"]):
-                        st.markdown(msg["content"])
-
-                # Handle new message and streaming inside the container
-                if task_b_prompt:
-                    st.session_state.align_study_task_b_messages.append({"role": "user", "content": task_b_prompt})
-
-                    # Show user message
-                    with st.chat_message("user"):
-                        st.markdown(task_b_prompt)
-
-                    # Build system prompt with current edited rubric
-                    edited_rubric = st.session_state.align_study_edited_rubric
-                    rubric_json = json.dumps(edited_rubric, indent=2)
-
-                    system_prompt = f"""You are a helpful writing assistant. You help users write content based on their preferences.
-
-The user has the following writing preferences (rubric). Use these to guide your writing suggestions:
-
-{rubric_json}
-
-When writing or giving feedback, follow these preferences closely. The user can see and edit the rubric, so you may discuss it openly if they ask.
-Wrap any draft content in <draft></draft> tags."""
-
-                    api_messages = [{"role": m["role"], "content": m["content"]} for m in st.session_state.align_study_task_b_messages]
-
-                    # Stream assistant response inside the container
-                    with st.chat_message("assistant"):
-                        response_placeholder = st.empty()
-                        full_response = ""
-
-                        try:
-                            with client.messages.stream(
-                                model="claude-sonnet-4-20250514",
-                                max_tokens=4000,
-                                system=system_prompt,
-                                messages=api_messages
-                            ) as stream:
-                                for text in stream.text_stream:
-                                    full_response += text
-                                    # Strip draft tags for display during streaming
-                                    display_content = strip_draft_tags_for_streaming(full_response)
-                                    response_placeholder.markdown(display_content + "▌")
-
-                            # Final display without cursor
-                            display_content = strip_draft_tags_for_streaming(full_response)
-                            response_placeholder.markdown(display_content)
-
-                            # Save to session state
-                            st.session_state.align_study_task_b_messages.append({"role": "assistant", "content": full_response})
-                            st.rerun()
-                        except Exception as e:
-                            st.error(f"Error: {str(e)}")
-
-            # End session button (full width below everything)
-            st.markdown("---")
-            if len(st.session_state.align_study_task_b_messages) >= 2:
-                if st.button("✅ End Task B", type="primary", use_container_width=True):
-                    st.session_state.align_study_phase = "survey_b"
-                    st.rerun()
-
-        # ============ SURVEY B & RUBRIC REVIEW ============
-        elif phase == "survey_b":
-            st.markdown("---")
-            st.markdown("## 📝 Survey: Task B Feedback")
-
-            # Same questions as Survey A for comparison
-            st.markdown("**Q1: How well did the model understand what you wanted from the start?**")
-            q1 = st.slider("1 = Not at all, 5 = Perfectly", 1, 5,
-                          value=st.session_state.align_study_survey_b.get("q1_understanding", 3),
-                          key="survey_b_q1")
-            st.session_state.align_study_survey_b["q1_understanding"] = q1
-
-            st.markdown("**Q2: How much effort did you spend getting the model to match your style?**")
-            q2 = st.slider("1 = No effort, 5 = A lot of effort", 1, 5,
-                          value=st.session_state.align_study_survey_b.get("q2_effort", 3),
-                          key="survey_b_q2")
-            st.session_state.align_study_survey_b["q2_effort"] = q2
-
-            st.markdown("**Q3: Is there anything the model kept getting wrong?**")
-            q3 = st.text_area("Describe any issues...",
-                             value=st.session_state.align_study_survey_b.get("q3_problems", ""),
-                             key="survey_b_q3")
-            st.session_state.align_study_survey_b["q3_problems"] = q3
-
-            st.markdown("---")
-            st.markdown("## 🔍 Rubric Review")
-            st.markdown("Please review each criterion in the rubric. For each one, indicate whether it correctly represents your preferences.")
-
-            edited_rubric = st.session_state.align_study_edited_rubric
-
-            for crit_idx, criterion in enumerate(edited_rubric):
-                crit_name = criterion.get("name", f"Criterion {crit_idx + 1}")
-                crit_desc = criterion.get("description", "")
-                dims = criterion.get("dimensions", [])
-
-                with st.expander(f"**{crit_name}**", expanded=True):
-                    st.markdown(f"*{crit_desc}*")
-                    if dims:
-                        st.caption(f"Dimensions: {', '.join([d.get('label', '') for d in dims])}")
-
-                    # Three-way choice
-                    review_key = f"review_{crit_idx}"
-                    current_review = st.session_state.align_study_rubric_review.get(review_key, {})
-
-                    correctness = st.radio(
-                        "Is this criterion correct?",
-                        options=["Correct", "Not quite", "Wrong"],
-                        index=["Correct", "Not quite", "Wrong"].index(current_review.get("correctness", "Correct")),
-                        key=f"rubric_review_correct_{crit_idx}",
-                        horizontal=True
-                    )
-
-                    current_review["correctness"] = correctness
-
-                    # If wrong or not quite, ask what's wrong
-                    if correctness in ["Not quite", "Wrong"]:
-                        explanation = st.text_area(
-                            "What's wrong with this criterion?",
-                            value=current_review.get("explanation", ""),
-                            key=f"rubric_review_explain_{crit_idx}"
-                        )
-                        current_review["explanation"] = explanation
-
-                    st.session_state.align_study_rubric_review[review_key] = current_review
-
-            st.markdown("---")
-            if st.button("✅ Complete Study", type="primary", use_container_width=True):
-                # Save all data to database
-                project_id = st.session_state.get('current_project_id')
-                supabase = st.session_state.get('supabase')
-
-                study_results = {
-                    "timestamp": datetime.now().isoformat(),
-                    "original_rubric": st.session_state.align_study_original_rubric,
-                    "flawed_rubric": st.session_state.align_study_flawed_rubric,
-                    "injected_errors": st.session_state.align_study_errors,
-                    "task_a_conversation": st.session_state.align_study_task_a_messages,
-                    "task_b_conversation": st.session_state.align_study_task_b_messages,
-                    "task_b_rubric_chat": st.session_state.align_task_b_rubric_chat,
-                    "survey_a": st.session_state.align_study_survey_a,
-                    "survey_b": st.session_state.align_study_survey_b,
-                    "edited_rubric": st.session_state.align_study_edited_rubric,
-                    "rubric_review": st.session_state.align_study_rubric_review
-                }
-
-                if project_id and supabase:
-                    if save_project_data(supabase, project_id, "alignment_study", study_results):
-                        st.toast("Study results saved!")
-
-                st.session_state.align_study_phase = "complete"
-                st.rerun()
-
-        # ============ COMPLETE ============
-        elif phase == "complete":
-            st.markdown("---")
-            st.markdown("## ✅ Study Complete!")
-            st.success("Thank you for completing the alignment study.")
-
-            # Show summary
-            st.markdown("### 📊 Summary")
-
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown("**Task A (Hidden Rubric)**")
-                survey_a = st.session_state.align_study_survey_a
-                st.metric("Understanding", f"{survey_a.get('q1_understanding', 'N/A')}/5")
-                st.metric("Effort Required", f"{survey_a.get('q2_effort', 'N/A')}/5")
-
-            with col2:
-                st.markdown("**Task B (Visible Rubric)**")
-                survey_b = st.session_state.align_study_survey_b
-                st.metric("Understanding", f"{survey_b.get('q1_understanding', 'N/A')}/5")
-                st.metric("Effort Required", f"{survey_b.get('q2_effort', 'N/A')}/5")
-
-            # Show injected errors
-            st.markdown("### 🔍 Injected Errors")
-            st.markdown("These errors were injected into your rubric for Task A:")
-            errors = st.session_state.align_study_errors
-
-            # Separate loud and subtle errors
-            loud_errors = [e for e in errors if e.get("error_level") == "loud"]
-            subtle_errors = [e for e in errors if e.get("error_level") == "subtle"]
-
-            if loud_errors:
-                st.markdown("#### 🔊 Loud Error (expected to notice quickly)")
-                for error in loud_errors:
-                    if error["type"] == "criterion_flipped":
-                        st.error(f"**🔄 Criterion FLIPPED**: #{error['criterion_priority']} '{error['original_name']}' → '{error['flipped_name']}'")
-                        with st.expander("See details"):
-                            st.markdown(f"**Original description:** {error['original_description']}")
-                            st.markdown(f"**Flipped description:** {error['flipped_description']}")
-                            st.markdown(f"**Original dimensions:** {', '.join(error['original_dimensions'])}")
-                            st.markdown(f"**Flipped dimensions:** {', '.join(error['flipped_dimensions'])}")
-
-            if subtle_errors:
-                st.markdown("#### 🔇 Subtle Error (expected to notice when viewing rubric)")
-                st.markdown("*The nuance was shifted — broad strokes are correct but the specific quality is different.*")
-                for error in subtle_errors:
-                    if error["type"] == "meaning_shifted":
-                        st.warning(f"**🔀 Meaning SHIFTED**: #{error['criterion_priority']} '{error['original_name']}' → '{error['shifted_name']}'")
-                        with st.expander("See details"):
-                            st.markdown(f"**Why this is hard to catch in conversation:** {error.get('shift_explanation', 'The broad category is the same but the specific quality produces different output.')}")
-                            st.markdown("---")
-                            st.markdown(f"**Original name:** {error['original_name']}")
-                            st.markdown(f"**Shifted name:** {error['shifted_name']}")
-                            st.markdown(f"**Original description:** {error['original_description']}")
-                            st.markdown(f"**Shifted description:** {error['shifted_description']}")
-                            if error.get('original_dimensions'):
-                                st.markdown(f"**Original dimensions:** {', '.join(error['original_dimensions'])}")
-                            if error.get('shifted_dimensions'):
-                                st.markdown(f"**Shifted dimensions:** {', '.join(error['shifted_dimensions'])}")
-                    elif error["type"] == "priority_swap":
-                        st.warning(f"**🔀 Priority Swap**: '{error['criterion_1']}' #{error['original_priorities'][0]}→#{error['new_priorities'][0]} ↔ '{error['criterion_2']}' #{error['original_priorities'][1]}→#{error['new_priorities'][1]}")
-                    elif error["type"] == "dimensions_removed":
-                        st.warning(f"**➖ Dimensions Removed** from '{error['criterion']}': Removed {len(error['removed_dimensions'])} dimensions")
-                        with st.expander("See removed dimensions"):
-                            st.markdown(f"**Removed:** {', '.join(error['removed_dimensions'])}")
-                            st.markdown(f"**Kept:** {', '.join(error['kept_dimensions'])}")
-
-            # Handle any errors without error_level (legacy/fallback)
-            other_errors = [e for e in errors if e.get("error_level") not in ["loud", "subtle"]]
-            for error in other_errors:
-                if error["type"] == "flip_failed":
-                    st.warning(f"**⚠️ Flip Failed**: {error.get('error', 'Unknown error')}")
-                elif error["type"] == "shift_failed":
-                    st.warning(f"**⚠️ Shift Failed**: {error.get('error', 'Unknown error')}")
-
-            # Show rubric review results
-            st.markdown("### 📋 Rubric Review Results")
-            review = st.session_state.align_study_rubric_review
-            correct_count = sum(1 for k, v in review.items() if v.get("correctness") == "Correct")
-            total_count = len(review)
-            st.metric("Criteria Marked Correct", f"{correct_count}/{total_count}")
-
-            # Download results
-            st.markdown("---")
-            study_results = {
-                "timestamp": datetime.now().isoformat(),
-                "original_rubric": st.session_state.align_study_original_rubric,
-                "flawed_rubric": st.session_state.align_study_flawed_rubric,
-                "injected_errors": st.session_state.align_study_errors,
-                "task_a_conversation": st.session_state.align_study_task_a_messages,
-                "task_b_conversation": st.session_state.align_study_task_b_messages,
-                "survey_a": st.session_state.align_study_survey_a,
-                "survey_b": st.session_state.align_study_survey_b,
-                "edited_rubric": st.session_state.align_study_edited_rubric,
-                "rubric_review": st.session_state.align_study_rubric_review
-            }
-
-            st.download_button(
-                "📥 Download Results",
-                data=json.dumps(study_results, indent=2),
-                file_name=f"alignment_study_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                mime="application/json"
-            )
-
-# === UTILITY TAB (HIDDEN) ===
-if False:
-    st.header("⚡ Evaluate: Utility")
-    st.markdown("Measure how useful your rubric is for improving writing quality through surveys before and after using the rubric.")
-
-    # Helper function to render cognitive load survey
-    def render_cognitive_load_survey(prefix):
-        st.subheader("Cognitive Load Survey")
-        st.markdown("For each of the six scales, evaluate the task you recently performed by moving the slider bars. Each line has two endpoint descriptors that describe the scale.")
-
-        # 1. Mental Demand
-        st.markdown("**1. Mental Demand**")
-        st.markdown("*How much mental and perceptual activity was required (e.g., thinking, deciding, calculating, remembering, reading, concentrating, etc.)?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Low</p>", unsafe_allow_html=True)
-        with col_slider:
-            mental_demand = st.slider("Mental Demand", min_value=0, max_value=20, value=10, key=f"{prefix}_mental_demand", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>High</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 2. Physical Demand
-        st.markdown("**2. Physical Demand**")
-        st.markdown("*How much physical activity was required (e.g., typing, staring at the monitor, etc.)?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Low</p>", unsafe_allow_html=True)
-        with col_slider:
-            physical_demand = st.slider("Physical Demand", min_value=0, max_value=20, value=10, key=f"{prefix}_physical_demand", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>High</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 3. Temporal Demand
-        st.markdown("**3. Temporal Demand**")
-        st.markdown("*How much time pressure did you feel due to the rate or pace at which the task elements occurred?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Low</p>", unsafe_allow_html=True)
-        with col_slider:
-            temporal_demand = st.slider("Temporal Demand", min_value=0, max_value=20, value=10, key=f"{prefix}_temporal_demand", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>High</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 4. Effort
-        st.markdown("**4. Effort**")
-        st.markdown("*How hard did you have to work (mentally and physically) to accomplish your level of performance?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Low</p>", unsafe_allow_html=True)
-        with col_slider:
-            effort = st.slider("Effort", min_value=0, max_value=20, value=10, key=f"{prefix}_effort", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>High</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 5. Performance
-        st.markdown("**5. Performance**")
-        st.markdown("*How successful do you think you were in accomplishing the goals of the task set by the experimenter (or yourself)?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Good</p>", unsafe_allow_html=True)
-        with col_slider:
-            performance = st.slider("Performance", min_value=0, max_value=20, value=10, key=f"{prefix}_performance", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>Poor</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 6. Frustration
-        st.markdown("**6. Frustration**")
-        st.markdown("*How insecure, discouraged, irritated, stressed, and annoyed were you during the task?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Low</p>", unsafe_allow_html=True)
-        with col_slider:
-            frustration = st.slider("Frustration", min_value=0, max_value=20, value=10, key=f"{prefix}_frustration", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>High</p>", unsafe_allow_html=True)
-
-        return mental_demand, physical_demand, temporal_demand, effort, performance, frustration
-
-    # Helper function to render writing quality survey
-    def render_writing_quality_survey(prefix):
-        st.subheader("Writing Quality Survey")
-        st.markdown("For each of the six scales, evaluate your writing experience by moving the slider bars.")
-
-        # 1. Content Satisfaction
-        st.markdown("**1. Content Satisfaction**")
-        st.markdown("*How satisfied are you with the content of your writing, i.e., the final response to the prompt question?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Not satisfied</p>", unsafe_allow_html=True)
-        with col_slider:
-            content_satisfaction = st.slider("Content Satisfaction", min_value=0, max_value=20, value=10, key=f"{prefix}_content_satisfaction", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>Very satisfied</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 2. Ownership
-        st.markdown("**2. Ownership**")
-        st.markdown("*How much ownership do you feel over the content of your writing?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>No ownership</p>", unsafe_allow_html=True)
-        with col_slider:
-            ownership = st.slider("Ownership", min_value=0, max_value=20, value=10, key=f"{prefix}_ownership", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>Full ownership</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 3. Responsibility
-        st.markdown("**3. Responsibility**")
-        st.markdown("*How responsible do you feel for the text you wrote?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Not responsible</p>", unsafe_allow_html=True)
-        with col_slider:
-            responsibility = st.slider("Responsibility", min_value=0, max_value=20, value=10, key=f"{prefix}_responsibility", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>Fully responsible</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 4. Personal Connection
-        st.markdown("**4. Personal Connection**")
-        st.markdown("*How much personal connection do you feel to the content of your writing?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>No connection</p>", unsafe_allow_html=True)
-        with col_slider:
-            personal_connection = st.slider("Personal Connection", min_value=0, max_value=20, value=10, key=f"{prefix}_personal_connection", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>Full connection</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 5. Emotional Connection
-        st.markdown("**5. Emotional Connection**")
-        st.markdown("*How much emotional connection do you feel to the content of your writing?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>No connection</p>", unsafe_allow_html=True)
-        with col_slider:
-            emotional_connection = st.slider("Emotional Connection", min_value=0, max_value=20, value=10, key=f"{prefix}_emotional_connection", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>Full connection</p>", unsafe_allow_html=True)
-        st.markdown("")
-
-        # 6. Prompt Difficulty
-        st.markdown("**6. Prompt Difficulty**")
-        st.markdown("*How difficult was the given prompt to write about?*")
-        col_left, col_slider, col_right = st.columns([1, 4, 1])
-        with col_left:
-            st.markdown("<p style='text-align: right; color: gray; font-size: 0.85em; margin-top: 5px;'>Easy</p>", unsafe_allow_html=True)
-        with col_slider:
-            prompt_difficulty = st.slider("Prompt Difficulty", min_value=0, max_value=20, value=10, key=f"{prefix}_prompt_difficulty", label_visibility="collapsed")
-        with col_right:
-            st.markdown("<p style='text-align: left; color: gray; font-size: 0.85em; margin-top: 5px;'>Difficult</p>", unsafe_allow_html=True)
-
-        return content_satisfaction, ownership, responsibility, personal_connection, emotional_connection, prompt_difficulty
-
-    # Create top-level tabs: Without Rubric / With Rubric
-    without_rubric_tab, with_rubric_tab = st.tabs(["📝  WITHOUT RUBRIC  ", "📋  WITH RUBRIC  "])
-
-    with without_rubric_tab:
-        st.subheader("📝 Without Rubric")
-        st.markdown("Complete these surveys after writing **without** using the rubric.")
-        st.markdown("")
-
-        # Nested tabs for Cognitive Load and Writing Quality
-        wo_cognitive_tab, wo_writing_tab = st.tabs(["🧠 Cognitive Load", "✍️ Writing Quality"])
-
-        with wo_cognitive_tab:
-            mental_demand, physical_demand, temporal_demand, effort, performance, frustration = render_cognitive_load_survey("survey_wo_cl")
-
-            st.markdown("---")
-            if st.button("Submit Cognitive Load Survey", key="submit_wo_cognitive", type="primary"):
-                survey_response = {
-                    "timestamp": datetime.now().isoformat(),
-                    "condition": "without_rubric",
-                    "mental_demand": mental_demand,
-                    "physical_demand": physical_demand,
-                    "temporal_demand": temporal_demand,
-                    "effort": effort,
-                    "performance": performance,
-                    "frustration": frustration
-                }
-
-                project_id = st.session_state.get('current_project_id')
-                if not project_id:
-                    st.error("No project selected. Please select a project first.")
-                else:
-                    supabase = st.session_state.get('supabase')
-                    if supabase and save_project_data(supabase, project_id, "cognitive_load_responses", survey_response):
-                        st.success("Cognitive Load Survey (Without Rubric) submitted and saved successfully!")
+
+                                if is_expanded:
+                                    with st.container():
+                                        col_before, col_after = st.columns(2)
+                                        with col_before:
+                                            st.markdown(f"**📤 Original (Msg #{asst_msg}):**")
+                                            st.info(dp.get('before_quote', 'N/A'))
+                                        with col_after:
+                                            st.markdown(f"**📥 Your Edit (Msg #{user_msg}):**")
+                                            st.success(dp.get('after_quote', 'N/A'))
+
+                                        existing = st.session_state.evaluate_user_responses.get(dp_id, {})
+
+                                        q1 = st.text_area(
+                                            "**Q1:** What was wrong with the original, or what was better about your version?",
+                                            value=existing.get('reasoning', ''),
+                                            key=f"q1_{dp_id}",
+                                            placeholder="Explain the specific issues or improvements..."
+                                        )
+
+                                        q2_options = ["This is a general preference", "Specific to this situation", "Depends on context"]
+                                        q2 = st.radio(
+                                            "**Q2:** Is this a general preference or situation-specific?",
+                                            options=q2_options,
+                                            index=q2_options.index(existing.get('generalization', "Depends on context")),
+                                            key=f"q2_{dp_id}",
+                                            horizontal=True
+                                        )
+
+                                        if st.button("💾 Save Reflection", key=f"save_{dp_id}", type="primary"):
+                                            st.session_state.evaluate_user_responses[dp_id] = {
+                                                'decision_point_id': dp_id,
+                                                'dimension': dp.get('dimension', ''),
+                                                'before_text': dp.get('before_quote', ''),
+                                                'after_text': dp.get('after_quote', ''),
+                                                'reasoning': q1,
+                                                'generalization': q2
+                                            }
+                                            # Collapse the decision point after saving
+                                            st.session_state.evaluate_expanded_dp = None
+                                            st.rerun()
+
+                                        st.markdown("---")
+
+                        # ==================== STEP 3: GENERATE NOVEL ALTERNATIVES ====================
+                        if reflections_complete and not st.session_state.evaluate_novel_alternatives:
+                            st.divider()
+                            st.subheader("Step 3: Generate Alternatives")
+                            st.markdown("Generate 3 new versions for each decision point, varying along the identified dimension.")
+
+                            if st.button("🎲 Generate Alternatives", use_container_width=True, type="primary", key="gen_alts_btn"):
+                                with st.spinner("Generating alternatives for all decision points..."):
+                                    alternatives_data = {}
+                                    for dp in decision_points:
+                                        dp_id = dp.get('id')
+                                        dimension = dp.get('dimension', 'style')
+
+                                        try:
+                                            prompt = generate_novel_alternatives_prompt(dp, dimension)
+                                            response = client.messages.create(
+                                                model="claude-opus-4-5-20251101",
+                                                max_tokens=8000,
+                                                messages=[{"role": "user", "content": prompt}],
+                                                thinking={"type": "enabled", "budget_tokens": 4000}
+                                            )
+
+                                            response_text = ""
+                                            for block in response.content:
+                                                if block.type == "text":
+                                                    response_text = block.text
+
+                                            json_match = re.search(r'\{[\s\S]*\}', response_text)
+                                            if json_match:
+                                                alt_data = json.loads(json_match.group())
+                                                # Randomize order and create display mapping
+                                                alts = alt_data.get('alternatives', [])
+                                                random.shuffle(alts)
+                                                display_mapping = {alts[i]['id']: chr(65 + i) for i in range(len(alts))}  # A, B, C
+                                                alternatives_data[dp_id] = {
+                                                    'alternatives': alts,
+                                                    'display_mapping': display_mapping,
+                                                    'dimension': dimension,
+                                                    'dimension_description': alt_data.get('dimension_description', '')
+                                                }
+                                        except Exception as e:
+                                            st.warning(f"Error generating alternatives for DP#{dp_id}: {str(e)}")
+
+                                    st.session_state.evaluate_novel_alternatives = alternatives_data
+                                    st.rerun()
+
+                        # ==================== STEP 4: USER RANKS ALTERNATIVES ====================
+                        if st.session_state.evaluate_novel_alternatives:
+                            st.divider()
+                            st.subheader("Step 4: Rank Alternatives")
+                            st.markdown("For each decision point, rank the 3 alternatives from most to least preferred.")
+
+                            rankings_complete = len(st.session_state.evaluate_user_rankings) >= len(decision_points)
+                            st.progress(len(st.session_state.evaluate_user_rankings) / max(len(decision_points), 1))
+                            st.caption(f"Ranked: {len(st.session_state.evaluate_user_rankings)} / {len(decision_points)}")
+
+                            for dp in decision_points:
+                                dp_id = dp.get('id')
+                                if dp_id not in st.session_state.evaluate_novel_alternatives:
+                                    continue
+
+                                alt_info = st.session_state.evaluate_novel_alternatives[dp_id]
+                                alts = alt_info['alternatives']
+                                display_map = alt_info['display_mapping']
+                                already_ranked = dp_id in st.session_state.evaluate_user_rankings
+
+                                with st.expander(f"{'✅' if already_ranked else '⬜'} Decision Point #{dp_id}: {alt_info['dimension']}", expanded=not already_ranked):
+                                    st.caption(f"Dimension: {alt_info.get('dimension_description', alt_info['dimension'])}")
+
+                                    for alt in alts:
+                                        display_letter = display_map[alt['id']]
+                                        st.markdown(f"**Version {display_letter}:**")
+                                        st.markdown(f"> {alt['text']}")
+                                        st.markdown("")
+
+                                    existing_ranking = st.session_state.evaluate_user_rankings.get(dp_id, {})
+                                    options = ["Select...", "Version A", "Version B", "Version C"]
+
+                                    col1, col2, col3 = st.columns(3)
+                                    with col1:
+                                        rank1 = st.selectbox("1st (Best)", options, key=f"rank1_{dp_id}",
+                                                           index=options.index(existing_ranking.get('rank1_display', "Select...")))
+                                    with col2:
+                                        rank2 = st.selectbox("2nd", options, key=f"rank2_{dp_id}",
+                                                           index=options.index(existing_ranking.get('rank2_display', "Select...")))
+                                    with col3:
+                                        rank3 = st.selectbox("3rd (Worst)", options, key=f"rank3_{dp_id}",
+                                                           index=options.index(existing_ranking.get('rank3_display', "Select...")))
+
+                                    if st.button("💾 Save Ranking", key=f"save_rank_{dp_id}", type="primary"):
+                                        if rank1 != "Select..." and rank2 != "Select..." and rank3 != "Select...":
+                                            if len(set([rank1, rank2, rank3])) == 3:
+                                                # Convert display letters back to alt_ids
+                                                reverse_map = {v: k for k, v in display_map.items()}
+                                                ranking_ids = [
+                                                    reverse_map.get(rank1.replace("Version ", "")),
+                                                    reverse_map.get(rank2.replace("Version ", "")),
+                                                    reverse_map.get(rank3.replace("Version ", ""))
+                                                ]
+                                                st.session_state.evaluate_user_rankings[dp_id] = {
+                                                    'ranking': ranking_ids,
+                                                    'rank1_display': rank1,
+                                                    'rank2_display': rank2,
+                                                    'rank3_display': rank3,
+                                                    'dimension': alt_info['dimension']
+                                                }
+                                                st.success("Ranking saved!")
+                                                st.rerun()
+                                            else:
+                                                st.error("Please select different versions for each rank.")
+                                        else:
+                                            st.error("Please complete all rankings.")
+
+                        # ==================== STEP 5: SCORE & COMPUTE AGREEMENT ====================
+                        rankings_complete = st.session_state.evaluate_novel_alternatives and len(st.session_state.evaluate_user_rankings) >= len(decision_points)
+
+                        if rankings_complete and not st.session_state.evaluate_agreement_scores:
+                            st.divider()
+                            st.subheader("Step 5: Score & Analyze")
+                            st.markdown("Score your ranked alternatives against three baselines: the inferred rubric, your stated preferences (Task A Survey), and generic writing quality.")
+
+                            # Check for free-text preferences
+                            freetext_prefs = st.session_state.get('survey_responses', {}).get('task_a', {}).get('q4', '')
+                            if not freetext_prefs:
+                                st.warning("⚠️ Please complete Task A Survey Q4 (your writing preferences) before proceeding.")
+                            elif st.button("🔬 Score All & Compute Results", use_container_width=True, type="primary", key="score_all_btn"):
+                                rubric_json = json.dumps(coverage_rubric_dict, indent=2)
+                                rubric_rankings = {}
+                                freetext_rankings = {}
+                                generic_rankings = {}
+
+                                progress_bar = st.progress(0)
+                                status_text = st.empty()
+                                total_steps = len(st.session_state.evaluate_novel_alternatives) * 3
+
+                                step_count = 0
+                                for dp_id, alt_info in st.session_state.evaluate_novel_alternatives.items():
+                                    alts_for_scoring = [{"id": a['id'], "text": a['text']} for a in alt_info['alternatives']]
+
+                                    # Score with Rubric
+                                    status_text.text(f"Scoring DP#{dp_id} with rubric...")
+                                    try:
+                                        prompt = score_alternatives_with_rubric_prompt(alts_for_scoring, rubric_json)
+                                        response = client.messages.create(
+                                            model="claude-opus-4-5-20251101",
+                                            max_tokens=4000,
+                                            messages=[{"role": "user", "content": prompt}]
+                                        )
+                                        response_text = response.content[0].text if response.content else ""
+                                        json_match = re.search(r'\{[\s\S]*\}', response_text)
+                                        if json_match:
+                                            rubric_rankings[dp_id] = json.loads(json_match.group())
+                                    except Exception as e:
+                                        st.warning(f"Error scoring DP#{dp_id} with rubric: {e}")
+                                    step_count += 1
+                                    progress_bar.progress(step_count / total_steps)
+
+                                    # Score with Free-text
+                                    status_text.text(f"Scoring DP#{dp_id} with free-text preferences...")
+                                    try:
+                                        prompt = score_alternatives_with_freetext_prompt(alts_for_scoring, freetext_prefs)
+                                        response = client.messages.create(
+                                            model="claude-opus-4-5-20251101",
+                                            max_tokens=4000,
+                                            messages=[{"role": "user", "content": prompt}]
+                                        )
+                                        response_text = response.content[0].text if response.content else ""
+                                        json_match = re.search(r'\{[\s\S]*\}', response_text)
+                                        if json_match:
+                                            freetext_rankings[dp_id] = json.loads(json_match.group())
+                                    except Exception as e:
+                                        st.warning(f"Error scoring DP#{dp_id} with free-text: {e}")
+                                    step_count += 1
+                                    progress_bar.progress(step_count / total_steps)
+
+                                    # Score with Generic
+                                    status_text.text(f"Scoring DP#{dp_id} with generic quality...")
+                                    try:
+                                        prompt = score_alternatives_generic_prompt(alts_for_scoring)
+                                        response = client.messages.create(
+                                            model="claude-opus-4-5-20251101",
+                                            max_tokens=4000,
+                                            messages=[{"role": "user", "content": prompt}]
+                                        )
+                                        response_text = response.content[0].text if response.content else ""
+                                        json_match = re.search(r'\{[\s\S]*\}', response_text)
+                                        if json_match:
+                                            generic_rankings[dp_id] = json.loads(json_match.group())
+                                    except Exception as e:
+                                        st.warning(f"Error scoring DP#{dp_id} with generic: {e}")
+                                    step_count += 1
+                                    progress_bar.progress(step_count / total_steps)
+
+                                # Store all rankings
+                                st.session_state.evaluate_rubric_rankings = rubric_rankings
+                                st.session_state.evaluate_freetext_rankings = freetext_rankings
+                                st.session_state.evaluate_generic_rankings = generic_rankings
+
+                                # Compute agreement scores
+                                status_text.text("Computing agreement scores...")
+                                rubric_tau, rubric_p = compute_rank_correlation(
+                                    st.session_state.evaluate_user_rankings,
+                                    rubric_rankings
+                                )
+                                freetext_tau, freetext_p = compute_rank_correlation(
+                                    st.session_state.evaluate_user_rankings,
+                                    freetext_rankings
+                                )
+                                generic_tau, generic_p = compute_rank_correlation(
+                                    st.session_state.evaluate_user_rankings,
+                                    generic_rankings
+                                )
+
+                                # Per-dimension breakdown
+                                per_dimension = {}
+                                for dp_id, user_data in st.session_state.evaluate_user_rankings.items():
+                                    dim = user_data.get('dimension', 'unknown')
+                                    if dim not in per_dimension:
+                                        per_dimension[dim] = {'user': {}, 'rubric': {}, 'freetext': {}, 'generic': {}}
+                                    per_dimension[dim]['user'][dp_id] = user_data
+                                    if dp_id in rubric_rankings:
+                                        per_dimension[dim]['rubric'][dp_id] = rubric_rankings[dp_id]
+                                    if dp_id in freetext_rankings:
+                                        per_dimension[dim]['freetext'][dp_id] = freetext_rankings[dp_id]
+                                    if dp_id in generic_rankings:
+                                        per_dimension[dim]['generic'][dp_id] = generic_rankings[dp_id]
+
+                                st.session_state.evaluate_agreement_scores = {
+                                    'rubric': {'tau': rubric_tau, 'p_value': rubric_p},
+                                    'freetext': {'tau': freetext_tau, 'p_value': freetext_p},
+                                    'generic': {'tau': generic_tau, 'p_value': generic_p},
+                                    'per_dimension': per_dimension
+                                }
+
+                                progress_bar.progress(1.0)
+                                status_text.text("Done!")
+                                st.rerun()
+
+                        # ==================== STEP 6: SHOW RESULTS ====================
+                        if st.session_state.evaluate_agreement_scores:
+                            st.divider()
+                            st.subheader("Step 6: Results & Analysis")
+
+                            scores = st.session_state.evaluate_agreement_scores
+
+                            # Main results table
+                            st.markdown("### Overall Prediction Accuracy")
+                            results_data = []
+                            for name, data in [('Rubric', scores['rubric']), ('Free-text', scores['freetext']), ('Generic', scores['generic'])]:
+                                tau = data.get('tau')
+                                p = data.get('p_value')
+                                if tau is not None:
+                                    interpretation = "Strong" if abs(tau) > 0.6 else "Moderate" if abs(tau) > 0.3 else "Weak"
+                                    results_data.append({
+                                        'Preference Source': name,
+                                        "Kendall's Tau": f"{tau:.3f}" if tau else "N/A",
+                                        'p-value': f"{p:.4f}" if p else "N/A",
+                                        'Interpretation': interpretation
+                                    })
+
+                            if results_data:
+                                st.table(results_data)
+
+                            # Inference surplus analysis
+                            st.markdown("### Inference Surplus Analysis")
+                            rubric_better_count = 0
+                            freetext_better_count = 0
+                            ties = 0
+
+                            for dp_id in st.session_state.evaluate_user_rankings:
+                                user_rank = st.session_state.evaluate_user_rankings[dp_id].get('ranking', [])
+                                rubric_rank = st.session_state.evaluate_rubric_rankings.get(dp_id, {}).get('ranking', [])
+                                freetext_rank = st.session_state.evaluate_freetext_rankings.get(dp_id, {}).get('ranking', [])
+
+                                if user_rank and rubric_rank and freetext_rank:
+                                    # Check if first choice matches
+                                    rubric_match = user_rank[0] == rubric_rank[0] if rubric_rank else False
+                                    freetext_match = user_rank[0] == freetext_rank[0] if freetext_rank else False
+
+                                    if rubric_match and not freetext_match:
+                                        rubric_better_count += 1
+                                    elif freetext_match and not rubric_match:
+                                        freetext_better_count += 1
+                                    else:
+                                        ties += 1
+
+                            st.markdown(f"""
+                            - **Inference Surplus** (rubric correct, free-text wrong): **{rubric_better_count}** cases
+                            - Free-text better than rubric: **{freetext_better_count}** cases
+                            - Both agree or both wrong: **{ties}** cases
+                            """)
+
+                            # Detailed breakdown
+                            with st.expander("📋 Detailed Scoring Breakdown"):
+                                for dp_id in st.session_state.evaluate_user_rankings:
+                                    st.markdown(f"**Decision Point #{dp_id}**")
+                                    user_rank = st.session_state.evaluate_user_rankings[dp_id].get('ranking', [])
+                                    rubric_rank = st.session_state.evaluate_rubric_rankings.get(dp_id, {}).get('ranking', [])
+                                    freetext_rank = st.session_state.evaluate_freetext_rankings.get(dp_id, {}).get('ranking', [])
+                                    generic_rank = st.session_state.evaluate_generic_rankings.get(dp_id, {}).get('ranking', [])
+
+                                    st.markdown(f"- User ranking: {user_rank}")
+                                    st.markdown(f"- Rubric ranking: {rubric_rank}")
+                                    st.markdown(f"- Free-text ranking: {freetext_rank}")
+                                    st.markdown(f"- Generic ranking: {generic_rank}")
+                                    st.markdown("---")
+
+                            # Export
+                            st.markdown("### Export Data")
+                            export_data = {
+                                "timestamp": datetime.now().isoformat(),
+                                "conversation_file": eval_selected_file,
+                                "rubric_version": coverage_rubric_version,
+                                "decision_points": decision_points,
+                                "user_reflections": st.session_state.evaluate_user_responses,
+                                "novel_alternatives": st.session_state.evaluate_novel_alternatives,
+                                "user_rankings": st.session_state.evaluate_user_rankings,
+                                "rubric_rankings": st.session_state.evaluate_rubric_rankings,
+                                "freetext_rankings": st.session_state.evaluate_freetext_rankings,
+                                "generic_rankings": st.session_state.evaluate_generic_rankings,
+                                "agreement_scores": st.session_state.evaluate_agreement_scores
+                            }
+
+                            if st.button("💾 Save Evaluation", type="primary", use_container_width=True, key="save_coverage_eval"):
+                                project_id = st.session_state.get('current_project_id')
+                                if not project_id:
+                                    st.error("No project selected. Please select a project first.")
+                                else:
+                                    supabase = st.session_state.get('supabase')
+                                    if supabase and save_project_data(supabase, project_id, "coverage_evaluation", export_data):
+                                        st.success("✅ Evaluation saved successfully!")
+                                    else:
+                                        st.error("Failed to save evaluation.")
+
                     else:
-                        st.error("Failed to save survey response.")
+                        st.warning("Could not parse decision points. Raw response:")
+                        st.text(result.get("raw_response", "No response"))
 
-        with wo_writing_tab:
-            content_satisfaction, ownership, responsibility, personal_connection, emotional_connection, prompt_difficulty = render_writing_quality_survey("survey_wo_wq")
-
-            st.markdown("---")
-            if st.button("Submit Writing Quality Survey", key="submit_wo_writing", type="primary"):
-                survey_response = {
-                    "timestamp": datetime.now().isoformat(),
-                    "condition": "without_rubric",
-                    "content_satisfaction": content_satisfaction,
-                    "ownership": ownership,
-                    "responsibility": responsibility,
-                    "personal_connection": personal_connection,
-                    "emotional_connection": emotional_connection,
-                    "prompt_difficulty": prompt_difficulty
-                }
-
-                project_id = st.session_state.get('current_project_id')
-                if not project_id:
-                    st.error("No project selected. Please select a project first.")
-                else:
-                    supabase = st.session_state.get('supabase')
-                    if supabase and save_project_data(supabase, project_id, "writing_quality_responses", survey_response):
-                        st.success("Writing Quality Survey (Without Rubric) submitted and saved successfully!")
-                    else:
-                        st.error("Failed to save survey response.")
-
-    with with_rubric_tab:
-        st.subheader("📋 With Rubric")
-        st.markdown("Complete these surveys after writing **with** the rubric.")
-        st.markdown("")
-
-        # Nested tabs for Cognitive Load and Writing Quality
-        w_cognitive_tab, w_writing_tab = st.tabs(["🧠 Cognitive Load", "✍️ Writing Quality"])
-
-        with w_cognitive_tab:
-            mental_demand, physical_demand, temporal_demand, effort, performance, frustration = render_cognitive_load_survey("survey_w_cl")
-
-            st.markdown("---")
-            if st.button("Submit Cognitive Load Survey", key="submit_w_cognitive", type="primary"):
-                survey_response = {
-                    "timestamp": datetime.now().isoformat(),
-                    "condition": "with_rubric",
-                    "mental_demand": mental_demand,
-                    "physical_demand": physical_demand,
-                    "temporal_demand": temporal_demand,
-                    "effort": effort,
-                    "performance": performance,
-                    "frustration": frustration
-                }
-
-                project_id = st.session_state.get('current_project_id')
-                if not project_id:
-                    st.error("No project selected. Please select a project first.")
-                else:
-                    supabase = st.session_state.get('supabase')
-                    if supabase and save_project_data(supabase, project_id, "cognitive_load_responses", survey_response):
-                        st.success("Cognitive Load Survey (With Rubric) submitted and saved successfully!")
-                    else:
-                        st.error("Failed to save survey response.")
-
-        with w_writing_tab:
-            content_satisfaction, ownership, responsibility, personal_connection, emotional_connection, prompt_difficulty = render_writing_quality_survey("survey_w_wq")
-
-            st.markdown("---")
-            if st.button("Submit Writing Quality Survey", key="submit_w_writing", type="primary"):
-                survey_response = {
-                    "timestamp": datetime.now().isoformat(),
-                    "condition": "with_rubric",
-                    "content_satisfaction": content_satisfaction,
-                    "ownership": ownership,
-                    "responsibility": responsibility,
-                    "personal_connection": personal_connection,
-                    "emotional_connection": emotional_connection,
-                    "prompt_difficulty": prompt_difficulty
-                }
-
-                project_id = st.session_state.get('current_project_id')
-                if not project_id:
-                    st.error("No project selected. Please select a project first.")
-                else:
-                    supabase = st.session_state.get('supabase')
-                    if supabase and save_project_data(supabase, project_id, "writing_quality_responses", survey_response):
-                        st.success("Writing Quality Survey (With Rubric) submitted and saved successfully!")
-                    else:
-                        st.error("Failed to save survey response.")
+        else:
+            st.info("👆 Select a conversation above to begin evaluation.")
 
 # ============ EVALUATE: SURVEY TAB ============
 with tab2:

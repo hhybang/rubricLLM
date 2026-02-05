@@ -1383,7 +1383,7 @@ When identifying decision points, PRIORITIZE moments that:
 
 {conversation_text}
 {rubric_context}
-Identify 6–8 moments where the user made an explicit writing choice. Prioritize:
+Identify 3–4 of the MOST CRUCIAL and NON-REDUNDANT moments where the user made an explicit writing choice. Quality over quantity - each decision point should reveal a distinct preference. Prioritize:
 
 1. **Rubric-relevant decisions**: Choices that directly relate to rubric criteria (if rubric provided)
 2. **User edits**: Places where the model suggested something and the user changed it
@@ -1403,6 +1403,9 @@ Avoid moments that are:
 - Factual corrections (not style preferences)
 - Trivial word changes with no clear pattern
 - Ambiguous (can't tell what user preferred)
+- Redundant with another decision point (showing the SAME preference twice - e.g., if you already have a "prefers concise language" example, don't include another conciseness example)
+
+CRITICAL: Each decision point must reveal a DISTINCT preference dimension. If the user made 10 edits for conciseness, only include ONE of them. Spread your 3-4 decision points across DIFFERENT preference dimensions (e.g., tone, structure, detail level, formality, etc.).
 
 Return your analysis as a JSON object with the following structure:
 ```json
@@ -1433,7 +1436,7 @@ Return your analysis as a JSON object with the following structure:
 IMPORTANT:
 - Return ONLY valid JSON, no other text before or after
 - Message numbers must be integers that match the [Message #X] labels in the conversation
-- Include 6-8 decision points
+- Include exactly 3-4 decision points (no more) - choose the most important and non-redundant ones
 - If a rubric is provided, prioritize decision points that have rubric implications"""
 
 
@@ -1780,3 +1783,260 @@ Return a JSON object with the following structure:
 - **Be consistent**: Apply the same standards to similar passages
 - **Default to lower levels when uncertain**: Better to under-score than over-score
 - **Quote specific evidence**: Vague assessments aren't helpful; cite actual text with positions"""
+
+
+# =============================================================================
+# Evaluate: Coverage Tab - 9-Step Workflow Prompts
+# =============================================================================
+
+def generate_novel_alternatives_prompt(decision_point: dict, dimension: str) -> str:
+    """
+    Step 3: Generate 3 novel text alternatives for a decision point along the identified dimension.
+
+    Args:
+        decision_point: Dict with 'before_quote', 'after_quote', and context
+        dimension: The dimension to vary (e.g., 'conciseness', 'formality', 'tone')
+
+    Returns:
+        Prompt string for Claude API
+    """
+    before_text = decision_point.get('before_quote', '')
+    after_text = decision_point.get('after_quote', '')
+    context = decision_point.get('context', '')
+
+    return f"""You are generating alternative text versions for preference testing.
+
+CONTEXT OF THE PASSAGE:
+{context if context else "A collaborative writing conversation between a user and an AI assistant."}
+
+ORIGINAL AI TEXT:
+"{before_text}"
+
+USER'S EDITED VERSION:
+"{after_text}"
+
+DIMENSION BEING VARIED: {dimension}
+
+YOUR TASK:
+Generate 3 NEW text alternatives that:
+1. Communicate the same core content/meaning as both versions above
+2. Vary ONLY on the "{dimension}" dimension
+3. Are DISTINCTLY different from each other on this dimension
+4. Are NOT identical (or nearly identical) to either the original AI text or user's edited version
+5. Are all competent, reasonable writing (not obviously bad or error-filled)
+
+IMPORTANT GUIDELINES:
+- Create a spectrum: one alternative at one extreme of the dimension, one at the other extreme, one in the middle
+- Examples by dimension:
+  - "conciseness": very concise (minimal words), moderate length, verbose (fully detailed)
+  - "formality": very formal/professional, moderate, casual/conversational
+  - "tone": warm/enthusiastic, neutral, direct/matter-of-fact
+  - "detail": high-level overview, balanced, granular with specifics
+  - "structure": simple/flowing, moderately organized, highly structured with headers/bullets
+- Each alternative should be a plausible version someone might actually write
+- Keep the core message/information the same across all alternatives
+
+Return ONLY valid JSON (no markdown code blocks):
+{{
+    "alternatives": [
+        {{
+            "id": "alt_1",
+            "text": "The first alternative text here...",
+            "dimension_position": "Description of where this sits on the dimension (e.g., 'very concise', 'formal', 'warm')"
+        }},
+        {{
+            "id": "alt_2",
+            "text": "The second alternative text here...",
+            "dimension_position": "moderate"
+        }},
+        {{
+            "id": "alt_3",
+            "text": "The third alternative text here...",
+            "dimension_position": "Description of opposite extreme (e.g., 'verbose', 'casual', 'direct')"
+        }}
+    ],
+    "dimension_description": "Brief explanation of what the '{dimension}' dimension means and how these alternatives vary along it",
+    "generation_notes": "Brief notes on how the alternatives were constructed to ensure they differ from original/user versions"
+}}"""
+
+
+def score_alternatives_with_rubric_prompt(alternatives: list, rubric_json: str, context: str = "") -> str:
+    """
+    Step 5: LM-as-judge scores 3 alternatives against the active rubric.
+
+    Args:
+        alternatives: List of dicts with 'id' and 'text' keys
+        rubric_json: JSON string of the full rubric
+        context: Optional context about what the writing is for
+
+    Returns:
+        Prompt string for Claude API
+    """
+    import json
+    alternatives_formatted = json.dumps(alternatives, indent=2)
+
+    return f"""You are evaluating text alternatives against a user's personalized writing rubric.
+
+RUBRIC:
+{rubric_json}
+
+CONTEXT: {context if context else "A collaborative writing task."}
+
+ALTERNATIVES TO EVALUATE:
+{alternatives_formatted}
+
+TASK:
+1. For EACH alternative, score it against EACH criterion in the rubric
+2. For each criterion, evaluate how well the alternative meets the described dimensions/qualities
+3. Calculate a total weighted score (higher priority criteria matter more)
+4. Produce a final ranking from best (most aligned with rubric) to worst
+
+SCORING RULES:
+- Score each criterion 0-100 based on how well the text fulfills that criterion
+- Weight by priority: priority 1 = 3x weight, priority 2 = 2x weight, others = 1x weight
+- Provide brief reasoning for each criterion score
+- The ranking should reflect rubric alignment, not generic quality
+
+Return ONLY valid JSON (no markdown code blocks):
+{{
+    "scores": [
+        {{
+            "alternative_id": "alt_X",
+            "total_score": <weighted average 0-100>,
+            "criterion_scores": [
+                {{
+                    "criterion_name": "<exact name from rubric>",
+                    "criterion_priority": <1-N>,
+                    "score": <0-100>,
+                    "reasoning": "Brief explanation of why this score"
+                }}
+            ]
+        }}
+    ],
+    "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
+    "ranking_reasoning": "Explanation of why this ranking based on rubric criteria alignment"
+}}"""
+
+
+def score_alternatives_with_freetext_prompt(alternatives: list, user_preferences_text: str, context: str = "") -> str:
+    """
+    Step 6: LM-as-judge scores 3 alternatives against user's free-text preference description.
+
+    Args:
+        alternatives: List of dicts with 'id' and 'text' keys
+        user_preferences_text: User's self-authored preference description (from Task A Survey Q4)
+        context: Optional context about what the writing is for
+
+    Returns:
+        Prompt string for Claude API
+    """
+    import json
+    alternatives_formatted = json.dumps(alternatives, indent=2)
+
+    return f"""You are evaluating text alternatives against a user's stated writing preferences.
+
+USER'S STATED PREFERENCES (written by the user themselves):
+"{user_preferences_text}"
+
+CONTEXT: {context if context else "A collaborative writing task."}
+
+ALTERNATIVES TO EVALUATE:
+{alternatives_formatted}
+
+TASK:
+1. First, identify the key preferences mentioned in the user's description (extract 3-6 distinct preferences)
+2. For EACH alternative, score it on how well it aligns with EACH identified preference
+3. Calculate a total alignment score (average across all preferences)
+4. Produce a final ranking from best (most aligned with stated preferences) to worst
+
+SCORING RULES:
+- Extract clear, distinct preferences from the user's text
+- Score each preference 0-100 for each alternative
+- Give equal weight to all identified preferences
+- Provide brief reasoning for each score
+- Be honest about ambiguity - if the preference is unclear, note that
+
+Return ONLY valid JSON (no markdown code blocks):
+{{
+    "identified_preferences": [
+        {{
+            "preference": "Brief description of the preference",
+            "source_quote": "The part of user's text this came from"
+        }}
+    ],
+    "scores": [
+        {{
+            "alternative_id": "alt_X",
+            "total_score": <average 0-100>,
+            "preference_scores": [
+                {{
+                    "preference": "<preference description>",
+                    "score": <0-100>,
+                    "reasoning": "Brief explanation"
+                }}
+            ]
+        }}
+    ],
+    "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
+    "ranking_reasoning": "Explanation of ranking based on stated preferences"
+}}"""
+
+
+def score_alternatives_generic_prompt(alternatives: list, context: str = "") -> str:
+    """
+    Step 7: LM-as-judge scores 3 alternatives with NO preference info - generic quality only.
+
+    Args:
+        alternatives: List of dicts with 'id' and 'text' keys
+        context: Optional context about what the writing is for
+
+    Returns:
+        Prompt string for Claude API
+    """
+    import json
+    alternatives_formatted = json.dumps(alternatives, indent=2)
+
+    return f"""You are evaluating text alternatives for general writing quality.
+
+IMPORTANT: You have NO information about the user's specific preferences.
+Evaluate purely on generic, universal writing quality standards.
+
+CONTEXT: {context if context else "A writing task."}
+
+ALTERNATIVES TO EVALUATE:
+{alternatives_formatted}
+
+TASK:
+1. Score each alternative on these GENERIC writing quality dimensions:
+   - Clarity: Is the meaning clear and unambiguous?
+   - Correctness: Grammar, spelling, punctuation accuracy
+   - Coherence: Does it flow logically? Are ideas connected well?
+   - Appropriateness: Does it seem suitable for the context?
+2. Calculate a total quality score (average of the 4 dimensions)
+3. Produce a ranking from best generic quality to worst
+
+CRITICAL RULES - DO NOT assume any preference for:
+- Formality level (formal and casual are equally valid if clear)
+- Length (concise and detailed are equally valid if appropriate)
+- Tone (warm and neutral are equally valid)
+- Style choices (bullets vs prose, etc.)
+
+You are measuring ONLY: Is it clear? Is it correct? Does it make sense? Does it fit the context?
+
+Return ONLY valid JSON (no markdown code blocks):
+{{
+    "scores": [
+        {{
+            "alternative_id": "alt_X",
+            "total_score": <average 0-100>,
+            "quality_scores": [
+                {{"dimension": "Clarity", "score": <0-100>, "reasoning": "..."}},
+                {{"dimension": "Correctness", "score": <0-100>, "reasoning": "..."}},
+                {{"dimension": "Coherence", "score": <0-100>, "reasoning": "..."}},
+                {{"dimension": "Appropriateness", "score": <0-100>, "reasoning": "..."}}
+            ]
+        }}
+    ],
+    "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
+    "ranking_reasoning": "Explanation based ONLY on generic quality (not style preferences)"
+}}"""
