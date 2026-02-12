@@ -7689,7 +7689,7 @@ with tab_grading:
                         except Exception as e:
                             st.error(str(e))
 
-            # --- Step 4: Show drafts + blind grading ---
+            # --- Step 2: Show drafts + blind grading ---
             if st.session_state.infer_step6_drafts:
                 drafts = st.session_state.infer_step6_drafts
                 labels = st.session_state.infer_step6_draft_labels
@@ -7697,7 +7697,7 @@ with tab_grading:
                 letters = [chr(65 + i) for i in range(num_d)]  # A, B, C, D, E
                 _gr_letter_to_src = {letters[i]: labels[i] for i in range(num_d)}
 
-                st.subheader("Step 4: Blind Grading")
+                st.subheader("Step 2: Blind Grading")
 
                 # Show drafts
                 st.markdown("""
@@ -7754,9 +7754,9 @@ with tab_grading:
                             key=f"grading_rank_{letter}"
                         )
 
-                # --- Step 5: Rubric criterion checks (3 drafts only: R*, coldstart, generic) ---
+                # --- Step 3: Rubric criterion checks (3 drafts only: R*, coldstart, generic) ---
                 st.divider()
-                st.subheader("Step 5: Rubric Criterion Checks")
+                st.subheader("Step 3: Rubric Criterion Checks")
                 st.markdown("Using the **same drafts from the Blind Grading step above**, mark each criterion as Met or Not met for **three of them** only. The remaining drafts are excluded from this step to avoid circularity.")
 
                 # Find which letters map to the 3 evaluation drafts
@@ -7799,7 +7799,7 @@ with tab_grading:
                                     opt = st.radio(f"Draft {letter}", opts, index=idx, key=f"grading_crit_{letter}_{crit_idx}", horizontal=True)
                                     dim_checks.setdefault(letter, {})[cname] = None if opt == "—" else (opt == "✓ Met")
 
-                # --- Step 6: Run LLM evaluations (3 drafts only) ---
+                # --- Run LLM evaluations (3 drafts only) ---
                 if st.session_state.infer_step6_llm_evaluations is None:
                     # st.divider()
                     # st.subheader("Step 6: LLM Evaluations")
@@ -8050,7 +8050,7 @@ with tab_grading:
 
                     # --- Step 8: Post-task survey ---
                     st.divider()
-                    st.subheader("Step 8: Post-Task Survey")
+                    st.subheader("Step 4: Post-Task Survey")
 
                     if st.session_state.infer_step6_survey is None:
                         st.session_state.infer_step6_survey = {}
@@ -8088,7 +8088,7 @@ with tab_grading:
 
                     # --- Step 9: Results Display ---
                     st.divider()
-                    st.subheader("Step 9: Results")
+                    st.subheader("Step 5: Results")
 
                     claim2 = st.session_state.infer_step6_claim2_metrics or {}
                     claim3 = st.session_state.infer_step6_claim3_metrics or {}
