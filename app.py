@@ -3531,60 +3531,28 @@ with tab1:
                                 rubric_list = active_rubric_dict.get("rubric", [])
                                 st.session_state.editing_criteria = copy.deepcopy(rubric_list)
 
-                            # Extract decision points from the SAME conversation context (silently, no extra UI)
-                            conversation_text = ""
-                            msg_num = 1
-                            for msg in conversation_for_infer:
-                                role = msg.get('role', 'unknown')
-                                content = msg.get('content', '')
-                                if role == 'user':
-                                    conversation_text += f"\n\n[Message #{msg_num}] USER:\n{content}"
-                                    msg_num += 1
-                                elif role == 'assistant':
-                                    conversation_text += f"\n\n[Message #{msg_num}] ASSISTANT:\n{content}"
-                                    msg_num += 1
-                            try:
-                                clean_rubric = copy.deepcopy(inferred_rubric_data)
-                                if 'rubric' in clean_rubric:
-                                    for criterion in clean_rubric['rubric']:
-                                        if isinstance(criterion, dict) and '_diff' in criterion:
-                                            del criterion['_diff']
-                                rubric_json_for_extraction = json.dumps(clean_rubric, indent=2)
-                                decision_prompt = extract_decision_pts(conversation_text, rubric_json_for_extraction)
-                                dp_response = _api_call_with_retry(
-                                    model="claude-opus-4-6",
-                                    max_tokens=16000,
-                                    messages=[{"role": "user", "content": decision_prompt}],
-                                    thinking={"type": "enabled", "budget_tokens": 8000}
-                                )
-                                dp_thinking_text = ""
-                                dp_response_text = ""
-                                for block in dp_response.content:
-                                    if block.type == "thinking":
-                                        dp_thinking_text = block.thinking
-                                    elif block.type == "text":
-                                        dp_response_text = block.text
-                                parsed_data = None
-                                try:
-                                    json_match = re.search(r'\{[\s\S]*\}', dp_response_text)
-                                    if json_match:
-                                        parsed_data = json.loads(json_match.group())
-                                except json.JSONDecodeError:
-                                    pass
+                            # Extract decision points from the rubric inference response
+                            # (the prompt already asks for inference_decision_points in the JSON)
+                            _dp_from_inference = inferred_rubric_data.get("inference_decision_points")
+                            _dp_result = None
+                            if _dp_from_inference and isinstance(_dp_from_inference, dict):
+                                # The inference response includes decision points directly
+                                _dp_parsed = _dp_from_inference.get("parsed_data", _dp_from_inference)
+                                # Handle case where inference_decision_points IS the parsed_data directly
+                                if "decision_points" in _dp_from_inference and "parsed_data" not in _dp_from_inference:
+                                    _dp_parsed = _dp_from_inference
                                 _dp_result = {
-                                    "thinking": dp_thinking_text,
-                                    "raw_response": dp_response_text,
-                                    "parsed_data": parsed_data,
+                                    "thinking": "",
+                                    "raw_response": "",
+                                    "parsed_data": _dp_parsed,
                                     "conversation_file": "__from_infer_rubric__"
                                 }
                                 st.session_state.infer_decision_points = _dp_result
                                 st.session_state.infer_dp_conversation = "__from_infer_rubric__"
                                 st.session_state.infer_dp_messages = copy.deepcopy(conversation_for_infer)
-                                if parsed_data and parsed_data.get("decision_points"):
-                                    first_dp_id = parsed_data["decision_points"][0].get("id")
-                                    st.session_state.infer_expanded_dp = first_dp_id
-                            except Exception as _e:
-                                _dp_result = None
+                                _dp_list = _dp_parsed.get("decision_points", []) if _dp_parsed else []
+                                if _dp_list:
+                                    st.session_state.infer_expanded_dp = _dp_list[0].get("id")
 
                             # Append to list of all infer conversations
                             _infer_entry = {
@@ -3846,7 +3814,10 @@ with st.sidebar:
                 try:
                     _infer_conv_raw = _supabase.table("project_data").select("data").eq("project_id", _new_pid).eq("data_type", "infer_conversation").execute()
                     if _infer_conv_raw.data and _infer_conv_raw.data[0].get("data"):
-                        _infer_conv_loaded = json.loads(_infer_conv_raw.data[0]["data"])
+                        _raw_ic = _infer_conv_raw.data[0]["data"]
+                        _infer_conv_loaded = json.loads(_raw_ic) if isinstance(_raw_ic, str) else _raw_ic
+                        if isinstance(_infer_conv_loaded, str):
+                            _infer_conv_loaded = json.loads(_infer_conv_loaded)
                         if isinstance(_infer_conv_loaded, list):
                             # New format: list of infer conversations
                             st.session_state.infer_all_conversations = _infer_conv_loaded
@@ -3879,6 +3850,51 @@ with st.sidebar:
         # Ensure current_project_id is set if we have a current project
         if st.session_state.current_project and not st.session_state.current_project_id:
             st.session_state.current_project_id = project_id_map.get(st.session_state.current_project)
+
+        # Load infer conversations from DB on startup if not already loaded
+        # (handles the case where user logs back in and project is already selected)
+        _startup_pid = st.session_state.get('current_project_id')
+        _startup_sb = st.session_state.get('supabase')
+        if _startup_pid and _startup_sb and not st.session_state.get('infer_all_conversations'):
+            try:
+                _startup_raw = _startup_sb.table("project_data").select("data").eq("project_id", _startup_pid).eq("data_type", "infer_conversation").execute()
+                if _startup_raw.data and _startup_raw.data[0].get("data"):
+                    _raw_data = _startup_raw.data[0]["data"]
+                    # Handle both string (text column) and already-parsed (jsonb column)
+                    if isinstance(_raw_data, str):
+                        _startup_loaded = json.loads(_raw_data)
+                    else:
+                        _startup_loaded = _raw_data
+                    # May be double-encoded: a string inside jsonb
+                    if isinstance(_startup_loaded, str):
+                        _startup_loaded = json.loads(_startup_loaded)
+                    if isinstance(_startup_loaded, list) and _startup_loaded:
+                        st.session_state.infer_all_conversations = _startup_loaded
+                        _latest = _startup_loaded[-1]
+                        st.session_state.infer_dp_messages = _latest.get("messages", [])
+                        st.session_state.infer_dp_conversation = "__from_infer_rubric__"
+                        if _latest.get("decision_points"):
+                            st.session_state.infer_decision_points = _latest["decision_points"]
+                    elif isinstance(_startup_loaded, dict) and "messages" in _startup_loaded:
+                        st.session_state.infer_all_conversations = [_startup_loaded]
+                        st.session_state.infer_dp_messages = _startup_loaded["messages"]
+                        st.session_state.infer_dp_conversation = "__from_infer_rubric__"
+                        if _startup_loaded.get("decision_points"):
+                            st.session_state.infer_decision_points = _startup_loaded["decision_points"]
+            except Exception as _e:
+                st.warning(f"Could not load infer conversations: {_e}")
+
+        # Also load survey responses on startup if not already loaded
+        if _startup_pid and _startup_sb and not st.session_state.get('survey_responses', {}).get('task_a', {}).get('completed'):
+            try:
+                _startup_survey = load_project_data(_startup_sb, _startup_pid, "survey_responses")
+                if _startup_survey:
+                    if isinstance(_startup_survey, list):
+                        _startup_survey = _startup_survey[-1]
+                    if isinstance(_startup_survey, dict):
+                        st.session_state.survey_responses = _startup_survey
+            except Exception:
+                pass
     else:
         st.info("No projects found. Create one below!")
 
@@ -5726,7 +5742,7 @@ with tab_infer:
                             else:
                                 st.caption("Select a decision point to highlight relevant messages")
                             with st.container(height=600):
-                                render_conversation_with_highlights(dp_messages, highlight_quotes, focus_msgs)
+                                render_conversation_with_highlights(st.session_state.infer_dp_messages, highlight_quotes, focus_msgs)
 
                         with col_dps:
                             if not st.session_state.infer_dp_dimension_confirmed:
@@ -5995,10 +6011,16 @@ with tab_infer:
                         _halluc = sum(1 for v in _cats.values() if v == "hallucinated")
                         _all_dps_confirmed = st.session_state.get("infer_dp_dimension_confirmed", False)
                         _precision_100 = len(_cats) > 0 and _halluc == 0
-                        # Check if any DP was mapped to "not in rubric"
+                        # Check if any DP was mapped to "not in rubric" or marked as incorrect
                         _dp_mappings = st.session_state.get("infer_dp_user_mappings", {})
-                        _has_unmapped_dps = any(m.get("not_in_rubric_reason") for m in _dp_mappings.values())
-                        _needs_refinement = _halluc > 0 or _has_unmapped_dps
+                        _has_unmapped_dps = any(m.get("not_in_rubric") for m in _dp_mappings.values())
+                        # Check confirmed decision points for incorrect mappings
+                        _confirmed_dps = []
+                        _dp_data_check = st.session_state.get("infer_decision_points")
+                        if _dp_data_check and isinstance(_dp_data_check, dict):
+                            _confirmed_dps = _dp_data_check.get("parsed_data", {}).get("decision_points", [])
+                        _has_incorrect_dps = any(dp.get("user_action") == "incorrect" for dp in _confirmed_dps)
+                        _needs_refinement = _halluc > 0 or _has_unmapped_dps or _has_incorrect_dps
                         _can_infer = _all_dps_confirmed and _needs_refinement
                         if _all_dps_confirmed and not _needs_refinement:
                             st.success("Rubric precision is 100% and all decision points are correctly mapped. No refinement needed.")
@@ -6010,6 +6032,8 @@ with tab_infer:
                                 _issues.append(f"{_halluc} hallucinated criteria")
                             if _has_unmapped_dps:
                                 _issues.append("decision points not covered by the rubric")
+                            if _has_incorrect_dps:
+                                _issues.append("incorrectly mapped decision points")
                             st.markdown(f"**Infer a refined rubric** to address: {', '.join(_issues)}.")
                         if st.button("🔄 Infer new rubric from evaluation", key="infer_step6_infer_new_rubric", disabled=not _can_infer):
                             with st.spinner("Generating refined rubric..."):
@@ -8198,42 +8222,104 @@ with tab_grading:
                     legend_html += '</div>'
                     st.markdown(legend_html, unsafe_allow_html=True)
 
-                    # --- Agreement summary: how similar is each LLM condition to your evaluation ---
-                    st.markdown("**How closely does each LLM grading approach match yours?**")
-                    st.caption("Match % = percentage of criteria where the LLM's score matches your score exactly.")
-
-                    _match_data = []
-                    for cond_key, cond_label in [("rubric", "Rubric-grounded"), ("coldstart", "Cold-start-grounded"), ("generic", "Generic")]:
-                        matches = 0
-                        total = 0
-                        for l in _display_letters:
-                            u = _gr_user_score(l)
-                            llm_s = _gr_score_from_llm_eval(evals.get(l, {}).get(cond_key))
-                            if u is not None and llm_s is not None:
-                                total += 1
-                                if u == llm_s:
-                                    matches += 1
-                        pct = (matches / total * 100) if total > 0 else 0
-                        _match_data.append((cond_label, matches, total, pct))
-
-                    match_cols = st.columns(3)
-                    for ci, (cond_label, matches, total, pct) in enumerate(_match_data):
-                        with match_cols[ci]:
-                            if pct >= 67:
-                                color = "#2E7D32"
-                            elif pct >= 34:
-                                color = "#E65100"
-                            else:
-                                color = "#C62828"
-                            st.markdown(
-                                f'<div style="text-align:center;padding:12px;background:#fafafa;border-radius:10px;border:1px solid #e0e0e0;">'
-                                f'<div style="font-size:0.85em;color:#666;">{cond_label}</div>'
-                                f'<div style="font-size:1.8em;font-weight:700;color:{color};">{pct:.0f}%</div>'
-                                f'<div style="font-size:0.8em;color:#999;">{matches}/{total} drafts match</div>'
-                                f'</div>',
-                                unsafe_allow_html=True
-                            )
-
+#                     # --- Agreement summary: how similar is each LLM condition to your evaluation ---
+                    # st.markdown("**How closely does each LLM grading approach match yours?**")
+                    # st.caption("Match % = percentage of drafts where the LLM's overall score (derived from criterion checks) matches your score exactly.")
+#
+                    # _match_data = []
+                    # for cond_key, cond_label in [("rubric", "Rubric-grounded"), ("coldstart", "Cold-start-grounded"), ("generic", "Generic")]:
+                        # matches = 0
+                        # total = 0
+                        # for l in _display_letters:
+                            # u = _gr_user_score(l)
+                            # llm_s = _gr_score_from_llm_eval(evals.get(l, {}).get(cond_key))
+                            # if u is not None and llm_s is not None:
+                                # total += 1
+                                # if u == llm_s:
+                                    # matches += 1
+                        # pct = (matches / total * 100) if total > 0 else 0
+                        # _match_data.append((cond_label, matches, total, pct))
+#
+                    # match_cols = st.columns(3)
+                    # for ci, (cond_label, matches, total, pct) in enumerate(_match_data):
+                        # with match_cols[ci]:
+                            # if pct >= 67:
+                                # color = "#2E7D32"
+                            # elif pct >= 34:
+                                # color = "#E65100"
+                            # else:
+                                # color = "#C62828"
+                            # st.markdown(
+                                # f'<div style="text-align:center;padding:12px;background:#fafafa;border-radius:10px;border:1px solid #e0e0e0;">'
+                                # f'<div style="font-size:0.85em;color:#666;">{cond_label}</div>'
+                                # f'<div style="font-size:1.8em;font-weight:700;color:{color};">{pct:.0f}%</div>'
+                                # f'<div style="font-size:0.8em;color:#999;">{matches}/{total} drafts match</div>'
+                                # f'</div>',
+                                # unsafe_allow_html=True
+                            # )
+#
+#                     # --- LLM scoring breakdowns (3 collapsed expanders) ---
+                    # st.markdown("**LLM Scoring Breakdowns**")
+                    # st.caption("Expand to see how each LLM condition evaluated the drafts.")
+#
+                    # _cond_info = [
+                        # ("rubric", "Rubric-grounded", "Evaluated against your final rubric criteria."),
+                        # ("coldstart", "Cold-start-grounded", "Evaluated against dimensions extracted from your stated preferences."),
+                        # ("generic", "Generic", "Evaluated against standard writing quality criteria."),
+                    # ]
+                    # import html as _html_mod_bd
+                    # for _cond_key, _cond_label, _cond_desc in _cond_info:
+                        # with st.expander(f"👾 {_cond_label}", expanded=False):
+                            # st.caption(_cond_desc)
+#                             # Build one table per draft
+                            # for _dl in _display_letters:
+                                # _dl_src = _gr_letter_to_src[_dl]
+                                # _dl_src_label = src_label_map.get(_dl_src, _dl_src)
+                                # _eval_block = evals.get(_dl, {}).get(_cond_key, {})
+                                # if not _eval_block or "error" in _eval_block:
+                                    # st.info(f"Draft {_dl} ({_dl_src_label}): No evaluation data")
+                                    # continue
+                                # _cs_list = _eval_block.get("criteria_scores", [])
+                                # _overall = _eval_block.get("overall_assessment", "")
+                                # _total_met = sum(c.get("dimensions_met", 0) for c in _cs_list)
+                                # _total_dim = sum(c.get("dimensions_total", 0) for c in _cs_list)
+                                # _score = _gr_score_from_llm_eval(_eval_block)
+                                # _score_colors = {5: "#2E7D32", 4: "#1565C0", 3: "#E65100", 2: "#BF360C", 1: "#C62828"}
+                                # _sc = _score_colors.get(_score, "#666")
+                                # _score_html = f'<span style="color:{_sc};font-weight:700;">{_score}/5</span>' if _score else "—"
+#                                 # Draft header
+                                # _tbl = f'<div style="margin-bottom:16px;">'
+                                # _tbl += f'<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px;">'
+                                # _tbl += f'<strong>Draft {_dl}</strong> <span style="color:#666;font-size:0.85em;">({_dl_src_label})</span>'
+                                # _tbl += f'<span style="margin-left:auto;font-size:0.9em;">{_total_met}/{_total_dim} dimensions met → {_score_html}</span>'
+                                # _tbl += f'</div>'
+#                                 # Criteria table
+                                # _tbl += '<table style="width:100%;border-collapse:collapse;font-size:0.85em;">'
+                                # _tbl += '<tr style="background:#f8f9fa;"><th style="text-align:left;padding:6px 10px;border-bottom:1px solid #e0e0e0;">Criterion</th><th style="text-align:center;padding:6px 10px;border-bottom:1px solid #e0e0e0;width:80px;">Score</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid #e0e0e0;">Dimensions</th></tr>'
+                                # for _cr in _cs_list:
+                                    # _cr_name = _html_mod_bd.escape(_cr.get("name", ""))
+                                    # _cr_met = _cr.get("dimensions_met", 0)
+                                    # _cr_total = _cr.get("dimensions_total", 0)
+                                    # _cr_icon = "✅" if _cr_met == _cr_total and _cr_total > 0 else ("⚠️" if _cr_met > 0 else "❌")
+#                                     # Build compact dimension chips
+                                    # _dim_chips = ""
+                                    # for _dim in _cr.get("dimensions_detail", []):
+                                        # _d_label = _html_mod_bd.escape(_dim.get("label", ""))
+                                        # _d_met = _dim.get("met", False)
+                                        # if _d_met:
+                                            # _dim_chips += f'<span style="display:inline-block;padding:2px 8px;margin:2px;background:#E8F5E9;color:#2E7D32;border-radius:10px;font-size:0.9em;">✓ {_d_label}</span>'
+                                        # else:
+                                            # _dim_chips += f'<span style="display:inline-block;padding:2px 8px;margin:2px;background:#FFEBEE;color:#C62828;border-radius:10px;font-size:0.9em;">✗ {_d_label}</span>'
+                                    # _tbl += f'<tr><td style="padding:6px 10px;border-bottom:1px solid #f0f0f0;vertical-align:top;"><strong>{_cr_name}</strong></td>'
+                                    # _tbl += f'<td style="text-align:center;padding:6px 10px;border-bottom:1px solid #f0f0f0;vertical-align:top;">{_cr_icon} {_cr_met}/{_cr_total}</td>'
+                                    # _tbl += f'<td style="padding:6px 10px;border-bottom:1px solid #f0f0f0;">{_dim_chips}</td></tr>'
+                                # _tbl += '</table>'
+                                # if _overall:
+                                    # _overall_esc = _html_mod_bd.escape(_overall)
+                                    # _tbl += f'<div style="margin-top:6px;padding:6px 10px;background:#f8f9fa;border-radius:6px;font-size:0.85em;color:#555;font-style:italic;">{_overall_esc}</div>'
+                                # _tbl += '</div>'
+                                # st.markdown(_tbl, unsafe_allow_html=True)
+#
                     # --- Step 10: Save to database ---
                     st.divider()
                     st.markdown("**Save all evaluation data** to the database.")

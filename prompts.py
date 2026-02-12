@@ -982,11 +982,12 @@ After your `<analysis>` block, output **only** this JSON:
 }
 ```
 
-**INERENCE DECISION POINTS (required):**
-- For each criterion (or the strongest evidence), include 2–4 **decision points**: specific moments in the conversation where the user made a writing choice (edit, rejection, correction, or selection) that **led you to infer** that criterion or dimension.
+**INFERENCE DECISION POINTS (required):**
+- Extract the **most important** decision points only — moments where the user's writing preferences are **strongly and clearly** demonstrated. Maximum **10 decision points**.
+- Focus on: explicit rejections, significant rewrites, strong feedback ("I don't like this", "make it more X"), and choices that reveal core preferences. Skip minor wording tweaks, trivial edits, or factual corrections.
 - Use the **exact message numbers** from the conversation (e.g. the [Message #N] labels). Each decision point must have `assistant_message_num` and `user_message_num` pointing to real messages.
-- Prioritize: user edits to the draft, rejections of suggestions, explicit feedback, and choices between options. Skip trivial typos or factual corrections.
 - Each decision point should map to a `related_rubric_criterion` (one of the criterion names in your rubric). This links the evidence to what you inferred.
+- Quality over quantity: 5–10 strong decision points are better than 15+ weak ones.
 
 **NOTE**: Do NOT include `excellent`, `good`, `fair`, or `weak` fields. Achievement levels are derived from dimension counts.
 """
