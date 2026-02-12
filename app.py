@@ -30,12 +30,7 @@ from prompts import (
     DRAFT_EDIT_RUBRIC_UPDATE_PROMPT,
     get_draft_edit_rubric_update_prompt,
     extract_decision_pts,
-    generate_novel_alternatives_prompt,
-    score_alternatives_with_rubric_prompt,
-    score_alternatives_with_freetext_prompt,
-    score_alternatives_generic_prompt,
     compare_rubric_to_coldstart_prompt,
-    classify_behavioral_evidence_prompt,
     generate_draft_from_rubric_prompt,
     judge_drafts_per_dimension_prompt,
     generate_degraded_draft_prompt,
@@ -44,6 +39,11 @@ from prompts import (
     refine_rubric_from_evaluation_prompt,
     get_rubric_suggestions_from_edit_feedback_prompt,
     get_apply_suggestion_to_rubric_prompt,
+    generate_writing_task_similar_but_different_prompt,
+    generate_draft_from_coldstart_prompt,
+    generate_draft_generic_prompt,
+    claim3_unified_eval_prompt,
+    infer_rubric_from_evaluation_prompt,
 )
 from scipy.stats import kendalltau
 import random
@@ -485,7 +485,7 @@ def update_rubric_from_draft_edit(original_draft: str, edited_draft: str):
             )
 
             # Make API call
-            response = client.messages.create(
+            response = _api_call_with_retry(
                 max_tokens=16000,
                 system=DRAFT_EDIT_RUBRIC_UPDATE_PROMPT,
                 messages=[{"role": "user", "content": user_prompt}],
@@ -548,7 +548,7 @@ def regenerate_draft_from_rubric_changes(original_rubric: list, updated_rubric: 
             updated_clean = _rubric_list_for_json(updated_rubric)
             user_prompt = get_regenerate_draft_prompt(original_clean, updated_clean, current_draft)
 
-            response = client.messages.create(
+            response = _api_call_with_retry(
                 max_tokens=16000,
                 system=REGENERATE_DRAFT_PROMPT,
                 messages=[{"role": "user", "content": user_prompt}],
@@ -1035,12 +1035,17 @@ def display_rubric_update_result():
                         hist.append(new_rubric_entry)
                         save_rubric_history(hist)
 
-                        # Log edit to conversation
+                        # Log edit to conversation (tagged so it only shows when this conversation is selected)
                         old_rubric_for_diff = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
                         old_ver = active_rubric_dict.get("version", "?") if active_rubric_dict else 0
                         edit_class = classify_rubric_edits(old_rubric_for_diff, modified_rubric)
                         log_msg = format_edit_log_message(edit_class, old_ver, new_version, "draft_edit")
-                        st.session_state.messages.append({"role": "system", "content": log_msg})
+                        if st.session_state.selected_conversation is not None:
+                            st.session_state.messages.append({
+                                "role": "system",
+                                "content": log_msg,
+                                "conversation_id": st.session_state.selected_conversation,
+                            })
 
                         # Update active rubric
                         st.session_state.active_rubric_idx = len(hist) - 1
@@ -1128,7 +1133,7 @@ def compare_rubrics(task, rubric_a, rubric_b):
     )
 
     # Call Claude API directly
-    message = client.messages.create(
+    message = _api_call_with_retry(
         model="claude-opus-4-6",
         max_tokens=16000,
         messages=[{"role": "user", "content": prompt}],
@@ -1169,6 +1174,25 @@ if api_key:
     os.environ['ANTHROPIC_API_KEY'] = api_key
 
 client = anthropic.Anthropic()
+
+
+def _api_call_with_retry(max_retries=3, base_delay=2, **kwargs):
+    """Wrapper around client.messages.create with exponential backoff retry on overloaded/rate-limit errors."""
+    for attempt in range(max_retries + 1):
+        try:
+            return client.messages.create(**kwargs)
+        except anthropic.APIStatusError as e:
+            if e.status_code in (429, 529) and attempt < max_retries:
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                time.sleep(delay)
+                continue
+            raise
+        except anthropic.APIConnectionError:
+            if attempt < max_retries:
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                time.sleep(delay)
+                continue
+            raise
 
 
 def parse_analysis_and_content(full_text):
@@ -1360,7 +1384,7 @@ def process_rubric_edit_request(user_request, current_rubric):
 
     # Call Claude API
     try:
-        response = client.messages.create(
+        response = _api_call_with_retry(
             max_tokens=16000,
             messages=[{
                 "role": "user",
@@ -1471,6 +1495,8 @@ def display_rubric_assessment(assessment_data, message_id=None, draft_text=None)
             return "#2196F3", "⭐⭐"
         elif 'fair' in level_lower:
             return "#FF9800", "⭐"
+        elif 'needs work' in level_lower or 'needs_work' in level_lower:
+            return "#E65100", "◇"
         else:  # weak
             return "#F44336", "☆"
 
@@ -1484,13 +1510,66 @@ def display_rubric_assessment(assessment_data, message_id=None, draft_text=None)
         # Sort criteria by priority
         sorted_criteria = sorted(criteria_scores, key=lambda x: x.get('priority', 99))
 
-        # Overall assessment narrative at the top
+        # --- Summary dashboard ---
+        if sorted_criteria:
+            # Count levels
+            level_counts = {"excellent": 0, "good": 0, "fair": 0, "needs work": 0, "weak": 0}
+            total_dims_met = 0
+            total_dims_all = 0
+            for crit in sorted_criteria:
+                lvl = crit.get('achievement_level', '').lower()
+                for k in level_counts:
+                    if k in lvl:
+                        level_counts[k] += 1
+                        break
+                total_dims_met += crit.get('dimensions_met', 0)
+                total_dims_all += crit.get('dimensions_total', 0)
+            overall_pct = round(total_dims_met / total_dims_all * 100) if total_dims_all > 0 else 0
+
+            # Overall score bar — compute 1-5 rating and label from percentage
+            if overall_pct >= 90:
+                overall_rating, overall_label, bar_color = 5, "Excellent", "#4CAF50"
+            elif overall_pct >= 75:
+                overall_rating, overall_label, bar_color = 4, "Good", "#2196F3"
+            elif overall_pct >= 50:
+                overall_rating, overall_label, bar_color = 3, "Fair", "#FF9800"
+            elif overall_pct >= 25:
+                overall_rating, overall_label, bar_color = 2, "Needs Work", "#E65100"
+            else:
+                overall_rating, overall_label, bar_color = 1, "Weak", "#F44336"
+            summary_html = f'''<div style="background:linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);border:1px solid #e0e0e0;border-radius:12px;padding:20px;margin-bottom:16px;">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+  <div>
+    <span style="font-size:1.3em;font-weight:700;">Overall Score</span>
+    <span style="display:inline-block;margin-left:10px;padding:3px 12px;background:{bar_color}20;color:{bar_color};border-radius:14px;font-size:0.95em;font-weight:700;">{overall_label} ({overall_rating})</span>
+  </div>
+  <span style="font-size:2em;font-weight:800;color:{bar_color};">{overall_pct}%</span>
+</div>
+<div style="background:#e9ecef;border-radius:8px;height:12px;overflow:hidden;margin-bottom:14px;">
+  <div style="background:{bar_color};height:100%;width:{overall_pct}%;border-radius:8px;transition:width 0.5s;"></div>
+</div>
+<div style="font-size:0.85em;color:#666;margin-bottom:10px;">{total_dims_met} of {total_dims_all} dimensions met across {len(sorted_criteria)} criteria</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;">'''
+            level_configs = [
+                ("excellent", "Excellent", "#E8F5E9", "#2E7D32"),
+                ("good", "Good", "#E3F2FD", "#1565C0"),
+                ("fair", "Fair", "#FFF3E0", "#E65100"),
+                ("needs work", "Needs Work", "#FBE9E7", "#BF360C"),
+                ("weak", "Weak", "#FFEBEE", "#C62828"),
+            ]
+            for key, label, bg, fg in level_configs:
+                count = level_counts.get(key, 0)
+                if count > 0:
+                    summary_html += f'<span style="padding:4px 12px;background:{bg};color:{fg};border-radius:16px;font-size:0.85em;font-weight:600;">{count} {label}</span>'
+            summary_html += '</div></div>'
+            st.markdown(summary_html, unsafe_allow_html=True)
+
+        # Overall assessment narrative
         if overall_assessment:
             st.markdown(f"*{overall_assessment}*")
             st.markdown("")
 
         # Build a lookup from (criterion, dimension_id) to evidence_highlights quotes
-        # This links the highlighted text to specific dimensions
         highlight_lookup = {}
         for ev in evidence_highlights:
             key = (ev.get('criterion', ''), ev.get('dimension_id', ''))
@@ -1501,7 +1580,7 @@ def display_rubric_assessment(assessment_data, message_id=None, draft_text=None)
                 'relevance': ev.get('relevance', '')
             })
 
-        # Criteria with Dimension Checklists (sorted by priority)
+        # --- Criteria cards ---
         for crit in sorted_criteria:
             crit_name = crit.get('name', 'Unknown')
             priority = crit.get('priority', 'N/A')
@@ -1512,47 +1591,81 @@ def display_rubric_assessment(assessment_data, message_id=None, draft_text=None)
             improvement_explanation = crit.get('improvement_explanation', '')
 
             level_color, level_emoji = get_level_info(achievement_level)
+            pct = round(dims_met / dims_total * 100) if dims_total > 0 else 0
+            # Compute 1-5 rating for this criterion
+            crit_pct_frac = dims_met / dims_total if dims_total > 0 else 0
+            if crit_pct_frac >= 0.90: crit_rating = 5
+            elif crit_pct_frac >= 0.75: crit_rating = 4
+            elif crit_pct_frac >= 0.50: crit_rating = 3
+            elif crit_pct_frac >= 0.25: crit_rating = 2
+            else: crit_rating = 1
 
-            # Criterion header with dimension count
-            expander_label = f"{priority}. {level_emoji} **{crit_name}** ({dims_met}/{dims_total} dimensions)"
+            # Criterion card header with progress bar
+            card_header = f'''<div style="background:white;border:1px solid #e0e0e0;border-left:4px solid {level_color};border-radius:8px;padding:14px 16px;margin-bottom:4px;">
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+  <div>
+    <span style="font-size:0.75em;color:#888;text-transform:uppercase;letter-spacing:0.5px;">Priority #{priority}</span>
+    <div style="font-size:1.05em;font-weight:600;margin-top:2px;">{level_emoji} {crit_name}</div>
+  </div>
+  <div style="text-align:right;">
+    <span style="background:{level_color}20;color:{level_color};padding:3px 10px;border-radius:12px;font-size:0.8em;font-weight:600;">{achievement_level} ({crit_rating})</span>
+    <div style="font-size:0.8em;color:#888;margin-top:4px;">{dims_met}/{dims_total} dimensions · {pct}%</div>
+  </div>
+</div>
+<div style="background:#e9ecef;border-radius:6px;height:6px;overflow:hidden;margin-top:10px;">
+  <div style="background:{level_color};height:100%;width:{pct}%;border-radius:6px;"></div>
+</div>
+</div>'''
+            st.markdown(card_header, unsafe_allow_html=True)
 
-            with st.expander(expander_label, expanded=False):
-
+            with st.expander(f"View details — {crit_name}", expanded=False):
+                # Dimension checklist as styled items
                 for dim in dimensions_detail:
                     dim_id = dim.get('id', '')
                     dim_label = dim.get('label', 'Unknown dimension')
                     dim_met = dim.get('met', False)
                     dim_evidence = dim.get('evidence', '')
-
-                    # Look up any evidence_highlights for this specific dimension
                     linked_highlights = highlight_lookup.get((crit_name, dim_id), [])
 
                     if dim_met:
-                        st.success(f"✅ {dim_label}")
-                        # Show linked highlight quote if available, otherwise fall back to evidence field
+                        st.markdown(f'''<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:#f0faf0;border-radius:6px;margin-bottom:4px;border:1px solid #c8e6c9;">
+<span style="color:#2E7D32;font-size:1.1em;flex-shrink:0;">✅</span>
+<div><span style="font-weight:500;">{dim_label}</span></div>
+</div>''', unsafe_allow_html=True)
+                        evidence_text = ""
                         if linked_highlights:
                             for hl in linked_highlights:
                                 quote = hl.get('quote', '')
                                 if quote:
-                                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why met:** *\"{quote}\"*")
-                        elif dim_evidence:
-                            st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why met:** *\"{dim_evidence}\"*")
+                                    evidence_text = quote
+                                    break
+                        if not evidence_text and dim_evidence:
+                            evidence_text = dim_evidence
+                        if evidence_text:
+                            st.markdown(f'''<div style="margin-left:32px;padding:6px 12px;border-left:3px solid #a5d6a7;color:#555;font-size:0.88em;font-style:italic;margin-bottom:6px;">"{evidence_text}"</div>''', unsafe_allow_html=True)
                     else:
-                        st.error(f"❌ {dim_label}")
-                        # Show linked highlight quote if available, otherwise fall back to evidence field
+                        st.markdown(f'''<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:#fef0ef;border-radius:6px;margin-bottom:4px;border:1px solid #ffcdd2;">
+<span style="color:#C62828;font-size:1.1em;flex-shrink:0;">❌</span>
+<div><span style="font-weight:500;">{dim_label}</span></div>
+</div>''', unsafe_allow_html=True)
+                        evidence_text = ""
                         if linked_highlights:
                             for hl in linked_highlights:
                                 quote = hl.get('quote', '')
                                 if quote:
-                                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why not met:** *\"{quote}\"*")
-                        elif dim_evidence:
-                            st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;**Why not met:** *\"{dim_evidence}\"*")
+                                    evidence_text = quote
+                                    break
+                        if not evidence_text and dim_evidence:
+                            evidence_text = dim_evidence
+                        if evidence_text:
+                            st.markdown(f'''<div style="margin-left:32px;padding:6px 12px;border-left:3px solid #ef9a9a;color:#555;font-size:0.88em;font-style:italic;margin-bottom:6px;">"{evidence_text}"</div>''', unsafe_allow_html=True)
 
-                # Improvement explanation (if not Excellent)
+                # Improvement explanation
                 if improvement_explanation and 'excellent' not in achievement_level.lower():
-                    st.markdown("")
-                    st.markdown("**To improve:**")
-                    st.markdown(improvement_explanation)
+                    st.markdown(f'''<div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:8px;padding:12px 14px;margin-top:8px;">
+<div style="font-weight:600;font-size:0.9em;color:#F57F17;margin-bottom:4px;">💡 To improve</div>
+<div style="font-size:0.9em;color:#555;">{improvement_explanation}</div>
+</div>''', unsafe_allow_html=True)
 
                 # Feedback input for this criterion
                 st.markdown("---")
@@ -1960,6 +2073,17 @@ def load_general_rubrics():
 
     return rubrics
 
+def _rubric_to_json_serializable(obj):
+    """Return a deep copy of obj with sets converted to lists so it can be JSON-serialized."""
+    if isinstance(obj, set):
+        return list(obj)
+    if isinstance(obj, dict):
+        return {k: _rubric_to_json_serializable(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_rubric_to_json_serializable(v) for v in obj]
+    return obj
+
+
 def get_active_rubric():
     """Get the active rubric and its index
     Returns: (full_rubric_dict, active_idx, rubric_history)
@@ -2019,11 +2143,9 @@ def infer_rubric_from_conversation(messages):
             thinking_text = ""
             response_text = ""
 
-            # Show progress indicator
+            # Show progress indicator only for retries (caller shows spinner on first attempt)
             if attempt > 0:
                 progress_placeholder.info(f"Retry attempt {attempt + 1} of {max_retries}...")
-            else:
-                progress_placeholder.info("Inferring rubric from conversation...")
 
             with client.messages.stream(
                 model="claude-opus-4-6",
@@ -2054,11 +2176,6 @@ def infer_rubric_from_conversation(messages):
             progress_placeholder.empty()
 
             response_text = response_text.strip()
-
-            # Show thinking in an expander
-            if thinking_text:
-                with st.expander("🧠 Thinking", expanded=False):
-                    st.markdown(thinking_text)
 
             # Try to parse JSON from the response
             import re
@@ -2370,6 +2487,8 @@ if 'current_project' not in st.session_state:
     st.session_state.current_project = None  # Project name
 if 'current_project_id' not in st.session_state:
     st.session_state.current_project_id = None  # Project UUID from Supabase
+if 'survey_responses' not in st.session_state:
+    st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
 
 if 'selected_conversation' not in st.session_state:
     st.session_state.selected_conversation = None
@@ -2413,38 +2532,50 @@ if 'infer_user_categorizations' not in st.session_state:
     st.session_state.infer_user_categorizations = {}  # Steps 2-3: {"Criterion Name": "stated"|"real"|"hallucinated"}
 if 'infer_categorizations_complete' not in st.session_state:
     st.session_state.infer_categorizations_complete = False  # Whether all criteria categorized
-if 'infer_selected_conversation' not in st.session_state:
-    st.session_state.infer_selected_conversation = None  # Step 5: Selected conversation for behavioral analysis
 if 'infer_behavioral_result' not in st.session_state:
     st.session_state.infer_behavioral_result = None  # Step 5: LLM behavioral evidence (parsed JSON)
-if 'infer_behavioral_thinking' not in st.session_state:
-    st.session_state.infer_behavioral_thinking = ""  # Step 5: LLM thinking text
-if 'infer_reconsideration_done' not in st.session_state:
-    st.session_state.infer_reconsideration_done = False  # Step 6: Whether user reviewed flagged criteria
 if 'infer_dp_conversation' not in st.session_state:
-    st.session_state.infer_dp_conversation = None  # Step 8: Selected conversation for decision points
+    st.session_state.infer_dp_conversation = None  # Step 4: Selected conversation for decision points
 if 'infer_decision_points' not in st.session_state:
-    st.session_state.infer_decision_points = None  # Step 5: Extracted decision points
+    st.session_state.infer_decision_points = None  # Step 4: Extracted decision points
+if 'infer_all_conversations' not in st.session_state:
+    st.session_state.infer_all_conversations = []  # List of {messages, decision_points, timestamp, rubric_version}
 if 'infer_expanded_dp' not in st.session_state:
     st.session_state.infer_expanded_dp = None  # Step 5: Currently expanded decision point ID
 if 'infer_dp_dimension_confirmed' not in st.session_state:
     st.session_state.infer_dp_dimension_confirmed = False  # Step 5: Whether user confirmed dimension mappings
 if 'infer_dp_user_mappings' not in st.session_state:
     st.session_state.infer_dp_user_mappings = {}  # Step 5: User-confirmed dimension mappings {dp_id: {"criterion": name, "not_in_rubric_reason": str|None}}
-if 'infer_novel_alternatives' not in st.session_state:
-    st.session_state.infer_novel_alternatives = None  # Step 8: Generated alternatives per DP
-if 'infer_user_rankings' not in st.session_state:
-    st.session_state.infer_user_rankings = {}  # Step 9: User's 1st/2nd/3rd rankings per DP
-if 'infer_rubric_rankings' not in st.session_state:
-    st.session_state.infer_rubric_rankings = None  # Step 10: Rubric-based predicted rankings
-if 'infer_coldstart_rankings' not in st.session_state:
-    st.session_state.infer_coldstart_rankings = None  # Step 10: Cold-start-based predicted rankings
-if 'infer_generic_rankings' not in st.session_state:
-    st.session_state.infer_generic_rankings = None  # Step 10: Generic baseline rankings
-if 'infer_agreement_scores' not in st.session_state:
-    st.session_state.infer_agreement_scores = None  # Step 11: Computed correlations
-if 'infer_refined_rubric' not in st.session_state:
-    st.session_state.infer_refined_rubric = None  # Step 12: Refined rubric from evaluation
+if 'infer_step6_generated_task' not in st.session_state:
+    st.session_state.infer_step6_generated_task = None
+if 'infer_step6_writing_task' not in st.session_state:
+    st.session_state.infer_step6_writing_task = ""
+if 'infer_step6_auto_gen_done' not in st.session_state:
+    st.session_state.infer_step6_auto_gen_done = False
+if 'infer_step6_custom_task_key_version' not in st.session_state:
+    st.session_state.infer_step6_custom_task_key_version = 0
+if 'infer_step6_drafts' not in st.session_state:
+    st.session_state.infer_step6_drafts = None  # {"r_star": str, "r1": str|None, "r0": str, "coldstart": str, "generic": str}
+if 'infer_step6_draft_labels' not in st.session_state:
+    st.session_state.infer_step6_draft_labels = None  # ordered list of source keys matching A/B/C/D/E shuffle
+if 'infer_step6_rubric_versions_used' not in st.session_state:
+    st.session_state.infer_step6_rubric_versions_used = None  # {"r_star": ver, "r1": ver|None, "r0": ver}
+if 'infer_step6_blind_ratings' not in st.session_state:
+    st.session_state.infer_step6_blind_ratings = None  # {"A": 1-5, ...}
+if 'infer_step6_user_ranking' not in st.session_state:
+    st.session_state.infer_step6_user_ranking = None  # ordered list most→least preferred
+if 'infer_step6_user_dimension_checks' not in st.session_state:
+    st.session_state.infer_step6_user_dimension_checks = None  # Only for R*, coldstart, generic
+if 'infer_step6_llm_evaluations' not in st.session_state:
+    st.session_state.infer_step6_llm_evaluations = None
+if 'infer_step6_survey' not in st.session_state:
+    st.session_state.infer_step6_survey = None  # {"accuracy": str, "rounds_needed": str}
+if 'infer_step6_claim2_metrics' not in st.session_state:
+    st.session_state.infer_step6_claim2_metrics = None
+if 'infer_step6_claim3_metrics' not in st.session_state:
+    st.session_state.infer_step6_claim3_metrics = None
+if 'infer_pending_rubric' not in st.session_state:
+    st.session_state.infer_pending_rubric = None  # Infer tab: Pending inferred rubric awaiting user review
 
 # Evaluate: Build tab state (5-step workflow)
 if 'build_rubric_a_idx' not in st.session_state:
@@ -2763,8 +2894,13 @@ def create_new_project(project_name):
 st.title("✍️ AI-Rubric Writer")
 st.markdown("Collaborate with AI to improve your writing!")
 
-# Create tabs
-tab1, tab2, tab6, tab7, tab8, tab3, tab4 = st.tabs(["💬 Chat", "📋 Evaluate: Survey", "🔎 Evaluate: Infer", "🔨 Evaluate: Build", "📝 Evaluate: Grade", "📁 View Rubric", "🔍 Compare Rubrics"])
+# Create tabs (Evaluate: Build and Evaluate: Grade hidden)
+SHOW_BUILD_GRADE_TABS = False
+if SHOW_BUILD_GRADE_TABS:
+    tab1, tab_survey, tab_infer, tab_grading, tab7, tab8, tab3, tab4 = st.tabs(["💬 Chat", "📋 Evaluate: Survey", "🔎 Evaluate: Infer", "📊 Evaluate: Grading", "🔨 Evaluate: Build", "📝 Evaluate: Grade", "📁 View Rubric", "🔍 Compare Rubrics"])
+else:
+    tab1, tab_survey, tab_infer, tab_grading, tab3, tab4 = st.tabs(["💬 Chat", "📋 Evaluate: Survey", "🔎 Evaluate: Infer", "📊 Evaluate: Grading", "📁 View Rubric", "🔍 Compare Rubrics"])
+    tab7 = tab8 = None
 
 with tab1:
     # Show save toast if we just saved (after rerun)
@@ -2848,6 +2984,10 @@ with tab1:
             continue
 
         if message['role'] == 'system':
+            # Only show system messages that belong to the currently selected conversation
+            msg_conv_id = message.get("conversation_id")
+            if msg_conv_id is not None and msg_conv_id != st.session_state.selected_conversation:
+                continue
             # Strip machine-readable HTML comments before display
             display_content = re.sub(r'<!--.*?-->', '', message['content']).strip()
             if display_content:
@@ -2914,7 +3054,7 @@ with tab1:
                                     (st.session_state.get(f"rubric_edit_fb_{safe_msg_id}_{j}", "") or "").strip()
                                     for j in range(1, len(ann) + 1)
                                 )
-                                if st.button("Suggest how to change the rubric", key=f"rubric_suggest_btn_{safe_msg_id}", disabled=not _has_feedback):
+                                if st.button("💡Suggest how to change the rubric", key=f"rubric_suggest_btn_{safe_msg_id}", disabled=not _has_feedback):
                                     edits_with_feedback = [
                                         {**ac, "user_feedback": st.session_state.get(f"rubric_edit_fb_{safe_msg_id}_{j}", "") or ""}
                                         for j, ac in enumerate(ann, 1)
@@ -2930,7 +3070,7 @@ with tab1:
                                         with st.spinner("Getting suggestion..."):
                                             prompt1 = get_rubric_suggestions_from_edit_feedback_prompt(active_json, edited_json, edits_with_feedback)
                                             client = anthropic.Anthropic()
-                                            r1 = client.messages.create(
+                                            r1 = _api_call_with_retry(
                                                 model="claude-sonnet-4-20250514",
                                                 max_tokens=4096,
                                                 messages=[{"role": "user", "content": prompt1}]
@@ -2940,7 +3080,7 @@ with tab1:
                                                 if getattr(b, "text", None):
                                                     suggestion_text += b.text
                                             prompt2 = get_apply_suggestion_to_rubric_prompt(active_json, edited_json, suggestion_text)
-                                            r2 = client.messages.create(
+                                            r2 = _api_call_with_retry(
                                                 model="claude-sonnet-4-20250514",
                                                 max_tokens=8192,
                                                 messages=[{"role": "user", "content": prompt2}]
@@ -3046,7 +3186,7 @@ with tab1:
                                     with st.spinner("Getting suggestion..."):
                                         prompt1 = get_rubric_suggestions_from_edit_feedback_prompt(active_json, edited_json, edits_with_feedback)
                                         client = anthropic.Anthropic()
-                                        r1 = client.messages.create(
+                                        r1 = _api_call_with_retry(
                                             model="claude-sonnet-4-20250514",
                                             max_tokens=4096,
                                             messages=[{"role": "user", "content": prompt1}]
@@ -3056,7 +3196,7 @@ with tab1:
                                             if getattr(b, "text", None):
                                                 suggestion_text += b.text
                                         prompt2 = get_apply_suggestion_to_rubric_prompt(active_json, edited_json, suggestion_text)
-                                        r2 = client.messages.create(
+                                        r2 = _api_call_with_retry(
                                             model="claude-sonnet-4-20250514",
                                             max_tokens=8192,
                                             messages=[{"role": "user", "content": prompt2}]
@@ -3199,13 +3339,14 @@ with tab1:
         # Prepare message history for API
         api_messages = []
 
-        # Include main conversation messages
+        # Include main conversation messages (skip system messages)
         for msg in st.session_state.messages:
-            content_to_send = msg.get('content', msg.get('display_content', ''))
-            api_messages.append({
-                "role": msg['role'],
-                "content": content_to_send
-            })
+            if msg['role'] in ('user', 'assistant'):
+                content_to_send = msg.get('content', msg.get('display_content', ''))
+                api_messages.append({
+                    "role": msg['role'],
+                    "content": content_to_send
+                })
 
         # Add the new user message to API messages (for the API call)
         api_messages.append({"role": "user", "content": full_message})
@@ -3365,35 +3506,116 @@ with tab1:
                 if not st.session_state.messages:
                     st.error("No conversation to infer rubric from!")
                 else:
-                    # Store key before inference
+                    # Single conversation context for this entire action: rubric inference and decision-point extraction both use this.
+                    conversation_for_infer = copy.deepcopy(st.session_state.messages)
                     preserve_state = {
-                        'messages': st.session_state.messages.copy(),
+                        'messages': conversation_for_infer,
                         'selected_conversation': st.session_state.selected_conversation,
                         'current_analysis': st.session_state.current_analysis
                     }
-                    
+
                     with st.spinner("Inferring rubric from conversation..."):
-                        inferred_rubric_data = infer_rubric_from_conversation(preserve_state['messages'])
+                        inferred_rubric_data = infer_rubric_from_conversation(conversation_for_infer)
                         if inferred_rubric_data:
                             # Restore preserved state
                             st.session_state.messages = preserve_state['messages']
                             st.session_state.selected_conversation = preserve_state['selected_conversation']
                             st.session_state.current_analysis = preserve_state['current_analysis']
-                            
+
                             # Update rubric and editing criteria
                             st.session_state.rubric = inferred_rubric_data.get("rubric")
-                            
+
                             # Get the newly set active rubric (which should now be the inferred one)
                             active_rubric_dict, active_idx, _ = get_active_rubric()
                             if active_rubric_dict:
-                                # active_rubric_dict is a dict with "rubric" and "version" fields
                                 rubric_list = active_rubric_dict.get("rubric", [])
                                 st.session_state.editing_criteria = copy.deepcopy(rubric_list)
-                            
-                            st.success(f"✓ Rubric inferred (v{inferred_rubric_data.get('version', '?')})")
-                            st.rerun()  # Rerun to update the sidebar
+
+                            # Extract decision points from the SAME conversation context (silently, no extra UI)
+                            conversation_text = ""
+                            msg_num = 1
+                            for msg in conversation_for_infer:
+                                role = msg.get('role', 'unknown')
+                                content = msg.get('content', '')
+                                if role == 'user':
+                                    conversation_text += f"\n\n[Message #{msg_num}] USER:\n{content}"
+                                    msg_num += 1
+                                elif role == 'assistant':
+                                    conversation_text += f"\n\n[Message #{msg_num}] ASSISTANT:\n{content}"
+                                    msg_num += 1
+                            try:
+                                clean_rubric = copy.deepcopy(inferred_rubric_data)
+                                if 'rubric' in clean_rubric:
+                                    for criterion in clean_rubric['rubric']:
+                                        if isinstance(criterion, dict) and '_diff' in criterion:
+                                            del criterion['_diff']
+                                rubric_json_for_extraction = json.dumps(clean_rubric, indent=2)
+                                decision_prompt = extract_decision_pts(conversation_text, rubric_json_for_extraction)
+                                dp_response = _api_call_with_retry(
+                                    model="claude-opus-4-6",
+                                    max_tokens=16000,
+                                    messages=[{"role": "user", "content": decision_prompt}],
+                                    thinking={"type": "enabled", "budget_tokens": 8000}
+                                )
+                                dp_thinking_text = ""
+                                dp_response_text = ""
+                                for block in dp_response.content:
+                                    if block.type == "thinking":
+                                        dp_thinking_text = block.thinking
+                                    elif block.type == "text":
+                                        dp_response_text = block.text
+                                parsed_data = None
+                                try:
+                                    json_match = re.search(r'\{[\s\S]*\}', dp_response_text)
+                                    if json_match:
+                                        parsed_data = json.loads(json_match.group())
+                                except json.JSONDecodeError:
+                                    pass
+                                _dp_result = {
+                                    "thinking": dp_thinking_text,
+                                    "raw_response": dp_response_text,
+                                    "parsed_data": parsed_data,
+                                    "conversation_file": "__from_infer_rubric__"
+                                }
+                                st.session_state.infer_decision_points = _dp_result
+                                st.session_state.infer_dp_conversation = "__from_infer_rubric__"
+                                st.session_state.infer_dp_messages = copy.deepcopy(conversation_for_infer)
+                                if parsed_data and parsed_data.get("decision_points"):
+                                    first_dp_id = parsed_data["decision_points"][0].get("id")
+                                    st.session_state.infer_expanded_dp = first_dp_id
+                            except Exception as _e:
+                                _dp_result = None
+
+                            # Append to list of all infer conversations
+                            _infer_entry = {
+                                "messages": copy.deepcopy(conversation_for_infer),
+                                "decision_points": st.session_state.get("infer_decision_points"),
+                                "timestamp": datetime.now().isoformat(),
+                                "rubric_version": inferred_rubric_data.get("version", "?"),
+                                "num_messages": len(conversation_for_infer)
+                            }
+                            if 'infer_all_conversations' not in st.session_state:
+                                st.session_state.infer_all_conversations = []
+                            st.session_state.infer_all_conversations.append(_infer_entry)
+
+                            # Persist all infer conversations to database
+                            _save_sb = st.session_state.get('supabase')
+                            _save_pid = st.session_state.get('current_project_id')
+                            if _save_sb and _save_pid:
+                                try:
+                                    _save_sb.table("project_data").delete().eq("project_id", _save_pid).eq("data_type", "infer_conversation").execute()
+                                    _save_sb.table("project_data").insert({
+                                        "project_id": _save_pid,
+                                        "data_type": "infer_conversation",
+                                        "data": json.dumps(st.session_state.infer_all_conversations),
+                                        "created_at": datetime.now().isoformat()
+                                    }).execute()
+                                except Exception:
+                                    pass
+
+                            st.success(f"✓ Rubric inferred (v{inferred_rubric_data.get('version', '?')})" + (" and decision points extracted" if st.session_state.get("infer_decision_points") else ""))
+                            st.rerun()
                         else:
-                            # Restore preserved state on failure
                             st.session_state.messages = preserve_state['messages']
                             st.session_state.selected_conversation = preserve_state['selected_conversation']
                             st.session_state.current_analysis = preserve_state['current_analysis']
@@ -3447,12 +3669,13 @@ with tab1:
                                 # Build the conversation history with assessment prompt as the last message
                                 assessment_messages = []
 
-                                # Include all messages
+                                # Include all user/assistant messages (skip system messages)
                                 for msg in st.session_state.messages:
-                                    assessment_messages.append({
-                                        "role": msg['role'],
-                                        "content": msg['content']
-                                    })
+                                    if msg['role'] in ('user', 'assistant'):
+                                        assessment_messages.append({
+                                            "role": msg['role'],
+                                            "content": msg['content']
+                                        })
 
                                 # Add the assessment prompt as the last user message
                                 assessment_messages.append({
@@ -3466,7 +3689,7 @@ with tab1:
                                 system_instruction = build_system_instruction(rubric_for_system)
 
                                 # Make API call with full conversation context
-                                assessment_response = client.messages.create(
+                                assessment_response = _api_call_with_retry(
                                     max_tokens=16000,
                                     system=system_instruction,
                                     messages=assessment_messages,
@@ -3593,6 +3816,64 @@ with st.sidebar:
                 st.session_state.rubric = []
                 st.session_state.editing_criteria = []
 
+            # Load survey responses from database
+            _supabase = st.session_state.get('supabase')
+            _new_pid = project_id_map[selected_project_name]
+            if _supabase and _new_pid:
+                _loaded_survey = load_project_data(_supabase, _new_pid, "survey_responses")
+                if _loaded_survey:
+                    # save_project_data appends to a list, so get the latest entry
+                    if isinstance(_loaded_survey, list) and len(_loaded_survey) > 0:
+                        _latest = _loaded_survey[-1]
+                        if isinstance(_latest, dict) and "task_a" in _latest:
+                            st.session_state.survey_responses = _latest
+                        else:
+                            st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+                    elif isinstance(_loaded_survey, dict) and "task_a" in _loaded_survey:
+                        st.session_state.survey_responses = _loaded_survey
+                    else:
+                        st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+                else:
+                    st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+            else:
+                st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+            # Reset cold-start state so Infer tab re-evaluates from loaded survey
+            st.session_state.infer_coldstart_text = ""
+            st.session_state.infer_coldstart_saved = False
+
+            # Load infer conversations from database
+            if _supabase and _new_pid:
+                try:
+                    _infer_conv_raw = _supabase.table("project_data").select("data").eq("project_id", _new_pid).eq("data_type", "infer_conversation").execute()
+                    if _infer_conv_raw.data and _infer_conv_raw.data[0].get("data"):
+                        _infer_conv_loaded = json.loads(_infer_conv_raw.data[0]["data"])
+                        if isinstance(_infer_conv_loaded, list):
+                            # New format: list of infer conversations
+                            st.session_state.infer_all_conversations = _infer_conv_loaded
+                            # Default to the latest one
+                            if _infer_conv_loaded:
+                                _latest_conv = _infer_conv_loaded[-1]
+                                st.session_state.infer_dp_messages = _latest_conv.get("messages", [])
+                                st.session_state.infer_dp_conversation = "__from_infer_rubric__"
+                                if _latest_conv.get("decision_points"):
+                                    st.session_state.infer_decision_points = _latest_conv["decision_points"]
+                        elif isinstance(_infer_conv_loaded, dict) and "messages" in _infer_conv_loaded:
+                            # Legacy format: single conversation dict
+                            st.session_state.infer_all_conversations = [_infer_conv_loaded]
+                            st.session_state.infer_dp_messages = _infer_conv_loaded["messages"]
+                            st.session_state.infer_dp_conversation = "__from_infer_rubric__"
+                            if _infer_conv_loaded.get("decision_points"):
+                                st.session_state.infer_decision_points = _infer_conv_loaded["decision_points"]
+                        else:
+                            st.session_state.infer_all_conversations = []
+                            st.session_state.infer_dp_messages = []
+                    else:
+                        st.session_state.infer_all_conversations = []
+                        st.session_state.infer_dp_messages = []
+                except Exception:
+                    st.session_state.infer_all_conversations = []
+                    st.session_state.infer_dp_messages = []
+
             st.rerun()
 
         # Ensure current_project_id is set if we have a current project
@@ -3613,8 +3894,12 @@ with st.sidebar:
             if st.button("Delete Project", type="primary", use_container_width=True, key="delete_project_btn"):
                 if confirm_name.strip() == st.session_state.current_project:
                     supabase = st.session_state.get('supabase')
-                    user_id = st.session_state.get('user_id')
+                    user_id = st.session_state.get('auth_username')
                     project_id = st.session_state.current_project_id
+                    # Fallback: resolve project_id from map if not set
+                    if not project_id and st.session_state.current_project in project_id_map:
+                        project_id = project_id_map[st.session_state.current_project]
+                        st.session_state.current_project_id = project_id
                     if supabase and user_id and project_id:
                         success, message = delete_project(supabase, user_id, project_id)
                         if success:
@@ -3624,6 +3909,7 @@ with st.sidebar:
                             st.session_state.editing_criteria = []
                             st.session_state.messages = []
                             st.session_state.selected_conversation = None
+                            st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
                             if 'active_rubric_idx' in st.session_state:
                                 del st.session_state.active_rubric_idx
                             if 'delete_project_confirm' in st.session_state:
@@ -3632,7 +3918,11 @@ with st.sidebar:
                         else:
                             st.error(message)
                     else:
-                        st.error("Could not connect to database.")
+                        _missing = []
+                        if not supabase: _missing.append("database connection")
+                        if not user_id: _missing.append("user ID")
+                        if not project_id: _missing.append("project ID")
+                        st.error(f"Could not delete project. Missing: {', '.join(_missing)}. Try refreshing the page.")
                 else:
                     st.error("Project name does not match. Please type the exact project name to confirm deletion.")
 
@@ -3933,7 +4223,12 @@ with st.sidebar:
                     old_rubric_for_diff = rubric_history[active_idx].get("rubric", [])
                     edit_class = classify_rubric_edits(old_rubric_for_diff, st.session_state.editing_criteria)
                     log_msg = format_edit_log_message(edit_class, current_version_num, f"{current_version_num}*", "editing")
-                    st.session_state.messages.append({"role": "system", "content": log_msg})
+                    if st.session_state.selected_conversation is not None:
+                        st.session_state.messages.append({
+                            "role": "system",
+                            "content": log_msg,
+                            "conversation_id": st.session_state.selected_conversation,
+                        })
                     st.session_state.rubric = copy.deepcopy(st.session_state.editing_criteria)
 
                     draft_appended = False
@@ -3978,7 +4273,7 @@ with st.sidebar:
                             try:
                                 system = build_system_instruction(st.session_state.editing_criteria) + "\n\nWhen the user asks for a draft, output ONLY the draft text wrapped in <draft></draft>. No preamble or follow-up."
                                 req = "Write a draft for the following request. Output ONLY the draft text inside <draft></draft> tags.\n\n" + (last_user_content[:8000] or "Write a short passage.")
-                                resp = client.messages.create(
+                                resp = _api_call_with_retry(
                                     model="claude-opus-4-6",
                                     max_tokens=4096,
                                     system=system,
@@ -4024,7 +4319,12 @@ with st.sidebar:
                     old_rubric_for_diff = rubric_history[active_idx].get("rubric", []) if rubric_history and active_idx is not None else []
                     edit_class = classify_rubric_edits(old_rubric_for_diff, saved_criteria)
                     log_msg = format_edit_log_message(edit_class, old_version_num, new_version, "edited")
-                    st.session_state.messages.append({"role": "system", "content": log_msg})
+                    if st.session_state.selected_conversation is not None:
+                        st.session_state.messages.append({
+                            "role": "system",
+                            "content": log_msg,
+                            "conversation_id": st.session_state.selected_conversation,
+                        })
 
                     # Update session state to point to new version
                     st.session_state.active_rubric_idx = len(hist) - 1
@@ -4040,12 +4340,13 @@ with st.sidebar:
                     original_rubric = rubric_history[active_idx].get("rubric", [])
                     st.session_state.editing_criteria = copy.deepcopy(original_rubric)
                     st.session_state.rubric = copy.deepcopy(original_rubric)
-                    # Log revert to conversation
+                    # Log revert to conversation (tagged so it only shows when this conversation is selected)
                     revert_version = rubric_history[active_idx].get("version", active_idx + 1)
                     revert_log = json.dumps({"reverted_to_version": revert_version})
                     st.session_state.messages.append({
                         "role": "system",
-                        "content": f"↩️ **Rubric edits reverted** (back to v{revert_version})\n<!--RUBRIC_REVERT_LOG:{revert_log}-->"
+                        "content": f"↩️ **Rubric edits reverted** (back to v{revert_version})\n<!--RUBRIC_REVERT_LOG:{revert_log}-->",
+                        "conversation_id": st.session_state.selected_conversation,
                     })
                     st.toast("Rubric reset to saved version!")
                     st.rerun()
@@ -4096,318 +4397,447 @@ with st.sidebar:
     else:
         st.info("No rubric loaded. Use 'Infer Rubric' to create one from your conversation.")
 
-    st.divider()
+    # st.divider()
+    #
+    # # === Rubric Chat Section (COMMENTED OUT — redundant with sidebar editing + Log Changes) ===
+    # st.header("💬 Improve Rubric")
+    # st.caption("Describe changes you want to make to your rubric and see how they affect your draft.")
 
-    # === Rubric Chat Section ===
-    st.header("💬 Improve Rubric")
-    st.caption("Describe changes you want to make to your rubric and see how they affect your draft.")
-
-    # Initialize rubric chat state
-    if "rubric_chat_messages" not in st.session_state:
-        st.session_state.rubric_chat_messages = []
-    if "rubric_chat_suggestion" not in st.session_state:
-        st.session_state.rubric_chat_suggestion = None
-    if "rubric_chat_preview_draft" not in st.session_state:
-        st.session_state.rubric_chat_preview_draft = None
-
-    # Check if we have a rubric and draft to work with
-    if not st.session_state.editing_criteria:
-        st.info("Load a rubric first to start improving it.")
-    else:
-        # Get last draft from conversation
-        last_draft, draft_msg_idx = get_last_draft_from_messages()
-
-        if not last_draft:
-            st.info("Start a conversation and generate a draft to see how rubric changes affect it.")
-        else:
-            # Display chat history in scrollable container with white background
-            if st.session_state.rubric_chat_messages or st.session_state.rubric_chat_suggestion:
-                # Create scrollable white container using HTML/CSS
-                chat_html_start = """
-                <div style="
-                    background-color: white;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    padding: 12px;
-                    max-height: 300px;
-                    overflow-y: auto;
-                    margin-bottom: 10px;
-                ">
-                """
-                chat_content = ""
-
-                def md_to_html(text):
-                    # Convert **bold** to <strong>bold</strong>
-                    import re
-                    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
-                    # Convert newlines to <br>
-                    text = text.replace('\n', '<br>')
-                    return text
-
-                for msg in st.session_state.rubric_chat_messages:
-                    content_html = md_to_html(msg["content"])
-                    if msg["role"] == "user":
-                        chat_content += f'<p><strong>You:</strong> {content_html}</p>'
-                    else:
-                        chat_content += f'<p><strong>AI:</strong> {content_html}</p>'
-
-                chat_html_end = "</div>"
-
-                st.markdown(chat_html_start + chat_content + chat_html_end, unsafe_allow_html=True)
-
-            # User input for rubric changes
-            rubric_change_input = st.text_area(
-                "What would you like to change?",
-                placeholder="e.g., Make 'Clarity' the top priority, Add a criterion for 'Evidence Quality', Remove the 'Brevity' dimension...",
-                key="rubric_chat_input",
-                height=80
-            )
-
-            col_send, col_clear = st.columns([3, 1])
-
-            with col_send:
-                if st.button("💡 Get Suggestions", type="primary", use_container_width=True, disabled=not rubric_change_input.strip()):
-                    if rubric_change_input.strip():
-                        # Add user message to chat
-                        st.session_state.rubric_chat_messages.append({
-                            "role": "user",
-                            "content": rubric_change_input.strip()
-                        })
-
-                        with st.spinner("Analyzing your request..."):
-                            try:
-                                from prompts import RUBRIC_EDIT_PROMPT
-
-                                client = anthropic.Anthropic()
-
-                                # Build system prompt with current rubric
-                                current_rubric_json = json.dumps(st.session_state.editing_criteria, indent=2)
-                                system_prompt = RUBRIC_EDIT_PROMPT.format(
-                                    current_rubric=current_rubric_json,
-                                    user_request="{user_request}"  # Placeholder, actual request in messages
-                                )
-
-                                # Build conversation messages from chat history
-                                api_messages = []
-                                for msg in st.session_state.rubric_chat_messages:
-                                    api_messages.append({
-                                        "role": msg["role"],
-                                        "content": msg["content"]
-                                    })
-
-                                response = client.messages.create(
-                                    model="claude-opus-4-6",
-                                    max_tokens=16000,
-                                    system=system_prompt,
-                                    messages=api_messages,
-                                    thinking={"type": "enabled", "budget_tokens": 8000}
-                                )
-
-                                response_text = ""
-                                for block in response.content:
-                                    if block.type == "text":
-                                        response_text = block.text
-
-                                # Try to parse JSON response
-                                json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                if json_match:
-                                    result = json.loads(json_match.group())
-                                    changes_summary = result.get("changes_summary", "Changes applied")
-                                    modified_rubric = result.get("modified_rubric", [])
-
-                                    # Store the suggestion
-                                    original_rubric = copy.deepcopy(st.session_state.editing_criteria)
-                                    st.session_state.rubric_chat_suggestion = {
-                                        "summary": changes_summary,
-                                        "modified_rubric": modified_rubric,
-                                        "original_rubric": original_rubric
-                                    }
-
-                                    # Add AI response to chat
-                                    st.session_state.rubric_chat_messages.append({
-                                        "role": "assistant",
-                                        "content": f"✅ **Suggested changes:** {changes_summary}"
-                                    })
-
-                                    # Build rubric change preview and add as chat message
-                                    original_names = {c.get("name"): c for c in original_rubric}
-                                    modified_names = {c.get("name"): c for c in modified_rubric}
-                                    added = set(modified_names.keys()) - set(original_names.keys())
-                                    removed = set(original_names.keys()) - set(modified_names.keys())
-                                    common = set(original_names.keys()) & set(modified_names.keys())
-
-                                    change_lines = []
-                                    # Added criteria
-                                    for name in added:
-                                        crit = modified_names[name]
-                                        change_lines.append(f"➕ **NEW: {name}** (priority #{crit.get('priority', '?')})")
-                                        if crit.get("description"):
-                                            change_lines.append(f"   {crit.get('description')}")
-
-                                    # Removed criteria
-                                    for name in removed:
-                                        change_lines.append(f"➖ **REMOVED:** ~~{name}~~")
-
-                                    # Modified criteria
-                                    for name in common:
-                                        orig = original_names[name]
-                                        mod = modified_names[name]
-                                        orig_p = orig.get("priority", 0)
-                                        mod_p = mod.get("priority", 0)
-                                        orig_desc = orig.get("description", "")
-                                        mod_desc = mod.get("description", "")
-                                        orig_dims = [d.get("label", "") for d in orig.get("dimensions", [])]
-                                        mod_dims = [d.get("label", "") for d in mod.get("dimensions", [])]
-
-                                        if orig_p != mod_p or orig_desc != mod_desc or orig_dims != mod_dims:
-                                            change_lines.append(f"🔄 **{name}**")
-                                            if orig_p != mod_p:
-                                                change_lines.append(f"   Priority: #{orig_p} → #{mod_p}")
-                                            if orig_desc != mod_desc:
-                                                change_lines.append(f"   Description:")
-                                                change_lines.append(f"   ❌ {orig_desc[:150]}{'...' if len(orig_desc) > 150 else ''}")
-                                                change_lines.append(f"   ✅ {mod_desc}")
-                                            added_dims = set(mod_dims) - set(orig_dims)
-                                            removed_dims = set(orig_dims) - set(mod_dims)
-                                            if added_dims or removed_dims:
-                                                change_lines.append(f"   Dimensions:")
-                                                for d in removed_dims:
-                                                    change_lines.append(f"   ➖ ~~{d}~~")
-                                                for d in added_dims:
-                                                    change_lines.append(f"   ➕ {d}")
-
-                                    if change_lines:
-                                        st.session_state.rubric_chat_messages.append({
-                                            "role": "assistant",
-                                            "content": "\n".join(change_lines)
-                                        })
-
-                                else:
-                                    # AI asked a clarifying question
-                                    st.session_state.rubric_chat_messages.append({
-                                        "role": "assistant",
-                                        "content": response_text
-                                    })
-
-                                st.rerun()
-
-                            except Exception as e:
-                                st.error(f"Error: {str(e)}")
-
-            with col_clear:
-                if st.button("🗑️", help="Clear chat", use_container_width=True):
-                    st.session_state.rubric_chat_messages = []
-                    st.session_state.rubric_chat_suggestion = None
-                    st.session_state.rubric_chat_preview_draft = None
-                    st.rerun()
-
-            # Show Accept/Reject/Preview buttons if there's a pending suggestion
-            if st.session_state.rubric_chat_suggestion:
-                col_preview, col_accept, col_reject = st.columns(3)
-
-                with col_preview:
-                    if st.button("📝 Preview Draft", use_container_width=True):
-                        # Regenerate draft with the suggested rubric changes
-                        modified_rubric = st.session_state.rubric_chat_suggestion.get("modified_rubric", [])
-                        regenerate_result = regenerate_draft_from_rubric_changes(
-                            st.session_state.editing_criteria,
-                            modified_rubric,
-                            last_draft
-                        )
-
-                        if regenerate_result:
-                            revised_draft = regenerate_result.get("revised_draft", "")
-                            st.session_state.rubric_chat_preview_draft = revised_draft
-                            # Add draft preview as a chat message so it stays in order
-                            st.session_state.rubric_chat_messages.append({
-                                "role": "assistant",
-                                "content": f"📝 **Updated Draft Preview:**\n\n{revised_draft}"
-                            })
-                            st.rerun()
-
-                with col_accept:
-                    if st.button("✅ Accept", type="primary", use_container_width=True):
-                        # Get rubric before and after
-                        original_rubric = st.session_state.rubric_chat_suggestion.get("original_rubric", [])
-                        modified_rubric = st.session_state.rubric_chat_suggestion.get("modified_rubric", [])
-
-                        # Save as new version
-                        hist = load_rubric_history()
-                        new_version = next_version_number()
-                        new_rubric_entry = {
-                            "version": new_version,
-                            "rubric": modified_rubric,
-                            "source": "chat_edit"
-                        }
-                        hist.append(new_rubric_entry)
-                        save_rubric_history(hist)
-
-                        # Log edit to conversation
-                        old_ver = hist[-2].get("version", len(hist) - 1) if len(hist) >= 2 else 0
-                        edit_class = classify_rubric_edits(original_rubric, modified_rubric)
-                        log_msg = format_edit_log_message(edit_class, old_ver, new_version, "chat_edit")
-                        st.session_state.messages.append({"role": "system", "content": log_msg})
-
-                        # Save rubric conversation to database
-                        project_id = st.session_state.get('current_project_id')
-                        supabase = st.session_state.get('supabase')
-                        if project_id and supabase:
-                            rubric_conversation_data = {
-                                "timestamp": datetime.now().isoformat(),
-                                "conversation": st.session_state.rubric_chat_messages.copy(),
-                                "rubric_before": original_rubric,
-                                "rubric_after": modified_rubric,
-                                "new_version": new_version,
-                                "draft_preview": st.session_state.rubric_chat_preview_draft
-                            }
-                            if save_project_data(supabase, project_id, "rubric_conversation", rubric_conversation_data):
-                                st.toast("Rubric conversation saved to database")
-                            else:
-                                st.warning("Failed to save rubric conversation to database")
-
-                        # Update session state
-                        st.session_state.active_rubric_idx = len(hist) - 1
-                        st.session_state.rubric = modified_rubric
-                        st.session_state.editing_criteria = copy.deepcopy(modified_rubric)
-
-                        # Optionally add the new draft to conversation
-                        if st.session_state.rubric_chat_preview_draft:
-                            new_draft_msg = {
-                                "role": "assistant",
-                                "content": f"<draft>{st.session_state.rubric_chat_preview_draft}</draft>\n\n*Draft updated based on rubric changes.*"
-                            }
-                            st.session_state.messages.append(new_draft_msg)
-
-                        # Clear suggestion state
-                        st.session_state.rubric_chat_suggestion = None
-                        st.session_state.rubric_chat_preview_draft = None
-                        st.session_state.rubric_chat_messages.append({
-                            "role": "assistant",
-                            "content": f"✅ Changes saved as v{new_version}!"
-                        })
-
-                        st.toast(f"Rubric saved as v{new_version}!")
-                        st.rerun()
-
-                with col_reject:
-                    if st.button("❌ Reject", use_container_width=True):
-                        st.session_state.rubric_chat_suggestion = None
-                        st.session_state.rubric_chat_preview_draft = None
-                        st.session_state.rubric_chat_messages.append({
-                            "role": "assistant",
-                            "content": "Changes rejected. Feel free to describe what you'd like instead."
-                        })
-                        # Log rejection to conversation
-                        active_rd, active_ri, _ = get_active_rubric()
-                        reject_ver = active_rd.get("version", 1) if active_rd else 1
-                        revert_log = json.dumps({"reverted_to_version": reject_ver})
-                        st.session_state.messages.append({
-                            "role": "system",
-                            "content": f"↩️ **Rubric chat suggestion rejected** (staying on v{reject_ver})\n<!--RUBRIC_REVERT_LOG:{revert_log}-->"
-                        })
-                        st.rerun()
-
-    st.divider()
+#     # Initialize rubric chat state
+    # if "rubric_chat_messages" not in st.session_state:
+        # st.session_state.rubric_chat_messages = []
+    # if "rubric_chat_suggestion" not in st.session_state:
+        # st.session_state.rubric_chat_suggestion = None
+    # if "rubric_chat_preview_draft" not in st.session_state:
+        # st.session_state.rubric_chat_preview_draft = None
+    # if "rubric_chat_regenerate_result" not in st.session_state:
+        # st.session_state.rubric_chat_regenerate_result = None
+#
+#     # Check if we have a rubric and draft to work with
+    # if not st.session_state.editing_criteria:
+        # st.info("Load a rubric first to start improving it.")
+    # else:
+#         # Get last draft from conversation
+        # last_draft, draft_msg_idx = get_last_draft_from_messages()
+#
+        # if not last_draft:
+            # st.info("Start a conversation and generate a draft to see how rubric changes affect it.")
+        # else:
+#             # Display chat history in scrollable container with white background
+            # if st.session_state.rubric_chat_messages or st.session_state.rubric_chat_suggestion:
+#                 # Create scrollable white container using HTML/CSS
+                # chat_html_start = """
+                # <div style="
+                    # background-color: white;
+                    # border: 1px solid #ddd;
+                    # border-radius: 8px;
+                    # padding: 12px;
+                    # max-height: 300px;
+                    # overflow-y: auto;
+                    # margin-bottom: 10px;
+                # ">
+                # """
+                # chat_content = ""
+#
+                # def md_to_html(text):
+#                     # Convert **bold** to <strong>bold</strong>
+                    # import re
+                    # text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+#                     # Convert newlines to <br>
+                    # text = text.replace('\n', '<br>')
+                    # return text
+#
+                # for msg in st.session_state.rubric_chat_messages:
+                    # content_html = md_to_html(msg["content"])
+                    # if msg["role"] == "user":
+                        # chat_content += f'<p><strong>You:</strong> {content_html}</p>'
+                    # else:
+                        # chat_content += f'<p><strong>AI:</strong> {content_html}</p>'
+#
+                # chat_html_end = "</div>"
+#
+                # st.markdown(chat_html_start + chat_content + chat_html_end, unsafe_allow_html=True)
+#
+#             # User input for rubric changes
+            # rubric_change_input = st.text_area(
+                # "What would you like to change?",
+                # placeholder="e.g., the current draft sounds weird...",
+                # key="rubric_chat_input",
+                # height=80
+            # )
+#
+            # col_send, col_clear = st.columns([3, 1])
+#
+            # with col_send:
+                # if st.button("💡 Get Suggestions", type="primary", use_container_width=True, disabled=not rubric_change_input.strip()):
+                    # if rubric_change_input.strip():
+#                         # Add user message to chat
+                        # st.session_state.rubric_chat_messages.append({
+                            # "role": "user",
+                            # "content": rubric_change_input.strip()
+                        # })
+#
+                        # with st.spinner("Analyzing your request..."):
+                            # try:
+                                # from prompts import RUBRIC_EDIT_PROMPT
+#
+                                # client = anthropic.Anthropic()
+#
+#                                 # Build system prompt with current rubric
+                                # current_rubric_json = json.dumps(st.session_state.editing_criteria, indent=2)
+                                # system_prompt = RUBRIC_EDIT_PROMPT.format(
+                                    # current_rubric=current_rubric_json,
+                                    # user_request="{user_request}"  # Placeholder, actual request in messages
+                                # )
+#
+#                                 # Build conversation messages from chat history (skip system messages)
+                                # api_messages = []
+                                # for msg in st.session_state.rubric_chat_messages:
+                                    # if msg["role"] in ("user", "assistant"):
+                                        # api_messages.append({
+                                            # "role": msg["role"],
+                                            # "content": msg["content"]
+                                        # })
+#
+                                # response = _api_call_with_retry(
+                                    # model="claude-opus-4-6",
+                                    # max_tokens=16000,
+                                    # system=system_prompt,
+                                    # messages=api_messages,
+                                    # thinking={"type": "enabled", "budget_tokens": 8000}
+                                # )
+#
+                                # response_text = ""
+                                # for block in response.content:
+                                    # if block.type == "text":
+                                        # response_text = block.text
+#
+#                                 # Try to parse JSON response
+                                # json_match = re.search(r'\{[\s\S]*\}', response_text)
+                                # if json_match:
+                                    # result = json.loads(json_match.group())
+                                    # changes_summary = result.get("changes_summary", "Changes applied")
+                                    # modified_rubric = result.get("modified_rubric", [])
+#
+#                                     # Store the suggestion
+                                    # original_rubric = copy.deepcopy(st.session_state.editing_criteria)
+                                    # st.session_state.rubric_chat_suggestion = {
+                                        # "summary": changes_summary,
+                                        # "modified_rubric": modified_rubric,
+                                        # "original_rubric": original_rubric
+                                    # }
+#
+#                                     # Add AI response to chat
+                                    # st.session_state.rubric_chat_messages.append({
+                                        # "role": "assistant",
+                                        # "content": f"**Suggested changes:** {changes_summary}"
+                                    # })
+#
+#                                     # Auto-regenerate draft with suggested rubric changes
+                                    # regen_result = regenerate_draft_from_rubric_changes(
+                                        # original_rubric,
+                                        # modified_rubric,
+                                        # last_draft
+                                    # )
+                                    # if regen_result and not regen_result.get("error"):
+                                        # st.session_state.rubric_chat_regenerate_result = regen_result
+                                    # else:
+                                        # st.session_state.rubric_chat_regenerate_result = None
+                                        # _regen_err = regen_result.get("error", "Unknown error") if regen_result else "Unknown error"
+                                        # st.session_state.rubric_chat_messages.append({
+                                            # "role": "assistant",
+                                            # "content": f"Could not regenerate draft preview: {_regen_err}"
+                                        # })
+#
+                                # else:
+#                                     # AI asked a clarifying question
+                                    # st.session_state.rubric_chat_messages.append({
+                                        # "role": "assistant",
+                                        # "content": response_text
+                                    # })
+#
+                                # st.rerun()
+#
+                            # except Exception as e:
+                                # st.error(f"Error: {str(e)}")
+#
+            # with col_clear:
+                # if st.button("🗑️", help="Clear chat", use_container_width=True):
+                    # st.session_state.rubric_chat_messages = []
+                    # st.session_state.rubric_chat_suggestion = None
+                    # st.session_state.rubric_chat_preview_draft = None
+                    # st.session_state.rubric_chat_regenerate_result = None
+                    # st.rerun()
+#
+#             # Show rich suggestion display if there's a pending suggestion with regenerated draft
+            # if st.session_state.rubric_chat_suggestion:
+                # _sug = st.session_state.rubric_chat_suggestion
+                # _original_rubric = _sug.get("original_rubric", [])
+                # _modified_rubric = _sug.get("modified_rubric", [])
+#
+                # st.divider()
+#
+#                 # --- Rubric change suggestions at the top ---
+                # st.markdown("#### Suggested Rubric Changes")
+                # _orig_names = {c.get("name"): c for c in _original_rubric}
+                # _mod_names = {c.get("name"): c for c in _modified_rubric}
+                # _added_names = set(_mod_names.keys()) - set(_orig_names.keys())
+                # _removed_names = set(_orig_names.keys()) - set(_mod_names.keys())
+                # _common_names = set(_orig_names.keys()) & set(_mod_names.keys())
+#
+                # for name in _added_names:
+                    # crit = _mod_names[name]
+                    # st.markdown(f"➕ **NEW: {name}** (priority #{crit.get('priority', '?')})")
+                    # if crit.get("description"):
+                        # st.caption(f"  {crit.get('description')}")
+#
+                # for name in _removed_names:
+                    # st.markdown(f"➖ **REMOVED:** ~~{name}~~")
+#
+                # for name in _common_names:
+                    # orig = _orig_names[name]
+                    # mod = _mod_names[name]
+                    # orig_p = orig.get("priority", 0)
+                    # mod_p = mod.get("priority", 0)
+                    # orig_desc = orig.get("description", "")
+                    # mod_desc = mod.get("description", "")
+                    # orig_dims = [d.get("label", "") for d in orig.get("dimensions", [])]
+                    # mod_dims = [d.get("label", "") for d in mod.get("dimensions", [])]
+#
+                    # if orig_p != mod_p or orig_desc != mod_desc or orig_dims != mod_dims:
+                        # st.markdown(f"🔄 **{name}**")
+                        # if orig_p != mod_p:
+                            # st.markdown(f"  Priority: #{orig_p} → #{mod_p}")
+                        # if orig_desc != mod_desc:
+                            # st.markdown(f"  ❌ {orig_desc[:150]}{'...' if len(orig_desc) > 150 else ''}")
+                            # st.markdown(f"  ✅ {mod_desc}")
+                        # added_dims = set(mod_dims) - set(orig_dims)
+                        # removed_dims = set(orig_dims) - set(mod_dims)
+                        # if added_dims or removed_dims:
+                            # for d in removed_dims:
+                                # st.markdown(f"  ➖ ~~{d}~~")
+                            # for d in added_dims:
+                                # st.markdown(f"  ➕ {d}")
+#
+                # if not _added_names and not _removed_names:
+#                     # Check if any common names actually changed
+                    # _any_mod = False
+                    # for name in _common_names:
+                        # orig = _orig_names[name]
+                        # mod = _mod_names[name]
+                        # if (orig.get("priority") != mod.get("priority") or
+                            # orig.get("description") != mod.get("description") or
+                            # [d.get("label", "") for d in orig.get("dimensions", [])] != [d.get("label", "") for d in mod.get("dimensions", [])]):
+                            # _any_mod = True
+                            # break
+                    # if not _any_mod:
+                        # st.info("No rubric changes detected.")
+#
+#                 # --- Annotated draft preview (Log Changes format) ---
+                # _regen = st.session_state.rubric_chat_regenerate_result
+                # if _regen:
+                    # st.divider()
+                    # _rc_ann = _regen.get('annotated_changes', [])
+                    # _rc_msg_id = "rubric_chat_preview"
+#
+                    # if _regen.get('change_summary'):
+                        # st.markdown("**What changed**")
+                        # st.markdown(_regen['change_summary'])
+#
+                    # _rc_annotated = _regen.get('revised_draft_annotated') or _regen.get('revised_draft', '')
+                    # if _rc_annotated:
+                        # st.markdown("**Revised draft** (click a marker to jump to the edit):")
+                        # st.markdown(_safe_annotated_draft_html(_rc_annotated, _rc_ann, _rc_msg_id), unsafe_allow_html=True)
+#
+                    # if _rc_ann:
+                        # st.markdown("**Edits (by rubric change):**")
+                        # import html as _html_mod_rc
+                        # _rc_safe_id = re.sub(r'[^a-zA-Z0-9_-]', '_', str(_rc_msg_id))
+                        # for _rc_i, _rc_ac in enumerate(_rc_ann, 1):
+                            # _rc_reason = (_rc_ac.get('reason', '') or '').strip()
+                            # _rc_orig_t = (_rc_ac.get('original_text', '') or '').strip()
+                            # _rc_new_t = (_rc_ac.get('new_text', '') or '').strip()
+                            # _rc_reason_esc = _html_mod_rc.escape(_rc_reason)
+                            # _rc_orig_esc = _html_mod_rc.escape(_rc_orig_t[:100] + ('…' if len(_rc_orig_t) > 100 else ''))
+                            # _rc_new_esc = _html_mod_rc.escape(_rc_new_t[:100] + ('…' if len(_rc_new_t) > 100 else ''))
+                            # _rc_aid = f"rubric-edit-{_rc_safe_id}-{_rc_i}"
+                            # _rc_div_style = "margin:4px 0; scroll-margin-top: 20vh;"
+                            # _rc_bold = f'<strong>{_rc_reason_esc}</strong>'
+                            # if not _rc_new_t and _rc_orig_t:
+                                # _rc_line = f'<div id="{_rc_aid}" style="{_rc_div_style}">• <strong>[{_rc_i}]</strong> {_rc_bold} — removed: "{_rc_orig_esc}"</div>'
+                            # elif not _rc_orig_t and _rc_new_t:
+                                # _rc_line = f'<div id="{_rc_aid}" style="{_rc_div_style}">• <strong>[{_rc_i}]</strong> {_rc_bold} — added: "{_rc_new_esc}"</div>'
+                            # else:
+                                # _rc_line = f'<div id="{_rc_aid}" style="{_rc_div_style}">• <strong>[{_rc_i}]</strong> {_rc_bold} — "{_rc_orig_esc}" → "{_rc_new_esc}"</div>'
+                            # st.markdown(_rc_line, unsafe_allow_html=True)
+                            # st.text_input(
+                                # "Your feedback (optional)",
+                                # key=f"rubric_chat_edit_fb_{_rc_safe_id}_{_rc_i}",
+                                # placeholder="Do you not agree? Why? What would you have done differently?",
+                                # label_visibility="collapsed"
+                            # )
+#
+#                         # "Suggest how to change the rubric" button
+                        # _rc_has_feedback = any(
+                            # (st.session_state.get(f"rubric_chat_edit_fb_{_rc_safe_id}_{j}", "") or "").strip()
+                            # for j in range(1, len(_rc_ann) + 1)
+                        # )
+                        # if st.button("💡 Suggest how to change the rubric", key="rubric_chat_suggest_btn", disabled=not _rc_has_feedback):
+                            # _rc_edits_with_fb = [
+                                # {**ac, "user_feedback": st.session_state.get(f"rubric_chat_edit_fb_{_rc_safe_id}_{j}", "") or ""}
+                                # for j, ac in enumerate(_rc_ann, 1)
+                            # ]
+                            # active_rubric_dict_rc, _, _ = get_active_rubric()
+                            # _rc_active_list = (active_rubric_dict_rc.get("rubric", []) or []) if active_rubric_dict_rc else []
+                            # _rc_edited_list = list(st.session_state.editing_criteria or [])
+                            # _rc_active_json = json.dumps(_rubric_list_for_json(_rc_active_list), indent=2)
+                            # _rc_edited_json = json.dumps(_rubric_list_for_json(_rc_edited_list), indent=2)
+                            # try:
+                                # with st.spinner("Getting suggestion..."):
+                                    # from prompts import get_rubric_suggestions_from_edit_feedback_prompt, get_apply_suggestion_to_rubric_prompt
+                                    # _rc_prompt1 = get_rubric_suggestions_from_edit_feedback_prompt(_rc_active_json, _rc_edited_json, _rc_edits_with_fb)
+                                    # _rc_client = anthropic.Anthropic()
+                                    # _rc_r1 = _api_call_with_retry(
+                                        # model="claude-sonnet-4-20250514",
+                                        # max_tokens=4096,
+                                        # messages=[{"role": "user", "content": _rc_prompt1}]
+                                    # )
+                                    # _rc_suggestion_text = ""
+                                    # for b in _rc_r1.content:
+                                        # if getattr(b, "text", None):
+                                            # _rc_suggestion_text += b.text
+                                    # _rc_prompt2 = get_apply_suggestion_to_rubric_prompt(_rc_active_json, _rc_edited_json, _rc_suggestion_text)
+                                    # _rc_r2 = _api_call_with_retry(
+                                        # model="claude-sonnet-4-20250514",
+                                        # max_tokens=8192,
+                                        # messages=[{"role": "user", "content": _rc_prompt2}]
+                                    # )
+                                    # _rc_raw = ""
+                                    # for b in _rc_r2.content:
+                                        # if getattr(b, "text", None):
+                                            # _rc_raw += b.text
+                                    # _rc_json_match = re.search(r'\[[\s\S]*\]', _rc_raw)
+                                    # _rc_fb_rubric = json.loads(_rc_json_match.group()) if _rc_json_match else []
+                                    # st.session_state.rubric_chat_suggestion["feedback_suggestion"] = {
+                                        # "suggestion_text": _rc_suggestion_text,
+                                        # "modified_rubric": _rc_fb_rubric,
+                                    # }
+                                    # st.rerun()
+                            # except Exception as e:
+                                # st.error(f"Suggestion failed: {e}")
+#
+#                         # Show feedback-based suggestion if available
+                        # _rc_fb_sug = _sug.get("feedback_suggestion")
+                        # if _rc_fb_sug:
+                            # with st.expander("💡 How to change the rubric (from your feedback)", expanded=True):
+                                # st.markdown(_rc_fb_sug.get("suggestion_text", ""))
+                                # st.caption("Apply individual criteria below, or apply all at once at the bottom. Changes appear in **Rubric Configuration** in the sidebar.")
+                                # display_rubric_comparison(
+                                    # list(st.session_state.editing_criteria or []),
+                                    # _rc_fb_sug.get("modified_rubric", []),
+                                    # apply_context={"safe_msg_id": _rc_safe_id, "message": None, "message_id": _rc_msg_id},
+                                # )
+#
+#                 # --- Accept / Reject buttons ---
+                # st.divider()
+                # col_accept, col_reject = st.columns(2)
+#
+                # with col_accept:
+                    # if st.button("✅ Accept Changes", type="primary", use_container_width=True):
+#                         # Get rubric before and after
+                        # original_rubric = _sug.get("original_rubric", [])
+                        # modified_rubric = _sug.get("modified_rubric", [])
+#
+#                         # Save as new version
+                        # hist = load_rubric_history()
+                        # new_version = next_version_number()
+                        # new_rubric_entry = {
+                            # "version": new_version,
+                            # "rubric": modified_rubric,
+                            # "source": "chat_edit"
+                        # }
+                        # hist.append(new_rubric_entry)
+                        # save_rubric_history(hist)
+#
+#                         # Log edit to conversation
+                        # old_ver = hist[-2].get("version", len(hist) - 1) if len(hist) >= 2 else 0
+                        # edit_class = classify_rubric_edits(original_rubric, modified_rubric)
+                        # log_msg = format_edit_log_message(edit_class, old_ver, new_version, "chat_edit")
+                        # if st.session_state.selected_conversation is not None:
+                            # st.session_state.messages.append({
+                                # "role": "system",
+                                # "content": log_msg,
+                                # "conversation_id": st.session_state.selected_conversation,
+                            # })
+#
+#                         # Save rubric conversation to database
+                        # project_id = st.session_state.get('current_project_id')
+                        # supabase = st.session_state.get('supabase')
+                        # if project_id and supabase:
+                            # _revised_draft = ""
+                            # if st.session_state.rubric_chat_regenerate_result:
+                                # _revised_draft = st.session_state.rubric_chat_regenerate_result.get("revised_draft", "")
+                            # rubric_conversation_data = {
+                                # "timestamp": datetime.now().isoformat(),
+                                # "conversation": st.session_state.rubric_chat_messages.copy(),
+                                # "rubric_before": original_rubric,
+                                # "rubric_after": modified_rubric,
+                                # "new_version": new_version,
+                                # "draft_preview": _revised_draft
+                            # }
+                            # if save_project_data(supabase, project_id, "rubric_conversation", rubric_conversation_data):
+                                # st.toast("Rubric conversation saved to database")
+                            # else:
+                                # st.warning("Failed to save rubric conversation to database")
+#
+#                         # Update session state
+                        # st.session_state.active_rubric_idx = len(hist) - 1
+                        # st.session_state.rubric = modified_rubric
+                        # st.session_state.editing_criteria = copy.deepcopy(modified_rubric)
+#
+#                         # Add the new draft to conversation if regeneration was done
+                        # if st.session_state.rubric_chat_regenerate_result:
+                            # _accepted_draft = st.session_state.rubric_chat_regenerate_result.get("revised_draft", "")
+                            # if _accepted_draft:
+                                # new_draft_msg = {
+                                    # "role": "assistant",
+                                    # "content": f"<draft>{_accepted_draft}</draft>\n\n*Draft updated based on rubric changes.*"
+                                # }
+                                # st.session_state.messages.append(new_draft_msg)
+#
+#                         # Clear suggestion state
+                        # st.session_state.rubric_chat_suggestion = None
+                        # st.session_state.rubric_chat_preview_draft = None
+                        # st.session_state.rubric_chat_regenerate_result = None
+                        # st.session_state.rubric_chat_messages.append({
+                            # "role": "assistant",
+                            # "content": f"Changes saved as v{new_version}!"
+                        # })
+#
+                        # st.toast(f"Rubric saved as v{new_version}!")
+                        # st.rerun()
+#
+                # with col_reject:
+                    # if st.button("❌ Reject", use_container_width=True):
+                        # st.session_state.rubric_chat_suggestion = None
+                        # st.session_state.rubric_chat_preview_draft = None
+                        # st.session_state.rubric_chat_regenerate_result = None
+                        # st.session_state.rubric_chat_messages.append({
+                            # "role": "assistant",
+                            # "content": "Changes rejected. Feel free to describe what you'd like instead."
+                        # })
+#                         # Log rejection to conversation
+                        # active_rd, active_ri, _ = get_active_rubric()
+                        # reject_ver = active_rd.get("version", 1) if active_rd else 1
+                        # revert_log = json.dumps({"reverted_to_version": reject_ver})
+                        # st.session_state.messages.append({
+                            # "role": "system",
+                            # "content": f"↩️ **Rubric chat suggestion rejected** (staying on v{reject_ver})\n<!--RUBRIC_REVERT_LOG:{revert_log}-->",
+                            # "conversation_id": st.session_state.selected_conversation,
+                        # })
+                        # st.rerun()
+#
+    # st.divider()
 # View Rubric Tab
 with tab3:
     st.subheader("📁 View Rubric")
@@ -4420,13 +4850,26 @@ with tab3:
         st.warning("No active rubric available. Please create or select a rubric first.")
     else:
         # Display version, writing type, and user goals at the top
-        col_meta1, col_meta2 = st.columns([1, 2])
+        col_meta1, col_meta2, col_meta3 = st.columns([1, 1, 2])
 
         with col_meta1:
             version = active_rubric_dict.get("version", 1)
             st.metric("Version", f"v{version}")
 
         with col_meta2:
+            _source_raw = active_rubric_dict.get("source", "unknown")
+            _source_labels = {
+                "inferred": ("Inferred", "#E3F2FD", "#1565C0"),
+                "inferred_from_evaluation": ("Inferred", "#E3F2FD", "#1565C0"),
+                "edited": ("User-edited", "#E8F5E9", "#2E7D32"),
+                "edit_feedback": ("User-edited", "#E8F5E9", "#2E7D32"),
+                "chat_edit": ("User-edited", "#E8F5E9", "#2E7D32"),
+            }
+            _src_label, _src_bg, _src_fg = _source_labels.get(_source_raw, ("Unknown", "#f5f5f5", "#666"))
+            st.markdown(f'<span style="display:inline-block;padding:4px 12px;background:{_src_bg};color:{_src_fg};border-radius:12px;font-size:0.85em;font-weight:600;">{_src_label}</span>', unsafe_allow_html=True)
+            st.caption(f"Source: {_source_raw}")
+
+        with col_meta3:
             writing_type = active_rubric_dict.get("writing_type", "Not specified")
             st.markdown(f"**Writing Type:** {writing_type}")
 
@@ -4437,7 +4880,7 @@ with tab3:
 
         # Achievement level explanation
         st.markdown("**Achievement Levels** *(based on dimensions met)*")
-        st.markdown("⭐⭐⭐ **Excellent**: 100% | ⭐⭐ **Good**: 75%+ | ⭐ **Fair**: 50-74% | ☆ **Weak**: <50%")
+        st.markdown("⭐⭐⭐ **Excellent**: 90%+ | ⭐⭐ **Good**: 75-89% | ⭐ **Fair**: 50-74% | ◇ **Needs Work**: 25-49% | ☆ **Weak**: <25%")
 
         st.markdown("---")
 
@@ -4531,30 +4974,31 @@ with tab4:
     if len(rubric_history) < 2:
         st.warning("You need at least 2 rubrics to compare. Create more rubric versions first.")
     else:
-        rubric_options = [f"v{r.get('version', 1)}" for r in rubric_history]
+        _cmp_source_labels = {"inferred": "inferred", "inferred_from_evaluation": "inferred", "edited": "edited", "edit_feedback": "edited", "chat_edit": "edited"}
+        rubric_options = [f"v{r.get('version', 1)} ({_cmp_source_labels.get(r.get('source', ''), r.get('source', 'unknown'))})" for r in rubric_history]
         col1, col2 = st.columns(2)
-        
+
         with col1:
-            rubric_a_idx = st.selectbox("Rubric A:", options=list(range(len(rubric_history))), 
+            rubric_a_idx = st.selectbox("Rubric A:", options=list(range(len(rubric_history))),
                                         format_func=lambda x: rubric_options[x], key="tab2_rubric_a_select")
         with col2:
-            rubric_b_idx = st.selectbox("Rubric B:", options=list(range(len(rubric_history))), 
+            rubric_b_idx = st.selectbox("Rubric B:", options=list(range(len(rubric_history))),
                                         format_func=lambda x: rubric_options[x], key="tab2_rubric_b_select")
-        
+
         # Display selected rubrics
         st.markdown("---")
         col_rubric_a, col_rubric_b = st.columns(2)
-        
+
         with col_rubric_a:
             rubric_a_version = rubric_history[rubric_a_idx].get('version', 1)
-            st.markdown(f"### 📋 Rubric v{rubric_a_version}")
-            # Pass rubric B as comparison to highlight differences in A
+            _src_a = _cmp_source_labels.get(rubric_history[rubric_a_idx].get("source", ""), "unknown")
+            st.markdown(f"### 📋 Rubric v{rubric_a_version} ({_src_a})")
             display_rubric_criteria(rubric_history[rubric_a_idx], st, comparison_rubric_data=rubric_history[rubric_b_idx])
 
         with col_rubric_b:
             rubric_b_version = rubric_history[rubric_b_idx].get('version', 1)
-            st.markdown(f"### 📋 Rubric v{rubric_b_version}")
-            # Pass rubric A as comparison to highlight differences in B
+            _src_b = _cmp_source_labels.get(rubric_history[rubric_b_idx].get("source", ""), "unknown")
+            st.markdown(f"### 📋 Rubric v{rubric_b_version} ({_src_b})")
             display_rubric_criteria(rubric_history[rubric_b_idx], st, comparison_rubric_data=rubric_history[rubric_a_idx])
         
         # Comparison task input
@@ -4726,7 +5170,7 @@ with tab4:
             """, unsafe_allow_html=True)
 
 # ============ EVALUATE: INFER TAB ============
-with tab6:
+with tab_infer:
     st.header("🔎 Evaluate: Infer")
     st.markdown("Measure what the rubric surfaces beyond what you can state upfront, and test whether it predicts your preferences.")
 
@@ -4777,151 +5221,125 @@ with tab6:
                 st.session_state.infer_coldstart_saved = False
                 st.session_state.infer_user_categorizations = {}
                 st.session_state.infer_categorizations_complete = False
-                st.session_state.infer_selected_conversation = None
-                st.session_state.infer_behavioral_result = None
-                st.session_state.infer_behavioral_thinking = ""
-                st.session_state.infer_reconsideration_done = False
                 st.session_state.infer_dp_conversation = None
                 st.session_state.infer_decision_points = None
                 st.session_state.infer_expanded_dp = None
                 st.session_state.infer_dp_dimension_confirmed = False
                 st.session_state.infer_dp_user_mappings = {}
-                st.session_state.infer_novel_alternatives = None
-                st.session_state.infer_user_rankings = {}
-                st.session_state.infer_rubric_rankings = None
-                st.session_state.infer_coldstart_rankings = None
-                st.session_state.infer_generic_rankings = None
-                st.session_state.infer_agreement_scores = None
-                st.session_state.infer_refined_rubric = None
+                st.session_state.infer_step6_generated_task = None
+                st.session_state.infer_step6_writing_task = ""
+                st.session_state.infer_step6_auto_gen_done = False
+                st.session_state.infer_step6_custom_task_key_version = 0
+                st.session_state.infer_step6_drafts = None
+                st.session_state.infer_step6_draft_labels = None
+                st.session_state.infer_step6_rubric_versions_used = None
+                st.session_state.infer_step6_blind_ratings = None
+                st.session_state.infer_step6_user_ranking = None
+                st.session_state.infer_step6_user_dimension_checks = None
+                st.session_state.infer_step6_llm_evaluations = None
+                st.session_state.infer_step6_survey = None
+                st.session_state.infer_step6_claim2_metrics = None
+                st.session_state.infer_step6_claim3_metrics = None
                 st.rerun()
 
         # Progress indicator
         def get_infer_step():
             if not st.session_state.infer_coldstart_saved:
-                return 1
+                return 0  # auto-setup needed
             if not st.session_state.infer_user_categorizations:
-                return 2
+                return 1
             if not st.session_state.infer_categorizations_complete:
-                return 3
-            # Step 4 (Category Ratios) is display-only, flows into Step 5
+                return 2
+            # Step 3 (Category Ratios) is display-only, flows into Step 4
             if not st.session_state.infer_decision_points or not st.session_state.infer_dp_dimension_confirmed:
-                return 5
-            all_dps = st.session_state.infer_decision_points.get("parsed_data", {}).get("decision_points", [])
-            active_dp_count = sum(1 for dp in all_dps if not dp.get("is_not_in_rubric"))
-            if not st.session_state.infer_novel_alternatives or not st.session_state.infer_user_rankings or len(st.session_state.infer_user_rankings) < active_dp_count:
-                return 6
-            if not st.session_state.infer_agreement_scores:
-                return 7
-            # Step 8 (Agreement Analysis) display-only, flows into Step 9
-            if not st.session_state.infer_behavioral_result:
-                return 9
-            if not st.session_state.infer_reconsideration_done:
-                return 10
-            # Step 11 (Behavioral Confirmation) display-only, flows into Step 12
-            return 12
+                return 4
+            return 4  # All done — remaining steps are in the Grading tab
 
         infer_current = get_infer_step()
+        infer_total = 4
         infer_steps = [
-            "1. Cold-Start Description",
-            "2. Mark Stated vs. Unstated",
-            "3. Categorize Unstated",
-            "4. Category Ratios",
-            "5. Extract Decision Points",
-            "6. Generate & Rank Alternatives",
-            "7. Score Under Three Conditions",
-            "8. Agreement Analysis",
-            "9. Behavioral Evidence",
-            "10. Cross-Reference & Reconsideration",
-            "11. Behavioral Confirmation & Signal Sources",
-            "12. Refine Rubric"
+            "1. Mark Stated vs. Unstated",
+            "2. Categorize Unstated",
+            "3. Category Ratios",
+            "4. Extract Decision Points",
         ]
-        st.progress(infer_current / 12)
-        st.markdown(f"**Step {infer_current}/12: {infer_steps[infer_current - 1]}**")
-        st.divider()
-
-        # ==================== STEP 1: COLD-START DESCRIPTION ====================
-        st.subheader("Step 1: Cold-Start Preference Description")
-        st.markdown(
-            "**Without looking at the rubric**, describe your writing preferences for this task. "
-            "What do you care about? How do you want the writing to sound? What matters to you?"
-        )
-
-        if not st.session_state.infer_coldstart_saved:
-            coldstart_input = st.text_area(
-                "Your writing preferences (cold-start):",
-                value=st.session_state.infer_coldstart_text,
-                placeholder="e.g., I prefer concise language, a warm but professional tone, clear structure with headers...",
-                height=200,
-                key="infer_coldstart_input"
-            )
-
-            if st.button("✅ Submit Cold-Start Description", type="primary", use_container_width=True, key="infer_submit_coldstart"):
-                if coldstart_input.strip():
-                    st.session_state.infer_coldstart_text = coldstart_input.strip()
-                    st.session_state.infer_coldstart_saved = True
-
-                    # Auto-run LLM classification for Step 2
-                    with st.spinner("LLM is classifying each criterion against your cold-start description..."):
-                        try:
-                            clean_rubric = copy.deepcopy(infer_rubric_dict)
-                            if 'rubric' in clean_rubric:
-                                for criterion in clean_rubric['rubric']:
-                                    if '_diff' in criterion:
-                                        del criterion['_diff']
-                            rubric_json_str = json.dumps(clean_rubric, indent=2)
-
-                            prompt = compare_rubric_to_coldstart_prompt(
-                                rubric_json_str,
-                                st.session_state.infer_coldstart_text
-                            )
-
-                            response = client.messages.create(
-                                model="claude-opus-4-6",
-                                max_tokens=16000,
-                                messages=[{"role": "user", "content": prompt}],
-                                thinking={"type": "enabled", "budget_tokens": 8000}
-                            )
-
-                            response_text = ""
-                            for block in response.content:
-                                if block.type == "text":
-                                    response_text = block.text
-
-                            json_match = re.search(r'\{[\s\S]*\}', response_text)
-                            if json_match:
-                                parsed = json.loads(json_match.group())
-                                st.session_state.infer_llm_classification = parsed
-                        except Exception as e:
-                            st.error(f"Error during LLM classification: {str(e)}")
-
-                    st.rerun()
-                else:
-                    st.error("Please write a description of your preferences before submitting.")
+        if infer_current >= 1:
+            st.progress(infer_current / infer_total)
+            st.markdown(f"**Step {infer_current}/{infer_total}: {infer_steps[infer_current - 1]}**")
         else:
-            with st.expander("📝 Your cold-start description", expanded=False):
-                st.markdown(st.session_state.infer_coldstart_text)
+            st.progress(0.0)
+            st.markdown("**Setting up...**")
+        # st.divider()
 
-        # ==================== STEP 2: MARK STATED VS. UNSTATED ====================
+        # ==================== AUTO-SETUP: Pull preference description from Task A Q4 ====================
+        _task_a_survey = st.session_state.get("survey_responses", {}).get("task_a", {})
+        _task_a_q4 = _task_a_survey.get("q4", "").strip()
+        _task_a_done = _task_a_survey.get("completed", False)
+
+        _infer_tab_blocked = False
+        if not st.session_state.infer_coldstart_saved:
+            if not _task_a_done or not _task_a_q4:
+                st.warning("You haven't completed the **Task A survey** yet (or Q4 is empty). Please go to the **Evaluate: Survey** tab, select **Task A (without rubric)**, and fill in Q4 with your writing preferences before continuing.")
+                _infer_tab_blocked = True
+            else:
+                # Auto-use Q4 text and run LLM classification
+                st.session_state.infer_coldstart_text = _task_a_q4
+                st.session_state.infer_coldstart_saved = True
+
+                with st.spinner("Classifying each rubric criterion against your preference description..."):
+                    try:
+                        clean_rubric = copy.deepcopy(infer_rubric_dict)
+                        if 'rubric' in clean_rubric:
+                            for criterion in clean_rubric['rubric']:
+                                if '_diff' in criterion:
+                                    del criterion['_diff']
+                        rubric_json_str = json.dumps(clean_rubric, indent=2)
+
+                        prompt = compare_rubric_to_coldstart_prompt(
+                            rubric_json_str,
+                            st.session_state.infer_coldstart_text
+                        )
+
+                        response = _api_call_with_retry(
+                            model="claude-opus-4-6",
+                            max_tokens=16000,
+                            messages=[{"role": "user", "content": prompt}],
+                            thinking={"type": "enabled", "budget_tokens": 8000}
+                        )
+
+                        response_text = ""
+                        for block in response.content:
+                            if block.type == "text":
+                                response_text = block.text
+
+                        json_match = re.search(r'\{[\s\S]*\}', response_text)
+                        if json_match:
+                            parsed = json.loads(json_match.group())
+                            st.session_state.infer_llm_classification = parsed
+                    except Exception as e:
+                        st.error(f"Error during LLM classification: {str(e)}")
+
+                st.rerun()
+
+        # ==================== STEP 1: MARK STATED VS. UNSTATED ====================
         if st.session_state.infer_coldstart_saved:
-            st.divider()
-            st.subheader("Step 2: Mark Stated vs. Unstated")
+            with st.expander("📝 Your preference description (from Task A Survey)", expanded=False):
+                st.markdown(st.session_state.infer_coldstart_text)
+            st.subheader("Step 1: Mark Stated vs. Unstated")
             st.markdown(
                 "Review each rubric criterion below. The LLM has made an initial classification — "
-                "**confirm or override** each one. Mark criteria as **Stated** (present in your cold-start) "
+                "**confirm or override** each one. Mark criteria as **Stated** (present in your preference description) "
                 "or **Unstated** (absent)."
             )
 
             # LLM classification is auto-triggered when cold-start is submitted
             if not st.session_state.infer_user_categorizations and not st.session_state.get("infer_llm_classification"):
-                st.info("LLM classification was not completed. Please reset and re-submit your cold-start description.")
+                st.info("LLM classification was not completed. Please reset and re-submit your preference description.")
 
             # Display LLM results for user review
             llm_class = st.session_state.get("infer_llm_classification")
             if llm_class and not st.session_state.infer_user_categorizations:
                 criteria_comparison = llm_class.get("criteria_comparison", [])
-
-                with st.expander("📝 Your cold-start description (for reference)", expanded=False):
-                    st.markdown(st.session_state.infer_coldstart_text)
 
                 st.markdown("**Review each criterion.** The LLM's suggestion is pre-selected — override if needed.")
 
@@ -4972,14 +5390,16 @@ with tab6:
                 agreement_rate = st.session_state.infer_llm_user_agreement
                 st.caption(f"LLM-user agreement on stated/unstated: {agreement_rate:.0%}")
 
-        # ==================== STEP 3: CATEGORIZE UNSTATED CRITERIA ====================
+        # ==================== STEP 2: CATEGORIZE UNSTATED CRITERIA ====================
         if st.session_state.infer_user_categorizations:
             st.divider()
-            st.subheader("Step 3: Categorize Unstated Criteria")
+            st.subheader("Step 2: Categorize Unstated Criteria")
 
-            unstated_criteria = [name for name, status in st.session_state.infer_user_categorizations.items() if status == "unstated"]
+            # All criteria that are not "stated" — show these so saved ones don't disappear
+            criteria_to_show = [name for name, status in st.session_state.infer_user_categorizations.items() if status != "stated"]
+            unstated_criteria = [name for name in criteria_to_show if st.session_state.infer_user_categorizations.get(name) == "unstated"]
 
-            if not unstated_criteria and not st.session_state.infer_categorizations_complete:
+            if not criteria_to_show and not st.session_state.infer_categorizations_complete:
                 st.info("All criteria were marked as stated. No categorization needed.")
                 st.session_state.infer_categorizations_complete = True
                 st.rerun()
@@ -4994,7 +5414,7 @@ with tab6:
                         st.markdown(f"- **{crit_name}**: {cat_labels.get(category, category)}")
             else:
                 st.markdown(
-                    f"For each of the **{len(unstated_criteria)}** unstated criteria, choose the category that best describes why:"
+                    f"For each of the **{len(criteria_to_show)}** unstated criteria, choose the category that best describes why:"
                 )
 
                 categorization_options = {
@@ -5002,8 +5422,12 @@ with tab6:
                     "hallucinated": "Hallucinated — I do NOT care about this; the model fabricated it"
                 }
 
-                for idx, crit_name in enumerate(unstated_criteria):
+                def _is_categorized(cat):
+                    return cat in categorization_options or cat in ("latent_real", "elicited")
+
+                for idx, crit_name in enumerate(criteria_to_show):
                     existing_cat = st.session_state.infer_user_categorizations.get(crit_name)
+                    already_categorized = _is_categorized(existing_cat)
 
                     # Find criterion description from rubric
                     crit_desc = ""
@@ -5012,8 +5436,6 @@ with tab6:
                             crit_desc = c.get("description", "")
                             break
 
-                    # Treat legacy latent_real/elicited as real for "already categorized" check
-                    already_categorized = existing_cat in categorization_options or existing_cat in ("latent_real", "elicited")
                     with st.expander(
                         f"{'✅' if already_categorized else '⬜'} {crit_name}",
                         expanded=not already_categorized
@@ -5021,38 +5443,44 @@ with tab6:
                         if crit_desc:
                             st.markdown(f"**Description:** {crit_desc}")
 
-                        # Map legacy latent_real/elicited to "real" for default selection
-                        effective_cat = "real" if existing_cat in ("latent_real", "elicited") else existing_cat
-                        default_idx = list(categorization_options.keys()).index(effective_cat) if effective_cat in categorization_options else 0
-                        selected = st.radio(
-                            f"How would you categorize '{crit_name}'?",
-                            options=list(categorization_options.keys()),
-                            format_func=lambda x: categorization_options[x],
-                            index=default_idx,
-                            key=f"infer_cat_{idx}",
-                            horizontal=False
-                        )
+                        if already_categorized:
+                            # Show saved choice (stays visible; option to change)
+                            cat_labels_display = {"real": "Real", "hallucinated": "Hallucinated", "latent_real": "Real", "elicited": "Real"}
+                            st.success(f"**Saved:** {cat_labels_display.get(existing_cat, existing_cat)}")
+                            if st.button("✏️ Change", key=f"infer_change_cat_{idx}"):
+                                st.session_state.infer_user_categorizations[crit_name] = "unstated"
+                                st.rerun()
+                        else:
+                            # Not yet categorized: show radio and Save
+                            effective_cat = "real" if existing_cat in ("latent_real", "elicited") else existing_cat
+                            default_idx = list(categorization_options.keys()).index(effective_cat) if effective_cat in categorization_options else 0
+                            selected = st.radio(
+                                f"How would you categorize '{crit_name}'?",
+                                options=list(categorization_options.keys()),
+                                format_func=lambda x: categorization_options[x],
+                                index=default_idx,
+                                key=f"infer_cat_{idx}",
+                                horizontal=False
+                            )
 
-                        if st.button("💾 Save", key=f"infer_save_cat_{idx}", type="primary"):
-                            st.session_state.infer_user_categorizations[crit_name] = selected
-                            st.rerun()
+                            if st.button("💾 Save", key=f"infer_save_cat_{idx}", type="primary"):
+                                st.session_state.infer_user_categorizations[crit_name] = selected
+                                st.rerun()
 
-                # Check if all unstated criteria have been categorized (real, hallucinated, or legacy)
-                def _is_categorized(cat):
-                    return cat in categorization_options or cat in ("latent_real", "elicited")
+                # Check if all criteria in this step have been categorized
                 all_categorized = all(
                     _is_categorized(st.session_state.infer_user_categorizations.get(name))
-                    for name in unstated_criteria
+                    for name in criteria_to_show
                 )
                 if all_categorized:
                     if not st.session_state.infer_categorizations_complete:
                         st.session_state.infer_categorizations_complete = True
                         st.rerun()
 
-        # ==================== STEP 4: CATEGORY RATIOS ====================
+        # ==================== STEP 3: CATEGORY RATIOS ====================
         if st.session_state.infer_categorizations_complete:
             st.divider()
-            st.subheader("Step 4: Category Ratios")
+            st.subheader("Step 3: Category Ratios")
             st.markdown("Summary of how rubric criteria break down by source category.")
 
             cats = st.session_state.infer_user_categorizations
@@ -5085,99 +5513,1084 @@ with tab6:
             user_endorsed = real_count
             st.markdown(
                 f"**Key Insight**: Of {total_cats} rubric criteria, **{stated_count}** were stated upfront, "
-                f"**{user_endorsed}** were real (user-endorsed but absent from cold-start), and **{hallucinated_count}** were hallucinated."
+                f"**{user_endorsed}** were real (user-endorsed but absent from your preference description), and **{hallucinated_count}** were hallucinated."
             )
             if total_cats > 0 and hallucinated_count < total_cats:
                 precision = (total_cats - hallucinated_count) / total_cats
                 st.markdown(f"**Rubric precision** (non-hallucinated / total): **{precision:.0%}**")
 
-        # ==================== STEP 5: EXTRACT DECISION POINTS ====================
+        # ==================== STEP 4: EXTRACT DECISION POINTS ====================
         if st.session_state.infer_categorizations_complete:
             st.divider()
-            st.subheader("Step 5: Extract Decision Points")
+            st.subheader("Step 4: Decision Points")
             st.markdown(
-                "Select a past conversation to extract decision points where you edited or corrected the AI's draft. "
+                "Decision points were extracted from the **same conversation** used to infer the rubric, "
+                "ensuring the analysis matches the context the model actually saw."
             )
 
-            # Conversation selector for decision points
-            dp_conversations = load_conversations()
-            dp_conv_options = [("Select a conversation...", None)]
-            if dp_conversations:
-                for conv in dp_conversations:
-                    try:
-                        dt = datetime.fromisoformat(conv["timestamp"])
-                        formatted_time = dt.strftime("%m/%d %H:%M")
-                        display = f"{formatted_time} ({conv['messages_count']} msgs)"
-                    except:
-                        display = f"{conv['timestamp']} ({conv['messages_count']} msgs)"
-                    dp_conv_options.append((display, conv["filename"]))
+            # Get all infer conversations
+            _all_convs = st.session_state.get("infer_all_conversations", [])
+            if not _all_convs:
+                # Fallback: check if single conversation exists in legacy format
+                if st.session_state.get("infer_dp_messages") and st.session_state.get("infer_decision_points"):
+                    _all_convs = [{
+                        "messages": st.session_state.infer_dp_messages,
+                        "decision_points": st.session_state.infer_decision_points,
+                        "timestamp": "unknown",
+                        "rubric_version": "?",
+                        "num_messages": len(st.session_state.infer_dp_messages)
+                    }]
+                    st.session_state.infer_all_conversations = _all_convs
 
-            dp_options = [opt[1] for opt in dp_conv_options]
-            dp_current_index = 0
-            if st.session_state.infer_dp_conversation:
-                try:
-                    dp_current_index = dp_options.index(st.session_state.infer_dp_conversation)
-                except ValueError:
-                    dp_current_index = 0
+            if not _all_convs:
+                st.warning("No conversation from rubric inference found. Please go to the **Chat** tab and click **Infer Rubric** on a conversation first.")
+            else:
+                # If multiple infer conversations, let user pick
+                if len(_all_convs) > 1:
+                    _conv_labels = []
+                    for i, c in enumerate(_all_convs):
+                        ts = c.get("timestamp", "unknown")
+                        ver = c.get("rubric_version", "?")
+                        n = c.get("num_messages", len(c.get("messages", [])))
+                        try:
+                            dt = datetime.fromisoformat(ts)
+                            ts_display = dt.strftime("%m/%d %H:%M")
+                        except Exception:
+                            ts_display = ts
+                        _conv_labels.append(f"Rubric v{ver} — {ts_display} ({n} msgs)")
 
-            dp_selected_file = st.selectbox(
-                "📂 Select conversation for decision points:",
-                options=dp_options,
-                format_func=lambda x: next(opt[0] for opt in dp_conv_options if opt[1] == x) if x is not None else "Select a conversation...",
-                index=dp_current_index,
-                key="infer_dp_conversation_selector"
-            )
+                    _selected_idx = st.selectbox(
+                        "Select which rubric inference conversation to use:",
+                        options=list(range(len(_all_convs))),
+                        format_func=lambda i: _conv_labels[i],
+                        index=len(_all_convs) - 1,  # default to latest
+                        key="infer_dp_conv_selector"
+                    )
+                    _selected_conv = _all_convs[_selected_idx]
+                else:
+                    _selected_conv = _all_convs[0]
 
-            if dp_selected_file != st.session_state.infer_dp_conversation:
-                st.session_state.infer_dp_conversation = dp_selected_file
-                st.session_state.infer_decision_points = None
-                st.session_state.infer_dp_dimension_confirmed = False
-                st.session_state.infer_dp_user_mappings = {}
-                st.session_state.infer_novel_alternatives = None
-                st.session_state.infer_user_rankings = {}
-                st.session_state.infer_rubric_rankings = None
-                st.session_state.infer_coldstart_rankings = None
-                st.session_state.infer_generic_rankings = None
-                st.session_state.infer_agreement_scores = None
+                # Set the selected conversation as active
+                st.session_state.infer_dp_messages = _selected_conv.get("messages", [])
+                st.session_state.infer_dp_conversation = "__from_infer_rubric__"
+                if _selected_conv.get("decision_points"):
+                    st.session_state.infer_decision_points = _selected_conv["decision_points"]
 
-            if dp_selected_file:
-                dp_conv_data = load_conversation_data(dp_selected_file)
+                n_msgs = len(st.session_state.infer_dp_messages)
+                _dp_count = 0
+                if st.session_state.infer_decision_points:
+                    _dp_parsed = st.session_state.infer_decision_points.get("parsed_data", {})
+                    if _dp_parsed:
+                        _dp_count = len(_dp_parsed.get("decision_points", []))
+                st.info(f"Using conversation from rubric inference ({n_msgs} messages, {_dp_count} decision points extracted)")
 
-                if dp_conv_data:
-                    dp_messages = dp_conv_data.get("messages", [])
+                dp_conv_data = {"messages": st.session_state.infer_dp_messages}
 
-                    if not st.session_state.infer_decision_points:
-                        if st.button("🎯 Extract Decision Points", use_container_width=True, type="primary", key="infer_extract_dp_btn"):
-                            # Build conversation text
-                            conversation_text = ""
+                if not st.session_state.infer_decision_points:
+                    st.warning("Decision points could not be extracted from this conversation during rubric inference. Try inferring the rubric again.")
+
+                # Display decision points
+                if st.session_state.infer_decision_points:
+                    result = st.session_state.infer_decision_points
+                    parsed_data = result.get("parsed_data")
+
+                    if parsed_data and "decision_points" in parsed_data:
+                        decision_points = parsed_data["decision_points"]
+
+                        # Build lookup sets
+                        surplus_dims = {name for name, cat in st.session_state.infer_user_categorizations.items()
+                                        if cat in ("real", "latent_real", "elicited")}
+                        stated_dims = {name for name, cat in st.session_state.infer_user_categorizations.items()
+                                        if cat == "stated"}
+                        all_criteria_names = list(st.session_state.infer_user_categorizations.keys())
+
+                        # Auto-match each DP to a criterion
+                        def auto_match_dp(dp):
+                            related_crit = dp.get("related_rubric_criterion") or ""
+                            dim = dp.get("dimension", "")
+                            if related_crit in surplus_dims or related_crit in stated_dims:
+                                return related_crit
+                            if related_crit:
+                                for name in all_criteria_names:
+                                    if name.lower() in related_crit.lower() or related_crit.lower() in name.lower():
+                                        return name
+                            for name in all_criteria_names:
+                                if name.lower() in dim.lower() or dim.lower() in name.lower():
+                                    return name
+                            return None
+
+                        def build_highlight_quotes_for_dp(dp):
+                            """Build highlights dict for a single DP."""
+                            highlights = {}
+                            before_q = dp.get("before_quote", "")
+                            after_q = dp.get("after_quote", "")
+                            asst_num = dp.get("assistant_message_num")
+                            user_num = dp.get("user_message_num")
+                            dp_id = dp.get("id", 0)
+                            if asst_num and before_q:
+                                highlights.setdefault(asst_num, []).append((before_q, dp_id, "before"))
+                            if user_num and after_q:
+                                highlights.setdefault(user_num, []).append((after_q, dp_id, "after"))
+                            return highlights
+
+                        def render_conversation_with_highlights(messages, highlights, focus_msg_nums=None):
+                            import html as html_lib
                             msg_num = 1
-                            for msg in dp_messages:
+                            for msg in messages:
                                 role = msg.get('role', 'unknown')
                                 content = msg.get('content', '')
-                                if role == 'user':
-                                    conversation_text += f"\n\n[Message #{msg_num}] USER:\n{content}"
-                                    msg_num += 1
-                                elif role == 'assistant':
-                                    conversation_text += f"\n\n[Message #{msg_num}] ASSISTANT:\n{content}"
-                                    msg_num += 1
+                                if role not in ('user', 'assistant'):
+                                    continue
 
-                            with st.spinner("Analyzing conversation for decision points..."):
+                                role_label = "You" if role == "user" else "Assistant"
+                                role_color = "#2196F3" if role == "user" else "#4CAF50"
+
+                                display_content = re.sub(r'<!--.*?-->', '', content).strip()
+                                escaped = html_lib.escape(display_content)
+
+                                # Highlight quotes in this message
+                                if msg_num in highlights:
+                                    for quote, dp_id, quote_type in highlights[msg_num]:
+                                        escaped_quote = html_lib.escape(quote.strip())
+                                        if escaped_quote in escaped:
+                                            hl_color = "#FFEB3B" if quote_type == "before" else "#81C784"
+                                            escaped = escaped.replace(
+                                                escaped_quote,
+                                                f'<span style="background-color: {hl_color}; padding: 1px 3px; border-radius: 3px; color: #000;" '
+                                                f'title="DP#{dp_id}">{escaped_quote}</span>',
+                                                1
+                                            )
+
+                                # Dim non-focused messages when a DP is selected
+                                is_focused = focus_msg_nums is None or msg_num in focus_msg_nums
+                                if is_focused:
+                                    bg_color = "#e3f2fd" if role == "user" else "#f1f8e9"
+                                    opacity = "1"
+                                    border_width = "3px"
+                                else:
+                                    bg_color = "#f5f5f5"
+                                    opacity = "0.4"
+                                    border_width = "2px"
+
+                                lines = escaped.split('\n')
+                                if len(lines) > 15 and not is_focused:
+                                    escaped = '\n'.join(lines[:5]) + '\n<i>... (truncated)</i>'
+                                elif len(lines) > 30:
+                                    escaped = '\n'.join(lines[:30]) + '\n<i>... (truncated)</i>'
+
+                                st.markdown(
+                                    f'<div style="margin-bottom: 8px; padding: 8px 12px; border-left: {border_width} solid {role_color}; '
+                                    f'background-color: {bg_color}; border-radius: 4px; font-size: 0.85em; opacity: {opacity};">'
+                                    f'<b style="color: {role_color};">#{msg_num} {role_label}</b><br>'
+                                    f'<span style="white-space: pre-wrap; color: #222;">{escaped}</span></div>',
+                                    unsafe_allow_html=True
+                                )
+                                msg_num += 1
+
+                        st.success(f"Found **{len(decision_points)}** decision points")
+
+                        if result.get("thinking"):
+                            with st.expander("🧠 Extraction Thinking", expanded=False):
+                                st.markdown(result["thinking"])
+
+                        # Determine which DP is selected
+                        selected_dp_id = st.session_state.get("infer_expanded_dp")
+                        selected_dp = None
+                        if selected_dp_id is not None:
+                            for dp in decision_points:
+                                if dp.get("id") == selected_dp_id:
+                                    selected_dp = dp
+                                    break
+
+                        # Build highlights only for selected DP (only when not yet confirmed)
+                        if not st.session_state.infer_dp_dimension_confirmed and selected_dp:
+                            highlight_quotes = build_highlight_quotes_for_dp(selected_dp)
+                            focus_msgs = set()
+                            if selected_dp.get("assistant_message_num"):
+                                focus_msgs.add(selected_dp["assistant_message_num"])
+                            if selected_dp.get("user_message_num"):
+                                focus_msgs.add(selected_dp["user_message_num"])
+                        else:
+                            highlight_quotes = {}
+                            focus_msgs = None
+
+                        # Two-column layout: conversation on left, DPs on right
+                        col_conv, col_dps = st.columns([1, 1])
+
+                        with col_conv:
+                            st.markdown("**Conversation**")
+                            if not st.session_state.infer_dp_dimension_confirmed and selected_dp:
+                                st.caption(f"Showing DP#{selected_dp_id}")
+                            elif st.session_state.infer_dp_dimension_confirmed:
+                                st.caption("Dimension mappings confirmed")
+                            else:
+                                st.caption("Select a decision point to highlight relevant messages")
+                            with st.container(height=600):
+                                render_conversation_with_highlights(dp_messages, highlight_quotes, focus_msgs)
+
+                        with col_dps:
+                            if not st.session_state.infer_dp_dimension_confirmed:
+                                st.markdown(
+                                    "**Review each decision point's dimension mapping.** "
+                                    "Select **Incorrect** to choose a different dimension, "
+                                    "or **Not in rubric** if the edit doesn't map to any rubric dimension. "
+                                    "Click a DP to see its context in the conversation."
+                                )
+
+                                for dp in decision_points:
+                                    dp_id = dp.get('id', 0)
+                                    dp_id_str = str(dp_id)
+                                    auto_matched = auto_match_dp(dp)
+                                    related_crit = dp.get("related_rubric_criterion") or ""
+
+                                    existing_mapping = st.session_state.infer_dp_user_mappings.get(dp_id_str)
+
+                                    # Auto-apply default "Correct" mapping for DPs the user hasn't interacted with
+                                    if not existing_mapping and auto_matched:
+                                        st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": auto_matched, "not_in_rubric": False}
+                                        existing_mapping = st.session_state.infer_dp_user_mappings[dp_id_str]
+
+                                    title_crit = auto_matched or "Unmatched"
+
+                                    msg_ref = ""
+                                    asst_num = dp.get("assistant_message_num")
+                                    user_num = dp.get("user_message_num")
+                                    if asst_num and user_num:
+                                        msg_ref = f" [#{asst_num}→#{user_num}]"
+
+                                    is_selected = (selected_dp_id == dp_id)
+
+                                    # Toggle button to select/deselect DP
+                                    btn_label = f"{'▼' if is_selected else '▶'} DP#{dp_id}: {dp.get('dimension', 'Unknown')} — {title_crit}{msg_ref}"
+                                    if st.button(btn_label, key=f"infer_dp_select_{dp_id}", use_container_width=True,
+                                                 type="primary" if is_selected else "secondary"):
+                                        if is_selected:
+                                            st.session_state.infer_expanded_dp = None
+                                        else:
+                                            st.session_state.infer_expanded_dp = dp_id
+                                        st.rerun()
+
+                                    if is_selected:
+                                        col_b, col_a = st.columns(2)
+                                        with col_b:
+                                            st.caption("Original:")
+                                            st.info(dp.get('before_quote', 'N/A')[:200])
+                                        with col_a:
+                                            st.caption("Your Action:")
+                                            st.success(dp.get('after_quote', 'N/A')[:200])
+
+                                        st.markdown(f"**Summary:** {dp.get('summary', 'N/A')}")
+
+                                        # Determine current mapped criterion for radio label
+                                        current_crit = auto_matched
+                                        if existing_mapping and not existing_mapping.get("not_in_rubric"):
+                                            current_crit = existing_mapping.get("criterion") or auto_matched
+                                        mapped_label = f"Mapped to: {current_crit}" if current_crit else "No mapping"
+
+                                        st.markdown(f"**{mapped_label}**")
+
+                                        if existing_mapping:
+                                            if existing_mapping.get("not_in_rubric"):
+                                                default_action_idx = 2
+                                            elif existing_mapping.get("criterion") != auto_matched:
+                                                default_action_idx = 1
+                                            else:
+                                                default_action_idx = 0
+                                        else:
+                                            default_action_idx = 0
+
+                                        action = st.radio(
+                                            f"DP#{dp_id} classification:",
+                                            options=["Correct", "Incorrect", "Not in rubric"],
+                                            index=default_action_idx,
+                                            key=f"infer_dp_action_{dp_id}",
+                                            horizontal=True,
+                                            label_visibility="collapsed"
+                                        )
+
+                                        if action == "Correct":
+                                            if auto_matched:
+                                                st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": auto_matched, "not_in_rubric": False}
+                                            else:
+                                                st.warning("No auto-match found. Please select 'Incorrect' to choose a criterion or 'Not in rubric'.")
+                                        elif action == "Incorrect":
+                                            default_idx = 0
+                                            if existing_mapping and existing_mapping.get("criterion") in all_criteria_names:
+                                                default_idx = all_criteria_names.index(existing_mapping["criterion"])
+                                            elif auto_matched and auto_matched in all_criteria_names:
+                                                default_idx = all_criteria_names.index(auto_matched)
+
+                                            def on_incorrect_change(did=dp_id_str):
+                                                crit_val = st.session_state.get(f"infer_dp_correct_{did}")
+                                                reason_val = st.session_state.get(f"infer_dp_incorrect_reason_{did}", "")
+                                                st.session_state.infer_dp_user_mappings[did] = {"criterion": crit_val, "not_in_rubric": False, "incorrect_reason": reason_val}
+
+                                            corrected = st.selectbox(
+                                                f"Select correct criterion for DP#{dp_id}:",
+                                                options=all_criteria_names,
+                                                index=default_idx,
+                                                key=f"infer_dp_correct_{dp_id_str}",
+                                                on_change=on_incorrect_change
+                                            )
+                                            incorrect_reason = st.text_input(
+                                                f"Why is this a better match?",
+                                                value=existing_mapping.get("incorrect_reason", "") if existing_mapping else "",
+                                                placeholder="e.g., The edit was about sentence length, not tone",
+                                                key=f"infer_dp_incorrect_reason_{dp_id_str}",
+                                                on_change=on_incorrect_change
+                                            )
+                                            st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": corrected, "not_in_rubric": False, "incorrect_reason": incorrect_reason}
+                                        elif action == "Not in rubric":
+                                            def on_nir_change(did=dp_id_str):
+                                                reason_val = st.session_state.get(f"infer_dp_notinrubric_{did}", "")
+                                                st.session_state.infer_dp_user_mappings[did] = {"criterion": None, "not_in_rubric": True, "not_in_rubric_reason": reason_val}
+
+                                            reason = st.text_input(
+                                                f"What preference does DP#{dp_id} reflect?",
+                                                value=existing_mapping.get("not_in_rubric_reason", "") if existing_mapping else "",
+                                                placeholder="e.g., Preference for active voice not captured in rubric",
+                                                key=f"infer_dp_notinrubric_{dp_id_str}",
+                                                on_change=on_nir_change
+                                            )
+                                            st.session_state.infer_dp_user_mappings[dp_id_str] = {
+                                                "criterion": None, "not_in_rubric": True,
+                                                "not_in_rubric_reason": reason
+                                            }
+
+                                all_mapped = len(st.session_state.infer_dp_user_mappings) >= len(decision_points)
+                                confirm_ok = all(
+                                    st.session_state.infer_dp_user_mappings.get(str(dp.get('id', 0)), {}).get("criterion") is not None
+                                    or st.session_state.infer_dp_user_mappings.get(str(dp.get('id', 0)), {}).get("not_in_rubric", False)
+                                    for dp in decision_points
+                                )
+
+                                if all_mapped and confirm_ok:
+                                    if st.button("✅ Confirm All Dimension Mappings", type="primary", use_container_width=True, key="infer_confirm_dp_dims"):
+                                        for dp in decision_points:
+                                            dp_id_str = str(dp.get('id', 0))
+                                            mapping = st.session_state.infer_dp_user_mappings.get(dp_id_str, {})
+                                            crit = mapping.get("criterion")
+                                            original_suggestion = auto_match_dp(dp)
+                                            dp["original_suggestion"] = original_suggestion
+                                            if crit:
+                                                dp["confirmed_criterion"] = crit
+                                                dp["is_surplus"] = crit in surplus_dims
+                                                dp["is_stated"] = crit in stated_dims
+                                                dp["is_not_in_rubric"] = False
+                                                # Determine user action
+                                                if crit == original_suggestion:
+                                                    dp["user_action"] = "correct"
+                                                else:
+                                                    dp["user_action"] = "incorrect"
+                                                    dp["incorrect_reason"] = mapping.get("incorrect_reason", "")
+                                            else:
+                                                dp["confirmed_criterion"] = None
+                                                dp["is_surplus"] = False
+                                                dp["is_stated"] = False
+                                                dp["is_not_in_rubric"] = True
+                                                dp["not_in_rubric_reason"] = mapping.get("not_in_rubric_reason", "")
+                                                dp["user_action"] = "not_in_rubric"
+                                        parsed_data["decision_points"] = decision_points
+                                        st.session_state.infer_decision_points["parsed_data"] = parsed_data
+                                        st.session_state.infer_dp_dimension_confirmed = True
+                                        st.rerun()
+                                else:
+                                    st.info("Review all decision points above, then confirm.")
+
+                            else:
+                                # --- Confirmed view ---
+                                active_count = sum(1 for dp in decision_points if not dp.get("is_not_in_rubric"))
+                                not_in_rubric_count = sum(1 for dp in decision_points if dp.get("is_not_in_rubric"))
+                                summary = f"**{active_count}** decision points confirmed"
+                                if not_in_rubric_count > 0:
+                                    summary += f" ({not_in_rubric_count} skipped — not in rubric)"
+                                st.success(summary)
+
+                                for dp in decision_points:
+                                    dp_id = dp.get('id', 0)
+                                    crit = dp.get("confirmed_criterion") or ""
+                                    user_action = dp.get("user_action", "correct")
+                                    original = dp.get("original_suggestion") or dp.get("dimension", "")
+
+                                    # Action annotation
+                                    if user_action == "correct":
+                                        action_note = f"✅ {crit}"
+                                    elif user_action == "incorrect":
+                                        action_note = f"✏️ {original} → {crit}"
+                                    elif user_action == "not_in_rubric":
+                                        action_note = f"❌ Not in rubric"
+                                    else:
+                                        action_note = crit
+
+                                    with st.expander(f"DP#{dp_id}: {dp.get('dimension', 'Unknown')} — {action_note}", expanded=False):
+                                        col_b, col_a = st.columns(2)
+                                        with col_b:
+                                            st.caption("Original:")
+                                            st.info(dp.get('before_quote', 'N/A')[:200])
+                                        with col_a:
+                                            st.caption("Your Action:")
+                                            st.success(dp.get('after_quote', 'N/A')[:200])
+                                        if user_action == "incorrect":
+                                            reason = dp.get("incorrect_reason", "")
+                                            if reason:
+                                                st.caption(f"Reason: {reason}")
+                                        elif user_action == "not_in_rubric":
+                                            reason = dp.get("not_in_rubric_reason", "")
+                                            if reason:
+                                                st.caption(f"Reason: {reason}")
+
+                        # Show save + infer rubric buttons here after Step 5 is complete.
+                        st.divider()
+                        if st.button("💾 Save evaluation to database", type="primary", key="infer_step6_save_eval"):
+                                project_id = st.session_state.get("current_project_id")
+                                if not project_id:
+                                    st.error("No project selected. Please select a project first.")
+                                else:
+                                    supabase = st.session_state.get("supabase")
+                                    if not supabase:
+                                        st.error("Not connected to database.")
+                                    else:
+                                        export_data = {
+                                            "timestamp": datetime.now().isoformat(),
+                                            "rubric_version": infer_rubric_dict.get("version"),
+                                            "coldstart_text": st.session_state.get("infer_coldstart_text"),
+                                            "user_categorizations": st.session_state.get("infer_user_categorizations"),
+                                            "decision_points_conversation": st.session_state.get("infer_dp_conversation"),
+                                            "decision_points": st.session_state.get("infer_decision_points"),
+                                        }
+                                        if save_project_data(supabase, project_id, "infer_evaluation", export_data):
+                                            st.success("Evaluation saved to database.")
+                                        else:
+                                            st.error("Failed to save.")
+                        # _infer_next_col1, _infer_next_col2 = st.columns(2)
+                        # with _infer_next_col1:
+                        #     st.subheader("Save Evaluation")
+                        #     st.markdown("**Save all evaluation data** from this tab to the database.")
+                        #     if st.button("💾 Save evaluation to database", type="primary", key="infer_step6_save_eval"):
+                        #         project_id = st.session_state.get("current_project_id")
+                        #         if not project_id:
+                        #             st.error("No project selected. Please select a project first.")
+                        #         else:
+                        #             supabase = st.session_state.get("supabase")
+                        #             if not supabase:
+                        #                 st.error("Not connected to database.")
+                        #             else:
+                        #                 export_data = {
+                        #                     "timestamp": datetime.now().isoformat(),
+                        #                     "rubric_version": infer_rubric_dict.get("version"),
+                        #                     "coldstart_text": st.session_state.get("infer_coldstart_text"),
+                        #                     "user_categorizations": st.session_state.get("infer_user_categorizations"),
+                        #                     "decision_points_conversation": st.session_state.get("infer_dp_conversation"),
+                        #                     "decision_points": st.session_state.get("infer_decision_points"),
+                        #                 }
+                        #                 if save_project_data(supabase, project_id, "infer_evaluation", export_data):
+                        #                     st.success("Evaluation saved to database.")
+                        #                 else:
+                        #                     st.error("Failed to save.")
+                        # with _infer_next_col2:
+                        st.subheader("Infer from Evaluation")
+                        # Only enabled when the rubric needs improvement:
+                        # hallucinated criteria exist OR decision point mappings revealed issues
+                        _cats = st.session_state.get("infer_user_categorizations", {})
+                        _halluc = sum(1 for v in _cats.values() if v == "hallucinated")
+                        _all_dps_confirmed = st.session_state.get("infer_dp_dimension_confirmed", False)
+                        _precision_100 = len(_cats) > 0 and _halluc == 0
+                        # Check if any DP was mapped to "not in rubric"
+                        _dp_mappings = st.session_state.get("infer_dp_user_mappings", {})
+                        _has_unmapped_dps = any(m.get("not_in_rubric_reason") for m in _dp_mappings.values())
+                        _needs_refinement = _halluc > 0 or _has_unmapped_dps
+                        _can_infer = _all_dps_confirmed and _needs_refinement
+                        if _all_dps_confirmed and not _needs_refinement:
+                            st.success("Rubric precision is 100% and all decision points are correctly mapped. No refinement needed.")
+                        elif not _all_dps_confirmed:
+                            st.info("Confirm all decision point mappings above before inferring a new rubric.")
+                        else:
+                            _issues = []
+                            if _halluc > 0:
+                                _issues.append(f"{_halluc} hallucinated criteria")
+                            if _has_unmapped_dps:
+                                _issues.append("decision points not covered by the rubric")
+                            st.markdown(f"**Infer a refined rubric** to address: {', '.join(_issues)}.")
+                        if st.button("🔄 Infer new rubric from evaluation", key="infer_step6_infer_new_rubric", disabled=not _can_infer):
+                            with st.spinner("Generating refined rubric..."):
                                 try:
-                                    clean_rubric = copy.deepcopy(infer_rubric_dict)
-                                    if 'rubric' in clean_rubric:
-                                        for criterion in clean_rubric['rubric']:
-                                            if '_diff' in criterion:
-                                                del criterion['_diff']
-                                    rubric_json_for_extraction = json.dumps(clean_rubric, indent=2)
+                                    rubric_json = json.dumps(_rubric_to_json_serializable(infer_rubric_dict), indent=2)
+                                    coldstart_text = st.session_state.infer_coldstart_text
+                                    user_cats = st.session_state.infer_user_categorizations
+                                    dp_data = st.session_state.infer_decision_points.get("parsed_data", {}).get("decision_points", [])
+                                    prompt = refine_rubric_from_evaluation_prompt(
+                                        current_rubric_json=rubric_json,
+                                        coldstart_text=coldstart_text,
+                                        user_categorizations=user_cats,
+                                        behavioral_summary=st.session_state.get("infer_behavioral_result"),
+                                        decision_points_summary=dp_data,
+                                        agreement_scores=st.session_state.get("infer_agreement_scores"),
+                                    )
+                                    resp = _api_call_with_retry(
+                                        model="claude-opus-4-6",
+                                        max_tokens=8000,
+                                        messages=[{"role": "user", "content": prompt}]
+                                    )
+                                    txt = "".join(b.text for b in resp.content if b.type == "text")
+                                    js = re.search(r'\{[\s\S]*\}', txt)
+                                    if js:
+                                        parsed = json.loads(js.group())
+                                        rubric_arr = parsed.get("rubric", [])
+                                        if rubric_arr:
+                                            st.session_state.infer_pending_rubric = rubric_arr
+                                            st.rerun()
+                                        else:
+                                            st.error("No rubric array in response.")
+                                    else:
+                                        st.error("Could not parse JSON from response.")
+                                except Exception as e:
+                                    st.error(str(e))
 
-                                    decision_prompt = extract_decision_pts(conversation_text, rubric_json_for_extraction)
-                                    response = client.messages.create(
+                        # --- Show inferred rubric diff for review before saving ---
+                        if st.session_state.get("infer_pending_rubric"):
+                            # st.divider()
+                            st.subheader("Review Inferred Rubric")
+                            _pending = st.session_state.infer_pending_rubric
+                            _current = infer_rubric_dict.get("rubric", [])
+                            _current_names = {c.get("name", "").lower(): c for c in _current}
+                            _pending_names = {c.get("name", "").lower(): c for c in _pending}
+
+                            # Classify each criterion
+                            _all_names_ordered = []
+                            _seen = set()
+                            for c in _pending:
+                                n = c.get("name", "").lower()
+                                if n not in _seen:
+                                    _all_names_ordered.append(n)
+                                    _seen.add(n)
+                            for c in _current:
+                                n = c.get("name", "").lower()
+                                if n not in _seen:
+                                    _all_names_ordered.append(n)
+                                    _seen.add(n)
+
+                            _diff_red = "color:#D32F2F;text-decoration:line-through;"
+                            _diff_green = "color:#2E7D32;font-weight:600;"
+
+                            for _name_lower in _all_names_ordered:
+                                _old = _current_names.get(_name_lower)
+                                _new = _pending_names.get(_name_lower)
+
+                                if _new and not _old:
+                                    # Added
+                                    _label = f"🟢 {_new.get('name', '?')} (NEW)"
+                                    with st.expander(_label, expanded=True):
+                                        st.markdown(f'<span style="{_diff_green}">New criterion</span>', unsafe_allow_html=True)
+                                        st.markdown(f"**Priority:** {_new.get('priority', '?')} · **Category:** {_new.get('category', '?')}")
+                                        st.markdown(f"**Description:** {_new.get('description', '')}")
+                                        _dims = _new.get("dimensions", [])
+                                        if _dims:
+                                            st.markdown("**Dimensions:**")
+                                            for _d in _dims:
+                                                st.markdown(f'- <span style="{_diff_green}">{_d.get("label", _d.get("id", ""))}</span>', unsafe_allow_html=True)
+                                elif _old and not _new:
+                                    # Removed
+                                    _label = f"🔴 {_old.get('name', '?')} (REMOVED)"
+                                    with st.expander(_label, expanded=True):
+                                        st.markdown(f'<span style="{_diff_red}">{_old.get("description", "")}</span>', unsafe_allow_html=True)
+                                else:
+                                    # Both exist — check for changes
+                                    _old_desc = _old.get("description", "")
+                                    _new_desc = _new.get("description", "")
+                                    _old_dims = set(d.get("label", d.get("id", "")) for d in _old.get("dimensions", []))
+                                    _new_dims = set(d.get("label", d.get("id", "")) for d in _new.get("dimensions", []))
+                                    _old_prio = _old.get("priority")
+                                    _new_prio = _new.get("priority")
+                                    _has_changes = (_old_desc != _new_desc) or (_old_dims != _new_dims) or (_old_prio != _new_prio)
+
+                                    if _has_changes:
+                                        _label = f"🟡 {_new.get('name', '?')} (UPDATED)"
+                                        with st.expander(_label, expanded=False):
+                                            if _old_prio != _new_prio:
+                                                st.markdown(f'**Priority:** <span style="{_diff_red}">{_old_prio}</span> → <span style="{_diff_green}">{_new_prio}</span>', unsafe_allow_html=True)
+                                            else:
+                                                st.markdown(f"**Priority:** {_new_prio}")
+                                            if _old_desc != _new_desc:
+                                                st.markdown(f'**Description:** <span style="{_diff_red}">{_old_desc}</span>', unsafe_allow_html=True)
+                                                st.markdown(f'<span style="{_diff_green}">{_new_desc}</span>', unsafe_allow_html=True)
+                                            else:
+                                                st.markdown(f"**Description:** {_new_desc}")
+                                            _added_dims = _new_dims - _old_dims
+                                            _removed_dims = _old_dims - _new_dims
+                                            _kept_dims = _new_dims & _old_dims
+                                            if _added_dims or _removed_dims:
+                                                st.markdown("**Dimensions:**")
+                                                for _d in sorted(_kept_dims):
+                                                    st.markdown(f"- {_d}")
+                                                for _d in sorted(_added_dims):
+                                                    st.markdown(f'- <span style="{_diff_green}">{_d}</span>', unsafe_allow_html=True)
+                                                for _d in sorted(_removed_dims):
+                                                    st.markdown(f'- <span style="{_diff_red}">{_d}</span>', unsafe_allow_html=True)
+                                            else:
+                                                _dims = _new.get("dimensions", [])
+                                                if _dims:
+                                                    st.markdown("**Dimensions:**")
+                                                    for _d in _dims:
+                                                        st.markdown(f"- {_d.get('label', _d.get('id', ''))}")
+                                    else:
+                                        _label = f"✅ {_new.get('name', '?')} (unchanged)"
+                                        with st.expander(_label, expanded=False):
+                                            st.markdown(f"**Priority:** {_new.get('priority', '?')} · **Category:** {_new.get('category', '?')}")
+                                            st.markdown(f"**Description:** {_new_desc}")
+
+                            _save_col1, _save_col2 = st.columns(2)
+                            with _save_col1:
+                                if st.button("💾 Save as new rubric version", type="primary", key="infer_save_pending_rubric"):
+                                    hist = load_rubric_history()
+                                    new_entry = {
+                                        "version": next_version_number(),
+                                        "rubric": _pending,
+                                        "source": "inferred_from_evaluation"
+                                    }
+                                    hist.append(new_entry)
+                                    save_rubric_history(hist)
+                                    st.session_state.active_rubric_idx = len(hist) - 1
+                                    st.session_state.rubric = _pending
+                                    st.session_state.editing_criteria = copy.deepcopy(_pending)
+                                    st.session_state.infer_pending_rubric = None
+                                    st.success("New rubric saved and set as active!")
+                                    st.rerun()
+                            with _save_col2:
+                                if st.button("❌ Discard", key="infer_discard_pending_rubric"):
+                                    st.session_state.infer_pending_rubric = None
+                                    st.rerun()
+
+                    else:
+                        st.warning("Could not parse decision points. Raw response:")
+                        st.text(result.get("raw_response", "No response"))
+
+
+# ============ EVALUATE: BUILD TAB (hidden when SHOW_BUILD_GRADE_TABS is False) ============
+if SHOW_BUILD_GRADE_TABS and tab7 is not None:
+    with tab7:
+        st.header("🔨 Evaluate: Build")
+        st.markdown("Measure whether user rubric editing improves outcomes compared to inference-only rubrics.")
+    
+        # Load rubric history
+        build_rubric_history = load_rubric_history()
+    
+        if not build_rubric_history or len(build_rubric_history) < 2:
+            st.warning("You need at least 2 rubric versions to use this tab. Edit your rubric to create additional versions.")
+        else:
+            # Reset button
+            col_info, col_reset = st.columns([3, 1])
+            with col_info:
+                st.success(f"**{len(build_rubric_history)}** rubric versions available for comparison")
+            with col_reset:
+                if st.button("🔄 Reset All", use_container_width=True, key="build_reset"):
+                    st.session_state.build_rubric_a_idx = None
+                    st.session_state.build_rubric_b_idx = None
+                    st.session_state.build_edit_classification = None
+                    st.session_state.build_writing_task = ""
+                    st.session_state.build_draft_a = None
+                    st.session_state.build_draft_b = None
+                    st.session_state.build_draft_a_thinking = ""
+                    st.session_state.build_draft_b_thinking = ""
+                    st.session_state.build_blind_labels = None
+                    st.session_state.build_user_preference = None
+                    st.session_state.build_llm_judge_result = None
+                    st.session_state.build_llm_judge_thinking = ""
+                    st.session_state.build_self_report = {}
+                    st.session_state.build_self_report_saved = False
+                    st.rerun()
+    
+            # Progress indicator
+            def get_build_step():
+                if st.session_state.build_rubric_a_idx is None or st.session_state.build_rubric_b_idx is None:
+                    return 1
+                if not st.session_state.build_edit_classification:
+                    return 2
+                if not st.session_state.build_draft_a or not st.session_state.build_draft_b:
+                    return 3
+                if not st.session_state.build_user_preference:
+                    return 3
+                if not st.session_state.build_llm_judge_result:
+                    return 4
+                if not st.session_state.build_self_report_saved:
+                    return 5
+                return 5
+    
+            build_current_step = get_build_step()
+            build_steps = [
+                "1. Choose Two Rubrics",
+                "2. Classify Edits",
+                "3. Generate & Evaluate Drafts",
+                "4. LLM Judge Scoring",
+                "5. Self-Report"
+            ]
+            st.progress(build_current_step / 5)
+            st.markdown(f"**Step {build_current_step}/5: {build_steps[build_current_step - 1]}**")
+            st.divider()
+    
+            # ==================== STEP 1: CHOOSE TWO RUBRICS ====================
+            st.subheader("Step 1: Choose Two Rubrics")
+            st.markdown("Select two rubric versions to compare. Typically: one edited by you (R_edited) and one inferred from conversation only (R_inferred).")
+    
+            build_rubric_options = [f"v{r.get('version', i+1)} ({r.get('source', 'unknown')})" for i, r in enumerate(build_rubric_history)]
+    
+            col_a, col_b = st.columns(2)
+            with col_a:
+                build_a_idx = st.selectbox(
+                    "Rubric A:",
+                    options=list(range(len(build_rubric_history))),
+                    format_func=lambda x: build_rubric_options[x],
+                    index=st.session_state.build_rubric_a_idx if st.session_state.build_rubric_a_idx is not None else 0,
+                    key="build_rubric_a_select"
+                )
+            with col_b:
+                build_b_idx = st.selectbox(
+                    "Rubric B:",
+                    options=list(range(len(build_rubric_history))),
+                    format_func=lambda x: build_rubric_options[x],
+                    index=st.session_state.build_rubric_b_idx if st.session_state.build_rubric_b_idx is not None else min(1, len(build_rubric_history) - 1),
+                    key="build_rubric_b_select"
+                )
+    
+            if build_a_idx == build_b_idx:
+                st.warning("Please select two different rubric versions.")
+            else:
+                # Update state if changed
+                if build_a_idx != st.session_state.build_rubric_a_idx or build_b_idx != st.session_state.build_rubric_b_idx:
+                    st.session_state.build_rubric_a_idx = build_a_idx
+                    st.session_state.build_rubric_b_idx = build_b_idx
+                    # Reset downstream state
+                    st.session_state.build_edit_classification = None
+                    st.session_state.build_draft_a = None
+                    st.session_state.build_draft_b = None
+                    st.session_state.build_blind_labels = None
+                    st.session_state.build_user_preference = None
+                    st.session_state.build_llm_judge_result = None
+    
+                build_rubric_a = build_rubric_history[build_a_idx]
+                build_rubric_b = build_rubric_history[build_b_idx]
+                build_rubric_a_list = build_rubric_a.get("rubric", [])
+                build_rubric_b_list = build_rubric_b.get("rubric", [])
+    
+                # Show rubrics side by side
+                with st.expander("📋 View Selected Rubrics", expanded=False):
+                    col_ra, col_rb = st.columns(2)
+                    with col_ra:
+                        st.markdown(f"**Rubric A: v{build_rubric_a.get('version', '?')}** ({build_rubric_a.get('source', 'unknown')})")
+                        for c in build_rubric_a_list:
+                            st.markdown(f"- **{c.get('name', '?')}** (wt: {c.get('weight', c.get('priority', '?'))}): {c.get('description', '')[:100]}...")
+                    with col_rb:
+                        st.markdown(f"**Rubric B: v{build_rubric_b.get('version', '?')}** ({build_rubric_b.get('source', 'unknown')})")
+                        for c in build_rubric_b_list:
+                            st.markdown(f"- **{c.get('name', '?')}** (wt: {c.get('weight', c.get('priority', '?'))}): {c.get('description', '')[:100]}...")
+    
+                # ==================== STEP 2: CLASSIFY EDITS ====================
+                st.divider()
+                st.subheader("Step 2: Classify Edits Between Rubrics")
+                st.markdown(f"Structural diff: Rubric B (v{build_rubric_b.get('version', '?')}) → Rubric A (v{build_rubric_a.get('version', '?')})")
+    
+                if not st.session_state.build_edit_classification:
+                    if st.button("🔍 Classify Edits", type="primary", use_container_width=True, key="build_classify_btn"):
+                        edits = classify_rubric_edits(build_rubric_b_list, build_rubric_a_list)
+                        st.session_state.build_edit_classification = edits
+                        st.rerun()
+    
+                if st.session_state.build_edit_classification:
+                    edits = st.session_state.build_edit_classification
+                    total_edits = sum(len(edits[k]) for k in edits)
+    
+                    # Summary metrics
+                    col1, col2, col3, col4, col5 = st.columns(5)
+                    with col1:
+                        st.metric("Added", len(edits["added"]))
+                    with col2:
+                        st.metric("Removed", len(edits["removed"]))
+                    with col3:
+                        st.metric("Reweighted", len(edits["reweighted"]))
+                    with col4:
+                        st.metric("Reworded", len(edits["reworded"]))
+                    with col5:
+                        st.metric("Dims Changed", len(edits["dimensions_changed"]))
+    
+                    st.markdown(f"**Total substantive edits: {total_edits}**")
+    
+                    # Detailed breakdown
+                    if total_edits > 0:
+                        edit_table = []
+                        for a in edits["added"]:
+                            edit_table.append({"Type": "Added", "Criterion": a["name"], "Detail": a.get("description", "")[:80]})
+                        for r in edits["removed"]:
+                            edit_table.append({"Type": "Removed", "Criterion": r["name"], "Detail": r.get("description", "")[:80]})
+                        for rw in edits["reweighted"]:
+                            edit_table.append({"Type": "Reweighted", "Criterion": rw["name"], "Detail": f"{rw['old_weight']} → {rw['new_weight']}"})
+                        for rw in edits["reworded"]:
+                            edit_table.append({"Type": "Reworded", "Criterion": rw["name"], "Detail": f"{rw['field']} changed"})
+                        for dc in edits["dimensions_changed"]:
+                            detail_parts = []
+                            if dc["added_dims"]:
+                                detail_parts.append(f"+{', '.join(dc['added_dims'][:3])}")
+                            if dc["removed_dims"]:
+                                detail_parts.append(f"-{', '.join(dc['removed_dims'][:3])}")
+                            edit_table.append({"Type": "Dims Changed", "Criterion": dc["name"], "Detail": "; ".join(detail_parts)})
+                        st.table(edit_table)
+    
+                    # Also show conversation-logged edits if available
+                    conv_edits = get_effective_edits_from_conversation(st.session_state.messages)
+                    if conv_edits:
+                        with st.expander(f"📝 Conversation Edit Log ({len(conv_edits)} logged edits)", expanded=False):
+                            for i, log in enumerate(conv_edits):
+                                st.markdown(f"**Edit {i+1}:** v{log.get('version_from', '?')} → v{log.get('version_to', '?')} (source: {log.get('source', '?')})")
+                                log_edits = log.get("edits", {})
+                                for edit_type, items in log_edits.items():
+                                    if items:
+                                        st.markdown(f"  - {edit_type}: {len(items)} change(s)")
+    
+                # ==================== STEP 3: GENERATE DRAFTS & BLIND EVALUATION ====================
+                if st.session_state.build_edit_classification:
+                    st.divider()
+                    st.subheader("Step 3: Generate Drafts & Blind Evaluation")
+    
+                    # Writing task input
+                    st.markdown("Enter a writing task. Both rubrics will generate a draft for the same task.")
+                    build_task_input = st.text_area(
+                        "Writing task:",
+                        value=st.session_state.build_writing_task,
+                        placeholder="e.g., Write a professional email declining a meeting invitation while maintaining a positive relationship...",
+                        height=120,
+                        key="build_task_input"
+                    )
+    
+                    if not st.session_state.build_draft_a or not st.session_state.build_draft_b:
+                        if st.button("✍️ Generate Drafts from Both Rubrics", type="primary", use_container_width=True, key="build_generate_btn"):
+                            if not build_task_input.strip():
+                                st.error("Please enter a writing task first.")
+                            else:
+                                st.session_state.build_writing_task = build_task_input.strip()
+    
+                                with st.spinner("Generating Draft A (from Rubric A)..."):
+                                    try:
+                                        clean_a = copy.deepcopy(build_rubric_a)
+                                        if 'rubric' in clean_a:
+                                            for c in clean_a['rubric']:
+                                                if '_diff' in c:
+                                                    del c['_diff']
+                                        rubric_a_json = json.dumps(clean_a, indent=2)
+    
+                                        system_a = build_system_instruction(clean_a)
+                                        response_a = _api_call_with_retry(
+                                            model="claude-opus-4-6",
+                                            max_tokens=8000,
+                                            system=system_a,
+                                            messages=[{"role": "user", "content": f"Please write a complete draft for this task. Output ONLY the draft text — no preamble, no follow-up notes, no meta-commentary.\n\n{st.session_state.build_writing_task}"}],
+                                            thinking={"type": "enabled", "budget_tokens": 6000}
+                                        )
+    
+                                        thinking_a = ""
+                                        draft_a_text = ""
+                                        for block in response_a.content:
+                                            if block.type == "thinking":
+                                                thinking_a = block.thinking
+                                            elif block.type == "text":
+                                                draft_a_text = block.text
+    
+                                        # Strip <draft> tags if present
+                                        draft_a_clean = re.sub(r'</?draft>', '', draft_a_text).strip()
+                                        st.session_state.build_draft_a = draft_a_clean
+                                        st.session_state.build_draft_a_thinking = thinking_a
+    
+                                    except Exception as e:
+                                        st.error(f"Error generating Draft A: {str(e)}")
+    
+                                if st.session_state.build_draft_a:
+                                    with st.spinner("Generating Draft B (from Rubric B)..."):
+                                        try:
+                                            clean_b = copy.deepcopy(build_rubric_b)
+                                            if 'rubric' in clean_b:
+                                                for c in clean_b['rubric']:
+                                                    if '_diff' in c:
+                                                        del c['_diff']
+    
+                                            system_b = build_system_instruction(clean_b)
+                                            response_b = _api_call_with_retry(
+                                                model="claude-opus-4-6",
+                                                max_tokens=8000,
+                                                system=system_b,
+                                                messages=[{"role": "user", "content": f"Please write a complete draft for this task. Output ONLY the draft text — no preamble, no follow-up notes, no meta-commentary.\n\n{st.session_state.build_writing_task}"}],
+                                                thinking={"type": "enabled", "budget_tokens": 6000}
+                                            )
+    
+                                            thinking_b = ""
+                                            draft_b_text = ""
+                                            for block in response_b.content:
+                                                if block.type == "thinking":
+                                                    thinking_b = block.thinking
+                                                elif block.type == "text":
+                                                    draft_b_text = block.text
+    
+                                            draft_b_clean = re.sub(r'</?draft>', '', draft_b_text).strip()
+                                            st.session_state.build_draft_b = draft_b_clean
+                                            st.session_state.build_draft_b_thinking = thinking_b
+    
+                                            # Randomize blind labels
+                                            if random.random() < 0.5:
+                                                st.session_state.build_blind_labels = {"Draft X": "a", "Draft Y": "b"}
+                                            else:
+                                                st.session_state.build_blind_labels = {"Draft X": "b", "Draft Y": "a"}
+    
+                                            st.rerun()
+    
+                                        except Exception as e:
+                                            st.error(f"Error generating Draft B: {str(e)}")
+    
+                    # Display drafts for blind evaluation
+                    if st.session_state.build_draft_a and st.session_state.build_draft_b and st.session_state.build_blind_labels:
+                        blind = st.session_state.build_blind_labels
+                        # Map blind labels to actual drafts
+                        draft_x = st.session_state.build_draft_a if blind["Draft X"] == "a" else st.session_state.build_draft_b
+                        draft_y = st.session_state.build_draft_a if blind["Draft Y"] == "a" else st.session_state.build_draft_b
+    
+                        st.markdown("### Blind Evaluation")
+                        st.markdown("Read both drafts below. You do NOT know which rubric produced which.")
+    
+                        col_dx, col_dy = st.columns(2)
+                        with col_dx:
+                            st.markdown("#### Draft X")
+                            with st.container(height=400):
+                                st.markdown(draft_x)
+                        with col_dy:
+                            st.markdown("#### Draft Y")
+                            with st.container(height=400):
+                                st.markdown(draft_y)
+    
+                        # Overall preference
+                        st.markdown("### Overall Preference")
+                        pref_options = ["Prefer Draft X", "Prefer Draft Y", "No preference"]
+                        existing_pref = st.session_state.build_user_preference or {}
+                        overall_pref = st.radio(
+                            "Which draft do you prefer overall?",
+                            pref_options,
+                            index=pref_options.index(existing_pref.get("overall", "No preference")) if existing_pref.get("overall") in pref_options else 2,
+                            key="build_overall_pref",
+                            horizontal=True
+                        )
+    
+                        # Per-dimension satisfaction ratings
+                        st.markdown("### Per-Dimension Satisfaction")
+                        st.markdown("For each criterion, rate how well each draft satisfies it (1 = poorly, 5 = excellently).")
+    
+                        # Use Rubric A's criteria as the union set for evaluation
+                        all_criteria_names = []
+                        for c in build_rubric_a_list:
+                            if c.get("name") not in all_criteria_names:
+                                all_criteria_names.append(c.get("name"))
+                        for c in build_rubric_b_list:
+                            if c.get("name") not in all_criteria_names:
+                                all_criteria_names.append(c.get("name"))
+    
+                        dim_ratings = existing_pref.get("dimension_ratings", {})
+                        rating_options = ["1", "2", "3", "4", "5"]
+    
+                        for crit_idx, crit_name in enumerate(all_criteria_names):
+                            # Find description from either rubric
+                            crit_desc = ""
+                            for c in build_rubric_a_list + build_rubric_b_list:
+                                if c.get("name") == crit_name:
+                                    crit_desc = c.get("description", "")
+                                    break
+    
+                            existing_crit = dim_ratings.get(crit_name, {})
+    
+                            with st.expander(f"**{crit_name}**", expanded=True):
+                                if crit_desc:
+                                    st.caption(crit_desc[:150])
+                                col_rx, col_ry = st.columns(2)
+                                with col_rx:
+                                    dim_ratings.setdefault(crit_name, {})
+                                    dim_ratings[crit_name]["draft_x"] = st.radio(
+                                        f"Draft X — {crit_name}",
+                                        rating_options,
+                                        index=rating_options.index(str(existing_crit.get("draft_x", "3"))) if str(existing_crit.get("draft_x", "3")) in rating_options else 2,
+                                        key=f"build_dim_x_{crit_idx}",
+                                        horizontal=True,
+                                        label_visibility="collapsed"
+                                    )
+                                with col_ry:
+                                    dim_ratings[crit_name]["draft_y"] = st.radio(
+                                        f"Draft Y — {crit_name}",
+                                        rating_options,
+                                        index=rating_options.index(str(existing_crit.get("draft_y", "3"))) if str(existing_crit.get("draft_y", "3")) in rating_options else 2,
+                                        key=f"build_dim_y_{crit_idx}",
+                                        horizontal=True,
+                                        label_visibility="collapsed"
+                                    )
+                                st.caption("Draft X ↑ · Draft Y ↑ (1=poorly, 5=excellently)")
+    
+                        # Save preference
+                        if st.button("💾 Save Evaluation", type="primary", use_container_width=True, key="build_save_pref"):
+                            st.session_state.build_user_preference = {
+                                "overall": overall_pref,
+                                "dimension_ratings": dim_ratings,
+                                "blind_labels": st.session_state.build_blind_labels
+                            }
+                            st.rerun()
+    
+                # ==================== STEP 4: LLM JUDGE SCORING ====================
+                if st.session_state.build_user_preference:
+                    st.divider()
+                    st.subheader("Step 4: LLM Judge Scoring")
+                    st.markdown("An LLM judge scores both drafts per-dimension, using your satisfaction ratings as the reference standard.")
+    
+                    # Reveal which draft was which
+                    blind = st.session_state.build_blind_labels
+                    pref = st.session_state.build_user_preference
+                    overall = pref.get("overall", "No preference")
+    
+                    # Map overall preference to rubric
+                    if overall == "Prefer Draft X":
+                        preferred_rubric = "A" if blind["Draft X"] == "a" else "B"
+                    elif overall == "Prefer Draft Y":
+                        preferred_rubric = "A" if blind["Draft Y"] == "a" else "B"
+                    else:
+                        preferred_rubric = "tie"
+    
+                    st.info(f"**Reveal:** Draft X = Rubric {'A' if blind['Draft X'] == 'a' else 'B'}, Draft Y = Rubric {'A' if blind['Draft Y'] == 'a' else 'B'}. You preferred: **{overall}** (Rubric {preferred_rubric})")
+    
+                    if not st.session_state.build_llm_judge_result:
+                        if st.button("🔬 Run LLM Judge", type="primary", use_container_width=True, key="build_judge_btn"):
+                            with st.spinner("LLM judge is scoring both drafts per-dimension..."):
+                                try:
+                                    # Prepare rubric criteria JSON (union of both)
+                                    all_criteria = []
+                                    edits = st.session_state.build_edit_classification or {}
+                                    edited_names = set()
+                                    for k in ["added", "removed", "reweighted", "reworded", "dimensions_changed"]:
+                                        for item in edits.get(k, []):
+                                            edited_names.add(item.get("name", ""))
+    
+                                    for c in build_rubric_a_list:
+                                        all_criteria.append({
+                                            "name": c.get("name", ""),
+                                            "description": c.get("description", ""),
+                                            "weight": c.get("weight", c.get("priority", 0)),
+                                            "was_edited": c.get("name", "") in edited_names
+                                        })
+    
+                                    criteria_json = json.dumps(all_criteria, indent=2)
+                                    ratings_json = json.dumps(pref.get("dimension_ratings", {}), indent=2)
+    
+                                    prompt = judge_drafts_per_dimension_prompt(
+                                        st.session_state.build_draft_a,
+                                        st.session_state.build_draft_b,
+                                        criteria_json,
+                                        ratings_json
+                                    )
+    
+                                    response = _api_call_with_retry(
                                         model="claude-opus-4-6",
                                         max_tokens=16000,
-                                        messages=[{"role": "user", "content": decision_prompt}],
+                                        messages=[{"role": "user", "content": prompt}],
                                         thinking={"type": "enabled", "budget_tokens": 8000}
                                     )
-
+    
                                     thinking_text = ""
                                     response_text = ""
                                     for block in response.content:
@@ -5185,2669 +6598,1688 @@ with tab6:
                                             thinking_text = block.thinking
                                         elif block.type == "text":
                                             response_text = block.text
-
-                                    parsed_data = None
-                                    try:
-                                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                        if json_match:
-                                            parsed_data = json.loads(json_match.group())
-                                    except json.JSONDecodeError:
-                                        pass
-
-                                    st.session_state.infer_decision_points = {
-                                        "thinking": thinking_text,
-                                        "raw_response": response_text,
-                                        "parsed_data": parsed_data,
-                                        "conversation_file": dp_selected_file
-                                    }
-                                    first_dp_id = parsed_data.get("decision_points", [{}])[0].get("id") if parsed_data.get("decision_points") else None
-                                    st.session_state.infer_expanded_dp = first_dp_id
-                                    st.rerun()
-                                except Exception as e:
-                                    st.error(f"Error extracting decision points: {str(e)}")
-
-                    # Display decision points
-                    if st.session_state.infer_decision_points:
-                        result = st.session_state.infer_decision_points
-                        parsed_data = result.get("parsed_data")
-
-                        if parsed_data and "decision_points" in parsed_data:
-                            decision_points = parsed_data["decision_points"]
-
-                            # Build lookup sets
-                            surplus_dims = {name for name, cat in st.session_state.infer_user_categorizations.items()
-                                            if cat in ("real", "latent_real", "elicited")}
-                            stated_dims = {name for name, cat in st.session_state.infer_user_categorizations.items()
-                                            if cat == "stated"}
-                            all_criteria_names = list(st.session_state.infer_user_categorizations.keys())
-
-                            # Auto-match each DP to a criterion
-                            def auto_match_dp(dp):
-                                related_crit = dp.get("related_rubric_criterion") or ""
-                                dim = dp.get("dimension", "")
-                                if related_crit in surplus_dims or related_crit in stated_dims:
-                                    return related_crit
-                                if related_crit:
-                                    for name in all_criteria_names:
-                                        if name.lower() in related_crit.lower() or related_crit.lower() in name.lower():
-                                            return name
-                                for name in all_criteria_names:
-                                    if name.lower() in dim.lower() or dim.lower() in name.lower():
-                                        return name
-                                return None
-
-                            def build_highlight_quotes_for_dp(dp):
-                                """Build highlights dict for a single DP."""
-                                highlights = {}
-                                before_q = dp.get("before_quote", "")
-                                after_q = dp.get("after_quote", "")
-                                asst_num = dp.get("assistant_message_num")
-                                user_num = dp.get("user_message_num")
-                                dp_id = dp.get("id", 0)
-                                if asst_num and before_q:
-                                    highlights.setdefault(asst_num, []).append((before_q, dp_id, "before"))
-                                if user_num and after_q:
-                                    highlights.setdefault(user_num, []).append((after_q, dp_id, "after"))
-                                return highlights
-
-                            def render_conversation_with_highlights(messages, highlights, focus_msg_nums=None):
-                                import html as html_lib
-                                msg_num = 1
-                                for msg in messages:
-                                    role = msg.get('role', 'unknown')
-                                    content = msg.get('content', '')
-                                    if role not in ('user', 'assistant'):
-                                        continue
-
-                                    role_label = "You" if role == "user" else "Assistant"
-                                    role_color = "#2196F3" if role == "user" else "#4CAF50"
-
-                                    display_content = re.sub(r'<!--.*?-->', '', content).strip()
-                                    escaped = html_lib.escape(display_content)
-
-                                    # Highlight quotes in this message
-                                    if msg_num in highlights:
-                                        for quote, dp_id, quote_type in highlights[msg_num]:
-                                            escaped_quote = html_lib.escape(quote.strip())
-                                            if escaped_quote in escaped:
-                                                hl_color = "#FFEB3B" if quote_type == "before" else "#81C784"
-                                                escaped = escaped.replace(
-                                                    escaped_quote,
-                                                    f'<span style="background-color: {hl_color}; padding: 1px 3px; border-radius: 3px; color: #000;" '
-                                                    f'title="DP#{dp_id}">{escaped_quote}</span>',
-                                                    1
-                                                )
-
-                                    # Dim non-focused messages when a DP is selected
-                                    is_focused = focus_msg_nums is None or msg_num in focus_msg_nums
-                                    if is_focused:
-                                        bg_color = "#e3f2fd" if role == "user" else "#f1f8e9"
-                                        opacity = "1"
-                                        border_width = "3px"
-                                    else:
-                                        bg_color = "#f5f5f5"
-                                        opacity = "0.4"
-                                        border_width = "2px"
-
-                                    lines = escaped.split('\n')
-                                    if len(lines) > 15 and not is_focused:
-                                        escaped = '\n'.join(lines[:5]) + '\n<i>... (truncated)</i>'
-                                    elif len(lines) > 30:
-                                        escaped = '\n'.join(lines[:30]) + '\n<i>... (truncated)</i>'
-
-                                    st.markdown(
-                                        f'<div style="margin-bottom: 8px; padding: 8px 12px; border-left: {border_width} solid {role_color}; '
-                                        f'background-color: {bg_color}; border-radius: 4px; font-size: 0.85em; opacity: {opacity};">'
-                                        f'<b style="color: {role_color};">#{msg_num} {role_label}</b><br>'
-                                        f'<span style="white-space: pre-wrap; color: #222;">{escaped}</span></div>',
-                                        unsafe_allow_html=True
-                                    )
-                                    msg_num += 1
-
-                            st.success(f"Found **{len(decision_points)}** decision points")
-
-                            if result.get("thinking"):
-                                with st.expander("🧠 Extraction Thinking", expanded=False):
-                                    st.markdown(result["thinking"])
-
-                            # Determine which DP is selected
-                            selected_dp_id = st.session_state.get("infer_expanded_dp")
-                            selected_dp = None
-                            if selected_dp_id is not None:
-                                for dp in decision_points:
-                                    if dp.get("id") == selected_dp_id:
-                                        selected_dp = dp
-                                        break
-
-                            # Build highlights only for selected DP (only when not yet confirmed)
-                            if not st.session_state.infer_dp_dimension_confirmed and selected_dp:
-                                highlight_quotes = build_highlight_quotes_for_dp(selected_dp)
-                                focus_msgs = set()
-                                if selected_dp.get("assistant_message_num"):
-                                    focus_msgs.add(selected_dp["assistant_message_num"])
-                                if selected_dp.get("user_message_num"):
-                                    focus_msgs.add(selected_dp["user_message_num"])
-                            else:
-                                highlight_quotes = {}
-                                focus_msgs = None
-
-                            # Two-column layout: conversation on left, DPs on right
-                            col_conv, col_dps = st.columns([1, 1])
-
-                            with col_conv:
-                                st.markdown("**Conversation**")
-                                if not st.session_state.infer_dp_dimension_confirmed and selected_dp:
-                                    st.caption(f"Showing DP#{selected_dp_id}")
-                                elif st.session_state.infer_dp_dimension_confirmed:
-                                    st.caption("Dimension mappings confirmed")
-                                else:
-                                    st.caption("Select a decision point to highlight relevant messages")
-                                with st.container(height=600):
-                                    render_conversation_with_highlights(dp_messages, highlight_quotes, focus_msgs)
-
-                            with col_dps:
-                                if not st.session_state.infer_dp_dimension_confirmed:
-                                    st.markdown(
-                                        "**Review each decision point's dimension mapping.** "
-                                        "Select **Incorrect** to choose a different dimension, "
-                                        "or **Not in rubric** if the edit doesn't map to any rubric dimension. "
-                                        "Click a DP to see its context in the conversation."
-                                    )
-
-                                    for dp in decision_points:
-                                        dp_id = dp.get('id', 0)
-                                        dp_id_str = str(dp_id)
-                                        auto_matched = auto_match_dp(dp)
-                                        related_crit = dp.get("related_rubric_criterion") or ""
-
-                                        existing_mapping = st.session_state.infer_dp_user_mappings.get(dp_id_str)
-
-                                        # Auto-apply default "Correct" mapping for DPs the user hasn't interacted with
-                                        if not existing_mapping and auto_matched:
-                                            st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": auto_matched, "not_in_rubric": False}
-                                            existing_mapping = st.session_state.infer_dp_user_mappings[dp_id_str]
-
-                                        title_crit = auto_matched or "Unmatched"
-
-                                        msg_ref = ""
-                                        asst_num = dp.get("assistant_message_num")
-                                        user_num = dp.get("user_message_num")
-                                        if asst_num and user_num:
-                                            msg_ref = f" [#{asst_num}→#{user_num}]"
-
-                                        is_selected = (selected_dp_id == dp_id)
-
-                                        # Toggle button to select/deselect DP
-                                        btn_label = f"{'▼' if is_selected else '▶'} DP#{dp_id}: {dp.get('dimension', 'Unknown')} — {title_crit}{msg_ref}"
-                                        if st.button(btn_label, key=f"infer_dp_select_{dp_id}", use_container_width=True,
-                                                     type="primary" if is_selected else "secondary"):
-                                            if is_selected:
-                                                st.session_state.infer_expanded_dp = None
-                                            else:
-                                                st.session_state.infer_expanded_dp = dp_id
-                                            st.rerun()
-
-                                        if is_selected:
-                                            col_b, col_a = st.columns(2)
-                                            with col_b:
-                                                st.caption("Original:")
-                                                st.info(dp.get('before_quote', 'N/A')[:200])
-                                            with col_a:
-                                                st.caption("Your Action:")
-                                                st.success(dp.get('after_quote', 'N/A')[:200])
-
-                                            st.markdown(f"**Summary:** {dp.get('summary', 'N/A')}")
-
-                                            # Determine current mapped criterion for radio label
-                                            current_crit = auto_matched
-                                            if existing_mapping and not existing_mapping.get("not_in_rubric"):
-                                                current_crit = existing_mapping.get("criterion") or auto_matched
-                                            mapped_label = f"Mapped to: {current_crit}" if current_crit else "No mapping"
-
-                                            st.markdown(f"**{mapped_label}**")
-
-                                            if existing_mapping:
-                                                if existing_mapping.get("not_in_rubric"):
-                                                    default_action_idx = 2
-                                                elif existing_mapping.get("criterion") != auto_matched:
-                                                    default_action_idx = 1
-                                                else:
-                                                    default_action_idx = 0
-                                            else:
-                                                default_action_idx = 0
-
-                                            action = st.radio(
-                                                f"DP#{dp_id} classification:",
-                                                options=["Correct", "Incorrect", "Not in rubric"],
-                                                index=default_action_idx,
-                                                key=f"infer_dp_action_{dp_id}",
-                                                horizontal=True,
-                                                label_visibility="collapsed"
-                                            )
-
-                                            if action == "Correct":
-                                                if auto_matched:
-                                                    st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": auto_matched, "not_in_rubric": False}
-                                                else:
-                                                    st.warning("No auto-match found. Please select 'Incorrect' to choose a criterion or 'Not in rubric'.")
-                                            elif action == "Incorrect":
-                                                default_idx = 0
-                                                if existing_mapping and existing_mapping.get("criterion") in all_criteria_names:
-                                                    default_idx = all_criteria_names.index(existing_mapping["criterion"])
-                                                elif auto_matched and auto_matched in all_criteria_names:
-                                                    default_idx = all_criteria_names.index(auto_matched)
-
-                                                def on_incorrect_change(did=dp_id_str):
-                                                    crit_val = st.session_state.get(f"infer_dp_correct_{did}")
-                                                    reason_val = st.session_state.get(f"infer_dp_incorrect_reason_{did}", "")
-                                                    st.session_state.infer_dp_user_mappings[did] = {"criterion": crit_val, "not_in_rubric": False, "incorrect_reason": reason_val}
-
-                                                corrected = st.selectbox(
-                                                    f"Select correct criterion for DP#{dp_id}:",
-                                                    options=all_criteria_names,
-                                                    index=default_idx,
-                                                    key=f"infer_dp_correct_{dp_id_str}",
-                                                    on_change=on_incorrect_change
-                                                )
-                                                incorrect_reason = st.text_input(
-                                                    f"Why is this a better match?",
-                                                    value=existing_mapping.get("incorrect_reason", "") if existing_mapping else "",
-                                                    placeholder="e.g., The edit was about sentence length, not tone",
-                                                    key=f"infer_dp_incorrect_reason_{dp_id_str}",
-                                                    on_change=on_incorrect_change
-                                                )
-                                                st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": corrected, "not_in_rubric": False, "incorrect_reason": incorrect_reason}
-                                            elif action == "Not in rubric":
-                                                def on_nir_change(did=dp_id_str):
-                                                    reason_val = st.session_state.get(f"infer_dp_notinrubric_{did}", "")
-                                                    st.session_state.infer_dp_user_mappings[did] = {"criterion": None, "not_in_rubric": True, "not_in_rubric_reason": reason_val}
-
-                                                reason = st.text_input(
-                                                    f"What preference does DP#{dp_id} reflect?",
-                                                    value=existing_mapping.get("not_in_rubric_reason", "") if existing_mapping else "",
-                                                    placeholder="e.g., Preference for active voice not captured in rubric",
-                                                    key=f"infer_dp_notinrubric_{dp_id_str}",
-                                                    on_change=on_nir_change
-                                                )
-                                                st.session_state.infer_dp_user_mappings[dp_id_str] = {
-                                                    "criterion": None, "not_in_rubric": True,
-                                                    "not_in_rubric_reason": reason
-                                                }
-
-                                    all_mapped = len(st.session_state.infer_dp_user_mappings) >= len(decision_points)
-                                    confirm_ok = all(
-                                        st.session_state.infer_dp_user_mappings.get(str(dp.get('id', 0)), {}).get("criterion") is not None
-                                        or st.session_state.infer_dp_user_mappings.get(str(dp.get('id', 0)), {}).get("not_in_rubric", False)
-                                        for dp in decision_points
-                                    )
-
-                                    if all_mapped and confirm_ok:
-                                        if st.button("✅ Confirm All Dimension Mappings", type="primary", use_container_width=True, key="infer_confirm_dp_dims"):
-                                            for dp in decision_points:
-                                                dp_id_str = str(dp.get('id', 0))
-                                                mapping = st.session_state.infer_dp_user_mappings.get(dp_id_str, {})
-                                                crit = mapping.get("criterion")
-                                                original_suggestion = auto_match_dp(dp)
-                                                dp["original_suggestion"] = original_suggestion
-                                                if crit:
-                                                    dp["confirmed_criterion"] = crit
-                                                    dp["is_surplus"] = crit in surplus_dims
-                                                    dp["is_stated"] = crit in stated_dims
-                                                    dp["is_not_in_rubric"] = False
-                                                    # Determine user action
-                                                    if crit == original_suggestion:
-                                                        dp["user_action"] = "correct"
-                                                    else:
-                                                        dp["user_action"] = "incorrect"
-                                                        dp["incorrect_reason"] = mapping.get("incorrect_reason", "")
-                                                else:
-                                                    dp["confirmed_criterion"] = None
-                                                    dp["is_surplus"] = False
-                                                    dp["is_stated"] = False
-                                                    dp["is_not_in_rubric"] = True
-                                                    dp["not_in_rubric_reason"] = mapping.get("not_in_rubric_reason", "")
-                                                    dp["user_action"] = "not_in_rubric"
-                                            parsed_data["decision_points"] = decision_points
-                                            st.session_state.infer_decision_points["parsed_data"] = parsed_data
-                                            st.session_state.infer_dp_dimension_confirmed = True
-                                            st.rerun()
-                                    else:
-                                        st.info("Review all decision points above, then confirm.")
-
-                                else:
-                                    # --- Confirmed view ---
-                                    active_count = sum(1 for dp in decision_points if not dp.get("is_not_in_rubric"))
-                                    not_in_rubric_count = sum(1 for dp in decision_points if dp.get("is_not_in_rubric"))
-                                    summary = f"**{active_count}** decision points confirmed"
-                                    if not_in_rubric_count > 0:
-                                        summary += f" ({not_in_rubric_count} skipped — not in rubric)"
-                                    st.success(summary)
-
-                                    for dp in decision_points:
-                                        dp_id = dp.get('id', 0)
-                                        crit = dp.get("confirmed_criterion") or ""
-                                        user_action = dp.get("user_action", "correct")
-                                        original = dp.get("original_suggestion") or dp.get("dimension", "")
-
-                                        # Action annotation
-                                        if user_action == "correct":
-                                            action_note = f"✅ {crit}"
-                                        elif user_action == "incorrect":
-                                            action_note = f"✏️ {original} → {crit}"
-                                        elif user_action == "not_in_rubric":
-                                            action_note = f"❌ Not in rubric"
-                                        else:
-                                            action_note = crit
-
-                                        with st.expander(f"DP#{dp_id}: {dp.get('dimension', 'Unknown')} — {action_note}", expanded=False):
-                                            col_b, col_a = st.columns(2)
-                                            with col_b:
-                                                st.caption("Original:")
-                                                st.info(dp.get('before_quote', 'N/A')[:200])
-                                            with col_a:
-                                                st.caption("Your Action:")
-                                                st.success(dp.get('after_quote', 'N/A')[:200])
-                                            if user_action == "incorrect":
-                                                reason = dp.get("incorrect_reason", "")
-                                                if reason:
-                                                    st.caption(f"Reason: {reason}")
-                                            elif user_action == "not_in_rubric":
-                                                reason = dp.get("not_in_rubric_reason", "")
-                                                if reason:
-                                                    st.caption(f"Reason: {reason}")
-
-                            # ==================== STEP 6: GENERATE & RANK ALTERNATIVES ====================
-                            if st.session_state.infer_dp_dimension_confirmed:
-                                st.divider()
-                                st.subheader("Step 6: Generate & Rank Alternatives")
-
-                                # Filter out "Not in rubric" decision points
-                                active_dps = [dp for dp in decision_points if not dp.get("is_not_in_rubric")]
-                                not_in_rubric_dps = [dp for dp in decision_points if dp.get("is_not_in_rubric")]
-
-                                def generate_alternatives_for_dp(dp, feedback=None, previous_alternatives=None):
-                                    """Generate alternatives for a single DP, optionally with user feedback."""
-                                    dimension = dp.get('dimension', 'style')
-                                    confirmed_criterion = dp.get('confirmed_criterion', '')
-                                    writing_type = infer_rubric_dict.get('writing_type', '')
-                                    user_goals = infer_rubric_dict.get('user_goals_summary', '')
-                                    rubric_json = json.dumps(infer_rubric_dict, indent=2)
-                                    prompt = generate_novel_alternatives_prompt(dp, dimension, writing_type, user_goals, rubric_json=rubric_json, confirmed_criterion=confirmed_criterion)
-                                    if feedback:
-                                        prev_text = ""
-                                        if previous_alternatives:
-                                            prev_text = "\n\nThe previous alternatives that the user rejected were:\n"
-                                            for alt in previous_alternatives:
-                                                prev_text += f"- {alt.get('id', '?')}: {alt.get('text', '')}\n"
-                                        prompt += (
-                                            f"\n\nIMPORTANT — The user reviewed a previous set of alternatives and found them "
-                                            f"inaccurate or unrepresentative.{prev_text}\n"
-                                            f"Their feedback:\n\"{feedback}\"\n\n"
-                                            f"Please generate a NEW set of 3 alternatives that addresses this feedback. "
-                                            f"Make sure the alternatives are accurate and representative of realistic variation "
-                                            f"along this dimension."
-                                        )
-                                    response = client.messages.create(
-                                        model="claude-opus-4-6",
-                                        max_tokens=8000,
-                                        messages=[{"role": "user", "content": prompt}],
-                                        thinking={"type": "enabled", "budget_tokens": 4000}
-                                    )
-                                    response_text = ""
-                                    for block in response.content:
-                                        if block.type == "text":
-                                            response_text = block.text
+    
                                     json_match = re.search(r'\{[\s\S]*\}', response_text)
                                     if json_match:
-                                        alt_data = json.loads(json_match.group())
-                                        alts = alt_data.get('alternatives', [])
-                                        random.shuffle(alts)
-                                        display_mapping = {alts[i]['id']: chr(65 + i) for i in range(len(alts))}
-                                        return {
-                                            'alternatives': alts,
-                                            'display_mapping': display_mapping,
-                                            'dimension': dimension,
-                                            'dimension_description': alt_data.get('dimension_description', ''),
-                                            'content_objective': alt_data.get('content_objective', ''),
-                                            'is_surplus': dp.get('is_surplus', False),
-                                            'is_stated': dp.get('is_stated', False)
-                                        }
-                                    return None
+                                        parsed = json.loads(json_match.group())
+                                        st.session_state.build_llm_judge_result = parsed
+                                        st.session_state.build_llm_judge_thinking = thinking_text
+                                        st.rerun()
+                                    else:
+                                        st.error("Could not parse LLM judge response.")
+                                        st.text(response_text)
+    
+                                except Exception as e:
+                                    st.error(f"Error during LLM judging: {str(e)}")
+    
+                    # Display judge results
+                    if st.session_state.build_llm_judge_result:
+                        judge = st.session_state.build_llm_judge_result
+    
+                        if st.session_state.build_llm_judge_thinking:
+                            with st.expander("🧠 Judge Thinking", expanded=False):
+                                st.markdown(st.session_state.build_llm_judge_thinking)
+    
+                        overall_j = judge.get("overall", {})
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Draft A (Rubric A) Avg", f"{overall_j.get('draft_a_avg', 0):.1f}")
+                        with col2:
+                            st.metric("Draft B (Rubric B) Avg", f"{overall_j.get('draft_b_avg', 0):.1f}")
+                        with col3:
+                            st.metric("Winner", f"Rubric {overall_j.get('overall_winner', '?')}")
+    
+                        if overall_j.get("win_pattern"):
+                            st.markdown(f"**Pattern:** {overall_j['win_pattern']}")
+    
+                        # Per-criterion table
+                        st.markdown("### Per-Criterion Scores")
+                        edits = st.session_state.build_edit_classification or {}
+                        edited_names = set()
+                        for k in ["added", "removed", "reweighted", "reworded", "dimensions_changed"]:
+                            for item in edits.get(k, []):
+                                edited_names.add(item.get("name", ""))
+    
+                        judge_table = []
+                        edited_wins_a = 0
+                        edited_wins_b = 0
+                        unedited_wins_a = 0
+                        unedited_wins_b = 0
+    
+                        for pc in judge.get("per_criterion", []):
+                            was_edited = pc.get("criterion_name", "") in edited_names
+                            winner = pc.get("winner", "tie")
+                            judge_table.append({
+                                "Criterion": pc.get("criterion_name", ""),
+                                "Edited?": "Yes" if was_edited else "No",
+                                "Draft A": pc.get("draft_a_score", 0),
+                                "Draft B": pc.get("draft_b_score", 0),
+                                "Winner": winner,
+                                "Aligns w/ User": "Yes" if pc.get("aligns_with_user_rating") else "No"
+                            })
+                            if was_edited:
+                                if winner == "A":
+                                    edited_wins_a += 1
+                                elif winner == "B":
+                                    edited_wins_b += 1
+                            else:
+                                if winner == "A":
+                                    unedited_wins_a += 1
+                                elif winner == "B":
+                                    unedited_wins_b += 1
+    
+                        st.table(judge_table)
+    
+                        # Attribution analysis
+                        st.markdown("### Edit Attribution Analysis")
+                        st.markdown(
+                            f"On **edited dimensions**: Rubric A wins {edited_wins_a}, Rubric B wins {edited_wins_b}. "
+                            f"On **unedited dimensions**: Rubric A wins {unedited_wins_a}, Rubric B wins {unedited_wins_b}."
+                        )
+                        if edited_wins_a > edited_wins_b:
+                            st.success("Rubric A (edited) shows stronger performance specifically on dimensions that were edited — gains are attributable to user corrections.")
+                        elif edited_wins_b > edited_wins_a:
+                            st.warning("Rubric B performed better on edited dimensions — editing may not have improved these specific areas.")
+                        else:
+                            st.info("Tied on edited dimensions — no clear attribution signal.")
+    
+                # ==================== STEP 5: POST-TASK SELF-REPORT ====================
+                if st.session_state.build_llm_judge_result:
+                    st.divider()
+                    st.subheader("Step 5: Post-Task Self-Report")
+                    st.markdown("Reflect on whether seeing and editing the rubric shaped your preferences.")
+    
+                    report = st.session_state.build_self_report
+    
+                    st.markdown("**Q1: Did seeing the rubric help you realize preferences you wouldn't have known about?**")
+                    q1_options = ["1 - Not at all", "2", "3", "4", "5 - Absolutely"]
+                    report["q1"] = st.radio(
+                        "Realize preferences",
+                        q1_options,
+                        index=q1_options.index(report.get("q1", "3")) if report.get("q1") in q1_options else 2,
+                        key="build_q1",
+                        label_visibility="collapsed",
+                        horizontal=True
+                    )
+    
+                    st.markdown("**Q2: Did seeing the rubric help you understand your preferences more clearly?**")
+                    q2_options = ["1 - Not at all", "2", "3", "4", "5 - Absolutely"]
+                    report["q2"] = st.radio(
+                        "Understand preferences",
+                        q2_options,
+                        index=q2_options.index(report.get("q2", "3")) if report.get("q2") in q2_options else 2,
+                        key="build_q2",
+                        label_visibility="collapsed",
+                        horizontal=True
+                    )
+    
+                    st.markdown("**Q3: Did seeing the rubric help you express preferences you otherwise couldn't articulate?**")
+                    q3_options = ["1 - Not at all", "2", "3", "4", "5 - Absolutely"]
+                    report["q3"] = st.radio(
+                        "Express preferences",
+                        q3_options,
+                        index=q3_options.index(report.get("q3", "3")) if report.get("q3") in q3_options else 2,
+                        key="build_q3",
+                        label_visibility="collapsed",
+                        horizontal=True
+                    )
+    
+                    st.markdown("**Q4: Describe any specific preferences the rubric helped you discover or clarify.**")
+                    report["q4"] = st.text_area(
+                        "Specific preferences",
+                        value=report.get("q4", ""),
+                        placeholder="e.g., I didn't realize I cared so much about paragraph transitions until I saw it in the rubric...",
+                        key="build_q4",
+                        label_visibility="collapsed",
+                        height=150
+                    )
+    
+                    st.session_state.build_self_report = report
+    
+                    if st.button("💾 Save Build Evaluation", type="primary", use_container_width=True, key="save_build_eval"):
+                        st.session_state.build_self_report_saved = True
+    
+                        # Compile all data for export
+                        blind = st.session_state.build_blind_labels
+                        pref = st.session_state.build_user_preference
+                        export_data = {
+                            "timestamp": datetime.now().isoformat(),
+                            "rubric_a": {
+                                "version": build_rubric_a.get("version"),
+                                "source": build_rubric_a.get("source"),
+                                "criteria_count": len(build_rubric_a_list)
+                            },
+                            "rubric_b": {
+                                "version": build_rubric_b.get("version"),
+                                "source": build_rubric_b.get("source"),
+                                "criteria_count": len(build_rubric_b_list)
+                            },
+                            "edit_classification": st.session_state.build_edit_classification,
+                            "writing_task": st.session_state.build_writing_task,
+                            "blind_labels": blind,
+                            "user_preference": pref,
+                            "llm_judge_result": st.session_state.build_llm_judge_result,
+                            "self_report": report,
+                            "conversation_edits": get_effective_edits_from_conversation(st.session_state.messages)
+                        }
+    
+                        project_id = st.session_state.get('current_project_id')
+                        if not project_id:
+                            st.error("No project selected. Please select a project first.")
+                        else:
+                            supabase = st.session_state.get('supabase')
+                            if supabase and save_project_data(supabase, project_id, "build_evaluation", export_data):
+                                st.success("✅ Build evaluation saved successfully!")
+                            else:
+                                st.error("Failed to save evaluation.")
 
-                                if not st.session_state.infer_novel_alternatives:
-                                    st.markdown("Generate 3 new versions for each decision point, varying along the identified dimension. Then rank them.")
-                                    if not_in_rubric_dps:
-                                        st.info(f"Skipping {len(not_in_rubric_dps)} decision point(s) marked 'Not in rubric'. Generating alternatives for {len(active_dps)} remaining.")
-                                    if st.button("🎲 Generate Alternatives", use_container_width=True, type="primary", key="infer_gen_alts_btn"):
-                                        with st.spinner("Generating alternatives for all decision points..."):
-                                            alternatives_data = {}
-                                            for dp in active_dps:
-                                                dp_id = dp.get('id')
-                                                try:
-                                                    result = generate_alternatives_for_dp(dp)
-                                                    if result:
-                                                        alternatives_data[dp_id] = result
-                                                except Exception as e:
-                                                    st.warning(f"Error generating alternatives for DP#{dp_id}: {str(e)}")
-                                            st.session_state.infer_novel_alternatives = alternatives_data
-                                            st.rerun()
-
-                                if st.session_state.infer_novel_alternatives:
-                                    st.markdown("For each decision point, rank the 3 alternatives from most to least preferred.")
-
-                                    rankings_complete = len(st.session_state.infer_user_rankings) >= len(active_dps)
-                                    st.progress(len(st.session_state.infer_user_rankings) / max(len(active_dps), 1))
-                                    st.caption(f"Ranked: {len(st.session_state.infer_user_rankings)} / {len(active_dps)}")
-
-                                    for dp in active_dps:
-                                        dp_id = dp.get('id')
-                                        if dp_id not in st.session_state.infer_novel_alternatives:
-                                            continue
-
-                                        alt_info = st.session_state.infer_novel_alternatives[dp_id]
-                                        alts = alt_info['alternatives']
-                                        display_map = alt_info['display_mapping']
-                                        already_ranked = dp_id in st.session_state.infer_user_rankings
-                                        crit_name = dp.get("confirmed_criterion") or alt_info.get("dimension", "Unknown")
-
-                                        with st.expander(f"{'✅' if already_ranked else '⬜'} DP#{dp_id}: {crit_name}", expanded=not already_ranked):
-                                            if alt_info.get('content_objective'):
-                                                st.info(f"**Context:** {alt_info['content_objective']}")
-                                            st.caption(f"**Dimension being varied:** {alt_info.get('dimension_description', alt_info['dimension'])}")
-
-                                            for alt in alts:
-                                                display_letter = display_map[alt['id']]
-                                                st.markdown(f"**Version {display_letter}:**")
-                                                st.markdown(f"> {alt['text']}")
-
-                                            # Ranking controls
-                                            existing_ranking = st.session_state.infer_user_rankings.get(dp_id, {})
-                                            options = ["Select...", "Version A", "Version B", "Version C"]
-
-                                            col1, col2, col3 = st.columns(3)
-                                            with col1:
-                                                rank1 = st.selectbox("1st (Best)", options, key=f"infer_rank1_{dp_id}",
-                                                                    index=options.index(existing_ranking.get('rank1_display', "Select...")))
-                                            with col2:
-                                                rank2 = st.selectbox("2nd", options, key=f"infer_rank2_{dp_id}",
-                                                                    index=options.index(existing_ranking.get('rank2_display', "Select...")))
-                                            with col3:
-                                                rank3 = st.selectbox("3rd (Worst)", options, key=f"infer_rank3_{dp_id}",
-                                                                    index=options.index(existing_ranking.get('rank3_display', "Select...")))
-
-                                            if st.button("💾 Save Ranking", key=f"infer_save_rank_{dp_id}", type="primary"):
-                                                if rank1 != "Select..." and rank2 != "Select..." and rank3 != "Select...":
-                                                    if len(set([rank1, rank2, rank3])) == 3:
-                                                        reverse_map = {v: k for k, v in display_map.items()}
-                                                        ranking_ids = [
-                                                            reverse_map.get(rank1.replace("Version ", "")),
-                                                            reverse_map.get(rank2.replace("Version ", "")),
-                                                            reverse_map.get(rank3.replace("Version ", ""))
-                                                        ]
-                                                        st.session_state.infer_user_rankings[dp_id] = {
-                                                            'ranking': ranking_ids,
-                                                            'rank1_display': rank1,
-                                                            'rank2_display': rank2,
-                                                            'rank3_display': rank3,
-                                                            'dimension': alt_info['dimension'],
-                                                            'is_surplus': alt_info.get('is_surplus', False),
-                                                            'is_stated': alt_info.get('is_stated', False)
-                                                        }
-                                                        st.rerun()
-                                                    else:
-                                                        st.error("Please select different versions for each rank.")
-                                                else:
-                                                    st.error("Please complete all rankings.")
-
-                                            # Regeneration option
-                                            st.divider()
-                                            regen_key = f"infer_alt_feedback_{dp_id}"
-                                            # Use a generation counter to reset widget keys after regeneration
-                                            regen_count = alt_info.get('regen_count', 0)
-                                            with st.expander("🔄 Alternatives not accurate?", expanded=False):
-                                                feedback = st.text_input(
-                                                    "What's wrong with these alternatives?",
-                                                    placeholder="e.g., The context is about an email, not a report",
-                                                    key=f"{regen_key}_{regen_count}"
-                                                )
-                                                if st.button("Regenerate", key=f"infer_regen_{dp_id}_{regen_count}"):
-                                                    if feedback.strip():
-                                                        with st.spinner(f"Regenerating alternatives for DP#{dp_id}..."):
-                                                            try:
-                                                                result = generate_alternatives_for_dp(dp, feedback=feedback.strip(), previous_alternatives=alts)
-                                                                if result:
-                                                                    result['regen_count'] = regen_count + 1
-                                                                    st.session_state.infer_novel_alternatives[dp_id] = result
-                                                                    st.session_state.infer_user_rankings.pop(dp_id, None)
-                                                                    st.rerun()
-                                                                else:
-                                                                    st.error("Failed to regenerate. Please try again.")
-                                                            except Exception as e:
-                                                                st.error(f"Error: {str(e)}")
-                                                    else:
-                                                        st.warning("Please describe what's wrong before regenerating.")
-
-                            # ==================== STEP 7: SCORE UNDER THREE CONDITIONS ====================
-                            active_dps_for_scoring = [dp for dp in decision_points if not dp.get("is_not_in_rubric")]
-                            rankings_complete = st.session_state.infer_novel_alternatives and len(st.session_state.infer_user_rankings) >= len(active_dps_for_scoring)
-
-                            if rankings_complete and not st.session_state.infer_agreement_scores:
-                                st.divider()
-                                st.subheader("Step 7: Score Under Three Conditions")
-                                st.markdown("Score alternatives against the rubric, your cold-start description, and generic quality criteria.")
-
-                                if st.button("🔬 Score All & Compute Results", use_container_width=True, type="primary", key="infer_score_all_btn"):
-                                    rubric_json = json.dumps(infer_rubric_dict, indent=2)
-                                    coldstart_text = st.session_state.infer_coldstart_text
-                                    rubric_rankings = {}
-                                    coldstart_rankings = {}
-                                    generic_rankings = {}
-
-                                    progress_bar = st.progress(0)
-                                    status_text = st.empty()
-
-                                    # Build batched input: dp_id -> {criterion, alternatives}
-                                    # Use string keys consistently since JSON keys are always strings
-                                    all_dp_alts = {}
-                                    for dp_id, alt_info in st.session_state.infer_novel_alternatives.items():
-                                        dp_id_str = str(dp_id)
-                                        crit_name = None
-                                        for adp in active_dps:
-                                            if str(adp.get('id')) == dp_id_str:
-                                                crit_name = adp.get("confirmed_criterion") or alt_info.get("dimension", "Unknown")
-                                                break
-                                        all_dp_alts[dp_id_str] = {
-                                            "criterion": crit_name or alt_info.get("dimension", "Unknown"),
-                                            "alternatives": [{"id": a['id'], "text": a['text']} for a in alt_info['alternatives']]
-                                        }
-
-                                    # 1/3: Score with Rubric
-                                    status_text.text("Scoring all decision points with rubric...")
+# ============ EVALUATE: GRADE TAB (hidden when SHOW_BUILD_GRADE_TABS is False) ============
+if SHOW_BUILD_GRADE_TABS and tab8 is not None:
+    with tab8:
+        st.header("📝 Evaluate: Grade")
+        st.markdown("Measure how well an LLM replicates your quality judgments when using your rubric vs. generic criteria.")
+    
+        # Get active rubric
+        grade_rubric_dict, grade_rubric_idx, _ = get_active_rubric()
+    
+        if not grade_rubric_dict:
+            st.warning("No active rubric found. Please create a rubric first.")
+        else:
+            grade_rubric_list = grade_rubric_dict.get("rubric", [])
+            if len(grade_rubric_list) < 2:
+                st.warning("Your rubric needs at least 2 criteria for this evaluation.")
+            else:
+                # Reset button
+                col_grade_info, col_grade_reset = st.columns([3, 1])
+                with col_grade_info:
+                    st.success(f"Active rubric: **v{grade_rubric_dict.get('version', '?')}** with **{len(grade_rubric_list)}** criteria")
+                with col_grade_reset:
+                    if st.button("🔄 Reset All", use_container_width=True, key="grade_reset"):
+                        st.session_state.grade_writing_task = ""
+                        st.session_state.grade_violated_dims = None
+                        st.session_state.grade_draft_good = None
+                        st.session_state.grade_draft_degraded = None
+                        st.session_state.grade_draft_good_thinking = ""
+                        st.session_state.grade_draft_degraded_thinking = ""
+                        st.session_state.grade_blind_labels = None
+                        st.session_state.grade_user_overall_pref = None
+                        st.session_state.grade_user_dim_ratings = {}
+                        st.session_state.grade_rubric_judge_result = None
+                        st.session_state.grade_rubric_judge_thinking = ""
+                        st.session_state.grade_generic_judge_result = None
+                        st.session_state.grade_generic_judge_thinking = ""
+                        st.session_state.grade_agreement_results = None
+                        st.session_state.grade_saved = False
+                        st.rerun()
+    
+                # Progress indicator
+                def get_grade_step():
+                    if not st.session_state.grade_draft_good or not st.session_state.grade_draft_degraded:
+                        return 1
+                    if not st.session_state.grade_user_overall_pref:
+                        return 2
+                    if not st.session_state.grade_rubric_judge_result or not st.session_state.grade_generic_judge_result:
+                        return 3
+                    if not st.session_state.grade_agreement_results:
+                        return 4
+                    return 5
+    
+                grade_current_step = get_grade_step()
+                grade_steps = [
+                    "1. Generate Draft Pair",
+                    "2. Rate Drafts",
+                    "3. LLM Judge Evaluation",
+                    "4. Agreement Analysis",
+                    "5. Dimension Gap Analysis"
+                ]
+                st.progress(grade_current_step / 5)
+                st.markdown(f"**Step {grade_current_step}/5: {grade_steps[grade_current_step - 1]}**")
+                st.divider()
+    
+                # ==================== STEP 1: GENERATE DRAFT PAIR ====================
+                st.subheader("Step 1: Generate Draft Pair")
+                st.markdown("Select which rubric dimensions the degraded draft should violate, then enter a writing task.")
+    
+                # Checkboxes for dimensions to violate
+                st.markdown("**Select dimensions to violate** (the degraded draft will deliberately underperform on these):")
+                violated_selections = {}
+                num_cols = min(3, len(grade_rubric_list))
+                checkbox_cols = st.columns(num_cols)
+                for ci, criterion in enumerate(grade_rubric_list):
+                    crit_name = criterion.get("name", f"Criterion {ci+1}")
+                    with checkbox_cols[ci % num_cols]:
+                        violated_selections[crit_name] = st.checkbox(
+                            crit_name,
+                            value=crit_name in (st.session_state.grade_violated_dims or []),
+                            key=f"grade_violate_{ci}",
+                            help=criterion.get("description", "")[:100]
+                        )
+    
+                selected_violated = [name for name, checked in violated_selections.items() if checked]
+    
+                if selected_violated:
+                    st.caption(f"Selected for violation: {', '.join(selected_violated)}")
+                else:
+                    st.caption("Select at least 1 dimension (2-3 recommended)")
+    
+                # Writing task input
+                grade_task_input = st.text_area(
+                    "Writing task:",
+                    value=st.session_state.grade_writing_task,
+                    placeholder="e.g., Write a professional email declining a meeting invitation while maintaining a positive relationship...",
+                    height=120,
+                    key="grade_task_input"
+                )
+    
+                if not st.session_state.grade_draft_good or not st.session_state.grade_draft_degraded:
+                    if st.button("✍️ Generate Draft Pair", type="primary", use_container_width=True, key="grade_generate_btn"):
+                        if not grade_task_input.strip():
+                            st.error("Please enter a writing task first.")
+                        elif not selected_violated:
+                            st.error("Please select at least 1 dimension to violate.")
+                        else:
+                            st.session_state.grade_writing_task = grade_task_input.strip()
+                            st.session_state.grade_violated_dims = selected_violated
+    
+                            # Generate good draft
+                            with st.spinner("Generating good draft (following full rubric)..."):
+                                try:
+                                    clean_rubric = copy.deepcopy(grade_rubric_dict)
+                                    if 'rubric' in clean_rubric:
+                                        for c in clean_rubric['rubric']:
+                                            if '_diff' in c:
+                                                del c['_diff']
+    
+                                    system_good = build_system_instruction(clean_rubric)
+                                    response_good = _api_call_with_retry(
+                                        model="claude-opus-4-6",
+                                        max_tokens=8000,
+                                        system=system_good,
+                                        messages=[{"role": "user", "content": f"Please write a complete draft for this task. Output ONLY the draft text — no preamble, no follow-up notes, no meta-commentary.\n\n{st.session_state.grade_writing_task}"}],
+                                        thinking={"type": "enabled", "budget_tokens": 6000}
+                                    )
+    
+                                    thinking_good = ""
+                                    draft_good_text = ""
+                                    for block in response_good.content:
+                                        if block.type == "thinking":
+                                            thinking_good = block.thinking
+                                        elif block.type == "text":
+                                            draft_good_text = block.text
+    
+                                    draft_good_clean = re.sub(r'</?draft>', '', draft_good_text).strip()
+                                    st.session_state.grade_draft_good = draft_good_clean
+                                    st.session_state.grade_draft_good_thinking = thinking_good
+    
+                                except Exception as e:
+                                    st.error(f"Error generating good draft: {str(e)}")
+    
+                            # Generate degraded draft
+                            if st.session_state.grade_draft_good:
+                                with st.spinner("Generating degraded draft (violating selected dimensions)..."):
                                     try:
-                                        prompt = score_alternatives_with_rubric_prompt(all_dp_alts, rubric_json)
-                                        response = client.messages.create(
-                                            model="claude-opus-4-6",
-                                            max_tokens=16000,
-                                            messages=[{"role": "user", "content": prompt}],
-                                            thinking={"type": "enabled", "budget_tokens": 8000}
+                                        rubric_json = json.dumps(grade_rubric_list, indent=2)
+                                        violated_dims_info = []
+                                        for crit in grade_rubric_list:
+                                            if crit.get("name") in selected_violated:
+                                                violated_dims_info.append({
+                                                    "name": crit.get("name"),
+                                                    "description": crit.get("description", ""),
+                                                    "weight": crit.get("weight", 0)
+                                                })
+                                        violated_json = json.dumps(violated_dims_info, indent=2)
+    
+                                        degraded_prompt = generate_degraded_draft_prompt(
+                                            st.session_state.grade_writing_task,
+                                            rubric_json,
+                                            violated_json
                                         )
-                                        response_text = ""
-                                        for block in response.content:
-                                            if block.type == "text":
-                                                response_text = block.text
-                                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                        if json_match:
-                                            parsed = json.loads(json_match.group())
-                                            for dp_id, dp_data in parsed.get("decision_points", {}).items():
-                                                rubric_rankings[dp_id] = dp_data
-                                    except Exception as e:
-                                        st.warning(f"Error scoring with rubric: {e}")
-                                    progress_bar.progress(1 / 3)
-
-                                    # 2/3: Score with Cold-start description
-                                    status_text.text("Scoring all decision points with cold-start description...")
-                                    try:
-                                        prompt = score_alternatives_with_freetext_prompt(all_dp_alts, coldstart_text)
-                                        response = client.messages.create(
+    
+                                        response_degraded = _api_call_with_retry(
                                             model="claude-opus-4-6",
-                                            max_tokens=16000,
-                                            messages=[{"role": "user", "content": prompt}],
-                                            thinking={"type": "enabled", "budget_tokens": 8000}
+                                            max_tokens=8000,
+                                            messages=[{"role": "user", "content": degraded_prompt}],
+                                            thinking={"type": "enabled", "budget_tokens": 6000}
                                         )
-                                        response_text = ""
-                                        for block in response.content:
-                                            if block.type == "text":
-                                                response_text = block.text
-                                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                        if json_match:
-                                            parsed = json.loads(json_match.group())
-                                            for dp_id, dp_data in parsed.get("decision_points", {}).items():
-                                                coldstart_rankings[dp_id] = dp_data
+    
+                                        thinking_degraded = ""
+                                        draft_degraded_text = ""
+                                        for block in response_degraded.content:
+                                            if block.type == "thinking":
+                                                thinking_degraded = block.thinking
+                                            elif block.type == "text":
+                                                draft_degraded_text = block.text
+    
+                                        draft_degraded_clean = re.sub(r'</?draft>', '', draft_degraded_text).strip()
+                                        st.session_state.grade_draft_degraded = draft_degraded_clean
+                                        st.session_state.grade_draft_degraded_thinking = thinking_degraded
+    
+                                        # Randomize blind labels
+                                        if random.random() < 0.5:
+                                            st.session_state.grade_blind_labels = {"Draft X": "good", "Draft Y": "degraded"}
+                                        else:
+                                            st.session_state.grade_blind_labels = {"Draft X": "degraded", "Draft Y": "good"}
+    
+                                        st.rerun()
+    
                                     except Exception as e:
-                                        st.warning(f"Error scoring with cold-start: {e}")
-                                    progress_bar.progress(2 / 3)
-
-                                    # 3/3: Score with Generic
-                                    status_text.text("Scoring all decision points with generic quality...")
-                                    try:
-                                        prompt = score_alternatives_generic_prompt(all_dp_alts)
-                                        response = client.messages.create(
-                                            model="claude-opus-4-6",
-                                            max_tokens=16000,
-                                            messages=[{"role": "user", "content": prompt}],
-                                            thinking={"type": "enabled", "budget_tokens": 8000}
-                                        )
-                                        response_text = ""
-                                        for block in response.content:
-                                            if block.type == "text":
-                                                response_text = block.text
-                                        json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                        if json_match:
-                                            parsed = json.loads(json_match.group())
-                                            for dp_id, dp_data in parsed.get("decision_points", {}).items():
-                                                generic_rankings[dp_id] = dp_data
-                                    except Exception as e:
-                                        st.warning(f"Error scoring with generic: {e}")
-                                    progress_bar.progress(3 / 3)
-
-                                    st.session_state.infer_rubric_rankings = rubric_rankings
-                                    st.session_state.infer_coldstart_rankings = coldstart_rankings
-                                    st.session_state.infer_generic_rankings = generic_rankings
-
-                                    # Mark scoring complete
-                                    st.session_state.infer_agreement_scores = {"scored": True}
-                                    status_text.empty()
-                                    st.rerun()
-
-                            # ==================== STEP 8: AGREEMENT ANALYSIS ====================
-                            if st.session_state.infer_agreement_scores:
-                                st.divider()
-                                st.subheader("Step 8: Agreement Analysis")
-
-                                # Debug: rescore button
-                                if st.button("🔄 Rescore (debug)", key="infer_rescore_debug"):
-                                    st.session_state.infer_agreement_scores = None
-                                    st.session_state.infer_rubric_rankings = None
-                                    st.session_state.infer_coldstart_rankings = None
-                                    st.session_state.infer_generic_rankings = None
-                                    st.rerun()
-
-                                st.markdown(
-                                    "We scored the same alternatives you ranked under three conditions: "
-                                    "using **your rubric**, using **your cold-start description**, and using **generic writing quality criteria**."
+                                        st.error(f"Error generating degraded draft: {str(e)}")
+    
+                # Display drafts for blind evaluation
+                if st.session_state.grade_draft_good and st.session_state.grade_draft_degraded and st.session_state.grade_blind_labels:
+                    blind = st.session_state.grade_blind_labels
+                    draft_x = st.session_state.grade_draft_good if blind["Draft X"] == "good" else st.session_state.grade_draft_degraded
+                    draft_y = st.session_state.grade_draft_good if blind["Draft Y"] == "good" else st.session_state.grade_draft_degraded
+    
+                    st.markdown("### Drafts Generated")
+                    st.markdown("Read both drafts below. You do NOT know which one follows the full rubric.")
+    
+                    col_gx, col_gy = st.columns(2)
+                    with col_gx:
+                        st.markdown("#### Draft X")
+                        with st.container(height=400):
+                            st.markdown(draft_x)
+                    with col_gy:
+                        st.markdown("#### Draft Y")
+                        with st.container(height=400):
+                            st.markdown(draft_y)
+    
+                    # ==================== STEP 2: USER RATES DRAFTS ====================
+                    st.divider()
+                    st.subheader("Step 2: Rate Drafts")
+    
+                    # Overall preference
+                    st.markdown("### Overall Preference")
+                    grade_pref_options = ["Prefer Draft X", "Prefer Draft Y", "No preference"]
+                    existing_overall = st.session_state.grade_user_overall_pref
+                    grade_overall_pref = st.radio(
+                        "Which draft do you prefer overall?",
+                        grade_pref_options,
+                        index=grade_pref_options.index(existing_overall) if existing_overall in grade_pref_options else 2,
+                        key="grade_overall_pref_radio",
+                        horizontal=True
+                    )
+    
+                    # Per-dimension satisfaction ratings
+                    st.markdown("### Per-Dimension Satisfaction")
+                    st.markdown("For each criterion, rate how well each draft satisfies it (1 = poorly, 5 = excellently).")
+    
+                    grade_dim_ratings = st.session_state.grade_user_dim_ratings.copy() if st.session_state.grade_user_dim_ratings else {}
+                    grade_rating_options = ["1", "2", "3", "4", "5"]
+    
+                    for crit_idx, criterion in enumerate(grade_rubric_list):
+                        crit_name = criterion.get("name", f"Criterion {crit_idx+1}")
+                        crit_desc = criterion.get("description", "")
+    
+                        existing_crit = grade_dim_ratings.get(crit_name, {})
+    
+                        with st.expander(f"**{crit_name}**", expanded=True):
+                            if crit_desc:
+                                st.caption(crit_desc[:150])
+                            col_grx, col_gry = st.columns(2)
+                            with col_grx:
+                                grade_dim_ratings.setdefault(crit_name, {})
+                                grade_dim_ratings[crit_name]["draft_x"] = st.radio(
+                                    f"Draft X — {crit_name}",
+                                    grade_rating_options,
+                                    index=grade_rating_options.index(str(existing_crit.get("draft_x", "3"))) if str(existing_crit.get("draft_x", "3")) in grade_rating_options else 2,
+                                    key=f"grade_dim_x_{crit_idx}",
+                                    horizontal=True,
+                                    label_visibility="collapsed"
                                 )
-
-                                rubric_rankings = st.session_state.infer_rubric_rankings or {}
-                                coldstart_rankings = st.session_state.infer_coldstart_rankings or {}
-                                generic_rankings = st.session_state.infer_generic_rankings or {}
-                                user_rankings = st.session_state.infer_user_rankings
-
-                                # Per-DP breakdown
-                                for dp in active_dps:
-                                    dp_id = dp.get('id')
-                                    dp_id_str = str(dp_id)
-                                    # Look up with both original and string key for compatibility
-                                    if dp_id not in user_rankings and dp_id_str not in user_rankings:
-                                        continue
-                                    if dp_id not in st.session_state.infer_novel_alternatives and dp_id_str not in st.session_state.infer_novel_alternatives:
-                                        continue
-
-                                    alt_info = st.session_state.infer_novel_alternatives.get(dp_id) or st.session_state.infer_novel_alternatives.get(dp_id_str, {})
-                                    alts = alt_info.get('alternatives', [])
-                                    display_map = alt_info.get('display_mapping', {})
-                                    crit_name = dp.get("confirmed_criterion") or alt_info.get("dimension", "Unknown")
-                                    user_rank_data = user_rankings.get(dp_id) or user_rankings.get(dp_id_str, {})
-                                    user_rank = user_rank_data.get("ranking", [])
-
-                                    # Get each source's ranking (model returns string keys)
-                                    rubric_rank = rubric_rankings.get(dp_id_str, rubric_rankings.get(dp_id, {})).get("ranking", [])
-                                    coldstart_rank = coldstart_rankings.get(dp_id_str, coldstart_rankings.get(dp_id, {})).get("ranking", [])
-                                    generic_rank = generic_rankings.get(dp_id_str, generic_rankings.get(dp_id, {})).get("ranking", [])
-
-                                    # Check which sources matched user's #1
-                                    user_top = user_rank[0] if user_rank else None
-                                    rubric_match = "✅" if (rubric_rank and rubric_rank[0] == user_top) else "❌"
-                                    coldstart_match = "✅" if (coldstart_rank and coldstart_rank[0] == user_top) else "❌"
-                                    generic_match = "✅" if (generic_rank and generic_rank[0] == user_top) else "❌"
-
-                                    with st.expander(f"DP#{dp_id}: {crit_name} — Rubric {rubric_match}  Cold-Start {coldstart_match}  Generic {generic_match}", expanded=False):
-
-                                        # Show alternatives text for reference
-                                        st.markdown("**Alternatives:**")
-                                        for alt in alts:
-                                            alt_id = alt['id']
-                                            display_label = display_map.get(alt_id, alt_id)
-                                            st.markdown(f"- **{display_label}**: {alt['text'][:150]}{'...' if len(alt['text']) > 150 else ''}")
-
-                                        st.markdown("---")
-
-                                        # Rankings comparison table
-                                        def rank_position(ranking, alt_id):
-                                            if alt_id in ranking:
-                                                return str(ranking.index(alt_id) + 1)
-                                            return "—"
-
-                                        rank_data = []
-                                        for alt in alts:
-                                            alt_id = alt['id']
-                                            display_label = display_map.get(alt_id, alt_id)
-                                            rank_data.append({
-                                                "Alternative": display_label,
-                                                "Your Rank": rank_position(user_rank, alt_id),
-                                                "Rubric Rank": rank_position(rubric_rank, alt_id),
-                                                "Cold-Start Rank": rank_position(coldstart_rank, alt_id),
-                                                "Generic Rank": rank_position(generic_rank, alt_id),
-                                            })
-                                        st.table(rank_data)
-
-                                        # Rubric: dimension checks detail
-                                        rubric_data = rubric_rankings.get(dp_id_str, rubric_rankings.get(dp_id, {}))
-                                        rubric_alts = rubric_data.get("alternatives", [])
-                                        if rubric_alts:
-                                            rubric_crit = rubric_data.get("criterion_name", crit_name)
-                                            with st.expander(f"Rubric: {rubric_crit} dimension checks", expanded=False):
-                                                for alt_entry in rubric_alts:
-                                                    alt_id = alt_entry.get("alternative_id", "")
-                                                    display_label = display_map.get(alt_id, alt_id)
-                                                    dims_met = alt_entry.get("dimensions_met", 0)
-                                                    dims_total = alt_entry.get("dimensions_total", 0)
-                                                    st.markdown(f"**{display_label}** — {dims_met}/{dims_total} dimensions met")
-                                                    for dim in alt_entry.get("dimensions_detail", []):
-                                                        icon = "✅" if dim.get("met") else "❌"
-                                                        st.markdown(f"- {icon} {dim.get('label', '')}: *{dim.get('evidence', '')}*")
-                                                    st.markdown("")
-
-                                        # Cold-start: relevant preference
-                                        coldstart_data = coldstart_rankings.get(dp_id_str, coldstart_rankings.get(dp_id, {}))
-                                        relevant_pref = coldstart_data.get("relevant_preference", "")
-                                        if relevant_pref:
-                                            with st.expander("Cold-start: relevant preference", expanded=False):
-                                                st.markdown(f"**Relevant preference from your description:** *{relevant_pref}*")
-
-                                        # Ranking reasoning
-                                        rubric_reasoning = rubric_data.get("ranking_reasoning", "")
-                                        coldstart_reasoning = coldstart_data.get("ranking_reasoning", "")
-                                        generic_data = generic_rankings.get(dp_id_str, generic_rankings.get(dp_id, {}))
-                                        generic_reasoning = generic_data.get("ranking_reasoning", "")
-                                        if rubric_reasoning or coldstart_reasoning or generic_reasoning:
-                                            with st.expander("Ranking reasoning", expanded=False):
-                                                if rubric_reasoning:
-                                                    st.markdown(f"**Rubric:** {rubric_reasoning}")
-                                                if coldstart_reasoning:
-                                                    st.markdown(f"**Cold-Start:** {coldstart_reasoning}")
-                                                if generic_reasoning:
-                                                    st.markdown(f"**Generic:** {generic_reasoning}")
-
-                                # Summary counts
-                                st.markdown("---")
-                                st.markdown("### Summary")
-                                rubric_correct = 0
-                                coldstart_correct = 0
-                                generic_correct = 0
-                                total_dps = 0
-                                for dp_id in user_rankings:
-                                    dp_id_s = str(dp_id)
-                                    user_top = user_rankings[dp_id].get("ranking", [None])[0]
-                                    if user_top is None:
-                                        continue
-                                    total_dps += 1
-                                    r_rank = rubric_rankings.get(dp_id_s, rubric_rankings.get(dp_id, {})).get("ranking", [None])
-                                    if r_rank and r_rank[0] == user_top:
-                                        rubric_correct += 1
-                                    c_rank = coldstart_rankings.get(dp_id_s, coldstart_rankings.get(dp_id, {})).get("ranking", [None])
-                                    if c_rank and c_rank[0] == user_top:
-                                        coldstart_correct += 1
-                                    g_rank = generic_rankings.get(dp_id_s, generic_rankings.get(dp_id, {})).get("ranking", [None])
-                                    if g_rank and g_rank[0] == user_top:
-                                        generic_correct += 1
-
-                                col1, col2, col3 = st.columns(3)
-                                with col1:
-                                    st.metric("Rubric", f"{rubric_correct}/{total_dps}", "matched your #1")
-                                with col2:
-                                    st.metric("Cold-Start", f"{coldstart_correct}/{total_dps}", "matched your #1")
-                                with col3:
-                                    st.metric("Generic", f"{generic_correct}/{total_dps}", "matched your #1")
-
-                                # Export / Save
-                                st.divider()
-                                cats = st.session_state.infer_user_categorizations
-                                total_cats = len(cats)
-                                stated_count = sum(1 for v in cats.values() if v == "stated")
-                                real_count_step = sum(1 for v in cats.values() if v in ("real", "latent_real", "elicited"))
-                                hallucinated_count = sum(1 for v in cats.values() if v == "hallucinated")
-                                user_endorsed_absent = real_count_step
-                                surplus_pct = (user_endorsed_absent / total_cats * 100) if total_cats > 0 else 0
-                                precision_pct = ((total_cats - hallucinated_count) / total_cats * 100) if total_cats > 0 else 0
-
-                                export_data = {
-                                    "timestamp": datetime.now().isoformat(),
-                                    "rubric_version": infer_rubric_version,
-                                    "coldstart_text": st.session_state.infer_coldstart_text,
-                                    "user_categorizations": st.session_state.infer_user_categorizations,
-                                    "llm_user_agreement": st.session_state.get("infer_llm_user_agreement"),
-                                    "category_ratios": {
-                                        "total": total_cats, "stated": stated_count,
-                                        "real": real_count_step,
-                                        "hallucinated": hallucinated_count
-                                    },
-                                    "inference_surplus": {
-                                        "user_endorsed_absent": user_endorsed_absent,
-                                        "surplus_rate": surplus_pct,
-                                        "rubric_precision": precision_pct
-                                    },
-                                    "behavioral_analysis": st.session_state.infer_behavioral_result,
-                                    "conversation_analyzed": st.session_state.infer_selected_conversation,
-                                    "decision_points_conversation": st.session_state.infer_dp_conversation,
-                                    "agreement_scores": st.session_state.infer_agreement_scores
+                            with col_gry:
+                                grade_dim_ratings[crit_name]["draft_y"] = st.radio(
+                                    f"Draft Y — {crit_name}",
+                                    grade_rating_options,
+                                    index=grade_rating_options.index(str(existing_crit.get("draft_y", "3"))) if str(existing_crit.get("draft_y", "3")) in grade_rating_options else 2,
+                                    key=f"grade_dim_y_{crit_idx}",
+                                    horizontal=True,
+                                    label_visibility="collapsed"
+                                )
+                            st.caption("Draft X ↑ · Draft Y ↑ (1=poorly, 5=excellently)")
+    
+                    # Save ratings
+                    if not st.session_state.grade_user_overall_pref:
+                        if st.button("💾 Save Ratings", type="primary", use_container_width=True, key="grade_save_ratings"):
+                            st.session_state.grade_user_overall_pref = grade_overall_pref
+                            st.session_state.grade_user_dim_ratings = grade_dim_ratings
+                            st.rerun()
+    
+                    # ==================== STEP 3: LLM JUDGE EVALUATION ====================
+                    if st.session_state.grade_user_overall_pref:
+                        st.divider()
+                        st.subheader("Step 3: LLM Judge Evaluation")
+                        st.markdown("Two LLM judges evaluate the same drafts: one using your rubric + conversation context, one using only generic criteria.")
+    
+                        if not st.session_state.grade_rubric_judge_result or not st.session_state.grade_generic_judge_result:
+                            if st.button("🔬 Run LLM Judges", type="primary", use_container_width=True, key="grade_judge_btn"):
+                                # Prepare drafts (use actual A/B, not blind labels)
+                                actual_draft_a = st.session_state.grade_draft_good
+                                actual_draft_b = st.session_state.grade_draft_degraded
+    
+                                # Rubric-grounded judge
+                                with st.spinner("Running rubric-grounded judge..."):
+                                    try:
+                                        rubric_criteria_json = json.dumps(grade_rubric_list, indent=2)
+    
+                                        # Build conversation context (last 10 non-system messages)
+                                        conv_messages = []
+                                        for msg in st.session_state.messages:
+                                            if msg.get("role") != "system" or "<!--" not in msg.get("content", ""):
+                                                conv_messages.append(msg)
+                                        recent_conv = conv_messages[-10:] if len(conv_messages) > 10 else conv_messages
+                                        conv_context = "\n".join([f"[{m.get('role', 'unknown')}]: {m.get('content', '')[:500]}" for m in recent_conv])
+    
+                                        rubric_judge_prompt = grade_rubric_judge_prompt(
+                                            actual_draft_a,
+                                            actual_draft_b,
+                                            rubric_criteria_json,
+                                            conv_context
+                                        )
+    
+                                        response_rubric = _api_call_with_retry(
+                                            model="claude-opus-4-6",
+                                            max_tokens=16000,
+                                            messages=[{"role": "user", "content": rubric_judge_prompt}],
+                                            thinking={"type": "enabled", "budget_tokens": 8000}
+                                        )
+    
+                                        rubric_thinking = ""
+                                        rubric_text = ""
+                                        for block in response_rubric.content:
+                                            if block.type == "thinking":
+                                                rubric_thinking = block.thinking
+                                            elif block.type == "text":
+                                                rubric_text = block.text
+    
+                                        json_match = re.search(r'\{[\s\S]*\}', rubric_text)
+                                        if json_match:
+                                            st.session_state.grade_rubric_judge_result = json.loads(json_match.group())
+                                            st.session_state.grade_rubric_judge_thinking = rubric_thinking
+                                        else:
+                                            st.error("Failed to parse rubric judge response.")
+    
+                                    except Exception as e:
+                                        st.error(f"Error running rubric-grounded judge: {str(e)}")
+    
+                                # Generic judge
+                                if st.session_state.grade_rubric_judge_result:
+                                    with st.spinner("Running generic judge..."):
+                                        try:
+                                            generic_prompt = grade_generic_judge_prompt(actual_draft_a, actual_draft_b)
+    
+                                            response_generic = _api_call_with_retry(
+                                                model="claude-opus-4-6",
+                                                max_tokens=16000,
+                                                messages=[{"role": "user", "content": generic_prompt}],
+                                                thinking={"type": "enabled", "budget_tokens": 8000}
+                                            )
+    
+                                            generic_thinking = ""
+                                            generic_text = ""
+                                            for block in response_generic.content:
+                                                if block.type == "thinking":
+                                                    generic_thinking = block.thinking
+                                                elif block.type == "text":
+                                                    generic_text = block.text
+    
+                                            json_match = re.search(r'\{[\s\S]*\}', generic_text)
+                                            if json_match:
+                                                st.session_state.grade_generic_judge_result = json.loads(json_match.group())
+                                                st.session_state.grade_generic_judge_thinking = generic_thinking
+                                            else:
+                                                st.error("Failed to parse generic judge response.")
+    
+                                            st.rerun()
+    
+                                        except Exception as e:
+                                            st.error(f"Error running generic judge: {str(e)}")
+    
+                        # Display judge results
+                        if st.session_state.grade_rubric_judge_result and st.session_state.grade_generic_judge_result:
+                            rubric_result = st.session_state.grade_rubric_judge_result
+                            generic_result = st.session_state.grade_generic_judge_result
+    
+                            col_rj, col_gj = st.columns(2)
+                            with col_rj:
+                                st.markdown("#### Rubric-Grounded Scores")
+                                st.markdown(f"**Overall preference:** Draft {rubric_result.get('overall_preference', '?')}")
+                                if rubric_result.get("overall_reasoning"):
+                                    st.caption(rubric_result["overall_reasoning"])
+                                for pc in rubric_result.get("per_criterion", []):
+                                    with st.expander(f"{pc.get('criterion_name', '?')} — A:{pc.get('draft_a_score', '?')} / B:{pc.get('draft_b_score', '?')}"):
+                                        st.markdown(pc.get("reasoning", ""))
+    
+                            with col_gj:
+                                st.markdown("#### Generic Scores")
+                                st.markdown(f"**Overall preference:** Draft {generic_result.get('overall_preference', '?')}")
+                                if generic_result.get("overall_reasoning"):
+                                    st.caption(generic_result["overall_reasoning"])
+                                for pc in generic_result.get("per_criterion", []):
+                                    with st.expander(f"{pc.get('criterion_name', '?')} — A:{pc.get('draft_a_score', '?')} / B:{pc.get('draft_b_score', '?')}"):
+                                        st.markdown(pc.get("reasoning", ""))
+    
+                            # ==================== STEP 4: AGREEMENT ANALYSIS ====================
+                            st.divider()
+                            st.subheader("Step 4: Agreement Analysis")
+    
+                            # Compute agreement if not already done
+                            if not st.session_state.grade_agreement_results:
+                                blind = st.session_state.grade_blind_labels
+                                user_pref = st.session_state.grade_user_overall_pref
+                                user_dim = st.session_state.grade_user_dim_ratings
+    
+                                # Map user preference to A/B (good/degraded)
+                                if user_pref == "Prefer Draft X":
+                                    user_prefers = blind["Draft X"]  # "good" or "degraded"
+                                elif user_pref == "Prefer Draft Y":
+                                    user_prefers = blind["Draft Y"]
+                                else:
+                                    user_prefers = "tie"
+    
+                                # Map to A/B: A=good, B=degraded
+                                if user_prefers == "good":
+                                    user_overall_ab = "A"
+                                elif user_prefers == "degraded":
+                                    user_overall_ab = "B"
+                                else:
+                                    user_overall_ab = "tie"
+    
+                                rubric_overall = rubric_result.get("overall_preference", "tie")
+                                generic_overall = generic_result.get("overall_preference", "tie")
+    
+                                # Overall agreement
+                                rubric_overall_agrees = (user_overall_ab == rubric_overall)
+                                generic_overall_agrees = (user_overall_ab == generic_overall)
+    
+                                # Per-dimension agreement (rubric-grounded)
+                                # Map user dim ratings from blind X/Y to actual A(good)/B(degraded)
+                                rubric_dim_agreements = {}
+                                violated_dims = st.session_state.grade_violated_dims or []
+    
+                                for crit_name, ratings in user_dim.items():
+                                    # User rated draft_x and draft_y; map to good/degraded
+                                    user_x_score = int(ratings.get("draft_x", 3))
+                                    user_y_score = int(ratings.get("draft_y", 3))
+    
+                                    # Map X/Y to A(good)/B(degraded) scores
+                                    if blind["Draft X"] == "good":
+                                        user_a_score = user_x_score
+                                        user_b_score = user_y_score
+                                    else:
+                                        user_a_score = user_y_score
+                                        user_b_score = user_x_score
+    
+                                    # User's preference for this dimension
+                                    if user_a_score > user_b_score:
+                                        user_dim_pref = "A"
+                                    elif user_b_score > user_a_score:
+                                        user_dim_pref = "B"
+                                    else:
+                                        user_dim_pref = "tie"
+    
+                                    # Find rubric judge's scores for this criterion
+                                    judge_dim_pref = "tie"
+                                    judge_a_score = None
+                                    judge_b_score = None
+                                    for pc in rubric_result.get("per_criterion", []):
+                                        if pc.get("criterion_name") == crit_name:
+                                            judge_a_score = pc.get("draft_a_score", 3)
+                                            judge_b_score = pc.get("draft_b_score", 3)
+                                            if judge_a_score > judge_b_score:
+                                                judge_dim_pref = "A"
+                                            elif judge_b_score > judge_a_score:
+                                                judge_dim_pref = "B"
+                                            break
+    
+                                    agrees = (user_dim_pref == judge_dim_pref)
+                                    rubric_dim_agreements[crit_name] = {
+                                        "user_pref": user_dim_pref,
+                                        "judge_pref": judge_dim_pref,
+                                        "agrees": agrees,
+                                        "violated": crit_name in violated_dims,
+                                        "user_a_score": user_a_score,
+                                        "user_b_score": user_b_score,
+                                        "judge_a_score": judge_a_score,
+                                        "judge_b_score": judge_b_score,
+                                        "user_score_gap": abs(user_a_score - user_b_score)
+                                    }
+    
+                                # Compute overall Kendall's tau using per-dimension scores
+                                user_ranks_list = []
+                                rubric_ranks_list = []
+                                generic_ranks_list = []
+    
+                                for crit_name, info in rubric_dim_agreements.items():
+                                    # User scores (A, B)
+                                    user_ranks_list.append(info["user_a_score"])
+                                    user_ranks_list.append(info["user_b_score"])
+                                    # Rubric judge scores
+                                    if info["judge_a_score"] is not None:
+                                        rubric_ranks_list.append(info["judge_a_score"])
+                                        rubric_ranks_list.append(info["judge_b_score"])
+                                    else:
+                                        rubric_ranks_list.append(3)
+                                        rubric_ranks_list.append(3)
+    
+                                # For generic: use average generic score for each draft
+                                generic_per_crit = generic_result.get("per_criterion", [])
+                                generic_a_avg = sum(pc.get("draft_a_score", 3) for pc in generic_per_crit) / max(len(generic_per_crit), 1)
+                                generic_b_avg = sum(pc.get("draft_b_score", 3) for pc in generic_per_crit) / max(len(generic_per_crit), 1)
+    
+                                # Compute Kendall's tau
+                                rubric_tau, rubric_p = (None, None)
+                                if len(user_ranks_list) >= 4:
+                                    rubric_tau, rubric_p = kendalltau(user_ranks_list, rubric_ranks_list)
+    
+                                # Per-dimension agreement rates
+                                total_dims = len(rubric_dim_agreements)
+                                rubric_agree_count = sum(1 for v in rubric_dim_agreements.values() if v["agrees"])
+                                rubric_agree_rate = rubric_agree_count / total_dims if total_dims > 0 else 0
+    
+                                st.session_state.grade_agreement_results = {
+                                    "rubric_overall_agrees": rubric_overall_agrees,
+                                    "generic_overall_agrees": generic_overall_agrees,
+                                    "user_overall_ab": user_overall_ab,
+                                    "rubric_overall": rubric_overall,
+                                    "generic_overall": generic_overall,
+                                    "rubric_tau": rubric_tau,
+                                    "rubric_p": rubric_p,
+                                    "rubric_agree_rate": rubric_agree_rate,
+                                    "rubric_agree_count": rubric_agree_count,
+                                    "total_dims": total_dims,
+                                    "rubric_dim_agreements": rubric_dim_agreements,
+                                    "generic_a_avg": generic_a_avg,
+                                    "generic_b_avg": generic_b_avg
                                 }
-
-                                if st.button("💾 Save Infer Evaluation", type="primary", use_container_width=True, key="save_infer_eval"):
+    
+                            # Display agreement results
+                            agreement = st.session_state.grade_agreement_results
+    
+                            st.markdown("### Overall Agreement")
+                            col_m1, col_m2, col_m3 = st.columns(3)
+                            with col_m1:
+                                st.metric("User Prefers", f"Draft {agreement['user_overall_ab']}")
+                            with col_m2:
+                                rubric_match = "✅ Agrees" if agreement["rubric_overall_agrees"] else "❌ Disagrees"
+                                st.metric("Rubric Judge", f"Draft {agreement['rubric_overall']}", delta=rubric_match, delta_color="off")
+                            with col_m3:
+                                generic_match = "✅ Agrees" if agreement["generic_overall_agrees"] else "❌ Disagrees"
+                                st.metric("Generic Judge", f"Draft {agreement['generic_overall']}", delta=generic_match, delta_color="off")
+    
+                            st.markdown("### Per-Dimension Agreement (Rubric-Grounded)")
+                            col_tau, col_rate = st.columns(2)
+                            with col_tau:
+                                tau_val = agreement.get("rubric_tau")
+                                if tau_val is not None:
+                                    interpretation = "Strong" if abs(tau_val) > 0.6 else ("Moderate" if abs(tau_val) > 0.3 else "Weak")
+                                    st.metric("Kendall's τ", f"{tau_val:.3f}", delta=interpretation, delta_color="off")
+                                else:
+                                    st.metric("Kendall's τ", "N/A")
+                            with col_rate:
+                                rate = agreement.get("rubric_agree_rate", 0)
+                                count = agreement.get("rubric_agree_count", 0)
+                                total = agreement.get("total_dims", 0)
+                                st.metric("Dimension Agreement", f"{count}/{total} ({rate:.0%})")
+    
+                            # ==================== STEP 5: DIMENSION GAP ANALYSIS + SAVE ====================
+                            st.divider()
+                            st.subheader("Step 5: Dimension Gap Analysis")
+                            st.markdown("Which dimensions show the largest gap between rubric-grounded and generic evaluation? These are where personalization matters most.")
+    
+                            dim_agreements = agreement.get("rubric_dim_agreements", {})
+    
+                            # Build gap table
+                            gap_rows = []
+                            for crit_name, info in dim_agreements.items():
+                                gap_rows.append({
+                                    "Dimension": crit_name,
+                                    "Violated?": "Yes" if info["violated"] else "No",
+                                    "User Prefers": f"Draft {info['user_pref']}",
+                                    "Rubric Judge": f"Draft {info['judge_pref']}",
+                                    "Agree?": "✅" if info["agrees"] else "❌",
+                                    "User Score Gap": info["user_score_gap"],
+                                    "User A": info["user_a_score"],
+                                    "User B": info["user_b_score"],
+                                    "Judge A": info.get("judge_a_score", "?"),
+                                    "Judge B": info.get("judge_b_score", "?")
+                                })
+    
+                            # Sort: disagreements first, then by user score gap descending
+                            gap_rows.sort(key=lambda r: (r["Agree?"] == "✅", -r["User Score Gap"]))
+    
+                            if gap_rows:
+                                st.dataframe(
+                                    gap_rows,
+                                    column_config={
+                                        "Dimension": st.column_config.TextColumn("Dimension", width="medium"),
+                                        "Violated?": st.column_config.TextColumn("Violated?", width="small"),
+                                        "User Prefers": st.column_config.TextColumn("User", width="small"),
+                                        "Rubric Judge": st.column_config.TextColumn("Rubric Judge", width="small"),
+                                        "Agree?": st.column_config.TextColumn("Agree?", width="small"),
+                                        "User Score Gap": st.column_config.NumberColumn("Score Gap", width="small"),
+                                        "User A": st.column_config.NumberColumn("User A", width="small"),
+                                        "User B": st.column_config.NumberColumn("User B", width="small"),
+                                        "Judge A": st.column_config.NumberColumn("Judge A", width="small"),
+                                        "Judge B": st.column_config.NumberColumn("Judge B", width="small")
+                                    },
+                                    use_container_width=True,
+                                    hide_index=True
+                                )
+    
+                            # Summary statistics
+                            violated_agree = sum(1 for v in dim_agreements.values() if v["violated"] and v["agrees"])
+                            violated_total = sum(1 for v in dim_agreements.values() if v["violated"])
+                            non_violated_agree = sum(1 for v in dim_agreements.values() if not v["violated"] and v["agrees"])
+                            non_violated_total = sum(1 for v in dim_agreements.values() if not v["violated"])
+    
+                            st.markdown("### Summary")
+                            col_s1, col_s2, col_s3 = st.columns(3)
+                            with col_s1:
+                                st.metric(
+                                    "Rubric Judge Agreement",
+                                    f"{agreement.get('rubric_agree_count', 0)}/{agreement.get('total_dims', 0)}"
+                                )
+                            with col_s2:
+                                if violated_total > 0:
+                                    st.metric("On Violated Dims", f"{violated_agree}/{violated_total}")
+                                else:
+                                    st.metric("On Violated Dims", "N/A")
+                            with col_s3:
+                                if non_violated_total > 0:
+                                    st.metric("On Non-Violated Dims", f"{non_violated_agree}/{non_violated_total}")
+                                else:
+                                    st.metric("On Non-Violated Dims", "N/A")
+    
+                            # Generic vs rubric comparison
+                            st.markdown("### Rubric-Grounded vs. Generic")
+                            st.markdown(f"- **Rubric-grounded judge** agreed with your overall preference: {'✅ Yes' if agreement['rubric_overall_agrees'] else '❌ No'}")
+                            st.markdown(f"- **Generic judge** agreed with your overall preference: {'✅ Yes' if agreement['generic_overall_agrees'] else '❌ No'}")
+                            st.markdown(f"- **Rubric-grounded per-dimension agreement:** {agreement.get('rubric_agree_rate', 0):.0%}")
+    
+                            # Identify dimensions where personalization matters most
+                            disagreement_dims = [name for name, info in dim_agreements.items() if not info["agrees"]]
+                            if disagreement_dims and not agreement["generic_overall_agrees"]:
+                                st.info(f"**Dimensions where personalization matters most:** {', '.join(disagreement_dims)} — the rubric-grounded judge disagreed with you here, and the generic judge also failed to match your overall preference.")
+                            elif disagreement_dims:
+                                st.info(f"**Dimensions with rubric-judge disagreement:** {', '.join(disagreement_dims)}")
+                            elif not agreement["generic_overall_agrees"]:
+                                st.success("The rubric-grounded judge agreed with you on all dimensions, while the generic judge disagreed on overall preference — the rubric captured your preferences well.")
+                            else:
+                                st.success("Both judges agreed with your preferences across the board.")
+    
+                            # Save button
+                            st.divider()
+                            if not st.session_state.grade_saved:
+                                if st.button("💾 Save Grade Evaluation", type="primary", use_container_width=True, key="grade_save_btn"):
+                                    export_data = {
+                                        "timestamp": datetime.now().isoformat(),
+                                        "rubric_version": grade_rubric_dict.get("version", "?"),
+                                        "writing_task": st.session_state.grade_writing_task,
+                                        "violated_dims": st.session_state.grade_violated_dims,
+                                        "blind_labels": st.session_state.grade_blind_labels,
+                                        "user_overall_preference": st.session_state.grade_user_overall_pref,
+                                        "user_dim_ratings": st.session_state.grade_user_dim_ratings,
+                                        "rubric_judge_result": st.session_state.grade_rubric_judge_result,
+                                        "generic_judge_result": st.session_state.grade_generic_judge_result,
+                                        "agreement_results": {
+                                            k: v for k, v in agreement.items()
+                                            if k != "rubric_dim_agreements"
+                                        },
+                                        "dimension_agreements": agreement.get("rubric_dim_agreements", {})
+                                    }
+    
                                     project_id = st.session_state.get('current_project_id')
                                     if not project_id:
                                         st.error("No project selected. Please select a project first.")
                                     else:
                                         supabase = st.session_state.get('supabase')
-                                        if supabase and save_project_data(supabase, project_id, "infer_evaluation", export_data):
-                                            st.success("✅ Infer evaluation saved successfully!")
+                                        if supabase and save_project_data(supabase, project_id, "grade_evaluation", export_data):
+                                            st.session_state.grade_saved = True
+                                            st.success("✅ Grade evaluation saved successfully!")
                                         else:
                                             st.error("Failed to save evaluation.")
-
-                        else:
-                            st.warning("Could not parse decision points. Raw response:")
-                            st.text(result.get("raw_response", "No response"))
-
-        # ==================== STEP 9: BEHAVIORAL EVIDENCE ====================
-        if st.session_state.infer_agreement_scores:
-            st.divider()
-            st.subheader("Step 9: Behavioral Evidence")
-            st.markdown(
-                "Analyze your editing behavior in a conversation to find independent evidence "
-                "for each rubric criterion."
-            )
-
-            # Use the same conversation selected for decision points in Step 5
-            infer_selected_file = st.session_state.infer_dp_conversation
-            if infer_selected_file:
-                st.caption(f"Using the same conversation from Step 5: {infer_selected_file}")
-                st.session_state.infer_selected_conversation = infer_selected_file
-            else:
-                st.warning("No conversation selected. Please complete Step 5 first.")
-
-            if infer_selected_file and not st.session_state.infer_behavioral_result:
-                if st.button("🔬 Analyze Behavioral Evidence", type="primary", use_container_width=True, key="infer_behavioral_btn"):
-                    with st.spinner("Analyzing conversation for behavioral evidence (this may take a minute)..."):
-                        try:
-                            conv_data = load_conversation_data(infer_selected_file)
-                            if conv_data:
-                                infer_messages = conv_data.get("messages", [])
-                                infer_conv_text = ""
-                                infer_msg_num = 1
-                                for msg in infer_messages:
-                                    role = msg.get('role', 'unknown')
-                                    content = msg.get('content', '')
-                                    if role == 'user':
-                                        infer_conv_text += f"\n\n[Message #{infer_msg_num}] USER:\n{content}"
-                                        infer_msg_num += 1
-                                    elif role == 'assistant':
-                                        infer_conv_text += f"\n\n[Message #{infer_msg_num}] ASSISTANT:\n{content}"
-                                        infer_msg_num += 1
-
-                                clean_rubric = copy.deepcopy(infer_rubric_dict)
-                                if 'rubric' in clean_rubric:
-                                    for criterion in clean_rubric['rubric']:
-                                        if '_diff' in criterion:
-                                            del criterion['_diff']
-                                rubric_json_str = json.dumps(clean_rubric, indent=2)
-                                categorizations_str = json.dumps(st.session_state.infer_user_categorizations, indent=2)
-
-                                prompt = classify_behavioral_evidence_prompt(
-                                    infer_conv_text, rubric_json_str,
-                                    st.session_state.infer_coldstart_text, categorizations_str
-                                )
-
-                                response = client.messages.create(
-                                    model="claude-opus-4-6",
-                                    max_tokens=16000,
-                                    messages=[{"role": "user", "content": prompt}],
-                                    thinking={"type": "enabled", "budget_tokens": 10000}
-                                )
-
-                                thinking_text = ""
-                                response_text = ""
-                                for block in response.content:
-                                    if block.type == "thinking":
-                                        thinking_text = block.thinking
-                                    elif block.type == "text":
-                                        response_text = block.text
-
-                                json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                if json_match:
-                                    parsed = json.loads(json_match.group())
-                                    st.session_state.infer_behavioral_result = parsed
-                                    st.session_state.infer_behavioral_thinking = thinking_text
-                                    st.rerun()
-                                else:
-                                    st.error("Could not parse behavioral analysis response.")
                             else:
-                                st.error("Could not load conversation data.")
-                        except Exception as e:
-                            st.error(f"Error during behavioral analysis: {str(e)}")
+                                st.success("✅ Grade evaluation has been saved.")
+    
+# ============ EVALUATE: GRADING TAB ============
+with tab_grading:
+    st.header("📊 Evaluate: Grading")
 
-            # Display behavioral results
-            if st.session_state.infer_behavioral_result:
-                beh = st.session_state.infer_behavioral_result
-                beh_analysis = beh.get("behavioral_analysis", [])
-                beh_summary = beh.get("overall_summary", {})
+    # --- Auto-pull preference description from Task A Q4 ---
+    _gr_coldstart = st.session_state.get("infer_coldstart_text", "").strip()
+    _gr_tab_blocked = False
+    if not _gr_coldstart:
+        _gr_task_a = st.session_state.get("survey_responses", {}).get("task_a", {})
+        _gr_q4 = _gr_task_a.get("q4", "").strip()
+        _gr_a_done = _gr_task_a.get("completed", False)
+        if not _gr_a_done or not _gr_q4:
+            st.warning("You haven't completed the **Task A survey** yet (or Q4 is empty). Please go to the **Evaluate: Survey** tab, select **Task A (without rubric)**, and fill in Q4 with your writing preferences before continuing.")
+            _gr_tab_blocked = True
+        else:
+            st.session_state.infer_coldstart_text = _gr_q4
+            _gr_coldstart = _gr_q4
 
-                if st.session_state.infer_behavioral_thinking:
-                    with st.expander("🧠 Behavioral Analysis Thinking", expanded=False):
-                        st.markdown(st.session_state.infer_behavioral_thinking)
+    # Get active rubric and full history
+    _gr_rubric_dict, _gr_rubric_idx, _ = get_active_rubric()
+    _gr_hist = load_rubric_history()
 
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.metric("Strong Evidence", beh_summary.get("criteria_with_strong_evidence", 0))
-                with col2:
-                    st.metric("Weak Evidence", beh_summary.get("criteria_with_weak_evidence", 0))
-                with col3:
-                    st.metric("No Evidence", beh_summary.get("criteria_with_no_evidence", 0))
+    if _gr_tab_blocked:
+        pass  # Warning already shown above
+    elif not _gr_rubric_dict:
+        st.warning("No active rubric found. Please create a rubric first in the **Evaluate: Infer** tab.")
+    else:
+        _gr_rubric_list = _gr_rubric_dict.get("rubric", [])
 
-                # Signal type breakdown
-                signal_counts = beh_summary.get("signal_type_counts", {})
-                if any(v > 0 for v in signal_counts.values()):
-                    signal_icons = {
-                        "edit": "✏️", "rejection": "🚫", "correction": "🔧",
-                        "explicit_feedback": "💬", "choice": "🔀", "instruction": "📋"
-                    }
-                    signal_labels = {
-                        "edit": "Edits", "rejection": "Rejections", "correction": "Corrections",
-                        "explicit_feedback": "Explicit Feedback", "choice": "Choices", "instruction": "Instructions"
-                    }
-                    active_signals = {k: v for k, v in signal_counts.items() if v > 0}
-                    signal_parts = [f"{signal_icons.get(k, '')} {signal_labels.get(k, k)}: **{v}**" for k, v in active_signals.items()]
-                    st.markdown("**Signal sources:** " + " · ".join(signal_parts))
-
-                for item in beh_analysis:
-                    evidence_icon = {"strong": "🟢", "weak": "🟡", "none": "🔴"}.get(item.get("evidence_strength", "none"), "⚪")
-                    cat_display = {"stated": "Stated", "real": "Real", "latent_real": "Real",
-                                   "elicited": "Real", "hallucinated": "Hallucinated"
-                                   }.get(item.get("user_category", ""), item.get("user_category", ""))
-
-                    # Show signal types in expander header
-                    signal_types = item.get("signal_types_present", [])
-                    signal_tag = ""
-                    if signal_types:
-                        signal_icons_map = {
-                            "edit": "✏️", "rejection": "🚫", "correction": "🔧",
-                            "explicit_feedback": "💬", "choice": "🔀", "instruction": "📋"
-                        }
-                        signal_tag = " " + " ".join(signal_icons_map.get(s, "") for s in signal_types)
-
-                    with st.expander(f"{evidence_icon} {item['criterion_name']} — {cat_display} ({item.get('evidence_strength', 'N/A')} evidence){signal_tag}"):
-                        st.markdown(f"**Evidence summary:** {item.get('evidence_summary', 'N/A')}")
-                        instances = item.get("behavioral_instances", [])
-                        if instances:
-                            for inst in instances:
-                                support = "✅ Supports" if inst.get("supports_criterion") else "❌ Against"
-                                msg_nums = inst.get("message_numbers", [])
-                                sig_type = inst.get("signal_type", "")
-                                sig_icon = {"edit": "✏️", "rejection": "🚫", "correction": "🔧",
-                                            "explicit_feedback": "💬", "choice": "🔀", "instruction": "📋"}.get(sig_type, "")
-                                sig_label = {"edit": "Edit", "rejection": "Rejection", "correction": "Correction",
-                                             "explicit_feedback": "Feedback", "choice": "Choice", "instruction": "Instruction"}.get(sig_type, sig_type)
-                                st.markdown(f"- {sig_icon} **{sig_label}** · Msg #{', '.join(str(m) for m in msg_nums)} {support}: {inst.get('description', '')}")
-                                if inst.get("quote"):
-                                    st.markdown(f"  > \"{inst['quote']}\"")
-                        if signal_types:
-                            st.caption(f"Signal types: {', '.join(signal_types)}")
-
-        # ==================== STEP 10: CROSS-REFERENCE & RECONSIDERATION ====================
-        if st.session_state.infer_behavioral_result and not st.session_state.infer_reconsideration_done:
-            st.divider()
-            st.subheader("Step 10: Cross-Reference & Reconsideration")
-            st.markdown(
-                "Cross-referencing behavioral evidence against your categorizations. "
-                "Criteria you marked as **hallucinated** but that show behavioral evidence are flagged for review."
-            )
-
-            beh_analysis = st.session_state.infer_behavioral_result.get("behavioral_analysis", [])
-            beh_map = {item["criterion_name"]: item for item in beh_analysis}
-            cats = st.session_state.infer_user_categorizations
-
-            # Find hallucinated criteria with evidence
-            flagged = []
-            for crit_name, category in cats.items():
-                if category == "hallucinated":
-                    beh_item = beh_map.get(crit_name, {})
-                    if beh_item.get("evidence_strength") in ("strong", "weak"):
-                        flagged.append((crit_name, beh_item))
-
-            # Also note endorsed criteria with no evidence
-            no_evidence = []
-            for crit_name, category in cats.items():
-                if category in ("real", "latent_real", "elicited"):
-                    beh_item = beh_map.get(crit_name, {})
-                    if beh_item.get("evidence_strength") == "none":
-                        no_evidence.append(crit_name)
-
-            if flagged:
-                st.warning(f"**{len(flagged)} criterion(s)** you marked as hallucinated show behavioral evidence. Please review:")
-
-                for crit_name, beh_item in flagged:
-                    signal_types = beh_item.get("signal_types_present", [])
-                    signal_tag = ""
-                    if signal_types:
-                        sig_labels = {"edit": "edits", "rejection": "rejections", "correction": "corrections",
-                                      "explicit_feedback": "explicit feedback", "choice": "choices", "instruction": "instructions"}
-                        signal_tag = f" (via {', '.join(sig_labels.get(s, s) for s in signal_types)})"
-
-                    with st.expander(f"⚠️ {crit_name} — marked Hallucinated but has {beh_item.get('evidence_strength', '')} evidence{signal_tag}", expanded=True):
-                        st.markdown(f"**Evidence:** {beh_item.get('evidence_summary', 'N/A')}")
-                        instances = beh_item.get("behavioral_instances", [])
-                        if instances:
-                            for inst in instances:
-                                msg_nums = inst.get("message_numbers", [])
-                                sig_type = inst.get("signal_type", "")
-                                sig_icon = {"edit": "✏️", "rejection": "🚫", "correction": "🔧",
-                                            "explicit_feedback": "💬", "choice": "🔀", "instruction": "📋"}.get(sig_type, "")
-                                sig_label = {"edit": "Edit", "rejection": "Rejection", "correction": "Correction",
-                                             "explicit_feedback": "Feedback", "choice": "Choice", "instruction": "Instruction"}.get(sig_type, sig_type)
-                                st.markdown(f"- {sig_icon} **{sig_label}** · Msg #{', '.join(str(m) for m in msg_nums)}: {inst.get('description', '')}")
-                                if inst.get("quote"):
-                                    st.markdown(f"  > \"{inst['quote']}\"")
-
-                        reconsider_options = ["Keep as Hallucinated", "Change to Latent Real", "Change to Elicited"]
-                        choice = st.radio(
-                            f"Reconsider '{crit_name}'?",
-                            reconsider_options,
-                            key=f"infer_reconsider_{crit_name}",
-                            horizontal=True
-                        )
-
-                        if choice == "Change to Latent Real":
-                            st.session_state.infer_user_categorizations[crit_name] = "real"
-                        elif choice == "Change to Elicited":
-                            st.session_state.infer_user_categorizations[crit_name] = "real"
+        # --- Determine rubric versions for draft generation ---
+        _gr_r_star = _gr_hist[-1] if _gr_hist else _gr_rubric_dict  # latest
+        _gr_r0 = _gr_hist[0] if _gr_hist else _gr_rubric_dict  # first version
+        _gr_r1 = None
+        _gr_r1_idx = None
+        if len(_gr_hist) >= 3:
+            # Prefer an edited (user-saved) version for R₁; fall back to midpoint
+            _edited_sources = {"edited", "edit_feedback", "chat_edit"}
+            _edited_versions = [(i, h) for i, h in enumerate(_gr_hist) if h.get("source") in _edited_sources and 0 < i < len(_gr_hist) - 1]
+            if _edited_versions:
+                # Pick the edited version closest to the midpoint
+                mid = len(_gr_hist) // 2
+                _gr_r1_idx = min(_edited_versions, key=lambda x: abs(x[0] - mid))[0]
             else:
-                st.info("No hallucinated criteria with behavioral evidence found. No reconsideration needed.")
+                _gr_r1_idx = len(_gr_hist) // 2
+            _gr_r1 = _gr_hist[_gr_r1_idx]
+        _gr_num_drafts = 5 if _gr_r1 else (4 if len(_gr_hist) >= 2 else 3)
 
-            if no_evidence:
-                with st.expander(f"ℹ️ {len(no_evidence)} endorsed criteria with no behavioral evidence"):
-                    for name in no_evidence:
-                        st.markdown(f"- {name}")
+        st.subheader("Step 1: New Writing Task")
 
-            if st.button("✅ Done Reviewing", type="primary", use_container_width=True, key="infer_done_reconsider"):
-                st.session_state.infer_reconsideration_done = True
+        # Build conversation text from dp_messages for task generation
+        _gr_dp_messages = st.session_state.get("infer_dp_messages", [])
+        _gr_step5_text = ""
+        _gr_msg_num = 1
+        for _msg in _gr_dp_messages:
+            _role = _msg.get('role', 'unknown')
+            _content = _msg.get('content', '')
+            if _role == 'user':
+                _gr_step5_text += f"\n\n[Message #{_gr_msg_num}] USER:\n{_content}"
+                _gr_msg_num += 1
+            elif _role == 'assistant':
+                _gr_step5_text += f"\n\n[Message #{_gr_msg_num}] ASSISTANT:\n{_content}"
+                _gr_msg_num += 1
 
-                # Recompute and display updated ratios
-                cats = st.session_state.infer_user_categorizations
-                total_cats = len(cats)
-                hallucinated_count = sum(1 for v in cats.values() if v == "hallucinated")
-                user_endorsed = sum(1 for v in cats.values() if v in ("real", "latent_real", "elicited"))
-                st.success(
-                    f"Updated: {total_cats - hallucinated_count}/{total_cats} non-hallucinated, "
-                    f"{user_endorsed} surplus criteria."
-                )
-                st.rerun()
-
-        # ==================== STEP 11: BEHAVIORAL CONFIRMATION & SIGNAL SOURCES ====================
-        if st.session_state.infer_reconsideration_done:
-            st.divider()
-            st.subheader("Step 11: Behavioral Confirmation & Signal Sources")
-            st.markdown(
-                "How often do surplus criteria (unstated but endorsed) have independent behavioral confirmation? "
-                "And which natural interaction patterns are the richest sources of preference signal?"
-            )
-
-            beh_analysis = st.session_state.infer_behavioral_result.get("behavioral_analysis", [])
-            beh_map = {item["criterion_name"]: item for item in beh_analysis}
-            cats = st.session_state.infer_user_categorizations
-
-            # Compute confirmation rate for surplus criteria
-            surplus_criteria = {k: v for k, v in cats.items() if v in ("real", "latent_real", "elicited")}
-            stated_criteria = {k: v for k, v in cats.items() if v == "stated"}
-
-            surplus_confirmed = 0
-            surplus_total = len(surplus_criteria)
-            surplus_signal_counts = {}
-            surplus_confirmed_list = []
-            surplus_unconfirmed_list = []
-
-            for crit_name in surplus_criteria:
-                beh_item = beh_map.get(crit_name, {})
-                if beh_item.get("evidence_strength") in ("strong", "weak"):
-                    surplus_confirmed += 1
-                    surplus_confirmed_list.append((crit_name, beh_item))
-                    # Count signal types for confirmed surplus criteria
-                    for inst in beh_item.get("behavioral_instances", []):
-                        sig = inst.get("signal_type", "unknown")
-                        surplus_signal_counts[sig] = surplus_signal_counts.get(sig, 0) + 1
-                else:
-                    surplus_unconfirmed_list.append(crit_name)
-
-            # Also compute for stated criteria (for comparison)
-            stated_confirmed = 0
-            stated_total = len(stated_criteria)
-            stated_signal_counts = {}
-            for crit_name in stated_criteria:
-                beh_item = beh_map.get(crit_name, {})
-                if beh_item.get("evidence_strength") in ("strong", "weak"):
-                    stated_confirmed += 1
-                    for inst in beh_item.get("behavioral_instances", []):
-                        sig = inst.get("signal_type", "unknown")
-                        stated_signal_counts[sig] = stated_signal_counts.get(sig, 0) + 1
-
-            # Display confirmation rates
-            st.markdown("#### Behavioral Confirmation Rates")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                surplus_rate = (surplus_confirmed / surplus_total * 100) if surplus_total > 0 else 0
-                st.metric("Surplus Criteria Confirmed", f"{surplus_confirmed}/{surplus_total}", f"{surplus_rate:.0f}%")
-            with col2:
-                stated_rate = (stated_confirmed / stated_total * 100) if stated_total > 0 else 0
-                st.metric("Stated Criteria Confirmed", f"{stated_confirmed}/{stated_total}", f"{stated_rate:.0f}%")
-            with col3:
-                all_confirmed = surplus_confirmed + stated_confirmed
-                all_total = surplus_total + stated_total
-                all_rate = (all_confirmed / all_total * 100) if all_total > 0 else 0
-                st.metric("Overall Confirmation", f"{all_confirmed}/{all_total}", f"{all_rate:.0f}%")
-
-            if surplus_total > 0:
-                st.markdown(
-                    f"**{surplus_rate:.0f}%** of surplus criteria — preferences the user couldn't or didn't state upfront — "
-                    f"are independently confirmed by natural interaction behavior."
+        # Build project task examples
+        _gr_project_task_examples = ""
+        _gr_all_convs = load_conversations()
+        if _gr_all_convs:
+            _task_snippets = []
+            for _conv in _gr_all_convs[:10]:
+                _conv_data = load_conversation_data(_conv.get("filename") or _conv.get("id"))
+                if _conv_data:
+                    _msgs = _conv_data.get("messages", [])
+                    for _m in _msgs:
+                        if _m.get("role") == "user" and _m.get("content", "").strip():
+                            _snippet = _m["content"].strip()[:300]
+                            if len(_m["content"].strip()) > 300:
+                                _snippet += "..."
+                            _task_snippets.append(_snippet)
+                            break
+            if _task_snippets:
+                _gr_project_task_examples = "\n\n---\n\n".join(
+                    f"**Task {i+1}:**\n{s}" for i, s in enumerate(_task_snippets)
                 )
 
-            # Signal type distribution for surplus criteria
-            st.markdown("#### Signal Sources for Surplus Criteria")
-            st.markdown(
-                "Which interaction patterns revealed the user's unstated preferences? "
-                "This shows where the richest preference signal comes from."
-            )
-
-            signal_icons = {
-                "edit": "✏️", "rejection": "🚫", "correction": "🔧",
-                "explicit_feedback": "💬", "choice": "🔀", "instruction": "📋"
-            }
-            signal_labels = {
-                "edit": "Edits", "rejection": "Rejections", "correction": "Corrections",
-                "explicit_feedback": "Explicit Feedback", "choice": "Choices", "instruction": "Instructions"
-            }
-            signal_descriptions = {
-                "edit": "User directly modified or restructured text",
-                "rejection": "User rejected or asked to redo a suggestion",
-                "correction": "User corrected specific wording, tone, or structure",
-                "explicit_feedback": "User gave direct verbal feedback about preferences",
-                "choice": "User chose between alternatives or showed consistent accept/reject patterns",
-                "instruction": "User proactively gave instructions reflecting this preference"
-            }
-
-            if surplus_signal_counts:
-                # Sort by count descending
-                sorted_signals = sorted(surplus_signal_counts.items(), key=lambda x: x[1], reverse=True)
-                total_instances = sum(v for _, v in sorted_signals)
-
-                for sig_type, count in sorted_signals:
-                    pct = count / total_instances * 100 if total_instances > 0 else 0
-                    icon = signal_icons.get(sig_type, "")
-                    label = signal_labels.get(sig_type, sig_type)
-                    desc = signal_descriptions.get(sig_type, "")
-                    st.markdown(f"{icon} **{label}**: {count} instance(s) ({pct:.0f}%) — *{desc}*")
-                    st.progress(pct / 100)
+        # --- Step 1: Generate writing task automatically ---
+        if not st.session_state.infer_step6_writing_task:
+            if not st.session_state.infer_step6_auto_gen_done:
+                with st.spinner("Generating writing task..."):
+                    try:
+                        prompt = generate_writing_task_similar_but_different_prompt(_gr_step5_text, _gr_project_task_examples)
+                        resp = _api_call_with_retry(model="claude-opus-4-6", max_tokens=500, messages=[{"role": "user", "content": prompt}])
+                        text = "".join(b.text for b in resp.content if b.type == "text")
+                        task_text = text.strip()
+                        if task_text:
+                            st.session_state.infer_step6_generated_task = task_text
+                            st.session_state.infer_step6_writing_task = task_text
+                            st.session_state.infer_step6_auto_gen_done = True
+                            st.rerun()
+                        else:
+                            st.session_state.infer_step6_auto_gen_done = True
+                            st.error("No task text returned.")
+                    except Exception as e:
+                        st.session_state.infer_step6_auto_gen_done = True
+                        st.error(str(e))
             else:
-                st.info("No behavioral signal instances found for surplus criteria.")
-
-            # Comparison: stated vs surplus signal types
-            if surplus_signal_counts and stated_signal_counts:
-                st.markdown("#### Signal Source Comparison: Stated vs. Surplus")
-                st.markdown(
-                    "Do stated and surplus criteria come from different interaction patterns? "
-                    "Differences here reveal which behaviors surface preferences the user *couldn't have articulated*."
-                )
-
-                all_signal_types = sorted(set(list(surplus_signal_counts.keys()) + list(stated_signal_counts.keys())))
-                surplus_total_inst = sum(surplus_signal_counts.values())
-                stated_total_inst = sum(stated_signal_counts.values())
-
-                comparison_data = []
-                for sig in all_signal_types:
-                    s_count = surplus_signal_counts.get(sig, 0)
-                    st_count = stated_signal_counts.get(sig, 0)
-                    s_pct = s_count / surplus_total_inst * 100 if surplus_total_inst > 0 else 0
-                    st_pct = st_count / stated_total_inst * 100 if stated_total_inst > 0 else 0
-                    label = signal_labels.get(sig, sig)
-                    icon = signal_icons.get(sig, "")
-                    comparison_data.append({
-                        "Signal Type": f"{icon} {label}",
-                        "Surplus Count": s_count,
-                        "Surplus %": f"{s_pct:.0f}%",
-                        "Stated Count": st_count,
-                        "Stated %": f"{st_pct:.0f}%"
-                    })
-
-                import pandas as pd
-                st.dataframe(pd.DataFrame(comparison_data), use_container_width=True, hide_index=True)
-
-            # Detail: which surplus criteria were confirmed and by what signals
-            if surplus_confirmed_list:
-                with st.expander(f"Confirmed surplus criteria ({len(surplus_confirmed_list)})", expanded=False):
-                    for crit_name, beh_item in surplus_confirmed_list:
-                        cat = surplus_criteria[crit_name]
-                        cat_label = "Real"
-                        sig_types = beh_item.get("signal_types_present", [])
-                        sig_icons_str = " ".join(signal_icons.get(s, "") for s in sig_types)
-                        st.markdown(f"**{crit_name}** ({cat_label}) {sig_icons_str}")
-                        st.markdown(f"> {beh_item.get('evidence_summary', 'N/A')}")
-                        for inst in beh_item.get("behavioral_instances", []):
-                            sig = inst.get("signal_type", "")
-                            sig_lbl = signal_labels.get(sig, sig)
-                            msg_nums = inst.get("message_numbers", [])
-                            st.caption(f"  {signal_icons.get(sig, '')} {sig_lbl} · Msg #{', '.join(str(m) for m in msg_nums)}: {inst.get('description', '')}")
-
-            if surplus_unconfirmed_list:
-                with st.expander(f"Unconfirmed surplus criteria ({len(surplus_unconfirmed_list)})", expanded=False):
-                    for crit_name in surplus_unconfirmed_list:
-                        cat = surplus_criteria[crit_name]
-                        cat_label = "Real"
-                        st.markdown(f"- **{crit_name}** ({cat_label}) — no behavioral evidence found")
-
-
-        # ==================== STEP 12: REFINE RUBRIC ====================
-        if st.session_state.infer_reconsideration_done:
-            st.divider()
-            st.subheader("Step 12: Refine Rubric")
-            st.markdown(
-                "Based on everything surfaced in this evaluation — categorizations, behavioral evidence, "
-                "decision point mappings, and agreement scores — generate a refined rubric."
-            )
-
-            if not st.session_state.infer_refined_rubric:
-                if st.button("🔄 Generate Refined Rubric", type="primary", use_container_width=True, key="infer_refine_rubric_btn"):
-                    with st.spinner("Analyzing evaluation evidence and refining rubric..."):
+                st.markdown("Generate a **new** writing task that matches the type of writing in your project conversations, but a different specific scenario.")
+                if st.button("📝 Generate Writing Task", use_container_width=True, type="primary", key="grading_gen_task_btn"):
+                    with st.spinner("Generating writing task..."):
                         try:
-                            # Gather all evidence
-                            current_rubric_json = json.dumps(infer_rubric_dict, indent=2)
-                            coldstart_text = st.session_state.infer_coldstart_text
-                            user_categorizations = st.session_state.infer_user_categorizations
-                            behavioral_summary = st.session_state.infer_behavioral_result
-                            decision_points = st.session_state.infer_decision_points.get("parsed_data", {}).get("decision_points", [])
-                            agreement_scores = st.session_state.infer_agreement_scores
-
-                            prompt = refine_rubric_from_evaluation_prompt(
-                                current_rubric_json=current_rubric_json,
-                                coldstart_text=coldstart_text,
-                                user_categorizations=user_categorizations,
-                                behavioral_summary=behavioral_summary,
-                                decision_points_summary=decision_points,
-                                agreement_scores=agreement_scores
-                            )
-
-                            response = client.messages.create(
-                                model="claude-opus-4-6",
-                                max_tokens=16000,
-                                messages=[{"role": "user", "content": prompt}],
-                                thinking={"type": "enabled", "budget_tokens": 10000}
-                            )
-
-                            thinking_text = ""
-                            response_text = ""
-                            for block in response.content:
-                                if block.type == "thinking":
-                                    thinking_text = block.thinking
-                                elif block.type == "text":
-                                    response_text = block.text
-
-                            # Parse JSON from response
-                            json_match = re.search(r'\{[\s\S]*\}', response_text)
-                            if json_match:
-                                refined = json.loads(json_match.group())
-                                st.session_state.infer_refined_rubric = {
-                                    "rubric_data": refined,
-                                    "thinking": thinking_text,
-                                    "raw_response": response_text
-                                }
+                            prompt = generate_writing_task_similar_but_different_prompt(_gr_step5_text, _gr_project_task_examples)
+                            resp = _api_call_with_retry(model="claude-opus-4-6", max_tokens=500, messages=[{"role": "user", "content": prompt}])
+                            text = "".join(b.text for b in resp.content if b.type == "text")
+                            task_text = text.strip()
+                            if task_text:
+                                st.session_state.infer_step6_generated_task = task_text
+                                st.session_state.infer_step6_writing_task = task_text
                                 st.rerun()
                             else:
-                                st.error("Could not parse refined rubric from response.")
-                                with st.expander("Raw response"):
-                                    st.text(response_text)
+                                st.error("No task text returned.")
                         except Exception as e:
-                            st.error(f"Error generating refined rubric: {str(e)}")
+                            st.error(str(e))
 
-            if st.session_state.infer_refined_rubric:
-                refined_data = st.session_state.infer_refined_rubric["rubric_data"]
-                refined_rubric = refined_data.get("rubric", [])
-                current_rubric = infer_rubric_dict.get("rubric", [])
-
-                # Show analysis thinking
-                thinking = st.session_state.infer_refined_rubric.get("thinking", "")
-                if thinking:
-                    with st.expander("🧠 Analysis", expanded=False):
-                        st.markdown(thinking)
-
-                # Show changes summary
-                changes = refined_data.get("changes_summary", [])
-                if changes:
-                    st.markdown("### Changes Made")
-                    for change in changes:
-                        change_type = change.get("type", "")
-                        icon = {"added": "➕", "removed": "➖", "modified": "✏️", "reprioritized": "🔃"}.get(change_type, "•")
-                        st.markdown(f"{icon} **{change.get('criterion', '')}** ({change_type}): {change.get('reason', '')}")
-
-                # Side-by-side comparison
-                st.markdown("### Side-by-Side Comparison")
-                col_old, col_new = st.columns(2)
-
-                with col_old:
-                    st.markdown(f"**Current Rubric (v{infer_rubric_dict.get('version', '?')})**")
-                    for crit in current_rubric:
-                        with st.expander(f"P{crit.get('priority', '?')}: {crit.get('name', '?')}", expanded=False):
-                            st.caption(f"Category: {crit.get('category', '')}")
-                            st.markdown(crit.get('description', ''))
-                            dims = crit.get('dimensions', [])
-                            for dim in dims:
-                                st.markdown(f"- {dim.get('label', dim.get('id', ''))}")
-
-                with col_new:
-                    st.markdown(f"**Refined Rubric (v{refined_data.get('version', '?')})**")
-                    # Build set of current criterion names for highlighting new ones
-                    current_names = {c.get('name', '').lower() for c in current_rubric}
-                    for crit in refined_rubric:
-                        is_new = crit.get('name', '').lower() not in current_names
-                        label = f"P{crit.get('priority', '?')}: {crit.get('name', '?')}"
-                        if is_new:
-                            label += " 🆕"
-                        with st.expander(label, expanded=is_new):
-                            st.caption(f"Category: {crit.get('category', '')}")
-                            st.markdown(crit.get('description', ''))
-                            dims = crit.get('dimensions', [])
-                            for dim in dims:
-                                st.markdown(f"- {dim.get('label', dim.get('id', ''))}")
-
-                # Coaching notes
-                coaching = refined_data.get("coaching_notes", "")
-                if coaching:
-                    st.info(f"**Coaching notes:** {coaching}")
-
-                # Save as new version
-                st.divider()
-                col_save, col_regen = st.columns(2)
-                with col_save:
-                    if st.button("💾 Save as New Rubric Version", type="primary", use_container_width=True, key="infer_save_refined"):
-                        hist = load_rubric_history()
-                        new_version = next_version_number()
-                        refined_data["version"] = new_version
-                        refined_data["weighting_rationale"] = f"Refined from v{infer_rubric_dict.get('version', '?')} based on Infer evaluation"
-
-                        hist.append(refined_data)
-                        save_rubric_history(hist)
-
-                        st.session_state.active_rubric_idx = len(hist) - 1
-                        st.success(f"Saved as rubric version {new_version} and set as active!")
-                        st.rerun()
-
-                with col_regen:
-                    if st.button("🔄 Regenerate", use_container_width=True, key="infer_regen_refined"):
-                        st.session_state.infer_refined_rubric = None
-                        st.rerun()
-
-# ============ EVALUATE: BUILD TAB ============
-with tab7:
-    st.header("🔨 Evaluate: Build")
-    st.markdown("Measure whether user rubric editing improves outcomes compared to inference-only rubrics.")
-
-    # Load rubric history
-    build_rubric_history = load_rubric_history()
-
-    if not build_rubric_history or len(build_rubric_history) < 2:
-        st.warning("You need at least 2 rubric versions to use this tab. Edit your rubric to create additional versions.")
-    else:
-        # Reset button
-        col_info, col_reset = st.columns([3, 1])
-        with col_info:
-            st.success(f"**{len(build_rubric_history)}** rubric versions available for comparison")
-        with col_reset:
-            if st.button("🔄 Reset All", use_container_width=True, key="build_reset"):
-                st.session_state.build_rubric_a_idx = None
-                st.session_state.build_rubric_b_idx = None
-                st.session_state.build_edit_classification = None
-                st.session_state.build_writing_task = ""
-                st.session_state.build_draft_a = None
-                st.session_state.build_draft_b = None
-                st.session_state.build_draft_a_thinking = ""
-                st.session_state.build_draft_b_thinking = ""
-                st.session_state.build_blind_labels = None
-                st.session_state.build_user_preference = None
-                st.session_state.build_llm_judge_result = None
-                st.session_state.build_llm_judge_thinking = ""
-                st.session_state.build_self_report = {}
-                st.session_state.build_self_report_saved = False
-                st.rerun()
-
-        # Progress indicator
-        def get_build_step():
-            if st.session_state.build_rubric_a_idx is None or st.session_state.build_rubric_b_idx is None:
-                return 1
-            if not st.session_state.build_edit_classification:
-                return 2
-            if not st.session_state.build_draft_a or not st.session_state.build_draft_b:
-                return 3
-            if not st.session_state.build_user_preference:
-                return 3
-            if not st.session_state.build_llm_judge_result:
-                return 4
-            if not st.session_state.build_self_report_saved:
-                return 5
-            return 5
-
-        build_current_step = get_build_step()
-        build_steps = [
-            "1. Choose Two Rubrics",
-            "2. Classify Edits",
-            "3. Generate & Evaluate Drafts",
-            "4. LLM Judge Scoring",
-            "5. Self-Report"
-        ]
-        st.progress(build_current_step / 5)
-        st.markdown(f"**Step {build_current_step}/5: {build_steps[build_current_step - 1]}**")
-        st.divider()
-
-        # ==================== STEP 1: CHOOSE TWO RUBRICS ====================
-        st.subheader("Step 1: Choose Two Rubrics")
-        st.markdown("Select two rubric versions to compare. Typically: one edited by you (R_edited) and one inferred from conversation only (R_inferred).")
-
-        build_rubric_options = [f"v{r.get('version', i+1)} ({r.get('source', 'unknown')})" for i, r in enumerate(build_rubric_history)]
-
-        col_a, col_b = st.columns(2)
-        with col_a:
-            build_a_idx = st.selectbox(
-                "Rubric A:",
-                options=list(range(len(build_rubric_history))),
-                format_func=lambda x: build_rubric_options[x],
-                index=st.session_state.build_rubric_a_idx if st.session_state.build_rubric_a_idx is not None else 0,
-                key="build_rubric_a_select"
-            )
-        with col_b:
-            build_b_idx = st.selectbox(
-                "Rubric B:",
-                options=list(range(len(build_rubric_history))),
-                format_func=lambda x: build_rubric_options[x],
-                index=st.session_state.build_rubric_b_idx if st.session_state.build_rubric_b_idx is not None else min(1, len(build_rubric_history) - 1),
-                key="build_rubric_b_select"
-            )
-
-        if build_a_idx == build_b_idx:
-            st.warning("Please select two different rubric versions.")
-        else:
-            # Update state if changed
-            if build_a_idx != st.session_state.build_rubric_a_idx or build_b_idx != st.session_state.build_rubric_b_idx:
-                st.session_state.build_rubric_a_idx = build_a_idx
-                st.session_state.build_rubric_b_idx = build_b_idx
-                # Reset downstream state
-                st.session_state.build_edit_classification = None
-                st.session_state.build_draft_a = None
-                st.session_state.build_draft_b = None
-                st.session_state.build_blind_labels = None
-                st.session_state.build_user_preference = None
-                st.session_state.build_llm_judge_result = None
-
-            build_rubric_a = build_rubric_history[build_a_idx]
-            build_rubric_b = build_rubric_history[build_b_idx]
-            build_rubric_a_list = build_rubric_a.get("rubric", [])
-            build_rubric_b_list = build_rubric_b.get("rubric", [])
-
-            # Show rubrics side by side
-            with st.expander("📋 View Selected Rubrics", expanded=False):
-                col_ra, col_rb = st.columns(2)
-                with col_ra:
-                    st.markdown(f"**Rubric A: v{build_rubric_a.get('version', '?')}** ({build_rubric_a.get('source', 'unknown')})")
-                    for c in build_rubric_a_list:
-                        st.markdown(f"- **{c.get('name', '?')}** (wt: {c.get('weight', c.get('priority', '?'))}): {c.get('description', '')[:100]}...")
-                with col_rb:
-                    st.markdown(f"**Rubric B: v{build_rubric_b.get('version', '?')}** ({build_rubric_b.get('source', 'unknown')})")
-                    for c in build_rubric_b_list:
-                        st.markdown(f"- **{c.get('name', '?')}** (wt: {c.get('weight', c.get('priority', '?'))}): {c.get('description', '')[:100]}...")
-
-            # ==================== STEP 2: CLASSIFY EDITS ====================
-            st.divider()
-            st.subheader("Step 2: Classify Edits Between Rubrics")
-            st.markdown(f"Structural diff: Rubric B (v{build_rubric_b.get('version', '?')}) → Rubric A (v{build_rubric_a.get('version', '?')})")
-
-            if not st.session_state.build_edit_classification:
-                if st.button("🔍 Classify Edits", type="primary", use_container_width=True, key="build_classify_btn"):
-                    edits = classify_rubric_edits(build_rubric_b_list, build_rubric_a_list)
-                    st.session_state.build_edit_classification = edits
-                    st.rerun()
-
-            if st.session_state.build_edit_classification:
-                edits = st.session_state.build_edit_classification
-                total_edits = sum(len(edits[k]) for k in edits)
-
-                # Summary metrics
-                col1, col2, col3, col4, col5 = st.columns(5)
-                with col1:
-                    st.metric("Added", len(edits["added"]))
-                with col2:
-                    st.metric("Removed", len(edits["removed"]))
-                with col3:
-                    st.metric("Reweighted", len(edits["reweighted"]))
-                with col4:
-                    st.metric("Reworded", len(edits["reworded"]))
-                with col5:
-                    st.metric("Dims Changed", len(edits["dimensions_changed"]))
-
-                st.markdown(f"**Total substantive edits: {total_edits}**")
-
-                # Detailed breakdown
-                if total_edits > 0:
-                    edit_table = []
-                    for a in edits["added"]:
-                        edit_table.append({"Type": "Added", "Criterion": a["name"], "Detail": a.get("description", "")[:80]})
-                    for r in edits["removed"]:
-                        edit_table.append({"Type": "Removed", "Criterion": r["name"], "Detail": r.get("description", "")[:80]})
-                    for rw in edits["reweighted"]:
-                        edit_table.append({"Type": "Reweighted", "Criterion": rw["name"], "Detail": f"{rw['old_weight']} → {rw['new_weight']}"})
-                    for rw in edits["reworded"]:
-                        edit_table.append({"Type": "Reworded", "Criterion": rw["name"], "Detail": f"{rw['field']} changed"})
-                    for dc in edits["dimensions_changed"]:
-                        detail_parts = []
-                        if dc["added_dims"]:
-                            detail_parts.append(f"+{', '.join(dc['added_dims'][:3])}")
-                        if dc["removed_dims"]:
-                            detail_parts.append(f"-{', '.join(dc['removed_dims'][:3])}")
-                        edit_table.append({"Type": "Dims Changed", "Criterion": dc["name"], "Detail": "; ".join(detail_parts)})
-                    st.table(edit_table)
-
-                # Also show conversation-logged edits if available
-                conv_edits = get_effective_edits_from_conversation(st.session_state.messages)
-                if conv_edits:
-                    with st.expander(f"📝 Conversation Edit Log ({len(conv_edits)} logged edits)", expanded=False):
-                        for i, log in enumerate(conv_edits):
-                            st.markdown(f"**Edit {i+1}:** v{log.get('version_from', '?')} → v{log.get('version_to', '?')} (source: {log.get('source', '?')})")
-                            log_edits = log.get("edits", {})
-                            for edit_type, items in log_edits.items():
-                                if items:
-                                    st.markdown(f"  - {edit_type}: {len(items)} change(s)")
-
-            # ==================== STEP 3: GENERATE DRAFTS & BLIND EVALUATION ====================
-            if st.session_state.build_edit_classification:
-                st.divider()
-                st.subheader("Step 3: Generate Drafts & Blind Evaluation")
-
-                # Writing task input
-                st.markdown("Enter a writing task. Both rubrics will generate a draft for the same task.")
-                build_task_input = st.text_area(
-                    "Writing task:",
-                    value=st.session_state.build_writing_task,
-                    placeholder="e.g., Write a professional email declining a meeting invitation while maintaining a positive relationship...",
-                    height=120,
-                    key="build_task_input"
+        # --- Step 2: Show task + edit/regenerate ---
+        if st.session_state.infer_step6_writing_task:
+            st.markdown("**Writing task:**")
+            st.info(st.session_state.infer_step6_writing_task)
+            with st.expander("✏️ Use a different task (type your own or edit)", expanded=False):
+                custom_task = st.text_area(
+                    "Your task text",
+                    value=st.session_state.infer_step6_writing_task,
+                    key=f"grading_custom_task_{st.session_state.infer_step6_custom_task_key_version}",
+                    placeholder="e.g. Write a brief professional email declining a meeting and proposing an alternative."
                 )
-
-                if not st.session_state.build_draft_a or not st.session_state.build_draft_b:
-                    if st.button("✍️ Generate Drafts from Both Rubrics", type="primary", use_container_width=True, key="build_generate_btn"):
-                        if not build_task_input.strip():
-                            st.error("Please enter a writing task first.")
-                        else:
-                            st.session_state.build_writing_task = build_task_input.strip()
-
-                            with st.spinner("Generating Draft A (from Rubric A)..."):
-                                try:
-                                    clean_a = copy.deepcopy(build_rubric_a)
-                                    if 'rubric' in clean_a:
-                                        for c in clean_a['rubric']:
-                                            if '_diff' in c:
-                                                del c['_diff']
-                                    rubric_a_json = json.dumps(clean_a, indent=2)
-
-                                    system_a = build_system_instruction(clean_a)
-                                    response_a = client.messages.create(
-                                        model="claude-opus-4-6",
-                                        max_tokens=8000,
-                                        system=system_a,
-                                        messages=[{"role": "user", "content": f"Please write a complete draft for this task. Output ONLY the draft text — no preamble, no follow-up notes, no meta-commentary.\n\n{st.session_state.build_writing_task}"}],
-                                        thinking={"type": "enabled", "budget_tokens": 6000}
-                                    )
-
-                                    thinking_a = ""
-                                    draft_a_text = ""
-                                    for block in response_a.content:
-                                        if block.type == "thinking":
-                                            thinking_a = block.thinking
-                                        elif block.type == "text":
-                                            draft_a_text = block.text
-
-                                    # Strip <draft> tags if present
-                                    draft_a_clean = re.sub(r'</?draft>', '', draft_a_text).strip()
-                                    st.session_state.build_draft_a = draft_a_clean
-                                    st.session_state.build_draft_a_thinking = thinking_a
-
-                                except Exception as e:
-                                    st.error(f"Error generating Draft A: {str(e)}")
-
-                            if st.session_state.build_draft_a:
-                                with st.spinner("Generating Draft B (from Rubric B)..."):
-                                    try:
-                                        clean_b = copy.deepcopy(build_rubric_b)
-                                        if 'rubric' in clean_b:
-                                            for c in clean_b['rubric']:
-                                                if '_diff' in c:
-                                                    del c['_diff']
-
-                                        system_b = build_system_instruction(clean_b)
-                                        response_b = client.messages.create(
-                                            model="claude-opus-4-6",
-                                            max_tokens=8000,
-                                            system=system_b,
-                                            messages=[{"role": "user", "content": f"Please write a complete draft for this task. Output ONLY the draft text — no preamble, no follow-up notes, no meta-commentary.\n\n{st.session_state.build_writing_task}"}],
-                                            thinking={"type": "enabled", "budget_tokens": 6000}
-                                        )
-
-                                        thinking_b = ""
-                                        draft_b_text = ""
-                                        for block in response_b.content:
-                                            if block.type == "thinking":
-                                                thinking_b = block.thinking
-                                            elif block.type == "text":
-                                                draft_b_text = block.text
-
-                                        draft_b_clean = re.sub(r'</?draft>', '', draft_b_text).strip()
-                                        st.session_state.build_draft_b = draft_b_clean
-                                        st.session_state.build_draft_b_thinking = thinking_b
-
-                                        # Randomize blind labels
-                                        if random.random() < 0.5:
-                                            st.session_state.build_blind_labels = {"Draft X": "a", "Draft Y": "b"}
-                                        else:
-                                            st.session_state.build_blind_labels = {"Draft X": "b", "Draft Y": "a"}
-
-                                        st.rerun()
-
-                                    except Exception as e:
-                                        st.error(f"Error generating Draft B: {str(e)}")
-
-                # Display drafts for blind evaluation
-                if st.session_state.build_draft_a and st.session_state.build_draft_b and st.session_state.build_blind_labels:
-                    blind = st.session_state.build_blind_labels
-                    # Map blind labels to actual drafts
-                    draft_x = st.session_state.build_draft_a if blind["Draft X"] == "a" else st.session_state.build_draft_b
-                    draft_y = st.session_state.build_draft_a if blind["Draft Y"] == "a" else st.session_state.build_draft_b
-
-                    st.markdown("### Blind Evaluation")
-                    st.markdown("Read both drafts below. You do NOT know which rubric produced which.")
-
-                    col_dx, col_dy = st.columns(2)
-                    with col_dx:
-                        st.markdown("#### Draft X")
-                        with st.container(height=400):
-                            st.markdown(draft_x)
-                    with col_dy:
-                        st.markdown("#### Draft Y")
-                        with st.container(height=400):
-                            st.markdown(draft_y)
-
-                    # Overall preference
-                    st.markdown("### Overall Preference")
-                    pref_options = ["Prefer Draft X", "Prefer Draft Y", "No preference"]
-                    existing_pref = st.session_state.build_user_preference or {}
-                    overall_pref = st.radio(
-                        "Which draft do you prefer overall?",
-                        pref_options,
-                        index=pref_options.index(existing_pref.get("overall", "No preference")) if existing_pref.get("overall") in pref_options else 2,
-                        key="build_overall_pref",
-                        horizontal=True
-                    )
-
-                    # Per-dimension satisfaction ratings
-                    st.markdown("### Per-Dimension Satisfaction")
-                    st.markdown("For each criterion, rate how well each draft satisfies it (1 = poorly, 5 = excellently).")
-
-                    # Use Rubric A's criteria as the union set for evaluation
-                    all_criteria_names = []
-                    for c in build_rubric_a_list:
-                        if c.get("name") not in all_criteria_names:
-                            all_criteria_names.append(c.get("name"))
-                    for c in build_rubric_b_list:
-                        if c.get("name") not in all_criteria_names:
-                            all_criteria_names.append(c.get("name"))
-
-                    dim_ratings = existing_pref.get("dimension_ratings", {})
-                    rating_options = ["1", "2", "3", "4", "5"]
-
-                    for crit_idx, crit_name in enumerate(all_criteria_names):
-                        # Find description from either rubric
-                        crit_desc = ""
-                        for c in build_rubric_a_list + build_rubric_b_list:
-                            if c.get("name") == crit_name:
-                                crit_desc = c.get("description", "")
-                                break
-
-                        existing_crit = dim_ratings.get(crit_name, {})
-
-                        with st.expander(f"**{crit_name}**", expanded=True):
-                            if crit_desc:
-                                st.caption(crit_desc[:150])
-                            col_rx, col_ry = st.columns(2)
-                            with col_rx:
-                                dim_ratings.setdefault(crit_name, {})
-                                dim_ratings[crit_name]["draft_x"] = st.radio(
-                                    f"Draft X — {crit_name}",
-                                    rating_options,
-                                    index=rating_options.index(str(existing_crit.get("draft_x", "3"))) if str(existing_crit.get("draft_x", "3")) in rating_options else 2,
-                                    key=f"build_dim_x_{crit_idx}",
-                                    horizontal=True,
-                                    label_visibility="collapsed"
-                                )
-                            with col_ry:
-                                dim_ratings[crit_name]["draft_y"] = st.radio(
-                                    f"Draft Y — {crit_name}",
-                                    rating_options,
-                                    index=rating_options.index(str(existing_crit.get("draft_y", "3"))) if str(existing_crit.get("draft_y", "3")) in rating_options else 2,
-                                    key=f"build_dim_y_{crit_idx}",
-                                    horizontal=True,
-                                    label_visibility="collapsed"
-                                )
-                            st.caption("Draft X ↑ · Draft Y ↑ (1=poorly, 5=excellently)")
-
-                    # Save preference
-                    if st.button("💾 Save Evaluation", type="primary", use_container_width=True, key="build_save_pref"):
-                        st.session_state.build_user_preference = {
-                            "overall": overall_pref,
-                            "dimension_ratings": dim_ratings,
-                            "blind_labels": st.session_state.build_blind_labels
-                        }
-                        st.rerun()
-
-            # ==================== STEP 4: LLM JUDGE SCORING ====================
-            if st.session_state.build_user_preference:
-                st.divider()
-                st.subheader("Step 4: LLM Judge Scoring")
-                st.markdown("An LLM judge scores both drafts per-dimension, using your satisfaction ratings as the reference standard.")
-
-                # Reveal which draft was which
-                blind = st.session_state.build_blind_labels
-                pref = st.session_state.build_user_preference
-                overall = pref.get("overall", "No preference")
-
-                # Map overall preference to rubric
-                if overall == "Prefer Draft X":
-                    preferred_rubric = "A" if blind["Draft X"] == "a" else "B"
-                elif overall == "Prefer Draft Y":
-                    preferred_rubric = "A" if blind["Draft Y"] == "a" else "B"
-                else:
-                    preferred_rubric = "tie"
-
-                st.info(f"**Reveal:** Draft X = Rubric {'A' if blind['Draft X'] == 'a' else 'B'}, Draft Y = Rubric {'A' if blind['Draft Y'] == 'a' else 'B'}. You preferred: **{overall}** (Rubric {preferred_rubric})")
-
-                if not st.session_state.build_llm_judge_result:
-                    if st.button("🔬 Run LLM Judge", type="primary", use_container_width=True, key="build_judge_btn"):
-                        with st.spinner("LLM judge is scoring both drafts per-dimension..."):
+                c1, c2 = st.columns(2)
+                with c1:
+                    if st.button("Use my task", key="grading_use_custom"):
+                        if custom_task.strip():
+                            st.session_state.infer_step6_writing_task = custom_task.strip()
+                            st.session_state.infer_step6_drafts = None
+                            st.session_state.infer_step6_draft_labels = None
+                            st.rerun()
+                with c2:
+                    if st.button("🔄 Regenerate task", key="grading_regen_task"):
+                        with st.spinner("Regenerating..."):
                             try:
-                                # Prepare rubric criteria JSON (union of both)
-                                all_criteria = []
-                                edits = st.session_state.build_edit_classification or {}
-                                edited_names = set()
-                                for k in ["added", "removed", "reweighted", "reworded", "dimensions_changed"]:
-                                    for item in edits.get(k, []):
-                                        edited_names.add(item.get("name", ""))
+                                prompt = generate_writing_task_similar_but_different_prompt(_gr_step5_text, _gr_project_task_examples)
+                                resp = _api_call_with_retry(model="claude-opus-4-6", max_tokens=500, messages=[{"role": "user", "content": prompt}])
+                                text = "".join(b.text for b in resp.content if b.type == "text")
+                                if text.strip():
+                                    st.session_state.infer_step6_generated_task = text.strip()
+                                    st.session_state.infer_step6_writing_task = text.strip()
+                                    st.session_state.infer_step6_custom_task_key_version += 1
+                                    st.session_state.infer_step6_drafts = None
+                                    st.session_state.infer_step6_draft_labels = None
+                                    st.rerun()
+                            except Exception as e:
+                                st.error(str(e))
 
-                                for c in build_rubric_a_list:
-                                    all_criteria.append({
-                                        "name": c.get("name", ""),
-                                        "description": c.get("description", ""),
-                                        "weight": c.get("weight", c.get("priority", 0)),
-                                        "was_edited": c.get("name", "") in edited_names
-                                    })
+            # --- Step 3: Generate 4-5 drafts ---
+            if not st.session_state.infer_step6_drafts:
+                _draft_desc_parts = ["R* (final rubric v{})".format(_gr_r_star.get("version", "?"))]
+                if _gr_r1:
+                    _draft_desc_parts.append("R₁ (midpoint rubric v{})".format(_gr_r1.get("version", "?")))
+                if len(_gr_hist) >= 2:
+                    _draft_desc_parts.append("R₀ (initial rubric v{})".format(_gr_r0.get("version", "?")))
+                _draft_desc_parts += ["Cold-start", "Generic"]
+                st.markdown(f"Generate **{_gr_num_drafts} drafts** for this task: {', '.join(_draft_desc_parts)}.")
+                if st.button(f"📄 Generate {_gr_num_drafts} Drafts", use_container_width=True, type="primary", key="grading_gen_drafts_btn"):
+                    task = st.session_state.infer_step6_writing_task
+                    with st.spinner(f"Generating {_gr_num_drafts} drafts..."):
+                        try:
+                            generated = {}
+                            versions_used = {}
+                            # R* draft
+                            r_star_json = json.dumps(_rubric_to_json_serializable(_gr_r_star), indent=2)
+                            pr = generate_draft_from_rubric_prompt(task, r_star_json)
+                            r = _api_call_with_retry(model="claude-opus-4-6", max_tokens=4000, messages=[{"role": "user", "content": pr}])
+                            generated["r_star"] = "".join(b.text for b in r.content if b.type == "text").strip()
+                            versions_used["r_star"] = _gr_r_star.get("version", 1)
 
-                                criteria_json = json.dumps(all_criteria, indent=2)
-                                ratings_json = json.dumps(pref.get("dimension_ratings", {}), indent=2)
+                            # R₁ draft (if exists)
+                            if _gr_r1:
+                                r1_json = json.dumps(_rubric_to_json_serializable(_gr_r1), indent=2)
+                                pr1 = generate_draft_from_rubric_prompt(task, r1_json)
+                                r1_resp = _api_call_with_retry(model="claude-opus-4-6", max_tokens=4000, messages=[{"role": "user", "content": pr1}])
+                                generated["r1"] = "".join(b.text for b in r1_resp.content if b.type == "text").strip()
+                                versions_used["r1"] = _gr_r1.get("version", 1)
 
-                                prompt = judge_drafts_per_dimension_prompt(
-                                    st.session_state.build_draft_a,
-                                    st.session_state.build_draft_b,
-                                    criteria_json,
-                                    ratings_json
-                                )
+                            # R₀ draft (only if different from R*)
+                            if len(_gr_hist) >= 2:
+                                r0_json = json.dumps(_rubric_to_json_serializable(_gr_r0), indent=2)
+                                pr0 = generate_draft_from_rubric_prompt(task, r0_json)
+                                r0_resp = _api_call_with_retry(model="claude-opus-4-6", max_tokens=4000, messages=[{"role": "user", "content": pr0}])
+                                generated["r0"] = "".join(b.text for b in r0_resp.content if b.type == "text").strip()
+                                versions_used["r0"] = _gr_r0.get("version", 1)
 
-                                response = client.messages.create(
-                                    model="claude-opus-4-6",
-                                    max_tokens=16000,
-                                    messages=[{"role": "user", "content": prompt}],
-                                    thinking={"type": "enabled", "budget_tokens": 8000}
-                                )
+                            # Cold-start draft
+                            pc = generate_draft_from_coldstart_prompt(task, _gr_coldstart)
+                            c_resp = _api_call_with_retry(model="claude-opus-4-6", max_tokens=4000, messages=[{"role": "user", "content": pc}])
+                            generated["coldstart"] = "".join(b.text for b in c_resp.content if b.type == "text").strip()
 
-                                thinking_text = ""
-                                response_text = ""
-                                for block in response.content:
-                                    if block.type == "thinking":
-                                        thinking_text = block.thinking
-                                    elif block.type == "text":
-                                        response_text = block.text
+                            # Generic draft
+                            pg = generate_draft_generic_prompt(task)
+                            g_resp = _api_call_with_retry(model="claude-opus-4-6", max_tokens=4000, messages=[{"role": "user", "content": pg}])
+                            generated["generic"] = "".join(b.text for b in g_resp.content if b.type == "text").strip()
 
-                                json_match = re.search(r'\{[\s\S]*\}', response_text)
-                                if json_match:
-                                    parsed = json.loads(json_match.group())
-                                    st.session_state.build_llm_judge_result = parsed
-                                    st.session_state.build_llm_judge_thinking = thinking_text
+                            # Shuffle for blind grading
+                            source_keys = list(generated.keys())
+                            random.shuffle(source_keys)
+                            st.session_state.infer_step6_drafts = generated
+                            st.session_state.infer_step6_draft_labels = source_keys
+                            st.session_state.infer_step6_rubric_versions_used = versions_used
+                            st.session_state.infer_step6_blind_ratings = None
+                            st.session_state.infer_step6_user_ranking = None
+                            st.session_state.infer_step6_user_dimension_checks = None
+                            st.session_state.infer_step6_llm_evaluations = None
+                            st.session_state.infer_step6_survey = None
+                            st.session_state.infer_step6_claim2_metrics = None
+                            st.session_state.infer_step6_claim3_metrics = None
+                            st.rerun()
+                        except Exception as e:
+                            st.error(str(e))
+
+            # --- Step 4: Show drafts + blind grading ---
+            if st.session_state.infer_step6_drafts:
+                drafts = st.session_state.infer_step6_drafts
+                labels = st.session_state.infer_step6_draft_labels
+                num_d = len(labels)
+                letters = [chr(65 + i) for i in range(num_d)]  # A, B, C, D, E
+                _gr_letter_to_src = {letters[i]: labels[i] for i in range(num_d)}
+
+                st.subheader("Step 4: Blind Grading")
+
+                # Show drafts
+                st.markdown("""
+                <style>
+                textarea[disabled] {
+                    color: #1e1e1e !important;
+                    -webkit-text-fill-color: #1e1e1e !important;
+                    background-color: #f5f5f5 !important;
+                    font-size: 15px !important;
+                    line-height: 1.5 !important;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+
+                # Show drafts in rows of 3
+                draft_height = 300
+                for row_start in range(0, num_d, 3):
+                    row_letters = letters[row_start:row_start + 3]
+                    cols = st.columns(len(row_letters))
+                    for ci, letter in enumerate(row_letters):
+                        with cols[ci]:
+                            st.markdown(f"**Version {letter}**")
+                            src_key = _gr_letter_to_src[letter]
+                            st.text_area("", value=drafts[src_key], height=draft_height, key=f"grading_draft_{letter}", disabled=True, label_visibility="collapsed")
+
+                st.divider()
+                st.markdown("**Blind overall satisfaction** — Rate each draft without looking at the rubric. Giving multiple drafts the same score is perfectly fine.")
+                st.caption("1 = Does not reflect what I want at all | 2 = Misses most of what I care about | 3 = Gets some things right but misses important aspects | 4 = Mostly reflects what I want with minor issues | 5 = Fully reflects what I want")
+
+                if st.session_state.infer_step6_blind_ratings is None:
+                    st.session_state.infer_step6_blind_ratings = {l: 3 for l in letters}
+                _blind = st.session_state.infer_step6_blind_ratings
+
+                # Rating sliders in rows of 3
+                _blind_vals = {}
+                for row_start in range(0, num_d, 3):
+                    row_letters = letters[row_start:row_start + 3]
+                    cols = st.columns(len(row_letters))
+                    for ci, letter in enumerate(row_letters):
+                        with cols[ci]:
+                            _blind_vals[letter] = st.slider(f"Draft {letter}", 1, 5, _blind.get(letter, 3), key=f"grading_blind_{letter}")
+
+                # Ranking
+                st.markdown("**Rank all drafts** from most preferred (1) to least preferred ({})".format(num_d))
+                if st.session_state.infer_step6_user_ranking is None:
+                    st.session_state.infer_step6_user_ranking = []
+                _rank_vals = {}
+                rank_cols = st.columns(num_d)
+                for ci, letter in enumerate(letters):
+                    with rank_cols[ci]:
+                        _rank_vals[letter] = st.selectbox(
+                            f"Draft {letter} rank",
+                            options=list(range(1, num_d + 1)),
+                            key=f"grading_rank_{letter}"
+                        )
+
+                # --- Step 5: Rubric criterion checks (3 drafts only: R*, coldstart, generic) ---
+                st.divider()
+                st.subheader("Step 5: Rubric Criterion Checks")
+                st.markdown("Using the **same drafts from the Blind Grading step above**, mark each criterion as Met or Not met for **three of them** only. The remaining drafts are excluded from this step to avoid circularity.")
+
+                # Find which letters map to the 3 evaluation drafts
+                _eval_srcs = ["r_star", "coldstart", "generic"]
+                _eval_letters = [l for l in letters if _gr_letter_to_src[l] in _eval_srcs]
+                _eval_src_labels = {"r_star": "R*", "coldstart": "Cold-start", "generic": "Generic"}
+
+                # Show the 3 evaluated drafts for reference
+                _eval_cols = st.columns(len(_eval_letters))
+                for ci, letter in enumerate(_eval_letters):
+                    with _eval_cols[ci]:
+                        src_key = _gr_letter_to_src[letter]
+                        st.markdown(f"**Draft {letter}**")
+                        st.text_area("", value=drafts[src_key], height=250, key=f"grading_draft_1e_{letter}", disabled=True, label_visibility="collapsed")
+
+                if st.session_state.infer_step6_user_dimension_checks is None:
+                    st.session_state.infer_step6_user_dimension_checks = {l: {} for l in _eval_letters}
+                dim_checks = st.session_state.infer_step6_user_dimension_checks
+                for l in _eval_letters:
+                    if l not in dim_checks:
+                        dim_checks[l] = {}
+
+                if _gr_rubric_list:
+                    opts = ["✓ Met", "✗ Not met", "—"]
+                    for crit_idx, criterion in enumerate(_gr_rubric_list):
+                        cname = criterion.get("name", "")
+                        if not cname:
+                            continue
+                        vals = [dim_checks.get(l, {}).get(cname, None) for l in _eval_letters]
+                        criterion_done = all(v is not None for v in vals)
+                        expander_label = f"{'✅' if criterion_done else '⬜'} {cname}"
+                        with st.expander(expander_label, expanded=not criterion_done):
+                            if criterion.get("description"):
+                                st.caption(criterion.get("description"))
+                            ucols = st.columns(len(_eval_letters))
+                            for ci, letter in enumerate(_eval_letters):
+                                with ucols[ci]:
+                                    val = dim_checks.get(letter, {}).get(cname, None)
+                                    idx = 0 if val is True else (1 if val is False else 2)
+                                    opt = st.radio(f"Draft {letter}", opts, index=idx, key=f"grading_crit_{letter}_{crit_idx}", horizontal=True)
+                                    dim_checks.setdefault(letter, {})[cname] = None if opt == "—" else (opt == "✓ Met")
+
+                # --- Step 6: Run LLM evaluations (3 drafts only) ---
+                if st.session_state.infer_step6_llm_evaluations is None:
+                    # st.divider()
+                    # st.subheader("Step 6: LLM Evaluations")
+                    if st.button("👾 Run LLM evaluations", type="primary", key="grading_run_llm_evals"):
+                        # Save current blind ratings
+                        st.session_state.infer_step6_blind_ratings = _blind_vals
+                        # Save ranking
+                        ranked = sorted(_rank_vals.items(), key=lambda x: x[1])
+                        st.session_state.infer_step6_user_ranking = [r[0] for r in ranked]
+                        st.session_state.infer_step6_user_dimension_checks = {k: dict(v) for k, v in dim_checks.items()}
+
+                        task_desc = st.session_state.infer_step6_writing_task
+                        rubric_json = json.dumps(_rubric_to_json_serializable(_gr_r_star), indent=2)
+                        # Map eval letters to actual draft texts
+                        _eval_draft_texts = []
+                        for l in _eval_letters:
+                            src = _gr_letter_to_src[l]
+                            _eval_draft_texts.append(drafts[src])
+
+                        with st.spinner("Evaluating 3 drafts under rubric, cold-start, and generic conditions..."):
+                            try:
+                                prompt = claim3_unified_eval_prompt(task_desc, rubric_json, _gr_coldstart, *_eval_draft_texts[:3])
+                                r = _api_call_with_retry(model="claude-opus-4-6", max_tokens=16000, messages=[{"role": "user", "content": prompt}])
+                                txt = "".join(b.text for b in r.content if b.type == "text")
+                                js = re.search(r'\{[\s\S]*\}', txt)
+                                if js:
+                                    parsed = json.loads(js.group())
+                                    evals = {}
+                                    # Map parsed A/B/C back to our eval letters
+                                    for i, letter in enumerate(_eval_letters[:3]):
+                                        parsed_key = chr(65 + i)  # A, B, C from the prompt
+                                        block = parsed.get(parsed_key, {})
+                                        evals[letter] = {
+                                            "rubric": block.get("rubric", {}),
+                                            "coldstart": block.get("coldstart", {}),
+                                            "generic": block.get("generic", {}),
+                                        }
+                                    st.session_state.infer_step6_llm_evaluations = evals
                                     st.rerun()
                                 else:
-                                    st.error("Could not parse LLM judge response.")
-                                    st.text(response_text)
-
+                                    st.error("Could not parse evaluation JSON from response.")
+                            except json.JSONDecodeError as e:
+                                st.error(f"Invalid JSON in evaluation response: {e}")
                             except Exception as e:
-                                st.error(f"Error during LLM judging: {str(e)}")
-
-                # Display judge results
-                if st.session_state.build_llm_judge_result:
-                    judge = st.session_state.build_llm_judge_result
-
-                    if st.session_state.build_llm_judge_thinking:
-                        with st.expander("🧠 Judge Thinking", expanded=False):
-                            st.markdown(st.session_state.build_llm_judge_thinking)
-
-                    overall_j = judge.get("overall", {})
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Draft A (Rubric A) Avg", f"{overall_j.get('draft_a_avg', 0):.1f}")
-                    with col2:
-                        st.metric("Draft B (Rubric B) Avg", f"{overall_j.get('draft_b_avg', 0):.1f}")
-                    with col3:
-                        st.metric("Winner", f"Rubric {overall_j.get('overall_winner', '?')}")
-
-                    if overall_j.get("win_pattern"):
-                        st.markdown(f"**Pattern:** {overall_j['win_pattern']}")
-
-                    # Per-criterion table
-                    st.markdown("### Per-Criterion Scores")
-                    edits = st.session_state.build_edit_classification or {}
-                    edited_names = set()
-                    for k in ["added", "removed", "reweighted", "reworded", "dimensions_changed"]:
-                        for item in edits.get(k, []):
-                            edited_names.add(item.get("name", ""))
-
-                    judge_table = []
-                    edited_wins_a = 0
-                    edited_wins_b = 0
-                    unedited_wins_a = 0
-                    unedited_wins_b = 0
-
-                    for pc in judge.get("per_criterion", []):
-                        was_edited = pc.get("criterion_name", "") in edited_names
-                        winner = pc.get("winner", "tie")
-                        judge_table.append({
-                            "Criterion": pc.get("criterion_name", ""),
-                            "Edited?": "Yes" if was_edited else "No",
-                            "Draft A": pc.get("draft_a_score", 0),
-                            "Draft B": pc.get("draft_b_score", 0),
-                            "Winner": winner,
-                            "Aligns w/ User": "Yes" if pc.get("aligns_with_user_rating") else "No"
-                        })
-                        if was_edited:
-                            if winner == "A":
-                                edited_wins_a += 1
-                            elif winner == "B":
-                                edited_wins_b += 1
-                        else:
-                            if winner == "A":
-                                unedited_wins_a += 1
-                            elif winner == "B":
-                                unedited_wins_b += 1
-
-                    st.table(judge_table)
-
-                    # Attribution analysis
-                    st.markdown("### Edit Attribution Analysis")
-                    st.markdown(
-                        f"On **edited dimensions**: Rubric A wins {edited_wins_a}, Rubric B wins {edited_wins_b}. "
-                        f"On **unedited dimensions**: Rubric A wins {unedited_wins_a}, Rubric B wins {unedited_wins_b}."
-                    )
-                    if edited_wins_a > edited_wins_b:
-                        st.success("Rubric A (edited) shows stronger performance specifically on dimensions that were edited — gains are attributable to user corrections.")
-                    elif edited_wins_b > edited_wins_a:
-                        st.warning("Rubric B performed better on edited dimensions — editing may not have improved these specific areas.")
-                    else:
-                        st.info("Tied on edited dimensions — no clear attribution signal.")
-
-            # ==================== STEP 5: POST-TASK SELF-REPORT ====================
-            if st.session_state.build_llm_judge_result:
-                st.divider()
-                st.subheader("Step 5: Post-Task Self-Report")
-                st.markdown("Reflect on whether seeing and editing the rubric shaped your preferences.")
-
-                report = st.session_state.build_self_report
-
-                st.markdown("**Q1: Did seeing the rubric help you realize preferences you wouldn't have known about?**")
-                q1_options = ["1 - Not at all", "2", "3", "4", "5 - Absolutely"]
-                report["q1"] = st.radio(
-                    "Realize preferences",
-                    q1_options,
-                    index=q1_options.index(report.get("q1", "3")) if report.get("q1") in q1_options else 2,
-                    key="build_q1",
-                    label_visibility="collapsed",
-                    horizontal=True
-                )
-
-                st.markdown("**Q2: Did seeing the rubric help you understand your preferences more clearly?**")
-                q2_options = ["1 - Not at all", "2", "3", "4", "5 - Absolutely"]
-                report["q2"] = st.radio(
-                    "Understand preferences",
-                    q2_options,
-                    index=q2_options.index(report.get("q2", "3")) if report.get("q2") in q2_options else 2,
-                    key="build_q2",
-                    label_visibility="collapsed",
-                    horizontal=True
-                )
-
-                st.markdown("**Q3: Did seeing the rubric help you express preferences you otherwise couldn't articulate?**")
-                q3_options = ["1 - Not at all", "2", "3", "4", "5 - Absolutely"]
-                report["q3"] = st.radio(
-                    "Express preferences",
-                    q3_options,
-                    index=q3_options.index(report.get("q3", "3")) if report.get("q3") in q3_options else 2,
-                    key="build_q3",
-                    label_visibility="collapsed",
-                    horizontal=True
-                )
-
-                st.markdown("**Q4: Describe any specific preferences the rubric helped you discover or clarify.**")
-                report["q4"] = st.text_area(
-                    "Specific preferences",
-                    value=report.get("q4", ""),
-                    placeholder="e.g., I didn't realize I cared so much about paragraph transitions until I saw it in the rubric...",
-                    key="build_q4",
-                    label_visibility="collapsed",
-                    height=150
-                )
-
-                st.session_state.build_self_report = report
-
-                if st.button("💾 Save Build Evaluation", type="primary", use_container_width=True, key="save_build_eval"):
-                    st.session_state.build_self_report_saved = True
-
-                    # Compile all data for export
-                    blind = st.session_state.build_blind_labels
-                    pref = st.session_state.build_user_preference
-                    export_data = {
-                        "timestamp": datetime.now().isoformat(),
-                        "rubric_a": {
-                            "version": build_rubric_a.get("version"),
-                            "source": build_rubric_a.get("source"),
-                            "criteria_count": len(build_rubric_a_list)
-                        },
-                        "rubric_b": {
-                            "version": build_rubric_b.get("version"),
-                            "source": build_rubric_b.get("source"),
-                            "criteria_count": len(build_rubric_b_list)
-                        },
-                        "edit_classification": st.session_state.build_edit_classification,
-                        "writing_task": st.session_state.build_writing_task,
-                        "blind_labels": blind,
-                        "user_preference": pref,
-                        "llm_judge_result": st.session_state.build_llm_judge_result,
-                        "self_report": report,
-                        "conversation_edits": get_effective_edits_from_conversation(st.session_state.messages)
-                    }
-
-                    project_id = st.session_state.get('current_project_id')
-                    if not project_id:
-                        st.error("No project selected. Please select a project first.")
-                    else:
-                        supabase = st.session_state.get('supabase')
-                        if supabase and save_project_data(supabase, project_id, "build_evaluation", export_data):
-                            st.success("✅ Build evaluation saved successfully!")
-                        else:
-                            st.error("Failed to save evaluation.")
-
-# ============ EVALUATE: GRADE TAB ============
-with tab8:
-    st.header("📝 Evaluate: Grade")
-    st.markdown("Measure how well an LLM replicates your quality judgments when using your rubric vs. generic criteria.")
-
-    # Get active rubric
-    grade_rubric_dict, grade_rubric_idx, _ = get_active_rubric()
-
-    if not grade_rubric_dict:
-        st.warning("No active rubric found. Please create a rubric first.")
-    else:
-        grade_rubric_list = grade_rubric_dict.get("rubric", [])
-        if len(grade_rubric_list) < 2:
-            st.warning("Your rubric needs at least 2 criteria for this evaluation.")
-        else:
-            # Reset button
-            col_grade_info, col_grade_reset = st.columns([3, 1])
-            with col_grade_info:
-                st.success(f"Active rubric: **v{grade_rubric_dict.get('version', '?')}** with **{len(grade_rubric_list)}** criteria")
-            with col_grade_reset:
-                if st.button("🔄 Reset All", use_container_width=True, key="grade_reset"):
-                    st.session_state.grade_writing_task = ""
-                    st.session_state.grade_violated_dims = None
-                    st.session_state.grade_draft_good = None
-                    st.session_state.grade_draft_degraded = None
-                    st.session_state.grade_draft_good_thinking = ""
-                    st.session_state.grade_draft_degraded_thinking = ""
-                    st.session_state.grade_blind_labels = None
-                    st.session_state.grade_user_overall_pref = None
-                    st.session_state.grade_user_dim_ratings = {}
-                    st.session_state.grade_rubric_judge_result = None
-                    st.session_state.grade_rubric_judge_thinking = ""
-                    st.session_state.grade_generic_judge_result = None
-                    st.session_state.grade_generic_judge_thinking = ""
-                    st.session_state.grade_agreement_results = None
-                    st.session_state.grade_saved = False
-                    st.rerun()
-
-            # Progress indicator
-            def get_grade_step():
-                if not st.session_state.grade_draft_good or not st.session_state.grade_draft_degraded:
-                    return 1
-                if not st.session_state.grade_user_overall_pref:
-                    return 2
-                if not st.session_state.grade_rubric_judge_result or not st.session_state.grade_generic_judge_result:
-                    return 3
-                if not st.session_state.grade_agreement_results:
-                    return 4
-                return 5
-
-            grade_current_step = get_grade_step()
-            grade_steps = [
-                "1. Generate Draft Pair",
-                "2. Rate Drafts",
-                "3. LLM Judge Evaluation",
-                "4. Agreement Analysis",
-                "5. Dimension Gap Analysis"
-            ]
-            st.progress(grade_current_step / 5)
-            st.markdown(f"**Step {grade_current_step}/5: {grade_steps[grade_current_step - 1]}**")
-            st.divider()
-
-            # ==================== STEP 1: GENERATE DRAFT PAIR ====================
-            st.subheader("Step 1: Generate Draft Pair")
-            st.markdown("Select which rubric dimensions the degraded draft should violate, then enter a writing task.")
-
-            # Checkboxes for dimensions to violate
-            st.markdown("**Select dimensions to violate** (the degraded draft will deliberately underperform on these):")
-            violated_selections = {}
-            num_cols = min(3, len(grade_rubric_list))
-            checkbox_cols = st.columns(num_cols)
-            for ci, criterion in enumerate(grade_rubric_list):
-                crit_name = criterion.get("name", f"Criterion {ci+1}")
-                with checkbox_cols[ci % num_cols]:
-                    violated_selections[crit_name] = st.checkbox(
-                        crit_name,
-                        value=crit_name in (st.session_state.grade_violated_dims or []),
-                        key=f"grade_violate_{ci}",
-                        help=criterion.get("description", "")[:100]
-                    )
-
-            selected_violated = [name for name, checked in violated_selections.items() if checked]
-
-            if selected_violated:
-                st.caption(f"Selected for violation: {', '.join(selected_violated)}")
-            else:
-                st.caption("Select at least 1 dimension (2-3 recommended)")
-
-            # Writing task input
-            grade_task_input = st.text_area(
-                "Writing task:",
-                value=st.session_state.grade_writing_task,
-                placeholder="e.g., Write a professional email declining a meeting invitation while maintaining a positive relationship...",
-                height=120,
-                key="grade_task_input"
-            )
-
-            if not st.session_state.grade_draft_good or not st.session_state.grade_draft_degraded:
-                if st.button("✍️ Generate Draft Pair", type="primary", use_container_width=True, key="grade_generate_btn"):
-                    if not grade_task_input.strip():
-                        st.error("Please enter a writing task first.")
-                    elif not selected_violated:
-                        st.error("Please select at least 1 dimension to violate.")
-                    else:
-                        st.session_state.grade_writing_task = grade_task_input.strip()
-                        st.session_state.grade_violated_dims = selected_violated
-
-                        # Generate good draft
-                        with st.spinner("Generating good draft (following full rubric)..."):
-                            try:
-                                clean_rubric = copy.deepcopy(grade_rubric_dict)
-                                if 'rubric' in clean_rubric:
-                                    for c in clean_rubric['rubric']:
-                                        if '_diff' in c:
-                                            del c['_diff']
-
-                                system_good = build_system_instruction(clean_rubric)
-                                response_good = client.messages.create(
-                                    model="claude-opus-4-6",
-                                    max_tokens=8000,
-                                    system=system_good,
-                                    messages=[{"role": "user", "content": f"Please write a complete draft for this task. Output ONLY the draft text — no preamble, no follow-up notes, no meta-commentary.\n\n{st.session_state.grade_writing_task}"}],
-                                    thinking={"type": "enabled", "budget_tokens": 6000}
-                                )
-
-                                thinking_good = ""
-                                draft_good_text = ""
-                                for block in response_good.content:
-                                    if block.type == "thinking":
-                                        thinking_good = block.thinking
-                                    elif block.type == "text":
-                                        draft_good_text = block.text
-
-                                draft_good_clean = re.sub(r'</?draft>', '', draft_good_text).strip()
-                                st.session_state.grade_draft_good = draft_good_clean
-                                st.session_state.grade_draft_good_thinking = thinking_good
-
-                            except Exception as e:
-                                st.error(f"Error generating good draft: {str(e)}")
-
-                        # Generate degraded draft
-                        if st.session_state.grade_draft_good:
-                            with st.spinner("Generating degraded draft (violating selected dimensions)..."):
-                                try:
-                                    rubric_json = json.dumps(grade_rubric_list, indent=2)
-                                    violated_dims_info = []
-                                    for crit in grade_rubric_list:
-                                        if crit.get("name") in selected_violated:
-                                            violated_dims_info.append({
-                                                "name": crit.get("name"),
-                                                "description": crit.get("description", ""),
-                                                "weight": crit.get("weight", 0)
-                                            })
-                                    violated_json = json.dumps(violated_dims_info, indent=2)
-
-                                    degraded_prompt = generate_degraded_draft_prompt(
-                                        st.session_state.grade_writing_task,
-                                        rubric_json,
-                                        violated_json
-                                    )
-
-                                    response_degraded = client.messages.create(
-                                        model="claude-opus-4-6",
-                                        max_tokens=8000,
-                                        messages=[{"role": "user", "content": degraded_prompt}],
-                                        thinking={"type": "enabled", "budget_tokens": 6000}
-                                    )
-
-                                    thinking_degraded = ""
-                                    draft_degraded_text = ""
-                                    for block in response_degraded.content:
-                                        if block.type == "thinking":
-                                            thinking_degraded = block.thinking
-                                        elif block.type == "text":
-                                            draft_degraded_text = block.text
-
-                                    draft_degraded_clean = re.sub(r'</?draft>', '', draft_degraded_text).strip()
-                                    st.session_state.grade_draft_degraded = draft_degraded_clean
-                                    st.session_state.grade_draft_degraded_thinking = thinking_degraded
-
-                                    # Randomize blind labels
-                                    if random.random() < 0.5:
-                                        st.session_state.grade_blind_labels = {"Draft X": "good", "Draft Y": "degraded"}
-                                    else:
-                                        st.session_state.grade_blind_labels = {"Draft X": "degraded", "Draft Y": "good"}
-
-                                    st.rerun()
-
-                                except Exception as e:
-                                    st.error(f"Error generating degraded draft: {str(e)}")
-
-            # Display drafts for blind evaluation
-            if st.session_state.grade_draft_good and st.session_state.grade_draft_degraded and st.session_state.grade_blind_labels:
-                blind = st.session_state.grade_blind_labels
-                draft_x = st.session_state.grade_draft_good if blind["Draft X"] == "good" else st.session_state.grade_draft_degraded
-                draft_y = st.session_state.grade_draft_good if blind["Draft Y"] == "good" else st.session_state.grade_draft_degraded
-
-                st.markdown("### Drafts Generated")
-                st.markdown("Read both drafts below. You do NOT know which one follows the full rubric.")
-
-                col_gx, col_gy = st.columns(2)
-                with col_gx:
-                    st.markdown("#### Draft X")
-                    with st.container(height=400):
-                        st.markdown(draft_x)
-                with col_gy:
-                    st.markdown("#### Draft Y")
-                    with st.container(height=400):
-                        st.markdown(draft_y)
-
-                # ==================== STEP 2: USER RATES DRAFTS ====================
-                st.divider()
-                st.subheader("Step 2: Rate Drafts")
-
-                # Overall preference
-                st.markdown("### Overall Preference")
-                grade_pref_options = ["Prefer Draft X", "Prefer Draft Y", "No preference"]
-                existing_overall = st.session_state.grade_user_overall_pref
-                grade_overall_pref = st.radio(
-                    "Which draft do you prefer overall?",
-                    grade_pref_options,
-                    index=grade_pref_options.index(existing_overall) if existing_overall in grade_pref_options else 2,
-                    key="grade_overall_pref_radio",
-                    horizontal=True
-                )
-
-                # Per-dimension satisfaction ratings
-                st.markdown("### Per-Dimension Satisfaction")
-                st.markdown("For each criterion, rate how well each draft satisfies it (1 = poorly, 5 = excellently).")
-
-                grade_dim_ratings = st.session_state.grade_user_dim_ratings.copy() if st.session_state.grade_user_dim_ratings else {}
-                grade_rating_options = ["1", "2", "3", "4", "5"]
-
-                for crit_idx, criterion in enumerate(grade_rubric_list):
-                    crit_name = criterion.get("name", f"Criterion {crit_idx+1}")
-                    crit_desc = criterion.get("description", "")
-
-                    existing_crit = grade_dim_ratings.get(crit_name, {})
-
-                    with st.expander(f"**{crit_name}**", expanded=True):
-                        if crit_desc:
-                            st.caption(crit_desc[:150])
-                        col_grx, col_gry = st.columns(2)
-                        with col_grx:
-                            grade_dim_ratings.setdefault(crit_name, {})
-                            grade_dim_ratings[crit_name]["draft_x"] = st.radio(
-                                f"Draft X — {crit_name}",
-                                grade_rating_options,
-                                index=grade_rating_options.index(str(existing_crit.get("draft_x", "3"))) if str(existing_crit.get("draft_x", "3")) in grade_rating_options else 2,
-                                key=f"grade_dim_x_{crit_idx}",
-                                horizontal=True,
-                                label_visibility="collapsed"
-                            )
-                        with col_gry:
-                            grade_dim_ratings[crit_name]["draft_y"] = st.radio(
-                                f"Draft Y — {crit_name}",
-                                grade_rating_options,
-                                index=grade_rating_options.index(str(existing_crit.get("draft_y", "3"))) if str(existing_crit.get("draft_y", "3")) in grade_rating_options else 2,
-                                key=f"grade_dim_y_{crit_idx}",
-                                horizontal=True,
-                                label_visibility="collapsed"
-                            )
-                        st.caption("Draft X ↑ · Draft Y ↑ (1=poorly, 5=excellently)")
-
-                # Save ratings
-                if not st.session_state.grade_user_overall_pref:
-                    if st.button("💾 Save Ratings", type="primary", use_container_width=True, key="grade_save_ratings"):
-                        st.session_state.grade_user_overall_pref = grade_overall_pref
-                        st.session_state.grade_user_dim_ratings = grade_dim_ratings
-                        st.rerun()
-
-                # ==================== STEP 3: LLM JUDGE EVALUATION ====================
-                if st.session_state.grade_user_overall_pref:
-                    st.divider()
-                    st.subheader("Step 3: LLM Judge Evaluation")
-                    st.markdown("Two LLM judges evaluate the same drafts: one using your rubric + conversation context, one using only generic criteria.")
-
-                    if not st.session_state.grade_rubric_judge_result or not st.session_state.grade_generic_judge_result:
-                        if st.button("🔬 Run LLM Judges", type="primary", use_container_width=True, key="grade_judge_btn"):
-                            # Prepare drafts (use actual A/B, not blind labels)
-                            actual_draft_a = st.session_state.grade_draft_good
-                            actual_draft_b = st.session_state.grade_draft_degraded
-
-                            # Rubric-grounded judge
-                            with st.spinner("Running rubric-grounded judge..."):
-                                try:
-                                    rubric_criteria_json = json.dumps(grade_rubric_list, indent=2)
-
-                                    # Build conversation context (last 10 non-system messages)
-                                    conv_messages = []
-                                    for msg in st.session_state.messages:
-                                        if msg.get("role") != "system" or "<!--" not in msg.get("content", ""):
-                                            conv_messages.append(msg)
-                                    recent_conv = conv_messages[-10:] if len(conv_messages) > 10 else conv_messages
-                                    conv_context = "\n".join([f"[{m.get('role', 'unknown')}]: {m.get('content', '')[:500]}" for m in recent_conv])
-
-                                    rubric_judge_prompt = grade_rubric_judge_prompt(
-                                        actual_draft_a,
-                                        actual_draft_b,
-                                        rubric_criteria_json,
-                                        conv_context
-                                    )
-
-                                    response_rubric = client.messages.create(
-                                        model="claude-opus-4-6",
-                                        max_tokens=16000,
-                                        messages=[{"role": "user", "content": rubric_judge_prompt}],
-                                        thinking={"type": "enabled", "budget_tokens": 8000}
-                                    )
-
-                                    rubric_thinking = ""
-                                    rubric_text = ""
-                                    for block in response_rubric.content:
-                                        if block.type == "thinking":
-                                            rubric_thinking = block.thinking
-                                        elif block.type == "text":
-                                            rubric_text = block.text
-
-                                    json_match = re.search(r'\{[\s\S]*\}', rubric_text)
-                                    if json_match:
-                                        st.session_state.grade_rubric_judge_result = json.loads(json_match.group())
-                                        st.session_state.grade_rubric_judge_thinking = rubric_thinking
-                                    else:
-                                        st.error("Failed to parse rubric judge response.")
-
-                                except Exception as e:
-                                    st.error(f"Error running rubric-grounded judge: {str(e)}")
-
-                            # Generic judge
-                            if st.session_state.grade_rubric_judge_result:
-                                with st.spinner("Running generic judge..."):
-                                    try:
-                                        generic_prompt = grade_generic_judge_prompt(actual_draft_a, actual_draft_b)
-
-                                        response_generic = client.messages.create(
-                                            model="claude-opus-4-6",
-                                            max_tokens=16000,
-                                            messages=[{"role": "user", "content": generic_prompt}],
-                                            thinking={"type": "enabled", "budget_tokens": 8000}
-                                        )
-
-                                        generic_thinking = ""
-                                        generic_text = ""
-                                        for block in response_generic.content:
-                                            if block.type == "thinking":
-                                                generic_thinking = block.thinking
-                                            elif block.type == "text":
-                                                generic_text = block.text
-
-                                        json_match = re.search(r'\{[\s\S]*\}', generic_text)
-                                        if json_match:
-                                            st.session_state.grade_generic_judge_result = json.loads(json_match.group())
-                                            st.session_state.grade_generic_judge_thinking = generic_thinking
-                                        else:
-                                            st.error("Failed to parse generic judge response.")
-
-                                        st.rerun()
-
-                                    except Exception as e:
-                                        st.error(f"Error running generic judge: {str(e)}")
-
-                    # Display judge results
-                    if st.session_state.grade_rubric_judge_result and st.session_state.grade_generic_judge_result:
-                        rubric_result = st.session_state.grade_rubric_judge_result
-                        generic_result = st.session_state.grade_generic_judge_result
-
-                        col_rj, col_gj = st.columns(2)
-                        with col_rj:
-                            st.markdown("#### Rubric-Grounded Scores")
-                            st.markdown(f"**Overall preference:** Draft {rubric_result.get('overall_preference', '?')}")
-                            if rubric_result.get("overall_reasoning"):
-                                st.caption(rubric_result["overall_reasoning"])
-                            for pc in rubric_result.get("per_criterion", []):
-                                with st.expander(f"{pc.get('criterion_name', '?')} — A:{pc.get('draft_a_score', '?')} / B:{pc.get('draft_b_score', '?')}"):
-                                    st.markdown(pc.get("reasoning", ""))
-
-                        with col_gj:
-                            st.markdown("#### Generic Scores")
-                            st.markdown(f"**Overall preference:** Draft {generic_result.get('overall_preference', '?')}")
-                            if generic_result.get("overall_reasoning"):
-                                st.caption(generic_result["overall_reasoning"])
-                            for pc in generic_result.get("per_criterion", []):
-                                with st.expander(f"{pc.get('criterion_name', '?')} — A:{pc.get('draft_a_score', '?')} / B:{pc.get('draft_b_score', '?')}"):
-                                    st.markdown(pc.get("reasoning", ""))
-
-                        # ==================== STEP 4: AGREEMENT ANALYSIS ====================
-                        st.divider()
-                        st.subheader("Step 4: Agreement Analysis")
-
-                        # Compute agreement if not already done
-                        if not st.session_state.grade_agreement_results:
-                            blind = st.session_state.grade_blind_labels
-                            user_pref = st.session_state.grade_user_overall_pref
-                            user_dim = st.session_state.grade_user_dim_ratings
-
-                            # Map user preference to A/B (good/degraded)
-                            if user_pref == "Prefer Draft X":
-                                user_prefers = blind["Draft X"]  # "good" or "degraded"
-                            elif user_pref == "Prefer Draft Y":
-                                user_prefers = blind["Draft Y"]
-                            else:
-                                user_prefers = "tie"
-
-                            # Map to A/B: A=good, B=degraded
-                            if user_prefers == "good":
-                                user_overall_ab = "A"
-                            elif user_prefers == "degraded":
-                                user_overall_ab = "B"
-                            else:
-                                user_overall_ab = "tie"
-
-                            rubric_overall = rubric_result.get("overall_preference", "tie")
-                            generic_overall = generic_result.get("overall_preference", "tie")
-
-                            # Overall agreement
-                            rubric_overall_agrees = (user_overall_ab == rubric_overall)
-                            generic_overall_agrees = (user_overall_ab == generic_overall)
-
-                            # Per-dimension agreement (rubric-grounded)
-                            # Map user dim ratings from blind X/Y to actual A(good)/B(degraded)
-                            rubric_dim_agreements = {}
-                            violated_dims = st.session_state.grade_violated_dims or []
-
-                            for crit_name, ratings in user_dim.items():
-                                # User rated draft_x and draft_y; map to good/degraded
-                                user_x_score = int(ratings.get("draft_x", 3))
-                                user_y_score = int(ratings.get("draft_y", 3))
-
-                                # Map X/Y to A(good)/B(degraded) scores
-                                if blind["Draft X"] == "good":
-                                    user_a_score = user_x_score
-                                    user_b_score = user_y_score
-                                else:
-                                    user_a_score = user_y_score
-                                    user_b_score = user_x_score
-
-                                # User's preference for this dimension
-                                if user_a_score > user_b_score:
-                                    user_dim_pref = "A"
-                                elif user_b_score > user_a_score:
-                                    user_dim_pref = "B"
-                                else:
-                                    user_dim_pref = "tie"
-
-                                # Find rubric judge's scores for this criterion
-                                judge_dim_pref = "tie"
-                                judge_a_score = None
-                                judge_b_score = None
-                                for pc in rubric_result.get("per_criterion", []):
-                                    if pc.get("criterion_name") == crit_name:
-                                        judge_a_score = pc.get("draft_a_score", 3)
-                                        judge_b_score = pc.get("draft_b_score", 3)
-                                        if judge_a_score > judge_b_score:
-                                            judge_dim_pref = "A"
-                                        elif judge_b_score > judge_a_score:
-                                            judge_dim_pref = "B"
-                                        break
-
-                                agrees = (user_dim_pref == judge_dim_pref)
-                                rubric_dim_agreements[crit_name] = {
-                                    "user_pref": user_dim_pref,
-                                    "judge_pref": judge_dim_pref,
-                                    "agrees": agrees,
-                                    "violated": crit_name in violated_dims,
-                                    "user_a_score": user_a_score,
-                                    "user_b_score": user_b_score,
-                                    "judge_a_score": judge_a_score,
-                                    "judge_b_score": judge_b_score,
-                                    "user_score_gap": abs(user_a_score - user_b_score)
-                                }
-
-                            # Compute overall Kendall's tau using per-dimension scores
-                            user_ranks_list = []
-                            rubric_ranks_list = []
-                            generic_ranks_list = []
-
-                            for crit_name, info in rubric_dim_agreements.items():
-                                # User scores (A, B)
-                                user_ranks_list.append(info["user_a_score"])
-                                user_ranks_list.append(info["user_b_score"])
-                                # Rubric judge scores
-                                if info["judge_a_score"] is not None:
-                                    rubric_ranks_list.append(info["judge_a_score"])
-                                    rubric_ranks_list.append(info["judge_b_score"])
-                                else:
-                                    rubric_ranks_list.append(3)
-                                    rubric_ranks_list.append(3)
-
-                            # For generic: use average generic score for each draft
-                            generic_per_crit = generic_result.get("per_criterion", [])
-                            generic_a_avg = sum(pc.get("draft_a_score", 3) for pc in generic_per_crit) / max(len(generic_per_crit), 1)
-                            generic_b_avg = sum(pc.get("draft_b_score", 3) for pc in generic_per_crit) / max(len(generic_per_crit), 1)
-
-                            # Compute Kendall's tau
-                            rubric_tau, rubric_p = (None, None)
-                            if len(user_ranks_list) >= 4:
-                                rubric_tau, rubric_p = kendalltau(user_ranks_list, rubric_ranks_list)
-
-                            # Per-dimension agreement rates
-                            total_dims = len(rubric_dim_agreements)
-                            rubric_agree_count = sum(1 for v in rubric_dim_agreements.values() if v["agrees"])
-                            rubric_agree_rate = rubric_agree_count / total_dims if total_dims > 0 else 0
-
-                            st.session_state.grade_agreement_results = {
-                                "rubric_overall_agrees": rubric_overall_agrees,
-                                "generic_overall_agrees": generic_overall_agrees,
-                                "user_overall_ab": user_overall_ab,
-                                "rubric_overall": rubric_overall,
-                                "generic_overall": generic_overall,
-                                "rubric_tau": rubric_tau,
-                                "rubric_p": rubric_p,
-                                "rubric_agree_rate": rubric_agree_rate,
-                                "rubric_agree_count": rubric_agree_count,
-                                "total_dims": total_dims,
-                                "rubric_dim_agreements": rubric_dim_agreements,
-                                "generic_a_avg": generic_a_avg,
-                                "generic_b_avg": generic_b_avg
-                            }
-
-                        # Display agreement results
-                        agreement = st.session_state.grade_agreement_results
-
-                        st.markdown("### Overall Agreement")
-                        col_m1, col_m2, col_m3 = st.columns(3)
-                        with col_m1:
-                            st.metric("User Prefers", f"Draft {agreement['user_overall_ab']}")
-                        with col_m2:
-                            rubric_match = "✅ Agrees" if agreement["rubric_overall_agrees"] else "❌ Disagrees"
-                            st.metric("Rubric Judge", f"Draft {agreement['rubric_overall']}", delta=rubric_match, delta_color="off")
-                        with col_m3:
-                            generic_match = "✅ Agrees" if agreement["generic_overall_agrees"] else "❌ Disagrees"
-                            st.metric("Generic Judge", f"Draft {agreement['generic_overall']}", delta=generic_match, delta_color="off")
-
-                        st.markdown("### Per-Dimension Agreement (Rubric-Grounded)")
-                        col_tau, col_rate = st.columns(2)
-                        with col_tau:
-                            tau_val = agreement.get("rubric_tau")
-                            if tau_val is not None:
-                                interpretation = "Strong" if abs(tau_val) > 0.6 else ("Moderate" if abs(tau_val) > 0.3 else "Weak")
-                                st.metric("Kendall's τ", f"{tau_val:.3f}", delta=interpretation, delta_color="off")
-                            else:
-                                st.metric("Kendall's τ", "N/A")
-                        with col_rate:
-                            rate = agreement.get("rubric_agree_rate", 0)
-                            count = agreement.get("rubric_agree_count", 0)
-                            total = agreement.get("total_dims", 0)
-                            st.metric("Dimension Agreement", f"{count}/{total} ({rate:.0%})")
-
-                        # ==================== STEP 5: DIMENSION GAP ANALYSIS + SAVE ====================
-                        st.divider()
-                        st.subheader("Step 5: Dimension Gap Analysis")
-                        st.markdown("Which dimensions show the largest gap between rubric-grounded and generic evaluation? These are where personalization matters most.")
-
-                        dim_agreements = agreement.get("rubric_dim_agreements", {})
-
-                        # Build gap table
-                        gap_rows = []
-                        for crit_name, info in dim_agreements.items():
-                            gap_rows.append({
-                                "Dimension": crit_name,
-                                "Violated?": "Yes" if info["violated"] else "No",
-                                "User Prefers": f"Draft {info['user_pref']}",
-                                "Rubric Judge": f"Draft {info['judge_pref']}",
-                                "Agree?": "✅" if info["agrees"] else "❌",
-                                "User Score Gap": info["user_score_gap"],
-                                "User A": info["user_a_score"],
-                                "User B": info["user_b_score"],
-                                "Judge A": info.get("judge_a_score", "?"),
-                                "Judge B": info.get("judge_b_score", "?")
+                                st.error(str(e))
+
+                # --- Step 7+: Computation, survey, display, save (after LLM evals) ---
+                if st.session_state.infer_step6_llm_evaluations is not None:
+                    evals = st.session_state.infer_step6_llm_evaluations
+                    blind_ratings = st.session_state.infer_step6_blind_ratings or {}
+                    user_ranking = st.session_state.infer_step6_user_ranking or []
+
+                    # Helper functions (used in both computation and display)
+                    def _gr_pct_to_15(pct):
+                        if pct >= 0.90: return 5
+                        if pct >= 0.75: return 4
+                        if pct >= 0.50: return 3
+                        if pct >= 0.25: return 2
+                        return 1
+
+                    def _gr_score_from_llm_eval(eval_data):
+                        if not eval_data or "error" in eval_data:
+                            return None
+                        cs = eval_data.get("criteria_scores", [])
+                        if not cs:
+                            return None
+                        total_met = sum(c.get("dimensions_met", 0) for c in cs)
+                        total_dim = sum(c.get("dimensions_total", 0) for c in cs)
+                        if total_dim == 0:
+                            return None
+                        return _gr_pct_to_15(total_met / total_dim)
+
+                    def _cohens_kappa(user_checks, llm_checks):
+                        n = len(user_checks)
+                        if n == 0:
+                            return None
+                        agree = sum(1 for u, l in zip(user_checks, llm_checks) if u == l)
+                        p_o = agree / n
+                        p_u1 = sum(user_checks) / n
+                        p_l1 = sum(llm_checks) / n
+                        p_e = p_u1 * p_l1 + (1 - p_u1) * (1 - p_l1)
+                        if p_e == 1:
+                            return 1.0
+                        return (p_o - p_e) / (1 - p_e)
+
+                    # --- Step 7: Automatic computation ---
+                    if st.session_state.infer_step6_claim2_metrics is None or st.session_state.infer_step6_claim3_metrics is None:
+                        # ---- CLAIM 2: Convergence trajectory ----
+                        # Map source labels to trajectory order
+                        trajectory_order = ["coldstart"]
+                        if "r0" in drafts:
+                            trajectory_order.append("r0")
+                        if "r1" in drafts:
+                            trajectory_order.append("r1")
+                        trajectory_order.append("r_star")
+
+                        trajectory_scores = {}
+                        for src in trajectory_order:
+                            # Find which letter this source maps to
+                            letter = next((l for l, s in _gr_letter_to_src.items() if s == src), None)
+                            if letter and letter in blind_ratings:
+                                trajectory_scores[src] = blind_ratings[letter]
+
+                        # Improvement per step
+                        improvements = []
+                        traj_keys = list(trajectory_scores.keys())
+                        for i in range(1, len(traj_keys)):
+                            prev = trajectory_scores[traj_keys[i - 1]]
+                            curr = trajectory_scores[traj_keys[i]]
+                            improvements.append({
+                                "from": traj_keys[i - 1],
+                                "to": traj_keys[i],
+                                "delta": curr - prev
                             })
 
-                        # Sort: disagreements first, then by user score gap descending
-                        gap_rows.sort(key=lambda r: (r["Agree?"] == "✅", -r["User Score Gap"]))
+                        # Diminishing returns check
+                        diminishing = False
+                        if len(improvements) >= 2:
+                            deltas = [imp["delta"] for imp in improvements]
+                            diminishing = all(deltas[i] <= deltas[i - 1] for i in range(1, len(deltas)))
 
-                        if gap_rows:
-                            st.dataframe(
-                                gap_rows,
-                                column_config={
-                                    "Dimension": st.column_config.TextColumn("Dimension", width="medium"),
-                                    "Violated?": st.column_config.TextColumn("Violated?", width="small"),
-                                    "User Prefers": st.column_config.TextColumn("User", width="small"),
-                                    "Rubric Judge": st.column_config.TextColumn("Rubric Judge", width="small"),
-                                    "Agree?": st.column_config.TextColumn("Agree?", width="small"),
-                                    "User Score Gap": st.column_config.NumberColumn("Score Gap", width="small"),
-                                    "User A": st.column_config.NumberColumn("User A", width="small"),
-                                    "User B": st.column_config.NumberColumn("User B", width="small"),
-                                    "Judge A": st.column_config.NumberColumn("Judge A", width="small"),
-                                    "Judge B": st.column_config.NumberColumn("Judge B", width="small")
-                                },
-                                use_container_width=True,
-                                hide_index=True
+                        # Rubric diffs between versions
+                        rubric_diffs = []
+                        if len(_gr_hist) >= 2:
+                            rubric_diffs.append({
+                                "from_version": _gr_r0.get("version", 1),
+                                "to_version": (_gr_r1 or _gr_r_star).get("version", "?"),
+                                "label": "R₀ → {}".format("R₁" if _gr_r1 else "R*"),
+                                "edits": classify_rubric_edits(_gr_r0.get("rubric", []), (_gr_r1 or _gr_r_star).get("rubric", []))
+                            })
+                        if _gr_r1 and len(_gr_hist) >= 3:
+                            rubric_diffs.append({
+                                "from_version": _gr_r1.get("version", "?"),
+                                "to_version": _gr_r_star.get("version", "?"),
+                                "label": "R₁ → R*",
+                                "edits": classify_rubric_edits(_gr_r1.get("rubric", []), _gr_r_star.get("rubric", []))
+                            })
+
+                        claim2 = {
+                            "trajectory_scores": trajectory_scores,
+                            "improvements": improvements,
+                            "diminishing": diminishing,
+                            "rubric_diffs": rubric_diffs,
+                        }
+                        st.session_state.infer_step6_claim2_metrics = claim2
+
+                        # ---- CLAIM 3: Alignment metrics ----
+                        # Kendall tau: user blind scores vs LLM scores per condition (3 eval drafts)
+                        corr = {}
+                        for cond in ["rubric", "coldstart", "generic"]:
+                            pairs = []
+                            for letter in _eval_letters:
+                                user_s = blind_ratings.get(letter)
+                                llm_s = _gr_score_from_llm_eval(evals.get(letter, {}).get(cond))
+                                if user_s is not None and llm_s is not None:
+                                    pairs.append((user_s, llm_s))
+                            tau = None
+                            if len(pairs) >= 2:
+                                try:
+                                    tau, _ = kendalltau([p[0] for p in pairs], [p[1] for p in pairs])
+                                except Exception:
+                                    pass
+                            corr[cond] = {"tau": tau, "pairs": pairs}
+
+                        # Dimension agreement rates per condition
+                        dim_agree = {}
+                        _dc = st.session_state.infer_step6_user_dimension_checks or {}
+                        user_binary_all = []
+                        llm_binary_all = []
+                        for cond in ["rubric", "coldstart", "generic"]:
+                            total_agree = total_count = 0
+                            for letter in _eval_letters:
+                                uc = _dc.get(letter, {})
+                                eval_data = evals.get(letter, {}).get(cond, {})
+                                for c in (eval_data.get("criteria_scores") or []):
+                                    cname = c.get("name", "")
+                                    user_met = uc.get(cname)
+                                    if user_met is None:
+                                        continue
+                                    dims_detail = c.get("dimensions_detail", [])
+                                    llm_met = all(d.get("met", False) for d in dims_detail) if dims_detail else None
+                                    if llm_met is None:
+                                        continue
+                                    total_count += 1
+                                    if user_met == llm_met:
+                                        total_agree += 1
+                                    if cond == "rubric":
+                                        user_binary_all.append(int(user_met))
+                                        llm_binary_all.append(int(llm_met))
+                            dim_agree[cond] = {"rate": (total_agree / total_count) if total_count else None, "agree": total_agree, "count": total_count}
+
+                        # Cohen's kappa (rubric condition only)
+                        kappa = _cohens_kappa(user_binary_all, llm_binary_all) if user_binary_all else None
+
+                        # Top-draft match per condition
+                        user_top = user_ranking[0] if user_ranking else None
+                        top_match = {}
+                        for cond in ["rubric", "coldstart", "generic"]:
+                            cond_scores = []
+                            for letter in _eval_letters:
+                                s = _gr_score_from_llm_eval(evals.get(letter, {}).get(cond))
+                                if s is not None:
+                                    cond_scores.append((letter, s))
+                            if cond_scores:
+                                cond_scores.sort(key=lambda x: -x[1])
+                                top_match[cond] = (cond_scores[0][0] == user_top) if user_top else None
+                            else:
+                                top_match[cond] = None
+
+                        # Failure modes: where generic disagrees with user but rubric agrees
+                        failure_modes = []
+                        for letter in _eval_letters:
+                            uc = _dc.get(letter, {})
+                            rub_eval = evals.get(letter, {}).get("rubric", {})
+                            gen_eval = evals.get(letter, {}).get("generic", {})
+                            for c in (gen_eval.get("criteria_scores") or []):
+                                cname = c.get("name", "")
+                                user_met = uc.get(cname)
+                                if user_met is None:
+                                    continue
+                                gen_dims = c.get("dimensions_detail", [])
+                                gen_met = all(d.get("met", False) for d in gen_dims) if gen_dims else None
+                                if gen_met is None or gen_met == user_met:
+                                    continue
+                                # Generic disagrees with user — check if rubric agrees
+                                rub_crit = next((rc for rc in (rub_eval.get("criteria_scores") or []) if rc.get("name") == cname), None)
+                                rub_met = None
+                                if rub_crit:
+                                    rub_dims = rub_crit.get("dimensions_detail", [])
+                                    rub_met = all(d.get("met", False) for d in rub_dims) if rub_dims else None
+                                corrected = rub_met == user_met if rub_met is not None else None
+                                failure_modes.append({
+                                    "letter": letter,
+                                    "criterion": cname,
+                                    "user": user_met,
+                                    "generic": gen_met,
+                                    "rubric_corrected": corrected
+                                })
+
+                        claim3 = {
+                            "correlations": corr,
+                            "dimension_agreement": dim_agree,
+                            "cohens_kappa": kappa,
+                            "top_match": top_match,
+                            "failure_modes": failure_modes,
+                        }
+                        st.session_state.infer_step6_claim3_metrics = claim3
+
+                    # --- Step 8: Post-task survey ---
+                    st.divider()
+                    st.subheader("Step 8: Post-Task Survey")
+
+                    if st.session_state.infer_step6_survey is None:
+                        st.session_state.infer_step6_survey = {}
+                    _survey = st.session_state.infer_step6_survey
+
+                    st.markdown("**Does this rubric accurately represent what you care about in your writing?**")
+                    accuracy_opts = [
+                        "Yes, very accurately",
+                        "Mostly, with minor gaps",
+                        "Somewhat, it captures the basics but misses nuance",
+                        "No, it does not represent my preferences well"
+                    ]
+                    _survey["accuracy"] = st.radio(
+                        "Rubric accuracy",
+                        accuracy_opts,
+                        index=accuracy_opts.index(_survey["accuracy"]) if _survey.get("accuracy") in accuracy_opts else 0,
+                        key="grading_survey_accuracy",
+                        label_visibility="collapsed"
+                    )
+
+                    st.markdown("**How many more rounds of refinement do you think you would need before the rubric fully captures your preferences?**")
+                    rounds_opts = [
+                        "It already does",
+                        "One more round",
+                        "Two to three more rounds",
+                        "Many more rounds"
+                    ]
+                    _survey["rounds_needed"] = st.radio(
+                        "Rounds needed",
+                        rounds_opts,
+                        index=rounds_opts.index(_survey["rounds_needed"]) if _survey.get("rounds_needed") in rounds_opts else 0,
+                        key="grading_survey_rounds",
+                        label_visibility="collapsed"
+                    )
+
+                    # --- Step 9: Results Display ---
+                    st.divider()
+                    st.subheader("Step 9: Results")
+
+                    claim2 = st.session_state.infer_step6_claim2_metrics or {}
+                    claim3 = st.session_state.infer_step6_claim3_metrics or {}
+
+                    # ---- CLAIM 2 DISPLAY ----
+                    st.markdown("### Convergence Trajectory")
+
+                    traj = claim2.get("trajectory_scores", {})
+                    if len(traj) >= 2:
+                        import pandas as pd
+                        import altair as alt
+                        traj_display = {"coldstart": "Cold-start", "r0": "R₀", "r1": "R₁", "r_star": "R*"}
+                        ordered_keys = [k for k in ["coldstart", "r0", "r1", "r_star"] if k in traj]
+                        stage_labels = [traj_display.get(k, k) for k in ordered_keys]
+                        chart_data = pd.DataFrame({
+                            "Stage": stage_labels,
+                            "Satisfaction": [traj[k] for k in ordered_keys]
+                        })
+                        chart = alt.Chart(chart_data).mark_line(point=True).encode(
+                            x=alt.X("Stage", sort=stage_labels, title="Stage"),
+                            y=alt.Y("Satisfaction", scale=alt.Scale(domain=[1, 5]), title="Satisfaction (1-5)")
+                        ).properties(height=300)
+                        st.altair_chart(chart, use_container_width=True)
+                    else:
+                        st.info("Only one rubric version available — convergence trajectory requires at least two versions.")
+
+                    # Rubric diffs
+                    diffs = claim2.get("rubric_diffs", [])
+                    if diffs:
+                        st.markdown("**Rubric changes at each transition:**")
+                        for diff_info in diffs:
+                            with st.expander(f"{diff_info['label']} (v{diff_info['from_version']} → v{diff_info['to_version']})"):
+                                edits = diff_info["edits"]
+                                if edits.get("added"):
+                                    for a in edits["added"]:
+                                        st.markdown(f"➕ **Added:** {a['name']}")
+                                if edits.get("removed"):
+                                    for r in edits["removed"]:
+                                        st.markdown(f"➖ **Removed:** {r['name']}")
+                                if edits.get("reweighted"):
+                                    for w in edits["reweighted"]:
+                                        st.markdown(f"🔃 **Reweighted:** {w['name']} ({w['old_weight']} → {w['new_weight']})")
+                                if edits.get("reworded"):
+                                    for rw in edits["reworded"]:
+                                        st.markdown(f"✏️ **Reworded:** {rw['name']}")
+                                if edits.get("dimensions_changed"):
+                                    for dc in edits["dimensions_changed"]:
+                                        parts = []
+                                        if dc.get("added_dims"):
+                                            parts.append(f"+{len(dc['added_dims'])} dims")
+                                        if dc.get("removed_dims"):
+                                            parts.append(f"-{len(dc['removed_dims'])} dims")
+                                        st.markdown(f"📐 **Dimensions changed:** {dc['name']} ({', '.join(parts)})")
+                                if not any(edits.get(k) for k in ["added", "removed", "reweighted", "reworded", "dimensions_changed"]):
+                                    st.caption("No changes detected.")
+
+                    # ---- CLAIM 3 DISPLAY ----
+                    st.divider()
+                    st.markdown("### Rubric–User Alignment")
+
+                    # Order columns: R* (final) first, then cold-start, then generic
+                    _display_order = ["r_star", "coldstart", "generic"]
+                    _display_letters = []
+                    for src_key in _display_order:
+                        for l in _eval_letters:
+                            if _gr_letter_to_src[l] == src_key:
+                                _display_letters.append(l)
+                                break
+
+                    # Draft reveal pills
+                    src_label_map = {"r_star": "R* (final rubric)", "r1": "R₁ (midpoint)", "r0": "R₀ (initial)", "coldstart": "cold-start", "generic": "generic"}
+                    pill_colors = {"r_star": ("#E3F2FD", "#1565C0"), "r1": ("#E8EAF6", "#283593"), "r0": ("#F3E5F5", "#6A1B9A"), "coldstart": ("#FFF3E0", "#E65100"), "generic": ("#F3E5F5", "#7B1FA2")}
+                    pills_html = '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">'
+                    for letter in _display_letters:
+                        src = _gr_letter_to_src[letter]
+                        label = src_label_map.get(src, src)
+                        bg, border = pill_colors.get(src, ("#f5f5f5", "#999"))
+                        pills_html += f'<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:{bg};border:1.5px solid {border};border-radius:20px;font-size:0.9em;"><strong>Draft {letter}</strong> <span style="color:#666;">→ {label}</span></span>'
+                    pills_html += '</div>'
+                    st.markdown(pills_html, unsafe_allow_html=True)
+
+                    # Score matrix (4 rows × 3 evaluated draft columns)
+                    def _gr_score_cell(s):
+                        if s is None:
+                            return '<td style="text-align:center;padding:12px 18px;color:#999;font-size:1.1em;">—</td>'
+                        colors = {5: ("#E8F5E9", "#2E7D32", "⭐⭐⭐"), 4: ("#E3F2FD", "#1565C0", "⭐⭐"), 3: ("#FFF3E0", "#E65100", "⭐"), 2: ("#FBE9E7", "#BF360C", "◇"), 1: ("#FFEBEE", "#C62828", "☆")}
+                        bg, fg, icon = colors.get(s, ("#f5f5f5", "#333", ""))
+                        return f'<td style="text-align:center;padding:12px 18px;background:{bg};color:{fg};font-weight:700;font-size:1.2em;border-radius:6px;">{s} {icon}</td>'
+
+                    def _gr_user_score(letter):
+                        d = (st.session_state.infer_step6_user_dimension_checks or {}).get(letter, {})
+                        vals = [v for v in d.values() if v is not None]
+                        if not vals:
+                            return None
+                        return _gr_pct_to_15(sum(1 for v in vals if v is True) / len(vals))
+
+                    # Build score rows in fixed order: R* → cold-start → generic
+                    user_scores = [_gr_user_score(l) for l in _display_letters]
+                    rub_scores = [_gr_score_from_llm_eval(evals.get(l, {}).get("rubric")) for l in _display_letters]
+                    cs_scores = [_gr_score_from_llm_eval(evals.get(l, {}).get("coldstart")) for l in _display_letters]
+                    gen_scores = [_gr_score_from_llm_eval(evals.get(l, {}).get("generic")) for l in _display_letters]
+
+                    rows = [
+                        ("👤 You", "rubric criterion checks", user_scores),
+                        ("👾 LLM — rubric", "R* rubric-grounded", rub_scores),
+                        ("👾 LLM — cold-start", "cold-start-grounded", cs_scores),
+                        ("👾 LLM — generic", "standard quality", gen_scores),
+                    ]
+                    # Build header
+                    header_cells = "".join(
+                        f'<th style="text-align:center;padding:10px 14px;font-size:0.95em;font-weight:600;">Draft {l} ({_eval_src_labels.get(_gr_letter_to_src[l], "")})</th>'
+                        for l in _display_letters
+                    )
+                    table_html = f'''<table style="width:100%;border-collapse:separate;border-spacing:0 6px;margin:12px 0;">
+<tr style="background:#f8f9fa;">
+  <th style="text-align:left;padding:10px 14px;font-size:0.85em;color:#666;"></th>
+  {header_cells}
+</tr>'''
+                    for label, desc, scores in rows:
+                        table_html += f'<tr style="background:white;"><td style="padding:10px 14px;"><strong>{label}</strong><br><span style="font-size:0.8em;color:#888;">{desc}</span></td>'
+                        for s in scores:
+                            table_html += _gr_score_cell(s)
+                        table_html += '</tr>'
+                    table_html += '</table>'
+                    st.markdown(table_html, unsafe_allow_html=True)
+
+                    # Score legend
+                    legend_html = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px 0;">'
+                    for val, label, bg, fg in [(5, "Excellent", "#E8F5E9", "#2E7D32"), (4, "Good", "#E3F2FD", "#1565C0"), (3, "Fair", "#FFF3E0", "#E65100"), (2, "Needs Work", "#FBE9E7", "#BF360C"), (1, "Weak", "#FFEBEE", "#C62828")]:
+                        legend_html += f'<span style="padding:3px 10px;background:{bg};color:{fg};border-radius:12px;font-size:0.8em;font-weight:600;">{val} = {label}</span>'
+                    legend_html += '</div>'
+                    st.markdown(legend_html, unsafe_allow_html=True)
+
+                    # --- Agreement summary: how similar is each LLM condition to your evaluation ---
+                    st.markdown("**How closely does each LLM grading approach match yours?**")
+                    st.caption("Match % = percentage of criteria where the LLM's score matches your score exactly.")
+
+                    _match_data = []
+                    for cond_key, cond_label in [("rubric", "Rubric-grounded"), ("coldstart", "Cold-start-grounded"), ("generic", "Generic")]:
+                        matches = 0
+                        total = 0
+                        for l in _display_letters:
+                            u = _gr_user_score(l)
+                            llm_s = _gr_score_from_llm_eval(evals.get(l, {}).get(cond_key))
+                            if u is not None and llm_s is not None:
+                                total += 1
+                                if u == llm_s:
+                                    matches += 1
+                        pct = (matches / total * 100) if total > 0 else 0
+                        _match_data.append((cond_label, matches, total, pct))
+
+                    match_cols = st.columns(3)
+                    for ci, (cond_label, matches, total, pct) in enumerate(_match_data):
+                        with match_cols[ci]:
+                            if pct >= 67:
+                                color = "#2E7D32"
+                            elif pct >= 34:
+                                color = "#E65100"
+                            else:
+                                color = "#C62828"
+                            st.markdown(
+                                f'<div style="text-align:center;padding:12px;background:#fafafa;border-radius:10px;border:1px solid #e0e0e0;">'
+                                f'<div style="font-size:0.85em;color:#666;">{cond_label}</div>'
+                                f'<div style="font-size:1.8em;font-weight:700;color:{color};">{pct:.0f}%</div>'
+                                f'<div style="font-size:0.8em;color:#999;">{matches}/{total} drafts match</div>'
+                                f'</div>',
+                                unsafe_allow_html=True
                             )
 
-                        # Summary statistics
-                        violated_agree = sum(1 for v in dim_agreements.values() if v["violated"] and v["agrees"])
-                        violated_total = sum(1 for v in dim_agreements.values() if v["violated"])
-                        non_violated_agree = sum(1 for v in dim_agreements.values() if not v["violated"] and v["agrees"])
-                        non_violated_total = sum(1 for v in dim_agreements.values() if not v["violated"])
-
-                        st.markdown("### Summary")
-                        col_s1, col_s2, col_s3 = st.columns(3)
-                        with col_s1:
-                            st.metric(
-                                "Rubric Judge Agreement",
-                                f"{agreement.get('rubric_agree_count', 0)}/{agreement.get('total_dims', 0)}"
-                            )
-                        with col_s2:
-                            if violated_total > 0:
-                                st.metric("On Violated Dims", f"{violated_agree}/{violated_total}")
-                            else:
-                                st.metric("On Violated Dims", "N/A")
-                        with col_s3:
-                            if non_violated_total > 0:
-                                st.metric("On Non-Violated Dims", f"{non_violated_agree}/{non_violated_total}")
-                            else:
-                                st.metric("On Non-Violated Dims", "N/A")
-
-                        # Generic vs rubric comparison
-                        st.markdown("### Rubric-Grounded vs. Generic")
-                        st.markdown(f"- **Rubric-grounded judge** agreed with your overall preference: {'✅ Yes' if agreement['rubric_overall_agrees'] else '❌ No'}")
-                        st.markdown(f"- **Generic judge** agreed with your overall preference: {'✅ Yes' if agreement['generic_overall_agrees'] else '❌ No'}")
-                        st.markdown(f"- **Rubric-grounded per-dimension agreement:** {agreement.get('rubric_agree_rate', 0):.0%}")
-
-                        # Identify dimensions where personalization matters most
-                        disagreement_dims = [name for name, info in dim_agreements.items() if not info["agrees"]]
-                        if disagreement_dims and not agreement["generic_overall_agrees"]:
-                            st.info(f"**Dimensions where personalization matters most:** {', '.join(disagreement_dims)} — the rubric-grounded judge disagreed with you here, and the generic judge also failed to match your overall preference.")
-                        elif disagreement_dims:
-                            st.info(f"**Dimensions with rubric-judge disagreement:** {', '.join(disagreement_dims)}")
-                        elif not agreement["generic_overall_agrees"]:
-                            st.success("The rubric-grounded judge agreed with you on all dimensions, while the generic judge disagreed on overall preference — the rubric captured your preferences well.")
+                    # --- Step 10: Save to database ---
+                    st.divider()
+                    st.markdown("**Save all evaluation data** to the database.")
+                    if st.button("💾 Save evaluation to database", type="primary", key="grading_tab_save_eval"):
+                        project_id = st.session_state.get("current_project_id")
+                        if not project_id:
+                            st.error("No project selected.")
                         else:
-                            st.success("Both judges agreed with your preferences across the board.")
-
-                        # Save button
-                        st.divider()
-                        if not st.session_state.grade_saved:
-                            if st.button("💾 Save Grade Evaluation", type="primary", use_container_width=True, key="grade_save_btn"):
+                            supabase = st.session_state.get("supabase")
+                            if not supabase:
+                                st.error("Not connected to database.")
+                            else:
+                                dim_checks_serializable = None
+                                if st.session_state.get("infer_step6_user_dimension_checks"):
+                                    dim_checks_serializable = {}
+                                    for letter, d in st.session_state.infer_step6_user_dimension_checks.items():
+                                        dim_checks_serializable[letter] = {k if isinstance(k, str) else f"{k[0]}|{k[1]}": v for k, v in d.items()}
                                 export_data = {
                                     "timestamp": datetime.now().isoformat(),
-                                    "rubric_version": grade_rubric_dict.get("version", "?"),
-                                    "writing_task": st.session_state.grade_writing_task,
-                                    "violated_dims": st.session_state.grade_violated_dims,
-                                    "blind_labels": st.session_state.grade_blind_labels,
-                                    "user_overall_preference": st.session_state.grade_user_overall_pref,
-                                    "user_dim_ratings": st.session_state.grade_user_dim_ratings,
-                                    "rubric_judge_result": st.session_state.grade_rubric_judge_result,
-                                    "generic_judge_result": st.session_state.grade_generic_judge_result,
-                                    "agreement_results": {
-                                        k: v for k, v in agreement.items()
-                                        if k != "rubric_dim_agreements"
-                                    },
-                                    "dimension_agreements": agreement.get("rubric_dim_agreements", {})
+                                    "rubric_versions_used": st.session_state.get("infer_step6_rubric_versions_used"),
+                                    "coldstart_text": _gr_coldstart,
+                                    "writing_task": st.session_state.get("infer_step6_writing_task"),
+                                    "drafts": {k: v[:500] + "..." if len(v) > 500 else v for k, v in (st.session_state.get("infer_step6_drafts") or {}).items()},
+                                    "draft_labels": st.session_state.get("infer_step6_draft_labels"),
+                                    "blind_ratings": st.session_state.get("infer_step6_blind_ratings"),
+                                    "user_ranking": st.session_state.get("infer_step6_user_ranking"),
+                                    "user_dimension_checks": dim_checks_serializable,
+                                    "llm_evaluations": st.session_state.get("infer_step6_llm_evaluations"),
+                                    "survey": st.session_state.get("infer_step6_survey"),
+                                    "claim2_metrics": st.session_state.get("infer_step6_claim2_metrics"),
+                                    "claim3_metrics": st.session_state.get("infer_step6_claim3_metrics"),
                                 }
-
-                                project_id = st.session_state.get('current_project_id')
-                                if not project_id:
-                                    st.error("No project selected. Please select a project first.")
+                                if save_project_data(supabase, project_id, "grading_evaluation", export_data):
+                                    st.success("Evaluation saved to database.")
                                 else:
-                                    supabase = st.session_state.get('supabase')
-                                    if supabase and save_project_data(supabase, project_id, "grade_evaluation", export_data):
-                                        st.session_state.grade_saved = True
-                                        st.success("✅ Grade evaluation saved successfully!")
-                                    else:
-                                        st.error("Failed to save evaluation.")
-                        else:
-                            st.success("✅ Grade evaluation has been saved.")
+                                    st.error("Failed to save.")
+
+
+
+
+
+
+
 
 # ============ EVALUATE: SURVEY TAB ============
-with tab2:
+with tab_survey:
     st.header("📋 Evaluate: Survey")
     st.caption("Complete surveys after each task to track your experience")
 
@@ -7936,13 +8368,14 @@ with tab2:
                 if supabase:
                     try:
                         save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
-                        st.success("Task A survey saved!")
+                        st.toast("Task A survey saved!")
                     except Exception as e:
                         st.error(f"Failed to save: {e}")
                 else:
-                    st.success("Task A survey saved locally!")
+                    st.toast("Task A survey saved locally!")
             else:
-                st.success("Task A survey saved locally!")
+                st.toast("Task A survey saved locally!")
+            st.rerun()
 
     # ============ TASK B SURVEY ============
     elif survey_task == "Task B (with rubric, visible)":
@@ -8029,13 +8462,14 @@ with tab2:
                 if supabase:
                     try:
                         save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
-                        st.success("Task B survey saved!")
+                        st.toast("Task B survey saved!")
                     except Exception as e:
                         st.error(f"Failed to save: {e}")
                 else:
-                    st.success("Task B survey saved locally!")
+                    st.toast("Task B survey saved locally!")
             else:
-                st.success("Task B survey saved locally!")
+                st.toast("Task B survey saved locally!")
+            st.rerun()
 
     # ============ FINAL REVIEW ============
     elif survey_task == "Final Review":
@@ -8118,13 +8552,14 @@ with tab2:
                     if supabase:
                         try:
                             save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
-                            st.success("Final review saved!")
+                            st.toast("Final review saved!")
                         except Exception as e:
                             st.error(f"Failed to save: {e}")
                     else:
-                        st.success("Final review saved locally!")
+                        st.toast("Final review saved locally!")
                 else:
-                    st.success("Final review saved locally!")
+                    st.toast("Final review saved locally!")
+                st.rerun()
 
     # ============ SURVEY SUMMARY & EXPORT ============
     st.markdown("---")

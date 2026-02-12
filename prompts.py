@@ -13,10 +13,11 @@ You will receive:
 Each criterion has **dimensions** — checkable items that can be marked as met (✓) or not met (✗).
 
 Achievement levels are determined by how many dimensions are met:
-- **⭐⭐⭐ Excellent**: 100% of dimensions met (all checked)
-- **⭐⭐ Good**: 75%+ of dimensions met
+- **⭐⭐⭐ Excellent**: 90%+ of dimensions met
+- **⭐⭐ Good**: 75-89% of dimensions met
 - **⭐ Fair**: 50-74% of dimensions met
-- **⭐ Weak**: Less than 50% of dimensions met
+- **◇ Needs Work**: 25-49% of dimensions met
+- **☆ Weak**: Less than 25% of dimensions met
 
 ## Evaluation Process
 
@@ -39,7 +40,7 @@ Wrap your detailed analysis in <evaluation> tags:
 - [etc. for all dimensions]
 
 **Dimensions Met**: [X] of [Y] ([percentage]%)
-**Achievement Level**: [Excellent/Good/Fair/Weak]
+**Achievement Level**: [Excellent/Good/Fair/Needs Work/Weak]
 
 **Key Evidence**:
 - [Specific quote supporting dimension checks]
@@ -79,7 +80,7 @@ After your evaluation, provide this JSON:
           "evidence": "<brief quote or reason>"
         }
       ],
-      "achievement_level": "<Excellent/Good/Fair/Weak>",
+      "achievement_level": "<Excellent/Good/Fair/Needs Work/Weak>",
       "evidence_summary": "<1-2 sentence summary of key evidence>",
       "improvement_explanation": "<What specific changes would check off the unchecked dimensions? Be concrete and actionable.>"
     }
@@ -88,6 +89,7 @@ After your evaluation, provide this JSON:
     "excellent": <count of criteria at excellent>,
     "good": <count>,
     "fair": <count>,
+    "needs_work": <count>,
     "weak": <count>
   },
   "top_priorities_status": "<Summary of how the draft performs on the top 2-3 priority criteria>",
@@ -136,10 +138,11 @@ Then assess the **final draft** (the most recent assistant message) against each
 Each criterion has **dimensions** — checkable items that can be marked as met (✓) or not met (✗).
 
 Achievement levels are determined by how many dimensions are met:
-- **⭐⭐⭐ Excellent**: 100% of dimensions met (all checked)
-- **⭐⭐ Good**: 75%+ of dimensions met
+- **⭐⭐⭐ Excellent**: 90%+ of dimensions met
+- **⭐⭐ Good**: 75-89% of dimensions met
 - **⭐ Fair**: 50-74% of dimensions met
-- **☆ Weak**: Less than 50% of dimensions met
+- **◇ Needs Work**: 25-49% of dimensions met
+- **☆ Weak**: Less than 25% of dimensions met
 
 ## Evaluation Process
 
@@ -172,7 +175,7 @@ Wrap your detailed evaluation in `<evaluation>` tags, following this structure f
 - [etc. for all dimensions]
 
 **Dimensions Met**: [X] of [Y] ([percentage]%)
-**Achievement Level**: [Excellent/Good/Fair/Weak]
+**Achievement Level**: [Excellent/Good/Fair/Needs Work/Weak]
 
 **Key Evidence**:
 - [Specific quote from draft]
@@ -205,7 +208,7 @@ After completing the evaluation for all criteria, provide a JSON summary:
           "evidence": "<brief quote or reason>"
         }
       ],
-      "achievement_level": "<Excellent|Good|Fair|Weak>",
+      "achievement_level": "<Excellent|Good|Fair|Needs Work|Weak>",
       "evidence_summary": "<1-2 sentence summary of key evidence>",
       "improvement_explanation": "<What specific changes would check off the unchecked dimensions? Be concrete and actionable.>"
     }
@@ -215,6 +218,7 @@ After completing the evaluation for all criteria, provide a JSON summary:
     "excellent": <count of criteria at excellent>,
     "good": <count>,
     "fair": <count>,
+    "needs_work": <count>,
     "weak": <count>
   },
   "top_priorities_status": "<Summary of how the draft performs on the top 2-3 priority criteria - this is the most important indicator of draft quality>",
@@ -1168,10 +1172,10 @@ def build_system_instruction(rubric_dict_or_list):
 
     rubric_block = ""
     if rubric:
-        # Number the criteria explicitly for clarity
+        # Number the criteria explicitly for clarity, stripping _diff (contains non-serializable sets)
         numbered_rubric = []
         for idx, criterion in enumerate(rubric, start=1):
-            numbered_crit = criterion.copy()
+            numbered_crit = {k: v for k, v in criterion.items() if k != '_diff'}
             numbered_crit['index'] = idx
             numbered_rubric.append(numbered_crit)
 
@@ -1253,11 +1257,12 @@ Each criterion in the rubric must have this structure:
   "priority": 1-N (unique integer rank, 1 = most important)
 }}
 
-Note: Achievement levels (Excellent/Good/Fair/Weak) are automatically derived from how many dimensions are met:
-- Excellent: 100% of dimensions met
-- Good: 75%+ of dimensions met
+Note: Achievement levels (Excellent/Good/Fair/Needs Work/Weak) are automatically derived from how many dimensions are met:
+- Excellent: 90%+ of dimensions met
+- Good: 75-89% of dimensions met
 - Fair: 50-74% of dimensions met
-- Weak: Less than 50% of dimensions met
+- Needs Work: 25-49% of dimensions met
+- Weak: Less than 25% of dimensions met
 
 Rules:
 - Preserve all fields unless explicitly changed by the user
@@ -1476,20 +1481,21 @@ Here is the current rubric that has been inferred from this user's writing prefe
 
 {rubric_json}
 
-When identifying decision points, PRIORITIZE moments that:
-- Directly relate to criteria in this rubric (validate or contradict them)
-- Could help refine or add nuance to existing rubric criteria
-- Reveal preferences not yet captured in the rubric
-- Show the user's priorities when multiple rubric criteria might conflict
+CRITICAL: Every decision point you extract MUST map to a specific criterion in this rubric. The rubric was inferred from this same conversation, so every user writing choice should correspond to something the rubric captures. If a moment doesn't clearly relate to any rubric criterion, skip it — do NOT include decision points with no rubric match.
 
-IMPORTANT: Maximize diversity across rubric criteria. Each decision point should ideally map to a DIFFERENT rubric criterion. Avoid selecting multiple decision points that all relate to the same criterion, even if there are many examples of that criterion in the conversation. If the conversation only touches on a few criteria, that's fine — just cover as many distinct criteria as the conversation evidence supports.
+When identifying decision points, focus on moments that:
+- Directly relate to criteria in this rubric (validate or refine them)
+- Show the user's priorities when multiple rubric criteria might conflict
+- Add nuance or evidence to existing rubric criteria
+
+When listing decision points, include ALL that qualify (see below). Do not limit to a small number; extract every moment where the user made an explicit writing choice that maps to a rubric criterion.
 """
 
     return f"""Here is a conversation where a user collaborated with an AI to write a piece. Each message is numbered for reference:
 
 {conversation_text}
 {rubric_context}
-Identify 3–4 of the MOST CRUCIAL and NON-REDUNDANT moments where the user made an explicit writing choice. Quality over quantity - each decision point should reveal a distinct preference. Prioritize:
+Identify **ALL** moments where the user made an explicit writing choice — do not limit the number. Include every qualifying moment. Prioritize and include:
 
 1. **Rubric-relevant decisions**: Choices that directly relate to rubric criteria (if rubric provided)
 2. **User edits**: Places where the model suggested something and the user changed it
@@ -1505,13 +1511,12 @@ For each moment:
 - Note whether the user explained their reasoning (if visible in conversation)
 - If a rubric is provided, note which rubric criterion (if any) this decision relates to
 
-Avoid moments that are:
+Exclude only moments that are:
 - Factual corrections (not style preferences)
 - Trivial word changes with no clear pattern
 - Ambiguous (can't tell what user preferred)
-- Redundant with another decision point (showing the SAME preference twice - e.g., if you already have a "prefers concise language" example, don't include another conciseness example)
 
-CRITICAL: Each decision point must reveal a DISTINCT preference dimension. If the user made 10 edits for conciseness, only include ONE of them. Spread your 3-4 decision points across DIFFERENT preference dimensions (e.g., tone, structure, detail level, formality, etc.).
+Include every moment where the user made a discernible writing choice (edit, rejection, or selection), even if multiple choices relate to the same dimension (e.g., include each conciseness edit as its own decision point if it's a distinct moment in the conversation). Do not cap or limit the number of decision points.
 
 Return your analysis as a JSON object with the following structure:
 ```json
@@ -1527,23 +1532,23 @@ Return your analysis as a JSON object with the following structure:
       "after_quote": "Brief quote showing user's change",
       "user_reason": "Quote from user explaining why, or null if not stated",
       "summary": "One sentence explaining what choice the user made and why it matters",
-      "related_rubric_criterion": "Name of the rubric criterion this relates to, or null if none",
+      "related_rubric_criterion": "Name of the rubric criterion this relates to (REQUIRED — every DP must map to a criterion)",
       "rubric_impact": {{{{
-        "type": "validates|refines|contradicts|suggests_new|none",
-        "description": "1 sentence explaining the impact: e.g., 'Validates the Conciseness criterion by showing user prefers shorter sentences' or 'Suggests new criterion around technical terminology preferences'"
+        "type": "validates|refines|contradicts",
+        "description": "1 sentence explaining the impact: e.g., 'Validates the Conciseness criterion by showing user prefers shorter sentences'"
       }}}}
     }}}}
   ],
   "overall_patterns": "2-3 sentences describing any patterns you notice across all decision points (e.g., user consistently prefers formal tone, user values conciseness, etc.)",
-  "rubric_insights": "2-3 sentences about how these decisions relate to the rubric - do they validate it, contradict it, or suggest new criteria? (only if rubric was provided)"
+  "rubric_insights": "2-3 sentences about how these decisions relate to the rubric — which criteria are most strongly validated by user behavior, and which have weaker evidence? (only if rubric was provided)"
 }}}}
 ```
 
 IMPORTANT:
 - Return ONLY valid JSON, no other text before or after
 - Message numbers must be integers that match the [Message #X] labels in the conversation
-- Include exactly 3-4 decision points (no more) - choose the most important and non-redundant ones
-- If a rubric is provided, prioritize decision points that have rubric implications"""
+- Include **ALL** qualifying decision points — do not limit to 3-4; extract every moment where the user made an explicit writing choice
+- If a rubric is provided, EVERY decision point MUST have a related_rubric_criterion — do NOT include DPs that don't map to any rubric criterion. The rubric was inferred from this conversation, so all user choices should map to something in it."""
 
 
 def generate_writing_task_from_conversation_prompt(conversation_text: str) -> str:
@@ -1563,6 +1568,58 @@ Your job: Write ONE short writing instruction (1-3 sentences) that will be used 
 
 Output ONLY the writing instruction itself. No preamble, no "Here is the task:", no JSON. Just the instruction.
 """
+
+
+def generate_writing_task_similar_but_different_prompt(conversation_text: str, project_task_examples: str = "") -> str:
+    """Generate a NEW writing task similar in domain/type to the project's writing tasks but a different specific scenario,
+    so the same rubric would still apply. Task and resulting drafts should be short for quick comparison."""
+    project_section = ""
+    if project_task_examples:
+        project_section = f"""## Writing tasks from this project's conversations
+
+These are the kinds of writing tasks the user has been working on in this project. The new task MUST be the same type/domain of writing.
+
+{project_task_examples}
+
+"""
+    conversation_section = ""
+    if conversation_text:
+        conversation_section = f"""## Reference conversation
+
+{conversation_text}
+
+"""
+    return f"""{project_section}{conversation_section}Your job: Write ONE **short** writing instruction (1-2 sentences) for a **new** task that:
+1. Is in the SAME domain and type of writing as the tasks above (e.g. if the tasks are about emails, the new task must be to write an email; if they are recommendation letters, write a recommendation letter).
+2. Is a **different** specific scenario or prompt — not the same as any task shown above. For example, if a task was "declining a meeting," the new task might be "asking for an extension on a deadline" or "thanking a colleague for feedback."
+3. Is similar enough that a rubric inferred from the conversations would still apply to drafts written for this new task.
+4. Asks for a **brief** output so drafts stay short: e.g. "Write a 2-4 sentence email...", "Write one short paragraph...", "In 2-3 sentences...". The user will read 3 drafts side by side — keep the task scope small (no long essays or multi-paragraph pieces).
+
+Output ONLY the writing instruction itself. No preamble, no "Here is the task:", no JSON. Just the instruction. Keep it concise.
+"""
+
+
+def generate_draft_from_coldstart_prompt(writing_task: str, coldstart_text: str) -> str:
+    """Generate a draft for the task using ONLY the user's cold-start preference description (no rubric)."""
+    return f"""You are a skilled writer. Write a complete draft for the following task, following ONLY the user's stated preferences below. Do not use any rubric or other criteria.
+
+WRITING TASK:
+{writing_task}
+
+USER'S PREFERENCES (follow these — they describe how the user wants the writing to sound and what they care about):
+{coldstart_text}
+
+Keep the draft to around 100 words (or to the length the task specifies). Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Just the draft itself."""
+
+
+def generate_draft_generic_prompt(writing_task: str) -> str:
+    """Generate a draft for the task with no rubric or user preferences — generic writing."""
+    return f"""You are a skilled writer. Write a complete draft for the following task.
+
+WRITING TASK:
+{writing_task}
+
+Keep the draft to around 100 words (or to the length the task specifies). Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Just the draft itself. Fulfill the task in a clear, competent way."""
 
 
 def generate_reflection_questions_prompt(conversation_text, decision_points_json):
@@ -1863,7 +1920,7 @@ Return a JSON object with the following structure:
     "criteria_scores": [
         {{
             "name": "<exact criterion name from rubric>",
-            "achievement_level": "<Excellent|Good|Fair|Weak>",
+            "achievement_level": "<Excellent|Good|Fair|Needs Work|Weak>",
             "level_percentage": <25|50|75|100>,
             "evidence": [
                 {{
@@ -2472,9 +2529,9 @@ INSTRUCTIONS:
 2. Follow EVERY criterion in the rubric — higher-weight criteria should be more prominent
 3. The draft should read naturally, not like a checklist of criteria
 4. Do NOT mention the rubric or criteria in the draft itself
-5. Aim for a substantial draft (300-600 words unless the task implies otherwise)
+5. Keep the draft short: around 100 words (or to the length the task specifies if it asks for more). Do not write a long piece unless the task explicitly asks for one.
 
-Write ONLY the draft text. No preamble, no explanation, no meta-commentary."""
+Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Do not ask for clarification or add "Here is the draft:" or similar. Just the draft itself."""
 
 
 def judge_drafts_per_dimension_prompt(draft_a: str, draft_b: str, rubric_criteria_json: str, user_ratings_json: str) -> str:
@@ -2854,3 +2911,286 @@ Then output the refined rubric as JSON:
   ]
 }}}}
 ```"""
+
+
+# --- Claim 3 Evaluation (Step 6 grading: rubric / cold-start / generic) ---
+
+def claim3_rubric_eval_prompt(task_description: str, rubric_json: str, draft: str) -> str:
+    """LLM evaluates draft against user's rubric. Returns prompt for Condition 1."""
+    return f"""Please evaluate the following draft against the user's preference rubric.
+
+## Context
+
+Writing task: {task_description}
+
+## User's Preference Rubric
+
+{rubric_json}
+
+## Draft to Evaluate
+
+{draft}
+
+## Dimension-Based Evaluation
+
+Each criterion has dimensions — checkable items that can be marked as met (✓) or not met (✗).
+
+Achievement levels are determined by how many dimensions are met:
+- ⭐⭐⭐ Excellent: 100% of dimensions met (all checked)
+- ⭐⭐ Good: 75%+ of dimensions met
+- ⭐ Fair: 50-74% of dimensions met
+- ☆ Weak: Less than 50% of dimensions met
+
+## Evaluation Process
+
+For each criterion in the rubric (ordered by priority, highest first):
+
+1. Read the criterion carefully: Understand what THIS specific user values (not generic writing quality)
+2. Check each dimension: For each dimension listed under the criterion, determine if the draft meets it (yes/no)
+3. Examine the draft: Look for evidence — direct quotes, structural patterns, tone choices
+4. Calculate achievement level: Based on the percentage of dimensions met
+5. Document your reasoning: Provide specific evidence for each dimension check
+
+## Assessment Principles
+
+- Be binary on dimensions: Each dimension is either met or not — no partial credit
+- Priority matters most: A draft that checks off dimensions on priority #1-3 criteria is stronger
+- Be calibrated to THIS user's values
+- Default to "not met" when uncertain
+- Quote specific evidence
+
+## Required Output Format
+
+For EACH criterion:
+
+### [Criterion Name]
+Priority: #[N]
+
+Dimension Checklist:
+- [✓/✗] [Dimension label]: [Quote or evidence]
+
+Dimensions Met: [X] of [Y] ([percentage]%)
+Achievement Level: [Excellent/Good/Fair/Needs Work/Weak]
+
+Key Evidence:
+- [Specific quote from draft]
+
+---
+
+After all criteria, provide JSON summary (no markdown code fence):
+
+{{"criteria_scores": [{{"name": "<criterion name>", "priority": <integer>, "dimensions_met": <count>, "dimensions_total": <total>, "dimensions_detail": [{{"id": "<dimension id>", "label": "<dimension label>", "met": true/false, "evidence": "<brief quote or reason>"}}], "achievement_level": "<Excellent|Good|Fair|Needs Work|Weak>"}}], "overall_assessment": "<2-3 sentence summary>"}}
+"""
+
+
+def claim3_coldstart_eval_prompt(task_description: str, cold_start_text: str, draft: str) -> str:
+    """LLM evaluates draft against user's cold-start preference description. Returns prompt for Condition 2."""
+    return f"""Please evaluate the following draft against the user's stated writing preferences.
+
+## Context
+
+Writing task: {task_description}
+
+## User's Stated Preferences
+
+The user provided the following description of their writing preferences before any interaction with the system:
+
+---
+{cold_start_text}
+---
+
+## Draft to Evaluate
+
+{draft}
+
+## Step 1: Extract Dimensions
+
+Read the user's preference description carefully. Extract concrete, checkable dimensions organized into criteria. For each preference the user expressed, create a criterion with specific dimensions that can be checked yes/no.
+
+IMPORTANT: Only extract dimensions from what the user explicitly stated. Do NOT add criteria the user did not mention.
+
+## Step 2: Evaluate
+
+For each extracted criterion, check each dimension against the draft.
+
+Achievement levels: ⭐⭐⭐ Excellent (90%+), ⭐⭐ Good (75-89%), ⭐ Fair (50-74%), ◇ Needs Work (25-49%), ☆ Weak (<25%).
+
+- Be binary on dimensions
+- Only evaluate against what the user stated
+- Default to "not met" when uncertain
+- Quote specific evidence
+
+## Required Output Format
+
+First list Extracted Criteria. Then for EACH criterion give Dimension Checklist, Dimensions Met, Achievement Level, Key Evidence.
+
+After all criteria, provide JSON summary (no markdown code fence):
+
+{{"criteria_scores": [{{"name": "<criterion name>", "dimensions_met": <count>, "dimensions_total": <total>, "dimensions_detail": [{{"id": "<dimension id>", "label": "<dimension label>", "met": true/false, "evidence": "<brief quote or reason>"}}], "achievement_level": "<Excellent|Good|Fair|Needs Work|Weak>"}}], "overall_assessment": "<2-3 sentence summary>"}}
+"""
+
+
+def claim3_generic_eval_prompt(task_description: str, draft: str) -> str:
+    """LLM evaluates draft against standard writing quality criteria. Returns prompt for Condition 3."""
+    return f"""Please evaluate the following draft against standard writing quality criteria.
+
+## Context
+
+Writing task: {task_description}
+
+## Draft to Evaluate
+
+{draft}
+
+## Standard Writing Quality Criteria
+
+Evaluate the draft against each of the following generic dimensions (not any specific user's personal preferences).
+
+### Clarity
+- [ ] Main point is immediately identifiable
+- [ ] Sentences are unambiguous and easy to parse
+- [ ] Technical terms or jargon are used appropriately for the audience
+
+### Coherence
+- [ ] Ideas flow logically from one to the next
+- [ ] Transitions between paragraphs are smooth
+- [ ] The piece maintains a consistent thread throughout
+
+### Structure
+- [ ] Organization is appropriate for the task type
+- [ ] Paragraphs are well-scoped (one idea per paragraph)
+- [ ] Opening and closing are effective
+
+### Tone & Style
+- [ ] Tone is appropriate for the task and likely audience
+- [ ] Register is consistent throughout
+- [ ] Voice is engaging rather than flat or generic
+
+### Completeness
+- [ ] The task is fully addressed
+- [ ] No obvious gaps in reasoning or content
+- [ ] Appropriate level of detail
+
+### Grammar & Mechanics
+- [ ] Free of grammatical errors
+- [ ] Punctuation is correct
+- [ ] Word choice is precise
+
+Achievement levels: ⭐⭐⭐ Excellent (90%+), ⭐⭐ Good (75-89%), ⭐ Fair (50-74%), ◇ Needs Work (25-49%), ☆ Weak (<25%).
+
+- Be binary on dimensions
+- Evaluate against general writing quality only
+- Default to "not met" when uncertain
+- Quote specific evidence
+
+## Required Output Format
+
+For EACH criterion give Dimension Checklist, Dimensions Met, Achievement Level, Key Evidence.
+
+After all criteria, provide JSON summary (no markdown code fence):
+
+{{"criteria_scores": [{{"name": "<criterion name>", "dimensions_met": <count>, "dimensions_total": <total>, "dimensions_detail": [{{"id": "<dimension id>", "label": "<dimension label>", "met": true/false, "evidence": "<brief quote or reason>"}}], "achievement_level": "<Excellent|Good|Fair|Needs Work|Weak>"}}], "overall_assessment": "<2-3 sentence summary>"}}
+"""
+
+
+def claim3_unified_eval_prompt(
+    task_description: str,
+    rubric_json: str,
+    cold_start_text: str,
+    draft_a: str,
+    draft_b: str,
+    draft_c: str,
+) -> str:
+    """Single prompt to evaluate all 3 drafts under all 3 conditions (rubric, cold-start, generic). Returns one big evaluation."""
+    return f"""You will evaluate three drafts (A, B, C) under three conditions each — 9 evaluations total. Return ONE JSON object with all results.
+
+## Shared context
+
+**Writing task:** {task_description}
+
+**User's preference rubric (for Condition 1 — rubric):**
+{rubric_json}
+
+**User's stated cold-start preferences (for Condition 2 — cold-start):**
+{cold_start_text}
+
+**Condition 3 (generic):** Evaluate against standard writing quality: Clarity, Coherence, Structure, Tone & Style, Completeness, Grammar & Mechanics. Use the same dimension-based format (dimensions_met, dimensions_total, dimensions_detail with id, label, met, evidence), achievement_level (Excellent/Good/Fair/Needs Work/Weak), overall_assessment.
+
+---
+
+## Draft A
+
+{draft_a}
+
+---
+
+## Draft B
+
+{draft_b}
+
+---
+
+## Draft C
+
+{draft_c}
+
+---
+
+## Your task
+
+For each draft (A, B, C), produce three evaluations:
+1. **Rubric:** Evaluate against the user's preference rubric. Each criterion: dimensions_met, dimensions_total, dimensions_detail (id, label, met, evidence), achievement_level. Be binary on dimensions; quote evidence.
+2. **Cold-start:** Evaluate against the user's stated preferences only. Extract checkable dimensions from the cold-start text; evaluate the draft against those. Same output shape.
+3. **Generic:** Evaluate against standard writing quality criteria (clarity, coherence, structure, tone, completeness, grammar). Same output shape.
+
+For each evaluation output: `criteria_scores` (array of {{"name", "dimensions_met", "dimensions_total", "dimensions_detail": [{{"id", "label", "met", "evidence"}}], "achievement_level"}}), and `overall_assessment` (2–3 sentences).
+
+## Required output format
+
+Return a single JSON object (no markdown fence, no preamble) with this exact structure:
+
+{{"A": {{"rubric": {{"criteria_scores": [...], "overall_assessment": "..."}}, "coldstart": {{"criteria_scores": [...], "overall_assessment": "..."}}, "generic": {{"criteria_scores": [...], "overall_assessment": "..."}}}}, "B": {{"rubric": {{...}}, "coldstart": {{...}}, "generic": {{...}}}}, "C": {{"rubric": {{...}}, "coldstart": {{...}}, "generic": {{...}}}}}}
+
+Use keys exactly: "A", "B", "C" for drafts; "rubric", "coldstart", "generic" for conditions. Keep evidence brief to fit in one response.
+"""
+
+
+def infer_rubric_from_evaluation_prompt(
+    rubric_json: str,
+    writing_task: str,
+    user_preferred_draft: str,
+    preferred_was_condition: str,
+    blind_scores: dict,
+    agreement_6a: dict,
+    agreement_6b: dict,
+    agreement_6c: dict,
+) -> str:
+    """Prompt to infer a refined rubric from Claim 3 evaluation results."""
+    return f"""You have run a writing evaluation with three drafts (A, B, C) under three conditions: rubric, cold-start preferences, and generic quality. The user preferred one draft and rated all three blindly. LLM grading under each condition was compared to the user.
+
+## Current rubric
+
+{rubric_json}
+
+## Writing task used
+
+{writing_task}
+
+## User's preferred draft
+
+The user preferred **Draft {user_preferred_draft}**, which was written using the **{preferred_was_condition}** condition.
+
+## User's blind satisfaction (1–5 per draft)
+
+{json.dumps(blind_scores, indent=2)}
+
+## Agreement results
+
+- **6a (overall satisfaction):** Kendall τ for rubric / cold-start / generic vs user blind ratings: {agreement_6a.get('corr_rubric')}, {agreement_6a.get('corr_coldstart')}, {agreement_6a.get('corr_generic')}
+- **6b (dimension-level):** Rubric-condition LLM vs user dimension checks: {agreement_6b.get('total_agree')}/{agreement_6b.get('total_count')} agreement
+- **6c (top-ranked):** Did each condition pick the user's preferred draft? Rubric: {agreement_6c.get('top_rubric')}, Cold-start: {agreement_6c.get('top_coldstart')}, Generic: {agreement_6c.get('top_generic')}
+
+## Your task
+
+Produce a **refined rubric** that incorporates what this evaluation reveals. Output a complete rubric in the same JSON structure as the current one: a single JSON object with key "rubric" whose value is an array of criteria. Each criterion: name, category, description, dimensions (list of {{"id", "label"}}), priority. Return ONLY valid JSON. No markdown code fence or preamble.
+"""
