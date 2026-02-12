@@ -16,7 +16,7 @@ Achievement levels are determined by how many dimensions are met:
 - **⭐⭐⭐ Excellent**: 100% of dimensions met (all checked)
 - **⭐⭐ Good**: 75%+ of dimensions met
 - **⭐ Fair**: 50-74% of dimensions met
-- **☆ Weak**: Less than 50% of dimensions met
+- **⭐ Weak**: Less than 50% of dimensions met
 
 ## Evaluation Process
 
@@ -955,9 +955,34 @@ After your `<analysis>` block, output **only** this JSON:
       "priority": <integer rank, 1 = most important>
     }
   ],
-  "coaching_notes": "<2–3 concise insights>"
+  "coaching_notes": "<2–3 concise insights>",
+  "inference_decision_points": {
+    "parsed_data": {
+      "decision_points": [
+        {
+          "id": <integer, 1-based>,
+          "title": "<brief descriptive title>",
+          "dimension": "<tone/structure/detail/clarity/voice/etc.>",
+          "assistant_message_num": <message number where AI suggestion appeared>,
+          "user_message_num": <message number where user's change appeared>,
+          "before_quote": "<short quote from assistant's suggestion, ~30 words max>",
+          "after_quote": "<short quote showing user's change, ~30 words max>",
+          "summary": "<one sentence: what choice the user made and why it matters>",
+          "related_rubric_criterion": "<name of the rubric criterion this moment supports or refines>"
+        }
+      ],
+      "overall_patterns": "<2–3 sentences describing patterns across decision points>",
+      "rubric_insights": "<2–3 sentences on how these moments relate to the rubric>"
+    }
+  }
 }
 ```
+
+**INERENCE DECISION POINTS (required):**
+- For each criterion (or the strongest evidence), include 2–4 **decision points**: specific moments in the conversation where the user made a writing choice (edit, rejection, correction, or selection) that **led you to infer** that criterion or dimension.
+- Use the **exact message numbers** from the conversation (e.g. the [Message #N] labels). Each decision point must have `assistant_message_num` and `user_message_num` pointing to real messages.
+- Prioritize: user edits to the draft, rejections of suggestions, explicit feedback, and choices between options. Skip trivial typos or factual corrections.
+- Each decision point should map to a `related_rubric_criterion` (one of the criterion names in your rubric). This links the evidence to what you inferred.
 
 **NOTE**: Do NOT include `excellent`, `good`, `fair`, or `weak` fields. Achievement levels are derived from dimension counts.
 """
@@ -1325,7 +1350,7 @@ Your task:
 1. Identify what changed between the original and updated rubric (priorities, descriptions, dimensions)
 2. Analyze how those changes should affect the draft
 3. Revise the draft to better fulfill the updated rubric criteria
-4. Explain the key changes you made and why
+4. Provide an annotated version showing exactly what changed and why
 
 Guidelines:
 - Focus changes on areas affected by the rubric updates
@@ -1342,11 +1367,39 @@ Return ONLY a valid JSON object with this exact structure:
     "List of specific changes between old and new rubric"
   ],
   "revision_strategy": "Brief explanation of how you'll approach the revision",
-  "revised_draft": "The full revised draft text here",
-  "changes_made": [
-    "List of specific changes made to the draft and why"
+  "change_summary": "2-4 sentence summary for the user: what rubric changes led to what draft changes and why. Write for the user who just clicked 'Log Changes'.",
+  "revised_draft": "The full revised draft text here (clean, no annotations)",
+  "revised_draft_annotated": "Same content as revised_draft but with inline annotations. Use ONLY these tags: <ins>added text</ins> for insertions, <del>removed text</del> for deletions. Immediately after any changed phrase insert a rubric marker [1], [2], etc. (1-based index into annotated_changes). Example: 'The <del>long-winded</del><ins>concise</ins> version [1] works better.' Keep the draft readable; use ins/del only where something actually changed.",
+  "revised_draft_with_markers": "Same as revised_draft but with only [1], [2], ... markers inserted after each changed phrase (no ins/del tags). Use if revised_draft_annotated would be too cluttered; otherwise can duplicate revised_draft_annotated without the ins/del tags.",
+  "annotated_changes": [
+    {
+      "original_text": "The exact text from the original draft that was changed",
+      "new_text": "The new text that replaced it",
+      "reason": "CriterionName (what changed about it): why this text was modified"
+    }
   ]
 }
+
+IMPORTANT for annotated_changes:
+- Each entry should capture one specific edit location
+- "original_text" must be an exact substring from the original draft
+- "new_text" is what replaced it in the revised draft
+- "reason" MUST follow this format: "CriterionName (the rubric change): explanation"
+  - Example: "Brevity (priority increased from #3 to #1): removed unnecessary qualifier words"
+  - Example: "Tone (new dimension added: 'avoid jargon'): replaced technical term with plain language"
+  - Example: "Structure (description updated to emphasize flow): reorganized for better transitions"
+- IMPORTANT: Different types of rubric changes drive different draft edits. Treat each separately:
+  - If a criterion has BOTH a priority change AND a description edit, these are separate rubric changes
+  - Each draft change should reference the SPECIFIC rubric change that caused it
+  - Example: If "Brevity" moved from #3 to #1 AND got a new dimension, a draft edit caused by the priority change should say "Brevity (priority #3→#1): ..." while an edit caused by the new dimension should say "Brevity (new dimension 'cut filler words'): ..."
+  - Do NOT combine multiple rubric changes into one reason
+- Include ALL changes, even small wording tweaks
+- If text was deleted, new_text should be empty string
+- If text was added (not replacing anything), original_text should indicate the location context
+
+IMPORTANT for change_summary and revised_draft_annotated:
+- change_summary: Write in plain language for the user. Example: "Raising Brevity to priority 1 led to trimming the opening sentence and removing two qualifiers. The new 'avoid jargon' dimension under Tone led to replacing 'utilize' with 'use'."
+- revised_draft_annotated: Must be valid: every <ins> and <del> must be closed; every [N] must correspond to an index in annotated_changes (1-based). Prefer this over revised_draft_with_markers when you can show clear add/remove inline.
 """
 
 
@@ -1364,6 +1417,57 @@ Current draft to revise:
 Analyze the rubric changes and revise the draft to better fulfill the updated criteria."""
 
 
+def get_rubric_suggestions_from_edit_feedback_prompt(active_rubric_json: str, edited_rubric_json: str, edits_with_feedback: list):
+    """
+    Build prompt for suggesting how to change the rubric based on user feedback on edits.
+    The model sees both the active (saved) rubric and the edited rubric so it knows what changed.
+    active_rubric_json = saved version from history; edited_rubric_json = user's edits (used for the draft).
+    edits_with_feedback is a list of {"reason", "original_text", "new_text", "user_feedback"}.
+    """
+    feedback_block = "\n\n".join(
+        f"- [Edit] {e.get('reason', '')} — original: \"{(e.get('original_text') or '')[:80]}{'…' if len(e.get('original_text', '') or '') > 80 else ''}\" → new: \"{(e.get('new_text', '') or '')[:80]}{'…' if len(e.get('new_text', '') or '') > 80 else ''}\"\n  **User feedback:** {e.get('user_feedback', '').strip() or '(none)'}"
+        for e in (edits_with_feedback or [])
+    )
+    return f"""You are helping refine a writing rubric based on the user's feedback on a regenerated draft.
+
+**Active rubric** (saved version, before the user's manual edits):
+{active_rubric_json}
+
+**Edited rubric** (the user's current changes in Rubric Configuration — this version was used to regenerate the draft):
+{edited_rubric_json}
+
+**Edits the user gave feedback on** (they may not agree with the edit; their feedback explains why or what they would have done differently):
+{feedback_block or "(no feedback provided)"}
+
+**Your task:** Using the user's feedback and the context of both rubrics above, suggest specific changes to the **edited rubric** so that in future draft regenerations, the model would not be led to make edits the user disagrees with. Be concrete: name criteria, dimensions, or descriptions to add, remove, soften, or reword. Explain in 2–5 short bullet points. Write for the user who will then edit the rubric (e.g. in the Rubric tab)."""
+
+
+def get_apply_suggestion_to_rubric_prompt(active_rubric_json: str, edited_rubric_json: str, suggestion_text: str):
+    """
+    Build prompt to turn the suggestion (bullet points) into an actual modified rubric JSON.
+    The model sees both active (saved) and edited rubric; it applies the suggestion to the edited rubric.
+    Output: ONLY a valid JSON array of criteria, same structure.
+    """
+    return f"""You are a rubric editor. The user received the following suggestion for how to change their rubric (based on their feedback on draft edits):
+
+{suggestion_text}
+
+**Active rubric** (saved version, before the user's manual edits):
+{active_rubric_json}
+
+**Edited rubric** (current user changes — apply the suggestion TO this version):
+{edited_rubric_json}
+
+**Your task:** Produce the MODIFIED rubric by applying the suggestion to the **edited rubric**. Output ONLY a valid JSON array of criteria, no markdown or explanation. Each criterion must have:
+- "name": string
+- "category": string
+- "description": string
+- "dimensions": array of {{"id": "unique_id", "label": "string"}}
+- "priority": integer (1 = most important, unique per criterion)
+
+Preserve the same overall structure and any criteria/dimensions not mentioned in the suggestion. Only change what the suggestion asks to change. If the suggestion adds a criterion or dimension, generate a new "id" (e.g. "new_1", "dim_abc"). Output nothing but the JSON array."""
+
+
 def extract_decision_pts(conversation_text, rubric_json=None):
     rubric_context = ""
     if rubric_json:
@@ -1377,6 +1481,8 @@ When identifying decision points, PRIORITIZE moments that:
 - Could help refine or add nuance to existing rubric criteria
 - Reveal preferences not yet captured in the rubric
 - Show the user's priorities when multiple rubric criteria might conflict
+
+IMPORTANT: Maximize diversity across rubric criteria. Each decision point should ideally map to a DIFFERENT rubric criterion. Avoid selecting multiple decision points that all relate to the same criterion, even if there are many examples of that criterion in the conversation. If the conversation only touches on a few criteria, that's fine — just cover as many distinct criteria as the conversation evidence supports.
 """
 
     return f"""Here is a conversation where a user collaborated with an AI to write a piece. Each message is numbered for reference:
@@ -1393,8 +1499,8 @@ Identify 3–4 of the MOST CRUCIAL and NON-REDUNDANT moments where the user made
 
 For each moment:
 - Reference the EXACT message numbers involved
-- Quote the model's suggestion or the "before" state (keep quotes short, ~30 words max)
-- Quote the user's change or the "after" state (keep quotes short, ~30 words max)
+- before_quote: Copy an EXACT substring from the assistant message (the text the user reacted to). Keep it short (~30 words max) but it must appear verbatim in the conversation so we can highlight it.
+- after_quote: Copy an EXACT substring from the user message (their edit or response). Keep it short (~30 words max) but it must appear verbatim in the conversation so we can highlight it.
 - Identify what dimension this choice reflects (tone, structure, detail, etc.)
 - Note whether the user explained their reasoning (if visible in conversation)
 - If a rubric is provided, note which rubric criterion (if any) this decision relates to
@@ -1438,6 +1544,25 @@ IMPORTANT:
 - Message numbers must be integers that match the [Message #X] labels in the conversation
 - Include exactly 3-4 decision points (no more) - choose the most important and non-redundant ones
 - If a rubric is provided, prioritize decision points that have rubric implications"""
+
+
+def generate_writing_task_from_conversation_prompt(conversation_text: str) -> str:
+    """Prompt for generating a single writing task in the same domain as the conversation.
+    The task must be specific to the conversation's domain so the inferred rubric still applies.
+    The LLM should return only the writing instruction (1-3 sentences), no JSON or extra text.
+    """
+    return f"""Below is a collaborative writing conversation between a user and an AI. The user was working on a specific kind of writing in a specific domain (e.g., professional email, academic essay, technical report, short story, memo, grant paragraph).
+
+{conversation_text}
+
+Your job: Write ONE short writing instruction (1-3 sentences) that will be used to generate drafts for a preference check. The task MUST:
+
+1. Be in the EXACT SAME domain and type of writing as this conversation. If the conversation is about emails, the task must be to write an email (e.g. "Write a brief professional email declining a meeting and proposing an alternative."). If it's about a report, the task must be a report excerpt. If it's about a story, the task must be a story passage. Do NOT give a generic "write a short passage" — be as specific as the conversation's domain.
+2. Ask for a short but concrete product (e.g., one email, one short paragraph, 2-4 sentences of the same type) so that the rubric inferred from this conversation clearly applies.
+3. You may add "Match the tone and style the user prefers" or similar only at the end, but the main instruction must be domain-specific (e.g. "Write a 2-3 sentence opening for a grant proposal that states the problem." not "Write a short passage.").
+
+Output ONLY the writing instruction itself. No preamble, no "Here is the task:", no JSON. Just the instruction.
+"""
 
 
 def generate_reflection_questions_prompt(conversation_text, decision_points_json):
@@ -1789,7 +1914,7 @@ Return a JSON object with the following structure:
 # Evaluate: Coverage Tab - 9-Step Workflow Prompts
 # =============================================================================
 
-def generate_novel_alternatives_prompt(decision_point: dict, dimension: str, writing_type: str = "", user_goals: str = "") -> str:
+def generate_novel_alternatives_prompt(decision_point: dict, dimension: str, writing_type: str = "", user_goals: str = "", rubric_json: str = "", confirmed_criterion: str = "") -> str:
     """
     Step 3: Generate 3 novel text alternatives for a decision point along the identified dimension.
 
@@ -1798,6 +1923,8 @@ def generate_novel_alternatives_prompt(decision_point: dict, dimension: str, wri
         dimension: The dimension to vary (e.g., 'conciseness', 'formality', 'tone')
         writing_type: The type of writing from the rubric (e.g., "professional emails", "academic essays")
         user_goals: The user's goals summary from the rubric
+        rubric_json: Full rubric JSON string for context
+        confirmed_criterion: The specific rubric criterion this DP maps to
 
     Returns:
         Prompt string for Claude API
@@ -1818,10 +1945,29 @@ WRITING DOMAIN/CONTEXT (from user's rubric):
 The alternatives you generate must be appropriate for this domain. Do not generate content that would be out of place for this type of writing.
 """
 
-    return f"""You are generating alternative text versions for preference testing.
-{domain_context}
-WHAT THIS PASSAGE IS ABOUT:
-The user was working on a writing task. At this point in the conversation, the text needed to accomplish the following:
+    # Build rubric context so the model knows the full set of dimensions
+    rubric_section = ""
+    if rubric_json:
+        criterion_note = ""
+        if confirmed_criterion:
+            criterion_note = f"""
+The specific rubric criterion being tested is: "{confirmed_criterion}"
+You are varying the alternatives along THIS criterion. Study its description in the rubric to understand exactly what it measures."""
+        rubric_section = f"""
+THE FULL RUBRIC:
+{rubric_json}
+{criterion_note}
+Use this rubric to understand:
+1. What "{dimension}" (the dimension being tested) actually means for this user's writing — look at the criterion description, not just the name
+2. What ALL the other criteria are — you must hold ALL of these constant across your 3 alternatives. For example, if the rubric has criteria for "tone," "detail level," and "structure," and you are varying "tone," then detail level and structure must be identical across all 3 versions.
+"""
+
+    return f"""You are generating alternative text versions for a controlled preference test.
+
+The goal: determine the user's preference along ONE specific dimension by giving them 3 versions that ONLY differ on that dimension. If the alternatives differ on other qualities too (e.g., one is clearly better-written, more complete, or more natural), the test is ruined because the user will pick based on overall quality rather than the dimension being tested.
+{domain_context}{rubric_section}
+CONTEXT:
+The user was working on a writing task. Here is what was happening at this point:
 - Title: {title if title else "N/A"}
 - Summary: {summary if summary else "A piece of text that the user edited to better match their preferences."}
 
@@ -1831,60 +1977,56 @@ ORIGINAL AI TEXT:
 USER'S EDITED VERSION:
 "{after_text}"
 
-DIMENSION BEING VARIED: {dimension}
+DIMENSION BEING TESTED: {dimension}
 
 YOUR TASK:
-First, identify the core CONTENT and OBJECTIVE of this passage (what information is it conveying? what is it trying to accomplish?). Make sure this stays within the writing domain specified above.
+1. First, identify exactly what this passage is doing — what information is being conveyed, what purpose it serves in context, who the audience is. Write this as a clear, specific description (not generic).
 
-Then generate 3 NEW text alternatives that:
-1. Have the SAME content and accomplish the SAME objective as the original passages
-2. Stay within the same writing domain/context (don't generate random or off-topic content)
-3. Vary ONLY on the "{dimension}" dimension (how the content is expressed)
-4. Are DISTINCTLY different from each other on this dimension
-5. Are NOT identical (or nearly identical) to either the original AI text or user's edited version
-6. Are all competent, reasonable writing (not obviously bad or error-filled)
+2. Then generate 3 NEW text alternatives that:
+   - Convey the EXACT same information and serve the EXACT same purpose
+   - Are roughly the SAME length (within ~20% of each other)
+   - Are ALL equally well-written, natural, and competent — no version should feel awkward, incomplete, or obviously worse
+   - Differ ONLY in how they handle "{dimension}"
+   - Represent three plausible, natural approaches a skilled writer might take along this dimension
 
-IMPORTANT GUIDELINES:
-- Create a spectrum: one alternative at one extreme of the dimension, one at the other extreme, one in the middle
-- Examples by dimension:
-  - "conciseness": very concise (minimal words), moderate length, verbose (fully detailed)
-  - "formality": very formal/professional, moderate, casual/conversational
-  - "tone": warm/enthusiastic, neutral, direct/matter-of-fact
-  - "detail": high-level overview, balanced, granular with specifics
-  - "structure": simple/flowing, moderately organized, highly structured with headers/bullets
-- Each alternative should be a plausible version someone might actually write FOR THIS DOMAIN
-- The content/information must be the same across all alternatives - only the expression style changes
+CRITICAL RULES FOR ISOLATION:
+- Hold ALL other dimensions constant. If varying "tone," keep the same level of detail, same structure, same formality, same vocabulary complexity. If varying "conciseness," keep the same tone, same formality, same structure.
+- Do NOT let quality vary. All 3 must be equally polished. A reader should think "these are all good, I just prefer this style."
+- Do NOT make any version obviously incomplete, awkward, or error-filled. The differences should be stylistic choices, not quality differences.
+- Each version should feel like something a competent writer would naturally produce — not a forced or artificial style.
+- Avoid extreme caricatures. Instead of "absurdly formal" vs "extremely casual," aim for "professional" vs "conversational" vs "warm but direct" — all within the realistic range for this domain.
 
 Return ONLY valid JSON (no markdown code blocks):
 {{
-    "content_objective": "A SHORT, NEUTRAL description of the task/purpose only (e.g., 'writing an email to set up a meeting', 'explaining how the feature works', 'introducing yourself to a new team'). Do NOT describe style, tone, or how it should be written - just WHAT it is. Keep it under 10 words.",
+    "content_objective": "A specific description of what this text does in context (e.g., 'email declining a meeting and suggesting an alternative time', 'opening paragraph introducing the team's quarterly results'). Be specific enough that someone could understand what they're reading without seeing the original. 10-20 words.",
     "alternatives": [
         {{
             "id": "alt_1",
             "text": "The first alternative text here...",
-            "dimension_position": "Description of where this sits on the dimension (e.g., 'very concise', 'formal', 'warm')"
+            "dimension_position": "Where this sits on the {dimension} dimension (e.g., 'more concise', 'more formal', 'warmer')"
         }},
         {{
             "id": "alt_2",
             "text": "The second alternative text here...",
-            "dimension_position": "moderate"
+            "dimension_position": "Where this sits (e.g., 'balanced', 'moderate')"
         }},
         {{
             "id": "alt_3",
             "text": "The third alternative text here...",
-            "dimension_position": "Description of opposite extreme (e.g., 'verbose', 'casual', 'direct')"
+            "dimension_position": "Where this sits (e.g., 'more detailed', 'more casual', 'more direct')"
         }}
     ],
-    "dimension_description": "Brief explanation of what the '{dimension}' dimension means and how these alternatives vary along it"
+    "dimension_description": "One sentence explaining what '{dimension}' means here and how these 3 versions differ along it"
 }}"""
 
 
-def score_alternatives_with_rubric_prompt(alternatives: list, rubric_json: str, context: str = "") -> str:
+def score_alternatives_with_rubric_prompt(all_dp_alternatives: dict, rubric_json: str, context: str = "") -> str:
     """
-    Step 5: LM-as-judge scores 3 alternatives against the active rubric.
+    Rank alternatives for ALL decision points in a single call.
+    Each DP specifies which criterion it tests — only evaluate on that criterion's dimensions.
 
     Args:
-        alternatives: List of dicts with 'id' and 'text' keys
+        all_dp_alternatives: Dict mapping dp_id -> {"criterion": str, "alternatives": [{"id", "text"}]}
         rubric_json: JSON string of the full rubric
         context: Optional context about what the writing is for
 
@@ -1892,170 +2034,823 @@ def score_alternatives_with_rubric_prompt(alternatives: list, rubric_json: str, 
         Prompt string for Claude API
     """
     import json
-    alternatives_formatted = json.dumps(alternatives, indent=2)
+    formatted = json.dumps(all_dp_alternatives, indent=2)
 
-    return f"""You are evaluating text alternatives against a user's personalized writing rubric.
+    return f"""You are ranking text alternatives based on specific criteria from a user's personalized writing rubric.
 
 RUBRIC:
 {rubric_json}
 
 CONTEXT: {context if context else "A collaborative writing task."}
 
-ALTERNATIVES TO EVALUATE:
-{alternatives_formatted}
+DECISION POINTS WITH ALTERNATIVES:
+{formatted}
 
-TASK:
-1. For EACH alternative, score it against EACH criterion in the rubric
-2. For each criterion, evaluate how well the alternative meets the described dimensions/qualities
-3. Calculate a total weighted score (higher priority criteria matter more)
-4. Produce a final ranking from best (most aligned with rubric) to worst
+Each decision point (DP) has 3 alternatives and specifies which rubric **criterion** it is testing. The alternatives were designed to vary on that specific criterion while holding everything else constant.
 
-SCORING RULES:
-- Score each criterion 0-100 based on how well the text fulfills that criterion
-- Weight by priority: priority 1 = 3x weight, priority 2 = 2x weight, others = 1x weight
-- Provide brief reasoning for each criterion score
-- The ranking should reflect rubric alignment, not generic quality
+## Dimension-Based Evaluation
+
+Each criterion has **dimensions** — checkable items that are either met (✓) or not met (✗). No partial credit.
+
+## Task
+
+For EACH decision point:
+1. Identify the criterion being tested (specified in the DP data)
+2. For each of the 3 alternatives, check each **dimension of that criterion only** as met or not met
+3. Rank the alternatives from best (1st) to worst (3rd) based on how many dimensions of that criterion are met
+
+## Rules
+- Only evaluate on the criterion specified for each DP — ignore other criteria
+- Be binary: each dimension is either met or not met
+- If you can't find clear evidence a dimension is met, mark it as not met
+- Apply the same standard consistently across all 3 alternatives
+- Evaluate each DP independently
 
 Return ONLY valid JSON (no markdown code blocks):
 {{
-    "scores": [
-        {{
-            "alternative_id": "alt_X",
-            "total_score": <weighted average 0-100>,
-            "criterion_scores": [
+    "decision_points": {{
+        "<dp_id>": {{
+            "criterion_name": "<the criterion being evaluated>",
+            "alternatives": [
                 {{
-                    "criterion_name": "<exact name from rubric>",
-                    "criterion_priority": <1-N>,
-                    "score": <0-100>,
-                    "reasoning": "Brief explanation of why this score"
+                    "alternative_id": "alt_X",
+                    "dimensions_detail": [
+                        {{
+                            "id": "<dimension id>",
+                            "label": "<dimension label>",
+                            "met": true/false,
+                            "evidence": "<brief quote or reason>"
+                        }}
+                    ],
+                    "dimensions_met": <count met>,
+                    "dimensions_total": <total>
                 }}
-            ]
+            ],
+            "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
+            "ranking_reasoning": "Why this ranking based on dimension checks"
         }}
-    ],
-    "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
-    "ranking_reasoning": "Explanation of why this ranking based on rubric criteria alignment"
+    }}
 }}"""
 
 
-def score_alternatives_with_freetext_prompt(alternatives: list, user_preferences_text: str, context: str = "") -> str:
+def score_alternatives_with_freetext_prompt(all_dp_alternatives: dict, user_preferences_text: str, context: str = "") -> str:
     """
-    Step 6: LM-as-judge scores 3 alternatives against user's free-text preference description.
+    Rank alternatives for ALL decision points in a single call based on user's free-text preferences.
+    Each DP specifies which dimension it tests — only evaluate on the most relevant preference.
 
     Args:
-        alternatives: List of dicts with 'id' and 'text' keys
-        user_preferences_text: User's self-authored preference description (from Task A Survey Q4)
+        all_dp_alternatives: Dict mapping dp_id -> {"criterion": str, "alternatives": [{"id", "text"}]}
+        user_preferences_text: User's self-authored preference description
         context: Optional context about what the writing is for
 
     Returns:
         Prompt string for Claude API
     """
     import json
-    alternatives_formatted = json.dumps(alternatives, indent=2)
+    formatted = json.dumps(all_dp_alternatives, indent=2)
 
-    return f"""You are evaluating text alternatives against a user's stated writing preferences.
+    return f"""You are ranking text alternatives based on a user's stated writing preferences.
 
 USER'S STATED PREFERENCES (written by the user themselves):
 "{user_preferences_text}"
 
 CONTEXT: {context if context else "A collaborative writing task."}
 
-ALTERNATIVES TO EVALUATE:
-{alternatives_formatted}
+DECISION POINTS WITH ALTERNATIVES:
+{formatted}
 
-TASK:
-1. First, identify the key preferences mentioned in the user's description (extract 3-6 distinct preferences)
-2. For EACH alternative, score it on how well it aligns with EACH identified preference
-3. Calculate a total alignment score (average across all preferences)
-4. Produce a final ranking from best (most aligned with stated preferences) to worst
+Each decision point (DP) has 3 alternatives and specifies which **criterion/dimension** it is testing. The alternatives were designed to vary on that specific dimension while holding everything else constant.
 
-SCORING RULES:
-- Extract clear, distinct preferences from the user's text
-- Score each preference 0-100 for each alternative
-- Give equal weight to all identified preferences
-- Provide brief reasoning for each score
-- Be honest about ambiguity - if the preference is unclear, note that
+## Task
+
+For EACH decision point:
+1. Identify which part of the user's stated preferences (if any) is relevant to the criterion being tested
+2. Rank the 3 alternatives from best (1st) to worst (3rd) based on how well they align with that relevant preference
+3. If the user's preferences don't mention anything relevant to this criterion, note that and rank as tied or based on any implicit preference you can infer
+
+## Rules
+- Focus only on the dimension being tested for each DP
+- Be honest if the user's preferences don't cover this dimension
+- Evaluate each DP independently
 
 Return ONLY valid JSON (no markdown code blocks):
 {{
-    "identified_preferences": [
-        {{
-            "preference": "Brief description of the preference",
-            "source_quote": "The part of user's text this came from"
+    "decision_points": {{
+        "<dp_id>": {{
+            "criterion_tested": "<the criterion/dimension being evaluated>",
+            "relevant_preference": "<quote or paraphrase from user's text that relates to this dimension, or 'Not mentioned'>",
+            "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
+            "ranking_reasoning": "Why this ranking based on the user's stated preferences"
         }}
-    ],
-    "scores": [
-        {{
-            "alternative_id": "alt_X",
-            "total_score": <average 0-100>,
-            "preference_scores": [
-                {{
-                    "preference": "<preference description>",
-                    "score": <0-100>,
-                    "reasoning": "Brief explanation"
-                }}
-            ]
-        }}
-    ],
-    "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
-    "ranking_reasoning": "Explanation of ranking based on stated preferences"
+    }}
 }}"""
 
 
-def score_alternatives_generic_prompt(alternatives: list, context: str = "") -> str:
+def score_alternatives_generic_prompt(all_dp_alternatives: dict, context: str = "") -> str:
     """
-    Step 7: LM-as-judge scores 3 alternatives with NO preference info - generic quality only.
+    Rank alternatives for ALL decision points in a single call based on generic writing quality only.
 
     Args:
-        alternatives: List of dicts with 'id' and 'text' keys
+        all_dp_alternatives: Dict mapping dp_id -> {"criterion": str, "alternatives": [{"id", "text"}]}
         context: Optional context about what the writing is for
 
     Returns:
         Prompt string for Claude API
     """
     import json
-    alternatives_formatted = json.dumps(alternatives, indent=2)
+    formatted = json.dumps(all_dp_alternatives, indent=2)
 
-    return f"""You are evaluating text alternatives for general writing quality.
+    return f"""You are ranking text alternatives based on general writing quality.
 
-IMPORTANT: You have NO information about the user's specific preferences.
+IMPORTANT: You have NO information about the user's specific preferences or rubric.
 Evaluate purely on generic, universal writing quality standards.
 
 CONTEXT: {context if context else "A writing task."}
 
-ALTERNATIVES TO EVALUATE:
-{alternatives_formatted}
+DECISION POINTS WITH ALTERNATIVES:
+{formatted}
 
-TASK:
-1. Score each alternative on these GENERIC writing quality dimensions:
-   - Clarity: Is the meaning clear and unambiguous?
-   - Correctness: Grammar, spelling, punctuation accuracy
-   - Coherence: Does it flow logically? Are ideas connected well?
-   - Appropriateness: Does it seem suitable for the context?
-2. Calculate a total quality score (average of the 4 dimensions)
-3. Produce a ranking from best generic quality to worst
+Each decision point (DP) has 3 alternatives. Evaluate each DP independently.
 
-CRITICAL RULES - DO NOT assume any preference for:
-- Formality level (formal and casual are equally valid if clear)
-- Length (concise and detailed are equally valid if appropriate)
-- Tone (warm and neutral are equally valid)
-- Style choices (bullets vs prose, etc.)
+## Task
 
-You are measuring ONLY: Is it clear? Is it correct? Does it make sense? Does it fit the context?
+For each DP, rank the 3 alternatives from best (1st) to worst (3rd) based on generic writing quality:
+- Clarity: Is the meaning clear and unambiguous?
+- Correctness: Grammar, spelling, punctuation accuracy
+- Coherence: Does it flow logically?
+- Appropriateness: Does it seem suitable for the context?
+
+## Rules
+- DO NOT assume any preference for formality, length, tone, or style
+- You are ranking ONLY on: Is it clear? Is it correct? Does it make sense?
+- Evaluate each DP independently
 
 Return ONLY valid JSON (no markdown code blocks):
 {{
-    "scores": [
-        {{
-            "alternative_id": "alt_X",
-            "total_score": <average 0-100>,
-            "quality_scores": [
-                {{"dimension": "Clarity", "score": <0-100>, "reasoning": "..."}},
-                {{"dimension": "Correctness", "score": <0-100>, "reasoning": "..."}},
-                {{"dimension": "Coherence", "score": <0-100>, "reasoning": "..."}},
-                {{"dimension": "Appropriateness", "score": <0-100>, "reasoning": "..."}}
-            ]
+    "decision_points": {{
+        "<dp_id>": {{
+            "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
+            "ranking_reasoning": "Why this ranking based on generic writing quality"
         }}
-    ],
-    "ranking": ["<best_alt_id>", "<middle_alt_id>", "<worst_alt_id>"],
-    "ranking_reasoning": "Explanation based ONLY on generic quality (not style preferences)"
+    }}
 }}"""
+
+
+# =============================================================================
+# Evaluate: Infer — Predict user's actual edit (before vs. after)
+# Ground truth: user preferred "after" (they edited that way). No synthetic alternatives.
+# =============================================================================
+
+def predict_before_after_rubric_prompt(decision_points_data: dict, rubric_json: str) -> str:
+    """
+    For each DP, score "before" and "after" on the criterion's dimensions only.
+    Predict "after" if after meets more dimensions, "before" if before does, "tie" if equal.
+    """
+    import json
+    formatted = json.dumps(decision_points_data, indent=2)
+    return f"""You are predicting whether a user would prefer the "before" (AI suggestion) or "after" (user's edit) text at each decision point, using ONLY the user's rubric.
+
+RUBRIC:
+{rubric_json}
+
+DECISION POINTS (each has before_quote, after_quote, criterion_name):
+{formatted}
+
+TASK:
+For EACH decision point, evaluate ONLY the criterion named for that DP:
+1. Score "before_quote" on that criterion's dimensions (how many dimensions are met?)
+2. Score "after_quote" on that same criterion's dimensions
+3. Predict "after" if after meets more dimensions than before, "before" if before meets more, "tie" if equal
+
+Rules:
+- Evaluate ONLY the specified criterion for each DP; ignore other criteria
+- Be binary per dimension: met or not met
+- If the criterion was inferred from this user's behavior, apply it as written — we are testing whether the rubric captures what the user preferred when they made this edit
+
+Return ONLY valid JSON (no markdown code blocks):
+{{
+    "decision_points": {{
+        "<dp_id>": {{
+            "prediction": "after" | "before" | "tie",
+            "before_dimensions_met": <int>,
+            "after_dimensions_met": <int>,
+            "reasoning": "One sentence: why this prediction based on dimension counts"
+        }}
+    }}
+}}"""
+
+
+def predict_before_after_coldstart_prompt(decision_points_data: dict, coldstart_text: str) -> str:
+    """
+    For each DP, given ONLY the user's cold-start description, which would this user prefer: before or after?
+    """
+    import json
+    formatted = json.dumps(decision_points_data, indent=2)
+    return f"""You are predicting whether a user would prefer the "before" (AI suggestion) or "after" (user's edit) text at each decision point, using ONLY what the user wrote in their cold-start preference description.
+
+USER'S COLD-START PREFERENCE DESCRIPTION (written without seeing the rubric):
+"{coldstart_text}"
+
+You have NO access to the rubric or any other information. Use ONLY the text above.
+
+DECISION POINTS (each has before_quote, after_quote, criterion_name):
+{formatted}
+
+TASK:
+For EACH decision point, decide which version (before or after) better matches the user's STATED preferences above.
+- If the cold-start text clearly implies a preference that favors "after", predict "after"
+- If it favors "before", predict "before"
+- If the cold-start says nothing relevant to this dimension or both are equally consistent, predict "tie"
+
+Be strict: if the user never mentioned anything that would distinguish this choice, say "tie". Do not infer preferences they did not state.
+
+Return ONLY valid JSON (no markdown code blocks):
+{{
+    "decision_points": {{
+        "<dp_id>": {{
+            "prediction": "after" | "before" | "tie",
+            "relevant_preference": "Quote or paraphrase from cold-start that applies, or 'Not mentioned'",
+            "reasoning": "One sentence: why this prediction"
+        }}
+    }}
+}}"""
+
+
+def predict_before_after_generic_prompt(decision_points_data: dict) -> str:
+    """
+    For each DP, which text is better by generic writing quality (clarity, correctness, coherence)?
+    No user preferences — purely universal writing quality.
+    """
+    import json
+    formatted = json.dumps(decision_points_data, indent=2)
+    return f"""You are predicting which text is better by generic writing quality only: clarity, correctness, coherence, appropriateness. You have NO information about the user's preferences.
+
+DECISION POINTS (each has before_quote, after_quote, criterion_name):
+{formatted}
+
+TASK:
+For EACH decision point, decide which version is better writing by universal standards:
+- Clarity, grammar, flow, suitability for context
+- Do NOT prefer one just because it's shorter, more formal, or more casual — only quality
+- Predict "after" if after is clearly better, "before" if before is, "tie" if roughly equal
+
+Return ONLY valid JSON (no markdown code blocks):
+{{
+    "decision_points": {{
+        "<dp_id>": {{
+            "prediction": "after" | "before" | "tie",
+            "reasoning": "One sentence: why this prediction based on generic quality"
+        }}
+    }}
+}}"""
+
+
+def compare_rubric_to_coldstart_prompt(rubric_json: str, coldstart_text: str) -> str:
+    """
+    Step 2 of Evaluate: Infer tab.
+    Compare rubric criteria against a user's cold-start preference description
+    to determine which criteria the user stated vs. which are absent.
+    """
+    return f"""You are analyzing a user's writing preferences.
+
+TASK: Compare a structured rubric (inferred from the user's editing behavior) against
+a free-text "cold-start" description the user wrote BEFORE seeing the rubric.
+
+Determine which rubric criteria the user's cold-start description covers (even partially
+or in different words) and which are completely absent.
+
+RUBRIC:
+{rubric_json}
+
+USER'S COLD-START PREFERENCE DESCRIPTION (written without seeing the rubric):
+"{coldstart_text}"
+
+INSTRUCTIONS:
+For EACH criterion in the rubric:
+1. Read the criterion's name, description, and dimensions carefully
+2. Search the cold-start description for ANY mention, paraphrase, or implicit reference
+   to this criterion's concern
+3. A criterion counts as "stated" if the cold-start text addresses the same underlying
+   concern, even if the exact wording differs. For example, if the rubric has a criterion
+   about "Concise Language" and the user wrote "I prefer short sentences," that counts as stated.
+4. A criterion counts as "unstated" if there is NO reference to it whatsoever in the cold-start text.
+
+Be generous in matching — semantic overlap counts, not just exact words.
+
+Return ONLY valid JSON (no markdown code blocks):
+{{{{
+    "criteria_comparison": [
+        {{{{
+            "criterion_name": "<exact name from rubric>",
+            "criterion_description": "<description from rubric>",
+            "category": "<category from rubric>",
+            "status": "stated" or "unstated",
+            "matching_text": "<quote from cold-start text that matches, or null if unstated>",
+            "match_reasoning": "<1-2 sentence explanation of why this is stated or unstated>"
+        }}}}
+    ],
+    "summary": {{{{
+        "total_criteria": <int>,
+        "stated_count": <int>,
+        "unstated_count": <int>,
+        "stated_criteria": ["<list of stated criterion names>"],
+        "unstated_criteria": ["<list of unstated criterion names>"]
+    }}}}
+}}}}"""
+
+
+def classify_behavioral_evidence_prompt(conversation_text: str, rubric_json: str, coldstart_text: str, user_categorizations: str) -> str:
+    """
+    Step 4 of Evaluate: Infer tab.
+    Classify whether user editing behavior provides independent evidence
+    for each rubric criterion.
+    """
+    return f"""You are analyzing a collaborative writing conversation to find behavioral evidence
+for writing preferences.
+
+CONTEXT:
+A user worked with an AI writing assistant. Separately, a rubric was inferred from their
+editing behavior. The user also wrote a "cold-start" preference description BEFORE seeing
+the rubric. For each criterion NOT in the cold-start description, the user categorized it as:
+- "latent_real": They care about it but couldn't have stated it upfront
+- "elicited": They care about it, could have stated it, but didn't think to
+- "hallucinated": They do NOT care about it — the model fabricated this criterion
+
+Your job: examine the conversation for BEHAVIORAL EVIDENCE that independently confirms or
+disconfirms each rubric criterion. Behavioral evidence means the user ACTED on this preference
+through natural interaction patterns — WITHOUT being prompted by the rubric.
+
+SIGNAL TYPES:
+Classify each behavioral instance by the type of interaction signal it came from:
+- "edit": The user directly modified, rewrote, or restructured text produced by the assistant
+- "rejection": The user rejected, declined, or asked to redo an assistant suggestion or draft
+- "correction": The user corrected specific wording, tone, structure, or content in the assistant's output
+- "explicit_feedback": The user gave direct verbal feedback about preferences (e.g., "I prefer shorter sentences")
+- "choice": The user chose between alternatives or consistently accepted/rejected a pattern across multiple turns
+- "instruction": The user proactively gave instructions that reflect this preference before seeing output
+
+RUBRIC:
+{rubric_json}
+
+USER'S COLD-START DESCRIPTION:
+"{coldstart_text}"
+
+USER'S CATEGORIZATIONS OF UNSTATED CRITERIA:
+{user_categorizations}
+
+CONVERSATION:
+{conversation_text}
+
+INSTRUCTIONS:
+For EACH criterion in the rubric (both stated and unstated):
+1. Search the conversation for moments where the user's behavior relates to this criterion
+2. For each instance, identify the SIGNAL TYPE — what kind of interaction produced this evidence
+3. Determine if there is "strong" evidence (clear, repeated behavioral signal),
+   "weak" evidence (some signal but ambiguous), or "none" (no relevant behavior found)
+4. Quote specific conversation moments as evidence
+
+For criteria the user marked as "hallucinated," behavioral evidence to the contrary is
+especially important — it might indicate the criterion IS real but the user is unaware of it.
+
+Return ONLY valid JSON (no markdown code blocks):
+{{{{
+    "behavioral_analysis": [
+        {{{{
+            "criterion_name": "<exact name from rubric>",
+            "user_category": "stated" or "latent_real" or "elicited" or "hallucinated",
+            "evidence_strength": "strong" or "weak" or "none",
+            "behavioral_instances": [
+                {{{{
+                    "signal_type": "edit" or "rejection" or "correction" or "explicit_feedback" or "choice" or "instruction",
+                    "message_numbers": [<int>, <int>],
+                    "description": "<what the user did>",
+                    "quote": "<brief relevant quote from conversation>",
+                    "supports_criterion": true or false
+                }}}}
+            ],
+            "signal_types_present": ["<list of distinct signal types found for this criterion>"],
+            "evidence_summary": "<1-2 sentence summary citing the signal types, e.g. 'Inferred from 3 rejections of formal phrasing and 1 direct edit replacing passive voice'>",
+            "behavioral_confirms_category": true or false,
+            "confirmation_reasoning": "<1 sentence: does the behavior match the user's self-categorization?>"
+        }}}}
+    ],
+    "overall_summary": {{{{
+        "criteria_with_strong_evidence": <int>,
+        "criteria_with_weak_evidence": <int>,
+        "criteria_with_no_evidence": <int>,
+        "signal_type_counts": {{{{
+            "edit": <int — total instances across all criteria>,
+            "rejection": <int>,
+            "correction": <int>,
+            "explicit_feedback": <int>,
+            "choice": <int>,
+            "instruction": <int>
+        }}}},
+        "hallucinated_with_evidence": ["<list of criterion names user marked hallucinated but behavior suggests otherwise>"],
+        "latent_confirmed": ["<list of latent_real criteria confirmed by behavior>"],
+        "elicited_confirmed": ["<list of elicited criteria confirmed by behavior>"]
+    }}}}
+}}}}"""
+
+
+def generate_draft_from_rubric_prompt(writing_task: str, rubric_json: str) -> str:
+    """
+    Generate a complete writing draft for a given task, following the rubric.
+    Used in Evaluate: Build tab to produce blind-comparison drafts.
+    """
+    return f"""You are a skilled writer. Write a complete draft for the following task,
+strictly following the rubric criteria provided.
+
+WRITING TASK:
+{writing_task}
+
+RUBRIC (follow these criteria carefully — they represent the user's writing preferences):
+{rubric_json}
+
+INSTRUCTIONS:
+1. Write a complete, polished draft that fulfills the writing task
+2. Follow EVERY criterion in the rubric — higher-weight criteria should be more prominent
+3. The draft should read naturally, not like a checklist of criteria
+4. Do NOT mention the rubric or criteria in the draft itself
+5. Aim for a substantial draft (300-600 words unless the task implies otherwise)
+
+Write ONLY the draft text. No preamble, no explanation, no meta-commentary."""
+
+
+def judge_drafts_per_dimension_prompt(draft_a: str, draft_b: str, rubric_criteria_json: str, user_ratings_json: str) -> str:
+    """
+    LLM judge scores two drafts per-dimension against the user's own satisfaction ratings.
+    Used in Evaluate: Build tab Step 4.
+    """
+    return f"""You are an impartial writing quality judge. You will evaluate two drafts
+against a set of rubric criteria, using the user's own per-dimension satisfaction ratings
+as a reference standard.
+
+DRAFT A:
+{draft_a}
+
+DRAFT B:
+{draft_b}
+
+RUBRIC CRITERIA:
+{rubric_criteria_json}
+
+USER'S PER-DIMENSION SATISFACTION RATINGS (ground truth — the user rated each draft on each dimension 1-5):
+{user_ratings_json}
+
+TASK:
+For each rubric criterion:
+1. Score Draft A (0-100) on how well it satisfies this criterion
+2. Score Draft B (0-100) on how well it satisfies this criterion
+3. Note which draft better aligns with the user's own satisfaction ratings for this dimension
+4. Provide brief reasoning
+
+Also determine the overall winner and whether wins cluster on specific criteria.
+
+Return ONLY valid JSON (no markdown code blocks):
+{{{{
+    "per_criterion": [
+        {{{{
+            "criterion_name": "<exact name from rubric>",
+            "draft_a_score": <0-100>,
+            "draft_b_score": <0-100>,
+            "winner": "A" or "B" or "tie",
+            "aligns_with_user_rating": true or false,
+            "reasoning": "<1-2 sentences>"
+        }}}}
+    ],
+    "overall": {{{{
+        "draft_a_avg": <float>,
+        "draft_b_avg": <float>,
+        "overall_winner": "A" or "B" or "tie",
+        "win_pattern": "<1-2 sentences describing whether wins cluster on edited vs non-edited dimensions>"
+    }}}}
+}}}}"""
+
+
+def generate_degraded_draft_prompt(writing_task: str, rubric_json: str, dimensions_to_violate_json: str) -> str:
+    """
+    Generate a draft that follows the rubric EXCEPT for specified dimensions,
+    which should be deliberately performed poorly on. Used in Evaluate: Grade tab.
+    """
+    return f"""You are a skilled writer. Write a complete draft for the following task,
+following MOST of the rubric criteria — but deliberately performing poorly on the
+specific dimensions listed under DIMENSIONS TO VIOLATE.
+
+WRITING TASK:
+{writing_task}
+
+FULL RUBRIC (follow these criteria carefully EXCEPT where told to violate):
+{rubric_json}
+
+DIMENSIONS TO VIOLATE (deliberately perform poorly on these — ignore them, do the opposite, or handle them weakly):
+{dimensions_to_violate_json}
+
+INSTRUCTIONS:
+1. Follow every criterion in the rubric EXCEPT the ones listed under DIMENSIONS TO VIOLATE
+2. For the violated dimensions: subtly underperform — don't make it cartoonishly bad,
+   but clearly fail to meet those specific criteria. The degradation should feel natural,
+   like a writer who simply didn't prioritize those aspects
+3. Higher-weight non-violated criteria should still be prominent
+4. The draft should still be coherent and complete — only the violated dimensions should suffer
+5. Do NOT mention the rubric, the violations, or that anything is intentionally degraded
+6. Aim for 300-600 words unless the task implies otherwise
+
+Write ONLY the draft text. No preamble, no explanation, no meta-commentary."""
+
+
+def grade_rubric_judge_prompt(draft_a: str, draft_b: str, rubric_criteria_json: str, conversation_context: str) -> str:
+    """
+    LLM judge scores two drafts per-dimension using the user's rubric + conversation context.
+    Used in Evaluate: Grade tab Step 3 (rubric-grounded condition).
+    """
+    return f"""You are an expert writing quality judge. You will evaluate two drafts
+against a set of personalized rubric criteria. You also have access to the user's
+recent conversation history for additional context about their preferences.
+
+DRAFT A:
+{draft_a}
+
+DRAFT B:
+{draft_b}
+
+RUBRIC CRITERIA (the user's personalized writing quality criteria):
+{rubric_criteria_json}
+
+RECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):
+{conversation_context}
+
+TASK:
+For each rubric criterion, score BOTH drafts on a 1-5 scale:
+  1 = Very poor — clearly fails this criterion
+  2 = Below average — noticeable weaknesses
+  3 = Adequate — meets basic expectations
+  4 = Good — clearly satisfies this criterion
+  5 = Excellent — outstanding performance on this criterion
+
+Use the conversation context to understand the user's nuanced preferences when scoring.
+Then determine your overall preference (which draft is better overall given all criteria).
+
+Return ONLY valid JSON (no markdown code blocks):
+{{{{
+    "per_criterion": [
+        {{{{
+            "criterion_name": "<exact name from rubric>",
+            "draft_a_score": <1-5>,
+            "draft_b_score": <1-5>,
+            "reasoning": "<1-2 sentences explaining the scores>"
+        }}}}
+    ],
+    "overall_preference": "A" or "B" or "tie",
+    "overall_reasoning": "<1-2 sentences explaining overall preference>"
+}}}}"""
+
+
+def grade_generic_judge_prompt(draft_a: str, draft_b: str) -> str:
+    """
+    LLM judge scores two drafts using only generic writing quality criteria.
+    No rubric, no user context. Used in Evaluate: Grade tab Step 3 (generic condition).
+    """
+    return f"""You are an expert writing quality judge. You will evaluate two drafts
+using standard writing quality criteria. You have NO information about the writer's
+specific preferences — evaluate based purely on general writing quality.
+
+DRAFT A:
+{draft_a}
+
+DRAFT B:
+{draft_b}
+
+TASK:
+Score both drafts on each of the following GENERIC writing quality dimensions (1-5 scale):
+  1 = Very poor
+  2 = Below average
+  3 = Adequate
+  4 = Good
+  5 = Excellent
+
+Generic dimensions to evaluate:
+- Clarity: Is the writing clear and easy to understand?
+- Coherence: Do ideas flow logically and connect well?
+- Grammar & Mechanics: Is the writing free of grammatical errors and typos?
+- Structure & Organization: Is the piece well-organized with clear sections/paragraphs?
+- Engagement: Is the writing interesting, compelling, or engaging to read?
+- Tone & Voice: Is the tone appropriate and the voice consistent?
+
+Then determine your overall preference (which draft is better overall).
+
+Return ONLY valid JSON (no markdown code blocks):
+{{{{
+    "per_criterion": [
+        {{{{
+            "criterion_name": "<one of: Clarity, Coherence, Grammar & Mechanics, Structure & Organization, Engagement, Tone & Voice>",
+            "draft_a_score": <1-5>,
+            "draft_b_score": <1-5>,
+            "reasoning": "<1-2 sentences>"
+        }}}}
+    ],
+    "overall_preference": "A" or "B" or "tie",
+    "overall_reasoning": "<1-2 sentences explaining overall preference>"
+}}}}"""
+
+
+def refine_rubric_from_evaluation_prompt(
+    current_rubric_json: str,
+    coldstart_text: str,
+    user_categorizations: dict,
+    behavioral_summary: dict,
+    decision_points_summary: list,
+    agreement_scores: dict
+) -> str:
+    """
+    Generate a prompt to refine a rubric based on all evaluation evidence collected
+    during the Infer tab workflow.
+    """
+    # Build categorization summary
+    cat_lines = []
+    for crit, cat in user_categorizations.items():
+        cat_label = {
+            "stated": "Stated (user mentioned in cold-start)",
+            "real": "Real (user cares about it)",
+            "latent_real": "Real (user cares about it)",
+            "elicited": "Real (user cares about it)",
+            "hallucinated": "Hallucinated (user doesn't actually care about this)"
+        }.get(cat, cat)
+        cat_lines.append(f"  - {crit}: {cat_label}")
+    categorization_text = "\n".join(cat_lines)
+
+    # Build behavioral evidence summary
+    behavioral_text = "No behavioral evidence collected."
+    if behavioral_summary:
+        analysis = behavioral_summary.get("behavioral_analysis", [])
+        beh_lines = []
+        for item in analysis:
+            strength = item.get("evidence_strength", "none")
+            summary = item.get("evidence_summary", "")
+            signals = item.get("signal_types_present", [])
+            beh_lines.append(f"  - {item.get('criterion_name', '?')}: evidence={strength}, signals={signals}, summary={summary}")
+        if beh_lines:
+            behavioral_text = "\n".join(beh_lines)
+
+    # Build decision points summary
+    dp_lines = []
+    for dp in decision_points_summary:
+        dp_id = dp.get("id", "?")
+        confirmed = dp.get("confirmed_criterion", "?")
+        user_action = dp.get("user_action", "correct")
+        original = dp.get("original_suggestion", "")
+        is_not_in_rubric = dp.get("is_not_in_rubric", False)
+        reason = dp.get("not_in_rubric_reason", "") or dp.get("incorrect_reason", "")
+
+        if is_not_in_rubric:
+            dp_lines.append(f"  - DP#{dp_id}: NOT IN RUBRIC — user said this edit doesn't map to any criterion. Reason: {reason}")
+        elif user_action == "incorrect":
+            dp_lines.append(f"  - DP#{dp_id}: LLM mapped to '{original}' but user corrected to '{confirmed}'. Reason: {reason}")
+        else:
+            dp_lines.append(f"  - DP#{dp_id}: Confirmed mapping to '{confirmed}'")
+    dp_text = "\n".join(dp_lines) if dp_lines else "No decision points."
+
+    # Build agreement scores summary (writing preference, before/after prediction accuracy, or legacy tau)
+    agreement_text = "No agreement scores computed."
+    if agreement_scores:
+        wp = agreement_scores.get("writing_preference")
+        before_after = agreement_scores.get("before_after_accuracy")
+        if wp:
+            if wp.get("user_preferred_rubric_guided"):
+                pref = "preferred the rubric-guided version"
+            elif wp.get("user_preferred_coldstart_guided"):
+                pref = "preferred the cold-start-guided version"
+            elif wp.get("user_preferred_generic_guided"):
+                pref = "preferred the generic (no-preference) version"
+            else:
+                pref = "chose tie (no single preference)"
+            agreement_text = f"Writing preference check (blind A/B/C): User {pref}."
+        elif before_after:
+            total = before_after.get("total", 0)
+            rc = before_after.get("rubric_correct", 0)
+            cc = before_after.get("coldstart_correct", 0)
+            gc = before_after.get("generic_correct", 0)
+            surp = before_after.get("surplus_count", 0)
+            src = before_after.get("surplus_rubric_correct", 0)
+            scc = before_after.get("surplus_coldstart_correct", 0)
+            sgc = before_after.get("surplus_generic_correct", 0)
+            agreement_text = f"""Prediction test: did each predictor correctly predict the user preferred "after" (their edit) over "before" (AI suggestion)?
+  Overall (n={total}): Rubric {rc}/{total} | Cold-Start {cc}/{total} | Generic {gc}/{total}
+  Surplus criteria only (n={surp}): Rubric {src}/{surp} | Cold-Start {scc}/{surp} | Generic {sgc}/{surp}
+(A surplus criterion is one the user endorsed but did not state in their cold-start description.)"""
+        else:
+            overall = agreement_scores.get("overall", {})
+            stated = agreement_scores.get("stated", {})
+            surplus = agreement_scores.get("surplus", {})
+            nir = agreement_scores.get("not_in_rubric", {})
+
+            def fmt(tau_dict):
+                tau = tau_dict.get("tau")
+                return f"{tau:.3f}" if tau is not None else "N/A"
+
+            agreement_text = f"""Overall Kendall's tau:
+    Rubric: {fmt(overall.get('rubric', {}))} | Cold-Start: {fmt(overall.get('coldstart', {}))} | Generic: {fmt(overall.get('generic', {}))}
+  Stated dimensions (n={stated.get('count', 0)}):
+    Rubric: {fmt(stated.get('rubric', {}))} | Cold-Start: {fmt(stated.get('coldstart', {}))} | Generic: {fmt(stated.get('generic', {}))}
+  Surplus dimensions (n={surplus.get('count', 0)}):
+    Rubric: {fmt(surplus.get('rubric', {}))} | Cold-Start: {fmt(surplus.get('coldstart', {}))} | Generic: {fmt(surplus.get('generic', {}))}
+  Not in rubric: {nir.get('count', 0)} decision points"""
+            nir_reasons = [r for r in nir.get("reasons", []) if r]
+            if nir_reasons:
+                agreement_text += "\n  Not-in-rubric reasons: " + "; ".join(nir_reasons)
+
+    return f"""You are refining a personalized writing rubric based on evaluation evidence.
+
+The user has gone through a comprehensive evaluation workflow to test how well their current rubric captures their actual writing preferences. You now have rich evidence about what works, what's missing, and what's wrong with the current rubric.
+
+## CURRENT RUBRIC
+{current_rubric_json}
+
+## EVALUATION EVIDENCE
+
+### 1. Cold-Start Description
+The user described their writing preferences WITHOUT seeing the rubric:
+"{coldstart_text}"
+
+### 2. User's Criterion Categorizations
+After seeing the rubric, the user categorized each criterion:
+{categorization_text}
+
+Key takeaways:
+- "Hallucinated" criteria: the rubric includes these but the user doesn't care about them. Consider REMOVING or significantly deprioritizing these.
+- "Latent Real" criteria: the user cares but couldn't articulate upfront — these are valuable and the rubric correctly surfaced them. Keep and possibly strengthen.
+- "Elicited" criteria: the user cares but just didn't think to mention — keep these.
+- "Stated" criteria: the user explicitly values these — make sure they're well-captured.
+
+### 3. Behavioral Evidence from Conversations
+Evidence from analyzing the user's actual editing behavior:
+{behavioral_text}
+
+### 4. Decision Point Analysis
+How the user's edits mapped to rubric criteria:
+{dp_text}
+
+Key takeaways from dimension mapping corrections:
+- Where the LLM was corrected, the criterion descriptions or names may be unclear or misleading
+- "Not in rubric" items suggest missing criteria that the user cares about but the rubric doesn't capture
+
+### 5. Preference Prediction Agreement
+How well different preference sources predicted the user's actual rankings:
+{agreement_text}
+
+Key takeaways:
+- If rubric tau >> cold-start tau: the rubric captures preferences the user can't easily articulate (good!)
+- If cold-start tau >> rubric tau: the rubric may be missing or miscalibrating important preferences
+- If generic tau is competitive: the rubric may not be adding much beyond generic quality standards
+- Differences between stated and surplus dimensions reveal where the rubric adds unique value
+
+## YOUR TASK
+
+Based on ALL this evidence, produce a refined rubric that:
+
+1. **REMOVES or deprioritizes** hallucinated criteria (user doesn't care about them)
+2. **STRENGTHENS** latent real and elicited criteria (user values them, rubric correctly surfaced them)
+3. **ADDS new criteria** for any "not in rubric" decision points that represent real preferences
+4. **CLARIFIES descriptions** for criteria where the LLM dimension mapping was frequently corrected — if the model couldn't match edits to the right criterion, the description may need rewording
+5. **ADJUSTS priorities** based on behavioral evidence strength and user categorizations
+6. **REFINES dimensions** (checkable items) based on the behavioral evidence — what specific behaviors did the user exhibit?
+7. **PRESERVES** what's working — criteria with strong behavioral evidence and correct dimension mappings should be kept largely intact
+
+IMPORTANT CONSTRAINTS:
+- Keep 4-7 criteria total
+- Each criterion needs: name, category, description (1-3 sentences), dimensions (3-5 checkable items), priority (unique integer rank)
+- Use the user's own vocabulary where possible (from cold-start description and behavioral evidence)
+- Include coaching_notes summarizing what changed and why
+
+First, write your analysis in <analysis> tags explaining what changes you're making and why based on the evidence.
+
+Then output the refined rubric as JSON:
+```json
+{{{{
+  "version": <next version number>,
+  "writing_type": "<specific genre, audience, constraints>",
+  "user_goals_summary": "<2-3 sentence summary updated with new evidence>",
+  "rubric": [
+    {{{{
+      "name": "<criterion name>",
+      "category": "<shared category>",
+      "description": "<1-3 sentence user-specific description>",
+      "dimensions": [
+        {{{{
+          "id": "<machine-friendly id>",
+          "label": "<checkable item: what to verify as yes/no>"
+        }}}}
+      ],
+      "priority": <integer rank, 1 = most important>
+    }}}}
+  ],
+  "coaching_notes": "<2-3 concise insights about what changed and why>",
+  "changes_summary": [
+    {{{{
+      "type": "added|removed|modified|reprioritized",
+      "criterion": "<criterion name>",
+      "reason": "<brief explanation based on evidence>"
+    }}}}
+  ]
+}}}}
+```"""
