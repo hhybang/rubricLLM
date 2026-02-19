@@ -113,7 +113,7 @@ def register_user(supabase: Client, email: str, password: str, name: str) -> Tup
         })
 
         if response.user:
-            return True, "Registration successful! Please check your email to verify your account."
+            return True, "Registration successful! You can now log in."
         else:
             return False, "Registration failed. Please try again."
 
