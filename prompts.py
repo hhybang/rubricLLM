@@ -1948,3 +1948,199 @@ DRAFT B:
 Which draft is better? Return ONLY a JSON object (no markdown, no preamble):
 {{"preferred": "A" or "B" or "tie", "confidence": "high" or "medium" or "low", "reasoning": "1-2 sentences explaining your choice"}}"""
 
+
+def ALIGNMENT_diagnostic_suggest_changes_prompt(
+    current_rubric_json: str,
+    rubric_judge_results_json: str,
+    generic_judge_results_json: str,
+    user_preference: str,
+    user_reason: str = "",
+) -> str:
+    """Generate rubric improvement suggestions based on alignment diagnostic evidence.
+
+    Takes per-criterion scoring from rubric and generic judges, plus the user's
+    preference, and produces concrete bullet-point suggestions for rubric changes.
+    """
+    user_reason_block = ""
+    if user_reason.strip():
+        user_reason_block = f"\nThe user also said: \"{user_reason.strip()}\"\n"
+
+    return f"""You are a rubric improvement advisor. A user just completed an alignment diagnostic
+comparing a rubric-guided draft vs. a generic draft (written without any rubric).
+
+CURRENT RUBRIC:
+{current_rubric_json}
+
+RUBRIC JUDGE RESULTS (per-criterion scores for both drafts, using the rubric):
+{rubric_judge_results_json}
+
+GENERIC QUALITY JUDGE RESULTS (per-dimension scores for both drafts, using standard writing dimensions):
+{generic_judge_results_json}
+
+USER'S PREFERENCE: The user preferred the **{user_preference}** draft.{user_reason_block}
+
+ANALYSIS FRAMEWORK:
+For each rubric criterion, classify it based on the score gap (rubric_draft_score - generic_draft_score):
+- DIFFERENTIATING (gap > 0): The rubric is successfully guiding the LLM to do better on this criterion.
+- REDUNDANT (gap = 0): The LLM does equally well without the rubric. The criterion may need sharpening or deprioritizing.
+- UNDERPERFORMING (gap < 0): The generic draft actually scores better. The criterion description may be too vague, misleading, or conflicting with other criteria.
+
+Also check the generic judge results for BLIND SPOTS: dimensions where the generic draft outperforms the rubric draft, suggesting the rubric may be missing something.
+
+YOUR TASK:
+Based on this evidence, suggest specific, concrete changes to improve the rubric. Format as bullet points:
+- For UNDERPERFORMING criteria: suggest rewriting the description or dimensions to be more specific
+- For REDUNDANT criteria: suggest sharpening the description to capture something the LLM wouldn't do by default, or lowering priority
+- For BLIND SPOTS: suggest adding a new criterion if the gap is significant
+- If the user preferred the generic draft: pay special attention to what the rubric is missing
+
+Be concrete: name specific criteria, quote specific dimension labels, suggest specific rewording.
+Keep it to 3-6 bullet points. Write directly to the user (e.g. "Reword the 'Concise Language' criterion to...")."""
+
+
+def PROBE_identify_uncertainty_prompt(rubric_json: str, conversation_text: str, diagnostic_guidance: str = "") -> str:
+    """Identify the single rubric criterion the model is most uncertain about applying.
+
+    Given the rubric and recent conversation, find where the criterion description
+    is ambiguous or the conversation examples give conflicting signals about how to apply it.
+    If diagnostic_guidance is provided, prioritize criteria flagged by the alignment diagnostic.
+    """
+    _diag_section = ""
+    if diagnostic_guidance:
+        _diag_section = f"""
+DIAGNOSTIC PRIORITY GUIDANCE:
+A recent alignment diagnostic compared rubric-guided vs generic drafts and classified each criterion.
+Use this to prioritize which criterion to probe — but ONLY if you also find genuine ambiguity there.
+Do NOT pick a criterion solely because it appears below; pick it because it is BOTH listed here AND genuinely unclear.
+
+{diagnostic_guidance}
+
+If none of the listed criteria are genuinely ambiguous to you, ignore this section and pick whichever criterion is most unclear.
+"""
+    return f"""You are analyzing a writing rubric to find where it's unclear or ambiguous.
+
+RUBRIC:
+{rubric_json}
+
+RECENT CONVERSATION (the user has been working with an LLM writing assistant):
+{conversation_text}
+{_diag_section}
+YOUR TASK:
+Look at each criterion in the rubric and the conversation context. Identify the SINGLE criterion
+where you are MOST uncertain about how to apply it. Uncertainty can come from:
+- The description is vague or could mean multiple things
+- The conversation examples show conflicting patterns (e.g. sometimes terse, sometimes verbose)
+- The dimensions are unclear about what "met" vs "not met" actually looks like
+- Two criteria seem to pull in opposite directions
+
+If you are genuinely confident about ALL criteria (every criterion is clear and unambiguous), set "all_confident": true.
+
+Return ONLY a JSON object (no markdown, no preamble):
+{{
+  "criterion_name": "<exact name of the most uncertain criterion>",
+  "criterion_index": <0-based index in the rubric array>,
+  "interpretation_a": "<one plausible way to apply this criterion — describe in 1-2 sentences>",
+  "interpretation_b": "<a different plausible way to apply the same criterion — describe in 1-2 sentences>",
+  "uncertainty_reason": "<1-2 sentences explaining why this criterion is ambiguous>",
+  "all_confident": false
+}}
+
+Or if all criteria are clear:
+{{
+  "all_confident": true,
+  "criterion_name": "",
+  "criterion_index": -1,
+  "interpretation_a": "",
+  "interpretation_b": "",
+  "uncertainty_reason": ""
+}}"""
+
+
+def PROBE_generate_variant_draft_prompt(
+    conversation_context: str, current_draft: str, rubric_json: str,
+    uncertain_criterion: str, uncertainty_reason: str
+) -> str:
+    """Generate ONE alternative draft that applies an uncertain criterion differently.
+
+    The model reads the original draft, identifies how the uncertain criterion was
+    interpreted, and rewrites with a clearly different interpretation — ensuring
+    the two drafts are distinguishable along that dimension.
+    """
+    return f"""You are a skilled writer. The user is in a conversation and just received Draft A (below).
+A rubric criterion was flagged as ambiguous — the draft could have gone a different direction
+on that criterion. Your job: figure out how Draft A interpreted the criterion, then write
+Draft B that takes a CLEARLY DIFFERENT interpretation of that same criterion.
+
+CONVERSATION CONTEXT (recent messages):
+{conversation_context}
+
+DRAFT A (the draft the user just received):
+{current_draft}
+
+FULL RUBRIC:
+{rubric_json}
+
+AMBIGUOUS CRITERION: {uncertain_criterion}
+WHY IT'S AMBIGUOUS: {uncertainty_reason}
+
+INSTRUCTIONS:
+1. Read Draft A carefully. Identify how it interprets the ambiguous criterion — what choices did it make along that dimension?
+2. Write Draft B with a CLEARLY DIFFERENT interpretation of that criterion. The difference should be obvious when reading both side by side. For example, if Draft A is formal, make Draft B conversational. If Draft A uses detailed examples, make Draft B use concise principles.
+3. Keep EVERYTHING ELSE the same — same topic, same structure, same key points, same tone on all OTHER criteria. Only the ambiguous criterion should change.
+4. Draft B should be similar in length to Draft A.
+5. Do NOT make Draft B worse — both should be good, just different on this one dimension.
+6. Do NOT mention the rubric, criteria, or that anything is being tested.
+
+Return ONLY a JSON object (no markdown, no preamble):
+{{
+  "draft_a_interpretation": "<1 sentence: how Draft A interprets the criterion>",
+  "draft_b_interpretation": "<1 sentence: how Draft B interprets the criterion differently>",
+  "variant": "<the full text of Draft B>",
+  "dimension_varied": "<brief label for what differs, e.g. 'level of formality' or 'amount of detail'>"
+}}"""
+
+
+def PROBE_refine_criterion_prompt(criterion_json: str, chosen_interpretation: str, user_reason: str = "") -> str:
+    """Refine a single rubric criterion based on the user's preference between two interpretations.
+
+    Produces an updated criterion with a sharper description and/or dimensions that resolve
+    the ambiguity the user just clarified.
+    """
+    reason_block = ""
+    if user_reason.strip():
+        reason_block = f"\nThe user also explained: \"{user_reason.strip()}\"\n"
+
+    return f"""You are refining a rubric criterion to resolve an ambiguity.
+
+CURRENT CRITERION (JSON):
+{criterion_json}
+
+The user was shown two draft variants that differed on how this criterion was applied.
+They preferred the interpretation: "{chosen_interpretation}"{reason_block}
+
+YOUR TASK:
+Update this criterion's description and/or dimensions so that the preferred interpretation
+is clearly captured and the ambiguity is resolved. Specifically:
+- Rewrite the "description" to be more precise about what the user wants
+- Update dimension labels and guidance (met_guidance, not_met_guidance) if they were vague
+- Keep the criterion name, category, and priority unchanged unless the name itself is misleading
+- Do NOT add new dimensions unless the current ones clearly miss the point
+- The updated criterion should make it obvious which interpretation is correct
+
+Return ONLY a JSON object (no markdown, no preamble):
+{{
+  "updated_criterion": {{
+    "name": "<criterion name — keep same unless misleading>",
+    "category": "<keep same>",
+    "description": "<refined 1-3 sentence description that resolves the ambiguity>",
+    "dimensions": [
+      {{
+        "label": "<dimension label>",
+        "met_guidance": "<what 'met' looks like — be specific>",
+        "not_met_guidance": "<what 'not met' looks like>"
+      }}
+    ],
+    "priority": <keep same integer>
+  }}
+}}"""
+

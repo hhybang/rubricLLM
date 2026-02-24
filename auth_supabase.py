@@ -244,19 +244,37 @@ def delete_project(supabase: Client, user_id: str, project_id: str) -> Tuple[boo
 # ========================
 
 def save_conversation(supabase: Client, project_id: str, messages: List[Dict],
-                     rubric: Any, analysis: str = "") -> Optional[str]:
-    """Save a conversation to the database"""
+                     rubric: Any, analysis: str = "",
+                     conversation_id: Optional[str] = None) -> Optional[str]:
+    """Save a conversation to the database.
+
+    If conversation_id is provided, updates the existing row.
+    Otherwise, inserts a new row.
+    """
     try:
-        response = supabase.table("conversations").insert({
+        data = {
             "project_id": project_id,
             "messages": json.dumps(messages),
             "rubric": json.dumps(rubric) if rubric else None,
             "analysis": analysis,
-            "created_at": datetime.now().isoformat()
-        }).execute()
+        }
+        if conversation_id:
+            # Delete + re-insert (no UPDATE RLS policy exists, so update silently fails)
+            try:
+                supabase.table("conversations").delete().eq("id", conversation_id).execute()
+                print(f"[SAVE] Deleted old row id={conversation_id} for re-insert")
+            except Exception:
+                print(f"[SAVE] Delete failed for id={conversation_id}, will insert as new")
 
+        # Insert conversation (new or replacement)
+        data["created_at"] = datetime.now().isoformat()
+        if conversation_id:
+            data["id"] = conversation_id  # Preserve the original ID
+        response = supabase.table("conversations").insert(data).execute()
         if response.data:
-            return response.data[0]["id"]
+            new_id = response.data[0]["id"]
+            print(f"[SAVE] {'Re-inserted' if conversation_id else 'Inserted new'} conversation: {new_id}")
+            return new_id
         return None
     except Exception as e:
         st.error(f"Error saving conversation: {e}")
@@ -287,7 +305,7 @@ def load_conversations(supabase: Client, project_id: str) -> List[Dict]:
 def load_conversation_by_id(supabase: Client, conversation_id: str) -> Optional[Dict]:
     """Load a specific conversation by ID"""
     try:
-        response = supabase.table("conversations").select("*").eq("id", conversation_id).single().execute()
+        response = supabase.table("conversations").select("*").eq("id", conversation_id).maybe_single().execute()
 
         if response.data:
             conv = response.data
@@ -302,6 +320,16 @@ def load_conversation_by_id(supabase: Client, conversation_id: str) -> Optional[
     except Exception as e:
         st.error(f"Error loading conversation: {e}")
         return None
+
+
+def delete_conversation(supabase: Client, conversation_id: str) -> bool:
+    """Delete a conversation by ID. Returns True on success."""
+    try:
+        response = supabase.table("conversations").delete().eq("id", conversation_id).execute()
+        return bool(response.data)
+    except Exception as e:
+        st.error(f"Error deleting conversation: {e}")
+        return False
 
 
 # ========================
@@ -503,6 +531,11 @@ CREATE POLICY "Users can view own conversations" ON public.conversations
 
 CREATE POLICY "Users can create conversations in own projects" ON public.conversations
     FOR INSERT WITH CHECK (
+        project_id IN (SELECT id FROM public.projects WHERE user_id = auth.uid())
+    );
+
+CREATE POLICY "Users can update own conversations" ON public.conversations
+    FOR UPDATE USING (
         project_id IN (SELECT id FROM public.projects WHERE user_id = auth.uid())
     );
 
