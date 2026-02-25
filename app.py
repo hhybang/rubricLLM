@@ -4325,6 +4325,10 @@ with tab1:
     if _dp_active and _dp_result:
         _dp_parsed = _dp_result.get("parsed_data", {})
         _dp_list_all = _dp_parsed.get("decision_points", [])
+        # Re-number DPs so IDs follow chat display order (sorted by message position)
+        _dp_list_all = sorted(_dp_list_all, key=lambda d: (d.get("user_message_num", 0), d.get("id", 0)))
+        for _i, _dp in enumerate(_dp_list_all, start=1):
+            _dp["id"] = _i
         # Build index: which DPs attach to which message number
         for _dp in _dp_list_all:
             _u_num = _dp.get("user_message_num")
@@ -4339,21 +4343,26 @@ with tab1:
             _dp_crit_names = [c.get("name", "") for c in _dp_rb.get("rubric", []) if c.get("name")]
 
     def _highlight_dp_quotes(text, dp_list, quote_key, color):
-        """Highlight DP quotes in message text. Returns modified text with HTML highlights."""
+        """Highlight DP quotes in message text. Returns modified text with HTML highlights and visible DP badge."""
+        _dp_badge_tpl = ('<sup style="background:#1976D2;color:white;padding:0 4px;border-radius:6px;'
+                         'font-size:0.7em;font-weight:bold;margin-right:2px;">DP#{dp_id}</sup>')
         for dp in dp_list:
             quote = (dp.get(quote_key, '') or '').strip()
             if not quote or len(quote) < 5:
                 continue
             dp_id = dp.get('id', 0)
+            _badge = _dp_badge_tpl.replace('{dp_id}', str(dp_id))
             # Try exact match first, then case-insensitive
             if quote in text:
-                highlight = f'<mark style="background:{color};padding:1px 3px;border-radius:3px;" title="DP#{dp_id}">{_dp_html_lib.escape(quote)}</mark>'
+                highlight = (f'<span style="background:{color};padding:1px 3px;border-radius:3px;">'
+                             f'{_badge}{_dp_html_lib.escape(quote)}</span>')
                 text = text.replace(quote, highlight, 1)
             elif quote.lower() in text.lower():
                 # Case-insensitive: find the position and replace preserving original case
                 idx = text.lower().find(quote.lower())
                 original = text[idx:idx+len(quote)]
-                highlight = f'<mark style="background:{color};padding:1px 3px;border-radius:3px;" title="DP#{dp_id}">{_dp_html_lib.escape(original)}</mark>'
+                highlight = (f'<span style="background:{color};padding:1px 3px;border-radius:3px;">'
+                             f'{_badge}{_dp_html_lib.escape(original)}</span>')
                 text = text[:idx] + highlight + text[idx+len(quote):]
         return text
 
@@ -6308,7 +6317,11 @@ with tab1:
     _ac_draft_pending = any(m.get("_ac_pending_draft") for m in st.session_state.get("messages", []))
     _rcp_active = st.session_state.get("ranking_checkpoint_pending") is not None
     _cc_review_active = st.session_state.get("chat_criteria_review_active", False) and not st.session_state.get("chat_criteria_review_confirmed", False)
-    _dp_review_pending = any(m.get('is_dp_review') for m in st.session_state.get("messages", [])) and not st.session_state.get("infer_dp_dimension_confirmed", False)
+    _dp_review_pending = (
+        st.session_state.get("infer_decision_points") is not None
+        and any(m.get('is_dp_review') for m in st.session_state.get("messages", []))
+        and not st.session_state.get("infer_dp_dimension_confirmed", False)
+    )
     _chat_blocked = _no_project or _pref_blocked or _alignment_check_needed or _ac_draft_pending or _rcp_active or _cc_review_active or _dp_review_pending
     if _no_project:
         st.info("Create a project first to start writing. Use the **sidebar** to create a new project.")
