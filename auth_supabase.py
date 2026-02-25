@@ -98,10 +98,8 @@ def init_auth_state():
 
 
 def register_user(supabase: Client, email: str, password: str, name: str) -> Tuple[bool, str]:
-    """Register a new user"""
+    """Register a new user (legacy password-based, kept for compatibility)"""
     try:
-        # Sign up with Supabase Auth
-        # The user profile in public.users is created automatically by a database trigger
         response = supabase.auth.sign_up({
             "email": email,
             "password": password,
@@ -124,8 +122,52 @@ def register_user(supabase: Client, email: str, password: str, name: str) -> Tup
         return False, f"Registration error: {error_msg}"
 
 
+def send_otp(supabase: Client, email: str, name: str = "") -> Tuple[bool, str]:
+    """Send a one-time password (OTP) to the user's email.
+
+    Works for both new and existing users — Supabase auto-creates the account
+    if the email is not yet registered.
+    """
+    try:
+        options = {}
+        if name:
+            options["data"] = {"name": name}
+        supabase.auth.sign_in_with_otp({
+            "email": email,
+            "options": options,
+        })
+        return True, "A sign-in code has been sent to your email."
+    except Exception as e:
+        return False, f"Failed to send code: {e}"
+
+
+def verify_otp(supabase: Client, email: str, token: str) -> Tuple[bool, str]:
+    """Verify an OTP code and log the user in."""
+    try:
+        response = supabase.auth.verify_otp({
+            "email": email,
+            "token": token,
+            "type": "email",
+        })
+        if response.user and response.session:
+            st.session_state.auth_user = {
+                "id": response.user.id,
+                "email": response.user.email,
+                "name": response.user.user_metadata.get("name", email.split("@")[0]),
+            }
+            st.session_state.auth_session = response.session
+            return True, "Login successful!"
+        else:
+            return False, "Verification failed. Please try again."
+    except Exception as e:
+        error_msg = str(e)
+        if "invalid" in error_msg.lower() or "expired" in error_msg.lower():
+            return False, "Invalid or expired code. Please request a new one."
+        return False, f"Verification error: {error_msg}"
+
+
 def login_user(supabase: Client, email: str, password: str) -> Tuple[bool, str]:
-    """Log in an existing user"""
+    """Log in an existing user (legacy password-based, kept for compatibility)"""
     try:
         response = supabase.auth.sign_in_with_password({
             "email": email,

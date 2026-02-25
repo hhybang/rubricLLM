@@ -1076,6 +1076,16 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         **OUTPUT FORMAT:**
         Always wrap any draft content (partial or full) in <draft></draft> tags.
         EXCEPTION: When presenting multiple options/alternatives for the user to choose between, do NOT use <draft> tags. Just present them as plain text (e.g. "Option 1: ...", "Option 2: ..."). Only use <draft> tags for a single committed draft that the user will edit and build on.
+
+        **PROBE SIGNAL (include ONLY when you produce a <draft>):**
+        After writing a draft, reflect on the rubric criteria you just applied. If you feel genuinely uncertain about how to interpret or apply any ONE criterion — the description is vague, the user's preferences seem conflicting, or you had to guess — append a probe signal tag AFTER the draft:
+        <probe_signal>{{"criterion_name": "<exact criterion name>", "criterion_index": <0-based index>, "uncertainty_reason": "<1-2 sentence explanation of the ambiguity>"}}</probe_signal>
+
+        Rules for the probe signal:
+        - Only include <probe_signal> when you have REAL uncertainty, not every draft. Most drafts should NOT have one.
+        - Pick the SINGLE most ambiguous criterion, not multiple.
+        - If all criteria are clear and you feel confident, do NOT include any <probe_signal> tag.
+        - The probe signal is processed by the system and will NOT be shown to the user.
         """).strip()
     else:
         system_instruction = dedent("""
@@ -1367,7 +1377,8 @@ WRITING TASK:
 USER'S PREFERENCES (follow these — they describe how the user wants the writing to sound and what they care about):
 {coldstart_text}
 
-Keep the draft to around 100 words (or to the length the task specifies). Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Just the draft itself."""
+Keep the draft to around 100 words (or to the length the task specifies). Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Just the draft itself.
+FORMATTING: Do NOT use markdown headings (#, ##, ###), bold (**), or any other large/emphasized formatting. Write in plain prose paragraphs only."""
 
 def GRADING_generate_draft_generic_prompt(writing_task: str) -> str:
     """Generate a draft for the task with no rubric or user preferences — generic writing."""
@@ -1376,7 +1387,8 @@ def GRADING_generate_draft_generic_prompt(writing_task: str) -> str:
 WRITING TASK:
 {writing_task}
 
-Keep the draft to around 100 words (or to the length the task specifies). Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Just the draft itself. Fulfill the task in a clear, competent way."""
+Keep the draft to around 100 words (or to the length the task specifies). Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Just the draft itself. Fulfill the task in a clear, competent way.
+FORMATTING: Do NOT use markdown headings (#, ##, ###), bold (**), or any other large/emphasized formatting. Write in plain prose paragraphs only."""
 
 def RUBRIC_compare_to_coldstart_prompt(rubric_json: str, coldstart_text: str, conversation_text: str = "") -> str:
     """
@@ -1462,6 +1474,7 @@ INSTRUCTIONS:
 3. The draft should read naturally, not like a checklist of criteria
 4. Do NOT mention the rubric or criteria in the draft itself
 5. Keep the draft short: around 100 words (or to the length the task specifies if it asks for more). Do not write a long piece unless the task explicitly asks for one.
+6. FORMATTING: Do NOT use markdown headings (#, ##, ###), bold (**), or any other large/emphasized formatting. Write in plain prose paragraphs only.
 
 Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Do not ask for clarification or add "Here is the draft:" or similar. Just the draft itself."""
 
@@ -1590,6 +1603,57 @@ Return ONLY valid JSON (no markdown code blocks):
     "overall_preference": "A" or "B" or "tie",
     "overall_reasoning": "<1-2 sentences explaining overall preference>"
 }}}}"""
+
+def GRADING_rubric_judge_3draft_prompt(draft_a: str, draft_b: str, draft_c: str, rubric_criteria_json: str, conversation_context: str) -> str:
+    """
+    LLM judge scores three drafts per-criterion using the user's rubric + conversation context.
+    Used in the Rubric Alignment Check when 3 drafts are generated (rubric, generic, preference).
+    """
+    return f"""You are an expert writing quality judge. You will evaluate three drafts
+against a set of personalized rubric criteria. You also have access to the user's
+recent conversation history for additional context about their preferences.
+
+DRAFT A:
+{draft_a}
+
+DRAFT B:
+{draft_b}
+
+DRAFT C:
+{draft_c}
+
+RUBRIC CRITERIA (the user's personalized writing quality criteria):
+{rubric_criteria_json}
+
+RECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):
+{conversation_context}
+
+TASK:
+For each rubric criterion, score ALL THREE drafts on a 1-5 scale:
+  1 = Very poor — clearly fails this criterion
+  2 = Below average — noticeable weaknesses
+  3 = Adequate — meets basic expectations
+  4 = Good — clearly satisfies this criterion
+  5 = Excellent — outstanding performance on this criterion
+
+Use the conversation context to understand the user's nuanced preferences when scoring.
+Then determine your overall ranking (which draft is best, second, third given all criteria).
+
+Return ONLY valid JSON (no markdown code blocks):
+{{{{
+    "per_criterion": [
+        {{{{
+            "criterion_name": "<exact name from rubric>",
+            "draft_a_score": <1-5>,
+            "draft_b_score": <1-5>,
+            "draft_c_score": <1-5>,
+            "reasoning": "<1-2 sentences explaining the scores>"
+        }}}}
+    ],
+    "overall_ranking": ["<best>", "<second>", "<third>"],
+    "overall_reasoning": "<1-2 sentences explaining overall ranking>"
+}}}}"""
+
 
 def GRADING_generic_judge_prompt(draft_a: str, draft_b: str) -> str:
     """
@@ -1952,50 +2016,133 @@ Which draft is better? Return ONLY a JSON object (no markdown, no preamble):
 def ALIGNMENT_diagnostic_suggest_changes_prompt(
     current_rubric_json: str,
     rubric_judge_results_json: str,
-    generic_judge_results_json: str,
-    user_preference: str,
+    user_ranking_description: str,
     user_reason: str = "",
 ) -> str:
     """Generate rubric improvement suggestions based on alignment diagnostic evidence.
 
-    Takes per-criterion scoring from rubric and generic judges, plus the user's
-    preference, and produces concrete bullet-point suggestions for rubric changes.
+    Takes per-criterion scoring from the rubric judge, the user's ranking of drafts,
+    and produces concrete bullet-point suggestions for rubric changes.
     """
     user_reason_block = ""
     if user_reason.strip():
         user_reason_block = f"\nThe user also said: \"{user_reason.strip()}\"\n"
 
     return f"""You are a rubric improvement advisor. A user just completed an alignment diagnostic
-comparing a rubric-guided draft vs. a generic draft (written without any rubric).
+comparing three drafts of the same writing task:
+1. A **rubric-guided** draft (written following the user's rubric criteria)
+2. A **generic** draft (written with no rubric or preferences — just competent writing)
+3. A **preference-based** draft (written following the user's original stated preferences from before the rubric was created)
 
 CURRENT RUBRIC:
 {current_rubric_json}
 
-RUBRIC JUDGE RESULTS (per-criterion scores for both drafts, using the rubric):
+RUBRIC JUDGE RESULTS (per-criterion scores for all three drafts, using the rubric):
 {rubric_judge_results_json}
 
-GENERIC QUALITY JUDGE RESULTS (per-dimension scores for both drafts, using standard writing dimensions):
-{generic_judge_results_json}
-
-USER'S PREFERENCE: The user preferred the **{user_preference}** draft.{user_reason_block}
+USER'S RANKING: {user_ranking_description}{user_reason_block}
 
 ANALYSIS FRAMEWORK:
-For each rubric criterion, classify it based on the score gap (rubric_draft_score - generic_draft_score):
-- DIFFERENTIATING (gap > 0): The rubric is successfully guiding the LLM to do better on this criterion.
-- REDUNDANT (gap = 0): The LLM does equally well without the rubric. The criterion may need sharpening or deprioritizing.
-- UNDERPERFORMING (gap < 0): The generic draft actually scores better. The criterion description may be too vague, misleading, or conflicting with other criteria.
+For each rubric criterion, look at the three scores:
+- If the rubric draft scores highest: the rubric is successfully guiding the LLM on this criterion (DIFFERENTIATING).
+- If the preference draft scores highest: the user's original preferences capture something the rubric doesn't yet (PREFERENCE GAP).
+- If the generic draft scores highest or all are tied: the criterion may be too vague or not adding value (UNDERPERFORMING/REDUNDANT).
 
-Also check the generic judge results for BLIND SPOTS: dimensions where the generic draft outperforms the rubric draft, suggesting the rubric may be missing something.
+KEY INSIGHT: Compare rubric vs preference drafts carefully. If the preference-based draft outperforms the rubric draft, it means the rubric hasn't fully captured what the user originally stated they wanted. If the rubric draft outperforms the preference draft, the rubric has successfully refined and improved upon the user's initial preferences.
 
 YOUR TASK:
 Based on this evidence, suggest specific, concrete changes to improve the rubric. Format as bullet points:
-- For UNDERPERFORMING criteria: suggest rewriting the description or dimensions to be more specific
-- For REDUNDANT criteria: suggest sharpening the description to capture something the LLM wouldn't do by default, or lowering priority
-- For BLIND SPOTS: suggest adding a new criterion if the gap is significant
-- If the user preferred the generic draft: pay special attention to what the rubric is missing
+- For criteria where the preference draft scores higher than the rubric draft: the user's original preferences contain something the rubric lost — suggest how to recapture it
+- For criteria where the generic draft beats both: the criterion description is likely too vague or misleading — suggest rewriting
+- For criteria where the rubric draft scores highest: acknowledge it's working well; only suggest changes if scores are close
+- If the user ranked the preference-based draft first: this is a strong signal that the rubric has drifted from the user's core preferences
 
 Be concrete: name specific criteria, quote specific dimension labels, suggest specific rewording.
 Keep it to 3-6 bullet points. Write directly to the user (e.g. "Reword the 'Concise Language' criterion to...")."""
+
+
+def ALIGNMENT_verify_suggested_rubric_prompt(
+    user_preferences: str,
+    writing_task: str,
+    rubric_draft: str,
+    generic_draft: str,
+    preference_draft: str,
+    user_ranking_description: str,
+    suggested_rubric_json: str,
+    suggested_draft: str,
+    original_suggestion_text: str,
+) -> str:
+    """Verify whether the suggested rubric + draft truly satisfy the user's preferences.
+
+    After generating rubric suggestions and a preview draft, this prompt asks the model
+    to check: given the writing task, the 3 original drafts, and how the user ranked them,
+    does the suggested rubric faithfully capture what the user wants?
+    If not, what specific refinements are needed?
+    """
+    _pref_draft_section = ""
+    if preference_draft:
+        _pref_draft_section = f"""
+PREFERENCE-BASED DRAFT (written from user's original preferences, no rubric):
+{preference_draft}
+"""
+
+    return f"""You are a rubric quality verifier. A user completed an alignment diagnostic where three drafts
+of the same writing task were generated and ranked. Based on that diagnostic, changes were suggested to
+the rubric, and a new draft was generated using the suggested rubric. Your job is to verify whether the
+suggested rubric and its draft truly capture what the user wants.
+
+WRITING TASK:
+{writing_task}
+
+USER'S ORIGINAL PREFERENCES (stated before any rubric existed):
+{user_preferences}
+
+THE 3 DRAFTS THE USER COMPARED:
+
+RUBRIC-GUIDED DRAFT (written following the original rubric):
+{rubric_draft}
+
+GENERIC DRAFT (written with no rubric — just competent writing):
+{generic_draft}
+{_pref_draft_section}
+USER'S RANKING OF THESE DRAFTS: {user_ranking_description}
+
+SUGGESTED RUBRIC (after diagnostic changes):
+{suggested_rubric_json}
+
+DRAFT PRODUCED BY THE SUGGESTED RUBRIC:
+{suggested_draft}
+
+ORIGINAL SUGGESTIONS THAT WERE APPLIED:
+{original_suggestion_text}
+
+YOUR TASK:
+1. Look at how the user ranked the 3 drafts. This tells you what the user actually values — the top-ranked
+   draft is closest to what they want. Does the suggested rubric move toward what the user ranked highest?
+2. Compare the suggested rubric against the user's original preferences. Does every key preference
+   have a corresponding criterion? Are any criteria misaligned with what the user actually wants?
+3. Look at the draft produced by the suggested rubric. Does it feel like an improvement that combines
+   the best qualities of the user's top-ranked draft(s)?
+4. Decide: is the suggested rubric good as-is, or does it need refinements?
+
+Return ONLY a JSON object (no markdown, no preamble):
+{{
+  "verdict": "approved" or "needs_refinement",
+  "reasoning": "2-3 sentences explaining your assessment",
+  "refinements": [
+    {{
+      "action": "reword" or "add" or "remove" or "adjust_weight",
+      "criterion_name": "<name of criterion to change, or new criterion name if adding>",
+      "current_text": "<current description if rewording, empty string if adding>",
+      "suggested_text": "<new/revised description>",
+      "reason": "<1 sentence why>"
+    }}
+  ]
+}}
+
+If verdict is "approved", set refinements to an empty list [].
+If verdict is "needs_refinement", provide 1-3 specific refinements.
+Be conservative — only suggest refinements for clear misalignments, not stylistic nitpicks."""
 
 
 def PROBE_identify_uncertainty_prompt(rubric_json: str, conversation_text: str, diagnostic_guidance: str = "") -> str:
@@ -2085,8 +2232,8 @@ WHY IT'S AMBIGUOUS: {uncertainty_reason}
 
 INSTRUCTIONS:
 1. Read Draft A carefully. Identify how it interprets the ambiguous criterion — what choices did it make along that dimension?
-2. Write Draft B with a CLEARLY DIFFERENT interpretation of that criterion. The difference should be obvious when reading both side by side. For example, if Draft A is formal, make Draft B conversational. If Draft A uses detailed examples, make Draft B use concise principles.
-3. Keep EVERYTHING ELSE the same — same topic, same structure, same key points, same tone on all OTHER criteria. Only the ambiguous criterion should change.
+2. Write Draft B with a CLEARLY DIFFERENT interpretation of that criterion. The difference should be OBVIOUS and felt throughout the draft — not just one swapped sentence. Let the different interpretation influence word choice, sentence structure, emphasis, and flow across MULTIPLE paragraphs/sentences. For example, if Draft A interprets "voice" as formal and authoritative, Draft B should be conversational and warm THROUGHOUT, not just in the opening line.
+3. The core content (topic, key information) should stay the same, but HOW it's expressed should feel noticeably different. A reader should be able to tell the two drafts apart within the first few sentences.
 4. Draft B should be similar in length to Draft A.
 5. Do NOT make Draft B worse — both should be good, just different on this one dimension.
 6. Do NOT mention the rubric, criteria, or that anything is being tested.
