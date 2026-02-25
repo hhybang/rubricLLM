@@ -1233,6 +1233,45 @@ Current draft to revise:
 
 Analyze the rubric changes and revise the draft to better fulfill the updated criteria."""
 
+INLINE_REGEN_SYSTEM_PROMPT = """You are a writing assistant performing a targeted edit on a specific portion of a draft.
+
+You will be given:
+1. The full draft (for context — do NOT rewrite the full draft)
+2. The specific text the user has selected for editing
+3. The user's instruction for how to change the selected text
+4. Optionally, rubric criteria to follow
+
+Your task:
+- Regenerate ONLY the selected text according to the user's instruction
+- The replacement must fit seamlessly into the surrounding draft (matching tone, tense, style)
+- Maintain approximately the same length unless the instruction explicitly asks for expansion or reduction
+- Follow the rubric criteria if provided
+
+Output ONLY a valid JSON object (no markdown fences, no extra text):
+{
+  "replacement_text": "The regenerated text that will replace the selection",
+  "explanation": "Brief explanation of what was changed and why (1-2 sentences)"
+}"""
+
+
+def INLINE_regen_user_prompt(full_draft, selected_text, instruction, rubric_list=None):
+    """Generate prompt for inline text regeneration."""
+    rubric_section = ""
+    if rubric_list:
+        rubric_section = f"\n\nRubric criteria to follow:\n{json.dumps(rubric_list, ensure_ascii=False, indent=2)}"
+
+    return f"""Full draft (for context only — do NOT rewrite the entire draft):
+{full_draft}
+
+Selected text to edit:
+{selected_text}
+
+User's instruction:
+{instruction}{rubric_section}
+
+Regenerate ONLY the selected text according to the instruction. Return JSON only."""
+
+
 def RUBRIC_refine_from_corrected_dps_prompt(current_rubric_json, corrected_dps_json):
     """Build prompt for refining a rubric based on user's DP corrections.
 

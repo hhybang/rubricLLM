@@ -49,6 +49,8 @@ from prompts import (
     PROBE_identify_uncertainty_prompt,
     PROBE_generate_variant_draft_prompt,
     PROBE_refine_criterion_prompt,
+    INLINE_REGEN_SYSTEM_PROMPT,
+    INLINE_regen_user_prompt,
 )
 from scipy.stats import kendalltau
 import random
@@ -281,6 +283,38 @@ def parse_draft_content(content: str):
 
     return parts
 
+
+def split_draft_into_sentences(draft_text: str) -> list:
+    """Split draft text into sentences, preserving paragraph structure."""
+    paragraphs = draft_text.split('\n\n')
+    sentences = []
+    for para in paragraphs:
+        if not para.strip():
+            continue
+        # Split on sentence-ending punctuation followed by space + uppercase letter
+        para_sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z])', para.strip())
+        sentences.extend([s.strip() for s in para_sentences if s.strip()])
+    return sentences
+
+
+def replace_sentences_in_draft(draft: str, sentences: list, selected_indices: set, replacement: str) -> str:
+    """Replace selected sentences in draft with replacement text using position-based matching."""
+    positions = []
+    search_start = 0
+    for idx in sorted(selected_indices):
+        sent = sentences[idx]
+        pos = draft.find(sent, search_start)
+        if pos == -1:
+            continue
+        positions.append((pos, pos + len(sent)))
+        search_start = pos + len(sent)
+    if not positions:
+        return draft
+    start = positions[0][0]
+    end = positions[-1][1]
+    return draft[:start] + replacement + draft[end:]
+
+
 def strip_draft_tags_for_streaming(content: str) -> str:
     """
     Strip <draft> tags from content for display during streaming.
@@ -394,19 +428,142 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                 # Get current value to display
                 current_value = st.session_state[draft_key][edit_key]
 
-                # Text area for editing - include reset counter in key to force refresh
-                textarea_widget_key = f"textarea_{edit_key}_v{st.session_state[reset_counter_key]}"
-                edited_draft = st.text_area(
-                    label="Edit draft",
-                    value=current_value,
-                    key=textarea_widget_key,
-                    height=300,
-                    label_visibility="collapsed"
-                )
+                # --- Rephrase mode state ---
+                rephrase_mode_key = f"rephrase_mode_{message_id}_{draft_idx}"
+                rephrase_selected_key = f"rephrase_selected_{message_id}_{draft_idx}"
+                if rephrase_mode_key not in st.session_state:
+                    st.session_state[rephrase_mode_key] = False
+                if rephrase_selected_key not in st.session_state:
+                    st.session_state[rephrase_selected_key] = set()
 
-                # Update session state with edited content
-                if edited_draft != st.session_state[draft_key][edit_key]:
-                    st.session_state[draft_key][edit_key] = edited_draft
+                _in_rephrase = st.session_state[rephrase_mode_key]
+
+                if not _in_rephrase:
+                    # --- Normal mode: show text_area ---
+                    textarea_widget_key = f"textarea_{edit_key}_v{st.session_state[reset_counter_key]}"
+                    edited_draft = st.text_area(
+                        label="Edit draft",
+                        value=current_value,
+                        key=textarea_widget_key,
+                        height=300,
+                        label_visibility="collapsed"
+                    )
+
+                    # Update session state with edited content
+                    if edited_draft != st.session_state[draft_key][edit_key]:
+                        st.session_state[draft_key][edit_key] = edited_draft
+                else:
+                    # In rephrase mode, use value from session state
+                    edited_draft = current_value
+
+                # --- Rephrase sentence selection UI ---
+                if _in_rephrase:
+                    _reph_sentences = split_draft_into_sentences(edited_draft)
+                    if not _reph_sentences:
+                        st.warning("Could not split draft into sentences.")
+                    else:
+                        st.caption("Select one or more sentences to rephrase:")
+                        _reph_selected = st.session_state[rephrase_selected_key]
+
+                        for _si, _sent in enumerate(_reph_sentences):
+                            _sent_cb_key = f"sent_cb_{edit_key}_{_si}"
+                            _cb_col, _txt_col = st.columns([0.05, 0.95])
+                            with _cb_col:
+                                _is_sel = st.checkbox(
+                                    label=f"s{_si}",
+                                    value=_si in _reph_selected,
+                                    key=_sent_cb_key,
+                                    label_visibility="collapsed"
+                                )
+                                if _is_sel:
+                                    _reph_selected.add(_si)
+                                elif _si in _reph_selected:
+                                    _reph_selected.discard(_si)
+                            with _txt_col:
+                                _escaped = html_module.escape(_sent)
+                                if _si in _reph_selected:
+                                    st.markdown(
+                                        f'<div style="background:#e3f2fd;padding:4px 8px;border-radius:4px;border-left:3px solid #1976D2;margin:2px 0;">{_escaped}</div>',
+                                        unsafe_allow_html=True
+                                    )
+                                else:
+                                    st.markdown(
+                                        f'<div style="padding:4px 8px;margin:2px 0;color:#555;">{_escaped}</div>',
+                                        unsafe_allow_html=True
+                                    )
+
+                        st.session_state[rephrase_selected_key] = _reph_selected
+
+                        # Show instruction + regenerate when sentences are selected
+                        if _reph_selected:
+                            _sel_text = " ".join(_reph_sentences[i] for i in sorted(_reph_selected))
+                            st.markdown(f"**Selected ({len(_reph_selected)} sentence{'s' if len(_reph_selected) > 1 else ''}):**")
+                            st.info(_sel_text[:500] + ("..." if len(_sel_text) > 500 else ""))
+
+                            _reph_instr = st.text_input(
+                                "How should this be rephrased?",
+                                placeholder="e.g., make more formal, shorten, add detail, rephrase...",
+                                key=f"rephrase_instr_{edit_key}"
+                            )
+
+                            _regen_col, _cancel_col, _ = st.columns([1, 1, 2])
+                            with _regen_col:
+                                if st.button("🔄 Regenerate", key=f"regen_btn_{edit_key}", disabled=not _reph_instr, type="primary"):
+                                    active_rubric_dict, _, _ = get_active_rubric()
+                                    _rub_list = active_rubric_dict.get("rubric", []) if active_rubric_dict else []
+                                    with st.spinner("Regenerating selected text..."):
+                                        _regen_result = regenerate_selected_text(
+                                            full_draft=edited_draft,
+                                            selected_text=_sel_text,
+                                            instruction=_reph_instr,
+                                            rubric_list=_rub_list
+                                        )
+                                    if _regen_result and _regen_result.get("replacement_text") and not _regen_result.get("error"):
+                                        _new_draft = replace_sentences_in_draft(
+                                            edited_draft, _reph_sentences, _reph_selected, _regen_result["replacement_text"]
+                                        )
+                                        st.session_state[draft_key][edit_key] = _new_draft
+                                        st.session_state[reset_counter_key] += 1
+                                        st.session_state[rephrase_mode_key] = False
+                                        st.session_state[rephrase_selected_key] = set()
+                                        # Log inline rephrase to conversation
+                                        import uuid as _uuid_mod
+                                        _reph_log_id = f"inline_rephrase_{_uuid_mod.uuid4().hex[:8]}"
+                                        st.session_state.messages.append({
+                                            "role": "assistant",
+                                            "content": f"<draft>\n{_new_draft}\n</draft>",
+                                            "message_id": _reph_log_id,
+                                            "is_inline_rephrase": True,
+                                            "inline_rephrase_data": {
+                                                "original_text": _sel_text,
+                                                "replacement_text": _regen_result["replacement_text"],
+                                                "instruction": _reph_instr,
+                                                "explanation": _regen_result.get("explanation", ""),
+                                            },
+                                        })
+                                        # Save to database
+                                        _reph_pid = st.session_state.get("current_project_id")
+                                        if _reph_pid:
+                                            save_project_data(supabase, _reph_pid, "inline_rephrase", {
+                                                "timestamp": datetime.now().isoformat(),
+                                                "conversation_id": st.session_state.get("selected_conversation", ""),
+                                                "message_id": _reph_log_id,
+                                                "original_draft": edited_draft,
+                                                "selected_text": _sel_text,
+                                                "instruction": _reph_instr,
+                                                "replacement_text": _regen_result["replacement_text"],
+                                                "new_draft": _new_draft,
+                                                "explanation": _regen_result.get("explanation", ""),
+                                            })
+                                        if _regen_result.get("explanation"):
+                                            st.toast(_regen_result["explanation"])
+                                        st.rerun()
+                                    else:
+                                        st.error(f"Regeneration failed: {_regen_result.get('error', 'Unknown error')}")
+                            with _cancel_col:
+                                if st.button("Cancel", key=f"regen_cancel_{edit_key}"):
+                                    st.session_state[rephrase_selected_key] = set()
+                                    st.rerun()
 
                 # Check if draft has been modified from original
                 original_draft = st.session_state[original_key].get(orig_key, draft_content)
@@ -441,10 +598,15 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                             st.rerun()
 
                 with col2:
-                    # Only enable Update Rubric if there are changes
-                    if st.button("🔄 Update Rubric", key=f"update_rubric_{edit_key}", disabled=not has_changes):
-                        if has_changes:
-                            update_rubric_from_draft_edit(original_draft, edited_draft)
+                    # # Only enable Update Rubric if there are changes
+                    # if st.button("🔄 Update Rubric", key=f"update_rubric_{edit_key}", disabled=not has_changes):
+                    #     if has_changes:
+                    #         update_rubric_from_draft_edit(original_draft, edited_draft)
+                    _reph_btn_label = "← Back to Full Edit" if _in_rephrase else "✏️ Rephrase"
+                    if st.button(_reph_btn_label, key=f"rephrase_toggle_{edit_key}", type="secondary"):
+                        st.session_state[rephrase_mode_key] = not _in_rephrase
+                        st.session_state[rephrase_selected_key] = set()
+                        st.rerun()
 
                 with col3:
                     # Only enable Reset if there are changes
@@ -583,6 +745,38 @@ def regenerate_draft_from_rubric_changes(original_rubric: list, updated_rubric: 
             return {"error": f"Error parsing response: {str(e)}"}
         except Exception as e:
             return {"error": str(e)}
+
+
+def regenerate_selected_text(full_draft: str, selected_text: str, instruction: str, rubric_list: list = None) -> dict:
+    """
+    Call the LLM to regenerate only the selected portion of a draft.
+    Returns dict with 'replacement_text' and 'explanation' on success, or 'error' key on failure.
+    """
+    from prompts import INLINE_REGEN_SYSTEM_PROMPT, INLINE_regen_user_prompt
+
+    try:
+        user_prompt = INLINE_regen_user_prompt(full_draft, selected_text, instruction, rubric_list)
+        response = _api_call_with_retry(
+            max_tokens=8000,
+            system=INLINE_REGEN_SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": user_prompt}],
+            model=MODEL_PRIMARY,
+            thinking={"type": "enabled", "budget_tokens": 4000}
+        )
+        response_text = ""
+        for block in response.content:
+            if block.type == "text":
+                response_text = block.text
+
+        json_match = re.search(r'\{[\s\S]*\}', response_text)
+        if json_match:
+            result = json.loads(json_match.group())
+            if "replacement_text" in result:
+                return result
+            return {"error": "Response missing 'replacement_text' field."}
+        return {"error": "Could not parse response from model."}
+    except Exception as e:
+        return {"error": str(e)}
 
 
 def get_last_draft_from_messages():
@@ -1588,6 +1782,7 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list, apply_
                             st.session_state.editing_criteria = new_criteria
                             st.session_state.rubric = new_criteria
                             st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                            st.session_state["rubric_version_selector"] = f"v{new_version}"
                             if message and "probe_result" in message:
                                 message["probe_result"]["applied"] = True
                                 message["probe_result"]["applied_version"] = new_version
@@ -1672,6 +1867,7 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list, apply_
                             st.session_state.editing_criteria = new_criteria
                             st.session_state.rubric = new_criteria
                             st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                            st.session_state["rubric_version_selector"] = f"v{new_version}"
                             if message and "probe_result" in message:
                                 message["probe_result"]["applied"] = True
                                 message["probe_result"]["applied_version"] = new_version
@@ -1749,6 +1945,7 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list, apply_
                             st.session_state.editing_criteria = new_criteria
                             st.session_state.rubric = new_criteria
                             st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                            st.session_state["rubric_version_selector"] = f"v{new_version}"
                             if message and "probe_result" in message:
                                 message["probe_result"]["applied"] = True
                                 message["probe_result"]["applied_version"] = new_version
@@ -1790,6 +1987,8 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list, apply_
                 st.session_state.rubric = new_criteria
                 st.session_state.editing_criteria = new_criteria
                 st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                # Force the sidebar version selector to update to the new version
+                st.session_state["rubric_version_selector"] = f"v{new_version}"
                 if message and "rubric_suggestion" in message:
                     message["rubric_suggestion"]["applied"] = True
                     message["rubric_suggestion"]["applied_version"] = new_version
@@ -1967,6 +2166,7 @@ def display_rubric_update_result():
                         st.session_state.rubric = modified_rubric
                         # Also update editing_criteria so Rubric Configuration shows the new version
                         st.session_state.editing_criteria = copy.deepcopy(modified_rubric)
+                        st.session_state["rubric_version_selector"] = f"v{new_version}"
 
                         # Clear the result
                         st.session_state.rubric_update_result = None
@@ -4599,12 +4799,11 @@ with tab1:
                                                 _auto_save_conversation()
                                                 st.rerun()
                         elif message['role'] == 'assistant':
-                            if _dp_highlighted:
-                                st.markdown(content_to_display, unsafe_allow_html=True)
-                            else:
-                                has_draft = render_message_with_draft(content_to_display, message_id, wrap_draft_in_expander=bool(message.get('rubric_revision')))
-                                if not has_draft:
-                                    st.markdown(content_to_display)
+                            # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
+                            _draft_source = message.get('content', content_to_display)
+                            has_draft = render_message_with_draft(_draft_source, message_id, wrap_draft_in_expander=bool(message.get('rubric_revision')))
+                            if not has_draft:
+                                st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
                         else:
                             st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
                         # Show non-preferred A/B draft inline (blind labels)
@@ -4903,12 +5102,11 @@ with tab1:
                                             _auto_save_conversation()
                                             st.rerun()
                     elif message['role'] == 'assistant':
-                        if _dp_highlighted:
-                            st.markdown(content_to_display, unsafe_allow_html=True)
-                        else:
-                            has_draft = render_message_with_draft(content_to_display, message_id, wrap_draft_in_expander=bool(message.get('rubric_revision')))
-                            if not has_draft:
-                                st.markdown(content_to_display)
+                        # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
+                        _draft_source2 = message.get('content', content_to_display)
+                        has_draft = render_message_with_draft(_draft_source2, message_id, wrap_draft_in_expander=bool(message.get('rubric_revision')))
+                        if not has_draft:
+                            st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
                     else:
                         st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
                     # Backward compat: render old A/B comparison results
@@ -4947,18 +5145,18 @@ with tab1:
         if _cc_llm and _cc_user:
             st.divider()
 
-            # Show user's cold-start preferences for reference
+            st.markdown("**Rubric Criteria Classification**")
+
+            # Show user's cold-start preferences prominently for reference
             _cs_ref_text = st.session_state.get("infer_coldstart_text", "").strip()
             if _cs_ref_text:
-                with st.expander("Your writing preferences (for reference)", expanded=False):
-                    st.markdown(f"*You wrote this before the conversation:*\n\n{_cs_ref_text}")
+                st.info(f"**Your writing preferences** (what you described at the start):\n\n{_cs_ref_text}")
 
             _cc_stated = [n for n, s in _cc_user.items() if s == "stated"]
             _cc_unstated = [n for n, s in _cc_user.items() if s != "stated"]
 
-            st.markdown("**Rubric Criteria Classification**")
             st.markdown(
-                "We compared each rubric criterion against the writing preferences you described earlier. "
+                "We compared each rubric criterion against the writing preferences you described above. "
                 "**Stated** criteria matched something you wrote. **Unstated** criteria were inferred from "
                 "your editing behavior but weren't in your original description — please review these below."
             )
@@ -5462,11 +5660,6 @@ with tab1:
                     },
                     "message_id": f"dp_confirm_{int(time.time() * 1000000)}"
                 })
-
-                # Auto-trigger ranking checkpoint after DP confirmation
-                if not st.session_state.get("ranking_checkpoint_auto_triggered", False):
-                    st.session_state.ranking_checkpoint_auto_triggered = True
-                    st.session_state.ranking_checkpoint_pending = {"step": 1}
 
                 st.rerun()
 
@@ -6114,10 +6307,13 @@ with tab1:
     _no_project = not bool(st.session_state.get("current_project_id"))
     _ac_draft_pending = any(m.get("_ac_pending_draft") for m in st.session_state.get("messages", []))
     _rcp_active = st.session_state.get("ranking_checkpoint_pending") is not None
-    _chat_blocked = _no_project or _pref_blocked or _alignment_check_needed or _ac_draft_pending or _rcp_active
+    _cc_review_active = st.session_state.get("chat_criteria_review_active", False) and not st.session_state.get("chat_criteria_review_confirmed", False)
+    _dp_review_pending = any(m.get('is_dp_review') for m in st.session_state.get("messages", [])) and not st.session_state.get("infer_dp_dimension_confirmed", False)
+    _chat_blocked = _no_project or _pref_blocked or _alignment_check_needed or _ac_draft_pending or _rcp_active or _cc_review_active or _dp_review_pending
     if _no_project:
         st.info("Create a project first to start writing. Use the **sidebar** to create a new project.")
-    if not _chat_blocked and (prompt := st.chat_input("Type your message here...")):
+    prompt = st.chat_input("Type your message here...", disabled=_chat_blocked)
+    if prompt and not _chat_blocked:
         # Clear comparison when starting a new message
         st.session_state.comparison_result = None
         st.session_state.comparison_rubric_version = None
@@ -6504,8 +6700,8 @@ with tab1:
         btn_col1, btn_col2, btn_col3 = st.columns(3)
 
         with btn_col1:
-            infer_button = st.button("🔍 Infer Rubric", use_container_width=True)
-            if infer_button:
+            infer_button = st.button("🔍 Infer Rubric", use_container_width=True, disabled=_chat_blocked)
+            if infer_button and not _chat_blocked:
                 if not st.session_state.messages:
                     st.error("No conversation to infer rubric from!")
                 else:
