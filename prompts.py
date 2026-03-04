@@ -916,6 +916,9 @@ Your task is to produce the definitive rubric that incorporates ALL of this feed
 - **Real criteria** → KEEP and potentially strengthen. These are genuine preferences the user validated. Consider refining their descriptions using evidence from the conversation.
 - **Stated criteria** → KEEP as-is. These are well-established.
 
+### Importance Ranking
+The classification feedback includes an `importance_ranking` — an ordered list of criteria from most to least important (as ranked by the user). Use this to set the `priority` field on each criterion. The user's ranking should be respected: criterion ranked #1 gets priority 1, etc. If new criteria are added (e.g. from "not_in_rubric" DPs), slot them in at a reasonable priority relative to the user's ranking.
+
 ### Decision Point Corrections
 - **"correct"**: The DP's criterion mapping was right. No change needed.
 - **"incorrect"**: The user says this DP maps to a DIFFERENT criterion. Update the target criterion's description/dimensions to better capture what this DP reveals.
@@ -1163,6 +1166,9 @@ You will be given:
 1. The original rubric (before changes)
 2. The updated rubric (after user's changes)
 3. The current draft that needs to be revised
+4. (Optional) The conversation history between the user and assistant — use this to understand the user's intent, preferences, and any feedback they gave
+5. (Optional) Rubric change suggestions — the reasoning behind why rubric criteria were changed
+6. (Optional) User edit feedback — the user's feedback on specific draft edits, explaining what they agreed/disagreed with
 
 Your task:
 1. Identify what changed between the original and updated rubric (priorities, descriptions, dimensions)
@@ -1171,8 +1177,8 @@ Your task:
 4. Provide an annotated version showing exactly what changed and why
 
 Guidelines:
-- Focus changes on areas affected by the rubric updates
-- Preserve the overall structure and content where the rubric hasn't changed
+- Use the conversation history, rubric suggestions, and user edit feedback to understand the FULL context of what the user wants
+- Focus changes on areas affected by the rubric updates AND any user feedback
 - Make targeted edits rather than complete rewrites
 - Ensure the revised draft still flows naturally
 - If a criterion's priority increased (lower number = higher priority), give more attention to that aspect
@@ -1187,7 +1193,7 @@ Return ONLY a valid JSON object with this exact structure:
   "revision_strategy": "Brief explanation of how you'll approach the revision",
   "change_summary": "2-4 sentence summary for the user: what rubric changes led to what draft changes and why. Write for the user who just clicked 'Log Changes'.",
   "revised_draft": "The full revised draft text here (clean, no annotations)",
-  "revised_draft_annotated": "Same content as revised_draft but with inline annotations. Use ONLY these tags: <ins>added text</ins> for insertions, <del>removed text</del> for deletions. Immediately after any changed phrase insert a rubric marker [1], [2], etc. (1-based index into annotated_changes). Example: 'The <del>long-winded</del><ins>concise</ins> version [1] works better.' Keep the draft readable; use ins/del only where something actually changed.",
+  "revised_draft_annotated": "Same content as revised_draft but with inline annotations showing EVERY change. CRITICAL RULES: (1) Every [N] marker MUST be immediately preceded by <ins>...</ins> and/or <del>...</del> tags — a bare [N] with no adjacent ins/del is INVALID. (2) Use <del>removed text</del> for deletions, <ins>new text</ins> for additions. (3) For replacements: <del>old</del><ins>new</ins>[N]. (4) Place [N] immediately AFTER the ins/del tags. Example: 'The <del>long-winded</del><ins>concise</ins>[1] version works better.' (5) Every entry in annotated_changes must have a corresponding [N] with visible ins/del tags. If you cannot show the change with ins/del, do NOT include the [N] marker.",
   "revised_draft_with_markers": "Same as revised_draft but with only [1], [2], ... markers inserted after each changed phrase (no ins/del tags). Use if revised_draft_annotated would be too cluttered; otherwise can duplicate revised_draft_annotated without the ins/del tags.",
   "annotated_changes": [
     {
@@ -1217,12 +1223,31 @@ IMPORTANT for annotated_changes:
 
 IMPORTANT for change_summary and revised_draft_annotated:
 - change_summary: Write in plain language for the user. Example: "Raising Brevity to priority 1 led to trimming the opening sentence and removing two qualifiers. The new 'avoid jargon' dimension under Tone led to replacing 'utilize' with 'use'."
-- revised_draft_annotated: Must be valid: every <ins> and <del> must be closed; every [N] must correspond to an index in annotated_changes (1-based). Prefer this over revised_draft_with_markers when you can show clear add/remove inline.
+- revised_draft_annotated: EVERY [N] marker MUST have <ins> and/or <del> tags immediately before it. A [N] without adjacent ins/del is a formatting error. Every <ins> and <del> must be closed. Every [N] must correspond to an index in annotated_changes (1-based).
 """
 
-def DRAFT_regenerate_prompt(original_rubric, updated_rubric, current_draft):
+def DRAFT_regenerate_prompt(original_rubric, updated_rubric, current_draft, conversation_history=None, rubric_suggestion_text=None, user_edit_feedback=None):
     """Generate user prompt for regenerating draft based on rubric changes."""
-    return f"""Original rubric (before changes):
+    parts = []
+
+    if conversation_history:
+        parts.append("=== CONVERSATION HISTORY ===")
+        parts.append(conversation_history)
+        parts.append("")
+
+    if rubric_suggestion_text:
+        parts.append("=== RUBRIC CHANGE SUGGESTIONS ===")
+        parts.append("These are the reasons why the rubric criteria were changed:")
+        parts.append(rubric_suggestion_text)
+        parts.append("")
+
+    if user_edit_feedback:
+        parts.append("=== USER EDIT FEEDBACK ===")
+        parts.append("The user provided this feedback on specific draft edits:")
+        parts.append(user_edit_feedback)
+        parts.append("")
+
+    parts.append(f"""Original rubric (before changes):
 {json.dumps(original_rubric, ensure_ascii=False, indent=2)}
 
 Updated rubric (after your changes):
@@ -1231,45 +1256,57 @@ Updated rubric (after your changes):
 Current draft to revise:
 {current_draft}
 
-Analyze the rubric changes and revise the draft to better fulfill the updated criteria."""
+Analyze the rubric changes and revise the draft to better fulfill the updated criteria. Use the conversation history, rubric suggestions, and user edit feedback (if provided) to understand the full context of the user's intent.""")
 
-INLINE_REGEN_SYSTEM_PROMPT = """You are a writing assistant performing a targeted edit on a specific portion of a draft.
+    return "\n".join(parts)
+
+INLINE_REGEN_SYSTEM_PROMPT = """You are a writing assistant performing targeted edits on specific sentences in a draft.
 
 You will be given:
 1. The full draft (for context — do NOT rewrite the full draft)
-2. The specific text the user has selected for editing
-3. The user's instruction for how to change the selected text
+2. One or more sentences the user has selected for editing, each labeled S1, S2, etc.
+3. The user's instruction for how to change the selected sentences
 4. Optionally, rubric criteria to follow
 
 Your task:
-- Regenerate ONLY the selected text according to the user's instruction
-- The replacement must fit seamlessly into the surrounding draft (matching tone, tense, style)
-- Maintain approximately the same length unless the instruction explicitly asks for expansion or reduction
+- Regenerate EACH selected sentence individually according to the user's instruction
+- Each replacement must fit seamlessly into its original position in the draft (matching tone, tense, style)
+- Maintain approximately the same length per sentence unless the instruction explicitly asks for expansion or reduction
 - Follow the rubric criteria if provided
 
 Output ONLY a valid JSON object (no markdown fences, no extra text):
 {
-  "replacement_text": "The regenerated text that will replace the selection",
+  "replacements": [
+    {"original": "The exact original sentence S1", "replacement": "The rephrased version of S1"},
+    {"original": "The exact original sentence S2", "replacement": "The rephrased version of S2"}
+  ],
   "explanation": "Brief explanation of what was changed and why (1-2 sentences)"
-}"""
+}
+
+IMPORTANT: Return one entry per selected sentence, in the same order they were given. Each sentence is replaced independently — they may be non-adjacent in the draft."""
 
 
-def INLINE_regen_user_prompt(full_draft, selected_text, instruction, rubric_list=None):
-    """Generate prompt for inline text regeneration."""
+def INLINE_regen_user_prompt(full_draft, selected_sentences, instruction, rubric_list=None):
+    """Generate prompt for inline text regeneration.
+
+    selected_sentences: list of sentence strings to rephrase (in order).
+    """
     rubric_section = ""
     if rubric_list:
         rubric_section = f"\n\nRubric criteria to follow:\n{json.dumps(rubric_list, ensure_ascii=False, indent=2)}"
 
+    sentences_block = "\n".join(f"S{i+1}: {s}" for i, s in enumerate(selected_sentences))
+
     return f"""Full draft (for context only — do NOT rewrite the entire draft):
 {full_draft}
 
-Selected text to edit:
-{selected_text}
+Sentences to edit (each must be rephrased independently):
+{sentences_block}
 
 User's instruction:
 {instruction}{rubric_section}
 
-Regenerate ONLY the selected text according to the instruction. Return JSON only."""
+Regenerate EACH sentence individually. Return JSON with a "replacements" array (one entry per sentence, same order). Return JSON only."""
 
 
 def RUBRIC_refine_from_corrected_dps_prompt(current_rubric_json, corrected_dps_json):
@@ -1517,6 +1554,78 @@ INSTRUCTIONS:
 
 Output ONLY the draft text — nothing else. No preamble, no questions, no notes, no commentary before or after. Do not ask for clarification or add "Here is the draft:" or similar. Just the draft itself."""
 
+
+def ALIGNMENT_generate_annotated_draft_prompt(
+    writing_task: str,
+    suggested_rubric_json: str,
+    original_rubric_draft: str,
+    suggestion_reasons: dict,
+) -> str:
+    """
+    Generate a draft following the suggested rubric, annotated with edit markers
+    showing what changed compared to the original rubric draft and why.
+    Used in the alignment diagnostic pipeline for the "Draft preview with suggested rubric".
+    """
+    reasons_text = "\n".join(
+        f"- {name}: {reason}" for name, reason in suggestion_reasons.items()
+    ) if suggestion_reasons else "(No specific reasons provided)"
+
+    return f"""Write a complete draft for the following task, strictly following the suggested rubric.
+
+WRITING TASK:
+{writing_task}
+
+SUGGESTED RUBRIC (follow these criteria carefully):
+{suggested_rubric_json}
+
+ORIGINAL RUBRIC DRAFT (the baseline — keep as much of this as possible):
+{original_rubric_draft}
+
+RUBRIC CHANGES THAT LED TO THIS NEW RUBRIC:
+{reasons_text}
+
+INSTRUCTIONS:
+1. Write a complete, polished draft that fulfills the writing task following the suggested rubric.
+2. Higher-priority criteria should be more prominent. The draft should read naturally.
+3. Do NOT mention the rubric in the draft itself.
+4. Keep the draft short: around 100 words (or to the length the task specifies).
+5. FORMATTING: Plain prose paragraphs only — no markdown headings, bold, or emphasis formatting.
+
+CRITICAL — EDIT ONLY WHAT THE RUBRIC CHANGES DEMAND:
+- The purpose of this draft is to show the user how the RUBRIC CHANGES above would affect their writing.
+- Only edit parts of the original draft that are DIRECTLY and MEANINGFULLY impacted by a specific rubric change listed above.
+- If a rubric criterion was NOT changed, the parts of the draft serving that criterion should stay THE SAME as the original — copy them word for word.
+- Do NOT rephrase, polish, or "improve" text that already satisfies the rubric. Cosmetic rewording is NOT an edit.
+- Every single edit must be traceable to a specific rubric change. If you cannot point to a concrete rubric change that necessitates the edit, do NOT make it.
+- Fewer, high-impact edits are better than many small tweaks. The user wants to see what the rubric changes ACTUALLY affect, not a rewritten draft.
+
+After writing the draft, list each meaningful edit you made and why.
+
+Return ONLY a valid JSON object with this exact structure:
+{{
+  "revised_draft": "The full new draft text (clean, no markup)",
+  "annotated_changes": [
+    {{
+      "original_text": "Exact text from the original draft that was changed or removed",
+      "new_text": "The new text that replaced it (empty string if deleted)",
+      "reason": "CriterionName: why this edit was needed"
+    }}
+  ]
+}}
+
+IMPORTANT for annotated_changes:
+- ONLY include edits that are directly driven by a rubric change. Do NOT list cosmetic or stylistic tweaks.
+- "original_text" must be an exact substring from the ORIGINAL RUBRIC DRAFT above.
+- "new_text" must be an exact substring from your revised_draft.
+- "reason" format: "CriterionName: 1 sentence explaining the edit"
+  Example: "Brevity: trimmed unnecessary qualifier words to match the higher priority on conciseness"
+  Example: "Tone: replaced technical term with plain language per the new 'avoid jargon' dimension"
+- If you cannot clearly tie an edit to a specific rubric change, DO NOT include it.
+- If text was deleted, new_text should be empty string.
+- If text was added (not replacing anything), original_text should be empty string.
+- It is completely fine to have 0 annotated_changes if the rubric changes do not meaningfully affect the draft."""
+
+
 def GRADING_judge_per_dimension_prompt(draft_a: str, draft_b: str, rubric_criteria_json: str, user_ratings_json: str) -> str:
     """
     LLM judge scores two drafts per-dimension against the user's own satisfaction ratings.
@@ -1606,10 +1715,14 @@ def GRADING_rubric_judge_prompt(draft_a: str, draft_b: str, rubric_criteria_json
 against a set of personalized rubric criteria. You also have access to the user's
 recent conversation history for additional context about their preferences.
 
-DRAFT A:
+The two drafts are:
+- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)
+- Draft B = the **generic** draft (written with no rubric — just competent writing)
+
+DRAFT A (rubric-guided):
 {draft_a}
 
-DRAFT B:
+DRAFT B (generic):
 {draft_b}
 
 RUBRIC CRITERIA (the user's personalized writing quality criteria):
@@ -1629,6 +1742,8 @@ For each rubric criterion, score BOTH drafts on a 1-5 scale:
 Use the conversation context to understand the user's nuanced preferences when scoring.
 Then determine your overall preference (which draft is better overall given all criteria).
 
+IMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic) rather than Draft A/B.
+
 Return ONLY valid JSON (no markdown code blocks):
 {{{{
     "per_criterion": [
@@ -1636,7 +1751,7 @@ Return ONLY valid JSON (no markdown code blocks):
             "criterion_name": "<exact name from rubric>",
             "draft_a_score": <1-5>,
             "draft_b_score": <1-5>,
-            "reasoning": "<1-2 sentences explaining the scores>"
+            "reasoning": "<1-2 sentences explaining the scores, using descriptive draft names>"
         }}}}
     ],
     "overall_preference": "A" or "B" or "tie",
@@ -1652,13 +1767,18 @@ def GRADING_rubric_judge_3draft_prompt(draft_a: str, draft_b: str, draft_c: str,
 against a set of personalized rubric criteria. You also have access to the user's
 recent conversation history for additional context about their preferences.
 
-DRAFT A:
+The three drafts are:
+- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)
+- Draft B = the **generic** draft (written with no rubric — just competent writing)
+- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)
+
+DRAFT A (rubric-guided):
 {draft_a}
 
-DRAFT B:
+DRAFT B (generic):
 {draft_b}
 
-DRAFT C:
+DRAFT C (original preference):
 {draft_c}
 
 RUBRIC CRITERIA (the user's personalized writing quality criteria):
@@ -1678,6 +1798,8 @@ For each rubric criterion, score ALL THREE drafts on a 1-5 scale:
 Use the conversation context to understand the user's nuanced preferences when scoring.
 Then determine your overall ranking (which draft is best, second, third given all criteria).
 
+IMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.
+
 Return ONLY valid JSON (no markdown code blocks):
 {{{{
     "per_criterion": [
@@ -1686,7 +1808,7 @@ Return ONLY valid JSON (no markdown code blocks):
             "draft_a_score": <1-5>,
             "draft_b_score": <1-5>,
             "draft_c_score": <1-5>,
-            "reasoning": "<1-2 sentences explaining the scores>"
+            "reasoning": "<1-2 sentences explaining the scores, using descriptive draft names>"
         }}}}
     ],
     "overall_ranking": ["<best>", "<second>", "<third>"],
@@ -2052,16 +2174,16 @@ Which draft is better? Return ONLY a JSON object (no markdown, no preamble):
 {{"preferred": "A" or "B" or "tie", "confidence": "high" or "medium" or "low", "reasoning": "1-2 sentences explaining your choice"}}"""
 
 
-def ALIGNMENT_diagnostic_suggest_changes_prompt(
+def ALIGNMENT_diagnostic_suggest_and_apply_prompt(
     current_rubric_json: str,
     rubric_judge_results_json: str,
     user_ranking_description: str,
     user_reason: str = "",
 ) -> str:
-    """Generate rubric improvement suggestions based on alignment diagnostic evidence.
+    """Generate modified rubric JSON + per-criterion reasons in a single call.
 
-    Takes per-criterion scoring from the rubric judge, the user's ranking of drafts,
-    and produces concrete bullet-point suggestions for rubric changes.
+    Combines what was previously two calls (suggest reasons + apply changes) into one,
+    ensuring reasons always match the actual modifications made.
     """
     user_reason_block = ""
     if user_reason.strip():
@@ -2077,27 +2199,69 @@ CURRENT RUBRIC:
 {current_rubric_json}
 
 RUBRIC JUDGE RESULTS (per-criterion scores for all three drafts, using the rubric):
+Note: In the scores below, draft_a = rubric-guided, draft_b = generic, draft_c = original preference.
 {rubric_judge_results_json}
 
 USER'S RANKING: {user_ranking_description}{user_reason_block}
 
-ANALYSIS FRAMEWORK:
-For each rubric criterion, look at the three scores:
-- If the rubric draft scores highest: the rubric is successfully guiding the LLM on this criterion (DIFFERENTIATING).
-- If the preference draft scores highest: the user's original preferences capture something the rubric doesn't yet (PREFERENCE GAP).
-- If the generic draft scores highest or all are tied: the criterion may be too vague or not adding value (UNDERPERFORMING/REDUNDANT).
+WHY THREE DRAFTS:
+The rubric was built from the user's original stated preferences. The preference-based draft acts as a **comparison signal**: by scoring both the rubric-guided draft and the preference-based draft against the same rubric criteria, we can see where the rubric successfully captures the user's intent (rubric draft scores equal or higher) and where it falls short (preference draft scores higher). The generic draft is a baseline — if it scores highest, the criterion isn't adding value at all.
 
-KEY INSIGHT: Compare rubric vs preference drafts carefully. If the preference-based draft outperforms the rubric draft, it means the rubric hasn't fully captured what the user originally stated they wanted. If the rubric draft outperforms the preference draft, the rubric has successfully refined and improved upon the user's initial preferences.
+TWO TYPES OF EVIDENCE:
+You have two signals to work with — use BOTH together:
+1. **Per-criterion scores** (from the rubric judge): automated scores showing how each draft performs on each criterion.
+2. **User's ranking** (from the user): the user's own holistic preference for which draft they liked best overall. This is the user's ground truth — it tells you whether the rubric is producing writing the user actually wants.
+
+These signals complement each other. The per-criterion scores show WHERE specific criteria may be weak. The user's ranking tells you the OVERALL direction — how aggressively to change the rubric.
+
+ANALYSIS FRAMEWORK:
+For each rubric criterion, compare the three per-criterion scores:
+- **Rubric draft scores highest**: the rubric is successfully capturing the user's intent on this criterion (DIFFERENTIATING). No change needed.
+- **Preference draft scores higher than rubric draft**: the rubric criterion isn't fully capturing what the user wants — consider rewording or re-prioritizing it so the rubric-guided draft can perform better.
+- **Generic draft scores highest or all tied**: the criterion may be too vague or not adding value (UNDERPERFORMING/REDUNDANT).
+
+IMPORTANT: The rubric already incorporates the user's stated preferences in distilled form. If the preference draft outperforms the rubric draft, that means existing criteria need strengthening — not that new criteria should be added to mirror stated preferences. You may add a new criterion only if the scores reveal a genuine gap that no existing criterion can cover even with rewording.
+
+CALIBRATE CHANGES TO THE USER'S RANKING:
+The user's ranking determines how much to change overall:
+- If the user ranked the RUBRIC-GUIDED draft FIRST: the rubric is working well overall. Be VERY conservative. Only modify criteria that are clearly underperforming or redundant based on the per-criterion scores. Most criteria should be kept UNCHANGED. Do NOT rephrase, reword, or "improve" criteria that are already working — leave them exactly as they are, character for character.
+- If the user ranked the PREFERENCE-BASED draft first: the rubric needs changes to better capture what the user wants. Focus on rewording or re-prioritizing existing criteria first. Only add a new criterion if no existing criterion can reasonably cover the gap.
+- If the user ranked the GENERIC draft first: the rubric may need significant revision.
 
 YOUR TASK:
-Based on this evidence, suggest specific, concrete changes to improve the rubric. Format as bullet points:
-- For criteria where the preference draft scores higher than the rubric draft: the user's original preferences contain something the rubric lost — suggest how to recapture it
-- For criteria where the generic draft beats both: the criterion description is likely too vague or misleading — suggest rewriting
-- For criteria where the rubric draft scores highest: acknowledge it's working well; only suggest changes if scores are close
-- If the user ranked the preference-based draft first: this is a strong signal that the rubric has drifted from the user's core preferences
+Based on this evidence, produce an updated version of the rubric that would generate drafts more like what the user ranked highest and less like what the user ranked lower. Only change what the evidence actually supports changing. You must return BOTH the rubric criteria AND a reason for each criterion explaining what you did and why.
 
-Be concrete: name specific criteria, quote specific dimension labels, suggest specific rewording.
-Keep it to 3-6 bullet points. Write directly to the user (e.g. "Reword the 'Concise Language' criterion to...")."""
+Return ONLY a JSON object (no markdown, no preamble, no code fences) with this EXACT structure:
+{{
+  "reasons": {{
+    "<criterion name>": "<1-2 sentence reason for what you did to this criterion and why>"
+  }},
+  "rubric": [
+    {{
+      "name": "<criterion name>",
+      "category": "<category>",
+      "description": "<description>",
+      "dimensions": [{{"id": "<unique_id>", "label": "<dimension label>"}}],
+      "priority": <integer, 1 = most important>
+    }}
+  ]
+}}
+
+STRICT RULES:
+1. "reasons" MUST include ONE entry for EVERY criterion — all existing criteria (whether modified, kept, or removed), plus any new criteria added. No criterion may be omitted.
+2. "rubric" is the complete modified rubric array. It must contain ALL criteria that should be in the final rubric (existing unchanged + modified + new). Do NOT include removed criteria in the rubric array.
+3. THE REASON MUST MATCH THE ACTION — THIS IS CRITICAL:
+   - If you MODIFIED a criterion (changed its description, priority, or dimensions in the "rubric" array): the reason MUST explain WHY you changed it and WHAT you changed. NEVER say "working well", "kept as-is", "no change needed", or similar for a criterion you actually modified. Example of a WRONG reason for a modified criterion: "Working well and scoring consistently — kept as-is." Example of a CORRECT reason: "Broadened description to cover email and chat formats, not just slides."
+   - If you KEPT a criterion TRULY unchanged (identical description, priority, and dimensions): the reason should explain why it's working well.
+   - If you REMOVED a criterion (not in the rubric array): the reason should explain why you removed it.
+   - If you ADDED a new criterion: the reason should explain the gap it fills.
+4. When keeping a criterion unchanged, copy it EXACTLY from the input — same description, same dimensions (same labels, same IDs), same priority. Do NOT rephrase, reword, or "clean up" criteria you intend to keep. Priorities must be unique integers starting from 1.
+5. Each reason must be 1-2 sentences MAX. No paragraphs. Every value must be a non-empty string.
+6. Use the EXACT criterion names as they appear in the current rubric JSON for existing criteria.
+7. Do NOT add new criteria by copying stated preferences into the rubric. The rubric was already built from those preferences. If you need to add a criterion, it should be because the per-criterion scores reveal a gap that no existing criterion can cover even with rewording — not because a stated preference isn't explicitly listed.
+8. Do NOT explain diagnostic results or repeat scores. The user already sees those.
+9. Write reasons directly to the user (e.g. "Reworded to focus on..." not "This criterion was reworded to...").
+10. When referring to drafts in reasons, use their descriptive names: "rubric-guided draft", "generic draft", "original preference draft". Do NOT say "Draft A", "Draft B", or "Draft C"."""
 
 
 def ALIGNMENT_verify_suggested_rubric_prompt(
@@ -2125,15 +2289,16 @@ PREFERENCE-BASED DRAFT (written from user's original preferences, no rubric):
 {preference_draft}
 """
 
-    return f"""You are a rubric quality verifier. A user completed an alignment diagnostic where three drafts
-of the same writing task were generated and ranked. Based on that diagnostic, changes were suggested to
-the rubric, and a new draft was generated using the suggested rubric. Your job is to verify whether the
-suggested rubric and its draft truly capture what the user wants.
+    return f"""You are a rubric quality verifier. The goal of this pipeline is to ensure that:
+1. The rubric produces drafts the user prefers over generic or preference-based drafts.
+2. The rubric's criteria accurately capture what the user values, so that LLM-as-a-judge scoring using the rubric mirrors the user's own preferences.
+
+A user completed an alignment diagnostic: three drafts were generated, the user ranked them, and rubric changes were suggested. A new draft was then generated using the suggested rubric. Your job is to verify whether the suggested rubric is an improvement.
 
 WRITING TASK:
 {writing_task}
 
-USER'S ORIGINAL PREFERENCES (stated before any rubric existed):
+USER'S ORIGINAL PREFERENCES (stated before any rubric existed — the rubric was built from these):
 {user_preferences}
 
 THE 3 DRAFTS THE USER COMPARED:
@@ -2156,12 +2321,9 @@ ORIGINAL SUGGESTIONS THAT WERE APPLIED:
 {original_suggestion_text}
 
 YOUR TASK:
-1. Look at how the user ranked the 3 drafts. This tells you what the user actually values — the top-ranked
-   draft is closest to what they want. Does the suggested rubric move toward what the user ranked highest?
-2. Compare the suggested rubric against the user's original preferences. Does every key preference
-   have a corresponding criterion? Are any criteria misaligned with what the user actually wants?
-3. Look at the draft produced by the suggested rubric. Does it feel like an improvement that combines
-   the best qualities of the user's top-ranked draft(s)?
+1. The user's ranking is ground truth. Does the suggested rubric move toward producing drafts more like what the user ranked highest, and further from what the user ranked lower? If the user already preferred the rubric draft, the changes should be minimal.
+2. Look at the draft produced by the suggested rubric. Does it capture the qualities of the user's top-ranked draft while avoiding the weaknesses of the lower-ranked drafts? Would the user likely prefer this over the original rubric draft?
+3. Check that no criteria were added by simply copying stated preferences. The rubric already distills those preferences — changes should come from what the scores and ranking revealed, not from re-adding preferences as criteria.
 4. Decide: is the suggested rubric good as-is, or does it need refinements?
 
 Return ONLY a JSON object (no markdown, no preamble):
@@ -2328,5 +2490,343 @@ Return ONLY a JSON object (no markdown, no preamble):
     ],
     "priority": <keep same integer>
   }}
+}}"""
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Goal-Based Termination Prompts
+# ═════════════════════════════════════════════════════════════════════════════
+
+def GOLD_DRAFT_GENERATION_PROMPT(persona, task: str) -> str:
+    """Prompt to generate the ideal/gold draft using ALL persona preferences."""
+    return f"""You are a skilled writer. Write the IDEAL draft for the following writing task, \
+perfectly reflecting ALL of the user's preferences below.
+
+WRITING TASK:
+{task}
+
+USER PROFILE:
+- Role: {persona.role}
+- Writing type: {persona.writing_type}
+- Core preferences: {persona.core_preferences}
+- Additional preferences: {persona.hidden_preferences}
+- Dealbreakers (absolutely avoid these): {persona.dealbreakers}
+
+INSTRUCTIONS:
+1. Write a complete, polished draft that fulfills the task
+2. Satisfy EVERY preference listed above — both core and additional
+3. Strictly avoid every dealbreaker
+4. The draft should read naturally, not like a checklist of preferences
+5. This is the "gold standard" — it represents exactly what this user wants
+
+CRITICAL — stay preference-faithful, do not over-specify:
+- Every distinctive choice in your draft must be TRACEABLE to a specific preference above.
+- Do NOT invent structural elements (bulleted timelines, named role callouts, \
+stakeholder communication plans, multi-step action items) unless a preference \
+explicitly calls for them.
+- When a preference says "clear call to action," write ONE clear next step — do not \
+elaborate into multiple role-specific asks.
+- When a preference says "empathy" or "acknowledgment," include it proportionally — \
+one sentence, not a multi-sentence passage.
+- Avoid adding content that would require information the user never mentioned \
+(specific team roles, stakeholder groups, milestone dates). Use simple placeholders \
+only where the task requires them.
+- The gold draft must be achievable by a writing system that learned these preferences \
+through conversation — not one that had a cheat sheet.
+
+Output ONLY the draft text — nothing else. No preamble, no commentary."""
+
+
+def QUALITY_JUDGE_PROMPT(current_draft: str, preferences: str) -> str:
+    """Prompt for preference-based quality judgment of a draft."""
+    return f"""You are a strict, independent writing quality judge. Your job is to determine \
+whether a draft satisfies the user's writing preferences — especially the HIDDEN (latent) \
+preferences that are harder to get right without learning them through interaction.
+
+USER PREFERENCES (the ground truth — judge ONLY against these):
+
+{preferences}
+
+DRAFT BEING EVALUATED:
+{current_draft}
+
+SCORING METHODOLOGY — you MUST evaluate each preference individually with evidence, then compute.
+
+Step 1: Break the "Hidden preferences" section into SEPARATE numbered preferences. \
+Each distinct requirement is its own preference (e.g., if a preference says "do X, and also Y" \
+that is TWO things to check). For each one:
+  a) STATE the preference in your own words (one sentence)
+  b) QUOTE the specific text from the draft that satisfies it, or write "NOT FOUND" if absent
+  c) SCORE: 0 (not found or wrong), 0.5 (partially there but missing key aspects), 1.0 (fully met)
+
+STRICT SCORING RULES:
+- If you cannot quote specific text from the draft that demonstrates the preference → score 0
+- If the draft does the opposite of what the preference asks → score 0
+- If the preference has multiple parts (e.g., "do X but not Y") and ANY part fails → cap at 0.5
+- Placeholders like [Owner] or [Name] do NOT count as satisfying preferences about clear ownership
+- "Close enough" or "the spirit is there" is NOT 1.0 — the preference must be satisfied AS DESCRIBED
+- A well-written draft that doesn't match these SPECIFIC preferences is still a low score
+
+Step 2: hidden_score = sum of all preference scores / number of preferences. Show the math.
+
+Step 3: Score core preferences (0 to 1.0 average) and dealbreakers (1.0 if none violated, 0.0 if any violated).
+
+Step 4: final = (hidden_score * 0.70) + (core_score * 0.20) + (dealbreaker_score * 0.10). Show the math.
+
+CALIBRATION — your score MUST match this math. Do NOT round up or adjust "because it feels good":
+- A well-written draft with NO knowledge of hidden preferences → 0.25-0.40
+- A draft where 2-3 issues were fixed via feedback but others remain → 0.45-0.60
+- 0.80+ requires MOST hidden preferences genuinely scored 1.0 (not 0.5)
+- 0.90+ means virtually ALL preferences scored 1.0 — this should be extremely rare
+
+ANTI-INFLATION CHECK: Before outputting your score, verify: \
+if hidden_score < 0.67, the final score CANNOT be above 0.70. \
+If hidden_score < 0.50, the final score CANNOT be above 0.55. \
+If your math doesn't match these bounds, recheck your per-preference scores.
+
+Return ONLY a JSON object:
+{{"score": <computed_final>, "meets_threshold": <true if score >= 0.8>, "reasoning": "<your full per-preference analysis with quotes and math>"}}"""
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Rubric Edit Proposal (synthetic user directly edits rubric)
+# ═════════════════════════════════════════════════════════════════════════════
+
+def RUBRIC_EDIT_PROPOSAL_PROMPT(rubric_criteria: list, persona) -> str:
+    """Prompt for synthetic user to propose direct edits to the rubric.
+
+    The synthetic user sees ALL preferences (core + hidden + dealbreakers)
+    and edits the rubric to better reflect what they actually want.
+    """
+    rubric_json = json.dumps(rubric_criteria, ensure_ascii=False, indent=2)
+    return f"""You are {persona.name}, a {persona.role} who writes {persona.writing_type}.
+
+You've been using a writing assistant that automatically inferred the following rubric criteria for your writing. Now you want to directly edit the rubric to better match your actual preferences.
+
+Your preferences:
+- Core preferences (things you've stated explicitly): {persona.core_preferences}
+- Other preferences (things you care about but haven't explicitly said): {persona.hidden_preferences}
+- Dealbreakers (things you absolutely don't want): {persona.dealbreakers}
+
+Current rubric criteria:
+{rubric_json}
+
+Review the rubric and make changes to better capture what you actually want. You may:
+- **Add** new criteria that are missing from the rubric
+- **Remove** criteria that don't match your needs or are irrelevant
+- **Reweight** criteria by changing their priority number (1 = most important, higher = less important)
+- **Reword** descriptions to better capture what you want
+- **Add or remove dimensions** (sub-criteria checkable items) within a criterion
+
+Guidelines:
+- Keep the same JSON structure for each criterion: {{"name": str, "description": str, "priority": int, "category": str, "dimensions": [{{"id": str, "label": str}}]}}
+- Be realistic — a real user wouldn't rewrite everything from scratch. Make targeted, meaningful edits.
+- Focus especially on adding criteria for preferences that aren't captured yet, and removing or deprioritizing criteria that don't match your needs.
+- For new dimensions, use IDs like "new_1", "new_2", etc.
+
+Return ONLY a valid JSON object (no markdown fences):
+{{
+  "edited_rubric": [... the full rubric list with your changes applied ...],
+  "reasoning": "Brief explanation of what you changed and why (2-3 sentences)"
+}}"""
+
+
+# ── Survey prompts (synthetic user completes post-task surveys) ──────────────
+
+def SURVEY_TASK_A_PROMPT(persona, conversation_summary: str) -> str:
+    """Prompt for Task A survey: experience WITHOUT rubric.
+
+    The synthetic user reflects on the conversation that happened before
+    any rubric was inferred — evaluating pure chat-based understanding.
+    """
+    return f"""You are {persona.name}, a {persona.role} who writes {persona.writing_type}.
+
+You just completed a writing task with an AI assistant. There was NO rubric involved — the assistant only had your conversation to understand your preferences.
+
+Your actual preferences (for reference when evaluating the experience):
+- Core preferences (things you stated): {persona.core_preferences}
+- Hidden preferences (things you care about but didn't explicitly say): {persona.hidden_preferences}
+- Dealbreakers (things you absolutely don't want): {persona.dealbreakers}
+
+Here is a summary of how the conversation went:
+{conversation_summary}
+
+Now complete this survey FROM YOUR PERSPECTIVE as {persona.name}. Answer honestly based on how the interaction ACTUALLY went.
+
+Q1: "How well did the model understand what you wanted from the start?" (1-5)
+  1 = Not at all — it seemed clueless about my preferences
+  2 = Poorly — it missed most of what I care about
+  3 = Somewhat — it got the basics but missed nuances
+  4 = Well — it understood most of what I wanted
+  5 = Perfectly — it nailed my preferences right away
+
+Q2: "How much effort did you spend getting the model to match your style?" (1-5)
+  1 = None — it matched my style effortlessly
+  2 = A little — minor corrections needed
+  3 = Moderate — several rounds of feedback
+  4 = Significant — I had to push hard to get what I wanted
+  5 = A lot — it was exhausting and I'm still not fully satisfied
+
+Q3: "Is there anything the model kept getting wrong?"
+  Answer in 1-3 sentences as {persona.name} would naturally express it.
+
+Return ONLY a valid JSON object (no markdown fences):
+{{"q1": <integer 1-5>, "q2": <integer 1-5>, "q3": "<free text response>"}}"""
+
+
+def SURVEY_TASK_B_PROMPT(persona, conversation_summary: str,
+                         rubric_criteria_summary: str, iteration: int) -> str:
+    """Prompt for Task B survey: experience WITH rubric visible.
+
+    The synthetic user reflects on the rubric-enhanced conversation,
+    comparing it to the previous (no-rubric) experience.
+    """
+    return f"""You are {persona.name}, a {persona.role} who writes {persona.writing_type}.
+
+You just completed iteration {iteration} of a writing task with an AI assistant. This time, a RUBRIC was being used to guide the assistant's responses and you could see it.
+
+Your actual preferences (for reference when evaluating):
+- Core preferences (things you stated): {persona.core_preferences}
+- Hidden preferences (things you care about but didn't explicitly say): {persona.hidden_preferences}
+- Dealbreakers (things you absolutely don't want): {persona.dealbreakers}
+
+Here is a summary of how the conversation went:
+{conversation_summary}
+
+The rubric criteria being used to guide the assistant:
+{rubric_criteria_summary}
+
+Now complete this survey FROM YOUR PERSPECTIVE as {persona.name}. Answer honestly.
+
+Q1: "How well did the model understand what you wanted from the start?" (1-5)
+  1 = Not at all, 2 = Poorly, 3 = Somewhat, 4 = Well, 5 = Perfectly
+
+Q2: "How much effort did you spend getting the model to match your style?" (1-5)
+  1 = None, 2 = A little, 3 = Moderate, 4 = Significant, 5 = A lot
+
+Q3: "Is there anything the model kept getting wrong?"
+  Answer in 1-3 sentences.
+
+Q4: "Compared to the previous task, how did this one feel?"
+  Choose EXACTLY one: "Much better" / "Somewhat better" / "About the same" / "Somewhat worse" / "Much worse"
+  Consider: Did the rubric make the experience better or worse?
+
+Q5: "Did you look at the rubric? Was it useful?"
+  As {persona.name}, comment on whether the rubric captured what you actually care about. Did it help the model do a better job? (1-3 sentences)
+
+Q6: "Did the rubric show you anything about the model's behavior you wouldn't have noticed otherwise?"
+  Reflect on whether the rubric surfaced any patterns — for example, did it make you realize the model was consistently missing something, or consistently doing something well? (1-3 sentences)
+
+Return ONLY a valid JSON object (no markdown fences):
+{{"q1": <integer 1-5>, "q2": <integer 1-5>, "q3": "<free text>", "q4": "<one of the five options>", "q5": "<free text>", "q6": "<free text>"}}"""
+
+
+def SURVEY_FINAL_REVIEW_PROMPT(persona, rubric_criteria: list) -> str:
+    """Prompt for Final Review survey: rubric accuracy evaluation.
+
+    The synthetic user evaluates each rubric criterion against their actual
+    preferences, rating accuracy and explaining what's right/wrong.
+    """
+    criteria_text = ""
+    for i, c in enumerate(rubric_criteria):
+        dims = c.get("dimensions", [])
+        dim_text = "\n".join(f"    - {d.get('label', '')}" for d in dims) if dims else "    (no dimensions listed)"
+        criteria_text += f"""
+  Criterion {i + 1}: "{c.get('name', 'Unnamed')}"
+    Description: {c.get('description', 'No description')}
+    Priority: #{c.get('priority', '?')}
+    Dimensions:
+{dim_text}
+"""
+
+    return f"""You are {persona.name}, a {persona.role} who writes {persona.writing_type}.
+
+The system has been learning about your writing preferences through multiple conversations. Here is the final rubric it built for you:
+{criteria_text}
+
+Your ACTUAL preferences (use these to judge accuracy):
+- Core preferences (things you stated): {persona.core_preferences}
+- Hidden preferences (things you care about but didn't explicitly say): {persona.hidden_preferences}
+- Dealbreakers (things you absolutely don't want): {persona.dealbreakers}
+
+Complete this final review FROM YOUR PERSPECTIVE as {persona.name}.
+
+Q1: For EACH criterion listed above, provide:
+- accuracy: "Accurate" (matches a real preference of yours), "Partially right" (captures something real but misses nuances or gets details wrong), or "Inaccurate" (does not match any of your actual preferences)
+- explanation: A brief 1-sentence explanation of what's right or wrong about this criterion
+
+Q2: "Is there anything here you wouldn't have thought to mention yourself?"
+Reflect on whether the rubric captured preferences you have but might not have articulated if asked directly. This could include hidden preferences that the system correctly inferred. (1-3 sentences)
+
+Return ONLY a valid JSON object (no markdown fences):
+{{
+  "criteria_ratings": {{
+    "<criterion name>": {{"accuracy": "Accurate|Partially right|Inaccurate", "explanation": "<brief explanation>"}},
+    ... one entry per criterion above ...
+  }},
+  "q2": "<free text response about unexpected insights>"
+}}"""
+
+
+# ── Preference coverage evaluation (ground-truth recall) ─────────────────
+
+def PREFERENCE_COVERAGE_PROMPT(persona, rubric_criteria: list) -> str:
+    """Prompt for evaluating what fraction of a persona's known preferences
+    are covered by the current rubric.
+
+    This is an LLM-as-judge evaluation that computes recall against
+    ground-truth preferences. Used only for synthetic users where we
+    have the full preference specification.
+    """
+    rubric_text = ""
+    for i, c in enumerate(rubric_criteria):
+        dims = c.get("dimensions", [])
+        dim_text = ", ".join(d.get("label", "") for d in dims) if dims else "(none)"
+        rubric_text += f"  {i + 1}. \"{c.get('name', 'Unnamed')}\" — {c.get('description', '')} [dims: {dim_text}]\n"
+
+    return f"""You are an evaluation judge. Your task is to assess how well a rubric captures a user's actual writing preferences.
+
+## User's Actual Preferences
+
+The user is {persona.name}, a {persona.role} who writes {persona.writing_type}.
+
+**Core preferences** (things they explicitly stated):
+{persona.core_preferences}
+
+**Hidden preferences** (things they care about but didn't explicitly say):
+{persona.hidden_preferences}
+
+**Dealbreakers** (things they absolutely don't want):
+{persona.dealbreakers}
+
+## Current Rubric
+
+{rubric_text}
+
+## Task
+
+1. First, decompose ALL of the user's preferences above into individual, atomic preference items. Each should be a single, testable preference. For example, "Concise and direct" becomes two items: "concise" and "direct". Include preferences from all three categories (core, hidden, dealbreakers).
+
+2. For EACH preference item, determine whether it is **covered** by the current rubric. A preference is "covered" if any rubric criterion or dimension addresses it — even if the wording is different, as long as the intent is captured. It is "partially covered" if the rubric touches on it but misses key nuances. It is "not covered" if no criterion addresses it.
+
+3. Compute overall coverage metrics.
+
+Return ONLY a valid JSON object (no markdown fences):
+{{
+  "preference_items": [
+    {{
+      "preference": "<atomic preference description>",
+      "source": "core|hidden|dealbreaker",
+      "coverage": "covered|partially_covered|not_covered",
+      "matched_criterion": "<name of matching criterion, or null>",
+      "explanation": "<brief explanation>"
+    }},
+    ...
+  ],
+  "total_preferences": <int>,
+  "covered_count": <int>,
+  "partially_covered_count": <int>,
+  "not_covered_count": <int>,
+  "coverage_score": <float 0.0-1.0, where covered=1.0 and partially=0.5>
 }}"""
 

@@ -1,0 +1,1068 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Precise language",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 5 explicitly addresses specific and exact word choices rather than vague or approximate ones."
+      },
+      {
+        "preference": "Formal academic tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 directly addresses maintaining academic formality throughout the prose."
+      },
+      {
+        "preference": "Logical flow between paragraphs",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1 directly addresses logical dependency-based transitions between paragraphs."
+      },
+      {
+        "preference": "Cite-aware writing that leaves room for references",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses leaving placeholders or structural room for citations and references."
+      },
+      {
+        "preference": "Each paragraph should begin with a sentence establishing its role in the argument before diving into content",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 captures the motivation-before-detail principle at the section/subsection level, but doesn't explicitly require every paragraph to open with its argumentative role."
+      },
+      {
+        "preference": "A paragraph that opens with technical detail before establishing its purpose feels disorienting",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 explicitly states that technical descriptions must be preceded by the problem or need they address, and sections should not open with procedural description."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: motivating question first",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 directly captures the motivating question coming before mechanism/approach."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: then approach overview",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 addresses motivation before mechanism but doesn't explicitly require an approach overview layer between motivation and formal details."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: then formal details",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "The ordering of formal details after motivation is implicit in Criterion 2, but the specific layered structure (overview then formal details) is not explicitly captured."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: then a brief 'what this buys us' sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Explicit Argumentative Payoff",
+        "explanation": "Criterion 3 explicitly requires sections to close by naming what the described approach achieves."
+      },
+      {
+        "preference": "Skipping motivation or payoff makes methods feel like a manual rather than a narrative",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criteria 2 and 3 together address both the motivation and payoff components, preventing a manual-like feel."
+      },
+      {
+        "preference": "Values strategic informality in key moments (e.g., 'intuitively, this means...' or 'the key insight is...')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 4 directly captures the use of carefully placed plain-language sentences to demonstrate deep understanding."
+      },
+      {
+        "preference": "Strategic informality must be rare (1-2 per section max)",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 4 says 'at least one sentence per dense technical passage' which implies some restraint, but doesn't explicitly cap frequency at 1-2 per section or warn against overuse."
+      },
+      {
+        "preference": "Overuse of strategic informality undermines formal register",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 4 focuses on ensuring these moments exist but doesn't explicitly warn that too many undermine formality. Criterion 6 addresses maintaining formality but doesn't link it to overuse of plain-language moments."
+      },
+      {
+        "preference": "Transition sentences should create logical dependency, not just sequence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1 explicitly contrasts dependency-driven transitions with temporal/sequential ones."
+      },
+      {
+        "preference": "'Next, we describe X' is weak; 'Because [previous point], we need X' is strong",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1 explicitly addresses avoiding temporal/procedural markers and requiring logical necessity in transitions."
+      },
+      {
+        "preference": "Every paragraph should feel like it couldn't be reordered",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1's dimension about the argument accumulating rather than merely proceeding captures this non-reorderability."
+      },
+      {
+        "preference": "Hates 'we note that' and 'it is worth noting that' as filler phrases",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses avoiding specific filler phrases like 'we note that' or 'it is worth noting that.' Criterion 5 addresses precision but not these specific hedging/filler constructions."
+      },
+      {
+        "preference": "These filler phrases signal the author couldn't figure out where to put the information",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "The rubric doesn't address the structural problem these phrases indicate \u2014 information that hasn't been properly integrated into the argument flow."
+      },
+      {
+        "preference": "No overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 explicitly requires no colloquialisms or casual phrasing."
+      },
+      {
+        "preference": "No unsubstantiated claims",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 mentions appropriate hedging and Criterion 3 mentions closing claims being supported, but there's no explicit criterion requiring all claims to be substantiated or evidenced throughout."
+      },
+      {
+        "preference": "No inconsistent terminology",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 5 explicitly addresses using the same term throughout without unmotivated synonym variation."
+      },
+      {
+        "preference": "No paragraph-long sentences",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 mentions that no sentence should be harder to understand solely because of its syntactic complexity, which indirectly discourages very long sentences, but doesn't explicitly prohibit paragraph-long sentences."
+      }
+    ],
+    "total_preferences": 23,
+    "covered_count": 13,
+    "partially_covered_count": 7,
+    "not_covered_count": 3,
+    "coverage_score": 0.717,
+    "iteration": 1,
+    "rubric_version": 1,
+    "timestamp": "2026-03-03T17:11:22.039367"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Precise language",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 6 explicitly addresses specific and exact word choices rather than vague or approximate ones."
+      },
+      {
+        "preference": "Formal academic tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 directly addresses maintaining academic formality throughout."
+      },
+      {
+        "preference": "Logical flow between paragraphs",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1 directly addresses logical dependency between paragraphs, going beyond mere sequence."
+      },
+      {
+        "preference": "Cite-aware writing that leaves room for references",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses leaving placeholder space for citations or writing in a cite-aware manner."
+      },
+      {
+        "preference": "Each paragraph should begin with a sentence establishing its role in the argument before diving into content",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 captures motivation-before-mechanism at the section level, but doesn't specifically require every paragraph to open with a role-establishing sentence."
+      },
+      {
+        "preference": "A paragraph that opens with technical detail before establishing its purpose feels disorienting",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 explicitly states that the reader should encounter the 'why' before the 'how' and that technical descriptions should be preceded by motivation."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: motivating question first",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2's requirement that sections open with motivating reasoning captures this."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: then approach overview",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 addresses motivation before detail but doesn't explicitly call for an approach overview step between motivation and formal details."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: then formal details",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "The rubric implies formal details follow motivation but doesn't prescribe the specific sequencing within methods sections."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: then a brief 'what this buys us' sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Explicit Argumentative Payoff",
+        "explanation": "Criterion 4 explicitly requires sections to close by naming what the described approach achieves."
+      },
+      {
+        "preference": "Skipping motivation or payoff in methods makes it feel like a manual rather than a narrative",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criteria 2 and 4 together ensure both motivation and payoff are present, avoiding the 'manual' feel."
+      },
+      {
+        "preference": "Values strategic informality \u2014 a well-placed 'intuitively, this means...' or 'the key insight is...' increases perceived rigor",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 directly addresses carefully placed plain-language insight sentences that demonstrate deep understanding."
+      },
+      {
+        "preference": "Strategic informality must be rare (1-2 per section max)",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 says 'at least one sentence per dense technical passage' but doesn't specify an upper bound or the 1-2 per section maximum."
+      },
+      {
+        "preference": "Overuse of informal moments undermines the formal register",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 maintains formality and Criterion 5 addresses plain language moments, but neither explicitly warns against overusing them."
+      },
+      {
+        "preference": "Transition sentences should create logical DEPENDENCY, not just sequence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1 explicitly distinguishes logical necessity from temporal sequence in transitions."
+      },
+      {
+        "preference": "'Next, we describe X' is weak; 'Because [previous point], we need X' is strong",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1 explicitly requires transitions to avoid temporal/procedural markers and use causal logic instead."
+      },
+      {
+        "preference": "Every paragraph should feel like it couldn't be reordered",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Paragraph Dependencies",
+        "explanation": "Criterion 1's dimension about later paragraphs building on earlier claims creating accumulation directly captures this."
+      },
+      {
+        "preference": "Hates 'we note that' \u2014 considers it filler",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion specifically addresses avoiding filler phrases like 'we note that' or 'it is worth noting that'."
+      },
+      {
+        "preference": "Hates 'it is worth noting that' \u2014 signals the author couldn't figure out where to put the information",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses this specific class of hedging/filler phrases that signal poor information placement."
+      },
+      {
+        "preference": "No overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 explicitly requires academic formality without colloquialisms or casual phrasing."
+      },
+      {
+        "preference": "No unsubstantiated claims",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 mentions appropriate hedging and Criterion 4 mentions claims supported by arguments, but no criterion directly and fully addresses requiring substantiation/evidence for all claims."
+      },
+      {
+        "preference": "No inconsistent terminology",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 6 explicitly requires the same term throughout without unmotivated synonym variation."
+      },
+      {
+        "preference": "No paragraph-long sentences",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 says no sentence should be harder to understand solely because of syntactic complexity, which partially captures this, but doesn't explicitly prohibit excessively long sentences."
+      }
+    ],
+    "total_preferences": 23,
+    "covered_count": 13,
+    "partially_covered_count": 7,
+    "not_covered_count": 3,
+    "coverage_score": 0.717,
+    "iteration": 2,
+    "rubric_version": 3,
+    "timestamp": "2026-03-03T17:16:54.241609"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Precise language",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 6 explicitly addresses specific and exact word choices rather than vague or approximate ones."
+      },
+      {
+        "preference": "Formal academic tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 directly addresses maintaining academic formality throughout."
+      },
+      {
+        "preference": "Logical flow between paragraphs",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 1 extensively covers logical dependency and flow between paragraphs and sections."
+      },
+      {
+        "preference": "Cite-aware writing that leaves room for references",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Citation-Aware Positioning",
+        "explanation": "Criterion 8 addresses anchoring claims to specific nameable prior work and citation placeholders."
+      },
+      {
+        "preference": "Each paragraph should begin with a sentence explaining its role in the argument before diving into content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 captures the idea that sections and subsections open with motivating reasoning, not procedural description, and the reader encounters 'why' before 'how'."
+      },
+      {
+        "preference": "A paragraph that opens with technical detail before establishing its purpose feels disorienting",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2's requirement that technical descriptions are preceded by a clear articulation of the problem addresses this directly."
+      },
+      {
+        "preference": "Methods sections should start with a motivating question",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 requires posing the animating question before launching into analysis or description."
+      },
+      {
+        "preference": "Methods sections should follow motivation with an approach overview",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 covers motivation-before-mechanism but doesn't specifically prescribe an approach overview step between motivation and formal details."
+      },
+      {
+        "preference": "Methods sections should include formal details after the approach overview",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "The rubric addresses the ordering of motivation before mechanism but doesn't explicitly prescribe the specific four-step rhythm (question \u2192 overview \u2192 formal details \u2192 payoff)."
+      },
+      {
+        "preference": "Methods sections should end with a brief 'what this buys us' sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Explicit Argumentative Payoff",
+        "explanation": "Criterion 4 directly addresses closing with what the approach achieves and why it matters."
+      },
+      {
+        "preference": "Skipping motivation in methods makes it feel like a manual rather than a narrative",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 2 captures the narrative quality by requiring motivating reasoning before procedural description."
+      },
+      {
+        "preference": "Skipping the payoff in methods makes it feel like a manual rather than a narrative",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Explicit Argumentative Payoff",
+        "explanation": "Criterion 4 explicitly requires sections to not end on implementation logistics without illuminating consequences."
+      },
+      {
+        "preference": "Strategic informality in key moments (e.g., 'intuitively, this means...' or 'the key insight is...') increases perceived rigor",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 directly addresses this, including the specific framing device 'the key insight is' and the idea that clarity strengthens formal register."
+      },
+      {
+        "preference": "Strategic informality must be rare \u2014 1-2 per section max",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 says 'at least one sentence per dense technical passage' but doesn't explicitly cap frequency or warn that overuse undermines the formal register."
+      },
+      {
+        "preference": "Overuse of strategic informality undermines the formal register",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 says clarity moments 'strengthen the formal register rather than undermining it' but doesn't explicitly address that frequency control is key to this."
+      },
+      {
+        "preference": "Transition sentences should create logical dependency, not just sequence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 1 explicitly requires logical necessity rather than temporal sequence and avoids purely temporal markers."
+      },
+      {
+        "preference": "'Next, we describe X' is a weak transition",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 1 explicitly calls out avoiding purely temporal or procedural markers like 'next,' 'then,' 'subsequently'."
+      },
+      {
+        "preference": "'Because [previous point], we need X' is a strong transition",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 1's requirement for logical necessity and causal dependency between units captures this pattern."
+      },
+      {
+        "preference": "Every paragraph should feel like it couldn't be reordered",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 1 directly addresses this with the requirement that the argument accumulates and later paragraphs build on earlier claims."
+      },
+      {
+        "preference": "Hates 'we note that' \u2014 it is filler",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses avoidance of specific filler phrases like 'we note that' or 'it is worth noting that'."
+      },
+      {
+        "preference": "Hates 'it is worth noting that' \u2014 it is filler",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses avoidance of specific filler phrases that signal the author couldn't figure out where to place information."
+      },
+      {
+        "preference": "No overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 explicitly requires no colloquialisms or casual phrasing."
+      },
+      {
+        "preference": "No unsubstantiated claims",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Citation-Aware Positioning",
+        "explanation": "Criterion 8 addresses anchoring claims to prior work, and Criterion 7 mentions appropriate hedging, but there's no general criterion requiring all claims to be substantiated with evidence or reasoning."
+      },
+      {
+        "preference": "No inconsistent terminology",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 6 explicitly requires the same term throughout without unmotivated synonym variation."
+      },
+      {
+        "preference": "No paragraph-long sentences",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 states 'No sentence is harder to understand solely because of its register or syntactic complexity' which partially addresses this, but doesn't explicitly prohibit excessively long sentences."
+      }
+    ],
+    "total_preferences": 25,
+    "covered_count": 17,
+    "partially_covered_count": 6,
+    "not_covered_count": 2,
+    "coverage_score": 0.8,
+    "iteration": 3,
+    "rubric_version": 5,
+    "timestamp": "2026-03-03T17:30:52.053722"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Precise language",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly addresses specific and exact word choices rather than vague or approximate ones."
+      },
+      {
+        "preference": "Formal academic tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 directly addresses maintaining academic formality throughout prose."
+      },
+      {
+        "preference": "Logical flow between paragraphs",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 explicitly addresses logical connections between paragraphs via necessity rather than mere sequence."
+      },
+      {
+        "preference": "Cite-aware writing that leaves room for references",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses citation placement, leaving space for references, or cite-aware writing conventions."
+      },
+      {
+        "preference": "Each paragraph should begin with a sentence explaining its role in the argument before diving into content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 explicitly states 'the reader should never land in the middle of a technical problem before knowing why they are reading this paragraph and what role it plays in the larger argument.'"
+      },
+      {
+        "preference": "A paragraph opening with technical detail before establishing its purpose feels disorienting",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 dimension explicitly states sections and paragraphs should open with motivating reasoning, not procedural description or technical content."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: motivating question first",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 covers the need for motivating questions before technical content."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: approach overview second",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 addresses motivation before mechanism but doesn't explicitly prescribe an approach overview step between motivation and formal details."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: formal details third",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "The rubric addresses ordering (motivation before mechanism) but doesn't explicitly prescribe the placement of formal details as a distinct step."
+      },
+      {
+        "preference": "Methods sections should include a brief 'what this buys us' sentence as payoff",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Explicit Argumentative Payoff",
+        "explanation": "Criterion 4 explicitly addresses closing with what the approach achieves and why it matters."
+      },
+      {
+        "preference": "Skipping motivation or payoff in methods makes it feel like a manual rather than a narrative",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criteria 1 and 4 together capture the need for both motivation and payoff to create narrative rather than procedural writing."
+      },
+      {
+        "preference": "Values strategic informality in key moments (e.g., 'intuitively, this means...' or 'the key insight is...')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 explicitly addresses well-placed plain-language moments including framing devices like 'the key insight is.'"
+      },
+      {
+        "preference": "Strategic informality increases perceived rigor by showing deep understanding",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 states clarity moments 'demonstrate understanding of the underlying principle' and make 'formal technical prose around it land harder.'"
+      },
+      {
+        "preference": "Strategic informality must be rare (1-2 per section max)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 explicitly addresses scarcity: 'typically once per section \u2014 so each occurrence retains its force.'"
+      },
+      {
+        "preference": "Too much strategic informality undermines the formal register",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 addresses restraint and that overuse would read as 'habitual framing rather than genuine illumination.'"
+      },
+      {
+        "preference": "Transition sentences should create logical dependency, not just sequence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 explicitly addresses logical necessity over temporal sequence in transitions."
+      },
+      {
+        "preference": "'Next, we describe X' style transitions are weak",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 explicitly says transitions should avoid purely temporal or procedural markers like 'next' and 'then.'"
+      },
+      {
+        "preference": "'Because [previous point], we need X' style transitions are strong",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 captures this by requiring each transition to name why the next unit is required by what preceded it."
+      },
+      {
+        "preference": "Every paragraph should feel like it couldn't be reordered",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 addresses argument accumulation and logical necessity between units, which implies non-reorderability."
+      },
+      {
+        "preference": "Hates 'we note that' as filler",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly names 'we note that' and 'it is worth noting that' as filler phrases to avoid."
+      },
+      {
+        "preference": "Hates 'it is worth noting that' as filler",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly names this phrase as a filler phrase the prose should be free of."
+      },
+      {
+        "preference": "Filler phrases signal the author couldn't figure out where to put the information",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 addresses removing filler but doesn't explicitly articulate the diagnostic reasoning that filler signals poor information placement."
+      },
+      {
+        "preference": "No overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 explicitly requires academic formality without colloquialisms or casual phrasing."
+      },
+      {
+        "preference": "No unsubstantiated claims",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 addresses appropriate hedging and Criterion 4 requires payoff to follow from the argument, but no criterion directly and fully addresses the requirement that all claims be substantiated with evidence or reasoning."
+      },
+      {
+        "preference": "No inconsistent terminology",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly addresses using the same term throughout without unmotivated synonym variation."
+      },
+      {
+        "preference": "No paragraph-long sentences",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 7 says 'no sentence is harder to understand solely because of its register or syntactic complexity,' which partially addresses overly long sentences, but doesn't explicitly prohibit paragraph-length sentences as a structural issue."
+      }
+    ],
+    "total_preferences": 26,
+    "covered_count": 20,
+    "partially_covered_count": 5,
+    "not_covered_count": 1,
+    "coverage_score": 0.865,
+    "iteration": 4,
+    "rubric_version": 8,
+    "timestamp": "2026-03-03T17:40:13.970460"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Precise language",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly addresses specific and exact word choices rather than vague or approximate ones."
+      },
+      {
+        "preference": "Formal academic tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 directly addresses maintaining academic formality throughout the prose."
+      },
+      {
+        "preference": "Logical flow between paragraphs",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 extensively covers logical dependency between paragraphs and sections."
+      },
+      {
+        "preference": "Cite-aware writing that leaves room for references",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 includes a dimension about citations and reference placeholders being woven into prose without disrupting flow."
+      },
+      {
+        "preference": "Each paragraph should begin with a sentence explaining its role in the argument before diving into content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 explicitly states the reader should never land in the middle of a technical problem before knowing why they are reading this paragraph and what role it plays."
+      },
+      {
+        "preference": "A paragraph opening with technical detail before establishing its purpose feels disorienting",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 directly addresses that technical descriptions should not precede motivation, at both section and paragraph level."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: motivating question first",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 covers the 'question before answer' pattern and motivating reasoning before technical content."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: approach overview second",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 addresses motivation before mechanism but doesn't specifically call out a distinct 'approach overview' step between motivation and formal details."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: formal details third",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "The rubric addresses motivation before mechanism but doesn't prescribe the specific four-part narrative rhythm for methods sections."
+      },
+      {
+        "preference": "Methods sections should include a brief 'what this buys us' sentence as payoff",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Explicit Argumentative Payoff",
+        "explanation": "Criterion 4 explicitly addresses closing sections with what the approach achieves and why it matters."
+      },
+      {
+        "preference": "Skipping motivation or payoff in methods makes it feel like a manual rather than a narrative",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criteria 1 and 4 together address both the motivation and payoff requirements, framing writing as argumentative narrative rather than procedural documentation."
+      },
+      {
+        "preference": "Strategic informality in key moments (e.g., 'intuitively, this means...' or 'the key insight is...') increases perceived rigor",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 directly addresses this, including the specific framing device 'the key insight is' and the principle that clarity moments strengthen formal register."
+      },
+      {
+        "preference": "Strategic informality must be rare (1-2 per section max) or it undermines the formal register",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 explicitly states restraint is essential and crystallizing sentences derive their force from scarcity, typically once per section."
+      },
+      {
+        "preference": "Transition sentences should create logical dependency, not just sequence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 directly addresses this, requiring logical necessity rather than temporal sequence between units."
+      },
+      {
+        "preference": "'Next, we describe X' is weak; 'Because [previous point], we need X' is strong",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 explicitly states transitions should avoid purely temporal or procedural markers like 'next' and instead name why the next unit is required."
+      },
+      {
+        "preference": "Every paragraph should feel like it couldn't be reordered",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 directly states 'The reader should feel that reordering any two adjacent units would break the argument.'"
+      },
+      {
+        "preference": "Hates 'we note that' and 'it is worth noting that' as filler",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly names 'we note that' and 'it is worth noting that' as filler phrases to be eliminated."
+      },
+      {
+        "preference": "Filler phrases signal the author couldn't figure out where to put the information",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 captures the spirit by calling out filler phrases and hedge-words that signal inability to place information."
+      },
+      {
+        "preference": "No overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 specifies prose maintains academic formality without colloquialisms or casual phrasing."
+      },
+      {
+        "preference": "No unsubstantiated claims",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 mentions appropriate hedging and Criterion 4 mentions payoff being earned by preceding argument, but no criterion explicitly and directly addresses ensuring all claims are substantiated with evidence or citations."
+      },
+      {
+        "preference": "No inconsistent terminology",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 directly addresses using the same term throughout without unmotivated synonym variation."
+      },
+      {
+        "preference": "No paragraph-long sentences",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly addresses splitting sentences that accumulate multiple claims, prohibiting paragraph-long sentences."
+      }
+    ],
+    "total_preferences": 22,
+    "covered_count": 19,
+    "partially_covered_count": 3,
+    "not_covered_count": 0,
+    "coverage_score": 0.932,
+    "iteration": 5,
+    "rubric_version": 11,
+    "timestamp": "2026-03-03T17:48:24.420830"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Precise language",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly addresses specific and exact word choices."
+      },
+      {
+        "preference": "Formal academic tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 directly addresses maintaining academic formality throughout."
+      },
+      {
+        "preference": "Logical flow between paragraphs",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 comprehensively addresses logical dependencies and flow between paragraphs."
+      },
+      {
+        "preference": "Cite-aware writing that leaves room for references",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 includes a dimension about citations and reference placeholders woven into prose without disrupting flow."
+      },
+      {
+        "preference": "Each paragraph should begin with a sentence establishing its role in the argument before diving into content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 explicitly states the reader should never land in the middle of a technical problem before knowing why they are reading the paragraph and its role in the larger argument."
+      },
+      {
+        "preference": "A paragraph opening with technical detail before establishing purpose feels disorienting",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 addresses this directly by requiring sections and paragraphs open with motivating reasoning, not procedural description or technical content."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: motivating question first",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 requires the reader encounters the question or need before the answer or mechanism."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: approach overview second",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criterion 1 covers motivation-before-mechanism but doesn't specifically prescribe an approach overview step between motivation and formal details."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: formal details third",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "The rubric addresses motivation before mechanism but doesn't explicitly prescribe the specific four-part sequencing of methods sections."
+      },
+      {
+        "preference": "Methods sections should follow the rhythm: 'what this buys us' sentence at the end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Explicit Argumentative Payoff",
+        "explanation": "Criterion 4 explicitly requires sections to close by illuminating why the described approach matters."
+      },
+      {
+        "preference": "Skipping motivation or payoff in methods makes it feel like a manual rather than a narrative",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Motivation-Before-Mechanism",
+        "explanation": "Criteria 1 and 4 together cover this by requiring both motivation before and payoff after technical content."
+      },
+      {
+        "preference": "Strategic informality in key moments (e.g., 'intuitively, this means...' or 'the key insight is...') increases perceived rigor",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 directly addresses this, including the specific framing device 'the key insight is' and the requirement that such moments strengthen rather than undermine formalism."
+      },
+      {
+        "preference": "Strategic informality must be rare (1-2 per section max)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 explicitly states restraint is essential, with crystallizing sentences used sparingly, typically once per section."
+      },
+      {
+        "preference": "Overuse of strategic informality undermines the formal register",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Clarity",
+        "explanation": "Criterion 5 explicitly addresses that each occurrence retains force from scarcity and must not read as habitual framing."
+      },
+      {
+        "preference": "Transition sentences should create logical dependency, not just sequence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 directly addresses this, requiring logical necessity over temporal sequence and explicitly avoiding 'next,' 'then,' 'subsequently.'"
+      },
+      {
+        "preference": "'Because [previous point], we need X' style transitions preferred over 'Next, we describe X'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 explicitly contrasts causal transitions with temporal/procedural markers."
+      },
+      {
+        "preference": "Every paragraph should feel like it couldn't be reordered",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Causal Inter-Unit Dependencies",
+        "explanation": "Criterion 2 explicitly states 'The reader should feel that reordering any two adjacent units would break the argument.'"
+      },
+      {
+        "preference": "Hates 'we note that' and 'it is worth noting that'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly names these exact phrases as filler to avoid."
+      },
+      {
+        "preference": "These filler phrases signal the author couldn't figure out where to put the information",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 describes these as phrases that signal the author couldn't figure out where to place the information \u2014 matching the exact reasoning."
+      },
+      {
+        "preference": "No overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 explicitly requires academic formality without colloquialisms or casual phrasing."
+      },
+      {
+        "preference": "No unsubstantiated claims",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register Without Camouflage",
+        "explanation": "Criterion 6 mentions appropriate hedging and Criterion 4 requires payoff claims to follow from the argument, but no criterion explicitly and directly addresses the requirement that all claims be substantiated with evidence or citations."
+      },
+      {
+        "preference": "No inconsistent terminology",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly requires key concepts use the same term throughout without unmotivated synonym variation."
+      },
+      {
+        "preference": "No paragraph-long sentences",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Terminological Precision and Consistency",
+        "explanation": "Criterion 3 explicitly addresses sentences that compress multiple claims into a single run and requires they be split."
+      }
+    ],
+    "total_preferences": 23,
+    "covered_count": 20,
+    "partially_covered_count": 3,
+    "not_covered_count": 0,
+    "coverage_score": 0.935,
+    "iteration": 6,
+    "rubric_version": 12,
+    "timestamp": "2026-03-03T17:55:36.553200"
+  }
+]

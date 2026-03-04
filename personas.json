@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Alex Chen",
+    "role": "Product Manager at a B2B SaaS startup",
+    "writing_type": "professional emails",
+    "project_name": "Work Emails",
+    "core_preferences": "Concise and direct. Professional but not stiff. Clear call to action. Short paragraphs.",
+    "hidden_preferences": "Information should follow a strict emotional arc: acknowledge effort/situation FIRST (1 sentence max), then deliver the news, then explain WHY it matters (stakes, not just facts), then one concrete next step — violating this order even if all elements are present feels wrong. The 'why' framing should always be from the READER's perspective, not the sender's — 'This matters because your team planned around this date' not 'This matters because we want quality'; drafts that center the sender's reasoning feel tone-deaf. Closing lines must be forward-looking and action-oriented — no 'thanks for your patience' or motivational platitudes; trailing sentiment after the CTA weakens the email. When multiple people need to do different things, prefers ONE clear owner with a deadline over group asks — 'Everyone please review' is a non-action — but also hates over-specified action items that assume org structure details the email shouldn't contain.",
+    "dealbreakers": "Corporate jargon, passive aggressive tone, walls of text, excessive exclamation marks",
+    "initial_task": "Help me draft an email to our engineering team about pushing the product launch date by two weeks due to a critical bug we found in testing."
+  },
+  {
+    "name": "Priya Sharma",
+    "role": "Academic researcher in computational linguistics",
+    "writing_type": "research paper sections",
+    "project_name": "Paper Drafts",
+    "core_preferences": "Precise language, formal academic tone, logical flow between paragraphs, cite-aware writing that leaves room for references.",
+    "hidden_preferences": "Each paragraph should begin with a sentence that tells you WHY you're reading it — its role in the argument — before diving into content; a paragraph that opens with technical detail before establishing its purpose feels disorienting. Prefers a specific rhythm in methods sections: motivating question, then approach overview, then formal details, then a brief 'what this buys us' sentence — skipping the motivation or the payoff makes it feel like a manual rather than a narrative. Values strategic informality in key moments — a well-placed 'intuitively, this means...' or 'the key insight is...' actually increases perceived rigor by showing the author understands deeply enough to explain simply, but this must be rare (1-2 per section max) or it undermines the formal register. Transition sentences between paragraphs should create logical DEPENDENCY, not just sequence — 'Next, we describe X' is weak, 'Because [previous point], we need X' is strong; every paragraph should feel like it couldn't be reordered. Hates 'we note that' and 'it is worth noting that' — these are filler that signal the author couldn't figure out where to put the information.",
+    "dealbreakers": "Overly casual language, unsubstantiated claims, inconsistent terminology, paragraph-long sentences",
+    "initial_task": "Help me write the methodology section for a paper on using LLMs to elicit implicit user preferences in collaborative writing systems."
+  },
+  {
+    "name": "Jordan Rivera",
+    "role": "Freelance food and travel blogger",
+    "writing_type": "blog posts",
+    "project_name": "Blog Content",
+    "core_preferences": "Warm conversational tone, vivid sensory descriptions, personal anecdotes woven in naturally. First person voice.",
+    "hidden_preferences": "Sensory details should be SPECIFIC and unexpected — not 'the broth was rich and flavorful' but something that makes the reader pause, like a comparison to a non-food thing or a physical sensation; generic food adjectives (delicious, amazing, incredible, flavorful) are almost as bad as no description. Personal anecdotes should serve double duty — both make the reader feel present AND set up the next point; an anecdote that's just 'here's a fun thing that happened' without connecting to the food/place/culture feels self-indulgent. Pacing follows a specific pattern: open with a scene (drop the reader into a moment), pull back for context (how you got there), zoom back in for the core experience, then end with a resonant closing image — never end with 'if you ever find yourself in X, definitely check out Y' because that's guidebook voice. Humor should emerge from honest observation or self-awareness, never from exaggeration or trying to be clever — 'I definitely did not eat three bowls' is forced, 'I realized I'd been sitting there for forty minutes just watching the chef work' is honest and naturally funny. Descriptions of place should include at least one NON-VISUAL sensory detail (sound, smell, temperature, texture) per scene — visual-only descriptions read like looking at photos rather than being there.",
+    "dealbreakers": "Generic travel cliches like 'hidden gem' or 'off the beaten path', listicle format, overly promotional language",
+    "initial_task": "Help me write a blog post about my experience at a tiny ramen shop I found in a backstreet of Osaka — it was this incredible hole-in-the-wall place with only 8 seats."
+  },
+  {
+    "name": "Marcus Thompson",
+    "role": "Senior software engineer writing internal documentation",
+    "writing_type": "technical documentation",
+    "project_name": "Tech Docs",
+    "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+    "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why — 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable — showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after — 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material — headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' — these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+    "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure",
+    "initial_task": "Help me document our new authentication service — it uses JWT tokens with refresh rotation and integrates with our existing user service via gRPC."
+  },
+  {
+    "name": "Elena Kowalski",
+    "role": "Non-profit communications director",
+    "writing_type": "donor newsletters and fundraising appeals",
+    "project_name": "Donor Communications",
+    "core_preferences": "Emotionally resonant but not manipulative. Story-driven with real impact examples. Professional yet warm. Clear ask at the end.",
+    "hidden_preferences": "Stories should center the AGENCY of the people being helped — what they chose, built, or achieved — not what was done TO or FOR them; 'Maria enrolled her daughters' not 'We enrolled Maria's daughters' because the subject of sentences matters enormously for dignity framing. Impact numbers should always be paired with a single human story that makes the number tangible — a number alone is abstract, a story alone is anecdotal — and the story should come FIRST, then the number as evidence of scale. The donor should be addressed as a collaborator who made a strategic investment, not a generous benefactor who gave charity — 'Your decision to fund X enabled Y' not 'Thanks to your generous donation'; the framing should make donors feel smart, not virtuous. The ask at the end should connect SPECIFICALLY to something in the story — not a generic 'please give again'; if the story was about Maria's daughters, the ask should be about what more funding would do for similar families, with a specific number tied to a specific outcome. Avoids any framing where the non-profit is the hero — the heroes are the community members and the donors; sentences starting with 'We' followed by an action verb ('We provided', 'We launched', 'We built') should be rare, reframed with community members or donors as subjects.",
+    "dealbreakers": "Guilt-tripping language, dehumanizing descriptions of beneficiaries, vague impact claims without specifics, overly corporate fundraising jargon",
+    "initial_task": "Help me write our quarterly newsletter update to donors about our literacy program expansion into three new rural communities in Guatemala."
+  }
+]

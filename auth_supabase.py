@@ -330,9 +330,16 @@ def load_conversations(supabase: Client, project_id: str) -> List[Dict]:
 
         conversations = []
         for conv in response.data or []:
+            # Clean Supabase timestamp: parse and re-format for display
+            raw_ts = conv["created_at"] or ""
+            try:
+                from datetime import datetime as _dt
+                clean_ts = _dt.fromisoformat(raw_ts).strftime("%Y-%m-%d %H:%M:%S")
+            except Exception:
+                clean_ts = raw_ts
             conversations.append({
                 "id": conv["id"],
-                "timestamp": conv["created_at"],
+                "timestamp": clean_ts,
                 "messages": json.loads(conv["messages"]) if conv["messages"] else [],
                 "rubric": json.loads(conv["rubric"]) if conv["rubric"] else None,
                 "analysis": conv.get("analysis", ""),
@@ -351,9 +358,15 @@ def load_conversation_by_id(supabase: Client, conversation_id: str) -> Optional[
 
         if response.data:
             conv = response.data
+            raw_ts = conv["created_at"] or ""
+            try:
+                from datetime import datetime as _dt
+                clean_ts = _dt.fromisoformat(raw_ts).strftime("%Y-%m-%d %H:%M:%S")
+            except Exception:
+                clean_ts = raw_ts
             return {
                 "id": conv["id"],
-                "timestamp": conv["created_at"],
+                "timestamp": clean_ts,
                 "messages": json.loads(conv["messages"]) if conv["messages"] else [],
                 "rubric": json.loads(conv["rubric"]) if conv["rubric"] else None,
                 "analysis": conv.get("analysis", "")

@@ -1,0 +1,1159 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation should be clear",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence addresses precise language and readable flow, which supports clarity."
+      },
+      {
+        "preference": "Documentation should be structured with headers",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly addresses section headers and their role in organizing content."
+      },
+      {
+        "preference": "Include code examples where relevant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline directly addresses the inclusion and formatting of code examples."
+      },
+      {
+        "preference": "Assume the reader is a competent engineer",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence includes 'Language is precise and respects the reader's competence.'"
+      },
+      {
+        "preference": "Assume the reader is new to this specific system",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "The rubric front-loads conceptual models and explanations which helps newcomers, but no criterion explicitly addresses calibrating explanation depth for someone new to the system specifically."
+      },
+      {
+        "preference": "Architectural decisions should include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Design Decision Reasoning explicitly requires naming rejected alternatives."
+      },
+      {
+        "preference": "Architectural decisions should explain why the rejected alternatives were worse",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Design Decision Reasoning requires the 'we chose X over Y because Z' framing."
+      },
+      {
+        "preference": "Stating only the chosen approach without alternatives is insufficient \u2014 the rejected alternatives are what teach the reader",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "The criterion explicitly states 'this is what they can't get from reading the code' and requires naming rejected alternatives."
+      },
+      {
+        "preference": "Code examples should be minimal",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline requires ~15 lines or fewer."
+      },
+      {
+        "preference": "Code examples should be runnable (exact happy path)",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The rubric addresses brevity and clarity but does not explicitly require examples to be runnable or show the happy path."
+      },
+      {
+        "preference": "Code examples should have no extra imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The rubric says to avoid 'carrying conceptual weight that belongs in prose' but doesn't explicitly address stripping imports/config/boilerplate."
+      },
+      {
+        "preference": "If a code example needs more than 15 lines, the surrounding prose didn't do its job",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The rubric explicitly states 'When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.'"
+      },
+      {
+        "preference": "Every code example must include a one-line 'what this does' comment above it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Directly addressed: 'Every code example has a single-line comment at the top describing what it accomplishes.'"
+      },
+      {
+        "preference": "Warnings and pitfalls should be placed BEFORE the section where someone would encounter them",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Explicitly addressed: 'Warnings and preconditions appear before the section where someone would encounter the problem, not after.'"
+      },
+      {
+        "preference": "Documentation should flow like a tutorial even when it's reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence says 'the doc flows like a tutorial even when it's reference material.'"
+      },
+      {
+        "preference": "Headers should tell a story (narrative progression) not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Directly addressed: 'Section headers convey a narrative progression rather than just categorizing contents.'"
+      },
+      {
+        "preference": "Avoid the word 'simply'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Explicitly listed: 'avoids minimizing words (\"simply\", \"just\", \"easy\").'"
+      },
+      {
+        "preference": "Avoid the word 'just'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Explicitly listed in the minimizing words dimension."
+      },
+      {
+        "preference": "Avoid the word 'easy'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Explicitly listed in the minimizing words dimension."
+      },
+      {
+        "preference": "Avoid the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "The rubric lists 'simply', 'just', 'easy' but not 'straightforward' explicitly. The spirit is captured but the specific word is missing."
+      },
+      {
+        "preference": "Use precise language instead of minimizing words (e.g., 'Run X, which returns Y')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence requires 'Language is precise' and avoids minimizing words."
+      },
+      {
+        "preference": "No condescending tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Addressed via 'respects the reader's competence' and avoiding minimizing words."
+      },
+      {
+        "preference": "No missing context for code snippets",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Prose-Code Weight Distribution requires prose to front-load conceptual models and introduce every notable construct before the code block."
+      },
+      {
+        "preference": "No outdated information presented as current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses currency/freshness of information or version accuracy."
+      },
+      {
+        "preference": "No walls of text without structure",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "The requirement for narrative headers and structured flow directly prevents walls of text."
+      }
+    ],
+    "total_preferences": 25,
+    "covered_count": 20,
+    "partially_covered_count": 4,
+    "not_covered_count": 1,
+    "coverage_score": 0.88,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-03T20:37:21.378763"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation should be clear",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence's emphasis on precise language, story-like flow, and descriptive headers all contribute to clarity."
+      },
+      {
+        "preference": "Documentation should be structured with headers",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly requires section headers that describe stages and content broken into distinct subsections."
+      },
+      {
+        "preference": "Include code examples where relevant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline directly addresses the quality and presence of code examples."
+      },
+      {
+        "preference": "Assume the reader is a competent engineer",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "The rubric avoids minimizing words and uses precise language (which respects the reader's competence), but doesn't explicitly set the baseline assumption of reader competence or calibrate explanation depth accordingly."
+      },
+      {
+        "preference": "Assume the reader is new to this specific system",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Front-loading conceptual models and explaining why code is shaped a certain way helps newcomers, but no criterion explicitly addresses calibrating for system-newcomer context."
+      },
+      {
+        "preference": "Architectural decisions should include what was rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Design Decision Reasoning explicitly requires naming rejected alternatives."
+      },
+      {
+        "preference": "Architectural decisions should explain why the rejected option was worse",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Design Decision Reasoning requires the 'we chose X over Y because Z' framing with tradeoff explanation."
+      },
+      {
+        "preference": "Stating only the chosen option without alternatives is insufficient",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "The criterion explicitly states reasoning should convey what cannot be derived from reading the implementation, and requires naming rejected alternatives."
+      },
+      {
+        "preference": "Code examples should be minimal",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline requires approximately 15 lines or fewer."
+      },
+      {
+        "preference": "Code examples should be runnable",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses whether code examples should be runnable/executable as-is versus pseudocode or fragments."
+      },
+      {
+        "preference": "Code examples should show the exact happy path",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion specifies that examples should demonstrate the happy path specifically."
+      },
+      {
+        "preference": "Code examples should have no extra imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The criterion says code should avoid carrying conceptual weight that belongs in prose and stay minimal, but doesn't explicitly address removing imports/config/boilerplate."
+      },
+      {
+        "preference": "If a code example needs more than 15 lines, the prose didn't do its job",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The criterion explicitly states 'When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.'"
+      },
+      {
+        "preference": "Every code example must include a one-line 'what this does' comment above it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Directly addressed: 'Every code example has a single-line comment at the top describing what it accomplishes.'"
+      },
+      {
+        "preference": "Warnings and pitfalls should be placed BEFORE the section where someone would encounter them",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Explicitly addressed: 'Warnings and preconditions appear before the section where someone would encounter the problem, not after.'"
+      },
+      {
+        "preference": "Documentation should flow like a tutorial even when it's reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence requires the doc to flow 'like a guided walkthrough even when it's reference material.'"
+      },
+      {
+        "preference": "Headers should tell a story (e.g., 'Setting Up Auth' then 'Your First Authenticated Request')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly requires headers that describe what is happening at each stage rather than labeling mechanisms."
+      },
+      {
+        "preference": "Headers should not just label sections generically (e.g., 'Setup', 'Usage', 'Error Handling')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Directly contrasted in Narrative Coherence with the example of descriptive vs. generic headers."
+      },
+      {
+        "preference": "Avoid the word 'simply'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly lists 'simply' among words to avoid."
+      },
+      {
+        "preference": "Avoid the word 'just'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly lists 'just' among words to avoid."
+      },
+      {
+        "preference": "Avoid the word 'easy'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly lists 'easy' among words to avoid."
+      },
+      {
+        "preference": "Avoid the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence avoids minimizing words and lists 'simply', 'just', 'easy' but does not explicitly name 'straightforward'."
+      },
+      {
+        "preference": "Use precise language instead of minimizing words (e.g., 'Run X, which returns Y')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence requires precise language and avoidance of minimizing words."
+      },
+      {
+        "preference": "No condescending tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "The avoidance of minimizing words and the precise language requirement address condescending tone."
+      },
+      {
+        "preference": "No missing context for code snippets",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Prose-Code Weight Distribution requires front-loading conceptual models, structural choices, and failure modes before code, ensuring context is present."
+      },
+      {
+        "preference": "No outdated information presented as current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses information freshness, version tracking, or ensuring documentation is up to date."
+      },
+      {
+        "preference": "No walls of text without structure",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence requires content to be broken into subsections with headers, directly preventing walls of text."
+      }
+    ],
+    "total_preferences": 27,
+    "covered_count": 20,
+    "partially_covered_count": 4,
+    "not_covered_count": 3,
+    "coverage_score": 0.815,
+    "iteration": 2,
+    "rubric_version": 4,
+    "timestamp": "2026-03-03T20:43:35.179817"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation should be clear",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence and Prose-Code Weight Distribution contribute to clarity, but 'clear' as a general quality isn't explicitly targeted by any single criterion."
+      },
+      {
+        "preference": "Documentation should be structured with headers",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly addresses section headers, their descriptive quality, and breaking content into subsections."
+      },
+      {
+        "preference": "Code examples should be included where relevant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline addresses the quality and structure of code examples, implying their inclusion where relevant."
+      },
+      {
+        "preference": "Assume the reader is a competent engineer",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "The rubric implicitly respects the reader's competence by not over-explaining in code comments and front-loading concepts, but doesn't explicitly address calibrating the assumed skill level."
+      },
+      {
+        "preference": "Assume the reader is new to this specific system",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "The tutorial-like flow in Narrative Coherence supports newcomers to the system, but the rubric doesn't explicitly address the balance of assuming general competence while explaining system-specific context."
+      },
+      {
+        "preference": "Architectural decisions should include what was rejected and why",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Design Decision Reasoning explicitly requires naming rejected alternatives and explaining why they were worse."
+      },
+      {
+        "preference": "Rejected alternatives are what actually teach the reader, not just restating current choices",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "The criterion's dimension about 'reasoning that cannot be derived from reading the implementation' and giving context to 'evaluate proposed changes' captures this teaching intent."
+      },
+      {
+        "preference": "Code examples should be minimal",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The ~15 line limit and the principle that long code means prose hasn't done its job directly address minimality."
+      },
+      {
+        "preference": "Code examples should be runnable",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The criterion requires examples to be 'self-contained enough to be intelligible without mentally gap-filling undefined references,' which approaches runnability but doesn't explicitly require examples to be runnable."
+      },
+      {
+        "preference": "Code examples should show the exact happy path",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion specifically addresses showing the happy path versus edge cases or error handling in code examples."
+      },
+      {
+        "preference": "Code examples should have no extra imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The minimality and ~15 line limit implicitly discourages boilerplate, but the rubric doesn't explicitly call out removing unnecessary imports, config, or boilerplate."
+      },
+      {
+        "preference": "Code examples needing more than 15 lines means the surrounding prose didn't do its job",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Explicitly stated: 'When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.'"
+      },
+      {
+        "preference": "Every code example must include a one-line 'what this does' comment above it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Directly addressed: 'Every code example has a single-line comment at the top describing what it accomplishes.'"
+      },
+      {
+        "preference": "Warnings and pitfalls should be placed BEFORE the section where someone would encounter them",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Explicitly addressed: 'Warnings and preconditions appear before the section where someone would encounter the problem, not after.' Also in Narrative Coherence."
+      },
+      {
+        "preference": "Documentation should flow like a tutorial even when it's reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly addresses: 'the doc flows like a guided walkthrough even when it's reference material.'"
+      },
+      {
+        "preference": "Headers should tell a story, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Directly addressed: 'Headers describe what is happening at each stage rather than labeling the mechanism.'"
+      },
+      {
+        "preference": "Avoid the word 'simply'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses the avoidance of specific minimizing words."
+      },
+      {
+        "preference": "Avoid the word 'just'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses the avoidance of specific minimizing words."
+      },
+      {
+        "preference": "Avoid the word 'easy'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses the avoidance of specific minimizing words."
+      },
+      {
+        "preference": "Avoid the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses the avoidance of specific minimizing words."
+      },
+      {
+        "preference": "Use precise language instead of minimizing words (e.g., 'Run X, which returns Y' rather than 'Simply run X')",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses precise, non-minimizing language choices at the sentence level."
+      },
+      {
+        "preference": "No condescending tone",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses tone or the avoidance of condescending language. The minimizing words preference is closely related to this, and neither is covered."
+      },
+      {
+        "preference": "No missing context for code snippets",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Addressed by the dimension: 'The example does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill.' Also supported by Prose-Code Weight Distribution front-loading context."
+      },
+      {
+        "preference": "No outdated information presented as current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses freshness, accuracy, or currency of information."
+      },
+      {
+        "preference": "No walls of text without structure",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence requires breaking content into subsections with headers, preventing walls of text."
+      },
+      {
+        "preference": "Recommendations should name alternative patterns",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Recommendation Framing",
+        "explanation": "Recommendation Framing explicitly requires naming at least one alternative pattern."
+      },
+      {
+        "preference": "Recommendations should acknowledge alternatives work rather than dismissing them",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Recommendation Framing",
+        "explanation": "Explicitly addressed: 'The alternative is acknowledged as functional, not dismissed outright.'"
+      },
+      {
+        "preference": "Recommendations should explain concretely why the alternative is worse",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Recommendation Framing",
+        "explanation": "Explicitly addressed: 'The specific weakness of the alternative is explained concretely.'"
+      }
+    ],
+    "total_preferences": 28,
+    "covered_count": 15,
+    "partially_covered_count": 5,
+    "not_covered_count": 8,
+    "coverage_score": 0.625,
+    "iteration": 3,
+    "rubric_version": 6,
+    "timestamp": "2026-03-03T20:50:39.293645"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation should be clear",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence and Prose-Code Weight Distribution both address clarity through structured flow and front-loaded explanations."
+      },
+      {
+        "preference": "Documentation should be structured with headers",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence explicitly requires section headers that describe stages and content broken into distinct subsections."
+      },
+      {
+        "preference": "Include code examples where relevant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline addresses code examples extensively, including format, length, and commenting requirements."
+      },
+      {
+        "preference": "Assume the reader is a competent engineer",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Recommendation Framing",
+        "explanation": "Recommendation Framing treats the reader as someone who can evaluate tradeoffs, and Design Decision Reasoning gives context for evaluation. However, no criterion explicitly addresses calibrating technical depth to a competent-engineer audience."
+      },
+      {
+        "preference": "Assume the reader is new to this specific system",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence's tutorial-like flow and prerequisite ordering partially addresses this, but no criterion explicitly states that system-specific context should be provided for newcomers."
+      },
+      {
+        "preference": "Architectural decisions should include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Design Decision Reasoning explicitly requires naming rejected alternatives with 'we chose X over Y because Z' framing."
+      },
+      {
+        "preference": "Architectural decisions should explain WHY the alternative was rejected, not just state the choice",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Design Decision Reasoning requires explaining why the rejected alternative was worse and conveying reasoning not derivable from code."
+      },
+      {
+        "preference": "Code examples should be minimal",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline requires ~15 lines or fewer and narrowing the slice when too much scaffolding is needed."
+      },
+      {
+        "preference": "Code examples should be runnable",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The criterion requires examples to be 'self-contained enough to be intelligible without mentally gap-filling undefined references,' which is close to runnable but doesn't explicitly require runnability."
+      },
+      {
+        "preference": "Code examples should show the exact happy path with no extra imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The criterion addresses narrowing the slice and keeping examples concise, but doesn't explicitly mention stripping imports, config, or boilerplate."
+      },
+      {
+        "preference": "Code examples should be 15 lines or fewer",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Explicitly stated as 'approximately 15 lines or fewer' in the criterion."
+      },
+      {
+        "preference": "If a code example needs more than 15 lines, the surrounding prose didn't do its job",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Prose-Code Weight Distribution requires front-loading conceptual models in prose so code only shows the pattern shape. Code Example Discipline also says the fix for long code is moving explanation to prose."
+      },
+      {
+        "preference": "Every code example must include a one-line 'what this does' comment above it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Explicitly required: 'Every code example has a single-line comment at the top describing what it accomplishes.'"
+      },
+      {
+        "preference": "Warnings and pitfalls should be placed BEFORE the section where someone would encounter them",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Explicitly stated: 'Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after.'"
+      },
+      {
+        "preference": "Documentation should flow like a tutorial even when it's reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence requires docs to flow like a guided walkthrough even when it's reference material."
+      },
+      {
+        "preference": "Headers should tell a story, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Explicitly required: 'Section headers describe what is happening at each stage rather than labeling the mechanism.'"
+      },
+      {
+        "preference": "Avoid the word 'simply'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoidance of specific minimizing/condescending words like 'simply'."
+      },
+      {
+        "preference": "Avoid the word 'just'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoidance of specific minimizing words like 'just'."
+      },
+      {
+        "preference": "Avoid the word 'easy'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoidance of specific minimizing words like 'easy'."
+      },
+      {
+        "preference": "Avoid the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoidance of specific minimizing words like 'straightforward'."
+      },
+      {
+        "preference": "Use precise language: 'Run X, which returns Y' rather than vague directives",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion explicitly addresses using precise, outcome-stating language instead of vague directives."
+      },
+      {
+        "preference": "No condescending tone",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "While the rubric implicitly supports a respectful tone through its emphasis on reasoning and precision, no criterion explicitly addresses condescending tone as something to avoid."
+      },
+      {
+        "preference": "No missing context for code snippets",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Code Example Discipline requires examples to be 'self-contained enough to be intelligible without mentally gap-filling undefined references.'"
+      },
+      {
+        "preference": "No outdated information presented as current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses information currency or the risk of presenting outdated information as current."
+      },
+      {
+        "preference": "No walls of text without structure",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Narrative Coherence requires content to be 'broken into distinct subsections with headers, not presented as a single long block.'"
+      }
+    ],
+    "total_preferences": 25,
+    "covered_count": 14,
+    "partially_covered_count": 4,
+    "not_covered_count": 7,
+    "coverage_score": 0.64,
+    "iteration": 4,
+    "rubric_version": 7,
+    "timestamp": "2026-03-03T20:56:53.570507"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation should be clear",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Clarity is implicitly supported by multiple criteria (prose before code, narrative coherence) but never explicitly named as a criterion."
+      },
+      {
+        "preference": "Documentation should be structured with headers",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 explicitly addresses section headers and their descriptive quality, and breaking content into distinct subsections with headers."
+      },
+      {
+        "preference": "Code examples where relevant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 extensively covers code example quality, though it focuses on constraints rather than when to include them. The overall rubric assumes code examples are present."
+      },
+      {
+        "preference": "Assume the reader is a competent engineer but new to this specific system",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "The rubric implicitly assumes a competent audience (no over-explaining) and provides context for system-specific concepts, but never explicitly calibrates the audience level."
+      },
+      {
+        "preference": "Architectural decisions should include what was rejected and why",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Criterion 1 explicitly requires naming rejected alternatives and explaining why they were worse."
+      },
+      {
+        "preference": "Rejection reasoning should name concrete mechanisms, properties, or couplings \u2014 not vague problems",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Criterion 1 dimension explicitly states 'The rejection reasoning names the specific mechanism, coupling, or property that made the alternative worse.'"
+      },
+      {
+        "preference": "Code examples should be minimal (approximately 15 lines or fewer)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 explicitly requires code blocks to be approximately 15 lines or fewer."
+      },
+      {
+        "preference": "Code examples should be runnable (self-contained, no undefined references)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 addresses this: 'does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill.'"
+      },
+      {
+        "preference": "Code examples should show the exact happy path with no extra imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The rubric addresses narrowing the slice and keeping examples short, but doesn't explicitly call out removing extra imports, config, or boilerplate \u2014 it focuses on undefined references rather than unnecessary included scaffolding."
+      },
+      {
+        "preference": "Every code example must include a one-line 'what this does' comment above it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 explicitly requires 'Every code example has a single-line comment at the top describing what it accomplishes.'"
+      },
+      {
+        "preference": "If a code example needs more than 15 lines, the surrounding prose didn't do its job",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Criterion 3 explicitly states 'Explanatory prose before code examples front-loads the conceptual model... so the code only needs to show the shape of the pattern,' and Criterion 2 addresses the 15-line constraint."
+      },
+      {
+        "preference": "Warnings and pitfalls should be placed BEFORE the section where someone would encounter them",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Criterion 3 explicitly states 'Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after.'"
+      },
+      {
+        "preference": "Documentation should flow like a tutorial even when it's reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 requires 'Section headers and reading order tell a coherent story \u2014 less encyclopedia entry, more here's what you need to know in the order you'll need it.'"
+      },
+      {
+        "preference": "Headers should tell a story (e.g., 'Setting Up Auth' then 'Your First Authenticated Request') not just label sections (e.g., 'Setup' then 'Usage')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 explicitly requires 'Section headers describe what is happening at each stage rather than labeling the mechanism.'"
+      },
+      {
+        "preference": "Avoid the word 'simply'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoiding specific condescending words like 'simply.'"
+      },
+      {
+        "preference": "Avoid the word 'just'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoiding specific condescending words like 'just.'"
+      },
+      {
+        "preference": "Avoid the word 'easy'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoiding specific condescending words like 'easy.'"
+      },
+      {
+        "preference": "Avoid the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses avoiding specific condescending words like 'straightforward.'"
+      },
+      {
+        "preference": "Use precise language: 'Run X, which returns Y' rather than 'Simply run X'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion explicitly addresses using precise, action-result language instead of vague directives."
+      },
+      {
+        "preference": "No condescending tone",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "While the rubric avoids condescending patterns implicitly through its focus on explaining reasoning, no criterion explicitly addresses tone or prohibits condescending language."
+      },
+      {
+        "preference": "No missing context for code snippets",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 addresses this via the dimension about not referencing undefined external functions/types and Criterion 3 ensures prose front-loads context."
+      },
+      {
+        "preference": "No outdated information presented as current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses information freshness or accuracy, or flagging when information might be outdated."
+      },
+      {
+        "preference": "No walls of text without structure",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 requires content to be 'broken into distinct subsections with headers, not presented as a single long block.'"
+      }
+    ],
+    "total_preferences": 23,
+    "covered_count": 13,
+    "partially_covered_count": 3,
+    "not_covered_count": 7,
+    "coverage_score": 0.63,
+    "iteration": 5,
+    "rubric_version": 9,
+    "timestamp": "2026-03-03T21:03:41.942180"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation should be clear",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Clarity is addressed implicitly through the prose-code weight distribution and narrative coherence criteria, but 'clear' as a standalone quality isn't directly measured."
+      },
+      {
+        "preference": "Documentation should be structured with headers",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 explicitly addresses section headers, their descriptive quality, and how content is broken into subsections."
+      },
+      {
+        "preference": "Code examples where relevant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 extensively covers code example quality, though it focuses on discipline rather than when to include them. The presence of code examples is assumed throughout."
+      },
+      {
+        "preference": "Assume the reader is a competent engineer",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Recommendation Framing",
+        "explanation": "Criterion 5's emphasis on reasoning the reader internalizes rather than blind instructions implies competent-reader assumption. However, no criterion explicitly addresses calibrating the technical level to a competent engineer."
+      },
+      {
+        "preference": "Assume the reader is new to this specific system",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "The tutorial-like flow in Criterion 4 and the front-loading of context in Criterion 3 implicitly serve someone new to the system, but no criterion explicitly addresses ensuring sufficient system-specific context for newcomers."
+      },
+      {
+        "preference": "Architectural decisions should include what was rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Criterion 1 explicitly requires naming rejected alternatives for every design choice."
+      },
+      {
+        "preference": "Architectural decisions should explain why the rejected option was worse",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Criterion 1 requires naming the concrete mechanism or property that made the alternative worse."
+      },
+      {
+        "preference": "Rejected alternatives are what actually teach the reader (not restating the code)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Decision Reasoning",
+        "explanation": "Criterion 1's dimension 'Explanations convey architectural reasoning that cannot be derived from reading the implementation' directly captures this."
+      },
+      {
+        "preference": "Code examples should be minimal",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 enforces ~15 lines or fewer and narrowing the slice when scaffolding is too much."
+      },
+      {
+        "preference": "Code examples should be runnable",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 requires examples to be 'self-contained enough to be intelligible without mentally gap-filling undefined references,' which is close but not the same as explicitly runnable. Runnable implies no extra imports/config/boilerplate needed, which is a stronger requirement."
+      },
+      {
+        "preference": "Code examples should show the exact happy path with no extra imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "The criterion addresses narrowing the slice and avoiding undefined references, but doesn't explicitly call out stripping imports, config, and boilerplate."
+      },
+      {
+        "preference": "Code examples should be 15 lines or fewer",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 explicitly states 'approximately 15 lines or fewer.'"
+      },
+      {
+        "preference": "If a code example needs more than 15 lines, the surrounding prose didn't do its job",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2's dimension 'When a code block is long, the fix is moving explanation to prose rather than cutting logic' captures this, and Criterion 3 reinforces that prose should front-load the conceptual model."
+      },
+      {
+        "preference": "Every code example must include a one-line 'what this does' comment above it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 explicitly requires 'a single-line comment at the top describing what the whole block accomplishes.'"
+      },
+      {
+        "preference": "Warnings and pitfalls should be placed BEFORE the section where someone would encounter them",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Prose-Code Weight Distribution",
+        "explanation": "Criterion 3 explicitly states 'Warnings, preconditions, and ordering constraints appear before the code block \u2014 not after' and has a dedicated dimension for this."
+      },
+      {
+        "preference": "Documentation should flow like a tutorial even when it's reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 explicitly states headers should 'feel like steps in a process, not tabs in a UI.'"
+      },
+      {
+        "preference": "Headers should tell a story (e.g., 'Setting Up Auth' then 'Your First Authenticated Request')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 explicitly requires 'Section headers describe what is happening at each stage rather than labeling the mechanism.'"
+      },
+      {
+        "preference": "Headers should not just label sections generically (e.g., not 'Setup' then 'Usage' then 'Error Handling')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 contrasts descriptive headers with tab-like labels."
+      },
+      {
+        "preference": "Avoid the word 'simply'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding specific minimizing words like 'simply', 'just', 'easy', or 'straightforward.'"
+      },
+      {
+        "preference": "Avoid the word 'just'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding specific minimizing words."
+      },
+      {
+        "preference": "Avoid the word 'easy'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding specific minimizing words."
+      },
+      {
+        "preference": "Avoid the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding specific minimizing words."
+      },
+      {
+        "preference": "Use precise language: 'Run X, which returns Y' rather than vague directives",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Recommendation Framing",
+        "explanation": "Criterion 5 promotes reasoning over blind instruction-following, which is related but doesn't specifically address precise action-result language patterns."
+      },
+      {
+        "preference": "No condescending tone",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "While the rubric implicitly promotes respectful writing through its emphasis on reasoning and competent-reader framing, no criterion explicitly addresses tone or condescension."
+      },
+      {
+        "preference": "No missing context for code snippets",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Discipline",
+        "explanation": "Criterion 2 addresses this with 'self-contained enough to be intelligible without mentally gap-filling undefined references' and Criterion 3 requires preceding prose to introduce all notable constructs."
+      },
+      {
+        "preference": "No outdated information presented as current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses information currency, version accuracy, or temporal correctness of documentation."
+      },
+      {
+        "preference": "No walls of text without structure",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Narrative Coherence",
+        "explanation": "Criterion 4 explicitly requires content to be 'broken into distinct subsections with headers, not presented as a single long block.'"
+      }
+    ],
+    "total_preferences": 27,
+    "covered_count": 15,
+    "partially_covered_count": 6,
+    "not_covered_count": 6,
+    "coverage_score": 0.667,
+    "iteration": 6,
+    "rubric_version": 11,
+    "timestamp": "2026-03-03T21:12:54.217231"
+  }
+]

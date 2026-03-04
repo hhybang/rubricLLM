@@ -1,0 +1,49 @@
+[
+  {
+    "source": "alignment_diagnostic",
+    "rubric_version": 3,
+    "suggestion_reasons": {
+      "Design Decision Reasoning": "Scoring highest for the rubric-guided draft and confirmed by the user as 'exactly the kind of rejected-alternative reasoning that teaches someone the system' \u2014 kept exactly as-is.",
+      "Code Example Discipline": "The generic draft scored 5 by having no code at all, which is a trivially correct result that reveals the criterion doesn't penalize absence of code \u2014 but since the user ranked the rubric-guided draft first and the criterion correctly caught the missing heading comment in the original preference draft, the criterion is functioning. Kept exactly as-is.",
+      "Prose-Code Weight Distribution": "The user explicitly called out that the 'One edge case worth knowing' warning in the original preference draft was 'backwards' and should appear before the section where someone would encounter it \u2014 this maps directly to the existing `preconditions_before_code` dimension, confirming the criterion is correctly specified. Kept exactly as-is.",
+      "Recommendation Framing": "Scoring pattern mirrors Design Decision Reasoning (rubric-guided 5, generic 1, original preference 2), and user feedback confirms the criterion is capturing the right behavior. Kept exactly as-is.",
+      "Narrative Coherence": "The rubric-guided draft scored 4 rather than 5 because the judge noted the absence of internal section headers despite a title promising narrative progression \u2014 the `headers_convey_progression` dimension currently focuses on headers conveying progression, but doesn't distinguish between a document with no headers at all versus one whose headers are merely categorical. Adding a clarification that continuous prose without headers fails this dimension when the document is long enough to warrant navigation would tighten the criterion without broadening its scope."
+    },
+    "timestamp": "2026-03-03T20:39:32.565320"
+  },
+  {
+    "source": "alignment_diagnostic",
+    "rubric_version": 5,
+    "suggestion_reasons": {
+      "Design Decision Reasoning": "Rubric-guided draft scored 5, original preference draft scored 2, and the user confirmed this criterion is the most important \u2014 kept exactly as-is since it is already producing the behavior the user wants.",
+      "Code Example Discipline": "Rubric-guided draft scored 5 and ranked first, so this criterion is working correctly \u2014 kept exactly as-is.",
+      "Prose-Code Weight Distribution": "Rubric-guided draft scored 5 and the criterion is clearly differentiating \u2014 kept exactly as-is.",
+      "Narrative Coherence": "Rubric-guided draft scored 4 (not 5) on this criterion, and the user's feedback called out that the original preference draft 'front-loads the warning about conflating failure categories before the caller would make that mistake, which is the right placement' \u2014 added a dimension explicitly requiring that warnings about conflating failure categories appear before the section where a caller would encounter the branching decision, reinforcing the precondition-before-problem requirement at the narrative level.",
+      "Recommendation Framing": "Rubric-guided draft scored 5 and ranked first \u2014 kept exactly as-is."
+    },
+    "timestamp": "2026-03-03T20:45:39.871340"
+  },
+  {
+    "source": "alignment_diagnostic",
+    "rubric_version": 8,
+    "suggestion_reasons": {
+      "Design Decision Reasoning": "The rubric-guided draft scored highest on this criterion per the judge, but the user ranked the original preference draft first specifically because the rejected alternative was explained with the 'actual reason it was rejected' \u2014 the coupling insight \u2014 rather than just naming the alternative. Added a dimension to require that rejection reasoning names the concrete mechanism or property that made the alternative worse, not just that it was worse.",
+      "Code Example Discipline": "The user explicitly praised the original preference draft's code example for showing the tombstone-first ordering inline rather than 'just asserting it in prose' \u2014 the code itself demonstrated the invariant. Added a dimension capturing that code examples should demonstrate behavioral invariants or ordering constraints directly in the code when those invariants are the point being made, rather than relying solely on prose assertion.",
+      "Prose-Code Weight Distribution": "The user's preference for the original preference draft's inline demonstration over the rubric-guided draft's prose-heavy approach suggests the current criterion over-weights prose explanation at the expense of letting code carry structural meaning. Added a dimension clarifying that when the code's structure itself is the argument (e.g., ordering of checks), prose should set up the question the code answers rather than pre-explaining the answer.",
+      "Narrative Coherence": "Kept unchanged \u2014 the rubric-guided draft scored highest on this criterion and the user's feedback did not identify narrative structure as a reason for preferring the original preference draft.",
+      "Recommendation Framing": "Kept unchanged \u2014 the rubric-guided draft scored highest on this criterion and the user's feedback did not identify recommendation framing as a weakness relative to the original preference draft."
+    },
+    "timestamp": "2026-03-03T20:59:22.340173"
+  },
+  {
+    "source": "alignment_diagnostic",
+    "rubric_version": 10,
+    "suggestion_reasons": {
+      "Design Decision Reasoning": "Kept unchanged \u2014 this criterion is clearly working: the rubric-guided draft scored 5 and the original preference draft scored 2, meaning the rubric successfully drove the behavior the user values most (naming rejected alternatives with specific mechanisms). The user's complaint about the original preference draft ('doesn't explain what was rejected and why') confirms this criterion is calibrated correctly.",
+      "Code Example Discipline": "Kept unchanged \u2014 the rubric-guided draft scored 4 and the original preference draft scored 3, and the user ranked the original preference draft first specifically because its code example was 'runnable' and 'does its job in under 15 lines.' The gap isn't in this criterion's definition \u2014 the original preference draft's code was closer to what the user wanted for different reasons (concreteness, runnability) that are already covered by existing dimensions like self_contained_slice and invariants_shown_in_code.",
+      "Prose-Code Weight Distribution": "Reworded the description and added a dimension to surface the specific failure the user identified: critical ordering information (like 'expiry is checked before state') appearing after the code block rather than before it. The user explicitly flagged this as the 'missing piece' in the original preference draft, and the existing preconditions_before_code dimension doesn't fully capture that ordering information which shapes how the reader interprets the code logic must come before the code, not just warnings and preconditions.",
+      "Narrative Coherence": "Kept unchanged \u2014 the rubric-guided draft scored 4 versus the original preference draft's 3, so the criterion is directionally correct. The user's complaint ('read the tombstone check first is asking the reader to reorder the document in their head') is already addressed by the conceptual_dependencies_ordered dimension, which requires dangerous prerequisites to come first."
+    },
+    "timestamp": "2026-03-03T21:06:01.732280"
+  }
+]

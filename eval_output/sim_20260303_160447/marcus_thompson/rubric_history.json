@@ -1,0 +1,1560 @@
+[
+  {
+    "version": 1,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should build the reader's mental model of why the system was designed this way, not just describe what it does. Prose carries conceptual weight so code examples stay short and scannable. The reader should finish knowing enough to evaluate future changes, not just follow current instructions.",
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and avoids carrying conceptual weight that belongs in prose.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story from setup through integration through troubleshooting. Later sections reference earlier design decisions via callbacks rather than re-explanation, and cross-section dependencies are named explicitly.",
+        "dimensions": [
+          {
+            "id": "headers_convey_progression",
+            "label": "Section headers convey a narrative progression rather than just categorizing contents"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          },
+          {
+            "id": "full_doc_coherence",
+            "label": "The document reads as a coherent whole from start to finish, not as independently authored sections"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Practical Reference Value",
+        "category": "Audience",
+        "description": "The doc includes structured reference material \u2014 error tables, FAQs, summary comparisons \u2014 that engineers will search for during incidents or integration. Answers address the specific scenario the engineer is in and tell them what to do, not just what went wrong.",
+        "dimensions": [
+          {
+            "id": "searchable_structured_entries",
+            "label": "Error codes, status codes, and common problems are in structured formats (tables, labeled Q&A)"
+          },
+          {
+            "id": "incident_oriented_answers",
+            "label": "FAQ and error entries address scenarios engineers encounter under pressure (debugging at 2am, unexpected errors in production)"
+          },
+          {
+            "id": "actionable_guidance",
+            "label": "Each error or FAQ entry includes what to do next, not just an explanation of what happened"
+          },
+          {
+            "id": "summary_tables",
+            "label": "Key properties and comparisons are summarized in tables for quick scanning"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user's core belief is that documentation should transmit architectural reasoning \u2014 'why this way and not another way' \u2014 because that's the only thing engineers can't get from reading the code. They will push back repeatedly until rejected alternatives are named and tradeoffs are explicit. They have a strong sense of prose-code division of labor: prose carries conceptual weight, code shows pattern shape, and the ~15-line ceiling is a hard signal that prose hasn't pulled enough weight. They give very precise, targeted feedback and explicitly approve ('keep verbatim') when satisfied, so track what they've locked in and don't revisit it.",
+    "source": "inferred"
+  },
+  {
+    "version": 2,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "The user writes for engineers who are competent but new to a specific system. Their core values are surfacing architectural reasoning (what was rejected and why), keeping code examples minimal with prose doing the heavy lifting, and structuring documentation as a narrative progression that builds intuition rather than just categorizing information.",
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and avoids carrying conceptual weight that belongs in prose. When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story from setup through integration through troubleshooting \u2014 the doc flows like a tutorial even when it's reference material. Later sections reference earlier design decisions via callbacks rather than re-explanation. Language is precise and respects the reader's competence.",
+        "dimensions": [
+          {
+            "id": "headers_convey_progression",
+            "label": "Section headers convey a narrative progression rather than just categorizing contents"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          },
+          {
+            "id": "precise_language",
+            "label": "Language is precise and avoids minimizing words ('simply', 'just', 'easy') that assume difficulty away"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "This user's strongest instinct is that documentation should teach architectural intuition, not just describe implementation. They consistently push for naming rejected alternatives and explaining tradeoffs. Their second strongest instinct is code economy \u2014 examples should be scannable at a glance, with prose doing the conceptual heavy lifting beforehand. When they say something is 'too long', the fix is almost always better prose above the code, not less code.",
+    "refinement_summary": "Removed the hallucinated 'Practical Reference Value' criterion. Reordered priorities to match the user's explicit importance ranking (Code Example Discipline moved to #2 above Prose-Code Weight Distribution). Added a 'precise_language' dimension to Narrative Coherence to capture the user's preference for respecting reader competence.",
+    "source": "inferred_final",
+    "_change_explanation": "- **Removed \"Practical Reference Value\"**: The user classified this criterion as hallucinated. While the doc happened to include error tables and FAQs, the user does not consider structured reference material a standalone writing preference \u2014 it was an artifact of this particular task, not a transferable value.\n- **Reordered priorities**: The user's importance ranking placed Code Example Discipline (#2) above Prose-Code Weight Distribution (#3), which was the opposite of the original rubric. Updated to match the user's explicit ranking.\n- **Added \"precise_language\" dimension to Narrative Coherence**: The user's cold-start preferences emphasize writing for engineers who are \"smart but haven't touched this particular system before.\" This, combined with the conversation's consistent avoidance of minimizing language, warranted a dimension capturing the preference for precise, non-condescending language. It fits naturally in Narrative Coherence alongside the existing tone-adjacent dimensions about progression and callbacks.",
+    "_refinement_summary": "Removed the hallucinated 'Practical Reference Value' criterion. Reordered priorities to match the user's explicit importance ranking (Code Example Discipline moved to #2 above Prose-Code Weight Distribution). Added a 'precise_language' dimension to Narrative Coherence to capture the user's preference for respecting reader competence."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and avoids carrying conceptual weight that belongs in prose. When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story from setup through integration through troubleshooting \u2014 the doc flows like a tutorial even when it's reference material. Later sections reference earlier design decisions via callbacks rather than re-explanation. Language is precise and respects the reader's competence.",
+        "dimensions": [
+          {
+            "id": "headers_convey_progression",
+            "label": "Documents long enough to require navigation use section headers that convey a narrative progression \u2014 continuous prose without headers fails this when the reader cannot scan for a specific phase"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          },
+          {
+            "id": "precise_language",
+            "label": "Language is precise and avoids minimizing words ('simply', 'just', 'easy') that assume difficulty away"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 3,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "The user writes for engineers who are competent but new to a specific system. Their core values are surfacing architectural reasoning (what was rejected and why), keeping code examples minimal with prose doing the heavy lifting, and structuring documentation as a narrative progression that builds intuition rather than just categorizing information.",
+    "coaching_notes": "This user's strongest instinct is that documentation should teach architectural intuition, not just describe implementation. They consistently push for naming rejected alternatives and explaining tradeoffs. Their second strongest instinct is code economy \u2014 examples should be scannable at a glance, with prose doing the conceptual heavy lifting beforehand. When they say something is 'too long', the fix is almost always better prose above the code, not less code."
+  },
+  {
+    "version": 4,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes developer-facing documentation for engineers who are competent but new to a specific system. Values documentation that conveys architectural reasoning engineers cannot get from reading the code, with code examples that are compact and front-loaded by prose. Structure should tell a navigable story, not just organize information.",
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and avoids carrying conceptual weight that belongs in prose. When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 the doc flows like a guided walkthrough even when it's reference material. Headers describe what is happening at each stage, not just label the mechanism. Content that walks through a sequence of stages is broken into subsections so a reader scanning for a specific behavior can locate it by header alone.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 e.g., 'Checking Whether the Cached Token Is Still Usable' rather than 'Expiry Check'"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          },
+          {
+            "id": "precise_language",
+            "label": "Language is precise and avoids minimizing words ('simply', 'just', 'easy') that assume difficulty away"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every design choice must name the rejected alternative and its tradeoff \u2014 restating the implementation without the 'why not the other way' framing is the single most frequent failure mode. This user treats structure as load-bearing: when they say the content is good but the structure is wrong, the fix is always adding headers that describe stages of a process, not reorganizing paragraphs. They prefer to iterate on one section at a time and approve sections verbatim before moving on \u2014 preserve approved language exactly.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and avoids carrying conceptual weight that belongs in prose. When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 the doc flows like a guided walkthrough even when it's reference material. Headers describe what is happening at each stage, not just label the mechanism. Content that walks through a sequence of stages is broken into subsections so a reader scanning for a specific behavior can locate it by header alone. Warnings about how failure categories differ \u2014 especially ones that affect branching decisions \u2014 appear before the section where a caller would first encounter that branching, not after.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 e.g., 'Checking Whether the Cached Token Is Still Usable' rather than 'Expiry Check'"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          },
+          {
+            "id": "precise_language",
+            "label": "Language is precise and avoids minimizing words ('simply', 'just', 'easy') that assume difficulty away"
+          },
+          {
+            "id": "conflation_warnings_front_loaded",
+            "label": "Warnings about failure categories that are easy to conflate (e.g., transient vs. terminal errors) appear before the section where a caller would make the branching decision, not after"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 5,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes developer-facing documentation for engineers who are competent but new to a specific system. Values documentation that conveys architectural reasoning engineers cannot get from reading the code, with code examples that are compact and front-loaded by prose. Structure should tell a navigable story, not just organize information.",
+    "coaching_notes": "Non-negotiable: every design choice must name the rejected alternative and its tradeoff \u2014 restating the implementation without the 'why not the other way' framing is the single most frequent failure mode. This user treats structure as load-bearing: when they say the content is good but the structure is wrong, the fix is always adding headers that describe stages of a process, not reorganizing paragraphs. They prefer to iterate on one section at a time and approve sections verbatim before moving on \u2014 preserve approved language exactly."
+  },
+  {
+    "version": 6,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Write internal developer documentation that builds architectural intuition by explaining rejected alternatives and design tradeoffs at every decision point. Code examples should be short, self-contained, and preceded by prose that carries all conceptual weight. The reading order and section structure should match the mental model a reader needs to build, with dangerous caveats surfaced before the reasoning that depends on them.",
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and is self-contained enough to be intelligible without mentally gap-filling undefined references. When an example is too long, the fix is moving explanation to surrounding prose, not cutting logic from the code.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "self_contained_slice",
+            "label": "The example does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 the doc flows like a guided walkthrough even when it's reference material. Headers describe what is happening at each stage, not just label the mechanism. Content walking through a sequence of stages is broken into subsections so a reader can locate a specific behavior by header alone.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 e.g., 'Checking Whether the Cached Token Is Still Usable' rather than 'Expiry Check'"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "dangerous_caveats_front_loaded",
+            "label": "State information, pitfalls, or caveats that affect how a reader interprets subsequent sections appear before those sections, not after"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every design choice must name what was rejected and why \u2014 'restating the implementation' is the failure mode this user flags first and most consistently. The ~15-line code ceiling is a diagnostic, not an arbitrary rule; when code is too long, the fix is always to move weight into prose, and when code references undefined externals, the example scope is too wide. This user reads documentation as a narrative journey \u2014 ordering and section headers matter as much as content accuracy, and dangerous caveats placed after the reasoning they affect is treated as a structural defect.",
+    "source": "inferred"
+  },
+  {
+    "version": 7,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should build the reader's mental model of why the system works this way, not just describe what it does. Every design choice names the rejected alternative and its cost. Code examples are concise, self-contained, and front-loaded with a heading comment so the reader knows whether a snippet is relevant before reading it.",
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and is self-contained enough to be intelligible without mentally gap-filling undefined references. When an example requires too much scaffolding to be intelligible, the fix is narrowing the slice to show only the caller-facing pattern, not adding more context.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "self_contained_slice",
+            "label": "The example does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill; when too much scaffolding would be needed, the slice is narrowed instead"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 the doc flows like a guided walkthrough even when it's reference material. Headers describe what is happening at each stage, not just label the mechanism. When two sections are conceptually entangled, the one with more dangerous failure modes or that serves as a prerequisite for correct reasoning comes first.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 e.g., 'Checking Whether the Cached Token Is Still Usable' rather than 'Expiry Check'"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "conceptual_dependencies_ordered",
+            "label": "When two sections are entangled, the one the reader needs to reason correctly about subsequent material comes first \u2014 especially state information, pitfalls, or caveats that affect interpretation"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiables: rejected alternatives must be named for every design decision; every code block gets a heading comment; warnings appear before the code they apply to. Preferred tradeoff: when a code example is too long or requires too much scaffolding, narrow the slice and move explanation to prose rather than adding context to the code. Responds to feedback by immediately identifying the precise gap between prose and code \u2014 typically the prose isn't pulling enough weight, and the fix is always structural (front-load explanation) rather than cosmetic (add comments).",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The rejection reasoning must name the concrete mechanism, property, or coupling that made the alternative worse \u2014 not just that it was worse or that it introduced vague problems. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          },
+          {
+            "id": "rejection_mechanism_named",
+            "label": "The rejection reasoning names the specific mechanism, coupling, or property that made the alternative worse \u2014 not just that it introduced problems or race conditions"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and is self-contained enough to be intelligible without mentally gap-filling undefined references. When an example requires too much scaffolding to be intelligible, the fix is narrowing the slice to show only the caller-facing pattern, not adding more context. When the point being made is an ordering constraint or behavioral invariant, the code example should demonstrate it directly \u2014 not just assert it in prose.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "self_contained_slice",
+            "label": "The example does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill; when too much scaffolding would be needed, the slice is narrowed instead"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          },
+          {
+            "id": "invariants_shown_in_code",
+            "label": "When the point being made is an ordering constraint or behavioral invariant (e.g., tombstone checked before TTL), the code demonstrates it directly rather than relying solely on prose assertion"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after. When the code's structure itself is the argument \u2014 for example, the ordering of checks encodes a security invariant \u2014 prose should frame the question the code answers, not pre-explain the answer the reader should see in the code.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          },
+          {
+            "id": "prose_frames_not_preempts",
+            "label": "When code structure carries the argument (e.g., check ordering), prose sets up the question the code answers rather than pre-explaining the answer \u2014 letting the code teach rather than merely illustrate"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 the doc flows like a guided walkthrough even when it's reference material. Headers describe what is happening at each stage, not just label the mechanism. When two sections are conceptually entangled, the one with more dangerous failure modes or that serves as a prerequisite for correct reasoning comes first.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 e.g., 'Checking Whether the Cached Token Is Still Usable' rather than 'Expiry Check'"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "conceptual_dependencies_ordered",
+            "label": "When two sections are entangled, the one the reader needs to reason correctly about subsequent material comes first \u2014 especially state information, pitfalls, or caveats that affect interpretation"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 8,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should build the reader's mental model of why the system works this way, not just describe what it does. Every design choice names the rejected alternative and its cost. Code examples are concise, self-contained, and front-loaded with a heading comment so the reader knows whether a snippet is relevant before reading it.",
+    "coaching_notes": "Non-negotiables: rejected alternatives must be named for every design decision; every code block gets a heading comment; warnings appear before the code they apply to. Preferred tradeoff: when a code example is too long or requires too much scaffolding, narrow the slice and move explanation to prose rather than adding context to the code. Responds to feedback by immediately identifying the precise gap between prose and code \u2014 typically the prose isn't pulling enough weight, and the fix is always structural (front-load explanation) rather than cosmetic (add comments)."
+  },
+  {
+    "version": 9,
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Documentation should build durable architectural intuition by explaining why the system is built the way it is \u2014 naming rejected alternatives and their specific costs \u2014 so that engineers new to the system can reason about future changes, not just follow current procedures. Code examples should be tight, self-contained, and scaffolded by prose that front-loads every structural choice, warning, and conceptual model the reader needs before they encounter the code.",
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The rejection reasoning must name the concrete mechanism, property, or coupling that made the alternative worse \u2014 not just that it was worse or that it introduced vague problems. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          },
+          {
+            "id": "rejection_mechanism_named",
+            "label": "The rejection reasoning names the specific mechanism, coupling, or property that made the alternative worse \u2014 not just that it introduced problems"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and is self-contained enough to be intelligible without mentally gap-filling undefined references. When an example requires too much scaffolding to be intelligible, the fix is narrowing the slice to show only the caller-facing pattern, not adding more context. When the point being made is an ordering constraint or behavioral invariant, the code example should demonstrate it directly.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "self_contained_slice",
+            "label": "The example does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill; when too much scaffolding would be needed, the slice is narrowed instead"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          },
+          {
+            "id": "invariants_shown_in_code",
+            "label": "When the point being made is an ordering constraint or behavioral invariant (e.g., tombstone checked before TTL), the code demonstrates it directly rather than relying solely on prose assertion"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings and preconditions appear before the section where someone would encounter the problem, not after. When the code's structure itself is the argument \u2014 for example, the ordering of checks encodes a security invariant \u2014 prose should frame the question the code answers, not pre-explain the answer the reader should see in the code.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          },
+          {
+            "id": "prose_frames_not_preempts",
+            "label": "When code structure carries the argument (e.g., check ordering), prose sets up the question the code answers rather than pre-explaining the answer \u2014 letting the code teach rather than merely illustrate"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 less encyclopedia entry, more 'here's what you need to know in the order you'll need it.' Headers describe what is happening at each stage, not just label the mechanism. When two sections are conceptually entangled, the one with more dangerous failure modes or that serves as a prerequisite for correct reasoning comes first.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 e.g., 'Checking Whether the Cached Token Is Still Usable' rather than 'Expiry Check'"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "conceptual_dependencies_ordered",
+            "label": "When two sections are entangled, the one the reader needs to reason correctly about subsequent material comes first \u2014 especially state information, pitfalls, or caveats that affect interpretation"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every design choice must name the rejected alternative and the specific mechanism that made it worse \u2014 'restating the implementation' is the failure mode. The user treats code length limits as a diagnostic, not a rule: when a function exceeds ~15 lines, the real problem is that prose before it hasn't absorbed enough of the structural explanation. When the user says 'keep that verbatim,' they mean it \u2014 once a passage earns approval, do not rephrase or reorganize it in subsequent drafts.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The rejection reasoning must name the concrete mechanism, property, or coupling that made the alternative worse \u2014 not just that it was worse or that it introduced vague problems. The reasoning gives the reader enough context to evaluate proposed changes, not just understand current behavior \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          },
+          {
+            "id": "rejection_mechanism_named",
+            "label": "The rejection reasoning names the specific mechanism, coupling, or property that made the alternative worse \u2014 not just that it introduced problems"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what it accomplishes (not how), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and is self-contained enough to be intelligible without mentally gap-filling undefined references. When an example requires too much scaffolding to be intelligible, the fix is narrowing the slice to show only the caller-facing pattern, not adding more context. When the point being made is an ordering constraint or behavioral invariant, the code example should demonstrate it directly.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what it accomplishes"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "self_contained_slice",
+            "label": "The example does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill; when too much scaffolding would be needed, the slice is narrowed instead"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          },
+          {
+            "id": "invariants_shown_in_code",
+            "label": "When the point being made is an ordering constraint or behavioral invariant (e.g., tombstone checked before TTL), the code demonstrates it directly rather than relying solely on prose assertion"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings, preconditions, and any ordering constraints that shape how the reader should interpret the code appear before the code block \u2014 not after. This specifically includes statements that describe the required evaluation order of checks (e.g., 'expiry is checked before state'), because a reader who encounters that constraint after the code has already misread the logic. When the code's structure itself is the argument \u2014 for example, the ordering of checks encodes a security invariant \u2014 prose should frame the question the code answers, not pre-explain the answer the reader should see in the code.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "ordering_constraints_before_code",
+            "label": "Any statement describing the required evaluation order of checks or operations appears before the code \u2014 a reader who sees 'X is checked before Y' after the code has already misread the logic"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          },
+          {
+            "id": "prose_frames_not_preempts",
+            "label": "When code structure carries the argument (e.g., check ordering), prose sets up the question the code answers rather than pre-explaining the answer \u2014 letting the code teach rather than merely illustrate"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 less encyclopedia entry, more 'here's what you need to know in the order you'll need it.' Headers describe what is happening at each stage, not just label the mechanism. When two sections are conceptually entangled, the one with more dangerous failure modes or that serves as a prerequisite for correct reasoning comes first.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 e.g., 'Checking Whether the Cached Token Is Still Usable' rather than 'Expiry Check'"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "conceptual_dependencies_ordered",
+            "label": "When two sections are entangled, the one the reader needs to reason correctly about subsequent material comes first \u2014 especially state information, pitfalls, or caveats that affect interpretation"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 10,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Documentation should build durable architectural intuition by explaining why the system is built the way it is \u2014 naming rejected alternatives and their specific costs \u2014 so that engineers new to the system can reason about future changes, not just follow current procedures. Code examples should be tight, self-contained, and scaffolded by prose that front-loads every structural choice, warning, and conceptual model the reader needs before they encounter the code.",
+    "coaching_notes": "Non-negotiable: every design choice must name the rejected alternative and the specific mechanism that made it worse \u2014 'restating the implementation' is the failure mode. The user treats code length limits as a diagnostic, not a rule: when a function exceeds ~15 lines, the real problem is that prose before it hasn't absorbed enough of the structural explanation. When the user says 'keep that verbatim,' they mean it \u2014 once a passage earns approval, do not rephrase or reorganize it in subsequent drafts."
+  },
+  {
+    "version": 11,
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Documentation should build architectural intuition by explaining why a system was built this way and not another way, using the 'we chose X over Y because Z' pattern throughout. Code examples must be tight, self-contained, and front-loaded by prose that carries the conceptual weight. The structure should read as a narrative journey through the system, with headers that move the reader forward and dangerous caveats positioned before the reader forms a wrong mental model.",
+    "rubric": [
+      {
+        "name": "Design Decision Reasoning",
+        "category": "Content",
+        "description": "Every documented design choice names the rejected alternative explicitly and explains why it was worse, using the 'we chose X over Y because Z' framing. The rejection reasoning must name the concrete mechanism, property, or coupling that made the alternative worse. The reasoning gives the reader enough context to evaluate proposed changes \u2014 this is what they can't get from reading the code.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each design choice names at least one specific rejected alternative"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Tradeoffs of the chosen approach are stated explicitly, not just its benefits"
+          },
+          {
+            "id": "reasoning_beyond_code",
+            "label": "Explanations convey architectural reasoning that cannot be derived from reading the implementation"
+          },
+          {
+            "id": "equips_future_decisions",
+            "label": "The reasoning gives the reader enough context to evaluate whether a future change would be appropriate"
+          },
+          {
+            "id": "rejection_mechanism_named",
+            "label": "The rejection reasoning names the specific mechanism, coupling, or property that made the alternative worse \u2014 not just that it introduced problems"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code Example Discipline",
+        "category": "Mechanics",
+        "description": "Each code example has a one-line heading comment stating what the entire block accomplishes (not what its first operation does), stays at or under ~15 lines so the reader can hold the whole function in their head at once, and is self-contained enough to be intelligible without mentally gap-filling undefined references. When an example requires too much scaffolding, the fix is narrowing the slice to show only the caller-facing pattern.",
+        "dimensions": [
+          {
+            "id": "heading_comment",
+            "label": "Every code example has a single-line comment at the top describing what the whole block accomplishes \u2014 not what its first branch or operation does"
+          },
+          {
+            "id": "scannable_purpose",
+            "label": "The heading comment lets the reader determine whether this snippet is relevant before reading any code"
+          },
+          {
+            "id": "line_count_ceiling",
+            "label": "Functions and code blocks are approximately 15 lines or fewer"
+          },
+          {
+            "id": "self_contained_slice",
+            "label": "The example does not reference undefined external functions, types, or helpers that force the reader to mentally gap-fill; when too much scaffolding would be needed, the slice is narrowed instead"
+          },
+          {
+            "id": "prose_absorbs_weight",
+            "label": "When a code block is long, the fix is moving explanation to prose rather than cutting logic"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose-Code Weight Distribution",
+        "category": "Structure",
+        "description": "Explanatory prose before code examples front-loads the conceptual model, structural choices, and failure modes so the code only needs to show the shape of the pattern. If something is explained by an inline comment, the prose hasn't done its job yet. Warnings, preconditions, and ordering constraints appear before the code block \u2014 not after. Every notable code construct (helpers, naming distinctions, two-phase patterns) is introduced in preceding prose. When code structure carries the argument, prose frames the question the code answers rather than pre-explaining the answer.",
+        "dimensions": [
+          {
+            "id": "structural_choices_in_prose",
+            "label": "Why the code is shaped a particular way (e.g., mutex strategy, helper functions, branching) is explained in prose before the code block"
+          },
+          {
+            "id": "code_constructs_foreshadowed",
+            "label": "Every notable construct in the code (helpers, naming distinctions, two-phase patterns) is introduced in the preceding prose"
+          },
+          {
+            "id": "preconditions_before_code",
+            "label": "Warnings, preconditions, and concurrency requirements appear before the code block they apply to, not after"
+          },
+          {
+            "id": "ordering_constraints_before_code",
+            "label": "Any statement describing the required evaluation order of checks or operations appears before the code \u2014 a reader who sees the constraint after the code has already misread the logic"
+          },
+          {
+            "id": "no_redundant_inline_comments",
+            "label": "Inline code comments do not restate what the surrounding prose has already explained"
+          },
+          {
+            "id": "prose_frames_not_preempts",
+            "label": "When code structure carries the argument (e.g., check ordering encodes a security invariant), prose sets up the question the code answers rather than pre-explaining the answer"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Coherence",
+        "category": "Structure",
+        "description": "Section headers and reading order tell a coherent story \u2014 the reader should feel like they're following steps in a process, not clicking tabs in a UI. Headers describe what is happening at each stage, not label the mechanism. When two sections are conceptually entangled, the one with more dangerous failure modes or that serves as a prerequisite for correct reasoning comes first.",
+        "dimensions": [
+          {
+            "id": "headers_describe_stages",
+            "label": "Section headers describe what is happening at each stage rather than labeling the mechanism \u2014 they feel like steps in a process, not tabs in a UI"
+          },
+          {
+            "id": "sequential_content_has_subsections",
+            "label": "Content that walks through a sequence of stages is broken into distinct subsections with headers, not presented as a single long block"
+          },
+          {
+            "id": "conceptual_dependencies_ordered",
+            "label": "When two sections are entangled, the one the reader needs to reason correctly about subsequent material comes first \u2014 especially state information, pitfalls, or caveats that affect interpretation"
+          },
+          {
+            "id": "callbacks_not_repetition",
+            "label": "Later sections reference earlier design reasoning with explicit callbacks rather than re-explaining"
+          },
+          {
+            "id": "cross_references_linked",
+            "label": "When a concept depends on another section, the dependency is named with a direct reference"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Recommendation Framing",
+        "category": "Content",
+        "description": "When recommending an approach, the doc names the alternative pattern, acknowledges that it works, and then explains concretely why it's the worse default. Directives become reasoning the reader internalizes rather than instructions they follow blindly.",
+        "dimensions": [
+          {
+            "id": "alternative_pattern_named",
+            "label": "The recommended approach is compared to at least one named alternative pattern"
+          },
+          {
+            "id": "alternative_acknowledged",
+            "label": "The alternative is acknowledged as functional, not dismissed outright"
+          },
+          {
+            "id": "why_alternative_loses",
+            "label": "The specific weakness of the alternative is explained concretely"
+          },
+          {
+            "id": "understanding_not_directive",
+            "label": "The reader finishes knowing why to use the recommendation, not just that they should"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "This user's non-negotiable is the 'chose X over Y because Z' pattern \u2014 any explanation of system behavior that doesn't name a rejected alternative reads as 'the code commenting on itself.' They treat warning/pitfall placement as a safety issue: if a dangerous caveat appears after the reader has formed a mental model, it may as well not exist. Their preferred trade-off is always: make prose do more work so code can be tighter \u2014 never the reverse.",
+    "source": "inferred"
+  }
+]
