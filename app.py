@@ -6439,8 +6439,72 @@ with tab1:
                 }
                 st.session_state.chat_classification_feedback = _cc_feedback_for_dps
 
-                # No rubric cleaning here — hallucinated criteria are kept in the rubric
-                # until the final rubric inference after DP confirmation (step 5)
+                # Remove hallucinated criteria and re-order by user importance ranking
+                if _cc_hallucinated_count > 0 or _cc_importance:
+                    _cleanup_rb_dict, _, _ = get_active_rubric()
+                    _cleanup_criteria = list(st.session_state.editing_criteria or [])
+                    _cleanup_halluc_names = {name.lower().strip() for name, cat in _cc_final.items() if cat == "hallucinated"}
+
+                    # Filter out hallucinated criteria
+                    _cleaned_criteria = [c for c in _cleanup_criteria if c.get("name", "").lower().strip() not in _cleanup_halluc_names]
+
+                    # Re-order by user importance ranking
+                    if _cc_importance:
+                        _importance_order = {name.lower().strip(): idx for idx, name in enumerate(_cc_importance)}
+                        _cleaned_criteria.sort(key=lambda c: _importance_order.get(c.get("name", "").lower().strip(), 999))
+                        # Update priority numbers to match new order
+                        for _pi, _pc in enumerate(_cleaned_criteria, 1):
+                            _pc["priority"] = _pi
+
+                    # Save as new rubric version
+                    _cleanup_hist = load_rubric_history()
+                    _cleanup_new_ver = next_version_number()
+                    _cleanup_hist.append({
+                        "version": _cleanup_new_ver,
+                        "rubric": copy.deepcopy(_cleaned_criteria),
+                        "source": "criteria_classification",
+                        "conversation_id": st.session_state.get("selected_conversation"),
+                    })
+                    save_rubric_history(_cleanup_hist)
+                    st.session_state.active_rubric_idx = len(_cleanup_hist) - 1
+                    st.session_state.rubric = _cleaned_criteria
+                    st.session_state.editing_criteria = _cleaned_criteria
+                    st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                    st.session_state["rubric_version_selector"] = f"v{_cleanup_new_ver}"
+
+                    # Update the classification log message with the version info
+                    for _clm in reversed(st.session_state.messages):
+                        if _clm.get("is_criteria_classification_log") and _clm.get("classification_data"):
+                            _clm["classification_data"]["rubric_version"] = _cleanup_new_ver
+                            break
+
+                    # Log what happened
+                    _cleanup_removed_names = [name for name, cat in _cc_final.items() if cat == "hallucinated"]
+                    _cleanup_summary_parts = []
+                    if _cleanup_removed_names:
+                        _cleanup_summary_parts.append(f"Removed {len(_cleanup_removed_names)} hallucinated criteria: {', '.join(_cleanup_removed_names)}")
+                    _cleanup_summary_parts.append(f"Rubric saved as v{_cleanup_new_ver} with {len(_cleaned_criteria)} criteria")
+                    st.session_state.messages.append({
+                        "role": "system",
+                        "content": " | ".join(_cleanup_summary_parts),
+                        "conversation_id": st.session_state.get("selected_conversation"),
+                    })
+
+                    # Save cleanup event to DB
+                    _cleanup_sb = st.session_state.get('supabase')
+                    _cleanup_pid = st.session_state.get('current_project_id')
+                    if _cleanup_sb and _cleanup_pid:
+                        try:
+                            save_project_data(_cleanup_sb, _cleanup_pid, "rubric_classification_cleanup", {
+                                "timestamp": datetime.now().isoformat(),
+                                "removed_criteria": _cleanup_removed_names,
+                                "importance_ranking": list(_cc_importance),
+                                "old_version": _cleanup_rb_dict.get("version", "?") if _cleanup_rb_dict else "?",
+                                "new_version": _cleanup_new_ver,
+                                "n_remaining": len(_cleaned_criteria),
+                            })
+                        except Exception:
+                            pass
 
                 # [DISABLED] Step 3: DP extraction + confirmation removed for now
                 # _cc_conv_msgs = st.session_state.get("infer_dp_messages", [])
