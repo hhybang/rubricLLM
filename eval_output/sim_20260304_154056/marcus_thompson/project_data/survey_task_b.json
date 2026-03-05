@@ -1,0 +1,57 @@
+[
+  {
+    "q1": 3,
+    "q2": 4,
+    "q3": "The architectural rationale placeholder kept persisting \u2014 the model understood conceptually that rejected alternatives matter, but it kept either stalling for information it should have flagged earlier or filling in the placeholder with generic reasoning that didn't reflect how our system actually works. That's the one thing that didn't land cleanly across iterations.",
+    "q4": "Somewhat better",
+    "q5": "The rubric captured most of what I care about \u2014 'Decision Rationale' and 'Preventive Information Placement' are exactly the two things I pushed back on hardest. Where it fell short is that it frames these as criteria to check rather than habits of thought, so the model would satisfy the letter of the rubric (warnings moved above code) without fully internalizing why that matters. The narrative header criterion was accurate but felt secondary given the bigger structural issues.",
+    "q6": "Seeing 'Decision Rationale' as priority one made it obvious the model was pattern-matching on the concept \u2014 it knew to include rejected alternatives \u2014 but consistently defaulted to placeholders or fabricated rationale rather than flagging the information gap earlier in the conversation when it would have been cheaper to resolve. The rubric surfaced that the model's issue wasn't ignorance of the preference, it was timing: it raised the right concern too late and too repeatedly.",
+    "completed": true,
+    "iteration": 2,
+    "timestamp": "2026-03-04T17:35:56.923749"
+  },
+  {
+    "q1": 3,
+    "q2": 3,
+    "q3": "The architectural rationale placeholder kept coming back \u2014 I flagged it multiple times and the model kept acknowledging it but never actually resolved it, just kept deferring to me to fill it in. That's the most important part of the doc and it stayed broken through three iterations.",
+    "q4": "Somewhat better",
+    "q5": "I looked at it, and honestly it captured the important stuff \u2014 Decision Rationale at priority one lines up with what I care most about, and Preventive Information Placement being second is right. But the rubric describes outcomes, not the actual writing behaviors that produce them. The model still couldn't fill in the architectural rationale even with the rubric telling it that was the top priority, because that's a knowledge problem, not a style problem.",
+    "q6": "It did surface one thing: the model was consistently good at warning placement and narrative headers \u2014 those came naturally and matched what I wanted without much friction. That made me realize the rubric criteria weren't equally hard for the model; structural things it handled well, but anything requiring system-specific judgment it deferred on regardless of how the rubric weighted it.",
+    "completed": true,
+    "iteration": 3,
+    "timestamp": "2026-03-04T17:41:25.137471"
+  },
+  {
+    "q1": 4,
+    "q2": 3,
+    "q3": "The code examples kept needing corrections \u2014 first the dead variable assignment that wouldn't compile, and before that the example was doing too much work for where it appeared in the doc. The model understood the narrative and warning-placement patterns well, but the code discipline took multiple rounds to land.",
+    "q4": "Somewhat better",
+    "q5": "I looked at it. The rubric captured the rejected-alternatives pattern and the preventive warning placement accurately, which are the two things I care most about and that are hardest to get right without being told explicitly. What it didn't fully capture is the code minimalism constraint \u2014 'self-service completeness' and minimal runnable examples are actually in tension, and the rubric didn't acknowledge that tradeoff, which may be why the code examples kept running long.",
+    "q6": "Seeing the rubric made me notice that the model was consistently stronger on prose structure than on code discipline \u2014 the headers and warning placement improved faster than the snippet quality did. Without the rubric labeling these as separate criteria, I might have just felt vaguely frustrated with the code without pinpointing that it was a separate failure mode from the structural issues.",
+    "completed": true,
+    "iteration": 4,
+    "timestamp": "2026-03-04T17:49:02.356628"
+  },
+  {
+    "q1": 4,
+    "q2": 3,
+    "q3": "The model had a recurring issue with code examples \u2014 they kept coming in either too long or missing the one-line 'what this does' comment above them. I had to explicitly call this out more than once, which shouldn't have been necessary after the first correction.",
+    "q4": "Somewhat better",
+    "q5": "I looked at it, and it maps reasonably well to what I care about. The 'Decision Rationale' and 'Preventive Information Placement' criteria are basically my hidden preferences in rubric form. That said, the rubric doesn't capture the specific code example constraints \u2014 the 15-line limit and the required comment \u2014 which is probably why the model kept slipping on those.",
+    "q6": "The rubric made it clearer that the model was consistently strong on the architectural reasoning and warning placement but weak on code example discipline. Without the rubric framing, I might have chalked the code issues up to one-off mistakes rather than seeing it as a pattern the rubric simply didn't cover well enough to correct.",
+    "completed": true,
+    "iteration": 5,
+    "timestamp": "2026-03-04T17:54:20.826444"
+  },
+  {
+    "q1": 4,
+    "q2": 3,
+    "q3": "The main recurring issue was code examples occasionally missing the one-line 'what this does' comment \u2014 I had to call that out explicitly mid-session. The model also had a dead variable bug in the first code snippet that needed correction, which is the kind of thing that should be caught before drafting.",
+    "q4": "Somewhat better",
+    "q5": "I looked at the rubric and it captured the important things \u2014 rejected alternatives, warning placement, precise tone. What it didn't fully capture was the code example specifics: the 15-line limit and the mandatory comment above each snippet. Those details matter a lot to me and the rubric treated code quality as secondary to narrative structure.",
+    "q6": "The rubric made it clearer that the model consistently nails the architectural reasoning sections \u2014 the rejected alternatives pattern was solid throughout \u2014 but it also highlighted that the model's weakest spot is the mechanical details of code examples, which the rubric only partially addressed. Without the rubric I might have attributed the code issues to one-off mistakes rather than a pattern.",
+    "completed": true,
+    "iteration": 6,
+    "timestamp": "2026-03-04T17:59:48.963529"
+  }
+]

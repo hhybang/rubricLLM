@@ -35,13 +35,14 @@ from simulation_engine import (
     build_conversation_text,
     _rubric_to_json_serializable,
     extract_draft_from_response,
-    judge_draft_quality,
+
     classify_rubric_edits,
     format_edit_log_message,
     headless_regenerate_draft_from_rubric_changes,
     headless_suggest_rubric_from_feedback,
     headless_apply_rubric_suggestion,
     evaluate_preference_coverage,
+    decompose_preferences,
 )
 from synthetic_user import SyntheticUser
 
@@ -141,7 +142,6 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
 
     # ── Setup ────────────────────────────────────────────────────────────
     project_id = str(uuid.uuid4())
-    judge_model = config.judge_model or config.model_light
     max_turns = config.max_chat_turns
 
     store.save_project(persona.name, {
@@ -155,7 +155,6 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             "num_iterations": config.num_iterations,
             "max_chat_turns": max_turns,
             "satisfaction_threshold": config.satisfaction_threshold,
-            "judge_model": judge_model,
         },
         "created_at": datetime.now().isoformat(),
     })
@@ -172,8 +171,12 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
     messages = []
     version_counter = 0
     termination_log = []
-    survey_responses = {"task_a": None, "task_b": [], "final": None}
+    survey_responses = {"task_a": None, "task_b": []}
     coverage_trajectory = []  # per-iteration preference coverage scores
+
+    # ── Decompose preferences once (fixed list for all coverage evals) ───
+    log.info(f"[{persona.name}] Decomposing preferences into atomic items...")
+    atomic_preferences = decompose_preferences(persona, model=config.model_primary)
 
     # ── Phase 1: Cold-start preferences ──────────────────────────────────
     log.info(f"[{persona.name}] Phase 1: Generating cold-start preferences...")
@@ -185,12 +188,8 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
     })
     log.info(f"[{persona.name}] Cold-start: {coldstart_text[:100]}...")
 
-    # Build preference string for quality judge (used every turn)
-    _pref_str = (
-        f"Core preferences: {persona.core_preferences}\n"
-        f"Hidden preferences: {persona.hidden_preferences}\n"
-        f"Dealbreakers: {persona.dealbreakers}"
-    )
+    # Track previous classifications for flip detection (P0 fix)
+    prev_classifications = {}
 
     # ── Main iteration loop ──────────────────────────────────────────────
     for iteration in range(config.num_iterations):
@@ -321,27 +320,30 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             log.info(f"[{persona.name}]   Turn {turn} — evaluating alignment starting draft (draft {draft_count}/{max_turns})")
 
             # User decides: accept or give feedback
-            user_response = syn_user.respond_to_draft(current_draft, messages, rubric_data)
-            quality = judge_draft_quality(current_draft, _pref_str, model=judge_model)
+            user_response = syn_user.respond_to_draft(
+                current_draft, messages, rubric_data,
+                iteration=iteration, draft_count=draft_count,
+            )
 
             turn_metric = {
                 "turn": turn, "has_draft": True, "draft_number": draft_count,
                 "satisfaction": {"score": user_response["score"], "reasoning": user_response["reasoning"]},
-                "quality": quality,
                 "is_alignment_start": True,
                 "user_accepted": user_response["accepted"],
                 "user_satisfied": user_response["accepted"],
-                "judge_satisfied": quality.get("score", 0) >= config.satisfaction_threshold,
             }
             log.info(
                 f"[{persona.name}]   Alignment draft — "
                 f"User: {'ACCEPTED' if user_response['accepted'] else 'FEEDBACK'} "
-                f"(score: {user_response['score']:.2f}), "
-                f"Quality: {quality.get('score', '?'):.2f}"
+                f"(score: {user_response['score']:.2f})"
             )
             turn_metrics.append(turn_metric)
 
             if user_response["accepted"]:
+                # Add the acceptance message to the conversation
+                accept_text = user_response["feedback"] or "This looks good — I'm happy with this draft."
+                messages.append({"role": "user", "content": accept_text})
+                store.save_conversation(persona.name, messages, rubric_data)
                 termination_reason = "user_accepted"
                 log.info(f"[{persona.name}]   User accepted alignment draft!")
             else:
@@ -373,36 +375,34 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                 turn_metric["draft_number"] = draft_count
 
                 # Single call: user checks preferences and decides accept/feedback
-                user_response = syn_user.respond_to_draft(current_draft, messages, rubric_data)
+                user_response = syn_user.respond_to_draft(
+                    current_draft, messages, rubric_data,
+                    iteration=iteration, draft_count=draft_count,
+                )
                 turn_metric["satisfaction"] = {
                     "score": user_response["score"],
                     "reasoning": user_response["reasoning"],
                     "accepted": user_response["accepted"],
                 }
 
-                # Independent quality judge (always runs for data collection)
-                quality = judge_draft_quality(
-                    current_draft, _pref_str, model=judge_model,
-                )
-                turn_metric["quality"] = quality
                 turn_metric["user_accepted"] = user_response["accepted"]
-                turn_metric["judge_satisfied"] = quality.get("score", 0) >= config.satisfaction_threshold
 
                 log.info(
                     f"[{persona.name}]   Draft {draft_count}/{max_turns} — "
                     f"User: {'ACCEPTED' if user_response['accepted'] else 'FEEDBACK'} "
-                    f"(score: {user_response['score']:.2f}), "
-                    f"Quality: {quality.get('score', '?'):.2f} "
-                    f"(threshold: {config.satisfaction_threshold})"
+                    f"(score: {user_response['score']:.2f})"
                 )
 
                 if user_response["accepted"]:
+                    # Add the acceptance message to the conversation
+                    accept_text = user_response["feedback"] or "This looks good — I'm happy with this draft."
+                    messages.append({"role": "user", "content": accept_text})
+                    store.save_conversation(persona.name, messages, rubric_data)
                     turn_metrics.append(turn_metric)
                     termination_reason = "user_accepted"
                     log.info(f"[{persona.name}]   User accepted draft at draft {draft_count}!")
                     break
                 else:
-                    # User gave feedback — add it to the conversation
                     feedback_text = user_response["feedback"] or "This isn't quite there yet — can you revise it?"
                     messages.append({"role": "user", "content": feedback_text})
                     store.save_conversation(persona.name, messages, rubric_data)
@@ -519,6 +519,26 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                                         else:
                                             log.info(f"[{persona.name}]   User rejected rubric suggestion from feedback")
 
+                            # If suggestion was applied, regenerate draft with the updated rubric
+                            if suggestion_applied and current_draft:
+                                post_regen = headless_regenerate_draft_from_rubric_changes(
+                                    rubric_list, edited_rubric, current_draft,
+                                    model=config.model_light,
+                                )
+                                if "revised_draft" in post_regen:
+                                    current_draft = post_regen["revised_draft"]
+                                    draft_msg = (
+                                        f"<draft>{current_draft}</draft>"
+                                        f"\n\n*Draft updated based on accepted rubric suggestion.*"
+                                    )
+                                    messages.append({
+                                        "role": "assistant",
+                                        "content": draft_msg,
+                                        "is_post_apply_draft": True,
+                                    })
+                                    draft_count += 1
+                                    log.info(f"[{persona.name}]   Post-suggestion draft regenerated (draft {draft_count})")
+
                             # Update rubric data (with either direct edits or suggestion-modified edits)
                             version_counter += 1
                             old_rubric_data = rubric_data
@@ -611,6 +631,32 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             rubric_data.get("rubric", []), user_classifications,
         )
 
+        # P0: Flip detection — if a criterion was real/stated in the previous
+        # iteration and is now hallucinated, re-classify it to verify.
+        # This prevents stochastic LLM flips from deleting valid criteria.
+        if prev_classifications:
+            flipped = []
+            for cname, new_cls in user_classifications.items():
+                prev_cls = prev_classifications.get(cname)
+                if prev_cls in ("stated", "real") and new_cls == "hallucinated":
+                    flipped.append(cname)
+            if flipped:
+                log.warning(f"[{persona.name}] Classification flip detected: {flipped} changed from real/stated → hallucinated. Re-verifying...")
+                # Re-classify just the flipped criteria with a focused prompt
+                re_result = syn_user.classify_criteria(
+                    rubric_data.get("rubric", []), llm_classification,
+                )
+                for cname in flipped:
+                    second_cls = re_result.get(cname, "hallucinated")
+                    if second_cls != "hallucinated":
+                        log.info(f"[{persona.name}] Flip overridden: '{cname}' re-classified as '{second_cls}' (was flipped to hallucinated)")
+                        user_classifications[cname] = second_cls
+                    else:
+                        log.info(f"[{persona.name}] Flip confirmed: '{cname}' is hallucinated on second pass too")
+
+        # Store for next iteration's flip detection
+        prev_classifications = dict(user_classifications)
+
         # Compute metrics
         n_criteria = len(rubric_data.get("rubric", []))
         n_stated = sum(1 for v in user_classifications.values() if v == "stated")
@@ -652,21 +698,49 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
         #     "timestamp": datetime.now().isoformat(),
         # })
 
-        # Step 5: Final rubric if hallucinated criteria found
-        has_hallucinated = n_hallucinated > 0
-        if has_hallucinated:
-            log.info(f"[{persona.name}] Inferring final rubric (hallucinated={has_hallucinated})...")
-            version_counter += 1
-            classification_json = json.dumps(classification_feedback, ensure_ascii=False, indent=2)
+        # Step 5: Remove hallucinated criteria and reorder by importance ranking
+        rubric_list = rubric_data.get("rubric", [])
+        rubric_changed = False
 
-            final_rubric = headless_infer_final_rubric(
-                messages, rubric_json, classification_json, "{}",
-                coldstart_text, model=config.model_primary, version=version_counter,
-            )
-            if final_rubric:
-                rubric_data = final_rubric
-                rubric_history.append(rubric_data)
-                store.save_rubric(persona.name, rubric_data)
+        # Remove hallucinated criteria
+        if n_hallucinated > 0:
+            kept = [c for c in rubric_list if user_classifications.get(c.get("name", "?")) != "hallucinated"]
+            removed_names = [c.get("name", "?") for c in rubric_list if user_classifications.get(c.get("name", "?")) == "hallucinated"]
+            log.info(f"[{persona.name}] Removing {n_hallucinated} hallucinated criteria: {removed_names}")
+            rubric_list = kept
+            rubric_changed = True
+
+        # Reorder by importance ranking
+        if importance_ranking:
+            name_to_criterion = {c.get("name", "?"): c for c in rubric_list}
+            reordered = []
+            for rank_name in importance_ranking:
+                if rank_name in name_to_criterion:
+                    reordered.append(name_to_criterion.pop(rank_name))
+            # Append any criteria not in the ranking (shouldn't happen, but safe)
+            reordered.extend(name_to_criterion.values())
+            # Update priority numbers
+            for i, c in enumerate(reordered):
+                c["priority"] = i + 1
+            if reordered != rubric_list:
+                rubric_list = reordered
+                rubric_changed = True
+                log.info(f"[{persona.name}] Reordered rubric by importance: {[c.get('name', '?') for c in rubric_list]}")
+
+        if rubric_changed:
+            version_counter += 1
+            old_rubric_data = rubric_data
+            rubric_data = {
+                "rubric": rubric_list,
+                "version": version_counter,
+                "source": "criteria_classification",
+            }
+            for key in ("writing_type", "user_goals_summary", "coaching_notes"):
+                if key in old_rubric_data:
+                    rubric_data[key] = old_rubric_data[key]
+            rubric_history.append(rubric_data)
+            store.save_rubric(persona.name, rubric_data)
+            log.info(f"[{persona.name}] Rubric updated to v{version_counter} after classification")
 
         # Save conversation state
         store.save_conversation(persona.name, messages, rubric_data)
@@ -692,6 +766,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             log.info(f"[{persona.name}] Evaluating preference coverage (iteration {iteration + 1})...")
             coverage_result = evaluate_preference_coverage(
                 persona, rubric_data["rubric"], model=config.model_primary,
+                preference_items=atomic_preferences or None,
             )
             coverage_result["iteration"] = iteration + 1
             coverage_result["rubric_version"] = rubric_data.get("version", 0)
@@ -714,29 +789,9 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
     store.save_project_data(persona.name, "termination_log", {
         "satisfaction_threshold": config.satisfaction_threshold,
         "max_drafts": max_turns,
-        "judge_model": judge_model,
         "iterations": termination_log,
         "timestamp": datetime.now().isoformat(),
     })
-
-    # ── Survey: Final Review ────────────────────────────────────────────
-    if rubric_data and rubric_data.get("rubric"):
-        log.info(f"[{persona.name}] Survey: Completing Final Review...")
-        final_result = syn_user.complete_survey_final(rubric_data)
-        survey_responses["final"] = final_result
-        store.save_project_data(persona.name, "survey_final_review", {
-            **final_result,
-            "rubric_version": rubric_data.get("version", 0),
-        })
-        ratings = final_result.get("criteria_ratings", {})
-        n_accurate = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Accurate")
-        n_partial = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Partially right")
-        n_inaccurate = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Inaccurate")
-        log.info(
-            f"[{persona.name}] Final Review: {n_accurate} accurate, "
-            f"{n_partial} partially right, {n_inaccurate} inaccurate "
-            f"(out of {len(ratings)} criteria)"
-        )
 
     # ── Final summary ────────────────────────────────────────────────────
     summary = {
@@ -756,10 +811,6 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                     t["turn_metrics"][-1].get("satisfaction", {}).get("score")
                     if t["turn_metrics"] else None
                 ),
-                "final_quality": (
-                    t["turn_metrics"][-1].get("quality", {}).get("score")
-                    if t["turn_metrics"] else None
-                ),
             }
             for t in termination_log
         ],
@@ -777,14 +828,6 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                 }
                 for b in survey_responses["task_b"]
             ],
-            "final_review": {
-                "n_accurate": sum(1 for r in survey_responses["final"].get("criteria_ratings", {}).values()
-                                  if isinstance(r, dict) and r.get("accuracy") == "Accurate"),
-                "n_partial": sum(1 for r in survey_responses["final"].get("criteria_ratings", {}).values()
-                                 if isinstance(r, dict) and r.get("accuracy") == "Partially right"),
-                "n_inaccurate": sum(1 for r in survey_responses["final"].get("criteria_ratings", {}).values()
-                                    if isinstance(r, dict) and r.get("accuracy") == "Inaccurate"),
-            } if survey_responses["final"] else None,
         },
         "coverage_trajectory": [
             {
@@ -816,8 +859,6 @@ def main():
                         help="DEPRECATED: use --max-chat-turns instead")
     parser.add_argument("--satisfaction-threshold", type=float, default=0.8,
                         help="Threshold (0.0-1.0) for both judges to agree draft is good enough")
-    parser.add_argument("--judge-model", type=str, default=None,
-                        help="Model for termination judges (default: same as --system-light)")
     parser.add_argument("--user-provider", choices=["anthropic", "openai", "google"], default="anthropic",
                         help="LLM provider for synthetic user")
     parser.add_argument("--user-model", type=str, default=None,
@@ -856,7 +897,6 @@ def main():
         num_iterations=args.iterations,
         max_chat_turns=max_chat_turns,
         satisfaction_threshold=args.satisfaction_threshold,
-        judge_model=args.judge_model or "",
         model_primary=args.system_primary,
         model_light=args.system_light,
         user_provider=args.user_provider,

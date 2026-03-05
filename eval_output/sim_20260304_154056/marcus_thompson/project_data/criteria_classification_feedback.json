@@ -1,0 +1,190 @@
+[
+  {
+    "iteration": 1,
+    "classifications": {
+      "Decision Rationale": "real",
+      "Narrative Header Flow": "real",
+      "Preventive Information Placement": "real",
+      "Audience Calibration": "stated",
+      "Self-Service Completeness": "stated",
+      "Empathy-Driven Troubleshooting": "real"
+    },
+    "importance_ranking": [
+      "Decision Rationale",
+      "Preventive Information Placement",
+      "Narrative Header Flow",
+      "Empathy-Driven Troubleshooting",
+      "Audience Calibration",
+      "Self-Service Completeness"
+    ],
+    "n_criteria": 6,
+    "n_stated": 2,
+    "n_real": 4,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 1,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' \u2014 these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-04T17:29:57.696206"
+  },
+  {
+    "iteration": 2,
+    "classifications": {
+      "Decision Rationale": "real",
+      "Preventive Information Placement": "real",
+      "Narrative Header Flow": "stated",
+      "Empathy-Driven Troubleshooting": "hallucinated",
+      "Proactive Contextual Teaching": "hallucinated",
+      "Audience Calibration": "stated",
+      "Self-Service Completeness": "stated"
+    },
+    "importance_ranking": [
+      "Decision Rationale",
+      "Preventive Information Placement",
+      "Audience Calibration",
+      "Self-Service Completeness",
+      "Narrative Header Flow",
+      "Empathy-Driven Troubleshooting",
+      "Proactive Contextual Teaching"
+    ],
+    "n_criteria": 7,
+    "n_stated": 3,
+    "n_real": 2,
+    "n_hallucinated": 2,
+    "precision": 0.7142857142857143,
+    "rubric_version": 4,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' \u2014 these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-04T17:35:47.522028"
+  },
+  {
+    "iteration": 3,
+    "classifications": {
+      "Decision Rationale": "real",
+      "Preventive Information Placement": "real",
+      "Audience Calibration": "stated",
+      "Self-Service Completeness": "stated",
+      "Narrative Header Flow": "real",
+      "Precise Technical Tone": "real"
+    },
+    "importance_ranking": [
+      "Decision Rationale",
+      "Preventive Information Placement",
+      "Narrative Header Flow",
+      "Precise Technical Tone",
+      "Audience Calibration",
+      "Self-Service Completeness"
+    ],
+    "n_criteria": 6,
+    "n_stated": 2,
+    "n_real": 4,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 6,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' \u2014 these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-04T17:41:17.450594"
+  },
+  {
+    "iteration": 4,
+    "classifications": {
+      "Decision Rationale": "real",
+      "Preventive Information Placement": "real",
+      "Narrative Header Flow": "stated",
+      "Precise Technical Tone": "real",
+      "Audience Calibration": "stated",
+      "Self-Service Completeness": "stated"
+    },
+    "importance_ranking": [
+      "Decision Rationale",
+      "Preventive Information Placement",
+      "Precise Technical Tone",
+      "Self-Service Completeness",
+      "Narrative Header Flow",
+      "Audience Calibration"
+    ],
+    "n_criteria": 6,
+    "n_stated": 3,
+    "n_real": 3,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 9,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' \u2014 these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-04T17:48:53.704063"
+  },
+  {
+    "iteration": 5,
+    "classifications": {
+      "Decision Rationale": "real",
+      "Preventive Information Placement": "real",
+      "Self-Service Completeness": "stated",
+      "Narrative Header Flow": "real",
+      "Precise Technical Tone": "real",
+      "Audience Calibration": "stated"
+    },
+    "importance_ranking": [
+      "Decision Rationale",
+      "Preventive Information Placement",
+      "Narrative Header Flow",
+      "Precise Technical Tone",
+      "Audience Calibration",
+      "Self-Service Completeness"
+    ],
+    "n_criteria": 6,
+    "n_stated": 2,
+    "n_real": 4,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 11,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' \u2014 these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-04T17:54:13.911760"
+  },
+  {
+    "iteration": 6,
+    "classifications": {
+      "Decision Rationale": "real",
+      "Preventive Information Placement": "real",
+      "Narrative Header Flow": "stated",
+      "Precise Technical Tone": "real",
+      "Audience Calibration": "stated",
+      "Self-Service Completeness": "stated"
+    },
+    "importance_ranking": [
+      "Decision Rationale",
+      "Preventive Information Placement",
+      "Precise Technical Tone",
+      "Narrative Header Flow",
+      "Self-Service Completeness",
+      "Audience Calibration"
+    ],
+    "n_criteria": 6,
+    "n_stated": 3,
+    "n_real": 3,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 13,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' \u2014 these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-04T17:59:42.059202"
+  }
+]

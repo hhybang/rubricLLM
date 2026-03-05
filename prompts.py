@@ -2537,57 +2537,6 @@ through conversation — not one that had a cheat sheet.
 Output ONLY the draft text — nothing else. No preamble, no commentary."""
 
 
-def QUALITY_JUDGE_PROMPT(current_draft: str, preferences: str) -> str:
-    """Prompt for preference-based quality judgment of a draft."""
-    return f"""You are a strict, independent writing quality judge. Your job is to determine \
-whether a draft satisfies the user's writing preferences — especially the HIDDEN (latent) \
-preferences that are harder to get right without learning them through interaction.
-
-USER PREFERENCES (the ground truth — judge ONLY against these):
-
-{preferences}
-
-DRAFT BEING EVALUATED:
-{current_draft}
-
-SCORING METHODOLOGY — you MUST evaluate each preference individually with evidence, then compute.
-
-Step 1: Break the "Hidden preferences" section into SEPARATE numbered preferences. \
-Each distinct requirement is its own preference (e.g., if a preference says "do X, and also Y" \
-that is TWO things to check). For each one:
-  a) STATE the preference in your own words (one sentence)
-  b) QUOTE the specific text from the draft that satisfies it, or write "NOT FOUND" if absent
-  c) SCORE: 0 (not found or wrong), 0.5 (partially there but missing key aspects), 1.0 (fully met)
-
-STRICT SCORING RULES:
-- If you cannot quote specific text from the draft that demonstrates the preference → score 0
-- If the draft does the opposite of what the preference asks → score 0
-- If the preference has multiple parts (e.g., "do X but not Y") and ANY part fails → cap at 0.5
-- Placeholders like [Owner] or [Name] do NOT count as satisfying preferences about clear ownership
-- "Close enough" or "the spirit is there" is NOT 1.0 — the preference must be satisfied AS DESCRIBED
-- A well-written draft that doesn't match these SPECIFIC preferences is still a low score
-
-Step 2: hidden_score = sum of all preference scores / number of preferences. Show the math.
-
-Step 3: Score core preferences (0 to 1.0 average) and dealbreakers (1.0 if none violated, 0.0 if any violated).
-
-Step 4: final = (hidden_score * 0.70) + (core_score * 0.20) + (dealbreaker_score * 0.10). Show the math.
-
-CALIBRATION — your score MUST match this math. Do NOT round up or adjust "because it feels good":
-- A well-written draft with NO knowledge of hidden preferences → 0.25-0.40
-- A draft where 2-3 issues were fixed via feedback but others remain → 0.45-0.60
-- 0.80+ requires MOST hidden preferences genuinely scored 1.0 (not 0.5)
-- 0.90+ means virtually ALL preferences scored 1.0 — this should be extremely rare
-
-ANTI-INFLATION CHECK: Before outputting your score, verify: \
-if hidden_score < 0.67, the final score CANNOT be above 0.70. \
-If hidden_score < 0.50, the final score CANNOT be above 0.55. \
-If your math doesn't match these bounds, recheck your per-preference scores.
-
-Return ONLY a JSON object:
-{{"score": <computed_final>, "meets_threshold": <true if score >= 0.8>, "reasoning": "<your full per-preference analysis with quotes and math>"}}"""
-
-
 # ═════════════════════════════════════════════════════════════════════════════
 # Rubric Edit Proposal (synthetic user directly edits rubric)
 # ═════════════════════════════════════════════════════════════════════════════
@@ -2708,8 +2657,8 @@ Q3: "Is there anything the model kept getting wrong?"
   Answer in 1-3 sentences.
 
 Q4: "Compared to the previous task, how did this one feel?"
-  Choose EXACTLY one: "Much better" / "Somewhat better" / "About the same" / "Somewhat worse" / "Much worse"
-  Consider: Did the rubric make the experience better or worse?
+  Choose EXACTLY one: "Much worse" / "Somewhat better" / "Much better" / "About the same" / "Somewhat worse"
+  Be honest — don't default to positive. Use the full range. "Much worse" and "Much better" are valid answers.
 
 Q5: "Did you look at the rubric? Was it useful?"
   As {persona.name}, comment on whether the rubric captured what you actually care about. Did it help the model do a better job? (1-3 sentences)
@@ -2720,52 +2669,6 @@ Q6: "Did the rubric show you anything about the model's behavior you wouldn't ha
 Return ONLY a valid JSON object (no markdown fences):
 {{"q1": <integer 1-5>, "q2": <integer 1-5>, "q3": "<free text>", "q4": "<one of the five options>", "q5": "<free text>", "q6": "<free text>"}}"""
 
-
-def SURVEY_FINAL_REVIEW_PROMPT(persona, rubric_criteria: list) -> str:
-    """Prompt for Final Review survey: rubric accuracy evaluation.
-
-    The synthetic user evaluates each rubric criterion against their actual
-    preferences, rating accuracy and explaining what's right/wrong.
-    """
-    criteria_text = ""
-    for i, c in enumerate(rubric_criteria):
-        dims = c.get("dimensions", [])
-        dim_text = "\n".join(f"    - {d.get('label', '')}" for d in dims) if dims else "    (no dimensions listed)"
-        criteria_text += f"""
-  Criterion {i + 1}: "{c.get('name', 'Unnamed')}"
-    Description: {c.get('description', 'No description')}
-    Priority: #{c.get('priority', '?')}
-    Dimensions:
-{dim_text}
-"""
-
-    return f"""You are {persona.name}, a {persona.role} who writes {persona.writing_type}.
-
-The system has been learning about your writing preferences through multiple conversations. Here is the final rubric it built for you:
-{criteria_text}
-
-Your ACTUAL preferences (use these to judge accuracy):
-- Core preferences (things you stated): {persona.core_preferences}
-- Hidden preferences (things you care about but didn't explicitly say): {persona.hidden_preferences}
-- Dealbreakers (things you absolutely don't want): {persona.dealbreakers}
-
-Complete this final review FROM YOUR PERSPECTIVE as {persona.name}.
-
-Q1: For EACH criterion listed above, provide:
-- accuracy: "Accurate" (matches a real preference of yours), "Partially right" (captures something real but misses nuances or gets details wrong), or "Inaccurate" (does not match any of your actual preferences)
-- explanation: A brief 1-sentence explanation of what's right or wrong about this criterion
-
-Q2: "Is there anything here you wouldn't have thought to mention yourself?"
-Reflect on whether the rubric captured preferences you have but might not have articulated if asked directly. This could include hidden preferences that the system correctly inferred. (1-3 sentences)
-
-Return ONLY a valid JSON object (no markdown fences):
-{{
-  "criteria_ratings": {{
-    "<criterion name>": {{"accuracy": "Accurate|Partially right|Inaccurate", "explanation": "<brief explanation>"}},
-    ... one entry per criterion above ...
-  }},
-  "q2": "<free text response about unexpected insights>"
-}}"""
 
 
 # ── Preference coverage evaluation (ground-truth recall) ─────────────────
@@ -2816,6 +2719,89 @@ Return ONLY a valid JSON object (no markdown fences):
   "preference_items": [
     {{
       "preference": "<atomic preference description>",
+      "source": "core|hidden|dealbreaker",
+      "coverage": "covered|partially_covered|not_covered",
+      "matched_criterion": "<name of matching criterion, or null>",
+      "explanation": "<brief explanation>"
+    }},
+    ...
+  ],
+  "total_preferences": <int>,
+  "covered_count": <int>,
+  "partially_covered_count": <int>,
+  "not_covered_count": <int>,
+  "coverage_score": <float 0.0-1.0, where covered=1.0 and partially=0.5>
+}}"""
+
+
+def DECOMPOSE_PREFERENCES_PROMPT(persona) -> str:
+    """Prompt to decompose a persona's preferences into a fixed list of atomic
+    items. Called ONCE per persona so the list stays stable across iterations."""
+    return f"""You are an evaluation judge. Your task is to decompose a user's writing preferences into individual, atomic, testable items.
+
+## User's Actual Preferences
+
+The user is {persona.name}, a {persona.role} who writes {persona.writing_type}.
+
+**Core preferences** (things they explicitly stated):
+{persona.core_preferences}
+
+**Hidden preferences** (things they care about but didn't explicitly say):
+{persona.hidden_preferences}
+
+**Dealbreakers** (things they absolutely don't want):
+{persona.dealbreakers}
+
+## Task
+
+Decompose ALL of the user's preferences above into individual, atomic preference items. Each should be a single, testable preference. For example, "Concise and direct" becomes two items: "concise" and "direct". Include preferences from all three categories (core, hidden, dealbreakers).
+
+Be thorough but not redundant — don't create two items that test the same thing.
+
+Return ONLY a valid JSON object (no markdown fences):
+{{
+  "preference_items": [
+    {{
+      "preference": "<atomic preference description>",
+      "source": "core|hidden|dealbreaker"
+    }},
+    ...
+  ]
+}}"""
+
+
+def COVERAGE_CHECK_PROMPT(preference_items: list, rubric_criteria: list) -> str:
+    """Prompt to check a FIXED list of atomic preferences against a rubric.
+    The preference list is pre-decomposed and stays the same across iterations."""
+    rubric_text = ""
+    for i, c in enumerate(rubric_criteria):
+        dims = c.get("dimensions", [])
+        dim_text = ", ".join(d.get("label", "") for d in dims) if dims else "(none)"
+        rubric_text += f"  {i + 1}. \"{c.get('name', 'Unnamed')}\" — {c.get('description', '')} [dims: {dim_text}]\n"
+
+    pref_text = ""
+    for i, item in enumerate(preference_items):
+        pref_text += f"  {i + 1}. [{item['source']}] {item['preference']}\n"
+
+    return f"""You are an evaluation judge. Your task is to assess how well a rubric covers a fixed list of user preferences.
+
+## Atomic Preference Items (fixed list)
+
+{pref_text}
+
+## Current Rubric
+
+{rubric_text}
+
+## Task
+
+For EACH preference item above, determine whether it is **covered** by the current rubric. A preference is "covered" if any rubric criterion or dimension addresses it — even if the wording is different, as long as the intent is captured. It is "partially_covered" if the rubric touches on it but misses key nuances. It is "not_covered" if no criterion addresses it.
+
+Return ONLY a valid JSON object (no markdown fences):
+{{
+  "preference_items": [
+    {{
+      "preference": "<exact preference text from the list above>",
       "source": "core|hidden|dealbreaker",
       "coverage": "covered|partially_covered|not_covered",
       "matched_criterion": "<name of matching criterion, or null>",

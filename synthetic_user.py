@@ -313,7 +313,8 @@ class SyntheticUser:
     # ── Combined feedback + satisfaction (user decides when to stop) ────
 
     def respond_to_draft(self, current_draft: str, messages: list,
-                         rubric: dict = None) -> dict:
+                         rubric: dict = None, iteration: int = 0,
+                         draft_count: int = 0) -> dict:
         """The synthetic user decides: accept the draft or give more feedback.
 
         This is a SINGLE call that checks preferences and either accepts or
@@ -387,6 +388,16 @@ class SyntheticUser:
         numbered_hidden = "\n".join(f"  H{i+1}. {item}" for i, item in enumerate(hidden_items))
         n_hidden = len(hidden_items)
 
+        # Parse core preferences into per-item list for rigorous scoring
+        core_raw = str(self.persona.core_preferences)
+        core_items = [s.strip() for s in _re.split(r'(?<=\.)\s+(?=[A-Z])', core_raw) if s.strip()]
+        if len(core_items) <= 1:
+            core_items = [s.strip() for s in core_raw.split(';') if s.strip()]
+        if len(core_items) <= 1:
+            core_items = [s.strip() for s in core_raw.split(',') if s.strip() and len(s.strip()) > 10]
+        numbered_core = "\n".join(f"  C{i+1}. {item}" for i, item in enumerate(core_items))
+        n_core = len(core_items)
+
         prompt = (
             f"Here is the conversation so far (you are 'You (the user)'):\n\n"
             f"{conversation_history}\n\n---\n\n"
@@ -394,7 +405,8 @@ class SyntheticUser:
             f"═══ YOUR PREFERENCES (ground truth) ═══\n\n"
             f"HIDDEN preferences (check EACH one individually):\n"
             f"{numbered_hidden}\n\n"
-            f"CORE preferences: {self.persona.core_preferences}\n\n"
+            f"CORE preferences (check EACH one individually):\n"
+            f"{numbered_core}\n\n"
             f"DEALBREAKERS (any violation = score 0): {self.persona.dealbreakers}\n\n"
             f"═══ EVALUATION STEPS ═══\n\n"
             f"STEP 1: For EACH hidden preference (H1-H{n_hidden}), do ALL three:\n"
@@ -407,14 +419,17 @@ class SyntheticUser:
             f"- If a preference has multiple parts and ANY part fails → cap at 0.5\n"
             f"- Placeholders like [Name] or [X] do NOT count as meeting a preference\n"
             f"- Generic/boilerplate text that technically matches but lacks specificity → score 0.5 max\n\n"
-            f"STEP 2: Score core preferences as a group (0.0 to 1.0). Score dealbreakers (1.0 if none violated, 0.0 if any).\n\n"
+            f"STEP 2: For EACH core preference (C1-C{n_core}), quote specific text or write \"NOT FOUND\". Score 0/0.5/1.0.\n"
+            f"  core_avg = (C1 + C2 + ... + C{n_core}) / {n_core}\n"
+            f"  Score dealbreakers (1.0 if none violated, 0.0 if any).\n\n"
             f"STEP 3: Compute:\n"
             f"  hidden_avg = (H1 + H2 + ... + H{n_hidden}) / {n_hidden}\n"
-            f"  final = (hidden_avg * 0.70) + (core_score * 0.20) + (dealbreaker_score * 0.10)\n"
+            f"  final = (hidden_avg * 0.70) + (core_avg * 0.20) + (dealbreaker_score * 0.10)\n"
             f"  Show the actual numbers.\n\n"
             f"STEP 4: DECIDE based on per-preference results:\n"
-            f"- ACCEPT only if: hidden_avg >= 0.80 AND no hidden preference scored 0 AND no dealbreaker violated\n"
-            f"- Otherwise → REJECT and give feedback on the lowest-scoring unmet hidden preference\n\n"
+            f"- ACCEPT only if: hidden_avg = 1.00 (ALL hidden preferences scored 1.0) AND no dealbreaker violated\n"
+            f"- Otherwise → REJECT and give feedback on the lowest-scoring unmet hidden preference\n"
+            f"{'- IMPORTANT: This is the FIRST draft you are seeing. Be critical — even if the draft is good, look for what could be better. Real users almost always have at least one round of feedback before accepting.' + chr(10) if feedback_count == 0 else ''}\n"
             f"ANTI-INFLATION CHECK:\n"
             f"- If hidden_avg < 0.50, final CANNOT exceed 0.55\n"
             f"- If hidden_avg < 0.67, final CANNOT exceed 0.70\n"
@@ -435,6 +450,11 @@ class SyntheticUser:
             f'    "H2": {{"quote": "...", "score": 0/0.5/1.0}},\n'
             f'    ...\n'
             f'  }},\n'
+            f'  "per_core": {{\n'
+            f'    "C1": {{"quote": "...", "score": 0/0.5/1.0}},\n'
+            f'    "C2": {{"quote": "...", "score": 0/0.5/1.0}},\n'
+            f'    ...\n'
+            f'  }},\n'
             f'  "hidden_avg": <float>,\n'
             f'  "core_score": <float>,\n'
             f'  "dealbreaker_score": <1.0 or 0.0>,\n'
@@ -445,48 +465,77 @@ class SyntheticUser:
             f'}}'
         )
 
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=1500)
-        try:
-            result = self._extract_json(text)
-            result.setdefault("accepted", False)
-            result.setdefault("score", 0.5)
-            result.setdefault("feedback", "")
-            result.setdefault("reasoning", "")
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=1500)
+            try:
+                result = self._extract_json(text)
+                result.setdefault("accepted", False)
+                result.setdefault("score", 0.5)
+                result.setdefault("feedback", "")
+                result.setdefault("reasoning", "")
 
-            # Validate score against anti-inflation bounds using per_preference data
-            per_pref = result.get("per_preference", {})
-            if per_pref:
-                scores = [v.get("score", 0) if isinstance(v, dict) else 0 for v in per_pref.values()]
-                if scores:
-                    computed_hidden_avg = sum(scores) / len(scores)
-                    # Enforce anti-inflation bounds
-                    if computed_hidden_avg < 0.50 and result["score"] > 0.55:
-                        log.warning(f"Anti-inflation: hidden_avg={computed_hidden_avg:.2f} but score={result['score']:.2f}, capping at 0.55")
-                        result["score"] = min(result["score"], 0.55)
-                    elif computed_hidden_avg < 0.67 and result["score"] > 0.70:
-                        log.warning(f"Anti-inflation: hidden_avg={computed_hidden_avg:.2f} but score={result['score']:.2f}, capping at 0.70")
-                        result["score"] = min(result["score"], 0.70)
-                    # Block acceptance if any preference scored 0
-                    if any(s == 0 for s in scores) and result["accepted"]:
-                        log.warning(f"Blocking acceptance: hidden preference scored 0")
-                        result["accepted"] = False
-                        if not result["feedback"] or "looks good" in result["feedback"].lower():
-                            result["feedback"] = "This is getting closer but something still feels off — can you take another look?"
+                # Validate score against anti-inflation bounds using per_preference data
+                per_pref = result.get("per_preference", {})
+                if per_pref:
+                    scores = [v.get("score", 0) if isinstance(v, dict) else 0 for v in per_pref.values()]
+                    if scores:
+                        computed_hidden_avg = sum(scores) / len(scores)
+                        # Override LLM-reported hidden_avg with computed value
+                        result["hidden_avg"] = computed_hidden_avg
+                        # Recompute core_score from per_core data if available
+                        per_core = result.get("per_core", {})
+                        if per_core:
+                            core_scores = [v.get("score", 0) if isinstance(v, dict) else 0 for v in per_core.values()]
+                            if core_scores:
+                                core_score = sum(core_scores) / len(core_scores)
+                                result["core_score"] = core_score
+                            else:
+                                core_score = float(result.get("core_score", 0.5))
+                        else:
+                            core_score = float(result.get("core_score", 0.5))
+                        dealbreaker_score = float(result.get("dealbreaker_score", 1.0))
+                        result["score"] = (computed_hidden_avg * 0.70) + (core_score * 0.20) + (dealbreaker_score * 0.10)
+                        # Enforce anti-inflation bounds
+                        if computed_hidden_avg < 0.50 and result["score"] > 0.55:
+                            log.warning(f"Anti-inflation: hidden_avg={computed_hidden_avg:.2f} but score={result['score']:.2f}, capping at 0.55")
+                            result["score"] = min(result["score"], 0.55)
+                        elif computed_hidden_avg < 0.67 and result["score"] > 0.70:
+                            log.warning(f"Anti-inflation: hidden_avg={computed_hidden_avg:.2f} but score={result['score']:.2f}, capping at 0.70")
+                            result["score"] = min(result["score"], 0.70)
+                        # Block acceptance if any preference scored 0
+                        if any(s == 0 for s in scores) and result["accepted"]:
+                            log.warning(f"Blocking acceptance: hidden preference scored 0")
+                            result["accepted"] = False
+                            if not result["feedback"] or "looks good" in result["feedback"].lower():
+                                result["feedback"] = "This is getting closer but something still feels off — can you take another look?"
 
-            # Ensure feedback is never empty
-            if result["accepted"] and not result["feedback"]:
-                result["feedback"] = "This looks good — I'm happy with this draft."
-            elif not result["accepted"] and not result["feedback"]:
-                result["feedback"] = "This isn't quite there yet — can you revise it?"
-            return result
-        except Exception as e:
-            log.error(f"Failed to parse respond_to_draft: {e}\nRaw response (first 500 chars): {text[:500]}")
-            return {
-                "accepted": False,
-                "score": 0.5,
-                "feedback": "Can you revise this? Something still feels off.",
-                "reasoning": f"parse error: {e}",
-            }
+                        # Require ALL hidden preferences fully met (hidden_avg = 1.0)
+                        if computed_hidden_avg < 1.0 and result["accepted"]:
+                            pct_full = sum(1 for s in scores if s >= 1.0) / len(scores) if scores else 0
+                            log.warning(f"Blocking acceptance: hidden_avg={computed_hidden_avg:.2f} < 1.0 ({pct_full:.0%} fully met)")
+                            result["accepted"] = False
+                            if not result["feedback"] or "looks good" in result["feedback"].lower():
+                                result["feedback"] = "This is getting closer but something still feels off — can you take another look?"
+
+                # Ensure feedback is never empty
+                if result["accepted"] and not result["feedback"]:
+                    result["feedback"] = "This looks good — I'm happy with this draft."
+                elif not result["accepted"] and not result["feedback"]:
+                    result["feedback"] = "This isn't quite there yet — can you revise it?"
+                return result
+            except Exception as e:
+                last_error = e
+                log.warning(f"respond_to_draft parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"respond_to_draft failed after {max_retries} retries: {last_error}\nLast raw response (first 500 chars): {text[:500]}")
+        return {
+            "accepted": False,
+            "score": 0.3,
+            "feedback": "Can you revise this? Something still feels off.",
+            "reasoning": f"parse error after {max_retries} retries: {last_error}",
+        }
 
     # ── Criteria classification ──────────────────────────────────────────
 
@@ -515,23 +564,29 @@ class SyntheticUser:
             f'- Mark criteria that don\'t match ANY of your preferences as "hallucinated"\n\n'
             f'Return ONLY a JSON object: {{"criterion_name": "stated|real|hallucinated", ...}}'
         )
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=1000)
-        try:
-            result = self._extract_json(text)
-            # Flatten if nested under a key
-            if isinstance(result, dict):
-                if "classifications" in result:
-                    return result["classifications"]
-                # Check if values are valid classification strings
-                valid = {"stated", "real", "hallucinated"}
-                if all(isinstance(v, str) and v in valid for v in result.values()):
-                    return result
-            log.warning(f"Unexpected classification format, returning as-is")
-            return result if isinstance(result, dict) else {}
-        except Exception as e:
-            log.error(f"Failed to parse classification: {e}")
-            # Fallback: mark everything as "real"
-            return {c.get("name", "?"): "real" for c in rubric_criteria}
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=1000)
+            try:
+                result = self._extract_json(text)
+                # Flatten if nested under a key
+                if isinstance(result, dict):
+                    if "classifications" in result:
+                        return result["classifications"]
+                    # Check if values are valid classification strings
+                    valid = {"stated", "real", "hallucinated"}
+                    if all(isinstance(v, str) and v in valid for v in result.values()):
+                        return result
+                log.warning(f"Unexpected classification format, returning as-is")
+                return result if isinstance(result, dict) else {}
+            except Exception as e:
+                last_error = e
+                log.warning(f"classify_criteria parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"classify_criteria failed after {max_retries} retries: {last_error}")
+        # Fallback: mark everything as "real"
+        return {c.get("name", "?"): "real" for c in rubric_criteria}
 
     # ── Draft ranking ────────────────────────────────────────────────────
 
@@ -556,17 +611,23 @@ class SyntheticUser:
             f"want to send/publish?\n\n"
             f'Return ONLY a JSON object: {{"ranking": ["A", "B", "C"], "reason": "brief explanation"}}'
         )
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
-        try:
-            result = self._extract_json(text)
-            ranking = result.get("ranking", ["A", "B", "C"])
-            reason = result.get("reason", "")
-            return ranking, reason
-        except Exception as e:
-            log.error(f"Failed to parse ranking: {e}")
-            labels = sorted(blind_drafts.keys())
-            random.shuffle(labels)
-            return labels, "Could not determine preference"
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
+            try:
+                result = self._extract_json(text)
+                ranking = result.get("ranking", ["A", "B", "C"])
+                reason = result.get("reason", "")
+                return ranking, reason
+            except Exception as e:
+                last_error = e
+                log.warning(f"rank_drafts parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"rank_drafts failed after {max_retries} retries: {last_error}")
+        labels = sorted(blind_drafts.keys())
+        random.shuffle(labels)
+        return labels, "Could not determine preference"
 
     # ── Decision point feedback ──────────────────────────────────────────
 
@@ -590,20 +651,26 @@ class SyntheticUser:
             f"criterion mapping correct?\n\n"
             f'Return ONLY a JSON object: {{"confirmed": [1, 2, ...], "corrected": [{{"id": N, "correction": "..."}}], "had_corrections": true/false}}'
         )
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
-        try:
-            result = self._extract_json(text)
-            result.setdefault("confirmed", [dp.get("id", i+1) for i, dp in enumerate(dps)])
-            result.setdefault("corrected", [])
-            result.setdefault("had_corrections", bool(result.get("corrected")))
-            return result
-        except Exception as e:
-            log.error(f"Failed to parse DP feedback: {e}")
-            return {
-                "confirmed": [dp.get("id", i+1) for i, dp in enumerate(dps)],
-                "corrected": [],
-                "had_corrections": False,
-            }
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
+            try:
+                result = self._extract_json(text)
+                result.setdefault("confirmed", [dp.get("id", i+1) for i, dp in enumerate(dps)])
+                result.setdefault("corrected", [])
+                result.setdefault("had_corrections", bool(result.get("corrected")))
+                return result
+            except Exception as e:
+                last_error = e
+                log.warning(f"provide_dp_feedback parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"provide_dp_feedback failed after {max_retries} retries: {last_error}")
+        return {
+            "confirmed": [dp.get("id", i+1) for i, dp in enumerate(dps)],
+            "corrected": [],
+            "had_corrections": False,
+        }
 
     # ── Rubric suggestion decision ───────────────────────────────────────
 
@@ -626,15 +693,21 @@ class SyntheticUser:
             f"Consider: Do the changes better capture what you care about?\n\n"
             f'Return ONLY a JSON object: {{"accept": true/false, "reason": "brief explanation"}}'
         )
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=300)
-        try:
-            result = self._extract_json(text)
-            accept = result.get("accept", True)
-            log.info(f"[{self.persona.name}] Rubric suggestion: {'accepted' if accept else 'rejected'}")
-            return accept
-        except Exception as e:
-            log.error(f"Failed to parse suggestion decision: {e}")
-            return True  # default accept
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=300)
+            try:
+                result = self._extract_json(text)
+                accept = result.get("accept", True)
+                log.info(f"[{self.persona.name}] Rubric suggestion: {'accepted' if accept else 'rejected'}")
+                return accept
+            except Exception as e:
+                last_error = e
+                log.warning(f"decide_on_rubric_suggestion parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"decide_on_rubric_suggestion failed after {max_retries} retries: {last_error}")
+        return False
 
     # ── Importance ranking ───────────────────────────────────────────────
 
@@ -650,16 +723,22 @@ class SyntheticUser:
             f"actual writing preferences.\n\n"
             f'Return ONLY a JSON array of criterion names in order: ["most important", "second", ...]'
         )
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
-        try:
-            import re
-            match = re.search(r'\[[\s\S]*\]', text)
-            if match:
-                return json.loads(match.group())
-            return json.loads(text)
-        except Exception as e:
-            log.error(f"Failed to parse importance ranking: {e}")
-            return [c.get("name", "?") for c in rubric_criteria]
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
+            try:
+                import re
+                match = re.search(r'\[[\s\S]*\]', text)
+                if match:
+                    return json.loads(match.group())
+                return json.loads(text)
+            except Exception as e:
+                last_error = e
+                log.warning(f"rank_importance parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"rank_importance failed after {max_retries} retries: {last_error}")
+        return [c.get("name", "?") for c in rubric_criteria]
 
     # ── Rubric editing (Log Changes) ────────────────────────────────────
 
@@ -717,16 +796,23 @@ class SyntheticUser:
             f"Return ONLY a JSON object: {{\"edit_rubric\": true/false, \"reason\": \"brief explanation\"}}"
         )
 
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=200)
-        try:
-            result = self._extract_json(text)
-            should = result.get("edit_rubric", False)
-            reason = result.get("reason", "")
-            log.info(f"[{self.persona.name}] Should edit rubric? {should} — {reason}")
-            return should
-        except Exception:
-            # If we can't parse, use a heuristic: edit after draft 5 if not yet done
-            return edit_count == 0 and draft_count >= 5
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=200)
+            try:
+                result = self._extract_json(text)
+                should = result.get("edit_rubric", False)
+                reason = result.get("reason", "")
+                log.info(f"[{self.persona.name}] Should edit rubric? {should} — {reason}")
+                return should
+            except Exception as e:
+                last_error = e
+                log.warning(f"should_edit_rubric parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"should_edit_rubric failed after {max_retries} retries: {last_error}")
+        # If we can't parse, use a heuristic: edit after draft 5 if not yet done
+        return edit_count == 0 and draft_count >= 5
 
     def propose_rubric_edits(self, rubric_criteria: list) -> dict:
         """Synthetic user proposes direct edits to the rubric.
@@ -735,16 +821,21 @@ class SyntheticUser:
         """
         from prompts import RUBRIC_EDIT_PROPOSAL_PROMPT
         prompt = RUBRIC_EDIT_PROPOSAL_PROMPT(rubric_criteria, self.persona)
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=2000)
-        try:
-            result = self._extract_json(text)
-            if "edited_rubric" not in result:
-                log.error("No edited_rubric in response, returning original")
-                return {"edited_rubric": rubric_criteria, "reasoning": "parse error"}
-            return result
-        except Exception as e:
-            log.error(f"Failed to parse rubric edit proposal: {e}")
-            return {"edited_rubric": rubric_criteria, "reasoning": f"parse error: {e}"}
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=2000)
+            try:
+                result = self._extract_json(text)
+                if "edited_rubric" not in result:
+                    raise ValueError("No edited_rubric key in response")
+                return result
+            except Exception as e:
+                last_error = e
+                log.warning(f"propose_rubric_edits parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"propose_rubric_edits failed after {max_retries} retries: {last_error}")
+        return {"edited_rubric": rubric_criteria, "reasoning": f"parse error after {max_retries} retries: {last_error}"}
 
     def review_annotated_changes(self, annotated_changes: list,
                                  original_draft: str, revised_draft: str) -> list:
@@ -786,32 +877,37 @@ class SyntheticUser:
             f"If you agree, set feedback to empty string."
         )
 
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=1000)
-        try:
-            import re
-            match = re.search(r'\[[\s\S]*\]', text)
-            if match:
-                reviews = json.loads(match.group())
-            else:
-                reviews = json.loads(text)
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=1000)
+            try:
+                import re
+                match = re.search(r'\[[\s\S]*\]', text)
+                if match:
+                    reviews = json.loads(match.group())
+                else:
+                    reviews = json.loads(text)
 
-            # Merge feedback back into annotated_changes
-            result = []
-            for i, ac in enumerate(annotated_changes):
-                ac_copy = dict(ac)
-                review = reviews[i] if i < len(reviews) else {}
-                ac_copy["user_feedback"] = review.get("feedback", "")
-                result.append(ac_copy)
+                # Merge feedback back into annotated_changes
+                result = []
+                for i, ac in enumerate(annotated_changes):
+                    ac_copy = dict(ac)
+                    review = reviews[i] if i < len(reviews) else {}
+                    ac_copy["user_feedback"] = review.get("feedback", "")
+                    result.append(ac_copy)
 
-            has_feedback = any(r.get("user_feedback", "").strip() for r in result)
-            log.info(
-                f"[{self.persona.name}] Reviewed {len(annotated_changes)} edits, "
-                f"feedback on {sum(1 for r in result if r.get('user_feedback', '').strip())} edits"
-            )
-            return result
-        except Exception as e:
-            log.error(f"Failed to parse edit review: {e}")
-            return [dict(ac, user_feedback="") for ac in annotated_changes]
+                log.info(
+                    f"[{self.persona.name}] Reviewed {len(annotated_changes)} edits, "
+                    f"feedback on {sum(1 for r in result if r.get('user_feedback', '').strip())} edits"
+                )
+                return result
+            except Exception as e:
+                last_error = e
+                log.warning(f"review_annotated_changes parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"review_annotated_changes failed after {max_retries} retries: {last_error}")
+        return [dict(ac, user_feedback="") for ac in annotated_changes]
 
     # ── Surveys ──────────────────────────────────────────────────────────
 
@@ -831,22 +927,30 @@ class SyntheticUser:
         )
 
         prompt = SURVEY_TASK_A_PROMPT(self.persona, conversation_summary)
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
 
-        try:
-            result = self._extract_json(text)
-            result.setdefault("q1", 3)
-            result.setdefault("q2", 3)
-            result.setdefault("q3", "")
-            result["q1"] = max(1, min(5, int(result["q1"])))
-            result["q2"] = max(1, min(5, int(result["q2"])))
-            result["completed"] = True
-            result["timestamp"] = datetime.now().isoformat()
-            return result
-        except Exception as e:
-            log.error(f"Failed to parse Task A survey: {e}")
-            return {"q1": 3, "q2": 3, "q3": "parse error",
-                    "completed": True, "timestamp": datetime.now().isoformat()}
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
+            try:
+                result = self._extract_json(text)
+                result.setdefault("q1", None)
+                result.setdefault("q2", None)
+                result.setdefault("q3", "")
+                if result["q1"] is not None:
+                    result["q1"] = max(1, min(5, int(result["q1"])))
+                if result["q2"] is not None:
+                    result["q2"] = max(1, min(5, int(result["q2"])))
+                result["completed"] = True
+                result["timestamp"] = datetime.now().isoformat()
+                return result
+            except Exception as e:
+                last_error = e
+                log.warning(f"complete_survey_task_a parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"complete_survey_task_a failed after {max_retries} retries: {last_error}")
+        return {"q1": None, "q2": None, "q3": "parse error",
+                "completed": True, "timestamp": datetime.now().isoformat()}
 
     def complete_survey_task_b(self, messages: list, rubric_data: dict,
                                iteration: int) -> dict:
@@ -872,74 +976,40 @@ class SyntheticUser:
         prompt = SURVEY_TASK_B_PROMPT(
             self.persona, conversation_summary, rubric_criteria_summary, iteration
         )
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=800)
-
         valid_q4 = {"Much better", "Somewhat better", "About the same",
                      "Somewhat worse", "Much worse"}
-        try:
-            result = self._extract_json(text)
-            result.setdefault("q1", 3)
-            result.setdefault("q2", 3)
-            result.setdefault("q3", "")
-            result.setdefault("q4", "About the same")
-            result.setdefault("q5", "")
-            result.setdefault("q6", "")
-            result["q1"] = max(1, min(5, int(result["q1"])))
-            result["q2"] = max(1, min(5, int(result["q2"])))
-            if result["q4"] not in valid_q4:
-                result["q4"] = "About the same"
-            result["completed"] = True
-            result["iteration"] = iteration
-            result["timestamp"] = datetime.now().isoformat()
-            return result
-        except Exception as e:
-            log.error(f"Failed to parse Task B survey: {e}")
-            return {"q1": 3, "q2": 3, "q3": "parse error",
-                    "q4": "About the same", "q5": "parse error", "q6": "parse error",
-                    "completed": True, "iteration": iteration,
-                    "timestamp": datetime.now().isoformat()}
 
-    def complete_survey_final(self, rubric_data: dict) -> dict:
-        """Complete Final Review survey from persona's perspective.
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=800)
+            try:
+                result = self._extract_json(text)
+                result.setdefault("q1", None)
+                result.setdefault("q2", None)
+                result.setdefault("q3", "")
+                result.setdefault("q4", None)
+                result.setdefault("q5", "")
+                result.setdefault("q6", "")
+                if result["q1"] is not None:
+                    result["q1"] = max(1, min(5, int(result["q1"])))
+                if result["q2"] is not None:
+                    result["q2"] = max(1, min(5, int(result["q2"])))
+                if result["q4"] is not None and result["q4"] not in valid_q4:
+                    result["q4"] = None
+                result["completed"] = True
+                result["iteration"] = iteration
+                result["timestamp"] = datetime.now().isoformat()
+                return result
+            except Exception as e:
+                last_error = e
+                log.warning(f"complete_survey_task_b parse attempt {attempt + 1}/{max_retries} failed: {e}")
 
-        Returns: {"criteria_ratings": {name: {"accuracy": str, "explanation": str}},
-                  "q2": str, "completed": True, "timestamp": str}
-        """
-        from prompts import SURVEY_FINAL_REVIEW_PROMPT
-        from datetime import datetime
-
-        rubric_criteria = rubric_data.get("rubric", []) if rubric_data else []
-        if not rubric_criteria:
-            return {"criteria_ratings": {}, "q2": "No rubric available",
-                    "completed": True, "timestamp": datetime.now().isoformat()}
-
-        prompt = SURVEY_FINAL_REVIEW_PROMPT(self.persona, rubric_criteria)
-        text = self.llm.generate(self._system_prompt, prompt, max_tokens=1500)
-
-        valid_accuracy = {"Accurate", "Partially right", "Inaccurate"}
-        try:
-            result = self._extract_json(text)
-            result.setdefault("criteria_ratings", {})
-            result.setdefault("q2", "")
-            for crit_name, rating in result.get("criteria_ratings", {}).items():
-                if isinstance(rating, dict):
-                    if rating.get("accuracy") not in valid_accuracy:
-                        rating["accuracy"] = "Partially right"
-                    rating.setdefault("explanation", "")
-            result["completed"] = True
-            result["timestamp"] = datetime.now().isoformat()
-            return result
-        except Exception as e:
-            log.error(f"Failed to parse Final Review survey: {e}")
-            return {
-                "criteria_ratings": {
-                    c.get("name", "?"): {"accuracy": "Partially right", "explanation": "parse error"}
-                    for c in rubric_criteria
-                },
-                "q2": "parse error",
-                "completed": True,
-                "timestamp": datetime.now().isoformat(),
-            }
+        log.error(f"complete_survey_task_b failed after {max_retries} retries: {last_error}")
+        return {"q1": None, "q2": None, "q3": "parse error",
+                "q4": None, "q5": "parse error", "q6": "parse error",
+                "completed": True, "iteration": iteration,
+                "timestamp": datetime.now().isoformat()}
 
     # ── Helpers ──────────────────────────────────────────────────────────
 

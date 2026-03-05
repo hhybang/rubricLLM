@@ -62,7 +62,6 @@ def load_run(run_dir):
             "log_changes": load_json(os.path.join(pd, "log_changes.json")),
             "survey_task_a": load_json(os.path.join(pd, "survey_task_a.json")),
             "survey_task_b": load_json(os.path.join(pd, "survey_task_b.json")),
-            "survey_final_review": load_json(os.path.join(pd, "survey_final_review.json")),
             "preference_coverage": load_json(os.path.join(pd, "preference_coverage.json")),
         }
         run["personas"][entry] = persona_data
@@ -96,7 +95,6 @@ def analyze_termination(persona_data):
         draft_turns = [m for m in metrics if m.get("has_draft")]
 
         sat_scores = [m["satisfaction"]["score"] for m in draft_turns if "satisfaction" in m]
-        qual_scores = [m["quality"]["score"] for m in draft_turns if "quality" in m]
 
         results.append({
             "iteration": it["iteration"],
@@ -105,11 +103,8 @@ def analyze_termination(persona_data):
             "total_turns": it.get("total_turns", it.get("turns_used", "?")),
             "reason": it["termination_reason"],
             "satisfaction_scores": sat_scores,
-            "quality_scores": qual_scores,
             "final_satisfaction": sat_scores[-1] if sat_scores else None,
-            "final_quality": qual_scores[-1] if qual_scores else None,
             "satisfaction_trend": _trend(sat_scores),
-            "quality_trend": _trend(qual_scores),
         })
     return results
 
@@ -216,9 +211,7 @@ def analyze_surveys(persona_data):
     """Extract survey response metrics."""
     task_a = persona_data.get("survey_task_a")
     task_b = persona_data.get("survey_task_b")
-    final = persona_data.get("survey_final_review")
-
-    result = {"task_a": None, "task_b": [], "final": None}
+    result = {"task_a": None, "task_b": []}
 
     # Task A
     if task_a:
@@ -241,23 +234,7 @@ def analyze_surveys(persona_data):
                     "comparison": entry.get("q4"),
                 })
 
-    # Final review
-    if final:
-        entry = final[-1] if isinstance(final, list) else final
-        ratings = entry.get("criteria_ratings", {})
-        n_accurate = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Accurate")
-        n_partial = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Partially right")
-        n_inaccurate = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Inaccurate")
-        result["final"] = {
-            "n_criteria_rated": len(ratings),
-            "n_accurate": n_accurate,
-            "n_partial": n_partial,
-            "n_inaccurate": n_inaccurate,
-            "accuracy_rate": n_accurate / len(ratings) if ratings else 0,
-            "unexpected_insights": entry.get("q2", "")[:200],
-        }
-
-    return result if any([result["task_a"], result["task_b"], result["final"]]) else None
+    return result if any([result["task_a"], result["task_b"]]) else None
 
 
 def analyze_coverage(persona_data):
@@ -310,20 +287,19 @@ def format_persona_report(name, persona_data, fmt="text"):
         for it in term:
             reason_icon = "+" if it["reason"] in ("goal_reached", "user_accepted") else "x"
             sat = f"{it['final_satisfaction']:.2f}" if it['final_satisfaction'] is not None else "n/a"
-            qual = f"{it['final_quality']:.2f}" if it['final_quality'] is not None else "n/a"
 
             if fmt == "md":
                 lines.append(f"  - **Iteration {it['iteration']}**: "
                              f"`{it['reason']}` — {it['drafts_produced']}/{it['max_drafts']} drafts "
                              f"({it['total_turns']} turns) | "
-                             f"satisfaction={sat} quality={qual} | "
-                             f"trend: sat {it['satisfaction_trend']} qual {it['quality_trend']}")
+                             f"satisfaction={sat} | "
+                             f"trend: {it['satisfaction_trend']}")
             else:
                 lines.append(f"    Iter {it['iteration']}: [{reason_icon}] {it['reason']} "
                              f"({it['drafts_produced']}/{it['max_drafts']} drafts, "
                              f"{it['total_turns']} turns) "
-                             f"sat={sat} qual={qual} "
-                             f"trend: sat {it['satisfaction_trend']} qual {it['quality_trend']}")
+                             f"sat={sat} "
+                             f"trend: {it['satisfaction_trend']}")
 
     # Rubric quality
     rubric_q = analyze_rubric_quality(persona_data)
@@ -405,15 +381,6 @@ def format_persona_report(name, persona_data, fmt="text"):
                 lines.append(f"    Task B (iter {b['iteration']}): "
                              f"understanding={b['understanding']}/5, effort={b['effort']}/5, "
                              f"vs prev={b['comparison']}")
-
-        if surveys["final"]:
-            f = surveys["final"]
-            if fmt == "md":
-                lines.append(f"  - **Final Review**: {f['n_accurate']}A + {f['n_partial']}P + "
-                             f"{f['n_inaccurate']}I = {f['accuracy_rate']:.0%} accuracy")
-            else:
-                lines.append(f"    Final Review: {f['n_accurate']} accurate, {f['n_partial']} partial, "
-                             f"{f['n_inaccurate']} inaccurate (accuracy={f['accuracy_rate']:.0%})")
 
     # Preference Coverage
     coverage = analyze_coverage(persona_data)
@@ -497,20 +464,17 @@ def format_run_report(run, fmt="text"):
             max_hit = sum(1 for t in all_term if t["reason"] == "max_drafts")
             avg_drafts = _avg([t["drafts_produced"] for t in all_term])
             avg_sat = _avg([t["final_satisfaction"] for t in all_term if t["final_satisfaction"] is not None])
-            avg_qual = _avg([t["final_quality"] for t in all_term if t["final_quality"] is not None])
 
             if fmt == "md":
                 lines.append(f"- **Termination**: {goal_reached} user_accepted / {max_hit} max_drafts "
                              f"({len(all_term)} total iterations)")
                 lines.append(f"- **Avg drafts**: {avg_drafts:.1f} | "
-                             f"**Avg final satisfaction**: {avg_sat:.2f} | "
-                             f"**Avg final quality**: {avg_qual:.2f}")
+                             f"**Avg final satisfaction**: {avg_sat:.2f}")
             else:
                 lines.append(f"    Termination: {goal_reached} user_accepted, {max_hit} max_drafts "
                              f"({len(all_term)} iterations)")
                 lines.append(f"    Avg drafts: {avg_drafts:.1f} | "
-                             f"Avg satisfaction: {avg_sat:.2f} | "
-                             f"Avg quality: {avg_qual:.2f}")
+                             f"Avg satisfaction: {avg_sat:.2f}")
 
         if all_precision:
             if fmt == "md":
@@ -536,13 +500,13 @@ def format_cross_run_comparison(runs, fmt="text"):
     if fmt == "md":
         lines.append(f"## Cross-Run Comparison")
         lines.append(f"")
-        lines.append(f"| Run | Personas | Goal% | Avg Drafts | Avg Sat | Avg Qual | Precision | Rubric 1st |")
-        lines.append(f"|---|---|---|---|---|---|---|---|")
+        lines.append(f"| Run | Personas | Goal% | Avg Drafts | Avg Sat | Precision | Rubric 1st |")
+        lines.append(f"|---|---|---|---|---|---|---|")
     else:
         lines.append(f"{'='*90}")
         lines.append(f"CROSS-RUN COMPARISON")
         lines.append(f"{'='*90}")
-        header = f"  {'Run':<28} {'#P':>3} {'Goal%':>6} {'Drafts':>6} {'Sat':>6} {'Qual':>6} {'Prec':>6} {'R#1':>5}"
+        header = f"  {'Run':<28} {'#P':>3} {'Goal%':>6} {'Drafts':>6} {'Sat':>6} {'Prec':>6} {'R#1':>5}"
         lines.append(header)
         lines.append(f"  {'─'*80}")
 
@@ -566,14 +530,13 @@ def format_cross_run_comparison(runs, fmt="text"):
         goal_pct = f"{sum(1 for t in all_term if t['reason'] in ('goal_reached', 'user_accepted')) / len(all_term) * 100:.0f}%" if all_term else "n/a"
         avg_drafts = f"{_avg([t['drafts_produced'] for t in all_term]):.1f}" if all_term else "n/a"
         avg_sat = f"{_avg([t['final_satisfaction'] for t in all_term if t['final_satisfaction'] is not None]):.2f}" if all_term else "n/a"
-        avg_qual = f"{_avg([t['final_quality'] for t in all_term if t['final_quality'] is not None]):.2f}" if all_term else "n/a"
         precision = f"{_avg(all_precision):.0%}" if all_precision else "n/a"
         rubric_1st = f"{sum(1 for r in all_rubric_rank if r == 1)}/{len(all_rubric_rank)}" if all_rubric_rank else "n/a"
 
         if fmt == "md":
-            lines.append(f"| `{run['name']}` | {n_personas} | {goal_pct} | {avg_drafts} | {avg_sat} | {avg_qual} | {precision} | {rubric_1st} |")
+            lines.append(f"| `{run['name']}` | {n_personas} | {goal_pct} | {avg_drafts} | {avg_sat} | {precision} | {rubric_1st} |")
         else:
-            lines.append(f"  {run['name']:<28} {n_personas:>3} {goal_pct:>6} {avg_drafts:>6} {avg_sat:>6} {avg_qual:>6} {precision:>6} {rubric_1st:>5}")
+            lines.append(f"  {run['name']:<28} {n_personas:>3} {goal_pct:>6} {avg_drafts:>6} {avg_sat:>6} {precision:>6} {rubric_1st:>5}")
 
     return "\n".join(lines)
 

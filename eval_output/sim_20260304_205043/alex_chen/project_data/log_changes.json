@@ -1,0 +1,252 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Clean, Decisive Endings",
+          "old_weight": 6,
+          "new_weight": 3
+        },
+        {
+          "name": "Specific Accountability",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Functional Density",
+          "old_weight": 4,
+          "new_weight": 5
+        },
+        {
+          "name": "Direct, Non-Corporate Tone",
+          "old_weight": 5,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Information Sequencing",
+          "field": "description",
+          "old": "The order of beats is deliberate: acknowledgment of the reader's situation comes before the news, and a human-facing impact line precedes any logistics or detail blocks. Each section lands because of what came before it.",
+          "new": "The order of beats is strict: acknowledge the situation first (one sentence max), then deliver the news, then explain why it matters from the reader's side, then one concrete next step. All elements can be present and the email still fails if they're in the wrong order."
+        },
+        {
+          "name": "Reader-Centered Framing",
+          "field": "description",
+          "old": "The message is framed around the reader's reality \u2014 their disruptions, their stakeholder pressures, their planning \u2014 rather than justifying the sender's reasoning or the company's position. Impact is named from the audience's side.",
+          "new": "The message is framed around the reader's reality \u2014 their disruptions, their stakeholder pressures, their planning \u2014 rather than justifying the sender's reasoning or the company's position. The 'why this matters' section names what changes for the reader, not why the sender made the decision."
+        },
+        {
+          "name": "Clean, Decisive Endings",
+          "field": "description",
+          "old": "The message ends when the information ends. There is one clear next step or touchpoint, no competing actions, and no trailing sentiment or motivational closers.",
+          "new": "The email ends at the action. One clear next step, no competing asks, and nothing after the CTA \u2014 no 'thanks for your patience,' no motivational lines, no trailing sentiment. Anything after the final action item weakens the close."
+        },
+        {
+          "name": "Specific Accountability",
+          "field": "description",
+          "old": "People and owners are named specifically. Actions are directed to identifiable individuals, not generic placeholders or unnamed groups. Vague group-asks are replaced with clear ownership \u2014 including disguised group-asks that appear structured but require recipients to self-identify their own tasks.",
+          "new": "One clear owner per action, named directly in the message, with a deadline. Group asks are non-actions. But action items should not over-specify org structure details the email has no business containing \u2014 ownership is clear without being presumptuous about how teams are organized."
+        },
+        {
+          "name": "Functional Density",
+          "field": "description",
+          "old": "Every line does identifiable work. Sentences are not decorative \u2014 each one advances the message, provides usable information, or serves a distinct structural purpose. If a line can be cut without loss, it should be.",
+          "new": "Every line does identifiable work. No padding, no decorative transitions, no restating the same point twice. Short paragraphs. If a sentence can be cut without losing information or structure, it should be cut."
+        },
+        {
+          "name": "Direct, Non-Corporate Tone",
+          "field": "description",
+          "old": "Tone is honest and human \u2014 direct without blaming, acknowledging without sugarcoating. Avoids language that reads like corporate communications, company all-hands, or PR framing.",
+          "new": "Tone is honest and human \u2014 direct without blaming, professional without being stiff. No corporate platitudes, no PR framing, no excessive exclamation marks. Reads like a person wrote it, not a communications team."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Information Sequencing",
+          "added_dims": [
+            "Acknowledgment section is one sentence or less \u2014 does not expand into a full paragraph before delivering the news",
+            "The overall sequence has a clear arc \u2014 acknowledgment, news, reader-facing stakes, next step \u2014 without doubling back"
+          ],
+          "removed_dims": [
+            "The overall sequence has a clear arc \u2014 context, news, impact, details, next step \u2014 without doubling back"
+          ]
+        },
+        {
+          "name": "Reader-Centered Framing",
+          "added_dims": [
+            "Stakes are grounded in the reader's world \u2014 e.g. 'your team planned around this date' \u2014 not in the sender's intentions or values"
+          ],
+          "removed_dims": [
+            "Detail sections are framed as tools the reader can use, not status reports for the sender"
+          ]
+        },
+        {
+          "name": "Clean, Decisive Endings",
+          "added_dims": [
+            "No motivational, sentimental, or gratitude-based closing lines after the final action",
+            "Closing line is forward-looking and action-oriented \u2014 it points to what happens next, not backward at effort already made"
+          ],
+          "removed_dims": [
+            "No motivational, sentimental, or 'all-hands' style closing lines after the final action"
+          ]
+        },
+        {
+          "name": "Specific Accountability",
+          "added_dims": [
+            "Each action item includes a deadline or timeframe, not just a task description",
+            "Anyone responsible for a task or deliverable is identified by name or clear role, not left to a group to self-assign",
+            "Action items are directed to specific people \u2014 'everyone please review' is not an action item",
+            "Action items do not over-specify org structure or process details the email shouldn't assume \u2014 ownership is clear without being presumptuous"
+          ],
+          "removed_dims": [
+            "Anyone responsible for a task or deliverable is identified by name, not by placeholder or role",
+            "Recipients are not directed to a shared doc, list, or system to locate their own assignments \u2014 ownership is stated directly in the message",
+            "Action items are directed to specific people, not phrased as 'everyone figure it out'"
+          ]
+        },
+        {
+          "name": "Functional Density",
+          "added_dims": [
+            "Paragraphs are short \u2014 dense blocks of text are broken up or cut"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Direct, Non-Corporate Tone",
+          "added_dims": [
+            "Avoids stock phrases like 'thank you for your resilience,' 'we remain committed,' or 'as we navigate this together'",
+            "No excessive exclamation marks \u2014 enthusiasm does not substitute for substance"
+          ],
+          "removed_dims": [
+            "Avoids stock phrases like 'thank you for your resilience' or 'commitment to getting this right'"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made three main changes: (1) moved 'Clean, Decisive Endings' up to priority 3 because the no-trailing-sentiment rule is a real dealbreaker for me and the old priority 6 buried it; (2) added a dimension to Specific Accountability explicitly calling out the over-specification problem \u2014 I hate when action items assume things about how a team is structured \u2014 and added a deadline dimension since that's half of what makes an owner real; (3) tightened the descriptions throughout to reflect that these are failure conditions, not just ideals, especially the sequencing rule where order matters even when all the content is there.",
+    "rubric_version": 4,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "With the launch date locked, I know most of you are already working against a real deadline rather than an abstract one. This email is meant to make your planning easier, not add to the noise \u2014 so here's exactly who owns what, with no ambiguity.",
+        "new_text": "With the launch date locked, I know you're working against a real deadline \u2014 so here's exactly who owns what.",
+        "reason": "Information Sequencing (new dimension 'acknowledgment is one sentence or less'): the two-sentence opening was collapsed into one sentence; 'most of you are already' and 'rather than an abstract one' were hedging qualifiers; the meta-commentary about the email's purpose ('make your planning easier, not add to the noise') is padding that delays the news",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "If your name isn't here, you don't have a pre-launch deliverable.",
+        "new_text": "All deliverables are due by end of day Friday. If your name isn't here, you don't have a pre-launch deliverable.",
+        "reason": "Specific Accountability (new 'deadline_included' dimension): action items now require a deadline or timeframe alongside the task; no deadline was previously stated for the ownership assignments",
+        "user_feedback": "Adding 'All deliverables are due by end of day Friday' as a standalone sentence before the ownership list feels like it's over-specifying in the wrong place. The deadline should live with the action items themselves, not as a blanket header sentence. If each item already has Friday baked in, you don't need to front-load it \u2014 that's just repeating yourself."
+      },
+      {
+        "original_text": "There's no buffer left in the schedule. If your piece isn't ready, the launch moves \u2014 and that lands on you.",
+        "new_text": "There's no buffer left. If your piece isn't ready by Friday, the launch moves \u2014 and your team's timeline shifts with it.",
+        "reason": "Reader-Centered Framing (new dimension 'stakes grounded in the reader's world'): 'that lands on you' frames consequence as blame directed at the individual; 'your team's timeline shifts with it' grounds the stakes in a concrete operational reality the reader owns; 'in the schedule' is redundant given context; 'by Friday' anchors the stakes to the stated deadline",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "Each owner has what they need from me. If something is missing, come directly to me by end of Thursday.",
+        "new_text": "If something is missing from your end, come directly to me by end of Thursday.",
+        "reason": "Functional Density (every_line_earns_place) and Clean, Decisive Endings (priority raised to #3, new forward-looking closing dimension): 'Each owner has what they need from me' is a status report from the sender's side that adds no actionable information and weakens the close; removing it leaves one clean, forward-looking action as the final beat",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "timestamp": "2026-03-04T20:59:51.930937"
+  },
+  {
+    "iteration": 3,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Clean, Decisive Endings",
+          "old_weight": 4,
+          "new_weight": 3
+        },
+        {
+          "name": "Specific Accountability",
+          "old_weight": 3,
+          "new_weight": 4
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Reader-Centered Framing",
+          "field": "description",
+          "old": "The message is framed around the reader's reality \u2014 their disruptions, their downstream dependencies, their stakeholder pressures. The 'why this matters' section makes each reader picture what changes for them specifically, using implication rather than description. Stakes language creates felt weight, not abstract warnings.",
+          "new": "The message is framed around the reader's reality \u2014 their disruptions, their downstream dependencies, their plans. The 'why this matters' section makes the reader picture what changes for them specifically. Stakes are concrete and grounded in the reader's world, not in the sender's intentions or company values."
+        },
+        {
+          "name": "Specific Accountability",
+          "field": "description",
+          "old": "One clear owner per action, named directly in the message, with a deadline. Group asks are non-actions. Ownership is clear without being presumptuous about how teams are organized, and contact points are not unnecessarily multiplied.",
+          "new": "One clear owner per action, named directly in the message, with a deadline. Group asks are non-actions. Ownership is clear without being presumptuous about how teams are organized."
+        },
+        {
+          "name": "Direct, Non-Corporate Tone",
+          "field": "description",
+          "old": "Tone is honest and human \u2014 direct without blaming, professional without being stiff. No corporate platitudes, no PR framing, no excessive exclamation marks. Accountability creates felt weight through consequence, not through accusation or finger-pointing.",
+          "new": "Tone is honest and human \u2014 direct without blaming, professional without being stiff. No corporate platitudes, no PR framing, no excessive exclamation marks."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Reader-Centered Framing",
+          "added_dims": [
+            "Stakes make the reader picture their own downstream consequence \u2014 not a diffuse group warning"
+          ],
+          "removed_dims": [
+            "Stakes make each individual reader picture their own downstream consequence \u2014 not a diffuse group warning like 'the whole team absorbs the delay'",
+            "Stakes create felt weight through implication \u2014 making the reader infer the consequence \u2014 rather than describing or explaining what will go wrong"
+          ]
+        },
+        {
+          "name": "Specific Accountability",
+          "added_dims": [],
+          "removed_dims": [
+            "There is no unnecessary multiplication of contact points \u2014 if one owner covers it, don't add a second"
+          ]
+        },
+        {
+          "name": "Direct, Non-Corporate Tone",
+          "added_dims": [
+            "Accountability language creates felt weight through consequence \u2014 not through accusation or finger-pointing"
+          ],
+          "removed_dims": [
+            "Accountability language creates felt weight through consequence \u2014 not through accusation, finger-pointing, or 'that lands on you' phrasing"
+          ]
+        }
+      ]
+    },
+    "reasoning": "Moved 'Clean, Decisive Endings' up to priority 3 because a weak close is one of my biggest pet peeves \u2014 it undercuts everything before it. Dropped the 'stakes_use_implication' dimension from Reader-Centered Framing and the 'no_redundant_contacts' dimension from Specific Accountability \u2014 both felt too prescriptive and in practice I just want clear ownership, not a rule about contact point count. Also trimmed the Reader-Centered Framing description slightly since the original was getting into territory that felt more like writing craft theory than a practical check.",
+    "rubric_version": 7,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "If it slips, they're back in the loop until it's resolved.",
+        "new_text": "If it slips, your team stays in the loop and the Thursday window is at risk.",
+        "reason": "Reader-Centered Framing (stakes_use_implication dimension removed): the old version relied on implication ('back in the loop until it's resolved') to let the reader infer the consequence. With that dimension gone, the consequence can be named directly \u2014 'Thursday window is at risk' states the concrete stake rather than leaving it to inference. Also addresses 'stakes_personally_specific' by replacing the vague pronoun 'they' with 'your team'.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": " so it doesn't push the window.",
+        "new_text": "",
+        "reason": "Clean, Decisive Endings (priority elevated from #4 to #3): with the close now under higher scrutiny, this trailing clause was cut. The action item stands cleanly on its own without the explanatory tag \u2014 removing it makes the email end at the action with no trailing qualification.",
+        "user_feedback": "Actually I'd keep that clause. Without 'so it doesn't push the window' the action item feels like it's floating \u2014 the reader doesn't immediately know why that specific deadline matters. It's not trailing sentiment, it's the reason the deadline exists. Cutting it makes the close feel abrupt rather than clean."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "timestamp": "2026-03-04T21:07:51.514975"
+  }
+]

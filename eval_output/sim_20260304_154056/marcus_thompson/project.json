@@ -1,0 +1,24 @@
+{
+  "id": "cd0489ef-5e59-423a-ad58-889afcd4724c",
+  "persona": {
+    "name": "Marcus Thompson",
+    "role": "Senior software engineer writing internal documentation",
+    "writing_type": "technical documentation",
+    "project_name": "Tech Docs",
+    "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+    "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 'we chose JWT over session tokens because...' is useful, but 'we use JWT tokens' without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than 15 lines the surrounding prose didn't do its job, but every example must include a one-line 'what this does' comment above it. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 'Note: if you see X, it means Y' after setup instructions means someone already hit the problem. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story ('Setting Up Auth' then 'Your First Authenticated Request' then 'Handling Token Expiration') not just label sections ('Setup' then 'Usage' then 'Error Handling'). Avoids 'simply', 'just', 'easy', and 'straightforward' \u2014 these words make the reader feel stupid when they struggle; use precise language instead: 'Run X, which returns Y' rather than 'Simply run X'.",
+    "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure",
+    "initial_task": "Help me document our new authentication service \u2014 it uses JWT tokens with refresh rotation and integrates with our existing user service via gRPC.",
+    "gold_draft": null
+  },
+  "config": {
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "num_iterations": 6,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8
+  },
+  "created_at": "2026-03-04T17:25:33.821607"
+}

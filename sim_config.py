@@ -57,7 +57,6 @@ class SimConfig:
     chat_turns_per_iteration: int = 3 # DEPRECATED: use max_chat_turns instead
     max_chat_turns: int = 10          # max drafts the LLM can produce before terminating
     satisfaction_threshold: float = 0.8  # threshold for both judges (0.0-1.0)
-    judge_model: str = ""             # model for termination judges; defaults to model_light
 
     # System models (always Anthropic — the RubricLLM system uses Claude)
     model_primary: str = "claude-opus-4-6"   # rubric inference, judging

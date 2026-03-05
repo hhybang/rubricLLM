@@ -1,0 +1,2135 @@
+[
+  {
+    "version": 1,
+    "writing_type": "academic research papers",
+    "user_goals_summary": "This user writes academic prose that reads as argument rather than documentation. They prioritize logical dependency between sections, motivated design justifications, and precise terminology, and they value strategic moments of plain-language clarity that signal confidence and mark the conceptual core for the reader.",
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place by connecting to what came before it through logical dependency, not mere sequence. The reader should feel walked through an argument, not handed a manual.",
+        "dimensions": [
+          {
+            "id": "dependency_transitions",
+            "label": "Transitions between paragraphs and sections express logical dependency (because, therefore, this requires) rather than mere sequence (next, additionally, also)"
+          },
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "section_necessity",
+            "label": "The reader can articulate why each section must follow the previous one, not just that it does"
+          },
+          {
+            "id": "cross_reference_logic",
+            "label": "Cross-references between sections reinforce the logical architecture rather than serving as mere navigation aids"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation",
+        "category": "Content",
+        "description": "Methodological choices are justified before they are described. The reader encounters the problem, failure mode, or gap that necessitates a component before learning what that component does.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major methodological component is preceded by the problem or failure mode it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core of a section lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident understanding.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores)"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery rather than informality or imprecision"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Content",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "This user thinks about prose architecturally \u2014 they diagnose problems at the level of rhetorical structure and argumentative logic, not at the sentence or grammar level. Their non-negotiable is that methodology reads as motivated argument, not procedural documentation: every component must answer 'why this and not something simpler?' before answering 'how does this work?' They are comfortable with length and complexity but resist uniformity of register, viewing strategic plainness at key moments as a marker of intellectual confidence rather than a concession to accessibility.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place by connecting to what came before it through logical dependency, not mere sequence. The reader should feel walked through an argument, not handed a manual.",
+        "dimensions": [
+          {
+            "id": "dependency_transitions",
+            "label": "Transitions between paragraphs and sections express logical dependency (because, therefore, this requires) rather than mere sequence (next, additionally, also)"
+          },
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "section_necessity",
+            "label": "The reader can articulate why each section must follow the previous one, not just that it does"
+          },
+          {
+            "id": "cross_reference_logic",
+            "label": "Cross-references between sections reinforce the logical architecture rather than serving as mere navigation aids"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Design Motivation",
+        "category": "Content",
+        "description": "Methodological choices are justified before they are described. The reader encounters the problem, failure mode, or gap that necessitates a component before learning what that component does.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major methodological component is preceded by the problem or failure mode it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Content",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core of a section lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident understanding.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores)"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery rather than informality or imprecision"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "academic research papers",
+    "user_goals_summary": "This user writes academic prose that reads as argument rather than documentation. They prioritize logical dependency between sections, motivated design justifications, and precise terminology, and they value strategic moments of plain-language clarity that signal confidence and mark the conceptual core for the reader.",
+    "coaching_notes": "This user thinks about prose architecturally \u2014 they diagnose problems at the level of rhetorical structure and argumentative logic, not at the sentence or grammar level. Their non-negotiable is that methodology reads as motivated argument, not procedural documentation: every component must answer 'why this and not something simpler?' before answering 'how does this work?' They are comfortable with length and complexity but resist uniformity of register, viewing strategic plainness at key moments as a marker of intellectual confidence rather than a concession to accessibility."
+  },
+  {
+    "version": 3,
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes academic papers that read as developing arguments rather than sequential reports. They value rigorous formal structure and precise terminology as non-negotiable baselines, but invest most revision energy in ensuring logical dependency between paragraphs, motivating design choices before describing them, strategically deploying plain-language pivots at conceptual cores, and making the stakes of findings explicit.",
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, so the reader senses a destination and experiences individual findings or descriptions as steps in a developing argument rather than items in a catalogue.",
+        "dimensions": [
+          {
+            "id": "dependency_transitions",
+            "label": "Transitions between paragraphs express logical dependency (because, therefore, this requires) rather than mere sequence (next, additionally, also)"
+          },
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "section_necessity",
+            "label": "The reader can articulate why each section must follow the previous one, not just that it does"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "steps_not_catalogue",
+            "label": "Individual findings, descriptions, or components function as steps in an argument rather than items in a list or checkboxes to clear"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core of a section lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are used sparingly and earn their place.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Key results are accompanied by explicit statements of significance, and major conclusions reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted, and statistical reporting is clean and precise.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user's non-negotiables are terminological precision and formal rigor \u2014 they expect these as baseline and will not revisit them once satisfied. Their revision energy concentrates overwhelmingly on structural argumentation: every paragraph must earn its place through logical dependency, and every section must build toward its most important claim rather than cataloguing findings. They respond strongly to the 'failure mode' pattern \u2014 motivating each component by naming what goes wrong without it. They value plain-language pivots used sparingly at conceptual cores as a signal of authorial confidence, and consistently request that key findings be accompanied by explicit statements of what they buy us practically or theoretically.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, so the reader senses a destination and experiences individual findings or descriptions as steps in a developing argument rather than items in a catalogue.",
+        "dimensions": [
+          {
+            "id": "dependency_transitions",
+            "label": "Transitions between paragraphs express logical dependency (because, therefore, this requires) rather than mere sequence (next, additionally, also)"
+          },
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "section_necessity",
+            "label": "The reader can articulate why each section must follow the previous one, not just that it does"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "steps_not_catalogue",
+            "label": "Individual findings, descriptions, or components function as steps in an argument rather than items in a list or checkboxes to clear"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core of a section lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are used sparingly and earn their place.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted, and statistical reporting is clean and precise.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Key results are accompanied by explicit statements of significance, and major conclusions reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 4,
+    "source": "criteria_classification",
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes academic papers that read as developing arguments rather than sequential reports. They value rigorous formal structure and precise terminology as non-negotiable baselines, but invest most revision energy in ensuring logical dependency between paragraphs, motivating design choices before describing them, strategically deploying plain-language pivots at conceptual cores, and making the stakes of findings explicit.",
+    "coaching_notes": "This user's non-negotiables are terminological precision and formal rigor \u2014 they expect these as baseline and will not revisit them once satisfied. Their revision energy concentrates overwhelmingly on structural argumentation: every paragraph must earn its place through logical dependency, and every section must build toward its most important claim rather than cataloguing findings. They respond strongly to the 'failure mode' pattern \u2014 motivating each component by naming what goes wrong without it. They value plain-language pivots used sparingly at conceptual cores as a signal of authorial confidence, and consistently request that key findings be accompanied by explicit statements of what they buy us practically or theoretically."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, so the reader senses a destination and experiences individual findings or descriptions as steps in a developing argument rather than items in a catalogue.",
+        "dimensions": [
+          {
+            "id": "dependency_transitions",
+            "label": "Transitions between paragraphs express logical dependency (because, therefore, this requires) rather than mere sequence (next, additionally, also)"
+          },
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "section_necessity",
+            "label": "The reader can articulate why each section must follow the previous one, not just that it does"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "steps_not_catalogue",
+            "label": "Individual findings, descriptions, or components function as steps in an argument rather than items in a list or checkboxes to clear"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core of a section lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are used sparingly and earn their place. Any departure from the dominant formal register must be justified by an argumentative payoff; casual phrasing that lacks such payoff weakens rather than emphasizes.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          },
+          {
+            "id": "departure_earns_payoff",
+            "label": "Any casual or informal phrasing is justified by a clear argumentative payoff; informality without payoff is treated as a weakness, not a stylistic choice"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted, and statistical reporting is clean and precise.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Key results are accompanied by explicit statements of significance, and major conclusions reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 5,
+    "source": "alignment_suggestion",
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes academic papers that read as developing arguments rather than sequential reports. They value rigorous formal structure and precise terminology as non-negotiable baselines, but invest most revision energy in ensuring logical dependency between paragraphs, motivating design choices before describing them, strategically deploying plain-language pivots at conceptual cores, and making the stakes of findings explicit.",
+    "coaching_notes": "This user's non-negotiables are terminological precision and formal rigor \u2014 they expect these as baseline and will not revisit them once satisfied. Their revision energy concentrates overwhelmingly on structural argumentation: every paragraph must earn its place through logical dependency, and every section must build toward its most important claim rather than cataloguing findings. They respond strongly to the 'failure mode' pattern \u2014 motivating each component by naming what goes wrong without it. They value plain-language pivots used sparingly at conceptual cores as a signal of authorial confidence, and consistently request that key findings be accompanied by explicit statements of what they buy us practically or theoretically."
+  },
+  {
+    "version": 6,
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes rigorous academic prose that reads as a developing argument rather than a procedural report. They prioritize logical dependency between components, demand that every methodological choice and finding earn its place through explicit motivation, and value rare plain-language pivots at structurally pivotal moments to signal confident mastery of the material.",
+    "rubric": [
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists to be catalogued.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, so the reader senses a destination and experiences individual findings or descriptions as steps in a developing argument rather than items in a catalogue.",
+        "dimensions": [
+          {
+            "id": "dependency_transitions",
+            "label": "Transitions between paragraphs express logical dependency (because, therefore, this requires) rather than mere sequence (next, additionally, also)"
+          },
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "section_necessity",
+            "label": "The reader can articulate why each section must follow the previous one, not just that it does"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "steps_not_catalogue",
+            "label": "Individual findings, descriptions, or components function as steps in an argument rather than items in a list or checkboxes to clear"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core of a section lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are used sparingly and must earn their place through argumentative payoff. Any departure from the dominant formal register that lacks such payoff weakens rather than emphasizes.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          },
+          {
+            "id": "departure_earns_payoff",
+            "label": "Any casual or informal phrasing is justified by a clear argumentative payoff; informality without payoff is treated as a weakness, not a stylistic choice"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted, and statistical reporting is clean and precise.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Key results are accompanied by explicit statements of significance, and major conclusions reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every section must read as an argument with logical dependency between components, never as a procedural catalogue or report. The user's revision pattern is consistent \u2014 structural and motivational concerns are addressed first, then register and implications are layered in last. Plain-language pivots are highly valued but only when earned; the user explicitly notices and praises the right one ('it multiplies the capacity that is already there') and would reject gratuitous informality. When presenting results, always establish what question is being answered and how before delivering the numbers.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, so the reader senses a destination and experiences individual findings or descriptions as steps in a developing argument rather than items in a catalogue.",
+        "dimensions": [
+          {
+            "id": "dependency_transitions",
+            "label": "Transitions between paragraphs express logical dependency (because, therefore, this requires) rather than mere sequence (next, additionally, also)"
+          },
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "section_necessity",
+            "label": "The reader can articulate why each section must follow the previous one, not just that it does"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "steps_not_catalogue",
+            "label": "Individual findings, descriptions, or components function as steps in an argument rather than items in a list or checkboxes to clear"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists to be catalogued.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Key results are accompanied by explicit statements of significance, and major conclusions reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core of a section lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are used sparingly and must earn their place through argumentative payoff. Any departure from the dominant formal register that lacks such payoff weakens rather than emphasizes.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          },
+          {
+            "id": "departure_earns_payoff",
+            "label": "Any casual or informal phrasing is justified by a clear argumentative payoff; informality without payoff is treated as a weakness, not a stylistic choice"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted, and statistical reporting is clean and precise.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 7,
+    "source": "criteria_classification",
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes rigorous academic prose that reads as a developing argument rather than a procedural report. They prioritize logical dependency between components, demand that every methodological choice and finding earn its place through explicit motivation, and value rare plain-language pivots at structurally pivotal moments to signal confident mastery of the material.",
+    "coaching_notes": "Non-negotiable: every section must read as an argument with logical dependency between components, never as a procedural catalogue or report. The user's revision pattern is consistent \u2014 structural and motivational concerns are addressed first, then register and implications are layered in last. Plain-language pivots are highly valued but only when earned; the user explicitly notices and praises the right one ('it multiplies the capacity that is already there') and would reject gratuitous informality. When presenting results, always establish what question is being answered and how before delivering the numbers."
+  },
+  {
+    "version": 8,
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes academic prose that functions as a developing argument rather than a sequential report. They value rigorous, formally structured sections where every paragraph earns its place through logical dependency, design choices are justified before being described, and key findings are accompanied by clear articulations of what they mean. They prize rare, well-placed moments of plain-language synthesis that demonstrate confident mastery of the material.",
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, and the reader senses a destination early. Paragraphs open by establishing their role in the argument before presenting content, and dense paragraphs synthesize their collective findings before transitioning.",
+        "dimensions": [
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "question_before_content",
+            "label": "Each paragraph establishes the question, role, or stakes it will address before presenting findings, descriptions, or data \u2014 it opens like a reason, not like a finding"
+          },
+          {
+            "id": "section_dependency",
+            "label": "Sections and subsections are logically dependent on one another, with transitions expressing necessity (because, therefore, this requires) rather than sequence (next, additionally)"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "paragraph_closure",
+            "label": "Dense paragraphs presenting multiple findings include a synthesis beat that names what the findings collectively establish before transitioning to the next paragraph"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Implications are woven throughout the section rather than saved for the end, and major findings reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          },
+          {
+            "id": "distributed_implications",
+            "label": "Implications and 'why this matters' beats are woven throughout the section rather than concentrated at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are used sparingly and must earn their place through argumentative payoff.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted, statistical reporting is clean and precise, and references to prior work are grounded with citations.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Claims about the broader literature or prior work are anchored with citations or explicit references, not merely asserted"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every paragraph must open by establishing its argumentative role (the question it answers, the gap it fills) before presenting content \u2014 the user consistently identifies 'answer before stakes' as a structural failure. The user treats rare plain-language pivots as marks of confidence, not informality, but will reject any that lack clear argumentative payoff. When revising, address structural and flow concerns first; the user systematically prioritizes argumentative dependency over any other quality, and will tolerate imperfect register or incomplete implications as long as the logical spine holds.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, and the reader senses a destination early. Paragraphs open by establishing their role in the argument before presenting content, and dense paragraphs synthesize their collective findings before transitioning.",
+        "dimensions": [
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "question_before_content",
+            "label": "Each paragraph establishes the question, role, or stakes it will address before presenting findings, descriptions, or data \u2014 it opens like a reason, not like a finding"
+          },
+          {
+            "id": "section_dependency",
+            "label": "Sections and subsections are logically dependent on one another, with transitions expressing necessity (because, therefore, this requires) rather than sequence (next, additionally)"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "paragraph_closure",
+            "label": "Dense paragraphs presenting multiple findings include a synthesis beat that names what the findings collectively establish before transitioning to the next paragraph"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are used sparingly and must earn their place through argumentative payoff.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Rigor and Specificity",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Claims about methodological properties are operationalized rather than merely asserted, statistical reporting is clean and precise, and references to prior work are grounded with citations.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Claims about the broader literature or prior work are anchored with citations or explicit references, not merely asserted"
+          },
+          {
+            "id": "appropriate_formality",
+            "label": "The prose maintains the formality and precision expected in peer-reviewed research throughout non-pivot passages"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Implications are woven throughout the section rather than saved for the end, and major findings reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          },
+          {
+            "id": "distributed_implications",
+            "label": "Implications and 'why this matters' beats are woven throughout the section rather than concentrated at the end"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 9,
+    "source": "criteria_classification",
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes academic prose that functions as a developing argument rather than a sequential report. They value rigorous, formally structured sections where every paragraph earns its place through logical dependency, design choices are justified before being described, and key findings are accompanied by clear articulations of what they mean. They prize rare, well-placed moments of plain-language synthesis that demonstrate confident mastery of the material.",
+    "coaching_notes": "Non-negotiable: every paragraph must open by establishing its argumentative role (the question it answers, the gap it fills) before presenting content \u2014 the user consistently identifies 'answer before stakes' as a structural failure. The user treats rare plain-language pivots as marks of confidence, not informality, but will reject any that lack clear argumentative payoff. When revising, address structural and flow concerns first; the user systematically prioritizes argumentative dependency over any other quality, and will tolerate imperfect register or incomplete implications as long as the logical spine holds."
+  },
+  {
+    "version": 10,
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes academic papers where every structural unit \u2014 paragraph, subsection, section \u2014 must earn its place through logical dependency, not sequence. They value rigorous formal prose punctuated by rare, strategically placed plain-language moments that signal mastery. Findings and design choices must be framed as arguments with articulated stakes, not catalogued as reports.",
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, and the reader senses a destination early. Paragraphs open by establishing their role in the argument before presenting content \u2014 opening like a reason, not like a finding \u2014 and dense paragraphs synthesize their collective findings before transitioning.",
+        "dimensions": [
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "question_before_content",
+            "label": "Each paragraph establishes the question, role, or stakes it will address before presenting findings, descriptions, or data \u2014 it opens like a reason, not like a finding"
+          },
+          {
+            "id": "section_dependency",
+            "label": "Sections and subsections are logically dependent on one another, with transitions expressing necessity (because, therefore, this requires) rather than sequence (next, additionally)"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "paragraph_closure",
+            "label": "Dense paragraphs presenting multiple findings include a synthesis beat that names what the findings collectively establish before transitioning to the next paragraph"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are brief, rare, unhedged, and make the surrounding formal analysis feel more rigorous, not less.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply \u2014 without tipping into casualness"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Implications are woven throughout the section rather than saved for the end, and major findings reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          },
+          {
+            "id": "distributed_implications",
+            "label": "Implications and 'why this matters' beats are woven throughout the section rather than concentrated at the end"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Formal Rigor and Tonal Calibration",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Statistical reporting is clean and precise, claims about prior work are grounded with citations, and word choices maintain confidence without editorializing \u2014 letting the evidence carry the weight rather than the rhetoric.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Claims about the broader literature or prior work are anchored with citations or explicit references, not merely asserted"
+          },
+          {
+            "id": "tone_calibration",
+            "label": "Word choices convey confidence without editorializing or triumphalism \u2014 verbs like 'bear out' over 'vindicate' \u2014 so that evidence carries the weight rather than rhetoric"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every paragraph must earn its place through logical dependency \u2014 sequence is never sufficient, and the user will flag it immediately if structure reads as a list rather than an argument. The user treats plain-language pivots as demonstrations of mastery, not concessions to informality, but insists they be rare, unhedged, and placed at structural hinges. Tone calibration matters: the user wants confident, authoritative prose that lets evidence do the work \u2014 triumphalist or promotional language erodes rather than builds credibility.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. The section builds toward its most important claim, and the reader senses a destination early. Paragraphs open by establishing their role in the argument before presenting content \u2014 opening like a reason, not like a finding \u2014 and dense paragraphs synthesize their collective findings before transitioning.",
+        "dimensions": [
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap"
+          },
+          {
+            "id": "question_before_content",
+            "label": "Each paragraph establishes the question, role, or stakes it will address before presenting findings, descriptions, or data \u2014 it opens like a reason, not like a finding"
+          },
+          {
+            "id": "section_dependency",
+            "label": "Sections and subsections are logically dependent on one another, with transitions expressing necessity (because, therefore, this requires) rather than sequence (next, additionally)"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "paragraph_closure",
+            "label": "Dense paragraphs presenting multiple findings include a synthesis beat that names what the findings collectively establish before transitioning to the next paragraph"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formal Rigor and Tonal Calibration",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Statistical reporting is clean and precise, claims about prior work are grounded with citations, and word choices maintain confidence without editorializing \u2014 letting the evidence carry the weight rather than the rhetoric.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Claims about the broader literature or prior work are anchored with citations or explicit references, not merely asserted"
+          },
+          {
+            "id": "tone_calibration",
+            "label": "Word choices convey confidence without editorializing or triumphalism \u2014 verbs like 'bear out' over 'vindicate' \u2014 so that evidence carries the weight rather than rhetoric"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are brief, rare, unhedged, and make the surrounding formal analysis feel more rigorous, not less.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply \u2014 without tipping into casualness"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Implications are woven throughout the section rather than saved for the end, and major findings reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          },
+          {
+            "id": "distributed_implications",
+            "label": "Implications and 'why this matters' beats are woven throughout the section rather than concentrated at the end"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 11,
+    "source": "criteria_classification",
+    "writing_type": "academic research papers",
+    "user_goals_summary": "The user writes academic papers where every structural unit \u2014 paragraph, subsection, section \u2014 must earn its place through logical dependency, not sequence. They value rigorous formal prose punctuated by rare, strategically placed plain-language moments that signal mastery. Findings and design choices must be framed as arguments with articulated stakes, not catalogued as reports.",
+    "coaching_notes": "Non-negotiable: every paragraph must earn its place through logical dependency \u2014 sequence is never sufficient, and the user will flag it immediately if structure reads as a list rather than an argument. The user treats plain-language pivots as demonstrations of mastery, not concessions to informality, but insists they be rare, unhedged, and placed at structural hinges. Tone calibration matters: the user wants confident, authoritative prose that lets evidence do the work \u2014 triumphalist or promotional language erodes rather than builds credibility."
+  },
+  {
+    "version": 12,
+    "writing_type": "academic research papers (methods, results, and discussion sections)",
+    "user_goals_summary": "The user writes academic prose that reads as an argument rather than a report. Every paragraph, subsection, and design choice must earn its place through logical dependency, and the reader should feel pulled toward the most important claim rather than informed of findings in sequence. The prose maintains formal rigor throughout, punctuated by rare, precisely placed moments of plain-language synthesis that signal mastery.",
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. Paragraphs open by establishing their role in the argument before presenting content \u2014 opening like a reason, not like a finding. The section builds toward its most important claim so the reader senses a destination early, and dense paragraphs synthesize their collective findings before transitioning. Well-placed paragraphs should feel inevitable rather than appended.",
+        "dimensions": [
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap \u2014 the paragraph feels inevitable rather than merely next"
+          },
+          {
+            "id": "question_before_content",
+            "label": "Each paragraph establishes the question, role, or stakes it will address before presenting findings, descriptions, or data \u2014 it opens like a reason, not like a finding"
+          },
+          {
+            "id": "section_dependency",
+            "label": "Sections and subsections are logically dependent on one another, with transitions expressing necessity (because, therefore, this requires) rather than sequence (next, additionally)"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "paragraph_closure",
+            "label": "Dense paragraphs presenting multiple findings include a synthesis beat that names what the findings collectively establish before transitioning to the next paragraph"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formal Rigor and Tonal Calibration",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Statistical reporting is clean and precise, claims about prior work are grounded with citations that function as anchors for authority rather than mere convention, and word choices maintain confidence without editorializing \u2014 letting the evidence carry the weight rather than the rhetoric.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Claims about the broader literature or prior work are anchored with citations that function as evidence for authority, not just convention \u2014 unanchored claims read as asserted rather than established"
+          },
+          {
+            "id": "tone_calibration",
+            "label": "Word choices convey confidence without editorializing or triumphalism \u2014 reporting rather than celebrating \u2014 so that evidence carries the weight (e.g., 'bear out' over 'vindicate')"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are brief, rare, unhedged, and make the surrounding formal analysis feel more rigorous, not less.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply \u2014 without tipping into casualness"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Implications are woven throughout the section rather than saved for the end, and major findings reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          },
+          {
+            "id": "distributed_implications",
+            "label": "Implications and 'why this matters' beats are woven throughout the section rather than concentrated at the end"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every paragraph must open by telling the reader why they are in that paragraph before content arrives \u2014 the 'opens like a reason, not a finding' principle is the single most consistent demand. Preferred trade-off: the user will sacrifice content comparability and even some formal completeness for argumentative coherence \u2014 they would rather a section do less but have every piece earn its place than cover more ground sequentially. When providing feedback, the user identifies problems with surgical precision and expects targeted fixes rather than wholesale rewrites; they respond best to options that name exactly where the intervention goes and what structural job it performs.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Argumentative Flow",
+        "category": "Structure",
+        "description": "Each paragraph and subsection earns its place through logical dependency, not mere sequence. Paragraphs open by establishing their role in the argument before presenting content \u2014 opening like a reason, not like a finding. The section builds toward its most important claim so the reader senses a destination early, and dense paragraphs synthesize their collective findings before transitioning. Well-placed paragraphs should feel inevitable rather than appended.",
+        "dimensions": [
+          {
+            "id": "paragraph_earned",
+            "label": "Each paragraph's opening connects explicitly to the preceding paragraph's conclusion, claim, or identified gap \u2014 the paragraph feels inevitable rather than merely next"
+          },
+          {
+            "id": "question_before_content",
+            "label": "Each paragraph establishes the question, role, or stakes it will address before presenting findings, descriptions, or data \u2014 it opens like a reason, not like a finding"
+          },
+          {
+            "id": "section_dependency",
+            "label": "Sections and subsections are logically dependent on one another, with transitions expressing necessity (because, therefore, this requires) rather than sequence (next, additionally)"
+          },
+          {
+            "id": "teleological_arc",
+            "label": "The section builds toward its most important claim, with the reader able to sense the destination early rather than encountering it as a surprise"
+          },
+          {
+            "id": "paragraph_closure",
+            "label": "Dense paragraphs presenting multiple findings include a synthesis beat that names what the findings collectively establish before transitioning to the next paragraph"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Motivation and Justification",
+        "category": "Content",
+        "description": "Methodological choices, analytical approaches, and evaluative frameworks are justified before they are described. The reader encounters the problem, failure mode, or question that necessitates a component before learning what that component does or what it found. Formal definitions and metrics earn the reader's trust through conceptual grounding rather than arriving as lists.",
+        "dimensions": [
+          {
+            "id": "problem_before_solution",
+            "label": "Each major component is preceded by the problem, failure mode, or question it addresses"
+          },
+          {
+            "id": "alternatives_named",
+            "label": "Naive or alternative approaches are named explicitly to clarify why the chosen approach is necessary"
+          },
+          {
+            "id": "specific_justification",
+            "label": "Justifications are specific to the design's internal logic, not generic appeals to best practice or convention"
+          },
+          {
+            "id": "cumulative_motivation",
+            "label": "Later components are motivated by the outputs, limitations, or requirements established by earlier components"
+          },
+          {
+            "id": "method_before_finding",
+            "label": "The analytical approach or testing strategy is briefly established before findings are presented"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Terminological Precision and Consistency",
+        "category": "Mechanics",
+        "description": "Key constructs are formally defined and then used with strict consistency. The same concept is referred to with the same term throughout \u2014 no unnecessary synonymic variation \u2014 and technical terms are clearly distinguished from everyday usage.",
+        "dimensions": [
+          {
+            "id": "defined_at_first_use",
+            "label": "Key constructs are formally defined at their first appearance"
+          },
+          {
+            "id": "no_synonymic_drift",
+            "label": "The same concept is referred to with the same term throughout the text without unnecessary variation"
+          },
+          {
+            "id": "technical_distinction",
+            "label": "Technical terms are clearly distinguished from everyday language through formatting, definition, or explicit framing"
+          },
+          {
+            "id": "cross_section_consistency",
+            "label": "Terms introduced in one section are reused consistently when the same construct reappears later"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Stakes and Implications",
+        "category": "Content",
+        "description": "The text articulates what findings and design choices actually mean \u2014 not just what was found, but what it buys us, what it changes, and why the reader should care. Implications are woven throughout the section rather than saved for the end, and major findings reframe earlier claims to reveal their shifted meaning.",
+        "dimensions": [
+          {
+            "id": "significance_articulated",
+            "label": "Key findings or design choices are accompanied by explicit statements of what they mean or imply"
+          },
+          {
+            "id": "consequence_drawn",
+            "label": "At least one moment draws out practical or theoretical consequences beyond the immediate result"
+          },
+          {
+            "id": "reframing_earlier_claims",
+            "label": "Major findings reframe earlier results, showing how their significance has shifted in light of the new evidence"
+          },
+          {
+            "id": "weight_felt",
+            "label": "The reader can identify which findings or claims the author considers most consequential and why"
+          },
+          {
+            "id": "distributed_implications",
+            "label": "Implications and 'why this matters' beats are woven throughout the section rather than concentrated at the end"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Rigor and Tonal Calibration",
+        "category": "Mechanics",
+        "description": "Procedures, protocols, and evaluative criteria are described with enough detail to be reproducible and assessable. Statistical reporting is clean and precise, claims about prior work are grounded with citations that function as anchors for authority rather than mere convention, and word choices maintain confidence without editorializing \u2014 letting the evidence carry the weight rather than the rhetoric.",
+        "dimensions": [
+          {
+            "id": "reproducible_detail",
+            "label": "Procedures and protocols are described with sufficient detail that another researcher could replicate them"
+          },
+          {
+            "id": "operationalized_claims",
+            "label": "Claims about methodological properties (validity, reliability, rigor) are operationalized with specific criteria, not just asserted"
+          },
+          {
+            "id": "specified_thresholds",
+            "label": "Statistical or evaluative criteria include precise specifications (thresholds, metrics, significance levels)"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Claims about the broader literature or prior work are anchored with citations that function as evidence for authority, not just convention \u2014 unanchored claims read as asserted rather than established"
+          },
+          {
+            "id": "tone_calibration",
+            "label": "Word choices convey confidence without editorializing or triumphalism \u2014 reporting rather than celebrating \u2014 so that evidence carries the weight (e.g., 'bear out' over 'vindicate')"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Strategic Register Variation",
+        "category": "Style",
+        "description": "The prose is not written at a single uniform register throughout. At structurally pivotal moments \u2014 where the conceptual core lives \u2014 the author steps back and states the key insight in plain, direct language that demonstrates confident mastery. These moments are brief, rare, unhedged, and make the surrounding formal analysis feel more rigorous, not less.",
+        "dimensions": [
+          {
+            "id": "plain_language_pivots",
+            "label": "Key conceptual insights are stated in plain, direct language that contrasts with the surrounding formal register"
+          },
+          {
+            "id": "emphasis_through_simplicity",
+            "label": "The most important ideas receive rhetorical emphasis through simplicity, not additional complexity"
+          },
+          {
+            "id": "pivotal_placement",
+            "label": "Register shifts occur at structurally pivotal moments (major transitions, framework introductions, conceptual cores) rather than at arbitrary points"
+          },
+          {
+            "id": "confidence_signal",
+            "label": "Plain-language moments convey authority and mastery \u2014 demonstrating the author understands the idea well enough to say it simply \u2014 without tipping into casualness"
+          },
+          {
+            "id": "disciplined_frequency",
+            "label": "Plain-language pivots are used sparingly (once or twice per section) so that each one carries weight"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 13,
+    "source": "criteria_classification",
+    "writing_type": "academic research papers (methods, results, and discussion sections)",
+    "user_goals_summary": "The user writes academic prose that reads as an argument rather than a report. Every paragraph, subsection, and design choice must earn its place through logical dependency, and the reader should feel pulled toward the most important claim rather than informed of findings in sequence. The prose maintains formal rigor throughout, punctuated by rare, precisely placed moments of plain-language synthesis that signal mastery.",
+    "coaching_notes": "Non-negotiable: every paragraph must open by telling the reader why they are in that paragraph before content arrives \u2014 the 'opens like a reason, not a finding' principle is the single most consistent demand. Preferred trade-off: the user will sacrifice content comparability and even some formal completeness for argumentative coherence \u2014 they would rather a section do less but have every piece earn its place than cover more ground sequentially. When providing feedback, the user identifies problems with surgical precision and expects targeted fixes rather than wholesale rewrites; they respond best to options that name exactly where the intervention goes and what structural job it performs."
+  }
+]

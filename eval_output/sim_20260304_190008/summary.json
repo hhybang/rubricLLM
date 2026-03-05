@@ -1,0 +1,62 @@
+{
+  "config": {
+    "num_users": 1,
+    "num_iterations": 1,
+    "chat_turns_per_iteration": 3,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8,
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "user_temperature": 0.8,
+    "enable_probes": false,
+    "enable_log_changes": true,
+    "persona_file": "personas.json",
+    "supabase_url": "",
+    "supabase_key": "",
+    "synthetic_user_id_prefix": "sim_"
+  },
+  "results": [
+    {
+      "persona": "Alex Chen",
+      "project_id": "9ba5ae20-f9d3-456e-aec2-6f13b3efb932",
+      "final_rubric_version": 2,
+      "num_rubric_versions": 2,
+      "num_messages": 16,
+      "num_iterations": 1,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 7,
+          "total_turns": 7,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 4
+        },
+        "task_b_iterations": [],
+        "final_review": {
+          "n_accurate": 3,
+          "n_partial": 2,
+          "n_inaccurate": 0
+        }
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.696,
+          "total_preferences": 23,
+          "covered": 13,
+          "partial": 6,
+          "not_covered": 4
+        }
+      ]
+    }
+  ],
+  "completed_at": "2026-03-04T19:04:29.380570"
+}

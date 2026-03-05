@@ -1,0 +1,2284 @@
+[
+  {
+    "version": 1,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes onboarding-oriented technical docs for competent engineers new to a specific system. Prioritizes building the reader's mental model over providing bare instructions \u2014 docs should explain not just what the system does but why alternatives were rejected. Structure should feel like a guided walkthrough, with warnings and context arriving before the reader needs them.",
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_examples",
+            "label": "Includes copy-pasteable code snippets in the team's primary language(s) for key operations"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Empathy-Driven Troubleshooting",
+        "category": "Audience",
+        "description": "Common failure modes are framed from the engineer's experience \u2014 what they observe and feel \u2014 rather than from the system's perspective. Troubleshooting entries start with the symptom the reader would describe, then provide the explanation and fix.",
+        "dimensions": [
+          {
+            "id": "symptom_first",
+            "label": "Each troubleshooting entry leads with the symptom the engineer would observe or complain about"
+          },
+          {
+            "id": "reader_voice",
+            "label": "Uses the reader's likely language (e.g., quoted frustrations) rather than system-centric descriptions"
+          },
+          {
+            "id": "actionable_resolution",
+            "label": "Each entry includes a concrete resolution or next step, not just an explanation of why it happens"
+          },
+          {
+            "id": "covers_common_cases",
+            "label": "Addresses the failure modes that would most commonly drive someone to ask the author for help"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user's top priority is that docs build the reader's mental model \u2014 they'd rather spend extra sentences on 'why not X' than add more implementation detail. They think carefully about the reader's temporal experience through the document and will push back on information that arrives too late. Structure and information architecture matter more to them than prose style; content under headers was mostly fine from the first draft, but header framing and info placement required two revision rounds.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Empathy-Driven Troubleshooting",
+        "category": "Audience",
+        "description": "Common failure modes are framed from the engineer's experience \u2014 what they observe and feel \u2014 rather than from the system's perspective. Troubleshooting entries start with the symptom the reader would describe, then provide the explanation and fix.",
+        "dimensions": [
+          {
+            "id": "symptom_first",
+            "label": "Each troubleshooting entry leads with the symptom the engineer would observe or complain about"
+          },
+          {
+            "id": "reader_voice",
+            "label": "Uses the reader's likely language (e.g., quoted frustrations) rather than system-centric descriptions"
+          },
+          {
+            "id": "actionable_resolution",
+            "label": "Each entry includes a concrete resolution or next step, not just an explanation of why it happens"
+          },
+          {
+            "id": "covers_common_cases",
+            "label": "Addresses the failure modes that would most commonly drive someone to ask the author for help"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_examples",
+            "label": "Includes copy-pasteable code snippets in the team's primary language(s) for key operations"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes onboarding-oriented technical docs for competent engineers new to a specific system. Prioritizes building the reader's mental model over providing bare instructions \u2014 docs should explain not just what the system does but why alternatives were rejected. Structure should feel like a guided walkthrough, with warnings and context arriving before the reader needs them.",
+    "coaching_notes": "This user's top priority is that docs build the reader's mental model \u2014 they'd rather spend extra sentences on 'why not X' than add more implementation detail. They think carefully about the reader's temporal experience through the document and will push back on information that arrives too late. Structure and information architecture matter more to them than prose style; content under headers was mostly fine from the first draft, but header framing and info placement required two revision rounds."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header \u2014 including sub-headers within sections \u2014 implies what the reader is doing or experiencing at that point, creating a story arc through the document. A document with a single top-level header and no sub-headers fails this criterion regardless of how well the top-level header is worded.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Empathy-Driven Troubleshooting",
+        "category": "Audience",
+        "description": "Common failure modes are framed from the engineer's experience \u2014 what they observe and feel \u2014 rather than from the system's perspective. Troubleshooting entries start with the symptom the reader would describe, then provide the explanation and fix.",
+        "dimensions": [
+          {
+            "id": "symptom_first",
+            "label": "Each troubleshooting entry leads with the symptom the engineer would observe or complain about"
+          },
+          {
+            "id": "reader_voice",
+            "label": "Uses the reader's likely language (e.g., quoted frustrations) rather than system-centric descriptions"
+          },
+          {
+            "id": "actionable_resolution",
+            "label": "Each entry includes a concrete resolution or next step, not just an explanation of why it happens"
+          },
+          {
+            "id": "covers_common_cases",
+            "label": "Addresses the failure modes that would most commonly drive someone to ask the author for help"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Proactive Contextual Teaching",
+        "category": "Content",
+        "description": "The document anticipates where readers will import wrong mental models from prior experience or will wait passively for a failure signal instead of acting on available information. It inserts brief orienting notes at those moments \u2014 before the misapplication would occur \u2014 that reframe the reader's expectations without requiring them to fail first.",
+        "dimensions": [
+          {
+            "id": "prior_experience_flags",
+            "label": "Where this system behaves differently from common alternatives, the doc explicitly notes the difference (e.g., 'this differs from systems where...')"
+          },
+          {
+            "id": "act_before_failure",
+            "label": "Where the reader could act on available information rather than waiting for an error, the doc shows them how (e.g., checking exp directly rather than waiting for a 401)"
+          },
+          {
+            "id": "teaching_near_behavior",
+            "label": "Orienting notes appear immediately alongside the behavior they contextualize, not in a separate background section"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author. Code snippets must be minimal, self-contained, and immediately runnable in isolation; examples that require substantial surrounding scaffolding to execute do not satisfy this criterion.",
+        "dimensions": [
+          {
+            "id": "code_examples",
+            "label": "Includes copy-pasteable code snippets in the team's primary language(s) for key operations"
+          },
+          {
+            "id": "code_minimal_and_runnable",
+            "label": "Code snippets are minimal and self-contained \u2014 a reader can run or adapt them without needing to reconstruct missing context"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "version": 3,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes onboarding-oriented technical docs for competent engineers new to a specific system. Prioritizes building the reader's mental model over providing bare instructions \u2014 docs should explain not just what the system does but why alternatives were rejected. Structure should feel like a guided walkthrough, with warnings and context arriving before the reader needs them.",
+    "coaching_notes": "This user's top priority is that docs build the reader's mental model \u2014 they'd rather spend extra sentences on 'why not X' than add more implementation detail. They think carefully about the reader's temporal experience through the document and will push back on information that arrives too late. Structure and information architecture matter more to them than prose style; content under headers was mostly fine from the first draft, but header framing and info placement required two revision rounds."
+  },
+  {
+    "version": 4,
+    "writing_type": "internal technical documentation for engineering teams",
+    "user_goals_summary": "Writes onboarding-oriented docs for competent backend engineers new to a specific system. Prioritizes teaching the mental model behind architectural decisions (what was rejected and why) over just documenting what exists, and structures documents as guided walkthroughs where warnings always precede the mistakes they prevent.",
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Empathy-Driven Troubleshooting",
+        "category": "Audience",
+        "description": "Common failure modes are framed from the engineer's experience \u2014 what they observe and feel \u2014 rather than from the system's perspective. Troubleshooting entries start with the symptom the reader would describe, then provide the explanation and fix.",
+        "dimensions": [
+          {
+            "id": "symptom_first",
+            "label": "Each troubleshooting entry leads with the symptom the engineer would observe or complain about"
+          },
+          {
+            "id": "reader_voice",
+            "label": "Uses the reader's likely language (e.g., quoted frustrations) rather than system-centric descriptions"
+          },
+          {
+            "id": "actionable_resolution",
+            "label": "Each entry includes a concrete resolution or next step, not just an explanation of why it happens"
+          },
+          {
+            "id": "covers_common_cases",
+            "label": "Addresses the failure modes that would most commonly drive someone to ask the author for help"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Proactive Contextual Teaching",
+        "category": "Content",
+        "description": "The document anticipates where readers will import wrong mental models from prior experience or will wait passively for a failure signal instead of acting on available information. It inserts brief orienting notes at those moments \u2014 before the misapplication would occur \u2014 that reframe the reader's expectations without requiring them to fail first.",
+        "dimensions": [
+          {
+            "id": "prior_experience_flags",
+            "label": "Where this system behaves differently from common alternatives, the doc explicitly notes the difference (e.g., 'this differs from systems where...')"
+          },
+          {
+            "id": "act_before_failure",
+            "label": "Where the reader could act on available information rather than waiting for an error, the doc shows them how (e.g., checking exp directly rather than waiting for a 401)"
+          },
+          {
+            "id": "teaching_near_behavior",
+            "label": "Orienting notes appear immediately alongside the behavior they contextualize, not in a separate background section"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_snippets_quality",
+            "label": "Includes copy-pasteable code snippets that are minimal, self-contained, and can be run or adapted without reconstructing missing context"
+          },
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet does (e.g., '// Decode and check expiration without making a network call')"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every architectural decision must explain what was rejected and why \u2014 the user considers docs without rationale to be actively harmful to onboarding. Preferred trade-off: the user will accept a plausible rationale that can be refined later over a missing one; having *something* is better than a placeholder. Feedback pattern: the user consistently ranks their feedback by importance ('the bigger one' vs. 'the smaller thing') and acknowledges what's working before critiquing \u2014 mirror this structure when presenting revisions.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_snippets_quality",
+            "label": "Includes copy-pasteable code snippets that are minimal, self-contained, and can be run or adapted without reconstructing missing context"
+          },
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet does (e.g., '// Decode and check expiration without making a network call')"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 5,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation for engineering teams",
+    "user_goals_summary": "Writes onboarding-oriented docs for competent backend engineers new to a specific system. Prioritizes teaching the mental model behind architectural decisions (what was rejected and why) over just documenting what exists, and structures documents as guided walkthroughs where warnings always precede the mistakes they prevent.",
+    "coaching_notes": "Non-negotiable: every architectural decision must explain what was rejected and why \u2014 the user considers docs without rationale to be actively harmful to onboarding. Preferred trade-off: the user will accept a plausible rationale that can be refined later over a missing one; having *something* is better than a placeholder. Feedback pattern: the user consistently ranks their feedback by importance ('the bigger one' vs. 'the smaller thing') and acknowledges what's working before critiquing \u2014 mirror this structure when presenting revisions."
+  },
+  {
+    "version": 6,
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Writes onboarding-oriented docs for competent backend engineers who are new to a specific system. Prioritizes teaching the mental model behind architectural decisions (not just describing what the system does), placing warnings before the code they protect, and creating a narrative walkthrough rather than a reference index. Values precision and directness over conversational softening.",
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_snippets_quality",
+            "label": "Includes copy-pasteable code snippets that are minimal, self-contained, and can be run or adapted without reconstructing missing context"
+          },
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet does (e.g., '// Decode and check expiration without making a network call')"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Decision rationale is this user's top non-negotiable \u2014 they will consistently flag any architectural statement that lacks a 'what we rejected and why.' Warning placement is their second priority: they read docs as a sequential workflow and expect the reader to be protected from mistakes before encountering the code that could cause them. They prefer to ship with clearly marked placeholders rather than fabricate details, but will eventually accept reasonable approximations if prompted. Style-wise, they are attuned to minimizing language ('simply') and treat it as a respect issue toward the reader.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_snippets_quality",
+            "label": "Includes copy-pasteable code snippets that are minimal, self-contained, and can be run or adapted without reconstructing missing context"
+          },
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet does (e.g., '// Decode and check expiration without making a network call')"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 7,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Writes onboarding-oriented docs for competent backend engineers who are new to a specific system. Prioritizes teaching the mental model behind architectural decisions (not just describing what the system does), placing warnings before the code they protect, and creating a narrative walkthrough rather than a reference index. Values precision and directness over conversational softening.",
+    "coaching_notes": "Decision rationale is this user's top non-negotiable \u2014 they will consistently flag any architectural statement that lacks a 'what we rejected and why.' Warning placement is their second priority: they read docs as a sequential workflow and expect the reader to be protected from mistakes before encountering the code that could cause them. They prefer to ship with clearly marked placeholders rather than fabricate details, but will eventually accept reasonable approximations if prompted. Style-wise, they are attuned to minimizing language ('simply') and treat it as a respect issue toward the reader."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Token Refresh' should become something like 'What Happens When Your Token Expires')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious. Prose accompanying code must explain the reasoning behind specific values and choices, not merely restate what the code does.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          },
+          {
+            "id": "explains_values_not_just_code",
+            "label": "Prose near code explains why specific values or thresholds were chosen (e.g., why 60 seconds and not 30 or 120), not just what the code does"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_snippets_quality",
+            "label": "Includes copy-pasteable code snippets that are minimal, self-contained, and can be run or adapted without reconstructing missing context"
+          },
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet does (e.g., '// Decode and check expiration without making a network call')"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_path",
+            "label": "Includes instructions or pointers for local development and testing"
+          },
+          {
+            "id": "reference_links",
+            "label": "Links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 8,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Writes onboarding-oriented docs for competent backend engineers who are new to a specific system. Prioritizes teaching the mental model behind architectural decisions (not just describing what the system does), placing warnings before the code they protect, and creating a narrative walkthrough rather than a reference index. Values precision and directness over conversational softening.",
+    "coaching_notes": "Decision rationale is this user's top non-negotiable \u2014 they will consistently flag any architectural statement that lacks a 'what we rejected and why.' Warning placement is their second priority: they read docs as a sequential workflow and expect the reader to be protected from mistakes before encountering the code that could cause them. They prefer to ship with clearly marked placeholders rather than fabricate details, but will eventually accept reasonable approximations if prompted. Style-wise, they are attuned to minimizing language ('simply') and treat it as a respect issue toward the reader."
+  },
+  {
+    "version": 9,
+    "writing_type": "internal engineering documentation",
+    "user_goals_summary": "Produce internal docs that teach engineers the mental model of the system \u2014 not just what it does, but what was considered and rejected and why. Documents should read as guided walkthroughs with warnings placed before the reader can make mistakes, code that is minimal and correct, and a tone that respects the reader's competence without minimizing complexity.",
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions. The reader should know what can go wrong before they've written any code or taken any action.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Expected error states' should become something like 'What to do when revocation calls go wrong')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious. Prose accompanying code explains the reasoning behind specific values and choices, not merely restates what the code does.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          },
+          {
+            "id": "explains_values_not_just_code",
+            "label": "Prose near code explains why specific values or thresholds were chosen (e.g., why 60 seconds and not 30 or 120), not just what the code does"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet does (e.g., '// Decode and check expiration without making a network call')"
+          },
+          {
+            "id": "code_confirms_not_repeats",
+            "label": "Code examples confirm what the surrounding prose already explains rather than re-explaining the same logic in code; when an example runs long, it signals the prose left something unfinished"
+          },
+          {
+            "id": "code_compiles_as_written",
+            "label": "Code examples compile and run as written \u2014 no dead assignments, missing imports, syntax errors, or patterns that would fail in the target language"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_and_references",
+            "label": "Includes local dev setup instructions and links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every significant architectural decision must include what was rejected and why \u2014 this user treats 'what we ruled out' as the most valuable part of documentation. Preferred tradeoff: will accept placeholders for unknown facts rather than fabricated specifics, but once a reasonable rationale is available, prefers shipping it and refining later over blocking on perfection. Code quality feedback is precise and language-aware (caught a Go compile error from a dead assignment) \u2014 treat code examples as production-quality artifacts, not pseudocode.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions. The reader should know what can go wrong before they've written any code or taken any action.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious. Prose accompanying code explains the reasoning behind specific values and choices, not merely restates what the code does.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          },
+          {
+            "id": "explains_values_not_just_code",
+            "label": "Prose near code explains why specific values or thresholds were chosen (e.g., why 60 seconds and not 30 or 120), not just what the code does"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet does (e.g., '// Decode and check expiration without making a network call')"
+          },
+          {
+            "id": "code_confirms_not_repeats",
+            "label": "Code examples confirm what the surrounding prose already explains rather than re-explaining the same logic in code; when an example runs long, it signals the prose left something unfinished"
+          },
+          {
+            "id": "code_compiles_as_written",
+            "label": "Code examples compile and run as written \u2014 no dead assignments, missing imports, syntax errors, or patterns that would fail in the target language"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_and_references",
+            "label": "Includes local dev setup instructions and links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Expected error states' should become something like 'What to do when revocation calls go wrong')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 10,
+    "source": "criteria_classification",
+    "writing_type": "internal engineering documentation",
+    "user_goals_summary": "Produce internal docs that teach engineers the mental model of the system \u2014 not just what it does, but what was considered and rejected and why. Documents should read as guided walkthroughs with warnings placed before the reader can make mistakes, code that is minimal and correct, and a tone that respects the reader's competence without minimizing complexity.",
+    "coaching_notes": "Non-negotiable: every significant architectural decision must include what was rejected and why \u2014 this user treats 'what we ruled out' as the most valuable part of documentation. Preferred tradeoff: will accept placeholders for unknown facts rather than fabricated specifics, but once a reasonable rationale is available, prefers shipping it and refining later over blocking on perfection. Code quality feedback is precise and language-aware (caught a Go compile error from a dead assignment) \u2014 treat code examples as production-quality artifacts, not pseudocode."
+  },
+  {
+    "version": 11,
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Writes onboarding-oriented internal docs for backend engineers who are competent generally but new to a specific system. Values documents that teach the mental model behind architectural decisions (not just the decisions themselves), place warnings before the reader can make mistakes, and include tight, runnable code examples that confirm what the prose already explains.",
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions. The reader should know what can go wrong before they've written any code or taken any action.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet accomplishes \u2014 not a docstring inside, but a comment above the block that orients the reader at a glance"
+          },
+          {
+            "id": "code_confirms_not_repeats",
+            "label": "Code examples confirm what the surrounding prose already explains rather than re-explaining the same logic in code; when an example runs long, it signals the prose left something unfinished"
+          },
+          {
+            "id": "code_compiles_as_written",
+            "label": "Code examples compile and run as written \u2014 no dead assignments, missing imports, syntax errors, or patterns that would fail if copy-pasted into a file"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_and_references",
+            "label": "Includes local dev setup instructions and links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Expected error states' should become something like 'What to do when revocation calls go wrong')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious. Prose accompanying code explains the reasoning behind specific values and choices, not merely restates what the code does.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          },
+          {
+            "id": "explains_values_not_just_code",
+            "label": "Prose near code explains why specific values or thresholds were chosen (e.g., why 60 seconds and not 30 or 120), not just what the code does"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiables: every architectural decision must name a rejected alternative with a concrete tradeoff, and every warning must appear before the action it applies to \u2014 these two patterns are never optional. Code philosophy: examples should be minimal confirmations of what the prose already taught; long code blocks signal that the prose didn't finish its job. Code must be copy-paste runnable. Feedback style: this user gives precisely prioritized feedback ('the bigger issue' / 'the smaller thing') and expects changes to preserve previously-approved work \u2014 don't lose established patterns when making targeted fixes.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius)"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions. The reader should know what can go wrong before they've written any code or taken any action.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers at every level read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc through the document.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Expected error states' should become something like 'What to do when revocation calls go wrong')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious. Prose accompanying code explains the reasoning behind specific values and choices, not merely restates what the code does.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          },
+          {
+            "id": "explains_values_not_just_code",
+            "label": "Prose near code explains why specific values or thresholds were chosen (e.g., why 60 seconds and not 30 or 120), not just what the code does"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know, but doesn't leave gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author.",
+        "dimensions": [
+          {
+            "id": "code_purpose_comments",
+            "label": "Each code snippet is preceded by a one-line comment describing what the snippet accomplishes \u2014 not a docstring inside, but a comment above the block that orients the reader at a glance"
+          },
+          {
+            "id": "code_confirms_not_repeats",
+            "label": "Code examples confirm what the surrounding prose already explains rather than re-explaining the same logic in code; when an example runs long, it signals the prose left something unfinished"
+          },
+          {
+            "id": "code_compiles_as_written",
+            "label": "Code examples compile and run as written \u2014 no dead assignments, missing imports, syntax errors, or patterns that would fail if copy-pasted into a file"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what to do about it"
+          },
+          {
+            "id": "local_dev_and_references",
+            "label": "Includes local dev setup instructions and links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 12,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Writes onboarding-oriented internal docs for backend engineers who are competent generally but new to a specific system. Values documents that teach the mental model behind architectural decisions (not just the decisions themselves), place warnings before the reader can make mistakes, and include tight, runnable code examples that confirm what the prose already explains.",
+    "coaching_notes": "Non-negotiables: every architectural decision must name a rejected alternative with a concrete tradeoff, and every warning must appear before the action it applies to \u2014 these two patterns are never optional. Code philosophy: examples should be minimal confirmations of what the prose already taught; long code blocks signal that the prose didn't finish its job. Code must be copy-paste runnable. Feedback style: this user gives precisely prioritized feedback ('the bigger issue' / 'the smaller thing') and expects changes to preserve previously-approved work \u2014 don't lose established patterns when making targeted fixes."
+  },
+  {
+    "version": 13,
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Produce onboarding-oriented internal docs that teach engineers the mental model of the system \u2014 not just what to do, but why the system works this way and what was considered and rejected. Docs should be self-contained enough that an engineer can get up and running without pinging the author, with warnings and gotchas placed before the reader can make the mistake.",
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system \u2014 this is 'actually the useful part' for someone trying to understand why things work the way they do.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius) rather than vague assertions"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions. The reader should know what can go wrong before they've written any code or taken any action.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc that an engineer following top-to-bottom feels guided by rather than lost in.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Expected error states' should become something like 'What to do when revocation calls go wrong')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious. Prose near code explains the reasoning behind specific values and thresholds, not merely restates what the code does.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          },
+          {
+            "id": "explains_values_not_just_code",
+            "label": "Prose near code explains why specific values or thresholds were chosen (e.g., why 60 seconds and not 30 or 120, why 5s timeout), not just what the code does"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know (e.g., what a JWT is), but leaves no gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author on Slack.",
+        "dimensions": [
+          {
+            "id": "code_purpose_comments",
+            "label": "Every code snippet has a one-line comment above the block describing what it accomplishes at a glance \u2014 not a docstring inside, but a comment that orients the reader before they read the code"
+          },
+          {
+            "id": "code_confirms_not_repeats",
+            "label": "Code examples confirm what the surrounding prose already explains rather than re-explaining the same logic; long examples signal the prose left something unfinished"
+          },
+          {
+            "id": "code_compiles_as_written",
+            "label": "Code examples compile and run as written \u2014 no dead assignments, unused variables, missing imports, syntax errors, or patterns that would fail if copy-pasted into a file"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what action to take"
+          },
+          {
+            "id": "local_dev_and_references",
+            "label": "Includes local dev setup instructions and links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiables in order of intensity: (1) rejected-alternative rationales \u2014 the user will explicitly call out missing 'why not' explanations and considers them the most valuable part of the doc; (2) warning placement before the relevant action \u2014 raised across every iteration; (3) one-line comment above every code block \u2014 raised three separate times, treat as a hard rule. The user's preferred trade-off is depth of reasoning over brevity \u2014 they'd rather a section be longer because it explains a tradeoff than shorter because it omits one. Code correctness is treated as a bug, not a style issue \u2014 a non-compiling snippet is equivalent to a factual error.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Decision Rationale",
+        "category": "Content",
+        "description": "Architectural decisions include what was ruled out and why, not just what was chosen. The rejected alternatives and their concrete tradeoffs are what teach the reader the mental model of the system \u2014 this is 'actually the useful part' for someone trying to understand why things work the way they do.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Each significant design choice names at least one rejected alternative"
+          },
+          {
+            "id": "tradeoff_explained",
+            "label": "The reason for rejecting each alternative is stated in concrete terms (e.g., performance, complexity, blast radius) rather than vague assertions"
+          },
+          {
+            "id": "rationale_near_decision",
+            "label": "The rationale appears close to where the decision is first introduced, not in a separate section"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "The cumulative effect of rationales gives the reader a coherent mental model of the system's priorities and constraints"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Preventive Information Placement",
+        "category": "Structure",
+        "description": "Warnings, gotchas, and prerequisite knowledge appear before the section where the reader would first encounter the problem \u2014 not alongside or after the relevant instructions. The reader should know what can go wrong before they've written any code or taken any action.",
+        "dimensions": [
+          {
+            "id": "warnings_before_action",
+            "label": "Each warning or gotcha is positioned before the instructions it applies to, not embedded within or after them"
+          },
+          {
+            "id": "prerequisites_upfront",
+            "label": "Setup prerequisites (e.g., registration, configuration) appear before the first step that depends on them"
+          },
+          {
+            "id": "visually_distinct",
+            "label": "Warnings are visually distinct from surrounding content (e.g., blockquotes, callout boxes, bold prefixes)"
+          },
+          {
+            "id": "no_buried_gotchas",
+            "label": "No critical failure-causing information is buried inside a paragraph the reader might skim"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Precise Technical Tone",
+        "category": "Style",
+        "description": "Uses exact, mechanistic descriptions of system behavior rather than softening or hedging language. Avoids words like 'simply,' 'just,' or 'easy' that minimize complexity or make readers feel they missed something obvious. Prose near code explains the reasoning behind specific values and thresholds, not merely restates what the code does.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids words like 'simply,' 'just,' 'easy,' 'obviously' that minimize complexity or imply the reader should find something trivial"
+          },
+          {
+            "id": "mechanical_over_abstract",
+            "label": "Describes system behavior in precise mechanical terms \u2014 what happens step by step \u2014 rather than vague summaries"
+          },
+          {
+            "id": "direct_imperative",
+            "label": "Uses direct, imperative phrasing for instructions rather than hedging or passive constructions"
+          },
+          {
+            "id": "consistent_register",
+            "label": "Maintains a professional-direct register throughout \u2014 not overly formal, not casually chatty"
+          },
+          {
+            "id": "explains_values_not_just_code",
+            "label": "Prose near code explains why specific values or thresholds were chosen (e.g., why 60 seconds and not 30 or 120, why 5s timeout), not just what the code does"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative Header Flow",
+        "category": "Structure",
+        "description": "Section headers read as a walkthrough, not an index. Each header implies what the reader is doing or experiencing at that point, creating a story arc that an engineer following top-to-bottom feels guided by rather than lost in.",
+        "dimensions": [
+          {
+            "id": "action_or_experience",
+            "label": "Headers convey an action the reader is taking or an experience they're having, not just a topic label"
+          },
+          {
+            "id": "sequential_logic",
+            "label": "Headers follow a logical sequence that mirrors the reader's actual workflow"
+          },
+          {
+            "id": "scannable_narrative",
+            "label": "Reading just the headers in order tells a coherent story of the onboarding path"
+          },
+          {
+            "id": "no_index_style",
+            "label": "No headers are bare noun phrases that merely name a concept (e.g., 'Expected error states' should become something like 'What to do when revocation calls go wrong')"
+          },
+          {
+            "id": "sufficient_sectioning",
+            "label": "Documents longer than a short paragraph are divided into multiple headed sections \u2014 a single top-level title with no sub-headers does not satisfy this criterion"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Self-Service Completeness",
+        "category": "Content",
+        "description": "The document contains everything an engineer needs to get up and running independently \u2014 annotated code snippets, error handling guidance, local dev setup, and reference links \u2014 so they don't need to ping the author on Slack.",
+        "dimensions": [
+          {
+            "id": "code_purpose_comments",
+            "label": "Every code snippet has a one-line comment above the block describing what it accomplishes at a glance \u2014 not a docstring inside, but a comment that orients the reader before they read the code"
+          },
+          {
+            "id": "code_confirms_not_repeats",
+            "label": "Code examples confirm what the surrounding prose already explains rather than re-explaining the same logic; long examples signal the prose left something unfinished"
+          },
+          {
+            "id": "code_compiles_as_written",
+            "label": "Code examples compile and run as written \u2014 no dead assignments, unused variables, missing imports, syntax errors, or patterns that would fail if copy-pasted into a file"
+          },
+          {
+            "id": "error_handling_table",
+            "label": "Enumerates expected error states with what each means and what action to take"
+          },
+          {
+            "id": "local_dev_and_references",
+            "label": "Includes local dev setup instructions and links to related resources (proto files, runbooks, Slack channels, registries) so the reader can go deeper without asking"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Audience Calibration",
+        "category": "Audience",
+        "description": "Assumes competence on general industry concepts while providing full depth on system-specific details. Does not over-explain what engineers already know (e.g., what a JWT is), but leaves no gaps on what's unique to this system.",
+        "dimensions": [
+          {
+            "id": "no_general_overexplain",
+            "label": "Does not explain general concepts the target audience already knows (e.g., what a JWT is, how gRPC works)"
+          },
+          {
+            "id": "system_specifics_thorough",
+            "label": "System-specific details (configuration, endpoints, error codes, flows) are explained thoroughly"
+          },
+          {
+            "id": "jargon_appropriate",
+            "label": "Uses domain jargon appropriate to the audience level without unnecessary definition"
+          },
+          {
+            "id": "context_sufficient",
+            "label": "Provides enough context that the reader can act without asking the author for clarification"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 14,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Produce onboarding-oriented internal docs that teach engineers the mental model of the system \u2014 not just what to do, but why the system works this way and what was considered and rejected. Docs should be self-contained enough that an engineer can get up and running without pinging the author, with warnings and gotchas placed before the reader can make the mistake.",
+    "coaching_notes": "Non-negotiables in order of intensity: (1) rejected-alternative rationales \u2014 the user will explicitly call out missing 'why not' explanations and considers them the most valuable part of the doc; (2) warning placement before the relevant action \u2014 raised across every iteration; (3) one-line comment above every code block \u2014 raised three separate times, treat as a hard rule. The user's preferred trade-off is depth of reasoning over brevity \u2014 they'd rather a section be longer because it explains a tradeoff than shorter because it omits one. Code correctness is treated as a bug, not a style issue \u2014 a non-compiling snippet is equivalent to a factual error."
+  }
+]

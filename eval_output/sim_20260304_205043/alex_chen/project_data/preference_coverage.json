@@ -1,0 +1,348 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional Density",
+        "explanation": "Functional Density explicitly requires every line to do identifiable work and states that if a line can be cut without loss, it should be. This captures conciseness."
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the lead",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The 'Direct, Non-Corporate Tone' criterion calls for direct language and delivering information without softening. Combined with Information Sequencing placing news early, this covers directness."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The rubric addresses tone being honest, human, and direct, which implies professionalism, but it never explicitly states the tone should be professional. The focus is more on avoiding corporate tone than ensuring professionalism."
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The criterion explicitly avoids corporate communications style, PR framing, and stock phrases, which addresses stiffness and over-formality."
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "Clean, Decisive Endings requires exactly one clear next step or touchpoint, which is a call to action."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion explicitly addresses paragraph length or formatting. Functional Density addresses content efficiency but not visual paragraph length."
+      },
+      {
+        "preference": "Email should begin by acknowledging the recipient's effort or the current situation, limited to one sentence maximum",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Information Sequencing requires acknowledgment of the reader's situation before the news, but does not specify it should be limited to one sentence maximum."
+      },
+      {
+        "preference": "The main news or update should be delivered immediately after the acknowledgment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Information Sequencing explicitly requires acknowledgment before the key news and describes an arc of context \u2192 news \u2192 impact \u2192 details \u2192 next step."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters (stakes), not just state facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Information Sequencing requires a reader-facing impact line as its own beat, and Reader-Centered Framing requires naming stakes and impact. Together they cover explaining why it matters."
+      },
+      {
+        "preference": "The why/stakes framing should follow the news, not precede it \u2014 the order acknowledgment \u2192 news \u2192 why \u2192 next step must be preserved",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Information Sequencing explicitly describes the arc as context \u2192 news \u2192 impact \u2192 details \u2192 next step and states empathy/acknowledgment should not appear only after the news."
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing explicitly requires impact described in terms of what changes for the reader, not why the sender made the decision."
+      },
+      {
+        "preference": "The email should not center the sender's reasoning or motivations when explaining why something matters",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing explicitly says to avoid framing that explains or defends the sender's reasoning as the emotional center of the message."
+      },
+      {
+        "preference": "The email should end with one concrete next step that is forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "Clean, Decisive Endings requires exactly one clear next step or touchpoint. The forward-looking and action-oriented aspect is partially implied but well-covered."
+      },
+      {
+        "preference": "Closing lines should not contain expressions of gratitude for patience (e.g., 'thanks for your patience')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "Direct, Non-Corporate Tone avoids stock phrases like 'thank you for your resilience,' and Clean, Decisive Endings prohibits trailing sentiment. 'Thanks for your patience' falls squarely into both."
+      },
+      {
+        "preference": "Closing lines should not contain motivational platitudes or generic positive sentiment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "Clean, Decisive Endings explicitly prohibits motivational, sentimental, or 'all-hands' style closing lines after the final action."
+      },
+      {
+        "preference": "No trailing sentiment or extra lines should appear after the call to action, as this weakens the email",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "Clean, Decisive Endings explicitly states the email stops when there is nothing left to communicate and prohibits trailing filler."
+      },
+      {
+        "preference": "When multiple people need to act, the email should name one clear owner with a deadline rather than making a group ask",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Specific Accountability",
+        "explanation": "Specific Accountability requires naming specific people and avoiding vague group-asks, and mentions not multiplying contact points. However, the explicit requirement for a deadline is not mentioned in the rubric."
+      },
+      {
+        "preference": "Action items should not be vague group requests like 'everyone please review'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Specific Accountability",
+        "explanation": "Specific Accountability explicitly states action items should not be phrased as 'everyone figure it out' and should be directed to specific people."
+      },
+      {
+        "preference": "Action items should not be over-specified with org structure details or assumptions the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses the risk of over-specifying action items with unnecessary organizational details or assumptions. The rubric focuses on under-specification but not over-specification."
+      },
+      {
+        "preference": "Email must not contain corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "Direct, Non-Corporate Tone explicitly avoids language that reads like corporate communications and calls for plain, direct language rather than corporate or PR-style framing."
+      },
+      {
+        "preference": "Email must not have a passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The criterion says to deliver difficult information without assigning blame and to be honest and direct, which partially addresses passive aggression. However, passive-aggressive tone is not explicitly called out."
+      },
+      {
+        "preference": "Email must not contain walls of text (long unbroken blocks of prose)",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses visual formatting, paragraph length, or avoiding walls of text. Functional Density addresses content efficiency but not visual layout."
+      },
+      {
+        "preference": "Email must not use excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses punctuation usage or excessive exclamation marks."
+      }
+    ],
+    "total_preferences": 23,
+    "covered_count": 15,
+    "partially_covered_count": 4,
+    "not_covered_count": 4,
+    "coverage_score": 0.739,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-04T20:55:10.187157"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional Density",
+        "explanation": "Functional Density directly addresses conciseness: 'Every line does identifiable work. No padding, no decorative transitions, no restating the same point twice. If a sentence can be cut without losing information or structure, it should be cut.'"
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the lead",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The 'Direct, Non-Corporate Tone' criterion calls for 'honest and human \u2014 direct' language and 'plain, direct language.' The Information Sequencing criterion also ensures the news is delivered early, preventing burying the lead."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The criterion specifies 'professional without being stiff,' directly addressing professionalism."
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "Explicitly states 'professional without being stiff.'"
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "Clean, Decisive Endings requires 'exactly one clear next step or touchpoint' and a 'forward-looking and action-oriented' closing line."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional Density",
+        "explanation": "Functional Density explicitly states 'Paragraphs are short \u2014 dense blocks of text are broken up or cut.'"
+      },
+      {
+        "preference": "Email should begin by acknowledging the recipient's effort or the current situation, limited to one sentence maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Information Sequencing explicitly requires 'acknowledge the situation first (one sentence max)' and has a dimension: 'Acknowledgment section is one sentence or less.'"
+      },
+      {
+        "preference": "The main news or update should be delivered immediately after the acknowledgment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "The sequence is explicitly defined as 'acknowledge the situation first... then deliver the news' with 'Acknowledgment of the reader's situation appears before the key news or change is delivered.'"
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters (stakes), not just state facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing requires stakes language that 'creates felt weight' and Information Sequencing includes 'explain why it matters from the reader's side' as a required beat."
+      },
+      {
+        "preference": "The why/stakes framing should follow the news, not precede it \u2014 the order acknowledgment \u2192 news \u2192 why \u2192 next step must be preserved",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Information Sequencing explicitly mandates the order: 'acknowledge the situation first, then deliver the news, then explain why it matters... then one concrete next step. All elements can be present and the email still fails if they're in the wrong order.'"
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing explicitly requires 'Stakes are grounded in the reader's world \u2014 their plans, their teams, their commitments \u2014 not in the sender's intentions.'"
+      },
+      {
+        "preference": "The email should not center the sender's reasoning or motivations when explaining why something matters",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Directly addressed: 'Avoids framing that explains or defends the sender's reasoning as the emotional center of the message.'"
+      },
+      {
+        "preference": "The email should end with one concrete next step that is forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "'The close contains exactly one clear next step' and 'Closing line is forward-looking and action-oriented \u2014 it points to what happens next.'"
+      },
+      {
+        "preference": "Closing lines should not contain expressions of gratitude for patience (e.g., 'thanks for your patience')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "'No motivational, sentimental, or gratitude-based closing lines after the final action' and the Direct tone criterion avoids 'thank you for your resilience' type phrases."
+      },
+      {
+        "preference": "Closing lines should not contain motivational platitudes or generic positive sentiment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "'No motivational, sentimental, or gratitude-based closing lines after the final action' directly covers this."
+      },
+      {
+        "preference": "No trailing sentiment or extra lines should appear after the call to action, as this weakens the email",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Clean, Decisive Endings",
+        "explanation": "'The email stops when there is nothing left to communicate \u2014 no trailing filler' and 'Anything after the final action item weakens the close.'"
+      },
+      {
+        "preference": "When multiple people need to act, the email should name one clear owner with a deadline rather than making a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Specific Accountability",
+        "explanation": "'Anyone responsible for a task or deliverable is identified by name or clear role, not left to a group to self-assign' and 'Each action item includes a deadline or timeframe.'"
+      },
+      {
+        "preference": "Action items should not be vague group requests like 'everyone please review'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Specific Accountability",
+        "explanation": "Explicitly: 'Action items are directed to specific people \u2014 \"everyone please review\" is not an action item.'"
+      },
+      {
+        "preference": "Action items should not be over-specified with org structure details or assumptions the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Specific Accountability",
+        "explanation": "'Action items do not over-specify org structure or process details the email shouldn't assume \u2014 ownership is clear without being presumptuous.'"
+      },
+      {
+        "preference": "Email must not contain corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The criterion calls for 'plain, direct language rather than corporate or PR-style framing' and avoids 'stock phrases like \"thank you for your resilience,\" \"we remain committed,\" or \"as we navigate this together.\"'"
+      },
+      {
+        "preference": "Email must not have a passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "The criterion addresses 'direct without blaming' and 'not through accusation, finger-pointing,' which partially covers passive aggression, but passive aggression as a specific tonal pattern (indirect hostility, backhanded politeness) is not explicitly named or dimensioned."
+      },
+      {
+        "preference": "Email must not contain walls of text (long unbroken blocks of prose)",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Functional Density",
+        "explanation": "'Paragraphs are short \u2014 dense blocks of text are broken up or cut' directly addresses walls of text."
+      },
+      {
+        "preference": "Email must not use excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Corporate Tone",
+        "explanation": "Explicitly: 'No excessive exclamation marks \u2014 enthusiasm does not substitute for substance.'"
+      }
+    ],
+    "total_preferences": 23,
+    "covered_count": 22,
+    "partially_covered_count": 1,
+    "not_covered_count": 0,
+    "coverage_score": 0.978,
+    "iteration": 2,
+    "rubric_version": 6,
+    "timestamp": "2026-03-04T21:03:15.701800"
+  }
+]

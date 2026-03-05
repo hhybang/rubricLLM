@@ -4292,7 +4292,7 @@ if 'current_project' not in st.session_state:
 if 'current_project_id' not in st.session_state:
     st.session_state.current_project_id = None  # Project UUID from Supabase
 if 'survey_responses' not in st.session_state:
-    st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+    st.session_state.survey_responses = {"task_a": {}, "task_b": {}}
 
 if 'selected_conversation' not in st.session_state:
     st.session_state.selected_conversation = None
@@ -8218,15 +8218,15 @@ with st.sidebar:
                         if isinstance(_latest, dict) and "task_a" in _latest:
                             st.session_state.survey_responses = _latest
                         else:
-                            st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+                            st.session_state.survey_responses = {"task_a": {}, "task_b": {}}
                     elif isinstance(_loaded_survey, dict) and "task_a" in _loaded_survey:
                         st.session_state.survey_responses = _loaded_survey
                     else:
-                        st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+                        st.session_state.survey_responses = {"task_a": {}, "task_b": {}}
                 else:
-                    st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+                    st.session_state.survey_responses = {"task_a": {}, "task_b": {}}
             else:
-                st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+                st.session_state.survey_responses = {"task_a": {}, "task_b": {}}
             # Load cold-start preferences from database
             st.session_state.infer_coldstart_text = ""
             st.session_state.infer_coldstart_saved = False
@@ -8435,7 +8435,7 @@ with st.sidebar:
                             st.session_state.editing_criteria = []
                             st.session_state.messages = []
                             st.session_state.selected_conversation = None
-                            st.session_state.survey_responses = {"task_a": {}, "task_b": {}, "final": {}}
+                            st.session_state.survey_responses = {"task_a": {}, "task_b": {}}
                             st.session_state.probe_draft_counts = {}
                             st.session_state.probe_pending = None
                             if 'active_rubric_idx' in st.session_state:
@@ -11403,16 +11403,12 @@ with tab_survey:
         st.session_state.survey_responses = {
             "task_a": {},
             "task_b": {},
-            "final": {}
         }
-
-    # Get active rubric for final survey
-    survey_rubric_dict, _, _ = get_active_rubric()
 
     # Task selection
     survey_task = st.radio(
         "Select which survey to complete:",
-        ["Task A (without rubric)", "Task B (with rubric, visible)", "Final Review"],
+        ["Task A (without rubric)", "Task B (with rubric, visible)"],
         horizontal=True,
         key="survey_task_select"
     )
@@ -11595,122 +11591,20 @@ with tab_survey:
                 st.toast("Task B survey saved locally!")
             st.rerun()
 
-    # ============ FINAL REVIEW ============
-    elif survey_task == "Final Review":
-        st.subheader("Final Review: Rubric Accuracy")
-        st.markdown("*Review what the system learned about your preferences.*")
-
-        final = st.session_state.survey_responses["final"]
-
-        if not survey_rubric_dict or not survey_rubric_dict.get("rubric"):
-            st.warning("No active rubric found. Please create or select a rubric first.")
-        else:
-            rubric_list = survey_rubric_dict.get("rubric", [])
-
-            st.markdown("**Q1: This is what the system learned about your preferences. Walk me through it — what's right, what's wrong, what surprises you?**")
-            st.markdown("*For each criterion, rate its accuracy and provide a brief explanation.*")
-
-            st.markdown("---")
-
-            # Initialize criteria responses if needed
-            if "criteria_ratings" not in final:
-                final["criteria_ratings"] = {}
-
-            for idx, criterion in enumerate(rubric_list):
-                crit_name = criterion.get("name", f"Criterion {idx + 1}")
-                crit_desc = criterion.get("description", "")
-                crit_dims = criterion.get("dimensions", [])
-
-                with st.expander(f"**{crit_name}**", expanded=True):
-                    st.markdown(f"*{crit_desc}*")
-
-                    if crit_dims:
-                        st.markdown("**Dimensions:**")
-                        for dim in crit_dims:
-                            st.markdown(f"- {dim.get('label', '')}")
-
-                    st.markdown("---")
-
-                    # Initialize this criterion's response
-                    if crit_name not in final["criteria_ratings"]:
-                        final["criteria_ratings"][crit_name] = {"accuracy": "Partially right", "explanation": ""}
-
-                    # Accuracy rating
-                    accuracy_options = ["Accurate", "Partially right", "Inaccurate"]
-                    final["criteria_ratings"][crit_name]["accuracy"] = st.radio(
-                        "How accurate is this criterion?",
-                        accuracy_options,
-                        index=accuracy_options.index(final["criteria_ratings"][crit_name].get("accuracy", "Partially right")),
-                        key=f"final_accuracy_{idx}",
-                        horizontal=True
-                    )
-
-                    # Brief explanation
-                    final["criteria_ratings"][crit_name]["explanation"] = st.text_input(
-                        "Brief explanation (what's right/wrong):",
-                        value=final["criteria_ratings"][crit_name].get("explanation", ""),
-                        key=f"final_explanation_{idx}",
-                        placeholder="e.g., 'This is spot on' or 'I actually prefer the opposite'"
-                    )
-
-            st.markdown("---")
-
-            # Q2
-            st.markdown("**Q2: Is there anything here you wouldn't have thought to mention yourself?**")
-            final["q2"] = st.text_area(
-                "Unexpected insights",
-                value=final.get("q2", ""),
-                placeholder="Any preferences the system captured that you didn't realize you had, or wouldn't have articulated...",
-                key="final_q2",
-                label_visibility="collapsed",
-                height=100
-            )
-
-            if st.button("Save Final Review", type="primary", key="save_final"):
-                final["completed"] = True
-                final["timestamp"] = datetime.now().isoformat()
-                # Save to database
-                project_id = st.session_state.get('current_project_id')
-                if project_id:
-                    supabase = st.session_state.get('supabase')
-                    if supabase:
-                        try:
-                            save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
-                            # Also save as separate data type for analyze_results.py
-                            _rb_dict_f, _, _ = get_active_rubric()
-                            _rb_ver_f = _rb_dict_f.get("version", 0) if _rb_dict_f else 0
-                            save_project_data(supabase, project_id, "survey_final_review", {
-                                "criteria_ratings": final.get("criteria_ratings", {}),
-                                "q2": final.get("q2", ""),
-                                "rubric_version": _rb_ver_f,
-                                "timestamp": final["timestamp"],
-                            })
-                            st.toast("Final review saved!")
-                        except Exception as e:
-                            st.error(f"Failed to save: {e}")
-                    else:
-                        st.toast("Final review saved locally!")
-                else:
-                    st.toast("Final review saved locally!")
-                st.rerun()
-
     # ============ SURVEY SUMMARY & EXPORT ============
     st.markdown("---")
     st.subheader("Survey Progress")
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     with col1:
         a_done = st.session_state.survey_responses["task_a"].get("completed", False)
         st.markdown(f"**Task A:** {'✅ Complete' if a_done else '⬜ Incomplete'}")
     with col2:
         b_done = st.session_state.survey_responses["task_b"].get("completed", False)
         st.markdown(f"**Task B:** {'✅ Complete' if b_done else '⬜ Incomplete'}")
-    with col3:
-        f_done = st.session_state.survey_responses["final"].get("completed", False)
-        st.markdown(f"**Final:** {'✅ Complete' if f_done else '⬜ Incomplete'}")
 
     # Save to database option
-    if any([a_done, b_done, f_done]):
+    if any([a_done, b_done]):
         project_id = st.session_state.get('current_project_id')
         if project_id:
             supabase = st.session_state.get('supabase')
@@ -11734,14 +11628,6 @@ with tab_survey:
                                 "q1": _tb.get("q1"), "q2": _tb.get("q2"), "q3": _tb.get("q3", ""),
                                 "q4": _tb.get("q4", ""), "q5": _tb.get("q5", ""), "q6": _tb.get("q6", ""),
                                 "iteration": _rb_ver_all, "timestamp": _tb.get("timestamp", datetime.now().isoformat()),
-                            })
-                        if _all_sr.get("final", {}).get("completed"):
-                            _fn = _all_sr["final"]
-                            save_project_data(supabase, project_id, "survey_final_review", {
-                                "criteria_ratings": _fn.get("criteria_ratings", {}),
-                                "q2": _fn.get("q2", ""),
-                                "rubric_version": _rb_ver_all,
-                                "timestamp": _fn.get("timestamp", datetime.now().isoformat()),
                             })
                         st.success("All survey responses saved to database!")
                     except Exception as e:

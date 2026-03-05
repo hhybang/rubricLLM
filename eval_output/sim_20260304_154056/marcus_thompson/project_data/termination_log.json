@@ -1,0 +1,257 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 3,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.33666666666666667,
+              "reasoning": "The structure is solid and the audience calibration is right, but the draft misses almost all of my hidden expectations \u2014 no architectural rationale that explains what alternatives were rejected, code examples are missing their 'what this does' comment and some exceed the implicit complexity threshold, warnings are placed after the relevant sections rather than before, headers read like labeled sections rather than a narrative arc, and the draft uses 'rather than' constructions that hedge instead of being precise.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.65,
+              "reasoning": "The narrative header structure is solid and the language is clean, but two hidden preferences scored 0: there's no 'rejected alternatives' reasoning anywhere in the doc for architectural decisions, and warnings consistently appear after the relevant sections rather than before them.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1, H3, H4, and H5 are all fully satisfied \u2014 the architectural decisions now include rejected alternatives with reasoning, warnings are pre-emptive, the header flow reads as a walkthrough, and language is precise throughout. H2 is the one partial: the code examples are minimal and scoped correctly, but neither the Go nor Python snippet includes the required one-line 'what this does' comment above it.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 3,
+        "max_drafts": 20,
+        "total_turns": 6,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.5466666666666666,
+              "reasoning": "Two hidden preferences scored 0 \u2014 no rejected alternatives are discussed anywhere, and the critical 'do not retry' warning appears after the failure-handling section rather than before it. These are both structural issues that would trip up a reader following the doc in order."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": false
+          },
+          {
+            "turn": 4,
+            "has_draft": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7899999999999999,
+              "reasoning": "The draft is structurally solid and handles warnings-before-content and flow well, but H1 is a hard zero \u2014 the architectural rationale is a placeholder, not actual content. H2 is partial because the isExpired example is missing the required one-line 'what this does' comment above it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "Every hidden preference is fully met: the architectural rationale names the rejected alternative with a concrete tradeoff, all code examples are minimal with one-line comments, warnings precede the sections they apply to, headers tell a story rather than label sections, and no hedging language appears anywhere. Core preferences are satisfied throughout.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H2, and H3 are all strong \u2014 the rejected-alternative reasoning and pre-emptive warnings are exactly right. H4 and H5 both have minor violations that pull the hidden average to exactly 0.80, but H5 has a direct 'simply' usage which is a firm no for me, so I can't accept as-is."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "Every hidden preference is fully met: architectural decisions include rejected alternatives with reasoning, code examples are minimal with one-line comments, warnings precede the relevant sections, headers tell a narrative story, and banned words are absent throughout.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 4,
+        "max_drafts": 20,
+        "total_turns": 4,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H4, and H5 are fully met \u2014 the rejected-alternative pattern is consistently applied, the headers tell a story, and the language is precise throughout. H2 and H3 both fall short: the singleflight example in getValidToken tips past 15 lines and the concurrent-request warning appears after the section header that introduces the problem rather than before it."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.8266666666666665,
+              "reasoning": "H1, H3, H5 are solid, and the warning placement is exactly right. But the code example has a problem \u2014 `result` is captured and never used, which means the snippet isn't actually runnable as shown, and a reader trying to follow it will hit a compile error immediately. That breaks the 'minimal and runnable' contract. H4 also only has one header visible in this excerpt, so there's no sense of narrative progression.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.23666666666666666,
+              "reasoning": "The draft is only the fixed code snippet in isolation \u2014 it resolves the compile error from last round, but the surrounding prose, headers, warnings, and rejected-alternative explanations are all missing from what was submitted. The code example itself is minimal and has the one-line comment, but without the rest of the section there's nothing to evaluate on narrative flow, pre-emptive warnings, or architectural reasoning.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 5,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 2,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1 and H3 are solid, and the warning placement is exactly right. The code block is missing the required one-line 'what this does' comment above it, which is a partial miss on H2, and the single header 'Token Revocation' doesn't carry the narrative flow I'd want \u2014 it reads like a label, not a step in a story."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1, H2, H3, and H5 are all fully met \u2014 the warning is pre-emptively placed, the code has its one-line comment, the rejected alternative is named with a reason, and no hedging language appears. H4 scores 0.5 because the single header 'Token Revocation' doesn't continue a narrative arc the way story-driven headers would \u2014 it labels rather than advances.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 6,
+        "drafts_produced": 1,
+        "max_drafts": 20,
+        "total_turns": 1,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H3, and H5 are fully met \u2014 the rejected-alternatives reasoning is genuinely useful, warnings are correctly front-loaded, and the language is precise throughout. H2 and H4 are partial: the introspect_token example runs past 15 lines and imports aren't minimal, and while the headers are better than generic labels, a few ('Reading the Response Fields', 'Setting Up Your Service to Call the Endpoint') still read more like section labels than story beats."
+            },
+            "is_alignment_start": true,
+            "user_accepted": true,
+            "user_satisfied": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-04T18:00:14.827920"
+  }
+]

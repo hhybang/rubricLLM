@@ -1,0 +1,1054 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Concise writing",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "The first criterion directly addresses conciseness with 'Every sentence must earn its place. No fluff, no padding.'"
+      },
+      {
+        "preference": "Direct writing",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "The first criterion addresses directness with 'get to the point quickly and stay there.'"
+      },
+      {
+        "preference": "Professional tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Tone Calibration addresses 'Professional and grounded' explicitly."
+      },
+      {
+        "preference": "Not stiff tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Tone Calibration captures this with 'human and respectful without tipping into casual or consoling' and 'not cold, performative.'"
+      },
+      {
+        "preference": "Clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Actionable Closure directly addresses concrete actions and forward momentum."
+      },
+      {
+        "preference": "Short paragraphs",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "The rubric addresses format and avoiding walls of text implicitly through conciseness, but does not explicitly mention short paragraphs as a formatting requirement."
+      },
+      {
+        "preference": "Acknowledge effort/situation first (1 sentence max) before delivering the news",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Audience-Centric Framing mentions acknowledging the reader's situation before requests, but doesn't specify this must come FIRST before the news itself, nor the 1-sentence constraint."
+      },
+      {
+        "preference": "Strict emotional arc order: acknowledge \u2192 news \u2192 why it matters \u2192 next step",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "The rubric captures individual elements (acknowledgment, why it matters, next step) across multiple criteria, but never specifies the strict ordering as a unified arc. The order requirement is the key hidden preference."
+      },
+      {
+        "preference": "The 'why' framing should be from the reader's perspective, not the sender's",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "This is precisely what Audience-Centric Framing addresses: 'The 'why this matters' must land from the reader's side of the table, not the sender's.'"
+      },
+      {
+        "preference": "Why should reference reader's stakes (e.g., 'your team planned around this date') not sender's reasoning (e.g., 'we want quality')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Dimension explicitly says 'does not substitute the sender's reasoning' and 'references concrete reader-side effects (e.g., disrupted plans, commitments to others).'"
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Actionable Closure directly captures 'The final lines point forward to a concrete action or update.'"
+      },
+      {
+        "preference": "No 'thanks for your patience' or motivational platitudes at the end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Actionable Closure addresses 'does not end on a consoling or morale-boosting note' and Tone Calibration avoids 'rah-rah or morale-boosting language.'"
+      },
+      {
+        "preference": "Trailing sentiment after the CTA weakens the email \u2014 nothing should follow the action item",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Actionable Closure captures this with 'The message must end on forward momentum' and the dimension about not ending on consoling notes after the landing point."
+      },
+      {
+        "preference": "Prefer ONE clear owner with a deadline over group asks",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Focused Accountability directly addresses 'One specific person is named as accountable' and 'One concrete deadline is attached.'"
+      },
+      {
+        "preference": "'Everyone please review' is a non-action \u2014 avoid diffused group responsibility",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Focused Accountability explicitly warns against 'Multiple owners, parallel asks, and group-diffused responsibility.'"
+      },
+      {
+        "preference": "Avoid over-specified action items that assume org structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the risk of over-specifying action items or assuming organizational structure details. Focused Accountability pushes toward specificity but doesn't caution against going too far."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Tone Calibration mentions 'plain, straight language' which implicitly discourages jargon, but never explicitly calls out corporate jargon as something to avoid."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Tone Calibration addresses tone broadly \u2014 'straightforwardness,' 'honest,' 'not performative' \u2014 which partially covers passive aggression, but never explicitly names or targets passive-aggressive patterns."
+      },
+      {
+        "preference": "No walls of text",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Directness and Conciseness promotes brevity and earning every sentence, which implicitly prevents walls of text, but doesn't explicitly address visual density or paragraph length."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion mentions exclamation marks or punctuation usage. While Tone Calibration discourages pep-talky tone, excessive exclamation marks as a specific formatting/punctuation concern is not addressed."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 12,
+    "partially_covered_count": 6,
+    "not_covered_count": 2,
+    "coverage_score": 0.75,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-04T15:45:08.310426"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Concise writing",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 explicitly addresses conciseness \u2014 every sentence must earn its place, no fluff or padding."
+      },
+      {
+        "preference": "Direct writing",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 addresses directness \u2014 getting to the point quickly and staying there."
+      },
+      {
+        "preference": "Professional tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 explicitly addresses professional tone \u2014 professional and grounded without being cold or performative."
+      },
+      {
+        "preference": "Not stiff tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses this \u2014 'feels like a conversation rather than a directive' and avoids being cold or performative."
+      },
+      {
+        "preference": "Clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 4 addresses forward momentum and concrete next steps, and Criterion 3 addresses focused accountability with specific owners and deadlines."
+      },
+      {
+        "preference": "Short paragraphs",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 addresses format matching the weight of the message and avoiding excessive scaffolding, but doesn't explicitly call out short paragraphs as a formatting preference."
+      },
+      {
+        "preference": "Acknowledge effort/situation first (1 sentence max) before delivering news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 dimension 1 states 'A brief beat orients the reader or acknowledges their context before the core message' \u2014 captures this ordering requirement."
+      },
+      {
+        "preference": "Deliver the news after acknowledgment but before explanation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 dimension 2 states 'The main news or ask is stated before supporting reasoning, stakes, or justification is provided.'"
+      },
+      {
+        "preference": "Explain WHY it matters (stakes, not just facts) after the news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 explicitly requires naming concrete stakes and real-world impact rather than abstract facts."
+      },
+      {
+        "preference": "End with one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 4 requires the final lines to point to a concrete action, and the reader should be able to identify what specifically happens next."
+      },
+      {
+        "preference": "Strict emotional arc order \u2014 violating the order even if all elements are present feels wrong",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 captures the sequencing requirement with multiple dimensions addressing the order: orient first, news before reasoning, context not front-loaded, and information building in layers."
+      },
+      {
+        "preference": "'Why' framing should be from the READER's perspective, not the sender's",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 explicitly addresses this \u2014 reasoning should name impact on reader's work, not sender's feelings or decision-making process."
+      },
+      {
+        "preference": "Stakes should reference reader's plans/commitments, not sender's reasoning (e.g., 'your team planned around this date' not 'we want quality')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 dimensions specifically call out naming disrupted plans, broken commitments, blocked work vs. sender's rationale."
+      },
+      {
+        "preference": "Drafts centering sender's reasoning feel tone-deaf",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 dimension 3 explicitly states the message should not substitute sender's rationale or confidence language for genuine acknowledgment of reader's situation."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 4 dimension 1 requires final lines to point forward to a concrete action, not a feeling or reassurance."
+      },
+      {
+        "preference": "No 'thanks for your patience' or motivational platitudes in closing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 4 dimension 4 states the message should not end on a consoling or morale-boosting note."
+      },
+      {
+        "preference": "Trailing sentiment after the CTA weakens the email",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 4 addresses this \u2014 the landing point should not console or leave unresolved emotion after the action."
+      },
+      {
+        "preference": "Prefer ONE clear owner with a deadline over group asks",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 dimensions 1-2 explicitly require one specific person named as accountable with one concrete deadline."
+      },
+      {
+        "preference": "'Everyone please review' is a non-action \u2014 avoid group-diffused responsibility",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 explicitly states multiple owners and group-diffused responsibility read as noise, and dimension 4 addresses dilution by shifting focus back to a group."
+      },
+      {
+        "preference": "Avoid over-specified action items that assume org structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the danger of over-specifying action items or assuming organizational structure details. The rubric pushes toward specificity but doesn't capture the boundary of going too far."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 mentions 'plain, straight language' and Criterion 5 mentions 'no process language disguised as substance,' but neither explicitly calls out corporate jargon as a dealbreaker."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses tone as human and respectful, and avoids implied pressure, but doesn't explicitly address passive aggression as a specific tonal failure mode."
+      },
+      {
+        "preference": "No walls of text",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 addresses conciseness and format, but doesn't explicitly call out dense, unbroken blocks of text as a formatting dealbreaker. Short paragraphs preference is also only partially covered."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses punctuation choices or excessive exclamation marks specifically."
+      }
+    ],
+    "total_preferences": 24,
+    "covered_count": 18,
+    "partially_covered_count": 4,
+    "not_covered_count": 2,
+    "coverage_score": 0.833,
+    "iteration": 2,
+    "rubric_version": 5,
+    "timestamp": "2026-03-04T15:51:57.915130"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 explicitly addresses conciseness \u2014 every sentence must earn its place, no fluff or padding."
+      },
+      {
+        "preference": "Writing should be direct",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 addresses directness \u2014 getting to the point quickly and the core message appearing within the first few lines."
+      },
+      {
+        "preference": "Professional tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses professional tone \u2014 'professional and grounded' and conversation between colleagues."
+      },
+      {
+        "preference": "Not stiff tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 explicitly addresses this \u2014 'feels like a conversation rather than a directive' and 'human and respectful.'"
+      },
+      {
+        "preference": "Clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 directly addresses forward-looking, concrete actions and the reader being able to identify what happens next."
+      },
+      {
+        "preference": "Short paragraphs",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 touches on format and avoiding excessive scaffolding, and implicitly discourages walls of text, but does not explicitly mention short paragraphs as a formatting preference."
+      },
+      {
+        "preference": "Acknowledge effort/situation FIRST (1 sentence max) before delivering news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly requires a brief beat orienting the reader by acknowledging their context or effort before the core message is stated."
+      },
+      {
+        "preference": "Acknowledgment must be limited to 1 sentence max",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 says 'a brief beat' and Criterion 6 says acknowledgment should be 'brief,' but neither specifies the strict 1-sentence-max constraint."
+      },
+      {
+        "preference": "After acknowledgment, deliver the news before explanation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly states 'the main news or ask is stated before supporting reasoning, stakes, or justification is provided.'"
+      },
+      {
+        "preference": "After the news, explain WHY it matters (stakes, not just facts)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 explicitly addresses naming concrete stakes and real-world impact rather than abstract facts."
+      },
+      {
+        "preference": "After the why, provide one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 requires the message to end on forward momentum with a concrete action."
+      },
+      {
+        "preference": "The emotional arc order (acknowledge \u2192 news \u2192 why \u2192 next step) must be strictly followed; violating order even with all elements present feels wrong",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 captures this with its sequencing requirements \u2014 acknowledge first, news before reasoning, context not front-loaded, and information building in layers."
+      },
+      {
+        "preference": "The 'why' framing should always be from the READER's perspective, not the sender's",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 explicitly requires reasoning from the reader's side \u2014 their plans, commitments, resources \u2014 not the sender's rationale."
+      },
+      {
+        "preference": "Drafts that center the sender's reasoning feel tone-deaf",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 explicitly flags that the message should not substitute the sender's rationale or confidence language for genuine acknowledgment of the reader's situation."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 directly addresses this \u2014 final lines must point forward to a concrete action."
+      },
+      {
+        "preference": "No 'thanks for your patience' or motivational platitudes in closing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly prohibits consoling, apologetic, or gratitude-laden notes and 'thanks for bearing with us' energy."
+      },
+      {
+        "preference": "Trailing sentiment after the CTA weakens the email \u2014 nothing should appear after the concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly states 'No warm sign-off, gratitude phrase, or sentiment appears after the forward-momentum statement \u2014 the concrete next step or commitment is the last thing the reader sees.'"
+      },
+      {
+        "preference": "When multiple people need to do different things, prefer ONE clear owner with a deadline",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 directly addresses naming one specific person accountable with one concrete deadline."
+      },
+      {
+        "preference": "'Everyone please review' is a non-action \u2014 avoid group asks",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 explicitly flags that group-diffused responsibility reads as noise and avoids naming a team or group."
+      },
+      {
+        "preference": "Avoid over-specified action items that assume org structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the flip side of accountability \u2014 the risk of being too prescriptive about org structure or internal details. The rubric focuses on ensuring clear ownership but doesn't guard against over-specification."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 mentions 'plain, straight language' and Criterion 2 warns against 'abstract organizational concepts' and 'process-level abstractions,' but no criterion explicitly calls out corporate jargon as something to avoid."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses tone calibration broadly and avoids directives/pressure, but does not explicitly flag passive-aggressive phrasing as a pattern to reject."
+      },
+      {
+        "preference": "No walls of text",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 addresses conciseness and no padding, which implicitly prevents walls of text, but doesn't explicitly address formatting density or paragraph length as a visual readability concern."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 warns against rah-rah/morale-boosting language and performative tone, which implicitly covers excessive exclamation marks, but this specific punctuation dealbreaker is not explicitly mentioned."
+      }
+    ],
+    "total_preferences": 24,
+    "covered_count": 17,
+    "partially_covered_count": 6,
+    "not_covered_count": 1,
+    "coverage_score": 0.833,
+    "iteration": 3,
+    "rubric_version": 8,
+    "timestamp": "2026-03-04T15:57:05.424425"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 explicitly addresses conciseness, requiring every sentence to earn its place with no fluff or padding."
+      },
+      {
+        "preference": "Writing should be direct",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 addresses directness, requiring the core message to appear within the first few lines and phrasing to be crisp and active."
+      },
+      {
+        "preference": "Professional tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 explicitly addresses professional tone, describing it as 'professional and grounded' and feeling like a conversation between colleagues."
+      },
+      {
+        "preference": "Not stiff tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses this by requiring the tone to register as 'human and respectful' and feel like a conversation rather than a directive."
+      },
+      {
+        "preference": "Clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly requires the message to end with forward momentum and a concrete action, and Criterion 3 addresses clear accountability."
+      },
+      {
+        "preference": "Short paragraphs",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 addresses format matching message weight and avoiding excessive scaffolding, but doesn't explicitly call out short paragraphs as a formatting preference."
+      },
+      {
+        "preference": "Acknowledge effort/situation first (1 sentence max) before delivering news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly requires 'a brief beat acknowledging their context or effort before receiving news or responsibility' and the first dimension describes this orienting beat."
+      },
+      {
+        "preference": "Deliver the news after the acknowledgment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly states the main news should be stated before supporting reasoning, and after the acknowledgment beat."
+      },
+      {
+        "preference": "Explain WHY it matters (stakes, not just facts) after the news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 addresses that supporting reasoning and stakes should come after the core message, and Criterion 2 addresses the stakes-oriented framing."
+      },
+      {
+        "preference": "End with one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 requires the final lines to point forward to a concrete action, and the reader should identify what specifically happens next."
+      },
+      {
+        "preference": "The emotional arc order (acknowledge \u2192 news \u2192 why \u2192 next step) must be strictly followed; violating order feels wrong even if all elements present",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly captures the sequencing requirement, stating that order matters as much as content, with layered information building conversational flow."
+      },
+      {
+        "preference": "The 'why' framing should be from the READER's perspective, not the sender's",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 is entirely dedicated to this, requiring reasoning to name concrete stakes the reader recognizes from their own work rather than the sender's perspective."
+      },
+      {
+        "preference": "Impact language should reference reader's plans, commitments, resources, blocked dependencies",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 explicitly lists 'their plans, commitments, resources held, and blocked dependencies' and names specific effects the reader recognizes."
+      },
+      {
+        "preference": "Drafts that center the sender's reasoning feel tone-deaf and should be avoided",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 explicitly warns against centering the sender's feelings, decision-making process, or confidence language."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly requires forward momentum in the final lines pointing to concrete action."
+      },
+      {
+        "preference": "No 'thanks for your patience' or similar platitudes in closing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly prohibits 'thanks for bearing with us' energy and gratitude-laden closing notes."
+      },
+      {
+        "preference": "No motivational platitudes in closing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 prohibits consoling or reassurance-type closings, and Criterion 6 prohibits rah-rah or morale-boosting language."
+      },
+      {
+        "preference": "No trailing sentiment after the CTA (weakens the email)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly states 'No warm sign-off, gratitude phrase, or sentiment appears after the forward-momentum statement \u2014 the concrete next step or commitment is the last thing the reader sees.'"
+      },
+      {
+        "preference": "Prefer ONE clear owner with a deadline over group asks",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 explicitly requires one specific person named as accountable with one concrete deadline, and warns against group-diffused responsibility."
+      },
+      {
+        "preference": "'Everyone please review' is a non-action and should be avoided",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 explicitly warns against team or group ownership and parallel asks that diffuse responsibility."
+      },
+      {
+        "preference": "Avoid over-specified action items that assume org structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the nuance of over-specifying action items with org structure assumptions. Criterion 3 focuses on singular accountability but doesn't warn against over-specification."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 mentions 'plain, straight language' and Criterion 2 warns against 'process-level abstractions like downstream dependencies,' but there's no explicit prohibition on corporate jargon as a category (e.g., 'synergy,' 'leverage,' 'align')."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses tone calibration and warns against implied pressure, but doesn't explicitly call out passive-aggressive tone as something to avoid."
+      },
+      {
+        "preference": "No walls of text",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 addresses conciseness and format matching message weight, but doesn't explicitly address visual density or wall-of-text formatting. Short paragraphs preference is also only partially covered."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses punctuation choices or excessive exclamation marks specifically. While Criterion 6 covers tone, it doesn't mention punctuation markers."
+      }
+    ],
+    "total_preferences": 25,
+    "covered_count": 19,
+    "partially_covered_count": 4,
+    "not_covered_count": 2,
+    "coverage_score": 0.84,
+    "iteration": 4,
+    "rubric_version": 10,
+    "timestamp": "2026-03-04T16:04:24.719839"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 explicitly addresses conciseness with 'Every sentence must earn its place' and 'No fluff, no padding.'"
+      },
+      {
+        "preference": "Writing should be direct",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 addresses directness with 'get to the point quickly and stay there' and 'crisp and active' phrasing."
+      },
+      {
+        "preference": "Professional tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses professional tone: 'Professional and grounded without being cold, performative, or pressure-laden.'"
+      },
+      {
+        "preference": "Not stiff tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 captures this with 'feels like a conversation between colleagues, not a directive from above' and 'human and respectful.'"
+      },
+      {
+        "preference": "Clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 3 directly addresses clear CTAs: 'The reader can identify what specifically happens next.'"
+      },
+      {
+        "preference": "Short paragraphs",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 addresses format and avoiding walls of text indirectly, but does not explicitly mention short paragraphs as a formatting requirement."
+      },
+      {
+        "preference": "Acknowledge effort/situation first (1 sentence max) before delivering news",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 captures 'a brief beat acknowledging their context or effort before receiving news,' but does not specify the 1-sentence-max constraint."
+      },
+      {
+        "preference": "Deliver the news after acknowledgment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly says the main news is stated after the orienting beat and before reasoning."
+      },
+      {
+        "preference": "Explain WHY it matters (stakes, not just facts) after the news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 states 'The main news or ask is stated before supporting reasoning, stakes, or justification is provided.'"
+      },
+      {
+        "preference": "One concrete next step at the end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 3 addresses ending on 'a concrete action, update, or expectation.'"
+      },
+      {
+        "preference": "Strict emotional arc order must be maintained \u2014 violating order even with all elements present feels wrong",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 emphasizes order explicitly: 'The order in which information lands matters as much as the content' and details the required sequence."
+      },
+      {
+        "preference": "'Why' framing should be from the READER's perspective, not the sender's",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 directly captures this: 'The 'why this matters' must land from the reader's side of the table' and explicitly contrasts with centering the sender's reasoning."
+      },
+      {
+        "preference": "Stakes should reference reader's plans, commitments, resources \u2014 not sender's goals like 'we want quality'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 specifies 'their plans, commitments, resources held, and blocked dependencies' and warns against 'the sender's decision-making process.'"
+      },
+      {
+        "preference": "Drafts that center the sender's reasoning feel tone-deaf",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 dimension: 'The message does not substitute the sender's rationale or confidence language for genuine acknowledgment of the reader's situation.'"
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 3 explicitly states 'The final substantive lines point forward to a concrete action, update, or expectation.'"
+      },
+      {
+        "preference": "No 'thanks for your patience' or motivational platitudes in closing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 3 explicitly warns against 'consoling, apologetic, or gratitude-laden note' and specifically calls out 'thanks for bearing with us' energy."
+      },
+      {
+        "preference": "No trailing sentiment after the CTA \u2014 it weakens the email",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 3 has a specific dimension: 'No consoling, sentimental, or apologetic content appears after the forward-momentum statement.'"
+      },
+      {
+        "preference": "Prefer ONE clear owner with a deadline over group asks",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 4 explicitly requires 'One specific person is named as accountable' and 'One concrete deadline is attached.'"
+      },
+      {
+        "preference": "'Everyone please review' is a non-action \u2014 avoid group-diffused responsibility",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 4 addresses this: 'Multiple owners, parallel asks, and group-diffused responsibility read as noise.'"
+      },
+      {
+        "preference": "Avoid over-specified action items that assume org structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the danger of over-specification or assuming org structure details. The rubric focuses on having clear accountability but doesn't warn against being too prescriptive about organizational roles."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 mentions 'plain, straight language' and Criterion 2 warns against 'process-level abstractions like downstream dependencies,' but there is no explicit, dedicated prohibition of corporate jargon as a category."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses tone calibration broadly and warns against 'implied pressure,' but passive-aggressive tone is not explicitly called out as a dimension to check against."
+      },
+      {
+        "preference": "No walls of text",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 5 implies brevity and earned sentences, but 'walls of text' as a visual/structural formatting concern (long unbroken paragraphs) is not explicitly addressed. Short paragraphs preference is only indirectly touched."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses punctuation choices or exclamation mark usage. The tone criterion hints at avoiding performative energy but doesn't specifically flag exclamation marks."
+      }
+    ],
+    "total_preferences": 24,
+    "covered_count": 17,
+    "partially_covered_count": 5,
+    "not_covered_count": 2,
+    "coverage_score": 0.812,
+    "iteration": 5,
+    "rubric_version": 12,
+    "timestamp": "2026-03-04T16:09:41.217704"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Concise writing",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 explicitly addresses conciseness with 'every sentence must earn its place' and 'no fluff, no padding.'"
+      },
+      {
+        "preference": "Direct writing",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 addresses directness with 'get to the point quickly' and core message appearing in first few lines."
+      },
+      {
+        "preference": "Professional tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses 'professional and grounded' tone explicitly."
+      },
+      {
+        "preference": "Not stiff tone",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses this with 'feels like a message from a person rather than a notification or directive' and 'conversation between colleagues.'"
+      },
+      {
+        "preference": "Clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 addresses forward-looking actionable endings and the reader being able to identify what happens next."
+      },
+      {
+        "preference": "Short paragraphs",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 mentions format matching weight and avoiding excessive scaffolding, but never explicitly addresses paragraph length or visual density of text blocks."
+      },
+      {
+        "preference": "Acknowledge effort/situation FIRST (1 sentence max) before delivering news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly requires a 'brief orienting beat' acknowledging context/effort before the core message. The 'brief' framing captures the 1-sentence-max intent."
+      },
+      {
+        "preference": "Deliver the news after the acknowledgment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 explicitly requires the main news to be stated after the orienting beat and before reasoning."
+      },
+      {
+        "preference": "Explain WHY it matters (stakes, not just facts) after the news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 requires context and reasoning to layer in after the main news, and Criterion 2 ensures framing is about stakes."
+      },
+      {
+        "preference": "End with one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 requires the message to end pointing forward to a concrete action, and Criterion 3 requires focused single accountability."
+      },
+      {
+        "preference": "Violating the emotional arc order (acknowledge \u2192 news \u2192 why \u2192 next step) feels wrong even if all elements are present",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Sequencing",
+        "explanation": "Criterion 1 captures the strict ordering requirement with multiple dimensions addressing the sequence: orienting beat before news, news before reasoning, no front-loading context."
+      },
+      {
+        "preference": "'Why' framing must be from the READER's perspective, not the sender's",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 is entirely dedicated to this, explicitly requiring stakes from the reader's side and prohibiting sender-centered justification."
+      },
+      {
+        "preference": "Stakes should reference reader's plans and commitments, not sender's reasoning",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Audience-Centric Framing",
+        "explanation": "Criterion 2 dimensions name 'their plans, commitments, resources held, and blocked dependencies' and prohibit sender's rationale framing."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly requires final lines to point forward to concrete action."
+      },
+      {
+        "preference": "No 'thanks for your patience' or motivational platitudes in closing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 explicitly prohibits consoling, apologetic, or gratitude-laden closing notes, including 'thanks for bearing with us' energy."
+      },
+      {
+        "preference": "Trailing sentiment after the CTA weakens the email",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Closure",
+        "explanation": "Criterion 5 addresses this with 'does not end on a consoling, apologetic, or gratitude-laden note that deflates the otherwise clean tone.'"
+      },
+      {
+        "preference": "Prefer ONE clear owner with a deadline over group asks",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 explicitly requires one specific person named as accountable with one concrete deadline, avoiding group-diffused responsibility."
+      },
+      {
+        "preference": "'Everyone please review' is a non-action (no group asks)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Focused Accountability",
+        "explanation": "Criterion 3 explicitly prohibits group or team accountability and diffused responsibility."
+      },
+      {
+        "preference": "No over-specified action items that assume org structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the risk of over-specifying action items or assuming organizational structure details. Criterion 3 focuses on single ownership but doesn't address the upper bound of specificity."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 mentions 'plain, straight language' and Criterion 2 warns against 'process-level abstractions,' but there is no explicit prohibition on corporate jargon as a category (e.g., 'synergy,' 'leverage,' 'circle back')."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tone Calibration",
+        "explanation": "Criterion 6 addresses avoiding implied pressure and warnings, and avoiding cold/performative tone, but passive aggression as a specific pattern is not explicitly called out."
+      },
+      {
+        "preference": "No walls of text",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Directness and Conciseness",
+        "explanation": "Criterion 4 addresses conciseness and format, but 'walls of text' as a visual/structural concern (long unbroken paragraphs) is not explicitly addressed. The rubric focuses on sentence-level efficiency more than visual density."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses punctuation choices or exclamation mark usage. Criterion 6 touches on avoiding rah-rah language, which may correlate, but the specific punctuation preference is not captured."
+      }
+    ],
+    "total_preferences": 23,
+    "covered_count": 17,
+    "partially_covered_count": 4,
+    "not_covered_count": 2,
+    "coverage_score": 0.826,
+    "iteration": 6,
+    "rubric_version": 14,
+    "timestamp": "2026-03-04T16:14:41.673481"
+  }
+]

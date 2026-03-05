@@ -39,10 +39,11 @@ from prompts import (
     ALIGNMENT_generate_annotated_draft_prompt,
     ALIGNMENT_verify_suggested_rubric_prompt,
     GOLD_DRAFT_GENERATION_PROMPT,
-    QUALITY_JUDGE_PROMPT,
     DRAFT_REGENERATE_SYSTEM_PROMPT,
     DRAFT_regenerate_prompt,
     PREFERENCE_COVERAGE_PROMPT,
+    DECOMPOSE_PREFERENCES_PROMPT,
+    COVERAGE_CHECK_PROMPT,
 )
 
 log = logging.getLogger("sim")
@@ -258,31 +259,6 @@ def generate_gold_draft(persona, task: str, model: str = "claude-sonnet-4-6") ->
     except Exception as e:
         log.error(f"Gold draft generation failed: {e}")
         return ""
-
-
-def judge_draft_quality(current_draft: str, preferences: str,
-                        model: str = "claude-sonnet-4-6") -> dict:
-    """Judge draft quality against user preferences (no gold draft needed).
-
-    Returns:
-        {"score": float (0.0-1.0), "meets_threshold": bool, "reasoning": str}
-    """
-    prompt = QUALITY_JUDGE_PROMPT(current_draft, preferences)
-    try:
-        resp = api_call_with_retry(
-            model=model,
-            max_tokens=4000,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        text = _extract_text(resp)
-        result = _parse_json(text)
-        result.setdefault("score", 0.5)
-        result.setdefault("meets_threshold", result.get("score", 0) >= 0.8)
-        result.setdefault("reasoning", "")
-        return result
-    except Exception as e:
-        log.error(f"Quality judge failed: {e}")
-        return {"score": 0.5, "meets_threshold": False, "reasoning": f"Judge error: {e}"}
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -954,24 +930,62 @@ def headless_regenerate_draft_from_rubric_changes(
 
 # ── Preference Coverage Evaluation ──────────────────────────────────────────
 
+def decompose_preferences(persona, model: str = "claude-sonnet-4-6") -> list:
+    """Decompose a persona's preferences into a fixed list of atomic items.
+
+    Called ONCE per persona before the iteration loop so that coverage
+    evaluations across iterations use the same set of items.
+
+    Returns list of dicts with 'preference' and 'source' keys,
+    or empty list on failure.
+    """
+    prompt = DECOMPOSE_PREFERENCES_PROMPT(persona)
+    try:
+        resp = api_call_with_retry(
+            model=model,
+            max_tokens=2000,
+            system="You are an objective evaluation judge. Be thorough and fair.",
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = _extract_text(resp)
+        json_match = re.search(r'\{[\s\S]*\}', text)
+        if not json_match:
+            log.error("Could not parse preference decomposition")
+            return []
+        result = json.loads(json_match.group())
+        items = result.get("preference_items", [])
+        log.info(f"Decomposed {persona.name}'s preferences into {len(items)} atomic items")
+        return items
+    except Exception as e:
+        log.error(f"Preference decomposition failed: {e}")
+        return []
+
+
 def evaluate_preference_coverage(persona, rubric_criteria: list,
-                                  model: str = "claude-sonnet-4-6") -> dict:
+                                  model: str = "claude-sonnet-4-6",
+                                  preference_items: list = None) -> dict:
     """Evaluate what fraction of a persona's ground-truth preferences are
     covered by the current rubric.
 
-    Uses an LLM judge to decompose preferences into atomic items and
-    check each against rubric criteria.
+    If preference_items is provided, uses that fixed list instead of
+    re-decomposing (recommended for consistent cross-iteration comparison).
 
     Returns dict with preference_items list and coverage metrics,
     or {"error": "..."} on failure.
     """
-    if not rubric_criteria:
-        return {"error": "No rubric criteria to evaluate",
-                "coverage_score": 0.0, "total_preferences": 0,
-                "covered_count": 0, "partially_covered_count": 0,
-                "not_covered_count": 0, "preference_items": []}
+    empty = {"coverage_score": 0.0, "total_preferences": 0,
+             "covered_count": 0, "partially_covered_count": 0,
+             "not_covered_count": 0, "preference_items": []}
 
-    prompt = PREFERENCE_COVERAGE_PROMPT(persona, rubric_criteria)
+    if not rubric_criteria:
+        return {**empty, "error": "No rubric criteria to evaluate"}
+
+    # Use the two-step prompt if we have pre-decomposed items,
+    # otherwise fall back to the original single-prompt approach
+    if preference_items:
+        prompt = COVERAGE_CHECK_PROMPT(preference_items, rubric_criteria)
+    else:
+        prompt = PREFERENCE_COVERAGE_PROMPT(persona, rubric_criteria)
 
     try:
         resp = api_call_with_retry(
@@ -983,7 +997,7 @@ def evaluate_preference_coverage(persona, rubric_criteria: list,
         text = _extract_text(resp)
         json_match = re.search(r'\{[\s\S]*\}', text)
         if not json_match:
-            return {"error": "Could not parse coverage evaluation"}
+            return {**empty, "error": "Could not parse coverage evaluation"}
 
         result = json.loads(json_match.group())
 
@@ -1006,16 +1020,10 @@ def evaluate_preference_coverage(persona, rubric_criteria: list,
         return result
 
     except json.JSONDecodeError as e:
-        return {"error": f"JSON parse error: {e}", "coverage_score": 0.0,
-                "total_preferences": 0, "covered_count": 0,
-                "partially_covered_count": 0, "not_covered_count": 0,
-                "preference_items": []}
+        return {**empty, "error": f"JSON parse error: {e}"}
     except Exception as e:
         log.error(f"Preference coverage evaluation failed: {e}")
-        return {"error": str(e), "coverage_score": 0.0,
-                "total_preferences": 0, "covered_count": 0,
-                "partially_covered_count": 0, "not_covered_count": 0,
-                "preference_items": []}
+        return {**empty, "error": str(e)}
 
 
 # ═════════════════════════════════════════════════════════════════════════════

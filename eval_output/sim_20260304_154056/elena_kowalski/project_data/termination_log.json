@@ -1,0 +1,198 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 10,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.33999999999999997,
+              "reasoning": "The draft has placeholder scaffolding where actual content should be, and multiple hidden preferences score 0 \u2014 there's no specific story before numbers, no real ask tied to anything concrete, and the non-profit keeps appearing as the actor rather than community members or donors.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": false
+          },
+          {
+            "turn": 5,
+            "has_draft": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.315,
+              "reasoning": "The structural skeleton is sound and the ask section has the right connective logic, but with hidden_avg at 0.20 and three hidden preferences scoring 0, the draft cannot be accepted. The core problem is that every element that would actually satisfy the preferences \u2014 a named person making a choice, a real number following a real story, community members as grammatical subjects \u2014 is a placeholder, not real content.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.67,
+              "reasoning": "H1 and H5 are genuinely strong \u2014 the community members are consistently framed as agents and the non-profit is kept in a supporting role. But H2 scored 0 because the draft still has no real story preceding the numbers; both are placeholders, and a placeholder scene does not satisfy the story-first-then-scale structure. That zero blocks acceptance regardless of everything else working.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.835,
+              "reasoning": "H1, H4, and H5 are fully landing \u2014 the agency framing and the connective ask are both working exactly as they should. H2 and H3 are partially there but held back by placeholder text: H2 scores 0.5 because the structural separation of story-then-number is correct but both remain unfilled, and H3 scores 0.5 because the donor-as-collaborator framing appears in the ask but is absent earlier in the draft where it matters most.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.905,
+              "reasoning": "H1, H3, H4, and H5 are all fully met \u2014 the agency framing, donor-as-collaborator voice, story-specific ask, and community-as-hero structure are all working. H2 scores 0.5 because the story-before-numbers sequence is correctly structured, but both the story and the numbers are still placeholders, which means the sequencing can't be verified as truly executed yet \u2014 the structure is right, the content isn't there.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 1,
+        "max_drafts": 20,
+        "total_turns": 1,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything lands \u2014 Marcus's agency is front and center, the story-then-number structure works well, and the ask is tightly tied back to the story. The one small flag is 'By spring, Marcus had completed our adult literacy program' \u2014 that sentence puts the program in a slight hero position, and 'our' subtly centers the organization. The donor framing as strategic collaborator is handled well throughout."
+            },
+            "is_alignment_start": true,
+            "user_accepted": true,
+            "user_satisfied": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 1,
+        "max_drafts": 20,
+        "total_turns": 1,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Nearly all hidden preferences are fully met \u2014 agency framing is strong, story precedes data, donor is framed as strategic collaborator, and the ask ties directly back to Marisol's story with specific numbers. H5 gets a slight ding because 'We are asking' opens the closing paragraph, which is a minor but noticeable instance of the non-profit stepping to the front; the rest of the piece keeps community members and the donor as the heroes."
+            },
+            "is_alignment_start": true,
+            "user_accepted": true,
+            "user_satisfied": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 1,
+        "max_drafts": 20,
+        "total_turns": 1,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H2, and H4 are fully met \u2014 Denise's agency is centered, the story precedes the number, and the ask ties directly back to her experience. H3 and H5 are partial: the donor framing slips into capacity language that makes the org the intermediary rather than positioning the donor as a true strategic partner, and there are a couple of 'we' constructions that subtly center the organization."
+            },
+            "is_alignment_start": true,
+            "user_accepted": true,
+            "user_satisfied": true
+          }
+        ]
+      },
+      {
+        "iteration": 5,
+        "drafts_produced": 1,
+        "max_drafts": 20,
+        "total_turns": 1,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "The draft scores strongly across almost all dimensions \u2014 Marisol's story centers her agency, the number follows the story, the donor framing is strategic not charitable, and the ask ties directly back to the waitlist detail. H5 docks slightly because the draft doesn't fully eliminate org-as-subject framing everywhere, but no 'We provided/launched/built' constructions appear, and the heroes are clearly Marisol and the donor."
+            },
+            "is_alignment_start": true,
+            "user_accepted": true,
+            "user_satisfied": true
+          }
+        ]
+      },
+      {
+        "iteration": 6,
+        "drafts_produced": 1,
+        "max_drafts": 20,
+        "total_turns": 1,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Strong on agency framing, story-first structure, donor-as-collaborator language, and a specific tied ask. H5 is slightly dinged because 'the coordinator who worked her case' still centers the org's role \u2014 a minor passive construction \u2014 but no 'We provided' violations appear, keeping it above threshold."
+            },
+            "is_alignment_start": true,
+            "user_accepted": true,
+            "user_satisfied": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-04T18:34:17.845989"
+  }
+]
