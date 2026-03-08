@@ -1,0 +1,344 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.3,
+              "reasoning": "The draft is technically competent and precise, but it reads more like a procedural manual than a methodological argument \u2014 there's no sense of why the decisions matter, and each section just moves to the next without earning its place in the logic.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All structural, tonal, and rhetorical preferences are met. Each paragraph opens with its argumentative role, follows the motivating-question-to-payoff rhythm, the one plain-language aside is well-placed and singular, paragraph transitions create genuine logical dependency rather than mere sequence, and no filler hedges appear.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 10,
+        "max_drafts": 20,
+        "total_turns": 13,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H4 and H3 land well, and the core preferences are largely satisfied. H1 partially fails because the opening of the first paragraph plunges into the restatement of the finding rather than orienting the reader to why this paragraph exists in the argument; H5 partially fails with 'however consistent with the data' which reads like a hedge placed where the author wasn't sure how to land the limitation."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7375,
+              "reasoning": "H1 is now fully resolved \u2014 the opening works exactly as intended. The main gap is H4: this is a single paragraph, so the dependency question is internal, but the paragraph's ending doesn't set up a logical necessity for whatever comes next; it closes on a strong summary rather than a load-bearing handoff. H3 is also unmet \u2014 there's no plain-language moment anywhere in the paragraph.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1 and H4 and H5 all land well, and the core preferences are fully met. The one thing that still isn't quite working is H3 \u2014 there's a moment that gestures toward plain-language clarity but it stays just inside the technical register rather than actually crossing into it, so it doesn't do the work a well-placed aside should do.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The paragraph is doing almost everything right \u2014 H1 is clean, the plain-language moment landed, and there are no filler hedges. The one issue is H4: the transition from the vocabulary-anchoring account to the attention-alignment account feels sequential rather than logically necessary. 'That pattern points toward cross-lingual attention alignment' follows the threshold-effect argument, but doesn't make me feel that this paragraph couldn't exist without the first one having established the scaffold-seeding frame.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1, H3, H4 are fully satisfied \u2014 the paragraph opens with its argumentative purpose, the plain-language moment lands cleanly, and the dependency chain is airtight. H5 is the one remaining friction point: the closing sentence gestures toward future work but does so in a way that reads slightly like a hedge appended because the paragraph needed an ending, not because the argument demanded it there.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "Almost everything is working \u2014 the opening move, the plain-language moment, the dependency chain through the threshold-effect argument. The one thing still not fully landing is the final sentence: it introduces a new variable (layer-level uniformity, plateau masking variation) that the paragraph's own logic never built toward, so it reads like a hedge that arrived because the paragraph needed to stop, not because the argument demanded it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1, H3, and H5 are fully satisfied; core preferences are clean throughout. The one remaining issue is H4: the final sentence creates a gesture toward forward dependency \u2014 naming what the eliminated account couldn't tell us \u2014 but it doesn't actually pull the reader into the next paragraph's specific question. The dependency is stated but not felt.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1, H3, and H5 are fully satisfied \u2014 the opening, the plain-language moment, and the absence of filler hedges are all working. H4 is the remaining issue: the final sentence opens toward the third paragraph, but it does so by listing two open questions side by side rather than creating a single pointed dependency that makes the next paragraph feel logically necessary.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 12,
+            "has_draft": false
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "Every preference is fully met: the opening establishes argumentative purpose before content, the plain-language moment earns its place without undermining formality, the final sentence creates genuine logical dependency toward the third paragraph by naming the specific empirical gap the design can't close, and there are no filler hedges or terminological inconsistencies.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 4,
+        "max_drafts": 20,
+        "total_turns": 10,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "H4 and H5 are strong \u2014 the logical dependency between paragraphs is well-constructed and there are no filler hedges. H1 partially works but the opening paragraphs don't cleanly orient the reader to their argumentative role before plunging into content, and H3 almost lands but the 'strategic informality' feels slightly too embedded in technical framing to read as a genuine plain-language aside."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1, H3, and H5 are fully satisfied; core preferences and dealbreakers all hold. The one thing that keeps this from landing is that the transition into the third paragraph creates a logical hinge that doesn't quite bear the weight it needs to \u2014 it feels sequential rather than structurally necessary.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "partial_draft": true
+          },
+          {
+            "turn": 6,
+            "has_draft": false
+          },
+          {
+            "turn": 7,
+            "has_draft": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1, H4, H5 are all fully met and the logical dependency structure across paragraphs is genuinely working. The one thing still falling short is H3 \u2014 the draft has one moment of plain language ('curse of multilinguality') but it's parenthetical and terminological rather than a real plain-language aside that signals authorial understanding. The strategic informality should feel like the author stepping back to say something simple that earns trust, not just naming a known phenomenon.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All non-N/A hidden preferences are fully met: each paragraph opens with its argumentative purpose, the one informal aside is placed precisely and doesn't recur, paragraph transitions create logical dependency rather than mere sequence, and there are no filler hedges. Core preferences and dealbreaker conditions are also satisfied throughout.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 11,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H1 and H4 are strong \u2014 each paragraph signals its argumentative role and the dependency chain holds. H3 is borderline: 'These concerns are serious, and we do not dismiss them' reads more like a rhetorical concession than a genuine plain-language moment that earns its informality. H5 is where I feel most friction \u2014 the final paragraph's closing sentence gestures at a limitation but feels like it's hedging in a way that doesn't quite know where to land."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": false
+          },
+          {
+            "turn": 4,
+            "has_draft": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The draft is strong overall \u2014 paragraph openings, logical dependency, and strategic informality all land well. The one thing still nagging at me is a sentence in the first paragraph that doesn't feel like it's earning its place.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.7375,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1, H3, and H4 are fully met \u2014 paragraph openings orient the reader, the plain-language aside lands exactly once in the right place, and the dependency chain between paragraphs is tight. H5 is the remaining weak point: 'only that they encode something that tracks syntactic typology' is doing real argumentative work but the construction 'only that' still reads slightly like the author is retreating rather than landing.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All non-N/A hidden preferences are fully met: each paragraph opens with its argumentative role, the plain-language aside is placed correctly and appears only once, paragraph dependencies are logical and non-reorderable, and the closing reframes the narrowing as a conclusion rather than a hedge. Core preferences are uniformly satisfied.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T00:04:20.455473"
+  }
+]

@@ -1,0 +1,338 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Design Rationale with Rejected Alternatives",
+          "description": "Every significant design choice names what was considered and rejected, and explains why. 'We use JWT tokens' is not rationale \u2014 it restates the code. 'We chose JWT over session tokens because X, and we rejected option Y because Z' is rationale. The rejected alternatives are what actually teach the reader how to think about the system.",
+          "weight": 1
+        },
+        {
+          "name": "Precise, Non-Condescending Language",
+          "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Instead, use action-result language: 'Run X, which returns Y' rather than 'Simply run X'. Walls of text without structure are a hard failure.",
+          "weight": 5
+        }
+      ],
+      "removed": [
+        {
+          "name": "Design Rationale",
+          "description": "Every significant design choice is accompanied by the reasoning behind it \u2014 what alternatives were considered, why they were rejected, and what tradeoffs were accepted. Rationale should reflect actual history (incidents, benchmarks, constraints), not reconstructed justification. Engineers reading this should be able to make informed downstream decisions, not just follow instructions."
+        }
+      ],
+      "reweighted": [],
+      "reworded": [
+        {
+          "name": "Information Placement",
+          "field": "description",
+          "old": "Warnings, caveats, and contextual information appear immediately before the content they govern \u2014 never in a catch-all section at the end. If a reader encounters a code example or instruction before being told about its risks or prerequisites, the document has failed at placement.",
+          "new": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?"
+        },
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "field": "description",
+          "old": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair') rather than passive labels ('Token Retrieval'). Each section pulls the reader forward into the next.",
+          "new": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Handle Token Expiration') rather than passive labels ('Token Retrieval', 'Error Handling'). This applies even to reference material \u2014 the headers should tell a story."
+        },
+        {
+          "name": "Code Example Economy",
+          "field": "description",
+          "old": "Code examples show only what is new at that point in the document's flow. They assume prior context rather than re-establishing it, and lean on surrounding prose to handle setup and explanation. Each snippet includes a one-line plain-language comment at the top describing what it accomplishes.",
+          "new": "Code examples are minimal and runnable \u2014 they show the exact happy path with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment describing what it accomplishes. Examples assume prior context rather than re-establishing it."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Code Example Economy",
+          "added_dims": [
+            "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I removed the 'grounded_in_history' dimension from Design Rationale since internal docs often can't reference specific incidents by name and I don't want to penalize docs that lack that \u2014 the rejected-alternatives requirement is the real core of what I care about there. I added an explicit 15-line limit dimension to Code Examples since that's a concrete, checkable rule I actually use. The biggest addition is a new 'Precise, Non-Condescending Language' criterion to capture the 'no simply/just/easy' rule and the action-result framing preference, which wasn't captured anywhere in the existing rubric.",
+    "rubric_version": 3,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "The Schema Registry client just needs to know where to reach the registry:",
+        "new_text": "The Schema Registry client needs to know where to reach the registry:",
+        "reason": "Precise, Non-Condescending Language (new criterion, dimension 'Avoids simply, just, easy, straightforward'): 'just' minimizes the step and makes the reader feel foolish if they struggle with it; removed.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "Now create the producer. Two settings here look like performance tuning but are actually correctness guarantees. `acks='all'` requires all in-sync replicas to acknowledge a write before Kafka confirms it \u2014 `acks=1` is faster but dropped 200 events in staging during a broker restart last November. `enable.idempotence=True` prevents a network hiccup from writing the same event twice on retry. Also register the flush hook now, before you write any produce calls: events that haven't been delivered yet live in the producer's internal buffer, and if your process exits without flushing them, they're lost without any error or log entry:",
+        "new_text": "Now create the producer. Two settings here look like performance tuning but are actually correctness guarantees:\n\n- **`acks='all'`** \u2014 We chose `acks='all'` over `acks=1` because `acks=1` only waits for the leader replica to acknowledge; during a broker restart in staging last November, that dropped 200 events with no error surfaced. `acks='all'` requires every in-sync replica to confirm before Kafka acknowledges the write.\n- **`enable.idempotence=True`** \u2014 We chose this over the default (`False`) because without it, a transient network error during retry can write the same event twice. The idempotent producer assigns each message a sequence number the broker uses to deduplicate.\n\nRegister the flush hook before you write any produce calls. Events that haven't been delivered live in the producer's internal buffer \u2014 if your process exits without flushing, they are lost with no error or log entry. `atexit.register(producer.flush)` guarantees flush runs on normal exit.",
+        "reason": "Design Rationale with Rejected Alternatives (description rewritten to require 'We chose X over Y because...' framing): original rationale stated the chosen approach and consequence but never named the rejected alternative as the grammatical subject; restructured into 'We chose X over Y because...' pattern for both `acks` and `enable.idempotence`. Precise, Non-Condescending Language (new criterion, dimension 'no walls of text'): the original was a dense paragraph mixing two separate rationale points with the flush hook; split into a bullet list for the two settings and a separate paragraph for the flush hook.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "# Create the producer with delivery guarantees that prevent data loss and duplicate writes,\n# and register a shutdown hook so in-flight events aren't silently dropped on exit",
+        "new_text": "# Create the producer with delivery guarantees that prevent data loss and duplicate writes",
+        "reason": "Code Example Economy (plain_language_comment dimension, now first in list signaling priority; description says comments describe what the snippet accomplishes): the flush hook is now explained in the surrounding prose paragraph above, so the comment no longer needs to cover it \u2014 the comment should describe only what the code block itself does, not what `atexit` does outside it.",
+        "user_feedback": "I get what they were going for, but cutting the comment down this much loses the 'and register a flush hook' part that tells the reader what else the block is doing beyond just creating the producer. The surrounding prose paragraph above might explain atexit, but the one-line comment should still describe the full scope of what this code block accomplishes \u2014 and this block does two things. A reader skimming code needs to know both from the comment, not by cross-referencing prose above it."
+      },
+      {
+        "original_text": "The `key` isn't cosmetic. Kafka routes all events with the same key to the same partition, which is what guarantees ordering. We key on `order_id` so all events for a given order arrive in sequence at the consumer \u2014 when we omitted consistent keying during early development, refund events were arriving before placement events and the refund service was rejecting them as invalid.",
+        "new_text": "The `key` isn't cosmetic \u2014 it is the ordering guarantee. Kafka routes all events with the same key to the same partition. We chose `order_id` as the key over a random or round-robin assignment because ordering must be enforced per-order: during early development we omitted consistent keying, and refund events were arriving before placement events, causing the refund service to reject them as invalid. Any consumer that needs to reconstruct order state depends on this key choice.",
+        "reason": "Design Rationale with Rejected Alternatives (description rewritten to require named rejected alternatives as the teaching mechanism): original said 'We key on order_id so...' which is rationale without naming the alternative; revised to 'We chose order_id over a random or round-robin assignment because...' to make the rejected alternatives explicit. downstream_implications dimension: added 'Any consumer that needs to reconstruct order state depends on this key choice' to make the consequence for downstream readers explicit.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "Don't omit it:",
+        "new_text": "Without it, a failed delivery produces no log entry, no exception, and no metric \u2014 the event is silently gone:",
+        "reason": "Precise, Non-Condescending Language (new criterion, dimension 'action-result framing'): 'Don't omit it' is a bare imperative with no explanation of consequence; replaced with action-result framing that states what happens when it is omitted, which is more useful to an engineer evaluating whether to include it.",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-05T02:35:51.266641"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 6,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Code Example Economy",
+          "old_weight": 4,
+          "new_weight": 3
+        },
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "old_weight": 3,
+          "new_weight": 4
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Design Rationale with Rejected Alternatives",
+          "field": "description",
+          "old": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete evidence. This applies to architectural decisions and to operational settings alike. 'We use acks=all' restates the config; 'We chose acks=all over acks=1 because acks=1 dropped 200 events in staging during a broker restart' is rationale. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+          "new": "Every significant design or configuration choice names what was considered and rejected, and explains why. This applies to architectural decisions and to operational settings alike. 'We use JWT tokens' restates the code; 'We chose JWT over session tokens because session tokens require shared state across services, which broke our horizontal scaling in load testing' is rationale. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system."
+        },
+        {
+          "name": "Code Example Economy",
+          "field": "description",
+          "old": "Code examples are minimal and focused \u2014 they show the exact operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does \u2014 if the block creates a producer and registers a flush hook, the comment names both. Examples assume prior context rather than re-establishing it.",
+          "new": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Examples assume prior context rather than re-establishing it."
+        },
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "field": "description",
+          "old": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). This applies at every level \u2014 rationale blocks, operational notes, and prerequisite sections all carry headers that signal what the reader is about to resolve or accomplish. Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are a failure mode: they signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+          "new": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident."
+        },
+        {
+          "name": "Precise, Non-Condescending Language",
+          "field": "description",
+          "old": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. The voice reads as institutional knowledge from someone who has operated the system, not as a spec transcription. Dense prose without structural relief is a hard failure.",
+          "new": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Use action-result framing: 'Run X, which returns Y' rather than 'Simply run X'. Dense prose without structural relief is a hard failure."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Design Rationale with Rejected Alternatives",
+          "added_dims": [
+            "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          ],
+          "removed_dims": [
+            "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios \u2014 'dropped 200 events in staging' over 'could potentially lose events'"
+          ]
+        },
+        {
+          "name": "Code Example Economy",
+          "added_dims": [
+            "Examples show the happy path only \u2014 error handling and edge cases are covered in prose or a dedicated section, not mixed into the primary example"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "added_dims": [],
+          "removed_dims": [
+            "Later sections reference and build on earlier ones because the linear reading order is assumed",
+            "Subsections including rationale blocks, operational notes, and prerequisites carry their own action-oriented headers rather than being buried in undifferentiated prose"
+          ]
+        },
+        {
+          "name": "Precise, Non-Condescending Language",
+          "added_dims": [
+            "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language throughout"
+          ],
+          "removed_dims": [
+            "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language",
+            "Reads as institutional knowledge from someone who has operated the system \u2014 not as a spec transcription or textbook explanation"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made four targeted changes: (1) Reworded the rationale criterion's description to use a more concrete auth example that matches my actual domain rather than the Kafka example, and softened 'concrete evidence' to not penalize docs where real incidents aren't available. (2) Moved Code Example Economy up to priority 3 and Action-Oriented Flow down to 4 \u2014 the 15-line rule and comment requirement are non-negotiable for me in a way that header style is important but slightly less critical. (3) Added a new dimension to Code Examples making explicit that happy-path-only is the goal, since that was implied but not stated. (4) Removed the 'practitioner_voice' and 'narrative_cohesion'/'subsection_headers_action' dimensions \u2014 practitioner voice is too subjective to be a checkable dimension, and those last two from Action-Oriented Flow felt redundant with the other dimensions in that criterion.",
+    "rubric_version": 8,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "",
+        "new_text": "The example below shows a high-traffic authenticated endpoint configured at 500 req/s with a 750-token burst ceiling \u2014 1.5\u00d7 `refill_rate`, the recommended starting point discussed above.\n\n",
+        "reason": "Code Example Economy (new dimension 'happy path only' + priority raised to #3): Added a prose sentence before the YAML block to carry the burst-ceiling rationale context that was previously buried inside the code comment. This moves the edge-case/warning reference (the 1.5\u00d7 recommendation) into surrounding prose where it belongs, keeping the code block itself a clean happy-path example.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "    burst_size: 750       # 1.5x refill_rate \u2014 see burst warning above",
+        "new_text": "    burst_size: 750",
+        "reason": "Code Example Economy (new dimension 'happy path only'): Removed the inline comment that referenced the burst warning. Inline comments that cross-reference warnings or edge cases mix operational concerns into the primary example. The rationale for the 1.5\u00d7 value is now carried by the new prose sentence immediately before the block.",
+        "user_feedback": "I actually want to keep some version of that comment. Not the cross-reference to a warning section \u2014 that part I agree is noise \u2014 but the '1.5x refill_rate' relationship is exactly the kind of thing that makes the number 750 meaningful rather than magic. If the prose sentence before the block already explains the 1.5x rule, then fine, drop it. But if the prose just says 'configured at 500 req/s with a 750-token burst,' the reader still doesn't know *why* 750 unless they do the math themselves. I'd keep a minimal comment like '# 1.5x refill_rate' with no cross-reference, just the ratio. That's not an edge case warning, that's the definition of the value."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-05T02:55:19.248078"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 11,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "old_weight": 4,
+          "new_weight": 3
+        },
+        {
+          "name": "Code Example Economy",
+          "old_weight": 3,
+          "new_weight": 4
+        }
+      ],
+      "reworded": [],
+      "dimensions_changed": [
+        {
+          "name": "Code Example Economy",
+          "added_dims": [
+            "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet",
+            "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one",
+            "Examples show the happy path only \u2014 operational warnings, cross-references, and edge-case caveats belong in prose, not mixed into the primary example"
+          ],
+          "removed_dims": [
+            "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one. Comments that define the relationship between values \u2014 such as a ratio or formula \u2014 are appropriate when the prose does not already establish it; cross-references to warning sections are not.",
+            "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet. Prose must fully resolve the context, including any derivation or ratio behind a specific value, before the comment can be dropped from the snippet.",
+            "Examples show the happy path only \u2014 operational warnings, cross-references, and edge-case caveats belong in prose, not mixed into the primary example. Inline comments that define what a numeric value means (e.g. its derivation or ratio) may remain when the prose does not already state it."
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made three targeted changes: I swapped the priorities of 'Action-Oriented Narrative Flow' and 'Code Example Economy' \u2014 the narrative flow of headers matters more to me than code length mechanics, and I've found that poorly sequenced docs are harder to fix than verbose examples. I also cleaned up the 'Code Example Economy' dimensions, which had gotten cluttered with overlapping and contradictory sub-criteria across 'full_scope_comment', 'new_1', and 'prose_carries_context' \u2014 I collapsed those into cleaner, non-redundant labels. The core intent of every criterion is preserved; I just removed the internal inconsistencies that had crept in.",
+    "rubric_version": 9,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "`api_key` is the default for authenticated endpoints because it isolates misbehaving clients without penalizing others, and gives you a direct attribution path in the logs when a bucket runs dry.\n\n```yaml",
+        "new_text": "`api_key` is the default for authenticated endpoints because it isolates misbehaving clients without penalizing others, and gives you a direct attribution path in the logs when a bucket runs dry.\n\nThe example below uses `refill_rate: 500` (req/s steady-state) and `burst_size: 750`, which is 1.5\u00d7 the refill rate \u2014 the ceiling before the bucket begins rejecting requests.\n\n```yaml",
+        "reason": "Code Example Economy / prose_carries_context (dimension simplified \u2014 removed carve-out for ratio comments in code): the updated dimension no longer explicitly permits inline ratio comments inside snippets, so the 1.5\u00d7 ratio explanation must live in prose. Added a sentence before the code block to carry that context.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "    burst_size: 750       # 1.5x refill_rate",
+        "new_text": "    burst_size: 750",
+        "reason": "Code Example Economy / happy_path_only (dimension simplified \u2014 removed 'inline comments that define what a numeric value means may remain when prose does not already state it'): the updated rule no longer carves out ratio annotations in code. With the ratio now stated in prose, the inline comment is redundant and removed.",
+        "user_feedback": "I get the logic here, but 750 is a magic number without that comment. Even if the prose says '1.5x refill_rate', someone reading the code in isolation \u2014 which happens constantly \u2014 has no idea why burst_size is 750 and not 500 or 1000. The ratio comment isn't explaining what the code does, it's explaining where the value came from. That's different. I'd keep it."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-05T02:59:32.629334"
+  },
+  {
+    "iteration": 5,
+    "draft_number": 3,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Code Example Economy",
+          "old_weight": 5,
+          "new_weight": 3
+        },
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Precise, Non-Condescending Language",
+          "old_weight": 4,
+          "new_weight": 5
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Design Rationale with Rejected Alternatives",
+          "field": "description",
+          "old": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete failure stories, not just careful deliberation. This applies to architectural decisions and operational settings alike. 'We use token bucket' restates the config; 'We rejected fixed window after 847 requests hit auth in a two-second boundary burst against a 500/min limit' is rationale. The goal is for the reader to understand the decision as painful and evidence-based. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+          "new": "Every significant design or configuration choice names what was considered and rejected, and explains why. 'We use JWT tokens' restates the code; 'We chose JWT over session tokens because session storage didn't work across our stateless service fleet' is rationale. The rejected alternatives are what actually teach the reader how to think about the system \u2014 without them, the explanation is just documentation theater."
+        },
+        {
+          "name": "Code Example Economy",
+          "field": "description",
+          "old": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Code is routinely read outside its surrounding prose \u2014 in IDEs, copy-paste workflows, and incident runbooks \u2014 so inline comments that explain where a value comes from are first-class documentation, not redundancy with the prose.",
+          "new": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment describing what the block does. The comment should cover the full operation, not just name the function being called."
+        },
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "field": "description",
+          "old": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Choose the Right Scope for Your Service') rather than passive labels ('Token Retrieval', 'Scope Configuration'). Passive noun-phrase headers signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+          "new": "The document reads as a linear journey through what the engineer is doing at each stage. Section headers describe actions or accomplishments ('Your First Authenticated Request', 'Handling Token Expiration') rather than passive topic labels ('Usage', 'Error Handling'). Even reference material should flow like a tutorial \u2014 the headers should tell a story when read in sequence."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Design Rationale with Rejected Alternatives",
+          "added_dims": [],
+          "removed_dims": [
+            "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          ]
+        },
+        {
+          "name": "Code Example Economy",
+          "added_dims": [
+            "Each code block opens with a one-line comment describing what the snippet does \u2014 not just naming the function, but describing the operation and outcome",
+            "Examples contain no extra imports, config setup, or scaffolding beyond what is needed to demonstrate the specific operation"
+          ],
+          "removed_dims": [
+            "Inline comments that define where a specific value comes from \u2014 its ratio, formula, or derivation \u2014 are preserved for readers who encounter the code in isolation, even when the surrounding prose covers the same ground",
+            "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections \u2014 each starts from the state the reader should have after following the preceding sections",
+            "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          ]
+        },
+        {
+          "name": "Action-Oriented Narrative Flow",
+          "added_dims": [
+            "Passive noun-phrase headers ('Architecture', 'Configuration', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          ],
+          "removed_dims": [
+            "Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made three targeted changes: First, I trimmed the 'Design Rationale' criterion \u2014 the 'concrete_evidence' dimension requiring real incidents and benchmarks is more prescriptive than I actually need; what matters is that alternatives are named and tradeoffs are honest, not that every decision has a war story attached. Second, I moved 'Code Example Economy' up to priority 3 because minimal, runnable examples are core to how I think about documentation quality, not an afterthought. Third, I replaced the 'assumes_prior_context' and 'value_provenance_in_code' dimensions in the code criterion with a single cleaner 'no_extra_boilerplate' dimension \u2014 the original split was overly granular and the value-provenance point was getting into territory I don't actually care about for most internal docs.",
+    "rubric_version": 11,
+    "draft_regenerated": false,
+    "reviewed_changes": [],
+    "feedback_edits_count": 0,
+    "suggestion_applied": false,
+    "user_reverted": true,
+    "timestamp": "2026-03-05T03:10:34.906909"
+  }
+]

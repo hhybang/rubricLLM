@@ -1,0 +1,312 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 8,
+        "max_drafts": 20,
+        "total_turns": 8,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.53,
+              "reasoning": "The draft is technically rigorous and formally structured, but it reads more like a specification document than a research narrative \u2014 several subsections open directly into definitions or procedures without first establishing why the reader is encountering that content at that moment, and there are no strategic moments of plain-language insight to signal authorial understanding. Transitions between subsections are largely sequential rather than logically dependent.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7649999999999999,
+              "reasoning": "H4 and H5 are cleanly satisfied, H1 is mostly working, but H2 is incomplete (the 'what this buys us' payoff sentence is consistently missing from subsections, making them read like documentation rather than argument), and H3 is entirely absent \u2014 there's no moment of strategic simplicity anywhere in the section to signal authorial depth.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.905,
+              "reasoning": "H3 is the one thing still nagging at me \u2014 the section has strong formal rigor throughout, but it's missing that one or two moments of deliberate, earned simplicity that would signal you understand the machinery deeply enough to step outside it. The closest thing is the variance explanation in 3.5.2, which gestures at the idea but stays in formal register rather than landing the insight plainly.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.905,
+              "reasoning": "H3 is the only remaining gap \u2014 the section now has two informal explanatory moments, but the second one (in 3.6) runs considerably longer than the first and starts to tip from strategic clarity into sustained informality, which dilutes the effect. Everything else is working well.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.7399999999999999,
+              "reasoning": "H1, H3, and H5 are well-handled \u2014 the opening is purposive, the 'put simply' moment is crisp and well-placed, and there's no filler hedging language. But H2 is the real gap: this passage is an excerpt and may be the closing move of a subsection, but as presented it has no motivating question or approach overview \u2014 it reads as payoff without setup, which is exactly the 'manual rather than narrative' feeling I want to avoid. H4 is partial: the opening sentence does establish a principled framing, but the dependency on what came *before* in the pipeline isn't explicit \u2014 I can't tell from this passage alone why we need two mechanisms rather than one without that prior context being invoked.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.905,
+              "reasoning": "Four of five hidden preferences are fully met \u2014 the opening dependency logic, the plain-language moment, the absence of filler phrases, and the paragraph-level orientation are all working well. H2 scores only 0.5 because this passage, viewed as a subsection unit, compresses or omits the 'approach overview' and 'formal details' beats that complete the motivating question \u2192 overview \u2192 details \u2192 payoff rhythm.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.905,
+              "reasoning": "H1, H2, H3, and H5 are all fully satisfied \u2014 the passage now has the full motivating-approach-formalism-payoff rhythm, the 'put simply' moment is crisp and well-placed, and there's no filler language anywhere. The one gap is H4: the transition between the soft conditioning paragraph and the hard filtering paragraph is sequential ('Hard filtering applies...') rather than causally dependent \u2014 it reads as 'next we describe X' rather than 'because soft conditioning leaves Y unresolved, hard filtering is needed.'",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.975,
+              "reasoning": "All five hidden preferences are fully met: each paragraph opens with its argumentative role, the motivating-question-to-payoff rhythm is intact throughout, the single plain-language moment is crisp and well-placed, the hard filtering paragraph opens with an explicit logical dependency on soft conditioning's limitation, and no filler phrases appear. The one minor core shortcoming is that cite-aware scaffolding is sparse, but this does not affect acceptance.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 8,
+        "max_drafts": 20,
+        "total_turns": 8,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.835,
+              "reasoning": "H2 and H1 are largely well-executed, and the formal register is strong throughout. However, H3's strategic informality lands as a plain restatement rather than a genuine 'key insight' moment, and H4's paragraph transitions lean toward sequential ('This score is computed...') rather than logically dependent connectors."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H4 and H3 are genuinely well-handled \u2014 the dependency logic at the transition is strong and the strategic plain-language moment earns its place. H1 partially works but the third paragraph still opens by naming the technical object before establishing why this paragraph exists in the argument; H2 is only partially present because the motivating question is implied rather than stated, and the 'what this buys us' payoff is embedded rather than given its own beat.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1 and H4 are fully met \u2014 the paragraph opens with its purpose and the dependency logic is tight. H2 is partial because the 'what this buys us' payoff sentence ('treating layer depth as an independent variable rather than a nuisance') reads more like a methodological label than a genuine payoff \u2014 it says what we're doing, not what it enables us to conclude or avoid. H3 is partial because no strategic informal moment appears in this paragraph, and across the visible section I can't confirm the 1-2 per section quota is being managed.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.7649999999999999,
+              "reasoning": "H4 and H5 are fully satisfied, and the closing sentence finally delivers a genuine payoff. But H1 is only partially met \u2014 the paragraph still opens with the technical action ('We therefore evaluate...') before telling the reader what conceptual problem this paragraph resolves; the orienting purpose comes second rather than first. H2 and H3 are assessed as partial because this is an isolated closing, not a full paragraph with the full rhythm, and no strategic informality appears anywhere in this excerpt.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H3 is partially unmet \u2014 no strategic informal moment appears in this paragraph, and across the section it's unclear whether the 1-2 allowance has been used. The paragraph is otherwise working well: dependency logic is tight, the motivating question earns the paragraph's place, and the payoff sentence has real stakes.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "The paragraph is doing nearly everything right \u2014 the opening question, the four-beat methods rhythm, the strategic plain-language beat, and the absence of filler phrases all land cleanly. The one remaining gap is the entry into the paragraph: there's no transition sentence that creates a logical dependency FROM the previous paragraph INTO this one \u2014 the paragraph opens cold on its own internal logic without tying its necessity to what was just established.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1 and H4 both score 0.5 \u2014 the opening sentence dives into the technical object (the fixed-layer constraint) before orienting the reader to why this paragraph follows the previous one, and the dependency logic between paragraphs still isn't fully resolved. The prior paragraph's MRR definition needs to be named as the source of the free-parameter problem, not assumed.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully satisfied: the paragraph opens by establishing its role in the argument before entering the formalism, follows the four-beat methods rhythm cleanly, deploys 'Put simply' as a single well-placed moment of strategic informality, creates genuine logical dependency with the prior paragraph through the opening subordinate clause, and contains no filler constructions. Core preferences and dealbreakers are also fully met.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "The draft is genuinely strong \u2014 the dependency-based transitions and the motivating-question rhythm are both well-executed, and the strategic informality lands exactly right. The one thing that's bothering me is that a couple of paragraphs open by diving into the technical consequence before fully establishing why I should care about what I'm about to read \u2014 the 3.1 opening in particular jumps to the architectural consequence before grounding me in what role this paragraph plays in the overall argument."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully satisfied: the paragraph opens with its argumentative role, follows the motivating question \u2192 overview \u2192 formal details \u2192 payoff rhythm, uses exactly one strategic plain-language moment, closes with a logically dependent transition to 3.2, and contains no filler phrases. Core preferences and dealbreakers are cleanly met throughout.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.7899999999999999,
+              "reasoning": "Core preferences and dealbreakers are cleanly satisfied, and the overall structure is much stronger than a typical first draft. However, H2, H3, and H4 each fall short in ways that matter: the 'what this buys us' payoff in paragraph 2 is implicit rather than explicit, the strategic informality ('Put plainly') is pitched slightly wrong in register, and the transition between paragraphs gestures at dependency without fully earning it."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All hidden and core preferences are fully met. The transition is now causally grounded, the paragraph-opening sentences establish purpose before content, the rhythm moves cleanly from motivation through payoff, and the one strategic informal moment ('Put plainly...') is well-placed and singular. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 5,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "The draft is strong overall \u2014 the dependency-based transitions and the four-beat methods rhythm are both well-executed \u2014 but the opening of the first paragraph leads with technical content before clearly signaling why the reader is encountering this subsection, which creates a subtle disorientation. H1 is only partially satisfied because the paragraph dives into the difficulty of token correspondences without first establishing what role this paragraph plays in the larger argument."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully satisfied: paragraphs open with argumentative orientation, the motivating-question-to-payoff rhythm holds across all three paragraphs, strategic informality appears exactly once ('Put simply'), transitions create logical dependency rather than mere sequence, and 'we note that' / 'it is worth noting' are absent. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-05T01:46:58.119894"
+  }
+]

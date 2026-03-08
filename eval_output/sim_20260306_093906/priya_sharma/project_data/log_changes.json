@@ -1,0 +1,342 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Methods Section Narrative Rhythm",
+          "description": "Methods sections follow a four-beat structure within each substantive paragraph or paragraph cluster: (1) the motivating question or problem that makes this methodological choice necessary, (2) an overview of the approach taken, (3) the formal or technical details, and (4) a brief closing statement of what this approach enables or buys the analysis. Skipping the motivation makes the section feel like a manual; skipping the payoff leaves the reader wondering why the detail mattered. This rhythm is non-negotiable for methods writing.",
+          "weight": 2
+        },
+        {
+          "name": "Strategic Register Modulation",
+          "description": "Formal academic register is the baseline and must be maintained throughout. However, a rare plain-language aside \u2014 at most one or two per section \u2014 can function as a signal of deep understanding, demonstrating that the author can explain a complex point simply. This is not an invitation to be casual; it is a precision tool. Overuse collapses the formal register entirely and is treated as a defect, not a feature.",
+          "weight": 5
+        }
+      ],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Argumentative Necessity",
+          "old_weight": 2,
+          "new_weight": 3
+        },
+        {
+          "name": "Closing Force",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Precision and Terminological Consistency",
+          "old_weight": 5,
+          "new_weight": 6
+        },
+        {
+          "name": "Section-Level Arc",
+          "old_weight": 4,
+          "new_weight": 7
+        },
+        {
+          "name": "Intellectual Voice",
+          "old_weight": 6,
+          "new_weight": 8
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Precision and Terminological Consistency",
+          "field": "description",
+          "old": "Technical terms are used consistently without unexplained variation. Claims are carefully scoped and specific. Details are accurate and unambiguous where specificity is needed.",
+          "new": "Technical terms are used consistently without unexplained variation. Claims are carefully scoped and specific. Details are accurate and unambiguous where specificity is needed. Filler hedges \u2014 vague qualifications inserted because the author was unsure where information belonged \u2014 are treated as a precision failure, not a stylistic choice."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Precision and Terminological Consistency",
+          "added_dims": [
+            "No filler hedges are present \u2014 qualifications appear only where they carry genuine epistemic meaning, not as placeholders for unresolved organizational decisions"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I added two new criteria that were missing entirely: 'Methods Section Narrative Rhythm' captures the four-beat structure I need in methods writing (motivation \u2192 overview \u2192 details \u2192 payoff), which is distinct enough from general argumentative necessity to deserve its own criterion; and 'Strategic Register Modulation' captures my specific view on plain-language asides \u2014 that they're a precision tool, not a casualness allowance, and that overuse is a defect. I also revised the Precision criterion's description to explicitly call out filler hedges as a precision failure rather than a style issue, since that framing matters to me. Finally, I reordered priorities to reflect that the methods rhythm and register modulation criteria are genuinely important to me, not afterthoughts.",
+    "rubric_version": 4,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "The resulting tokenization is not merely coarse \u2014 it is systematically misaligned with the morphological boundaries that carry the syntactic and semantic information the model must learn to transfer.\n\nTo see why",
+        "new_text": "The resulting tokenization is not merely coarse \u2014 it is systematically misaligned with the morphological boundaries that carry the syntactic and semantic information the model must learn to transfer. This misalignment, rather than any deficit in training signal, is what the present analysis sets out to explain.\n\nTo see why",
+        "reason": "Methods Section Narrative Rhythm (new criterion, priority #2 \u2014 'what this buys us' closing beat): Paragraph 1 lacked a closing payoff sentence stating what the argument enables. The added sentence makes explicit that the analysis's purpose is explaining misalignment, not data volume, completing the four-beat structure.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "a unit BPE is reasonably well-positioned to preserve intact. The locus of contrast",
+        "new_text": "a unit BPE is reasonably well-positioned to preserve intact. Put simply: BPE was implicitly designed for the kind of morphology it now advantages. The locus of contrast",
+        "reason": "Strategic Register Modulation (new criterion, priority #5 \u2014 plain-language aside at moment of genuine conceptual complexity): This is the section's densest conceptual moment \u2014 the asymmetry between morphological types and tokenizer design. A single plain-language aside here signals authorial command without collapsing the formal register.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "A model fine-tuned on high-resource fusional languages therefore arrives at low-resource agglutinative targets with learned representations organized around units that do not correspond to the morphological structure it now needs to exploit.\n\nThe implication",
+        "new_text": "A model fine-tuned on high-resource fusional languages therefore arrives at low-resource agglutinative targets with learned representations organized around units that do not correspond to the morphological structure it now needs to exploit. The diagnostic value of this asymmetry is that it generates a specific, testable prediction: transfer degradation should scale with the degree of suffix productivity in the target language, not simply with data volume.\n\nThe implication",
+        "reason": "Methods Section Narrative Rhythm (new criterion, priority #2 \u2014 'what this buys us' closing beat): Paragraph 2 ended without cashing out what the asymmetry analysis enables. The added sentence converts the paragraph's closing into an explicit payoff \u2014 a testable prediction \u2014 rather than leaving it at description.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "likely requires",
+        "new_text": "requires",
+        "reason": "Precision and Terminological Consistency (updated description + new dimension new_10 \u2014 filler hedges treated as precision failure): 'Likely' here functions as a placeholder hedge, not a genuine epistemic qualification. The claim follows directly from the argument; hedging it implies unresolved uncertainty that the analysis does not actually justify.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "motivate as priorities for",
+        "new_text": "establish as priorities for",
+        "reason": "Precision and Terminological Consistency (updated description \u2014 precise claims, no placeholder vagueness): 'Motivate' is weaker and vaguer than the argument warrants. The results do not merely motivate the directions \u2014 they establish them as necessary responses to the asymmetry demonstrated. 'Establish' is the more precise and confident term.",
+        "user_feedback": "I actually think 'motivate' might be the right call here depending on what comes after. 'Establish as priorities' is confident, but if the results are empirical findings pointing toward future directions, that's still a recommendation, not a proof \u2014 'establish' could overclaim. I'd want to see the full sentence before signing off on this. If the paper is genuinely arguing these are necessary responses, fine, but if it's setting up future work, 'motivate' is more honest and I'd keep it."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T10:15:02.159623"
+  },
+  {
+    "iteration": 3,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Methods Section Narrative Rhythm",
+          "description": "Methods sections must follow a specific four-beat rhythm within each substantive paragraph or passage: (1) motivating question \u2014 why this choice matters to the research; (2) approach overview \u2014 a plain statement of what was done; (3) formal details \u2014 the technical specifics; (4) payoff \u2014 a brief statement of what this approach enables or buys. Skipping the motivation collapses the passage into a manual; skipping the payoff leaves the reader without a reason to have read the details. This rhythm applies at the paragraph level and should be discernible across the section as a whole.",
+          "weight": 2
+        }
+      ],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Argumentative Necessity",
+          "old_weight": 2,
+          "new_weight": 3
+        },
+        {
+          "name": "Section-Level Arc",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Epistemic Precision",
+          "old_weight": 4,
+          "new_weight": 5
+        },
+        {
+          "name": "Closing Force",
+          "old_weight": 5,
+          "new_weight": 6
+        },
+        {
+          "name": "Intellectual Voice",
+          "old_weight": 6,
+          "new_weight": 8
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Epistemic Precision",
+          "field": "description",
+          "old": "Claims are scoped to match their actual evidential warrant. Demonstrated conclusions are stated with conviction; empirical observations pointing toward future directions use language that reflects recommendation, not proof. Precision means accurate scope \u2014 not automatically stronger claims. Filler hedges inserted from organizational uncertainty are treated as a precision failure, while hedges that honestly reflect the strength of a claim are required.",
+          "new": "Claims are scoped to match their actual evidential warrant. Demonstrated conclusions are stated with conviction; empirical observations pointing toward future directions use language that reflects recommendation, not proof. Precision means accurate scope \u2014 not automatically stronger claims. Filler hedges inserted from organizational uncertainty are treated as a precision failure, while hedges that honestly reflect the strength of a claim are required. Inconsistent terminology is a precision failure of equal severity to miscalibrated claim strength."
+        },
+        {
+          "name": "Strategic Register Modulation",
+          "field": "description",
+          "old": "Formal academic register is the baseline and must be maintained throughout. However, a rare plain-language aside \u2014 at most one or two per section \u2014 can function as a signal of deep understanding, demonstrating that the author can explain a complex point simply. This is a precision tool, not an invitation to be casual. Overuse collapses the formal register entirely and is treated as a defect.",
+          "new": "Formal academic register is the baseline and must be maintained throughout. However, a rare plain-language aside \u2014 strictly one or two per section \u2014 can function as a signal of deep understanding, demonstrating that the author can explain a complex point simply. This is a precision tool deployed at moments of genuine conceptual difficulty, not an invitation to be casual. Overuse collapses the formal register entirely and is treated as a defect equal in severity to pervasive casualness."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Epistemic Precision",
+          "added_dims": [
+            "No filler hedges are present \u2014 qualifications appear only where they carry genuine epistemic meaning, not as placeholders for unresolved organizational decisions",
+            "Key terms are used consistently throughout \u2014 synonymic variation for stylistic reasons is treated as a terminology error, not a virtue"
+          ],
+          "removed_dims": [
+            "Key terms are used consistently throughout without unexplained synonymic variation",
+            "No filler hedges are present \u2014 qualifications appear only where they carry genuine epistemic meaning, not as placeholders for unresolved decisions"
+          ]
+        },
+        {
+          "name": "Strategic Register Modulation",
+          "added_dims": [
+            "Plain-language asides, if present, are strictly limited to one or two per section and placed at moments of genuine conceptual complexity \u2014 not scattered for approachability",
+            "Overuse of plain-language asides (more than two per section) is flagged as a register failure regardless of whether individual instances are well-placed"
+          ],
+          "removed_dims": [
+            "Plain-language asides, if present, are limited to one or two per section and placed at moments of genuine conceptual complexity"
+          ]
+        },
+        {
+          "name": "Intellectual Voice",
+          "added_dims": [
+            "Sentences are syntactically clean \u2014 no run-on constructions that bundle multiple distinct claims or qualifications into a single clause"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "The most significant addition is the new 'Methods Section Narrative Rhythm' criterion (priority 2), which captures my specific four-beat structure preference \u2014 motivating question, approach overview, formal details, payoff \u2014 that was previously absent from the rubric entirely. I also added a dimension to 'Intellectual Voice' explicitly flagging run-on sentences as a defect, since that is a hard dealbreaker for me that had no dedicated home. Minor rewording was applied to 'Epistemic Precision' to make clear that synonymic variation for stylistic reasons is itself a terminology error, not a neutral stylistic choice, and to 'Strategic Register Modulation' to reinforce that overuse of plain-language asides is a categorical failure even if individual instances are acceptable.",
+    "rubric_version": 7,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "segmentation scheme",
+        "new_text": "morphological segmentation scheme",
+        "reason": "Epistemic Precision \u2014 consistent_terms (dimension updated: synonymic variation for stylistic reasons is now a terminology error): 'segmentation scheme' without the 'morphological' qualifier inconsistently uses the key term that appears throughout the passage; made consistent with 'morphological segmentation' used elsewhere",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "The result is that fine-tuning on low-resource morphologically rich languages inherits a representational bottleneck that additional labeled data cannot resolve.",
+        "new_text": "The result is that fine-tuning on low-resource morphologically rich languages inherits a representational bottleneck that additional labeled data cannot resolve \u2014 a bottleneck whose source is the morphological segmentation stage, not the learning algorithm.",
+        "reason": "Methods Section Narrative Rhythm (new criterion, priority #2, dimension new_4: each methods paragraph closes with a 'what this buys us' sentence): the original paragraph ending stated the problem but did not cash out its diagnostic significance or point toward the intervention; the addition names the stage responsible and contrasts it with the learning algorithm, completing the argumentative payoff",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "they offer genuine advantages in parameter efficiency (Pfeiffer et al., 2020; Houlsby et al., 2019). By inserting",
+        "new_text": "they offer genuine advantages in parameter efficiency (Pfeiffer et al., 2020; Houlsby et al., 2019). Understanding what adapters can and cannot fix is necessary before proposing an alternative. By inserting",
+        "reason": "Methods Section Narrative Rhythm (new criterion, priority #2, dimension new_1: each substantive methods paragraph opens with a motivating question or research-driven reason): the paragraph previously jumped directly from naming adapters to describing their mechanics without stating why this paragraph exists at this point in the argument; the added sentence provides the research-driven motivation for examining adapters before proposing the alternative",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "they do not alter the underlying tokenization",
+        "new_text": "they do not alter the underlying morphological segmentation",
+        "reason": "Epistemic Precision \u2014 consistent_terms (dimension updated: synonymic variation for stylistic reasons is now explicitly a terminology error): 'tokenization' is used here as a synonym for 'morphological segmentation,' which the updated rubric treats as a precision failure; replaced with the consistent term used throughout",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "This is an architectural commitment, not a tuning choice, and it means that adapter-based transfer operates over an impoverished input signal when applied to agglutinative or fusional languages with limited pretraining coverage.",
+        "new_text": "This is an architectural commitment, not a tuning choice. Adapter-based transfer therefore operates over an impoverished input signal when applied to agglutinative or fusional languages with limited pretraining coverage \u2014 and no amount of adapter capacity compensates for information that was discarded before the model ever saw the input.",
+        "reason": "Intellectual Voice (new dimension new_7: sentences must be syntactically clean \u2014 no run-on constructions bundling multiple distinct claims into a single clause) + Methods Section Narrative Rhythm (new criterion, dimension new_4: payoff sentence): the original sentence bundled two distinct claims ('architectural commitment' and 'operates over impoverished signal') into one clause with 'and it means'; split into two sentences and extended the second with a sharper payoff statement",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "located in the interface between raw text and model input",
+        "new_text": "located at the morphological segmentation stage",
+        "reason": "Epistemic Precision \u2014 consistent_terms (dimension updated: synonymic variation treated as a terminology error): 'interface between raw text and model input' is a paraphrase of 'morphological segmentation stage' that introduces inconsistent terminology; replaced with the consistent key term",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "Rather than accepting inherited tokenization",
+        "new_text": "Rather than accepting inherited morphological segmentation",
+        "reason": "Epistemic Precision \u2014 consistent_terms (dimension updated: synonymic variation for stylistic reasons is now a terminology error): 'tokenization' used again as a synonym for 'morphological segmentation'; replaced for terminological consistency",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "we intervene at the morphological segmentation stage,",
+        "new_text": "we intervene at that stage directly,",
+        "reason": "Epistemic Precision \u2014 consistent_terms (dimension updated) + Intellectual Voice new_7 (syntactic cleanliness): 'morphological segmentation stage' had just been named in the preceding clause; repeating it in the same sentence creates redundancy; 'that stage directly' maintains the referent while tightening the syntax",
+        "user_feedback": "I see what it's trying to do with the redundancy, but 'that stage directly' is doing a lot of work for a pronoun referent that's now somewhat distant in the sentence. In a methods section where precision matters, I'd rather have the slight repetition of 'morphological segmentation stage' than risk a reader having to backtrack to confirm what 'that stage' refers to. The tightening isn't worth the ambiguity cost here."
+      },
+      {
+        "original_text": "The consequence is that representations entering the transfer architecture carry morphological structure that cross-lingual pretraining alone cannot supply, which is the precondition for effective transfer in exactly the settings where prior methods demonstrably degrade.",
+        "new_text": "The consequence is that representations entering the transfer architecture carry morphological structure that cross-lingual pretraining alone cannot supply. This is the precondition for effective transfer in exactly the settings where prior methods demonstrably degrade, and it is what the approach described in the following sections is designed to provide.",
+        "reason": "Methods Section Narrative Rhythm (new criterion, priority #2, dimension new_4: each methods paragraph closes with a 'what this buys us' sentence) + Intellectual Voice new_7 (no run-on constructions): the original sentence bundled the consequence and its significance into a relative clause ('which is the precondition\u2026'), weakening both; split into two sentences and extended with a forward-pointing payoff that names what the section as a whole provides",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T10:26:06.869043"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Paragraph-Level Argumentative Rhythm",
+          "old_weight": 4,
+          "new_weight": 2
+        },
+        {
+          "name": "Argumentative Necessity",
+          "old_weight": 2,
+          "new_weight": 3
+        },
+        {
+          "name": "Epistemic Precision",
+          "old_weight": 5,
+          "new_weight": 4
+        },
+        {
+          "name": "Section-Level Arc",
+          "old_weight": 3,
+          "new_weight": 5
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Paragraph-Level Argumentative Rhythm",
+          "field": "description",
+          "old": "Each substantive paragraph follows a discernible four-beat rhythm: (1) a motivating question or problem that establishes why this content matters to the argument; (2) a plain overview of the approach, claim, or position; (3) the formal or technical specifics; (4) a closing statement of what this enables, establishes, or changes. Skipping the motivation collapses the paragraph into a manual; skipping the payoff leaves the reader without a reason to have read the details. This rhythm applies across section types \u2014 methods, discussion, and related work alike.",
+          "new": "Each substantive paragraph follows a discernible four-beat rhythm: (1) a motivating question or problem that establishes why this content matters to the argument; (2) a plain overview of the approach, claim, or position; (3) the formal or technical specifics; (4) a closing statement of what this enables, establishes, or changes. Skipping the motivation collapses the paragraph into a manual; skipping the payoff leaves the reader without a reason to have read the details. This rhythm applies across section types \u2014 methods, discussion, and related work alike \u2014 and is not optional in methods sections."
+        },
+        {
+          "name": "Epistemic Precision",
+          "field": "description",
+          "old": "Claims are scoped to match their actual evidential warrant. Demonstrated conclusions are stated with conviction; empirical observations pointing toward future directions use language that reflects recommendation, not proof. Filler hedges inserted from organizational uncertainty are a precision failure; hedges that honestly reflect claim strength are required. Inconsistent terminology is a precision failure of equal severity to miscalibrated claim strength.",
+          "new": "Claims are scoped to match their actual evidential warrant. Demonstrated conclusions are stated with conviction; empirical observations pointing toward future directions use language that reflects recommendation, not proof. Filler hedges inserted from organizational uncertainty are a precision failure \u2014 they are the single most reliable signal that the author did not know where to place information, and they are not acceptable as placeholders. Hedges that honestly reflect claim strength are required. Inconsistent terminology is a precision failure of equal severity to miscalibrated claim strength."
+        },
+        {
+          "name": "Authorial Voice and Register",
+          "field": "description",
+          "old": "Formal academic register is the baseline and must be maintained throughout. The voice conveys an author who commands the material \u2014 choices are presented as deliberate, not default, and reasoning is visible. A rare plain-language aside (strictly one or two per section) can function as a precision tool at moments of genuine conceptual difficulty, crystallizing a complex point simply. Overuse of plain language collapses the register and is treated as a defect equal in severity to pervasive casualness.",
+          "new": "Formal academic register is the baseline and must be maintained throughout. The voice conveys an author who commands the material \u2014 choices are presented as deliberate, not default, and reasoning is visible. A rare plain-language aside (strictly one or two per section) can function as a precision tool at moments of genuine conceptual difficulty, crystallizing a complex point simply. Overuse of plain language collapses the register and is treated as a defect equal in severity to pervasive casualness. Strategic informality is a scalpel, not a default mode."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Epistemic Precision",
+          "added_dims": [
+            "Hedged phrasing does not appear in positions where a clear claim is warranted \u2014 phrases like 'it could be argued' or 'one might suggest' are used only when the author genuinely cannot claim stronger warrant, not as defensive softening of well-supported points"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Authorial Voice and Register",
+          "added_dims": [
+            "Plain-language asides, when used, do not appear in consecutive paragraphs \u2014 spacing them is required to preserve their impact and the section's formal register",
+            "Plain-language asides, if present, are strictly limited to one or two per section and placed at moments of genuine conceptual complexity \u2014 each earns its informality by crystallizing a difficult point that formal phrasing obscures"
+          ],
+          "removed_dims": [
+            "Plain-language asides, if present, are strictly limited to one or two per section and placed at moments of genuine conceptual complexity \u2014 each earns its informality by crystallizing a difficult point"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made three targeted changes. First, I swapped the priorities of 'Paragraph-Level Argumentative Rhythm' and 'Argumentative Necessity' (now 2 and 3 respectively) because the four-beat rhythm \u2014 especially the motivation and payoff beats \u2014 is something I feel very strongly about and it was sitting too low relative to general content concerns. Second, I strengthened the 'Epistemic Precision' description to make explicit that filler hedges signal organizational failure, not just epistemic imprecision, and added a dimension (new_1) targeting defensive softening of well-supported claims specifically. Third, I added a dimension (new_2) under 'Authorial Voice and Register' requiring that plain-language asides not appear in consecutive paragraphs \u2014 the current rubric captures the per-section count limit but not the spacing requirement, which is what actually preserves the register contrast that makes those moments work.",
+    "rubric_version": 10,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "allow us to avoid.",
+        "new_text": "allow us to avoid making.",
+        "reason": "Paragraph-Level Argumentative Rhythm (priority increased from #4 to #2): completing 'avoid making' sharpens the claim that the aggregate data actively enables evasion of this conclusion, grounding the motivation beat more precisely and ensuring the opening stakes are unambiguous before the argument proceeds",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "is therefore misspecified",
+        "new_text": "is misspecified",
+        "reason": "Epistemic Precision (new dimension 'new_1' \u2014 hedged/filler phrasing must not appear where a clear claim is warranted): 'therefore' here functions as a filler connector rather than a logical operator \u2014 the structural argument has already been made, and appending 'therefore' adds no genuine inferential content while softening the declarative force of the conclusion; removing it allows the claim to land with the directness the evidence warrants",
+        "user_feedback": "Actually, I'd keep 'therefore' here. I know the reasoning sounds plausible \u2014 that it's a filler connector \u2014 but in this specific case it's doing real work. The 'therefore' signals that the misspecification is a *consequence* of the structural argument just made, not just a parallel observation. Without it, the sentence reads like a new assertion rather than a conclusion being drawn. That logical dependency between the preceding argument and this claim is exactly what I want to preserve. Removing it makes the paragraph feel like it ends with a standalone accusation rather than a reasoned verdict."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T10:35:38.658361"
+  }
+]

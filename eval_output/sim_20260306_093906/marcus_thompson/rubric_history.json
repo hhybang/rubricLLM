@@ -1,0 +1,1949 @@
+[
+  {
+    "version": 1,
+    "writing_type": "developer-facing technical documentation",
+    "user_goals_summary": "Documentation should explain why a system was built the way it was, not just describe what it does. Every element \u2014 prose, code, headers, warnings \u2014 must earn its place by doing work the other elements can't. The north star is: would this have saved an engineer an hour of confusion?",
+    "rubric": [
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts, not just what the system does. Without the 'why,' the documentation reads like code comments promoted to prose.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_named",
+            "label": "Tradeoffs are stated explicitly rather than left for the reader to infer"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "Reader comes away understanding the system's design philosophy, not just its behavior"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations. The prose has already done the explaining; the code only needs to show the shape of the call.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "copy_paste_ready",
+            "label": "Code is tight enough to drop into a codebase without stripping scaffolding"
+          },
+          {
+            "id": "response_shape_shown",
+            "label": "Key data structures or response shapes are visible, e.g. as a single inline comment"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Prose-Code Non-Redundancy",
+        "category": "Style",
+        "description": "Prose and code have distinct, non-overlapping jobs. If the prose explained something, the code doesn't re-explain it in a comment. Redundancy between the two is treated as a signal that the prose didn't finish its job, not that the code needs more annotation.",
+        "dimensions": [
+          {
+            "id": "no_duplicate_info",
+            "label": "Information conveyed in prose is not repeated in code comments"
+          },
+          {
+            "id": "prose_finishes_first",
+            "label": "Prose completes its explanatory job before the code block begins"
+          },
+          {
+            "id": "comments_structural_only",
+            "label": "Code comments show data shapes or structural annotations, not usage instructions already covered in prose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Style",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative that was not chosen"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short or creates problems"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Intent-Signaling Headers",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a sense of what they're walking into \u2014 the header is the first sentence of the story, not a file folder label.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user's ultimate test is 'would this have saved someone an hour?' \u2014 every sentence must pass that bar. They treat redundancy between prose and code as a failure of the prose, not a gap in the code comments. Their natural editing direction is always toward compression and purpose: if an element isn't doing unique work, it should be cut rather than justified.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Style",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative that was not chosen"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short or creates problems"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts, not just what the system does. Without the 'why,' the documentation reads like code comments promoted to prose.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_named",
+            "label": "Tradeoffs are stated explicitly rather than left for the reader to infer"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "Reader comes away understanding the system's design philosophy, not just its behavior"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations. The prose has already done the explaining; the code only needs to show the shape of the call.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "copy_paste_ready",
+            "label": "Code is tight enough to drop into a codebase without stripping scaffolding"
+          },
+          {
+            "id": "response_shape_shown",
+            "label": "Key data structures or response shapes are visible, e.g. as a single inline comment"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Intent-Signaling Headers",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a sense of what they're walking into \u2014 the header is the first sentence of the story, not a file folder label.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Prose-Code Non-Redundancy",
+        "category": "Style",
+        "description": "Prose and code have distinct, non-overlapping jobs. If the prose explained something, the code doesn't re-explain it in a comment. Redundancy between the two is treated as a signal that the prose didn't finish its job, not that the code needs more annotation.",
+        "dimensions": [
+          {
+            "id": "no_duplicate_info",
+            "label": "Information conveyed in prose is not repeated in code comments"
+          },
+          {
+            "id": "prose_finishes_first",
+            "label": "Prose completes its explanatory job before the code block begins"
+          },
+          {
+            "id": "comments_structural_only",
+            "label": "Code comments show data shapes or structural annotations, not usage instructions already covered in prose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "developer-facing technical documentation",
+    "user_goals_summary": "Documentation should explain why a system was built the way it was, not just describe what it does. Every element \u2014 prose, code, headers, warnings \u2014 must earn its place by doing work the other elements can't. The north star is: would this have saved an engineer an hour of confusion?",
+    "coaching_notes": "This user's ultimate test is 'would this have saved someone an hour?' \u2014 every sentence must pass that bar. They treat redundancy between prose and code as a failure of the prose, not a gap in the code comments. Their natural editing direction is always toward compression and purpose: if an element isn't doing unique work, it should be cut rather than justified."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Style",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens. Edits motivated by this criterion must show the full replacement \u2014 an incomplete sentence that opens a contrast without landing it is worse than no addition at all.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative that was not chosen"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short or creates problems"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow"
+          },
+          {
+            "id": "new_1",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing"
+          },
+          {
+            "id": "new_9",
+            "label": "When closing the contrast loop, the completing sentence must be fully formed \u2014 an incomplete sentence that opens a thought without landing it is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it. Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Every example must include exactly one comment explaining what it does \u2014 not what the prose already said.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "copy_paste_ready",
+            "label": "Code is tight enough to drop into a codebase without stripping scaffolding"
+          },
+          {
+            "id": "response_shape_shown",
+            "label": "Key data structures or response shapes are visible, e.g. as a single inline comment"
+          },
+          {
+            "id": "new_2",
+            "label": "Every code example includes exactly one comment that explains what the example does \u2014 not restating surrounding prose"
+          },
+          {
+            "id": "new_3",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "new_4",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general programming concepts, but it also does not use minimizing language \u2014 words like 'simply,' 'just,' 'obviously,' or 'easy' that make a struggling reader feel at fault rather than helped. Difficulty is acknowledged where it exists. Plain, honest language is preferred over theatrical replacements \u2014 the goal is to remove false reassurance, not to heighten stakes.",
+        "dimensions": [
+          {
+            "id": "new_5",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity \u2014 plain, honest phrasing is the target, not dramatic alternatives"
+          },
+          {
+            "id": "new_6",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this system"
+          },
+          {
+            "id": "new_7",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "new_8",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "new_10",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register. 'Probably won't notice' is a better fix than 'neither will betray you'"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts, not just what the system does. Without the 'why,' the documentation reads like code comments promoted to prose.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_named",
+            "label": "Tradeoffs are stated explicitly rather than left for the reader to infer"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "builds_mental_model",
+            "label": "Reader comes away understanding the system's design philosophy, not just its behavior"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Prose-Code Non-Redundancy",
+        "category": "Style",
+        "description": "Prose and code have distinct, non-overlapping jobs. If the prose explained something, the code doesn't re-explain it in a comment. Redundancy between the two is treated as a signal that the prose didn't finish its job, not that the code needs more annotation.",
+        "dimensions": [
+          {
+            "id": "no_duplicate_info",
+            "label": "Information conveyed in prose is not repeated in code comments"
+          },
+          {
+            "id": "prose_finishes_first",
+            "label": "Prose completes its explanatory job before the code block begins"
+          },
+          {
+            "id": "comments_structural_only",
+            "label": "Code comments show data shapes or structural annotations, not usage instructions already covered in prose"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "version": 3,
+    "source": "user_log_changes",
+    "writing_type": "developer-facing technical documentation",
+    "user_goals_summary": "Documentation should explain why a system was built the way it was, not just describe what it does. Every element \u2014 prose, code, headers, warnings \u2014 must earn its place by doing work the other elements can't. The north star is: would this have saved an engineer an hour of confusion?",
+    "coaching_notes": "This user's ultimate test is 'would this have saved someone an hour?' \u2014 every sentence must pass that bar. They treat redundancy between prose and code as a failure of the prose, not a gap in the code comments. Their natural editing direction is always toward compression and purpose: if an element isn't doing unique work, it should be cut rather than justified."
+  },
+  {
+    "version": 4,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should teach engineers why a system was built the way it was, not just describe what it does. Every architectural fact needs its rationale, rejected alternatives should be surfaced to preempt foreseeable objections, and real-world failure modes must appear before the code a reader will copy. Tone is engineer-to-engineer: honest, plain, and neither condescending nor dramatic.",
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated sentence that starts a comparison without landing it is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it. Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Each example includes exactly one comment \u2014 and that comment provides whichever single fact is most useful and not already stated in the surrounding prose.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "copy_paste_ready",
+            "label": "Code is tight enough to drop into a codebase without stripping scaffolding"
+          },
+          {
+            "id": "single_comment_best_fact",
+            "label": "Includes exactly one comment providing the most useful contextual fact not already in the prose \u2014 whether that's a response shape, a purpose annotation, or a structural distinction depends on what the prose already covered"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general programming concepts, but it also does not use minimizing language \u2014 words like 'simply,' 'just,' 'obviously,' or 'easy' that make a struggling reader feel at fault rather than helped. Difficulty is acknowledged where it exists. Plain, honest language is preferred over theatrical replacements \u2014 the goal is to remove false reassurance, not to heighten stakes.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register ('you probably won't notice the problem' over 'neither will betray you')"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts, not just what the system does. Without the 'why,' the documentation reads like code comments promoted to prose. When real incidents or experience motivated a decision, that evidence adds weight \u2014 but presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_named",
+            "label": "Tradeoffs are stated explicitly rather than left for the reader to infer"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Prose-Code Non-Redundancy",
+        "category": "Style",
+        "description": "Prose and code have distinct, non-overlapping jobs. If the prose explained something, the code doesn't re-explain it in a comment. Redundancy between the two is treated as a signal that the prose didn't finish its job, not that the code needs more annotation.",
+        "dimensions": [
+          {
+            "id": "no_duplicate_info",
+            "label": "Information conveyed in prose is not repeated in code comments"
+          },
+          {
+            "id": "prose_finishes_first",
+            "label": "Prose completes its explanatory job before the code block begins"
+          },
+          {
+            "id": "comments_additive_only",
+            "label": "Code comments provide information not already present in the prose \u2014 whether structural, purposive, or contextual"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "coaching_notes": "This user treats documentation as a tool for preempting foreseeable questions \u2014 if the next engineer will wonder 'why not just do X?', the doc should answer that before they ask. Tone is a hard constraint: plain, honest, engineer-to-engineer. Both minimizing language ('just do X') and dramatic replacements ('neither will betray you') are rejected equally \u2014 the target register is matter-of-fact. The user wants docs that feel like living reference material, not artifacts of a specific moment \u2014 real incidents add weight but names, dates, and postmortem framing must be stripped.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated sentence that starts a comparison without landing it is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it. Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts, not just what the system does. Without the 'why,' the documentation reads like code comments promoted to prose. When real incidents or experience motivated a decision, that evidence adds weight \u2014 but presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_named",
+            "label": "Tradeoffs are stated explicitly rather than left for the reader to infer"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general programming concepts, but it also does not use minimizing language \u2014 words like 'simply,' 'just,' 'obviously,' or 'easy' that make a struggling reader feel at fault rather than helped. Difficulty is acknowledged where it exists. Plain, honest language is preferred over theatrical replacements \u2014 the goal is to remove false reassurance, not to heighten stakes.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register ('you probably won't notice the problem' over 'neither will betray you')"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Each example includes exactly one comment \u2014 and that comment provides whichever single fact is most useful and not already stated in the surrounding prose.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "copy_paste_ready",
+            "label": "Code is tight enough to drop into a codebase without stripping scaffolding"
+          },
+          {
+            "id": "single_comment_best_fact",
+            "label": "Includes exactly one comment providing the most useful contextual fact not already in the prose \u2014 whether that's a response shape, a purpose annotation, or a structural distinction depends on what the prose already covered"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Prose-Code Non-Redundancy",
+        "category": "Style",
+        "description": "Prose and code have distinct, non-overlapping jobs. If the prose explained something, the code doesn't re-explain it in a comment. Redundancy between the two is treated as a signal that the prose didn't finish its job, not that the code needs more annotation.",
+        "dimensions": [
+          {
+            "id": "no_duplicate_info",
+            "label": "Information conveyed in prose is not repeated in code comments"
+          },
+          {
+            "id": "prose_finishes_first",
+            "label": "Prose completes its explanatory job before the code block begins"
+          },
+          {
+            "id": "comments_additive_only",
+            "label": "Code comments provide information not already present in the prose \u2014 whether structural, purposive, or contextual"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "version": 5,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should teach engineers why a system was built the way it was, not just describe what it does. Every architectural fact needs its rationale, rejected alternatives should be surfaced to preempt foreseeable objections, and real-world failure modes must appear before the code a reader will copy. Tone is engineer-to-engineer: honest, plain, and neither condescending nor dramatic.",
+    "coaching_notes": "This user treats documentation as a tool for preempting foreseeable questions \u2014 if the next engineer will wonder 'why not just do X?', the doc should answer that before they ask. Tone is a hard constraint: plain, honest, engineer-to-engineer. Both minimizing language ('just do X') and dramatic replacements ('neither will betray you') are rejected equally \u2014 the target register is matter-of-fact. The user wants docs that feel like living reference material, not artifacts of a specific moment \u2014 real incidents add weight but names, dates, and postmortem framing must be stripped."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated sentence that starts a comparison without landing it is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it. Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Each command or logical unit in a code block carries a short orientation comment so a skimmer knows what it does at a glance \u2014 these comments are for navigation, not elaboration.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "copy_paste_ready",
+            "label": "Code is tight enough to drop into a codebase without stripping scaffolding"
+          },
+          {
+            "id": "single_comment_best_fact",
+            "label": "Each command or logical unit carries a short orientation comment (2\u20135 words) so a skimmer knows what it does at a glance \u2014 this comment is for navigation, not elaboration. Its content should not duplicate prose; its existence should not be eliminated just because prose covers the same ground. The test is whether a skimmer would know what the line does without reading the prose."
+          },
+          {
+            "id": "new_1",
+            "label": "If a code example needs more than a handful of lines, treat that as a smell \u2014 a signal the surrounding prose may not have done its job \u2014 but do not use line count as a reason to strip orientation comments that serve scannability rather than explanation"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general programming concepts, but it also does not use minimizing language \u2014 words like 'simply,' 'just,' 'obviously,' or 'easy' that make a struggling reader feel at fault rather than helped. Difficulty is acknowledged where it exists. Plain, honest language is preferred over theatrical replacements \u2014 the goal is to remove false reassurance, not to heighten stakes.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts, not just what the system does. Without the 'why,' the documentation reads like code comments promoted to prose. When real incidents or experience motivated a decision, that evidence adds weight \u2014 but presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_named",
+            "label": "Tradeoffs are stated explicitly rather than left for the reader to infer"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Prose-Code Non-Redundancy",
+        "category": "Style",
+        "description": "Prose and code have distinct, non-overlapping jobs. If the prose explained something, the code doesn't re-explain it in a comment. Redundancy between the two is treated as a signal that the prose didn't finish its job, not that the code needs more annotation. Note: a short orientation label on a command (e.g. '# fetch configured limits') is not redundancy \u2014 it is scannability scaffolding. Non-redundancy applies to detail and elaboration, not to the existence of brief navigational comments.",
+        "dimensions": [
+          {
+            "id": "no_duplicate_info",
+            "label": "Information conveyed in prose is not repeated in code comments"
+          },
+          {
+            "id": "prose_finishes_first",
+            "label": "Prose completes its explanatory job before the code block begins"
+          },
+          {
+            "id": "comments_additive_only",
+            "label": "Code comments provide information not already present in the prose \u2014 whether structural, purposive, or contextual. A one-phrase orientation label is not redundancy; it is scannability scaffolding. Non-redundancy means comments should not re-explain the detail prose already covered, not that comments must be omitted whenever prose touches the same topic."
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "version": 6,
+    "source": "user_log_changes",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should teach engineers why a system was built the way it was, not just describe what it does. Every architectural fact needs its rationale, rejected alternatives should be surfaced to preempt foreseeable objections, and real-world failure modes must appear before the code a reader will copy. Tone is engineer-to-engineer: honest, plain, and neither condescending nor dramatic.",
+    "coaching_notes": "This user treats documentation as a tool for preempting foreseeable questions \u2014 if the next engineer will wonder 'why not just do X?', the doc should answer that before they ask. Tone is a hard constraint: plain, honest, engineer-to-engineer. Both minimizing language ('just do X') and dramatic replacements ('neither will betray you') are rejected equally \u2014 the target register is matter-of-fact. The user wants docs that feel like living reference material, not artifacts of a specific moment \u2014 real incidents add weight but names, dates, and postmortem framing must be stripped."
+  },
+  {
+    "version": 7,
+    "writing_type": "internal technical documentation (wiki pages, runbooks, getting-started guides for engineers)",
+    "user_goals_summary": "Documentation should teach engineers why a system was built the way it was, not just describe what it does. Prose does the heavy lifting \u2014 earning conclusions through reasoning chains, naming rejected alternatives, and surfacing real-world footguns \u2014 while code stays minimal and copy-pasteable. Claims and conclusions must be precisely bounded to what the evidence actually shows, never broader.",
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated comparison is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts \u2014 and tradeoffs must name the specific cost, not just assert that one was accepted. 'That's the tradeoff' is not an explanation; 'that penalizes clients for being idle' is. When real incidents motivated a decision, that evidence adds weight \u2014 presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_name_specific_cost",
+            "label": "Tradeoffs name the concrete thing that would be lost or sacrificed \u2014 not just 'this is a tradeoff we accepted' but what specifically the alternative would cost"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Operational Warnings and Diagnostic Forks Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. When multiple root causes produce the same symptom, the diagnostic fork is presented before any individual conclusion, so the reader follows the right investigation path from the start. Each warning is actionable: it names what goes wrong and what to do about it.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          },
+          {
+            "id": "diagnostic_forks_before_conclusions",
+            "label": "When multiple root causes could explain the same symptom, all branches are surfaced before the reader reaches any individual conclusion \u2014 not appended as an afterthought"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Every command or logical unit carries a short orientation comment so a skimmer knows what they're looking at \u2014 this is non-negotiable even when prose covers the same ground.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "orientation_comment_per_unit",
+            "label": "Each command or logical unit carries a short orientation comment so a skimmer knows what it does at a glance \u2014 this exists for navigation, not elaboration, and is required even when prose covers the topic"
+          },
+          {
+            "id": "commands_cleanly_runnable",
+            "label": "Runnable commands are not interleaved with inline output annotations \u2014 commands must be copy-pasteable as-is, with output or field explanations separated clearly"
+          },
+          {
+            "id": "prose_finishes_before_code",
+            "label": "Prose completes its explanatory job before the code block begins; if the code block grows beyond a handful of lines, that signals the prose may not have finished its job"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Bounded Claims",
+        "category": "Style",
+        "description": "Conclusions and diagnostic statements claim exactly what the evidence supports \u2014 no broader. Documentation does not offer verdicts ('healthy,' 'working as designed') when the data only supports narrower observations ('no single node recorded a violation'). Where a structured diagnostic path has been laid out, prose reflects that structure with direct statements rather than hedges. Gaps between what was observed and what the reader wants to know are named, not papered over.",
+        "dimensions": [
+          {
+            "id": "claims_match_evidence",
+            "label": "Closing or summary statements claim only what the presented data actually shows, not broader inferences"
+          },
+          {
+            "id": "no_premature_reassurance",
+            "label": "Does not offer 'all clear' verdicts when the observation is narrower than the system-level question being investigated"
+          },
+          {
+            "id": "structured_confidence_over_hedging",
+            "label": "When a proper diagnostic path has been laid out, uses direct statements rather than hedges like 'almost certainly' or 'probably'"
+          },
+          {
+            "id": "gaps_acknowledged",
+            "label": "When a gap exists between what was observed and what the reader wants to know, the gap is named explicitly rather than glossed over"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general concepts, but it also does not use minimizing language \u2014 'simply,' 'just,' 'obviously' \u2014 that makes a struggling reader feel at fault. Plain, honest language is preferred over theatrical replacements. Difficulty is acknowledged where it exists.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every code example must have a short orientation comment per command, even when prose covers the same topic \u2014 the user treats this as a firm rule, not a preference. This user's core instinct is that documentation teaches through reasoning chains, not descriptions; the rejected alternative is where learning happens, and the tradeoff must name its concrete cost. When offering diagnostic conclusions, match the precision of the claim to the precision of the evidence \u2014 this user will push back on any language that's broader than what the data shows.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated comparison is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts \u2014 and tradeoffs must name the specific cost, not just assert that one was accepted. 'That's the tradeoff' is not an explanation; 'that penalizes clients for being idle' is. When real incidents motivated a decision, that evidence adds weight \u2014 presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_name_specific_cost",
+            "label": "Tradeoffs name the concrete thing that would be lost or sacrificed \u2014 not just 'this is a tradeoff we accepted' but what specifically the alternative would cost"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Operational Warnings and Diagnostic Forks Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. When multiple root causes produce the same symptom, the diagnostic fork is presented before any individual conclusion, so the reader follows the right investigation path from the start. Each warning is actionable: it names what goes wrong and what to do about it.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          },
+          {
+            "id": "diagnostic_forks_before_conclusions",
+            "label": "When multiple root causes could explain the same symptom, all branches are surfaced before the reader reaches any individual conclusion \u2014 not appended as an afterthought"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Every command or logical unit carries a short orientation comment so a skimmer knows what they're looking at \u2014 this is non-negotiable even when prose covers the same ground.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "orientation_comment_per_unit",
+            "label": "Each command or logical unit carries a short orientation comment so a skimmer knows what it does at a glance \u2014 this exists for navigation, not elaboration, and is required even when prose covers the topic"
+          },
+          {
+            "id": "commands_cleanly_runnable",
+            "label": "Runnable commands are not interleaved with inline output annotations \u2014 commands must be copy-pasteable as-is, with output or field explanations separated clearly"
+          },
+          {
+            "id": "prose_finishes_before_code",
+            "label": "Prose completes its explanatory job before the code block begins; if the code block grows beyond a handful of lines, that signals the prose may not have finished its job"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general concepts, but it also does not use minimizing language \u2014 'simply,' 'just,' 'obviously' \u2014 that makes a struggling reader feel at fault. Plain, honest language is preferred over theatrical replacements. Difficulty is acknowledged where it exists.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 8,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation (wiki pages, runbooks, getting-started guides for engineers)",
+    "user_goals_summary": "Documentation should teach engineers why a system was built the way it was, not just describe what it does. Prose does the heavy lifting \u2014 earning conclusions through reasoning chains, naming rejected alternatives, and surfacing real-world footguns \u2014 while code stays minimal and copy-pasteable. Claims and conclusions must be precisely bounded to what the evidence actually shows, never broader.",
+    "coaching_notes": "Non-negotiable: every code example must have a short orientation comment per command, even when prose covers the same topic \u2014 the user treats this as a firm rule, not a preference. This user's core instinct is that documentation teaches through reasoning chains, not descriptions; the rejected alternative is where learning happens, and the tradeoff must name its concrete cost. When offering diagnostic conclusions, match the precision of the claim to the precision of the evidence \u2014 this user will push back on any language that's broader than what the data shows."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated comparison is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings and Diagnostic Forks Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. When multiple root causes produce the same symptom, the diagnostic fork is presented before any individual conclusion, so the reader follows the right investigation path from the start. Each warning is actionable: it names what goes wrong and what to do about it.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          },
+          {
+            "id": "diagnostic_forks_before_conclusions",
+            "label": "When multiple root causes could explain the same symptom, all branches are surfaced before the reader reaches any individual conclusion \u2014 not appended as an afterthought. Naming the two cases is distinct from instructing the reader on step order \u2014 when steps must be run sequentially because later steps depend on earlier results, that dependency should be stated explicitly, not left implicit in 'First/Second' enumeration. The fork paragraph does not discharge all sequencing responsibility; the step-by-step instructions may still need to carry their own order guidance."
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Every command or logical unit carries a short orientation comment so a skimmer knows what they're looking at \u2014 this is non-negotiable even when prose covers the same ground.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "orientation_comment_per_unit",
+            "label": "Each command or logical unit carries a short orientation comment so a skimmer knows what it does at a glance \u2014 this exists for navigation, not elaboration, and is required even when prose covers the topic"
+          },
+          {
+            "id": "commands_cleanly_runnable",
+            "label": "Runnable commands are not interleaved with inline output annotations \u2014 commands must be copy-pasteable as-is, with output or field explanations separated clearly"
+          },
+          {
+            "id": "prose_finishes_before_code",
+            "label": "Prose completes its explanatory job before the code block begins; if the code block grows beyond a handful of lines, that signals the prose may not have finished its job"
+          },
+          {
+            "id": "cuts_only_redundant_content",
+            "label": "Cuts made for concision are only valid when the removed content is genuinely redundant \u2014 if it carries information not present elsewhere in the passage, it is not redundant regardless of length"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general concepts, but it also does not use minimizing language \u2014 'simply,' 'just,' 'obviously' \u2014 that makes a struggling reader feel at fault. Plain, honest language is preferred over theatrical replacements. Difficulty is acknowledged where it exists.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts \u2014 and tradeoffs must name the specific cost, not just assert that one was accepted. 'That's the tradeoff' is not an explanation; 'that penalizes clients for being idle' is. When real incidents motivated a decision, that evidence adds weight \u2014 presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_name_specific_cost",
+            "label": "Tradeoffs name the concrete thing that would be lost or sacrificed \u2014 not just 'this is a tradeoff we accepted' but what specifically the alternative would cost"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 9,
+    "source": "user_log_changes",
+    "writing_type": "internal technical documentation (wiki pages, runbooks, getting-started guides for engineers)",
+    "user_goals_summary": "Documentation should teach engineers why a system was built the way it was, not just describe what it does. Prose does the heavy lifting \u2014 earning conclusions through reasoning chains, naming rejected alternatives, and surfacing real-world footguns \u2014 while code stays minimal and copy-pasteable. Claims and conclusions must be precisely bounded to what the evidence actually shows, never broader.",
+    "coaching_notes": "Non-negotiable: every code example must have a short orientation comment per command, even when prose covers the same topic \u2014 the user treats this as a firm rule, not a preference. This user's core instinct is that documentation teaches through reasoning chains, not descriptions; the rejected alternative is where learning happens, and the tradeoff must name its concrete cost. When offering diagnostic conclusions, match the precision of the claim to the precision of the evidence \u2014 this user will push back on any language that's broader than what the data shows."
+  },
+  {
+    "version": 10,
+    "writing_type": "internal engineering documentation (wiki pages, runbooks, getting-started guides)",
+    "user_goals_summary": "Documentation that teaches engineers why a system was built the way it was \u2014 not just what it does \u2014 by surfacing rejected alternatives, naming tradeoffs with specific costs, and placing warnings where they'll be seen before the reader acts. Tone should sound like a competent colleague who has personally hit the failure modes, not a narrator describing them from outside.",
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated comparison is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings and Diagnostic Forks Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. When multiple root causes produce the same symptom, the diagnostic fork is presented before any individual conclusion, so the reader follows the right investigation path from the start. Each warning is actionable: it names what goes wrong and what to do about it. Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          },
+          {
+            "id": "diagnostic_forks_before_conclusions",
+            "label": "When multiple root causes could explain the same symptom, all branches are surfaced before the reader reaches any individual conclusion \u2014 not appended as an afterthought. When diagnostic steps must be run sequentially because later steps depend on earlier results, that dependency is stated explicitly, not left implicit in 'First/Second' enumeration."
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Every command or logical unit carries a short orientation comment so a skimmer knows what they're looking at \u2014 this is non-negotiable even when prose covers the same ground.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "orientation_comment_per_unit",
+            "label": "Each command or logical unit carries a short orientation comment so a skimmer knows what it does at a glance \u2014 this exists for navigation, not elaboration, and is required even when prose covers the topic"
+          },
+          {
+            "id": "commands_cleanly_runnable",
+            "label": "Runnable commands are not interleaved with inline output annotations \u2014 commands must be copy-pasteable as-is, with output or field explanations separated clearly"
+          },
+          {
+            "id": "prose_finishes_before_code",
+            "label": "Prose completes its explanatory job before the code block begins; if the code block grows beyond a handful of lines, that signals the prose may not have finished its job"
+          },
+          {
+            "id": "cuts_only_redundant_content",
+            "label": "Cuts made for concision are only valid when the removed content is genuinely redundant \u2014 if it carries information not present elsewhere in the passage, it is not redundant regardless of length"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point. In on-call contexts, the header should meet the reader in their current situation.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general concepts, but it also does not use minimizing language \u2014 'simply,' 'just,' 'obviously' \u2014 that makes a struggling reader feel at fault. Plain, honest language is preferred over theatrical replacements. Difficulty is acknowledged where it exists, and the tone of that acknowledgment sounds like someone who has personally been in the situation, not someone narrating it from outside.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register"
+          },
+          {
+            "id": "lived_in_tone",
+            "label": "When acknowledging difficulty or confusion, the tone sounds like someone who has personally experienced the situation \u2014 not clinically describing it from outside"
+          },
+          {
+            "id": "bounded_claims",
+            "label": "Conclusions state what the data actually shows rather than offering reassuring verdicts \u2014 'no single node recorded a violation' over 'the limiter is healthy'"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts \u2014 and tradeoffs must name the specific cost, not just assert that one was accepted. 'That's the tradeoff' is not an explanation; 'that penalizes clients for being idle' is. When real incidents motivated a decision, that evidence adds weight \u2014 presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_name_specific_cost",
+            "label": "Tradeoffs name the concrete thing that would be lost or sacrificed \u2014 not just 'this is a tradeoff we accepted' but what specifically the alternative would cost"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every code example gets an orientation comment, every footgun appears before the code it relates to, and every design choice surfaces the rejected alternative. This user's quality bar is set by precision of claims \u2014 they will reject language that overstates what the evidence shows ('healthy,' 'behaved as configured') or that sounds narrated from a distance rather than spoken from experience. When offering tone alternatives, avoid theatrical or dramatic register; the user consistently picks the plainest, most direct option. Trade-off assertions without named costs are treated as empty \u2014 always specify what would be sacrificed.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Rejected-Alternative Framing",
+        "category": "Content",
+        "description": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens.",
+        "dimensions": [
+          {
+            "id": "names_alternative",
+            "label": "When explaining a design choice, names the familiar alternative the reader is likely already considering"
+          },
+          {
+            "id": "explains_rejection",
+            "label": "States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits"
+          },
+          {
+            "id": "bridges_to_chosen",
+            "label": "Uses the rejection to naturally motivate the actual design, creating a logical flow from 'this doesn't work' to 'so we did this instead'"
+          },
+          {
+            "id": "choice_not_self_evident",
+            "label": "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing without the rejected path"
+          },
+          {
+            "id": "contrast_fully_landed",
+            "label": "When opening a contrast, the completing thought is fully formed \u2014 an incomplete or truncated comparison is worse than no addition at all"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Operational Warnings and Diagnostic Forks Surfaced Early",
+        "category": "Content",
+        "description": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. When multiple root causes produce the same symptom, the diagnostic fork is presented before any individual conclusion, so the reader follows the right investigation path from the start. Each warning is actionable: it names what goes wrong and what to do about it. Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Known footguns appear before the code block they relate to"
+          },
+          {
+            "id": "visually_prominent",
+            "label": "Warnings are visually distinct (bold lead-ins, separate paragraphs) \u2014 not buried in flowing prose"
+          },
+          {
+            "id": "real_failure_modes",
+            "label": "Warnings address failure modes a practitioner would actually hit, not theoretical risks"
+          },
+          {
+            "id": "actionable_recovery",
+            "label": "Each warning includes what to do about the problem, not just what can go wrong"
+          },
+          {
+            "id": "diagnostic_forks_before_conclusions",
+            "label": "When multiple root causes could explain the same symptom, all branches are surfaced before the reader reaches any individual conclusion \u2014 not appended as an afterthought. When diagnostic steps must be run sequentially because later steps depend on earlier results, that dependency is stated explicitly, not left implicit in 'First/Second' enumeration."
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Design Rationale Over Feature Description",
+        "category": "Content",
+        "description": "Every architectural fact is motivated by the reasoning behind it. Prose explains why a design choice was made and what tradeoff it accepts \u2014 and tradeoffs must name the specific cost, not just assert that one was accepted. 'That's the tradeoff' is not an explanation; 'that penalizes clients for being idle' is. When real incidents motivated a decision, that evidence adds weight \u2014 presented as institutional knowledge, not as a dated postmortem.",
+        "dimensions": [
+          {
+            "id": "why_accompanies_what",
+            "label": "Each architectural fact is preceded or accompanied by the reasoning behind it"
+          },
+          {
+            "id": "tradeoffs_name_specific_cost",
+            "label": "Tradeoffs name the concrete thing that would be lost or sacrificed \u2014 not just 'this is a tradeoff we accepted' but what specifically the alternative would cost"
+          },
+          {
+            "id": "not_feature_summary",
+            "label": "Prose reads as explanation of design thinking, not as a feature list or system description"
+          },
+          {
+            "id": "evidence_as_living_reference",
+            "label": "When referencing real incidents or experience that motivated a decision, presents them as institutional knowledge \u2014 not tied to specific people, dates, or event timelines that date the document"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Intent-Signaling Headers That Tell a Story",
+        "category": "Structure",
+        "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point. In on-call contexts, the header should meet the reader in their current situation.",
+        "dimensions": [
+          {
+            "id": "signals_narrative",
+            "label": "Header hints at the section's argument or through-line, not just its subject matter"
+          },
+          {
+            "id": "not_generic_label",
+            "label": "Avoids generic labels like 'Getting Started,' 'Overview,' or 'Introduction'"
+          },
+          {
+            "id": "invites_reading",
+            "label": "Header creates enough context or curiosity that a scanning reader would stop and engage"
+          },
+          {
+            "id": "headers_form_narrative_arc",
+            "label": "Headers read sequentially as a coherent narrative arc, not as isolated topic labels"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Minimal Happy-Path Code",
+        "category": "Structure",
+        "description": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Every command or logical unit carries a short orientation comment so a skimmer knows what they're looking at \u2014 this is non-negotiable even when prose covers the same ground.",
+        "dimensions": [
+          {
+            "id": "single_path",
+            "label": "Code shows one usage path \u2014 the most common one \u2014 and nothing else"
+          },
+          {
+            "id": "no_wrapper_abstractions",
+            "label": "Code is a direct call, not wrapped in function definitions or classes the reader must mentally unpack"
+          },
+          {
+            "id": "no_unnecessary_boilerplate",
+            "label": "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          },
+          {
+            "id": "orientation_comment_per_unit",
+            "label": "Each command or logical unit carries a short orientation comment so a skimmer knows what it does at a glance \u2014 this exists for navigation, not elaboration, and is required even when prose covers the topic"
+          },
+          {
+            "id": "commands_cleanly_runnable",
+            "label": "Runnable commands are not interleaved with inline output annotations \u2014 commands must be copy-pasteable as-is, with output or field explanations separated clearly"
+          },
+          {
+            "id": "prose_finishes_before_code",
+            "label": "Prose completes its explanatory job before the code block begins; if the code block grows beyond a handful of lines, that signals the prose may not have finished its job"
+          },
+          {
+            "id": "cuts_only_redundant_content",
+            "label": "Cuts made for concision are only valid when the removed content is genuinely redundant \u2014 if it carries information not present elsewhere in the passage, it is not redundant regardless of length"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Respects the Reader's Intelligence Without Abandoning Them",
+        "category": "Style",
+        "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general concepts, but it also does not use minimizing language \u2014 'simply,' 'just,' 'obviously' \u2014 that makes a struggling reader feel at fault. Plain, honest language is preferred over theatrical replacements. Difficulty is acknowledged where it exists, and the tone of that acknowledgment sounds like someone who has personally been in the situation, not someone narrating it from outside.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system"
+          },
+          {
+            "id": "acknowledges_complexity",
+            "label": "Acknowledges when something is genuinely complex or counterintuitive rather than glossing over it"
+          },
+          {
+            "id": "collegial_tone",
+            "label": "Tone is collegial \u2014 written as one competent engineer explaining to another, not as instructor to student"
+          },
+          {
+            "id": "plain_not_dramatic",
+            "label": "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register"
+          },
+          {
+            "id": "lived_in_tone",
+            "label": "When acknowledging difficulty or confusion, the tone sounds like someone who has personally experienced the situation \u2014 not clinically describing it from outside"
+          },
+          {
+            "id": "bounded_claims",
+            "label": "Conclusions state what the data actually shows rather than offering reassuring verdicts \u2014 'no single node recorded a violation' over 'the limiter is healthy'"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 11,
+    "source": "criteria_classification",
+    "writing_type": "internal engineering documentation (wiki pages, runbooks, getting-started guides)",
+    "user_goals_summary": "Documentation that teaches engineers why a system was built the way it was \u2014 not just what it does \u2014 by surfacing rejected alternatives, naming tradeoffs with specific costs, and placing warnings where they'll be seen before the reader acts. Tone should sound like a competent colleague who has personally hit the failure modes, not a narrator describing them from outside.",
+    "coaching_notes": "Non-negotiable: every code example gets an orientation comment, every footgun appears before the code it relates to, and every design choice surfaces the rejected alternative. This user's quality bar is set by precision of claims \u2014 they will reject language that overstates what the evidence shows ('healthy,' 'behaved as configured') or that sounds narrated from a distance rather than spoken from experience. When offering tone alternatives, avoid theatrical or dramatic register; the user consistently picks the plainest, most direct option. Trade-off assertions without named costs are treated as empty \u2014 always specify what would be sacrificed."
+  }
+]

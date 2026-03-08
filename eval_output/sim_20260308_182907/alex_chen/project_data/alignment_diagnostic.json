@@ -1,0 +1,408 @@
+[
+  {
+    "timestamp": "2026-03-08T18:33:40.733012",
+    "writing_task": "I need to email a key customer \u2014 Priya at Northfield Logistics \u2014 letting her know that a feature she requested six months ago is finally shipping next week. She'll need to coordinate with her IT team to enable it, so there's a clear action item on her end.",
+    "drafts": {
+      "rubric": "Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nTo actually turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically. Given that it touches your data pipeline, they'll probably want a day or two to review the settings before flipping it on.\n\nDoes it make sense to get a quick call on the calendar so I can walk them through what to expect?",
+      "generic": "Subject: Your Requested Feature Is Shipping Next Week\n\nHi Priya,\n\nGreat news \u2014 the feature you requested six months ago is finally here. We're officially shipping it next week, and I wanted to make sure you're ready to take full advantage of it from day one.\n\nThere is one action item on your end: your IT team will need to enable the feature within your account settings before it becomes active. I'd recommend looping them in this week so everything is ready to go on launch day.\n\nPlease let me know if you have any questions or need guidance for your IT team. Excited for you to finally have this!\n\nBest,\n[Your Name]",
+      "preference": "Subject: The feature you requested is shipping next week\n\nHi Priya,\n\nGood news \u2014 the feature you requested back in the spring is finally ready and rolling out next week.\n\nTo turn it on, your IT team will need to enable it from the admin settings panel. It shouldn't take more than a few minutes once they're in there, but I want to make sure you have plenty of lead time to coordinate with them.\n\nCan you confirm by Thursday whether your team is set to activate it on launch day? Happy to jump on a quick call if anything needs clarifying.\n\nThanks,\n[Your name]"
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "preference"
+      ],
+      [
+        "B",
+        "rubric"
+      ],
+      [
+        "C",
+        "generic"
+      ]
+    ],
+    "user_preference": "rubric",
+    "user_ranking": [
+      "rubric",
+      "preference",
+      "generic"
+    ],
+    "user_reason": "B leads with acknowledgment of Priya's wait (reader-first framing), delivers the news cleanly, and the 'it won't activate automatically' plus the data pipeline note explains why this matters from her team's perspective \u2014 not ours. The ask is clear even if the deadline could be sharper. A is solid and direct but the 'I want to make sure you have plenty of lead time' centers the sender's reasoning, and 'Happy to jump on a quick call' after the CTA is trailing softness. Still, A beats C easily. C is the worst: 'take full advantage from day one' is filler, 'Excited for you to finally have this!' is exactly the kind of trailing sentiment that weakens the close, and 'Please let me know if you have any questions' is a non-action that diffuses the ask.",
+    "rubric_version": 2,
+    "criteria_analysis": [
+      {
+        "name": "Emotional Sequencing",
+        "rubric_score": 3,
+        "generic_score": 5,
+        "gap": -2,
+        "classification": "UNDERPERFORMING",
+        "reasoning": "Draft B opens by acknowledging Priya's original request and the long wait before delivering the news, earning the headline rather than leading with it \u2014 this mirrors exactly the sequencing pattern the user refined in conversation. Drafts A and C lead with 'good news' or 'great news' and deliver the headline immediately, with context trailing after rather than framing the reception.",
+        "preference_score": 3,
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centered Framing",
+        "rubric_score": 3,
+        "generic_score": 5,
+        "gap": -2,
+        "classification": "UNDERPERFORMING",
+        "reasoning": "Draft B names Priya's concrete situation \u2014 'it touches your data pipeline' and acknowledges the wait from her perspective \u2014 speaking to her reality rather than explaining the sender's delivery. Drafts A and C stay generic ('the feature you requested'), and Draft C's 'take full advantage of it from day one' is aspirational framing centered on the sender's excitement rather than Priya's operational reality.",
+        "preference_score": 3,
+        "priority": 2
+      },
+      {
+        "name": "Forward-Momentum Closings",
+        "rubric_score": 4,
+        "generic_score": 5,
+        "gap": -1,
+        "classification": "UNDERPERFORMING",
+        "reasoning": "Draft B closes with a concrete, actionable invitation \u2014 a call to walk the IT team through what to expect \u2014 putting the ball in Priya's court cleanly. Draft A asks for confirmation by Thursday, which is forward-moving but the 'Happy to jump on a quick call' feels like padding. Draft C ends on 'Excited for you to finally have this!' which is exactly the sentimental/motivational filler the user consistently flags as a problem.",
+        "preference_score": 2,
+        "priority": 3
+      },
+      {
+        "name": "Concrete Specificity",
+        "rubric_score": 2,
+        "generic_score": 4,
+        "gap": -2,
+        "classification": "UNDERPERFORMING",
+        "reasoning": "Draft B names a tangible detail \u2014 'it touches your data pipeline' and 'they'll probably want a day or two to review the settings' \u2014 giving Priya real texture about what's involved. Drafts A and C keep the action item abstract ('enable it from the admin settings panel' / 'enable the feature within your account settings') without naming what's actually at stake or what the IT team will encounter.",
+        "preference_score": 2,
+        "priority": 4
+      },
+      {
+        "name": "Concise Consolidation",
+        "rubric_score": 4,
+        "generic_score": 4,
+        "gap": 0,
+        "classification": "REDUNDANT",
+        "reasoning": "Drafts A and B are both lean and efficient \u2014 each paragraph serves a clear purpose without padding. Draft C over-specifies with phrases like 'take full advantage of it from day one' and 'I'd recommend looping them in this week so everything is ready to go on launch day,' which add padding where a consolidated statement would suffice.",
+        "preference_score": 3,
+        "priority": 5
+      },
+      {
+        "name": "Human Voice",
+        "rubric_score": 4,
+        "generic_score": 5,
+        "gap": -1,
+        "classification": "UNDERPERFORMING",
+        "reasoning": "Draft B reads most naturally \u2014 'I wanted to make sure you heard it from me directly' and 'it won't activate automatically' feel like a real person finishing a thought. Draft A is conversational but slightly more template-like. Draft C uses corporate-adjacent language ('take full advantage,' 'Excited for you to finally have this!') and a more formal cadence that distances it from genuine human voice.",
+        "preference_score": 3,
+        "priority": 6
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Emotional Sequencing",
+          "draft_a_score": 3,
+          "draft_b_score": 5,
+          "draft_c_score": 3,
+          "reasoning": "Draft B opens by acknowledging Priya's original request and the long wait before delivering the news, earning the headline rather than leading with it \u2014 this mirrors exactly the sequencing pattern the user refined in conversation. Drafts A and C lead with 'good news' or 'great news' and deliver the headline immediately, with context trailing after rather than framing the reception."
+        },
+        {
+          "criterion_name": "Reader-Centered Framing",
+          "draft_a_score": 3,
+          "draft_b_score": 5,
+          "draft_c_score": 3,
+          "reasoning": "Draft B names Priya's concrete situation \u2014 'it touches your data pipeline' and acknowledges the wait from her perspective \u2014 speaking to her reality rather than explaining the sender's delivery. Drafts A and C stay generic ('the feature you requested'), and Draft C's 'take full advantage of it from day one' is aspirational framing centered on the sender's excitement rather than Priya's operational reality."
+        },
+        {
+          "criterion_name": "Forward-Momentum Closings",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "draft_c_score": 2,
+          "reasoning": "Draft B closes with a concrete, actionable invitation \u2014 a call to walk the IT team through what to expect \u2014 putting the ball in Priya's court cleanly. Draft A asks for confirmation by Thursday, which is forward-moving but the 'Happy to jump on a quick call' feels like padding. Draft C ends on 'Excited for you to finally have this!' which is exactly the sentimental/motivational filler the user consistently flags as a problem."
+        },
+        {
+          "criterion_name": "Concrete Specificity",
+          "draft_a_score": 2,
+          "draft_b_score": 4,
+          "draft_c_score": 2,
+          "reasoning": "Draft B names a tangible detail \u2014 'it touches your data pipeline' and 'they'll probably want a day or two to review the settings' \u2014 giving Priya real texture about what's involved. Drafts A and C keep the action item abstract ('enable it from the admin settings panel' / 'enable the feature within your account settings') without naming what's actually at stake or what the IT team will encounter."
+        },
+        {
+          "criterion_name": "Concise Consolidation",
+          "draft_a_score": 4,
+          "draft_b_score": 4,
+          "draft_c_score": 3,
+          "reasoning": "Drafts A and B are both lean and efficient \u2014 each paragraph serves a clear purpose without padding. Draft C over-specifies with phrases like 'take full advantage of it from day one' and 'I'd recommend looping them in this week so everything is ready to go on launch day,' which add padding where a consolidated statement would suffice."
+        },
+        {
+          "criterion_name": "Human Voice",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "draft_c_score": 3,
+          "reasoning": "Draft B reads most naturally \u2014 'I wanted to make sure you heard it from me directly' and 'it won't activate automatically' feel like a real person finishing a thought. Draft A is conversational but slightly more template-like. Draft C uses corporate-adjacent language ('take full advantage,' 'Excited for you to finally have this!') and a more formal cadence that distances it from genuine human voice."
+        }
+      ],
+      "overall_ranking": [
+        "Draft B",
+        "Draft A",
+        "Draft C"
+      ],
+      "overall_reasoning": "Draft B best embodies the user's core priorities: it sequences acknowledgment before the news, frames everything around Priya's concrete situation (data pipeline, IT review time), and closes on a clean, forward-moving action without sentimental filler. Draft A is solid and clean but lacks the specificity and emotional sequencing refinement. Draft C falls to last due to motivational closing language and sender-centered framing that directly conflict with the user's demonstrated preferences."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A is more specific and precise \u2014 it names the feature ('advanced reporting feature'), references when it was requested ('back in the spring'), and specifies where IT needs to act ('admin console'). Draft B is clear but more generic ('the feature you requested,' 'account settings')."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts follow a logical flow: announcement, action needed, next step. Ideas connect smoothly in each."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are free of grammatical errors and typos, with proper punctuation and sentence construction throughout."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both are well-organized with a clear three-part structure: context/announcement, action item, and call to action. Paragraph breaks are appropriately placed in both."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A feels more personal and conversational ('I know it's been a long wait,' 'heard it from me directly'), which is more engaging. Draft B's enthusiasm ('Great news,' 'Excited for you') feels slightly more formulaic and sales-templated."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A strikes a natural, professional-yet-human tone that reads like a real person wrote it. Draft B is competent but leans toward a polished marketing/customer-success template tone with phrases like 'take full advantage' and 'Excited for you to finally have this!'"
+        }
+      ],
+      "overall_preference": "A",
+      "overall_reasoning": "Draft A reads as a more authentic, specific, and naturally conversational email. It provides more concrete details (feature name, admin console, data pipeline considerations) and avoids the slightly templated enthusiasm of Draft B, making it more credible and engaging as professional communication."
+    },
+    "suggestion_text": "",
+    "suggestion_reasons": {},
+    "suggested_rubric": null,
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nDRAFT A:\nSubject: The feature you requested is shipping next week\n\nHi Priya,\n\nGood news \u2014 the feature you requested back in the spring is finally ready and rolling out next week.\n\nTo turn it on, your IT team will need to enable it from the admin settings panel. It shouldn't take more than a few minutes once they're in there, but I want to make sure you have plenty of lead time to coordinate with them.\n\nCan you confirm by Thursday whether your team is set to activate it on launch day? Happy to jump on a quick call if anything needs clarifying.\n\nThanks,\n[Your name]\n\nDRAFT B:\nSubject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nTo actually turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically. Given that it touches your data pipeline, they'll probably want a day or two to review the settings before flipping it on.\n\nDoes it make sense to get a quick call on the calendar so I can walk them through what to expect?\n\nDRAFT C:\nSubject: Your Requested Feature Is Shipping Next Week\n\nHi Priya,\n\nGreat news \u2014 the feature you requested six months ago is finally here. We're officially shipping it next week, and I wanted to make sure you're ready to take full advantage of it from day one.\n\nThere is one action item on your end: your IT team will need to enable the feature within your account settings before it becomes active. I'd recommend looping them in this week so everything is ready to go on launch day.\n\nPlease let me know if you have any questions or need guidance for your IT team. Excited for you to finally have this!\n\nBest,\n[Your Name]\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Emotional Sequencing\",\n      \"category\": \"Structure\",\n      \"description\": \"The order in which information arrives shapes how the reader receives it. Acknowledgment and context come before the news or ask \\u2014 they set the frame rather than chasing after it. Each section builds on the emotional state the previous section creates.\",\n      \"dimensions\": [\n        {\n          \"id\": \"context_before_news\",\n          \"label\": \"Context or acknowledgment appears before the key news or ask, not after\"\n        },\n        {\n          \"id\": \"frame_earns_reception\",\n          \"label\": \"The opening sets a frame that shapes how the reader receives what follows\"\n        },\n        {\n          \"id\": \"no_retroactive_softening\",\n          \"label\": \"Acknowledgment is not positioned as damage control after the headline has already landed\"\n        },\n        {\n          \"id\": \"natural_buildup\",\n          \"label\": \"Each section flows naturally from the emotional state established by the prior one\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"Reader-Centered Framing\",\n      \"category\": \"Audience\",\n      \"description\": \"The message is framed around what it means for the reader \\u2014 their situation, their disruptions, their plans \\u2014 not around the sender's values, commitments, or organizational rationale. When the 'why' names something concrete about the reader's experience, it lands as acknowledgment; when it centers the sender, it reads as self-explanation.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_reader_reality\",\n          \"label\": \"Impact descriptions reference what the reader is actually experiencing or dealing with, not abstract outcomes\"\n        },\n        {\n          \"id\": \"avoids_org_centering\",\n          \"label\": \"Rationale is not framed around the sender's or organization's values or commitments\"\n        },\n        {\n          \"id\": \"acknowledges_cost\",\n          \"label\": \"Explicitly acknowledges what the message costs or asks of the reader\"\n        },\n        {\n          \"id\": \"speaks_to_not_at\",\n          \"label\": \"Language addresses the reader's situation rather than explaining the sender's position\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Forward-Momentum Closings\",\n      \"category\": \"Structure\",\n      \"description\": \"Endings land on something that moves people forward \\u2014 a next step, an invitation, a clear action \\u2014 rather than trailing into sentiment, gratitude, or motivational language. The closing puts the ball in the reader's court.\",\n      \"dimensions\": [\n        {\n          \"id\": \"ends_on_action\",\n          \"label\": \"The closing moves the reader toward a next step or invitation rather than signing off with sentiment\"\n        },\n        {\n          \"id\": \"no_motivational_filler\",\n          \"label\": \"No motivational-poster language, generic affirmations, or canned encouragement\"\n        },\n        {\n          \"id\": \"reader_agency\",\n          \"label\": \"The ending puts agency in the reader's hands (e.g., invites questions, opens a door)\"\n        },\n        {\n          \"id\": \"clean_exit\",\n          \"label\": \"The closing is clean and doesn't linger or add unnecessary padding\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Concrete Specificity\",\n      \"category\": \"Content\",\n      \"description\": \"Impact, reasoning, and disruptions are named in tangible, specific terms \\u2014 the actual texture of the situation \\u2014 rather than in abstract quality or outcome language. 'Dependencies lined up, people informed' over 'undo the work that got us here.'\",\n      \"dimensions\": [\n        {\n          \"id\": \"tangible_disruptions\",\n          \"label\": \"Disruptions or stakes are described in terms of specific, real-world consequences (schedules, dependencies, downstream conversations)\"\n        },\n        {\n          \"id\": \"avoids_abstraction\",\n          \"label\": \"Avoids abstract quality or outcome language ('getting this right,' 'undo the work') as the primary framing\"\n        },\n        {\n          \"id\": \"names_texture\",\n          \"label\": \"References the actual texture of the reader's situation rather than generalized statements\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Concise Consolidation\",\n      \"category\": \"Style\",\n      \"description\": \"Multiple related items resolve into one clear, unified statement rather than fanning out into separate line items. Information is covered efficiently \\u2014 every section serves a purpose and nothing is over-specified when a consolidated summary does the job.\",\n      \"dimensions\": [\n        {\n          \"id\": \"unified_statements\",\n          \"label\": \"Related action items or details are consolidated into clear, unified statements rather than broken into separate components\"\n        },\n        {\n          \"id\": \"no_over_specification\",\n          \"label\": \"Next steps and details are not over-specified when a brief summary would suffice\"\n        },\n        {\n          \"id\": \"lean_structure\",\n          \"label\": \"Every section serves a clear purpose with no padding or filler\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Human Voice\",\n      \"category\": \"Style\",\n      \"description\": \"The message reads like it's from a person finishing a thought, not from a project tracker, corporate template, or status report. Prose is preferred over bureaucratic structure when it can carry the same information with more warmth and directness.\",\n      \"dimensions\": [\n        {\n          \"id\": \"prose_over_lists\",\n          \"label\": \"Uses flowing prose where bullet lists would make the message feel like a status report\"\n        },\n        {\n          \"id\": \"reads_as_person\",\n          \"label\": \"The overall message reads like a person talking to their team, not an institutional communication\"\n        },\n        {\n          \"id\": \"avoids_corporate_templates\",\n          \"label\": \"Avoids corporate communication clich\\u00e9s and canned phrases\"\n        },\n        {\n          \"id\": \"natural_rhythm\",\n          \"label\": \"Sentences have natural, conversational rhythm rather than formal or bureaucratic cadence\"\n        }\n      ],\n      \"priority\": 6\n    }\n  ],\n  \"version\": 2,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"internal team communications\",\n  \"user_goals_summary\": \"This user writes to their engineering team as a peer-leader, not a corporate mouthpiece. They prioritize framing messages around the reader's lived experience and concrete situation, sequencing information so acknowledgment earns the news rather than softening it retroactively, and ending on forward momentum rather than sentiment.\",\n  \"coaching_notes\": \"This user's non-negotiable is reader-centeredness: every framing choice, every sequencing decision, and every word choice is evaluated by whether it speaks to the reader's actual experience or defaults to the sender's perspective. They have a strong instinct for detecting abstraction masquerading as empathy \\u2014 'undo the work' sounds empathetic but is still organizational framing; 'dependencies lined up, people informed' is what actually lands. When in doubt, name the concrete over the aspirational, and end on momentum rather than warmth.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\nange, let's talk \u2014 reply here or grab time on my calendar.\n\n[Your name]\n</draft>\n\nTwo sentences instead of four bullets. It still covers who's on it, by when, and when they'll hear from you again \u2014 but now it reads like a person finishing a thought rather than a project tracker.\n\n[Message #10 \u2014 user]\nThis is really close. The structure feels right, the ending is clean, the ownership is clear. The one thing that's still not quite landing is that middle line \u2014 'shipping something broken would undo the work that got us here.' I get what it's trying to do, but it still reads a little like a company-values statement. The team has been planning around a specific date \u2014 schedules, dependencies, probably things they've already communicated to other people. That's the actual disruption. When the 'why' names something concrete about their situation rather than speaking in terms of work quality or outcomes in the abstract, it'll feel like you're talking to them, not explaining yourself.\n\n[Message #11 \u2014 assistant]\nRight \u2014 \"undo the work\" is still abstract and outcome-focused. The real disruption is logistical and personal: they've made commitments around this date, and now those commitments have to be unwound.\n\n<draft>\n**Subject: Product Launch Date Update \u2014 Two-Week Delay**\n\nHi team,\n\nA lot of you have been heads-down pushing hard toward our launch date, and I want to be straight with you about where things stand.\n\nTesting caught a critical bug we can't ship with. We're pushing the launch back two weeks, from **[original date]** to **[new date]**. I know a lot of you have already built plans around this date \u2014 dependencies lined up, people informed \u2014 and this means revisiting some of that. That's a real ask, and I don't want to gloss over it.\n\n**[Owner/Team]** is leading the fix, and we're targeting **[internal deadline]** to have it resolved and re-tested. I'll send a full update by **[check-in date]**.\n\nIf you have questions or think something in this plan needs to change, let's talk \u2014 reply here or grab time on my calendar.\n\n[Your name]\n</draft>\n\n\"Dependencies lined up, people informed\" names the actual texture of the disruption \u2014 the downstream conversations they now have to have again. That's what makes it land as acknowledgment rather than explanation.\n\n[Message #12 \u2014 user]\nYeah, this one's there. The middle section finally reads like it's talking to the team \u2014 'dependencies lined up, people informed' is exactly the kind of concrete disruption I wanted acknowledged, not some abstract statement about quality. The structure flows, the ending lands clean, and the ownership is clear without over-specifying anything. I'd take this as-is.\n\n[Message #13 \u2014 system]\n--- Iteration 2/4 ---\n\n[Message #14 \u2014 user]\nI need to email a key customer \u2014 Priya at Northfield Logistics \u2014 letting her know that a feature she requested six months ago is finally shipping next week. She'll need to coordinate with her IT team to enable it, so there's a clear action item on her end.\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: Refer to drafts as Draft A, Draft B, Draft C in your reasoning and scores.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Emotional Sequencing\",\n            \"draft_a_score\": 3,\n            \"draft_b_score\": 5,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"Draft B opens by acknowledging Priya's original request and the long wait before delivering the news, earning the headline rather than leading with it \u2014 this mirrors exactly the sequencing pattern the user refined in conversation. Drafts A and C lead with 'good news' or 'great news' and deliver the headline immediately, with context trailing after rather than framing the reception.\"\n        },\n        {\n            \"criterion_name\": \"Reader-Centered Framing\",\n            \"draft_a_score\": 3,\n            \"draft_b_score\": 5,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"Draft B names Priya's concrete situation \u2014 'it touches your data pipeline' and acknowledges the wait from her perspective \u2014 speaking to her reality rather than explaining the sender's delivery. Drafts A and C stay generic ('the feature you requested'), and Draft C's 'take full advantage of it from day one' is aspirational framing centered on the sender's excitement rather than Priya's operational reality.\"\n        },\n        {\n            \"criterion_name\": \"Forward-Momentum Closings\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 5,\n            \"draft_c_score\": 2,\n            \"reasoning\": \"Draft B closes with a concrete, actionable invitation \u2014 a call to walk the IT team through what to expect \u2014 putting the ball in Priya's court cleanly. Draft A asks for confirmation by Thursday, which is forward-moving but the 'Happy to jump on a quick call' feels like padding. Draft C ends on 'Excited for you to finally have this!' which is exactly the sentimental/motivational filler the user consistently flags as a problem.\"\n        },\n        {\n            \"criterion_name\": \"Concrete Specificity\",\n            \"draft_a_score\": 2,\n            \"draft_b_score\": 4,\n            \"draft_c_score\": 2,\n            \"reasoning\": \"Draft B names a tangible detail \u2014 'it touches your data pipeline' and 'they'll probably want a day or two to review the settings' \u2014 giving Priya real texture about what's involved. Drafts A and C keep the action item abstract ('enable it from the admin settings panel' / 'enable the feature within your account settings') without naming what's actually at stake or what the IT team will encounter.\"\n        },\n        {\n            \"criterion_name\": \"Concise Consolidation\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 4,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"Drafts A and B are both lean and efficient \u2014 each paragraph serves a clear purpose without padding. Draft C over-specifies with phrases like 'take full advantage of it from day one' and 'I'd recommend looping them in this week so everything is ready to go on launch day,' which add padding where a consolidated statement would suffice.\"\n        },\n        {\n            \"criterion_name\": \"Human Voice\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 5,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"Draft B reads most naturally \u2014 'I wanted to make sure you heard it from me directly' and 'it won't activate automatically' feel like a real person finishing a thought. Draft A is conversational but slightly more template-like. Draft C uses corporate-adjacent language ('take full advantage,' 'Excited for you to finally have this!') and a more formal cadence that distances it from genuine human voice.\"\n        }\n    ],\n    \"overall_ranking\": [\"Draft B\", \"Draft A\", \"Draft C\"],\n    \"overall_reasoning\": \"Draft B best embodies the user's core priorities: it sequences acknowledgment before the news, frames everything around Priya's concrete situation (data pipeline, IT review time), and closes on a clean, forward-moving action without sentimental filler. Draft A is solid and clean but lacks the specificity and emotional sequencing refinement. Draft C falls to last due to motivational closing language and sender-centered framing that directly conflict with the user's demonstrated preferences.\"\n}\n```"
+      }
+    ],
+    "iteration": 2,
+    "phase": "pre_conversation"
+  },
+  {
+    "timestamp": "2026-03-08T18:41:28.395782",
+    "writing_task": "Help me write an email to our head of sales letting him know we're killing a feature that his team has been demoing to prospects \u2014 we discovered it creates a security liability and can't ship it. He needs to update his team's pitch decks before the conference next Thursday.",
+    "drafts": {
+      "rubric": "Subject: Feature removal before the conference\n\nHi [Name],\n\nYour team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.\n\nThat means any prospect who saw it in a deck is expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed beforehand.\n\nCan you update the pitch decks by Tuesday?",
+      "generic": "Subject: Urgent: Feature Removal Before Thursday's Conference\n\nHi [Name],\n\nI need to flag an urgent issue. We've discovered that the [feature name] your team has been demoing to prospects creates a security liability, and we've made the decision to pull it from our roadmap entirely. It will not be shipping.\n\nThis means your team's pitch decks need to be updated before the conference next Thursday. Please remove all references to this feature from any demos, slides, or prospect-facing materials as soon as possible.\n\nI'm happy to jump on a quick call to walk through the details and answer any questions. Let me know.\n\nThanks,\n[Your Name]",
+      "preference": "Subject: Removing [Feature Name] from Sales Demos \u2014 Action Needed Before Thursday\n\nHi [Name],\n\nWe're pulling [feature name] from the product. Our team found a security vulnerability that makes it unshippable, so it can't be part of any demos or pitches going forward.\n\nI know your team has been actively using it with prospects, so I wanted to flag this as quickly as possible. With the conference next Thursday, you'll need to get updated pitch decks to your reps before then.\n\nCan you confirm once the decks are updated? Happy to jump on a quick call if it helps.\n\nThanks,\n[Your name]"
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "preference"
+      ],
+      [
+        "B",
+        "generic"
+      ],
+      [
+        "C",
+        "rubric"
+      ]
+    ],
+    "user_preference": "rubric",
+    "user_ranking": [
+      "rubric",
+      "preference",
+      "generic"
+    ],
+    "user_reason": "C is the strongest \u2014 it follows the right emotional arc naturally: acknowledges the situation first, delivers the news, then frames the stakes from my reader's perspective ('prospect who saw it is expecting something you won't deliver' \u2014 that's his problem, not mine), and ends with a single clear owner and a real deadline. That's exactly how this should land. A is decent and gets the CTA right, but it buries the stakes and the 'why' framing is weak \u2014 'I wanted to flag this quickly' centers me, not him. The paragraph order also feels slightly off; the urgency comes after the news instead of being embedded in the consequence. B is the weakest \u2014 'I need to flag an urgent issue' is throat-clearing, the subject line screams panic, and 'please remove all references from any demos, slides, or prospect-facing materials' is a vague group ask with no deadline. It also closes with 'let me know' after a call offer, which trails off instead of driving action.",
+    "rubric_version": 5,
+    "criteria_analysis": [
+      {
+        "name": "Emotional Sequencing",
+        "rubric_score": 3,
+        "generic_score": 2,
+        "gap": 1,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "Draft C follows the ideal sequence: acknowledges the reader's situation first ('Your team has been pitching [feature name]\u2026'), then delivers the news, then explains why it matters to the reader (prospects expecting something undeliverable, walking into the conference with outdated pitches), then closes with one concrete next step. Draft A acknowledges the reader's situation but only after delivering the news in the opening line, making the acknowledgment feel retroactive. Draft B leads with 'I need to flag an urgent issue' \u2014 sender-centered framing \u2014 and the acknowledgment of the reader's situation is buried mid-sentence rather than appearing as a distinct opening beat.",
+        "preference_score": 4,
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centered Framing",
+        "rubric_score": 2,
+        "generic_score": 2,
+        "gap": 0,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "Draft C excels here: it names the specific downstream consequence for the reader \u2014 prospects who saw the feature are now expecting something that won't be delivered, and the team would walk into the conference with outdated pitches. That's concrete, tangible, and about the reader's reality. Drafts A and B both mention the conference deadline but never name the actual cost to the reader; they explain what happened and what needs to change without framing why it matters in terms of the reader's world.",
+        "preference_score": 5,
+        "priority": 2
+      },
+      {
+        "name": "Human Voice",
+        "rubric_score": 4,
+        "generic_score": 3,
+        "gap": 1,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "Draft C reads like a sharp colleague finishing a thought \u2014 natural, direct, no corporate padding. Draft A is mostly natural but 'Happy to jump on a quick call if it helps' is slightly canned. Draft B uses phrases like 'flag an urgent issue,' 'we've made the decision,' and 'prospect-facing materials' which edge toward institutional/corporate tone.",
+        "preference_score": 5,
+        "priority": 3
+      },
+      {
+        "name": "Conciseness and Directness",
+        "rubric_score": 3,
+        "generic_score": 3,
+        "gap": 0,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "Draft C is the leanest \u2014 every sentence earns its place, no filler, no over-explanation. Draft A adds an unnecessary 'Happy to jump on a quick call if it helps' and a trailing 'Thanks.' Draft B over-specifies by listing out 'demos, slides, or prospect-facing materials' which breaks out what could be consolidated, and the offer to walk through details adds weight without value.",
+        "preference_score": 5,
+        "priority": 4
+      },
+      {
+        "name": "Forward-Momentum Closings",
+        "rubric_score": 2,
+        "generic_score": 1,
+        "gap": 1,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "Draft C ends perfectly on the ask with a specific deadline ('Can you update the pitch decks by Tuesday?') and stops \u2014 nothing after it. This is exactly what the user demanded in conversation history. Draft A adds 'Happy to jump on a quick call if it helps' and 'Thanks' after the CTA, diluting it. Draft B is the worst offender: after the ask ('Please remove all references\u2026'), it adds an offer to jump on a call and 'Let me know' and 'Thanks' \u2014 three trailing elements after what should be the stopping point.",
+        "preference_score": 5,
+        "priority": 5
+      },
+      {
+        "name": "Action Ownership",
+        "rubric_score": 3,
+        "generic_score": 3,
+        "gap": 0,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "Draft C names the reader as owner ('Can you update the pitch decks') with a concrete deadline ('by Tuesday'). Drafts A and B both address the reader but lack a specific deadline \u2014 A says 'before then' (vague relative to Thursday) and asks for confirmation rather than setting a deadline, B says 'as soon as possible' which is not a concrete deadline. None of the drafts name a specific individual beyond the reader (which the user's rubric prefers), but Draft C comes closest to clean ownership with a hard date.",
+        "preference_score": 4,
+        "priority": 6
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Emotional Sequencing",
+          "draft_a_score": 3,
+          "draft_b_score": 2,
+          "draft_c_score": 4,
+          "reasoning": "Draft C follows the ideal sequence: acknowledges the reader's situation first ('Your team has been pitching [feature name]\u2026'), then delivers the news, then explains why it matters to the reader (prospects expecting something undeliverable, walking into the conference with outdated pitches), then closes with one concrete next step. Draft A acknowledges the reader's situation but only after delivering the news in the opening line, making the acknowledgment feel retroactive. Draft B leads with 'I need to flag an urgent issue' \u2014 sender-centered framing \u2014 and the acknowledgment of the reader's situation is buried mid-sentence rather than appearing as a distinct opening beat."
+        },
+        {
+          "criterion_name": "Reader-Centered Framing",
+          "draft_a_score": 2,
+          "draft_b_score": 2,
+          "draft_c_score": 5,
+          "reasoning": "Draft C excels here: it names the specific downstream consequence for the reader \u2014 prospects who saw the feature are now expecting something that won't be delivered, and the team would walk into the conference with outdated pitches. That's concrete, tangible, and about the reader's reality. Drafts A and B both mention the conference deadline but never name the actual cost to the reader; they explain what happened and what needs to change without framing why it matters in terms of the reader's world."
+        },
+        {
+          "criterion_name": "Human Voice",
+          "draft_a_score": 4,
+          "draft_b_score": 3,
+          "draft_c_score": 5,
+          "reasoning": "Draft C reads like a sharp colleague finishing a thought \u2014 natural, direct, no corporate padding. Draft A is mostly natural but 'Happy to jump on a quick call if it helps' is slightly canned. Draft B uses phrases like 'flag an urgent issue,' 'we've made the decision,' and 'prospect-facing materials' which edge toward institutional/corporate tone."
+        },
+        {
+          "criterion_name": "Conciseness and Directness",
+          "draft_a_score": 3,
+          "draft_b_score": 3,
+          "draft_c_score": 5,
+          "reasoning": "Draft C is the leanest \u2014 every sentence earns its place, no filler, no over-explanation. Draft A adds an unnecessary 'Happy to jump on a quick call if it helps' and a trailing 'Thanks.' Draft B over-specifies by listing out 'demos, slides, or prospect-facing materials' which breaks out what could be consolidated, and the offer to walk through details adds weight without value."
+        },
+        {
+          "criterion_name": "Forward-Momentum Closings",
+          "draft_a_score": 2,
+          "draft_b_score": 1,
+          "draft_c_score": 5,
+          "reasoning": "Draft C ends perfectly on the ask with a specific deadline ('Can you update the pitch decks by Tuesday?') and stops \u2014 nothing after it. This is exactly what the user demanded in conversation history. Draft A adds 'Happy to jump on a quick call if it helps' and 'Thanks' after the CTA, diluting it. Draft B is the worst offender: after the ask ('Please remove all references\u2026'), it adds an offer to jump on a call and 'Let me know' and 'Thanks' \u2014 three trailing elements after what should be the stopping point."
+        },
+        {
+          "criterion_name": "Action Ownership",
+          "draft_a_score": 3,
+          "draft_b_score": 3,
+          "draft_c_score": 4,
+          "reasoning": "Draft C names the reader as owner ('Can you update the pitch decks') with a concrete deadline ('by Tuesday'). Drafts A and B both address the reader but lack a specific deadline \u2014 A says 'before then' (vague relative to Thursday) and asks for confirmation rather than setting a deadline, B says 'as soon as possible' which is not a concrete deadline. None of the drafts name a specific individual beyond the reader (which the user's rubric prefers), but Draft C comes closest to clean ownership with a hard date."
+        }
+      ],
+      "overall_ranking": [
+        "Draft C",
+        "Draft A",
+        "Draft B"
+      ],
+      "overall_reasoning": "Draft C aligns most closely with the user's demonstrated preferences: it follows the exact emotional sequence (acknowledge \u2192 news \u2192 reader-centered impact \u2192 clean ask), names concrete downstream consequences for the reader's team, and ends on a specific action with a deadline \u2014 then stops. This mirrors the pattern the user praised in message #33. Draft A is decent but trails off with sentiment and lacks reader-centered framing. Draft B reads the most institutional and violates the closing principle most severely."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Both are clear, but Draft B is more explicit about the scope of what needs to change ('demos, slides, or prospect-facing materials') and leaves no ambiguity about the decision being final ('It will not be shipping')."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Both flow logically from problem to impact to action. Draft B's structure is slightly tighter, moving from issue to decision to ask to offer of support in a natural progression."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are grammatically correct with no errors or typos."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft B has a clearer subject line flagging urgency, a more complete email structure (greeting, body, offer to help, sign-off), and better delineation of information versus action items."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 4,
+          "draft_b_score": 4,
+          "reasoning": "Draft A has a slightly more conversational, punchy style that draws the reader in, while Draft B compensates with urgency signaling and a collaborative offer. Both are engaging for a business email."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft A's tone is direct and effective but slightly blunt ('We're pulling it') without offering collaboration. Draft B strikes a better balance between urgency and professionalism by offering a follow-up call, which is more appropriate for cross-team communication."
+        }
+      ],
+      "overall_preference": "B",
+      "overall_reasoning": "Draft B is the stronger email overall: it signals urgency in the subject line, is more explicit about scope and finality, follows complete email conventions with a sign-off, and offers collaborative support \u2014 all of which make it more professional and actionable for a high-stakes internal communication."
+    },
+    "suggestion_text": "",
+    "suggestion_reasons": {},
+    "suggested_rubric": null,
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nDRAFT A:\nSubject: Removing [Feature Name] from Sales Demos \u2014 Action Needed Before Thursday\n\nHi [Name],\n\nWe're pulling [feature name] from the product. Our team found a security vulnerability that makes it unshippable, so it can't be part of any demos or pitches going forward.\n\nI know your team has been actively using it with prospects, so I wanted to flag this as quickly as possible. With the conference next Thursday, you'll need to get updated pitch decks to your reps before then.\n\nCan you confirm once the decks are updated? Happy to jump on a quick call if it helps.\n\nThanks,\n[Your name]\n\nDRAFT B:\nSubject: Urgent: Feature Removal Before Thursday's Conference\n\nHi [Name],\n\nI need to flag an urgent issue. We've discovered that the [feature name] your team has been demoing to prospects creates a security liability, and we've made the decision to pull it from our roadmap entirely. It will not be shipping.\n\nThis means your team's pitch decks need to be updated before the conference next Thursday. Please remove all references to this feature from any demos, slides, or prospect-facing materials as soon as possible.\n\nI'm happy to jump on a quick call to walk through the details and answer any questions. Let me know.\n\nThanks,\n[Your Name]\n\nDRAFT C:\nSubject: Feature removal before the conference\n\nHi [Name],\n\nYour team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.\n\nThat means any prospect who saw it in a deck is expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed beforehand.\n\nCan you update the pitch decks by Tuesday?\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Emotional Sequencing\",\n      \"category\": \"Structure\",\n      \"description\": \"Information arrives in a specific order: acknowledge the effort or situation first (one or two short sentences), then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \\u2014 even if all the pieces are present \\u2014 breaks the flow. Brevity should come from word choice and trimming, not from merging sentences with punctuation that changes the tone.\",\n      \"dimensions\": [\n        {\n          \"id\": \"context_before_news\",\n          \"label\": \"Acknowledgment or situation framing appears before the key news or ask, not after\"\n        },\n        {\n          \"id\": \"acknowledgment_is_brief\",\n          \"label\": \"Opening acknowledgment is brief \\u2014 one or two short sentences \\u2014 not an extended preamble. Do not merge sentences mechanically (e.g. with an em dash) to hit a sentence count; two short, natural sentences are preferable to one forced one\"\n        },\n        {\n          \"id\": \"no_retroactive_softening\",\n          \"label\": \"Acknowledgment is not positioned as damage control after the headline has already landed\"\n        },\n        {\n          \"id\": \"why_before_next_step\",\n          \"label\": \"The 'why it matters' section appears before the next step, not after or mixed in\"\n        },\n        {\n          \"id\": \"one_next_step\",\n          \"label\": \"There is exactly one concrete next step at the end, not a list of follow-ups\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"Reader-Centered Framing\",\n      \"category\": \"Audience\",\n      \"description\": \"The 'why it matters' is always framed around the reader's concrete reality \\u2014 what it costs them (bad news) or what it unlocks for them (good news). Their time, their workflows, their team, their downstream conversations \\u2014 not the sender's values, commitments, or organizational rationale. When this section names something specific and tangible about the reader's situation, it earns whatever ask or action follows.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_reader_reality\",\n          \"label\": \"Impact is described in terms of the reader's concrete situation \\u2014 their time, plans, workflows, dependencies, or downstream conversations\"\n        },\n        {\n          \"id\": \"concrete_specifics\",\n          \"label\": \"Value or disruption is named with concrete specifics \\u2014 hours saved, people affected, workflows changed \\u2014 not abstract benefits or quality statements\"\n        },\n        {\n          \"id\": \"avoids_org_centering\",\n          \"label\": \"Rationale does not center the sender's values, commitments, or organizational priorities\"\n        },\n        {\n          \"id\": \"speaks_to_not_at\",\n          \"label\": \"Language addresses the reader's situation rather than explaining the sender's position\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Human Voice\",\n      \"category\": \"Style\",\n      \"description\": \"The message reads like a person finishing a thought, not a corporate template or status report. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \\u2014 the kind of email a sharp colleague would send.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_jargon\",\n          \"label\": \"Free of corporate jargon and canned phrases\"\n        },\n        {\n          \"id\": \"reads_as_person\",\n          \"label\": \"Reads like a person talking to their team or peer, not an institutional communication\"\n        },\n        {\n          \"id\": \"no_passive_aggression\",\n          \"label\": \"Tone is direct and neutral \\u2014 no passive-aggressive undertones\"\n        },\n        {\n          \"id\": \"no_exclamation_overuse\",\n          \"label\": \"Exclamation marks are used sparingly or not at all\"\n        },\n        {\n          \"id\": \"natural_rhythm\",\n          \"label\": \"Sentences have natural, conversational rhythm \\u2014 not formal or bureaucratic cadence\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Conciseness and Directness\",\n      \"category\": \"Style\",\n      \"description\": \"Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. Trusts the reader to connect obvious dots \\u2014 does not explain reasoning they can infer from context.\",\n      \"dimensions\": [\n        {\n          \"id\": \"short_paragraphs\",\n          \"label\": \"Paragraphs are short \\u2014 typically 1-3 sentences\"\n        },\n        {\n          \"id\": \"unified_statements\",\n          \"label\": \"Related details are consolidated rather than broken into separate bullet points or line items\"\n        },\n        {\n          \"id\": \"lean_structure\",\n          \"label\": \"Every section serves a clear purpose \\u2014 no padding or filler\"\n        },\n        {\n          \"id\": \"no_over_explanation\",\n          \"label\": \"Reasoning is stated once, cleanly \\u2014 not repeated or belabored\"\n        },\n        {\n          \"id\": \"trust_the_reader\",\n          \"label\": \"Does not explain reasoning or justification the reader can infer from context \\u2014 treats the reader as an intelligent adult\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Forward-Momentum Closings\",\n      \"category\": \"Structure\",\n      \"description\": \"The closing lands on the next step or an open door \\u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no explanatory reasoning the reader can infer themselves. Once you've made the ask with a deadline, stop. Any sentence after the CTA \\u2014 whether sentiment or justification \\u2014 dilutes it.\",\n      \"dimensions\": [\n        {\n          \"id\": \"ends_on_action\",\n          \"label\": \"The closing is the next step or an invitation \\u2014 not a sentiment or sign-off phrase\"\n        },\n        {\n          \"id\": \"nothing_after_cta\",\n          \"label\": \"No additional sentences appear after the call to action \\u2014 not sentiment, not reasoning, not justification\"\n        },\n        {\n          \"id\": \"no_trailing_justification\",\n          \"label\": \"Does not add explanatory reasoning after the ask that the reader can infer from context (e.g., explaining why a deadline matters when the reason is obvious)\"\n        },\n        {\n          \"id\": \"no_motivational_filler\",\n          \"label\": \"No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Action Ownership\",\n      \"category\": \"Content\",\n      \"description\": \"When something needs to happen, there is one clear owner \\u2014 a specific named person or the reader themselves \\u2014 with a concrete deadline. 'Have someone on your IT team' is how things don't get done. Specify WHO and WHEN clearly; don't break the action into sub-tasks or assume process details the email shouldn't contain.\",\n      \"dimensions\": [\n        {\n          \"id\": \"specific_owner\",\n          \"label\": \"There is one named or clearly identified person responsible for the next step \\u2014 not a vague team, role, or 'someone on your team'\"\n        },\n        {\n          \"id\": \"has_deadline\",\n          \"label\": \"The next step includes a concrete deadline or timeframe\"\n        },\n        {\n          \"id\": \"no_group_asks\",\n          \"label\": \"Avoids 'everyone please...' or other diffuse asks that produce no clear accountability\"\n        },\n        {\n          \"id\": \"no_over_specification\",\n          \"label\": \"Action items are not broken into sub-tasks or process steps \\u2014 specify who and when, not how\"\n        }\n      ],\n      \"priority\": 6\n    }\n  ],\n  \"version\": 5,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"professional emails\",\n  \"user_goals_summary\": \"Writes emails that land with readers by controlling information order, framing everything in terms of the reader's concrete reality, and ending cleanly on a specific action. Values treating readers as intelligent adults \\u2014 no over-explanation, no sentiment padding, no vague ownership. Tone is direct and human, never corporate or institutional.\",\n  \"coaching_notes\": \"Non-negotiable: once the CTA is stated with a deadline, the email stops \\u2014 no trailing justification, no sentiment, no reasoning the reader can figure out. This user treats over-explanation as a form of disrespect to the reader's intelligence. When the 'why it matters' section names something concrete about the reader's world \\u2014 whether it's disruption (bad news) or value unlocked (good news) \\u2014 it earns the ask and makes the whole email land. Action ownership must point at a real, specific person; vague team references are treated as non-actions.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\n integrations. Go ahead and update the closing to point at him specifically, and make sure there's still a clear Monday EOD deadline in there.\n\n[Message #30 \u2014 assistant]\n<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nCan you loop in Marcus to enable it through the admin console by Monday EOD? The feature goes live Tuesday, so that'll make sure his side is ready at launch.</draft>\n\n[Message #31 \u2014 user]\nThis is really close \u2014 the middle paragraph is doing exactly what it needs to, and naming Marcus with a hard deadline is so much better than before. My only remaining issue is the last sentence: 'The feature goes live Tuesday, so that'll make sure his side is ready at launch' is basically explaining why Monday matters, which Priya can figure out herself. It reads like we're nervous she won't act, so we're adding a little reasoning nudge after the ask. I'd rather the email just end on the action \u2014 once you've made the ask with a deadline, stop. That trailing sentence is diluting it.\n\n[Message #32 \u2014 assistant]\n<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nCan you loop in Marcus to enable it through the admin console by Monday EOD?</draft>\n\n[Message #33 \u2014 user]\nYeah, this is it. The middle paragraph finally earns the ask \u2014 it's specific, it's about her team's time, not our shipping schedule. And ending on 'Can you loop in Marcus to enable it through the admin console by Monday EOD?' is exactly right. No hedging, no 'thanks for your patience,' just a clean stop. Send it.\n\n[Message #34 \u2014 system]\n--- Iteration 3/4 ---\n\n[Message #35 \u2014 user]\nHelp me write an email to our head of sales letting him know we're killing a feature that his team has been demoing to prospects \u2014 we discovered it creates a security liability and can't ship it. He needs to update his team's pitch decks before the conference next Thursday.\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: Refer to drafts as Draft A, Draft B, Draft C in your reasoning and scores.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Emotional Sequencing\",\n            \"draft_a_score\": 3,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"Draft C follows the ideal sequence: acknowledges the reader's situation first ('Your team has been pitching [feature name]\u2026'), then delivers the news, then explains why it matters to the reader (prospects expecting something undeliverable, walking into the conference with outdated pitches), then closes with one concrete next step. Draft A acknowledges the reader's situation but only after delivering the news in the opening line, making the acknowledgment feel retroactive. Draft B leads with 'I need to flag an urgent issue' \u2014 sender-centered framing \u2014 and the acknowledgment of the reader's situation is buried mid-sentence rather than appearing as a distinct opening beat.\"\n        },\n        {\n            \"criterion_name\": \"Reader-Centered Framing\",\n            \"draft_a_score\": 2,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"Draft C excels here: it names the specific downstream consequence for the reader \u2014 prospects who saw the feature are now expecting something that won't be delivered, and the team would walk into the conference with outdated pitches. That's concrete, tangible, and about the reader's reality. Drafts A and B both mention the conference deadline but never name the actual cost to the reader; they explain what happened and what needs to change without framing why it matters in terms of the reader's world.\"\n        },\n        {\n            \"criterion_name\": \"Human Voice\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"Draft C reads like a sharp colleague finishing a thought \u2014 natural, direct, no corporate padding. Draft A is mostly natural but 'Happy to jump on a quick call if it helps' is slightly canned. Draft B uses phrases like 'flag an urgent issue,' 'we've made the decision,' and 'prospect-facing materials' which edge toward institutional/corporate tone.\"\n        },\n        {\n            \"criterion_name\": \"Conciseness and Directness\",\n            \"draft_a_score\": 3,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"Draft C is the leanest \u2014 every sentence earns its place, no filler, no over-explanation. Draft A adds an unnecessary 'Happy to jump on a quick call if it helps' and a trailing 'Thanks.' Draft B over-specifies by listing out 'demos, slides, or prospect-facing materials' which breaks out what could be consolidated, and the offer to walk through details adds weight without value.\"\n        },\n        {\n            \"criterion_name\": \"Forward-Momentum Closings\",\n            \"draft_a_score\": 2,\n            \"draft_b_score\": 1,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"Draft C ends perfectly on the ask with a specific deadline ('Can you update the pitch decks by Tuesday?') and stops \u2014 nothing after it. This is exactly what the user demanded in conversation history. Draft A adds 'Happy to jump on a quick call if it helps' and 'Thanks' after the CTA, diluting it. Draft B is the worst offender: after the ask ('Please remove all references\u2026'), it adds an offer to jump on a call and 'Let me know' and 'Thanks' \u2014 three trailing elements after what should be the stopping point.\"\n        },\n        {\n            \"criterion_name\": \"Action Ownership\",\n            \"draft_a_score\": 3,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"Draft C names the reader as owner ('Can you update the pitch decks') with a concrete deadline ('by Tuesday'). Drafts A and B both address the reader but lack a specific deadline \u2014 A says 'before then' (vague relative to Thursday) and asks for confirmation rather than setting a deadline, B says 'as soon as possible' which is not a concrete deadline. None of the drafts name a specific individual beyond the reader (which the user's rubric prefers), but Draft C comes closest to clean ownership with a hard date.\"\n        }\n    ],\n    \"overall_ranking\": [\"Draft C\", \"Draft A\", \"Draft B\"],\n    \"overall_reasoning\": \"Draft C aligns most closely with the user's demonstrated preferences: it follows the exact emotional sequence (acknowledge \u2192 news \u2192 reader-centered impact \u2192 clean ask), names concrete downstream consequences for the reader's team, and ends on a specific action with a deadline \u2014 then stops. This mirrors the pattern the user praised in message #33. Draft A is decent but trails off with sentiment and lacks reader-centered framing. Draft B reads the most institutional and violates the closing principle most severely.\"\n}\n```"
+      }
+    ],
+    "iteration": 3,
+    "phase": "pre_conversation"
+  }
+]

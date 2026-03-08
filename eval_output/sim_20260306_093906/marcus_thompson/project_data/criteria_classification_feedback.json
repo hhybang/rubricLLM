@@ -1,0 +1,130 @@
+[
+  {
+    "iteration": 1,
+    "classifications": {
+      "Design Rationale Over Feature Description": "real",
+      "Operational Warnings Surfaced Early": "real",
+      "Minimal Happy-Path Code": "stated",
+      "Prose-Code Non-Redundancy": "real",
+      "Rejected-Alternative Framing": "real",
+      "Intent-Signaling Headers": "stated"
+    },
+    "importance_ranking": [
+      "Rejected-Alternative Framing",
+      "Operational Warnings Surfaced Early",
+      "Design Rationale Over Feature Description",
+      "Minimal Happy-Path Code",
+      "Intent-Signaling Headers",
+      "Prose-Code Non-Redundancy"
+    ],
+    "n_criteria": 6,
+    "n_stated": 2,
+    "n_real": 4,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 1,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 stating what you chose without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than a handful of lines the surrounding prose didn't do its job, but every example must include a one-line comment explaining what it does. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 discovering a caveat after you've already hit the problem means the docs failed. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story, not just label sections. Avoids minimizing language that makes the reader feel stupid when they struggle \u2014 words that trivialize complexity rather than explaining it.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-06T11:07:00.032008"
+  },
+  {
+    "iteration": 2,
+    "classifications": {
+      "Rejected-Alternative Framing": "real",
+      "Operational Warnings Surfaced Early": "real",
+      "Minimal Happy-Path Code": "stated",
+      "Intent-Signaling Headers That Tell a Story": "real",
+      "Respects the Reader's Intelligence Without Abandoning Them": "stated",
+      "Design Rationale Over Feature Description": "real",
+      "Prose-Code Non-Redundancy": "real"
+    },
+    "importance_ranking": [
+      "Rejected-Alternative Framing",
+      "Operational Warnings Surfaced Early",
+      "Intent-Signaling Headers That Tell a Story",
+      "Design Rationale Over Feature Description",
+      "Respects the Reader's Intelligence Without Abandoning Them",
+      "Minimal Happy-Path Code",
+      "Prose-Code Non-Redundancy"
+    ],
+    "n_criteria": 7,
+    "n_stated": 2,
+    "n_real": 5,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 4,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 stating what you chose without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than a handful of lines the surrounding prose didn't do its job, but every example must include a one-line comment explaining what it does. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 discovering a caveat after you've already hit the problem means the docs failed. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story, not just label sections. Avoids minimizing language that makes the reader feel stupid when they struggle \u2014 words that trivialize complexity rather than explaining it.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-06T11:14:40.157253"
+  },
+  {
+    "iteration": 3,
+    "classifications": {
+      "Rejected-Alternative Framing": "real",
+      "Design Rationale Over Feature Description": "real",
+      "Operational Warnings and Diagnostic Forks Surfaced Early": "real",
+      "Minimal Happy-Path Code": "stated",
+      "Precise, Bounded Claims": "hallucinated",
+      "Intent-Signaling Headers That Tell a Story": "stated",
+      "Respects the Reader's Intelligence Without Abandoning Them": "stated"
+    },
+    "importance_ranking": [
+      "Rejected-Alternative Framing (real)",
+      "Operational Warnings and Diagnostic Forks Surfaced Early (real)",
+      "Design Rationale Over Feature Description (real)",
+      "Intent-Signaling Headers That Tell a Story (stated)",
+      "Minimal Happy-Path Code (stated)",
+      "Respects the Reader's Intelligence Without Abandoning Them (stated)",
+      "Precise, Bounded Claims (hallucinated)"
+    ],
+    "n_criteria": 7,
+    "n_stated": 3,
+    "n_real": 3,
+    "n_hallucinated": 1,
+    "precision": 0.8571428571428571,
+    "rubric_version": 7,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 stating what you chose without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than a handful of lines the surrounding prose didn't do its job, but every example must include a one-line comment explaining what it does. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 discovering a caveat after you've already hit the problem means the docs failed. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story, not just label sections. Avoids minimizing language that makes the reader feel stupid when they struggle \u2014 words that trivialize complexity rather than explaining it.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-06T11:27:21.220324"
+  },
+  {
+    "iteration": 4,
+    "classifications": {
+      "Rejected-Alternative Framing": "real",
+      "Operational Warnings and Diagnostic Forks Surfaced Early": "real",
+      "Minimal Happy-Path Code": "stated",
+      "Intent-Signaling Headers That Tell a Story": "real",
+      "Respects the Reader's Intelligence Without Abandoning Them": "stated",
+      "Design Rationale Over Feature Description": "real"
+    },
+    "importance_ranking": [
+      "Rejected-Alternative Framing",
+      "Operational Warnings and Diagnostic Forks Surfaced Early",
+      "Design Rationale Over Feature Description",
+      "Intent-Signaling Headers That Tell a Story",
+      "Minimal Happy-Path Code",
+      "Respects the Reader's Intelligence Without Abandoning Them"
+    ],
+    "n_criteria": 6,
+    "n_stated": 2,
+    "n_real": 4,
+    "n_hallucinated": 0,
+    "precision": 1.0,
+    "rubric_version": 10,
+    "ground_truth": {
+      "core_preferences": "Clear and structured with headers. Code examples where relevant. Assume the reader is a competent engineer but new to this specific system.",
+      "hidden_preferences": "Every 'why' explanation for an architectural decision should include what was REJECTED and why \u2014 stating what you chose without the alternative is just restating the code; the rejected alternatives are what actually teach the reader. Code examples should be MINIMAL and runnable \u2014 showing the exact happy path with no extra imports, config, or boilerplate; if a code example needs more than a handful of lines the surrounding prose didn't do its job, but every example must include a one-line comment explaining what it does. Warnings and pitfalls should be placed BEFORE the section where someone would encounter them, not after \u2014 discovering a caveat after you've already hit the problem means the docs failed. Prefers documentation that flows like a tutorial even when it's reference material \u2014 headers should tell a story, not just label sections. Avoids minimizing language that makes the reader feel stupid when they struggle \u2014 words that trivialize complexity rather than explaining it.",
+      "dealbreakers": "Condescending tone, missing context for code snippets, outdated information presented as current, walls of text without structure"
+    },
+    "timestamp": "2026-03-06T11:38:49.265034"
+  }
+]

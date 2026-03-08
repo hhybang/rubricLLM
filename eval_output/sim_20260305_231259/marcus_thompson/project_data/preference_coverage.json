@@ -1,0 +1,450 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation uses clear headers to organize content",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "Criterion 4 directly addresses header structure, requiring headers to give progression, enable scanning, and match logical divisions in content."
+      },
+      {
+        "preference": "Documentation is well-structured with logical sections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "Criterion 4 requires visual divisions to match logical divisions and that sections follow a logical progression."
+      },
+      {
+        "preference": "Code examples are included where relevant to illustrate concepts",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Criterion 3 explicitly discusses the role of code examples and how they complement prose to illustrate concepts."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Respectful Tone Around Difficulty",
+        "explanation": "Criterion 5 includes a dimension 'Assumes the reader is technically capable and addresses them as a peer,' which directly captures this preference."
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system (provides sufficient context about the system itself)",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Criterion 1 discusses explaining why the system works the way it does and equipping the reader to reason about edge cases, which partially addresses providing system context. However, no criterion explicitly requires providing sufficient introductory context about the system for newcomers."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Criterion 1 has a dimension: 'Each significant design decision names at least one alternative that was considered or rejected.'"
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Criterion 1 has a dimension: 'Explains the specific problems or tradeoffs the rejected alternatives would have introduced.'"
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Criterion 3 has a dimension: 'Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example.'"
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Criterion 3 discusses code showing 'the core sequence' and being 'the moment everything clicks,' which implies happy path demonstration. However, it does not explicitly require that code examples be runnable."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Criterion 3 has a dimension about 'Inline code comments reinforce or anchor the reader in the flow rather than re-explaining from scratch,' which touches on inline comments but does not require every example to have a one-line comment explaining what it does."
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Warning and Gotcha Placement",
+        "explanation": "Criterion 2 has a dimension: 'Warnings appear immediately before the point where the reader will write or execute the relevant logic.'"
+      },
+      {
+        "preference": "Headers tell a narrative story and guide the reader through a logical progression, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "Criterion 4 explicitly requires headers to give 'a sense of progression' and feel like questions the reader holds, not just topic labels."
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "Criterion 4 addresses narrative progression and momentum, and Criterion 3 discusses prose-then-code flow, which partially captures tutorial-like flow. However, no criterion explicitly addresses the dual tutorial/reference nature of the documentation."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'obviously', 'easily')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Respectful Tone Around Difficulty",
+        "explanation": "Criterion 5 has a dimension: 'Avoids language that implies failure modes should have been obvious or that softens genuine complexity,' which directly captures avoiding trivializing language."
+      }
+    ],
+    "total_preferences": 14,
+    "covered_count": 10,
+    "partially_covered_count": 4,
+    "not_covered_count": 0,
+    "coverage_score": 0.857,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-06T00:32:11.375595"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation uses clear headers to organize content",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "The criterion explicitly addresses headers and section structure, including the ability to locate topics by scanning headers alone."
+      },
+      {
+        "preference": "Documentation is well-structured with logical sections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "The criterion addresses logical structure, progression between sections, and the overall structure reading as one coherent argument."
+      },
+      {
+        "preference": "Code examples are included where relevant to illustrate concepts",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "The criterion addresses code examples demonstrating what prose explained, implying code is included where relevant to illustrate concepts."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Honest Treatment of Difficulty",
+        "explanation": "The 'Honest Treatment of Difficulty' criterion treats the reader as 'someone standing in front of a real system with real constraints' and avoids condescension, which partially captures this. However, no criterion explicitly addresses not over-explaining basic programming concepts."
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system (provides sufficient context about the system itself)",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "The rubric emphasizes explaining why the system works the way it does and naming wrong approaches readers might reach for (implying they're new to the system). However, no criterion explicitly requires providing sufficient introductory context about the system itself."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Directly addressed: 'Each significant design decision names at least one alternative that was considered or rejected.'"
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Directly addressed: 'Explains the specific problems or tradeoffs the rejected alternatives would have introduced.'"
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Directly addressed: 'Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example.'"
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "The criterion mentions showing 'the core sequence' and being a 'gut-check moment where the reader recognizes their own situation,' which partially captures the happy path aspect. However, runnability is not explicitly addressed."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "The criterion mentions 'Inline code comments anchor the reader in the flow' but frames verbose comments as a sign of prose failure. It doesn't require every example to have a one-line comment; in fact, it somewhat discourages comments that re-explain prose."
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Warning and Gotcha Placement",
+        "explanation": "Directly addressed: 'Warnings appear immediately before the point where the reader will write or execute the relevant logic' and 'Warnings land before the reader has committed to a path, not as retrospective observations.'"
+      },
+      {
+        "preference": "Headers tell a narrative story and guide the reader through a logical progression, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "Directly addressed: 'Section headers give a sense of progression' and 'The overall structure reads as one argument building toward understanding, not separate blocks of reasoning stacked together.'"
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "The criterion describes the reader feeling 'walked through a thought process' with narrative progression, which captures the tutorial-like flow even in reference material."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'obviously', 'easily')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Honest Treatment of Difficulty",
+        "explanation": "The criterion addresses this: 'Never imply a failure mode or complexity should have been obvious' and 'Avoids phrases like harder than it sounds, non-obvious, or tricky that imply the reader should eventually find it easy.' This captures the spirit of avoiding minimizing language."
+      }
+    ],
+    "total_preferences": 14,
+    "covered_count": 10,
+    "partially_covered_count": 4,
+    "not_covered_count": 0,
+    "coverage_score": 0.857,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 2,
+    "rubric_version": 5,
+    "timestamp": "2026-03-06T00:43:49.078084"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation uses clear headers to organize content",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "This criterion explicitly addresses headers and their role in organizing content, including the dimension about locating topics by scanning headers alone."
+      },
+      {
+        "preference": "Documentation is well-structured with logical sections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "The criterion addresses logical structure, progression, and the overall document reading as one coherent argument building toward understanding."
+      },
+      {
+        "preference": "Code examples are included where relevant to illustrate concepts",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "This criterion addresses the inclusion and role of code examples, specifically that code demonstrates what prose explains."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Validating Reader Experience",
+        "explanation": "This criterion frames the reader's instincts as coming from competence in other systems, and the overall rubric tone assumes engineering competence. The 'Honest Treatment of Difficulty' criterion also locates difficulty in the problem, not the reader's experience level."
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system (provides sufficient context about the system itself)",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Validating Reader Experience",
+        "explanation": "The rubric acknowledges that the reader may reach for wrong patterns from other systems, implying they're new to this system. However, no criterion explicitly requires providing sufficient context about the system itself for newcomers."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Directly addressed by the dimension: 'Each significant design decision names at least one alternative that was considered or rejected.'"
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Directly addressed by the dimension: 'Explains the specific problems or tradeoffs the rejected alternatives would have introduced.'"
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Directly addressed by the dimension: 'Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example.'"
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "The criterion mentions showing 'the core sequence' and being a 'gut-check moment,' which partially implies showing the happy path. However, there is no explicit requirement that code be runnable."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Directly addressed by the dimension: 'Each code snippet includes a brief anchoring comment that makes it self-contained for someone skimming.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Warning and Gotcha Placement",
+        "explanation": "Directly addressed by multiple dimensions: 'Warnings appear immediately before the point where the reader will write or execute the relevant logic' and 'Warnings land before the reader has committed to a path, not as retrospective observations.'"
+      },
+      {
+        "preference": "Headers tell a narrative story and guide the reader through a logical progression, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "Directly addressed: 'Headers should tell a progression story \u2014 each one answering something the previous section raised' and the dimension about headers giving a sense of progression."
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "The criterion describes the reader feeling 'walked through a thought process' and the structure reading as 'one argument building toward understanding,' which captures the tutorial-like flow even in reference material."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'obviously', 'easily')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Honest Treatment of Difficulty",
+        "explanation": "The criterion addresses honest treatment of difficulty and the dimension 'Avoids phrases like \"harder than it sounds,\" \"non-obvious,\" or \"tricky\" that imply the reader should eventually find it easy' captures the spirit of avoiding minimizing language, though the specific words listed differ slightly. The overall intent of not trivializing complexity is well captured."
+      }
+    ],
+    "total_preferences": 14,
+    "covered_count": 12,
+    "partially_covered_count": 2,
+    "not_covered_count": 0,
+    "coverage_score": 0.929,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 3,
+    "rubric_version": 7,
+    "timestamp": "2026-03-06T00:55:25.881753"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Documentation uses clear headers to organize content",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "This criterion explicitly addresses headers and section structure, including the dimension that someone returning to the doc can locate a specific topic by scanning headers alone."
+      },
+      {
+        "preference": "Documentation is well-structured with logical sections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "The criterion addresses logical structure directly: 'The visual structure should reflect the logical structure' and 'the overall structure reads as one argument building toward understanding.'"
+      },
+      {
+        "preference": "Code examples are included where relevant to illustrate concepts",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "This criterion directly addresses code examples and their role in illustrating concepts explained in prose: 'Code demonstrates what prose already explained.'"
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Validating Reader Experience",
+        "explanation": "This criterion frames the reader's instincts as 'coming from competence in other systems, not from ignorance or carelessness,' which assumes a competent engineer. The code-prose complementarity criterion also avoids over-explanation by requiring minimum scaffolding."
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system (provides sufficient context about the system itself)",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Validating Reader Experience",
+        "explanation": "The rubric acknowledges the reader's likely wrong instincts and explains 'why this system is different,' implying they're new to the system. However, there's no explicit criterion requiring sufficient context about the system itself for newcomers."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Directly covered: 'Each significant design decision names at least one alternative that was considered or rejected.'"
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Named Alternatives",
+        "explanation": "Directly covered: 'Explains the specific problems or tradeoffs the rejected alternatives would have introduced.'"
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Directly covered: 'Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example.'"
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "The criterion mentions 'show the core sequence' and code as 'the moment everything clicks,' which implies happy path. However, there is no explicit requirement that code examples be runnable."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code-Prose Complementarity",
+        "explanation": "Directly covered: 'Each code snippet includes a brief anchoring comment that makes it self-contained for someone skimming.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Warning and Gotcha Placement",
+        "explanation": "Directly covered: 'Warnings appear immediately before the point where the reader will write or execute the relevant logic' and 'Warnings land before the reader has committed to a path, not as retrospective observations.'"
+      },
+      {
+        "preference": "Headers tell a narrative story and guide the reader through a logical progression, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "Directly covered: 'Headers should tell a progression story \u2014 each one answering something the previous section raised' and 'Section headers give a sense of progression.'"
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Narrative-Driven Section Structure",
+        "explanation": "The criterion describes the doc as 'one argument building toward understanding' where the reader 'feels walked through a thought process,' which captures the tutorial-like flow for reference material."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'obviously', 'easily')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Honest Treatment of Difficulty",
+        "explanation": "The criterion addresses this: 'Avoids phrases like \"harder than it sounds,\" \"non-obvious,\" or \"tricky\" that imply the reader should eventually find it easy.' While the specific examples differ, the intent of avoiding language that trivializes complexity is captured, and the overall criterion is about honest treatment of difficulty."
+      }
+    ],
+    "total_preferences": 14,
+    "covered_count": 12,
+    "partially_covered_count": 2,
+    "not_covered_count": 0,
+    "coverage_score": 0.929,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 4,
+    "rubric_version": 9,
+    "timestamp": "2026-03-06T01:00:49.070483"
+  }
+]

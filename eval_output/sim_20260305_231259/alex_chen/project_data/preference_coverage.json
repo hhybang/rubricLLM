@@ -1,0 +1,646 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "The 'Functional Sentences' criterion explicitly requires every sentence to do work, cut trailing acknowledgments, performative closings, and redundancy \u2014 directly addressing conciseness."
+      },
+      {
+        "preference": "Writing should be direct, getting to the point without hedging or excessive preamble",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "'Professional Directness' calls for straightforward, confident tone with direct plain phrasing rather than corporate hedging. 'Structural Momentum' also orients quickly before delivering news."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "'Professional Directness' addresses professional tone \u2014 straightforward, confident, with ownership and clarity."
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "'Professional Directness' says to use 'direct, plain phrasing rather than corporate hedging or managerial euphemism,' which partially addresses avoiding stiffness, but doesn't explicitly warn against being overly formal or stiff."
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "'Actionable Precision' requires specific, actionable next steps with named owners and time windows, directly covering the call to action requirement."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses paragraph length or formatting structure."
+      },
+      {
+        "preference": "The email should begin by acknowledging the recipient's effort or current situation, limited to one sentence maximum",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'Structural Momentum' requires 'a brief orienting sentence establishes context before the key information is delivered,' which partially covers acknowledgment, but doesn't specify it should acknowledge recipient's effort/situation nor limit it to one sentence."
+      },
+      {
+        "preference": "After the acknowledgment, the main news or update should be delivered before any explanation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'Structural Momentum' says to orient the reader before delivering news and progress logically, but its dimension says 'The why comes early so readers aren't left anxious or guessing,' which actually suggests explanation comes early \u2014 potentially conflicting with delivering news before explanation."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'Structural Momentum' addresses progressing logically through reasoning and impact, and 'Reader-Centered Framing' covers naming what the reader is dealing with and addressing what they need to know."
+      },
+      {
+        "preference": "The 'why it matters' explanation should be framed in terms of stakes and impact, not just neutral facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "'Reader-Centered Framing' requires 'Impact statements speak directly into the reader's reality' and 'naming concrete realities the reader faces,' which captures stakes and impact framing rather than neutral facts."
+      },
+      {
+        "preference": "The email should end with one concrete next step",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'Structural Momentum' says 'the email ends where the action begins' and ends on the final actionable statement. 'Actionable Precision' includes specific next steps. However, neither explicitly requires exactly ONE next step \u2014 they could allow multiple."
+      },
+      {
+        "preference": "The emotional arc order (acknowledge \u2192 news \u2192 why it matters \u2192 next step) must be strictly followed; all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'Structural Momentum' describes a logical progression (orient \u2192 news \u2192 reasoning/impact \u2192 action), but the specific four-step emotional arc and the strict ordering requirement (especially acknowledge before news, and why after news) is not precisely captured. The 'why comes early' dimension may even contradict placing why after news."
+      },
+      {
+        "preference": "The 'why' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "'Reader-Centered Framing' explicitly requires writing from the reader's position, with the reader as grammatical subject, and 'Content addresses what the reader needs to know or do, not what the sender needs to justify or explain.'"
+      },
+      {
+        "preference": "The 'why' should not center the sender's reasoning or organizational goals as the primary framing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "The dimension 'Content addresses what the reader needs to know or do, not what the sender needs to justify or explain' directly addresses this preference."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'The email ends on the final actionable statement \u2014 no sign-off filler' ensures the closing is action-oriented and forward-looking."
+      },
+      {
+        "preference": "No 'thanks for your patience' or similar trailing sentiment after the call to action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'The email ends on the final actionable statement \u2014 no sign-off filler, thank-yous, or motivational closings after it' explicitly covers this."
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "'Functional Sentences' prohibits 'motivational slogans, rallying cries, or generic encouragements' and 'Structural Momentum' prohibits 'motivational closings after' the final action."
+      },
+      {
+        "preference": "When multiple people need to act, the email should designate one clear owner rather than making a group ask",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "'Actionable Precision' requires action items assigned to specific, named individuals, which partially covers this. However, it doesn't explicitly address the scenario of choosing one owner when multiple people are involved rather than making group asks."
+      },
+      {
+        "preference": "Action items assigned to a specific owner should include a deadline",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "'Actionable Precision' requires 'specific time windows' and 'anchored timeframes' alongside named owners, directly covering deadlines for action items."
+      },
+      {
+        "preference": "Avoid vague group requests like 'Everyone please review' that lack individual accountability",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "'Action items are assigned to specific, named individuals' directly addresses avoiding vague group requests by requiring individual accountability."
+      },
+      {
+        "preference": "Action items should not be over-specified with org structure details or assumptions about internal processes the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding over-specification of organizational details or internal process assumptions in action items."
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 13,
+    "partially_covered_count": 6,
+    "not_covered_count": 2,
+    "coverage_score": 0.762,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-05T23:18:28.010201"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "The 'Functional Sentences' criterion directly addresses this by requiring every sentence to do work, cutting redundancy, trailing acknowledgments, and filler."
+      },
+      {
+        "preference": "Writing should be direct, getting to the point without hedging or excessive preamble",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "The 'Professional Directness' criterion calls for straightforward, confident tone with 'direct, plain phrasing rather than corporate hedging or managerial euphemism.' Also 'Structural Momentum' warns against excessive preamble."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "The 'Professional Directness' criterion covers professional tone through its emphasis on confident, straightforward communication with ownership and clarity."
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "The criterion addresses avoiding 'corporate hedging or managerial euphemism' which touches on not being overly formal, but it doesn't explicitly address warmth or avoiding stiffness."
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "The 'Actionable Precision' criterion requires specific, clear next steps with named owners, timeframes, and single actions \u2014 fully covering the call to action requirement."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses paragraph length or visual formatting of the email."
+      },
+      {
+        "preference": "The email should begin by acknowledging the recipient's effort or current situation, limited to one sentence maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "The 'Structural Momentum' criterion specifies 'A brief orienting sentence acknowledges where the reader currently stands' and the description says 'not excessive preamble,' which captures the one-sentence limit."
+      },
+      {
+        "preference": "After the acknowledgment, the main news or update should be delivered before any explanation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum calls for orienting before delivering the change and says 'The why comes early so readers aren't left anxious or guessing,' but the dimension about 'why comes early' could be read as putting the why before the news, which contradicts delivering news before explanation. The intent is partially captured but ambiguous."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum describes progressing logically through reasoning and impact, and Reader-Centered Framing covers explaining stakes and impact."
+      },
+      {
+        "preference": "The 'why it matters' explanation should be framed in terms of stakes and impact, not just neutral facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing explicitly requires 'Stakes and impact should hit from the reader's side' and its dimensions address naming concrete realities and consequences."
+      },
+      {
+        "preference": "The email should end with one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Actionable Precision specifies 'exactly one thing the reader needs to do' and Structural Momentum says 'The email ends on the final actionable statement.'"
+      },
+      {
+        "preference": "The emotional arc order (acknowledge \u2192 news \u2192 why it matters \u2192 next step) must be strictly followed; all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum describes the general flow (orient \u2192 change \u2192 reasoning \u2192 action) and ending on the actionable statement, but doesn't explicitly mandate a strict four-part order or state that wrong order is a violation even if all elements are present."
+      },
+      {
+        "preference": "The 'why' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing directly addresses this: 'Write from the reader's position, not about them from the outside. Stakes and impact should hit from the reader's side, not the sender's.'"
+      },
+      {
+        "preference": "The 'why' should not center the sender's reasoning or organizational goals as the primary framing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing explicitly contrasts sender-centered framing (e.g., 'we want to give you lead time') against reader-centered framing, directly addressing this."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum states 'The email ends on the final actionable statement \u2014 no sign-off filler, thank-yous, or motivational closings after it.'"
+      },
+      {
+        "preference": "No 'thanks for your patience' or similar trailing sentiment after the call to action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum explicitly prohibits 'sign-off filler, thank-yous, or motivational closings' after the final actionable statement. Functional Sentences also addresses cutting trailing acknowledgments."
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "Functional Sentences explicitly prohibits 'motivational slogans, rallying cries, or generic encouragements' and Structural Momentum prohibits 'motivational closings.'"
+      },
+      {
+        "preference": "When multiple people need to act, the email should designate one clear owner rather than making a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Actionable Precision requires 'One person, one action, one deadline' and that action items are 'assigned to specific, named individuals' rather than broadcast to undefined groups."
+      },
+      {
+        "preference": "Action items assigned to a specific owner should include a deadline",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Actionable Precision explicitly includes 'One person, one action, one deadline' and a dimension about time references that resolve clearly."
+      },
+      {
+        "preference": "Avoid vague group requests like 'Everyone please review' that lack individual accountability",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Actionable Precision's dimension explicitly states 'Action items address the reader as the person who needs to act, not broadcast as an open invitation to an undefined group.'"
+      },
+      {
+        "preference": "Action items should not be over-specified with org structure details or assumptions about internal processes the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the issue of over-specifying action items with unnecessary organizational structure details or internal process assumptions."
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 16,
+    "partially_covered_count": 3,
+    "not_covered_count": 2,
+    "coverage_score": 0.833,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 2,
+    "rubric_version": 3,
+    "timestamp": "2026-03-05T23:24:06.103212"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "The 'Functional Sentences' criterion requires every sentence to do work, cut trailing acknowledgments, and avoid redundancy \u2014 directly addressing conciseness."
+      },
+      {
+        "preference": "Writing should be direct, getting to the point without hedging or excessive preamble",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "The 'Professional Directness' criterion explicitly calls for straightforward, direct phrasing without corporate hedging. 'Structural Momentum' also warns against excessive preamble while allowing a grounding sentence."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "The 'Professional Directness' criterion addresses tone as straightforward, confident, and clear \u2014 capturing professionalism."
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "The dimension 'Uses direct, plain phrasing rather than corporate hedging, managerial euphemism, or overly formal register' explicitly addresses avoiding overly formal tone."
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "The 'Actionable Precision' criterion requires specific next steps with owner, deadline, and channel \u2014 a clear call to action."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses paragraph length or visual formatting of paragraphs."
+      },
+      {
+        "preference": "The email should begin by acknowledging the recipient's effort or current situation, limited to one sentence maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "The first dimension of 'Structural Momentum' requires 'A brief orienting sentence acknowledges the reader's current state or reliance before delivering the change.' The 'brief' and 'a sentence' framing captures the one-sentence limit."
+      },
+      {
+        "preference": "After the acknowledgment, the main news or update should be delivered before any explanation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum says 'The rationale comes early so readers aren't left anxious or guessing' which implies news first then rationale. However, the criterion describes 'orient before delivering news, progress logically' which could be read as news-then-reasoning, but doesn't explicitly mandate news before explanation."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum's progression through reasoning and impact, plus 'Reader impact is acknowledged before pivoting to process or logistics,' captures the need to explain why it matters after the news."
+      },
+      {
+        "preference": "The 'why it matters' explanation should be framed in terms of stakes and impact, not just neutral facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing explicitly requires stakes, impact, and consequences to land on the reader's side, and consequences of inaction are framed as facts about the reader's world \u2014 this is stakes-based framing."
+      },
+      {
+        "preference": "The email should end with one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Actionable Precision requires 'exactly one thing the reader needs to do.' Structural Momentum's 'The email ends on the final actionable statement' also supports ending with a next step."
+      },
+      {
+        "preference": "The emotional arc order (acknowledge \u2192 news \u2192 why it matters \u2192 next step) must be strictly followed; all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Structural Momentum implies this order (orient \u2192 reasoning/impact \u2192 end on action), but doesn't explicitly name this as a strict four-part sequence where reordering is a violation. The individual pieces are addressed but the strict sequential mandate is not as explicit."
+      },
+      {
+        "preference": "The 'why' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Reader-Centered Framing is entirely about writing from inside the reader's situation, using the reader as the grammatical subject, not framing from the sender's perspective."
+      },
+      {
+        "preference": "The 'why' should not center the sender's reasoning or organizational goals as the primary framing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "The dimension 'Does not frame the sender's considerateness or process as the point of the message' and the requirement that impact uses reader/thing-at-stake as subject (not 'we') directly address this."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "'The email ends on the final actionable statement \u2014 no sign-off filler' ensures the closing is action-oriented and forward-looking."
+      },
+      {
+        "preference": "No 'thanks for your patience' or similar trailing sentiment after the call to action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "The dimension explicitly states 'no sign-off filler, thank-yous, motivational closings, or trailing sentiment after it.'"
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "Functional Sentences explicitly prohibits 'motivational slogans, rallying cries, or generic encouragements.' Structural Momentum also prohibits 'motivational closings.'"
+      },
+      {
+        "preference": "When multiple people need to act, the email should designate one clear owner rather than making a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "'One person, one action, one channel, one deadline' and 'Action items are assigned to or routed through a specific, named individual' directly address designating one owner."
+      },
+      {
+        "preference": "Action items assigned to a specific owner should include a deadline",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "The criterion specifies 'one deadline' and the dimension requires 'Time references resolve clearly regardless of when the message is opened.'"
+      },
+      {
+        "preference": "Avoid vague group requests like 'Everyone please review' that lack individual accountability",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "'Action items address the reader directly as the person who needs to act, not broadcast as an open invitation to an undefined group' directly covers this."
+      },
+      {
+        "preference": "Action items should not be over-specified with org structure details or assumptions about internal processes the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses the issue of over-specifying action items with organizational structure details or internal process assumptions."
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 17,
+    "partially_covered_count": 2,
+    "not_covered_count": 2,
+    "coverage_score": 0.857,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 3,
+    "rubric_version": 5,
+    "timestamp": "2026-03-05T23:29:32.511482"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "Criterion 4 explicitly requires every sentence to do work, cut trailing acknowledgments, and avoid redundancy \u2014 directly addressing conciseness."
+      },
+      {
+        "preference": "Writing should be direct, getting to the point without hedging or excessive preamble",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "Criterion 5 calls for straightforward, confident tone with 'direct, plain phrasing rather than corporate hedging,' and Criterion 1 warns against excessive preamble."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "Criterion 5 addresses professional tone through 'ownership and clarity' and avoiding overly casual or dramatic registers."
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Professional Directness",
+        "explanation": "Criterion 5 explicitly warns against 'overly formal register' in its last dimension."
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Criterion 3 requires specific next steps with named owner, timeframe, and channel \u2014 a detailed version of a clear call to action."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses paragraph length or visual formatting/chunking of text."
+      },
+      {
+        "preference": "The email should begin by acknowledging the recipient's effort or current situation, limited to one sentence maximum",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Criterion 1 requires 'a brief orienting sentence' that recognizes what the reader has been investing in, which captures the acknowledgment aspect. However, the 'one sentence maximum' constraint is implied by 'brief' but not explicitly stated."
+      },
+      {
+        "preference": "After the acknowledgment, the main news or update should be delivered before any explanation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Criterion 1 says to 'orient the reader before delivering news' and 'progress logically,' but it doesn't explicitly state that news must come before explanation. The 'rationale comes early' dimension could be read as rationale coming before or after news."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Criterion 1's dimension 'Reader impact is acknowledged before pivoting to process or logistics, with enough room to breathe as its own beat' implies the why-it-matters section exists and is given prominence."
+      },
+      {
+        "preference": "The 'why it matters' explanation should be framed in terms of stakes and impact, not just neutral facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Criterion 2 requires naming 'stakes, consequences, and impact' and 'downstream consequences,' explicitly going beyond neutral facts."
+      },
+      {
+        "preference": "The email should end with one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Criterion 1 says 'The email ends on the final actionable statement' and Criterion 3 specifies 'exactly one thing the reader needs to do.'"
+      },
+      {
+        "preference": "The emotional arc order (acknowledge \u2192 news \u2192 why it matters \u2192 next step) must be strictly followed; all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Criterion 1 implies a progression (orient \u2192 reasoning \u2192 impact \u2192 action), but doesn't explicitly mandate news before why-it-matters, and doesn't explicitly state wrong order is a violation even if all elements are present."
+      },
+      {
+        "preference": "The 'why' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Criterion 2 explicitly requires impact to 'land on the reader's side using the reader or the thing-at-stake as the grammatical subject \u2014 never we will do X.'"
+      },
+      {
+        "preference": "The 'why' should not center the sender's reasoning or organizational goals as the primary framing",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Criterion 2's dimension explicitly prohibits framing 'the sender's considerateness, authority, or process as the point of the message' and requires reader-centered framing."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Criterion 1 requires 'The email ends on the final actionable statement \u2014 no sign-off filler,' which ensures closing is action-oriented and forward-looking."
+      },
+      {
+        "preference": "No 'thanks for your patience' or similar trailing sentiment after the call to action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Structural Momentum",
+        "explanation": "Criterion 1 explicitly says 'no sign-off filler, thank-yous, motivational closings, or trailing sentiment after it.'"
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional Sentences",
+        "explanation": "Criterion 4 prohibits 'motivational slogans, rallying cries, or generic encouragements' and Criterion 1 says 'no motivational closings.'"
+      },
+      {
+        "preference": "When multiple people need to act, the email should designate one clear owner rather than making a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Criterion 3 requires 'One person, one action' and its dimension says action items should 'not broadcast as an open invitation to an undefined group.'"
+      },
+      {
+        "preference": "Action items assigned to a specific owner should include a deadline",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Criterion 3 explicitly requires 'reader-proof timeframes' and its dimension specifies time references that resolve clearly."
+      },
+      {
+        "preference": "Avoid vague group requests like 'Everyone please review' that lack individual accountability",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Actionable Precision",
+        "explanation": "Criterion 3 explicitly prohibits 'broadcast asks to unnamed groups' and requires action items addressed to a specific individual."
+      },
+      {
+        "preference": "Action items should not be over-specified with org structure details or assumptions about internal processes the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses avoiding over-specification of organizational details or internal process assumptions in action items."
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 16,
+    "partially_covered_count": 3,
+    "not_covered_count": 2,
+    "coverage_score": 0.833,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 4,
+    "rubric_version": 7,
+    "timestamp": "2026-03-05T23:35:00.050401"
+  }
+]

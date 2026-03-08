@@ -1,0 +1,273 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 9,
+        "max_drafts": 20,
+        "total_turns": 14,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.373,
+              "reasoning": "The opening has real momentum and the aim is well-structured, but the significance section flattens out too quickly \u2014 it states the problem rather than building urgency toward the proposed work. Preliminary data, innovation framing, and budget traceability are entirely absent.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.373,
+              "reasoning": "The significance opening is genuinely strong \u2014 the narrative tension builds well and the gap feels urgent. But this is just one paragraph; the specific aims, preliminary data framing, innovation section, and budget are all absent, so most of what I need to see from a full proposal isn't here yet.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "partial_draft": true
+          },
+          {
+            "turn": 5,
+            "has_draft": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.488,
+              "reasoning": "H3 is well-handled \u2014 the preliminary data reads as feasibility proof, not a results dump. But H4 is entirely absent (no innovation framing at all in this draft), H5 isn't applicable yet, H1 starts to build urgency but the rationale section levels off into catalogue mode rather than escalating tension, and H2 shows connection to later aims but doesn't make the case that this aim stands on its own if something downstream fails.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.5666,
+              "reasoning": "H1 is working beautifully \u2014 the rationale builds with real urgency and lands the gap well. But the innovation dimension is missing entirely: the draft describes what we're building without ever naming what it's replacing or why the current approach is insufficient in a way that makes ours feel like a specific advance rather than just a next step.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.791,
+              "reasoning": "H1 is working beautifully \u2014 the urgency escalates well and the floor-dropping structure is there. H4 is the remaining gap: we name what we're building and gesture at the status quo, but the current approach isn't characterized specifically enough for a reviewer to feel the contrast. The MoCA sentence does part of this work but the innovation framing at the end collapses back into describing our approach without a clean 'this replaces that' moment.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "partial_draft": true
+          },
+          {
+            "turn": 10,
+            "has_draft": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.6996,
+              "reasoning": "The closing sentence now names the three signals and clearly names what the work displaces (single-biomarker isolation), which is genuinely strong. But the aim as a whole still hasn't shown me that it's designed to stand on its own \u2014 I can't tell yet whether this aim could succeed or fail independently of the others, or how completing it contributes to something larger when combined.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 12,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1, H2, and H4 are all working well \u2014 the urgency builds, the aims are appropriately independent yet connected, and the innovation names both what's new and what it replaces. H3 is the gap: Webb's preliminary work is referenced to establish the integration's credibility, but the framing still leans slightly toward 'here's what we've already characterized' rather than 'here's why we're positioned to do this next thing.'",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.791,
+              "reasoning": "The feasibility framing and narrative urgency are genuinely working, and the three named signals are doing real argumentative work. But H4 is only halfway there \u2014 we've named what the integration replaces in general terms, but we haven't named the specific current approach clearly enough for a reviewer to feel the contrast. And H2 still hasn't been addressed in this closing sentence: there's no signal that Aim 1 produces something durable enough to stand on its own if a signal underperforms.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 14,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.967,
+              "reasoning": "All applicable hidden preferences are fully met \u2014 the innovation is named against what it replaces, the aims independence is explicit, the preliminary work reads as readiness not results, and the significance builds with genuine urgency. The one small softness is accessibility for non-specialists: 'polysomnography' and 'actigraphy protocols' appear without any brief orienting phrase, which an engineering or public health reviewer might trip on \u2014 but it doesn't sink the draft.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.933,
+              "reasoning": "H1 is fully met \u2014 the section reads as a building narrative with real urgency. The main issue is that the middle paragraph drops in technical terms (microbial metabolites, vagal pathways) without enough scaffolding for the neuroscientists and neonatologists on the panel who may not live in this literature."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": false
+          },
+          {
+            "turn": 4,
+            "has_draft": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.967,
+              "reasoning": "H1 is fully met \u2014 the narrative builds with real urgency and lands on the proposal as the obvious next step. The only soft spot is C3: 'metabolites and immune signals' is still a bit fast for a neuroscientist who's never thought about the gut-brain axis, but it's not a dealbreaker.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 3,
+        "max_drafts": 20,
+        "total_turns": 4,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.967,
+              "reasoning": "H1 is fully met \u2014 the section builds urgency well and lands the proposed work as the obvious next step. C2 scores lower because the significance section gestures at what the study will do without making the innovation feel crisply distinct from the current state of knowledge."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.967,
+              "reasoning": "H1 is fully met \u2014 the narrative builds beautifully to the gap. However, C2 is only partially satisfied: the significance section lands emotionally, but the draft doesn't yet gesture clearly enough toward what this study's innovation actually is, leaving the section feeling like it closes a door without opening the next one.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.967,
+              "reasoning": "All applicable hidden preferences are fully met \u2014 the significance section tells a building story, and the preliminary data is framed as capability rather than completed results. Core preferences are strong, with only a minor gap in the innovation/significance distinction in C2.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 3,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.617,
+              "reasoning": "H1 is partially met \u2014 the section builds momentum but the payoff feels more like a thesis statement than an inevitable conclusion; the urgency accumulates but then flattens into a description of what the proposal will do rather than making reviewers feel that the gap is almost unbearable. H2-H5 are N/A for this task."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.967,
+              "reasoning": "H1 is fully satisfied \u2014 the narrative builds with genuine urgency and the final sentence lands hard. However, C2 is only partially met because while the gap is emotionally clear, the significance section doesn't yet articulate what the proposed intervention actually is or why it's the right answer \u2014 it stops at the problem without gesturing toward the solution, which leaves the 'significance' half of the section incomplete.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All applicable hidden preferences are met \u2014 the section reads as a genuine narrative arc that builds urgency and lands the proposed intervention as the logical, inevitable response. No dealbreakers are violated; the prose is active, accessible, and avoids overpromising.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T03:38:08.040080"
+  }
+]

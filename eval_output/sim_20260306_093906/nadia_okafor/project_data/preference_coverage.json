@@ -1,0 +1,464 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Copy should be short and concise, avoiding unnecessary words",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Transactional Directness",
+        "explanation": "The dimension 'Every word earns its place \u2014 no filler, hedging, or softening that doesn't add information' directly addresses conciseness and avoiding unnecessary words."
+      },
+      {
+        "preference": "Copy should be scannable, structured so users can quickly extract meaning",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Preemptive Clarity",
+        "explanation": "Preemptive Clarity addresses eliminating the gap between reading and understanding, and 'No sentence leaves the user needing to guess at meaning,' which touches on quick extraction of meaning. However, the rubric doesn't explicitly address visual scannability or structural formatting."
+      },
+      {
+        "preference": "Copy should be action-oriented, prompting the user toward doing something",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "Outcome-Signaling CTAs focuses on action prompts describing outcomes, and Preemptive Clarity's 'Every state provides a clear next step' also supports action orientation."
+      },
+      {
+        "preference": "Every UI string should make the user's next step obvious",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Preemptive Clarity",
+        "explanation": "The dimension 'Every state provides a clear next step \u2014 the user is never left without a path forward' directly covers making the next step obvious."
+      },
+      {
+        "preference": "No marketing fluff or promotional language within the product UI itself",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Transactional Directness",
+        "explanation": "Transactional Directness addresses no emotional padding and no filler, which partially covers the anti-marketing-fluff preference. However, it doesn't explicitly call out promotional language or marketing copy."
+      },
+      {
+        "preference": "Error messages should state what happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion explicitly requires 'Copy explains what happened' and 'Copy names the responsible actor or system.'"
+      },
+      {
+        "preference": "Error messages should explain why it happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion states 'Copy explains what happened and why' and 'Every do this instruction is preceded by a because this explanation.'"
+      },
+      {
+        "preference": "Error messages should tell the user what to do next to resolve the issue",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion mentions 'telling the user what to do' and includes 'call to action or recovery instruction' in its dimensions."
+      },
+      {
+        "preference": "Error messages should follow the order: what happened, why, what to do next",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion name itself ('Diagnosis Before Direction') and the dimension 'The cause of the issue appears before the call to action or recovery instruction' directly address this ordering."
+      },
+      {
+        "preference": "Error messages should never be vague or generic (e.g., 'Something went wrong')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The dimension 'Copy names the responsible actor or system (e.g., your bank not just something went wrong)' explicitly calls out avoiding vague messages."
+      },
+      {
+        "preference": "Button labels should describe the outcome of clicking, not just the action (e.g., 'Save changes' not 'Submit')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "This is the core focus of the criterion: 'Buttons and action prompts describe the outcome of clicking, not just the task the user is about to perform.'"
+      },
+      {
+        "preference": "Button labels should let the user know what will happen before they click",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "The dimension 'CTA text communicates what happens after the click' and 'The user should know what the system will do as a result of their action' directly cover this."
+      },
+      {
+        "preference": "Confirmation dialogs should name the specific consequence of the action",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "Outcome-Signaling CTAs covers describing outcomes of actions, and Preemptive Clarity addresses anticipating user concerns. However, no criterion specifically addresses confirmation dialogs naming specific consequences."
+      },
+      {
+        "preference": "Confirmation dialogs should include specific details like quantities or item names (e.g., 'Delete 3 invoices permanently?' not 'Are you sure?')",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Preemptive Clarity",
+        "explanation": "Preemptive Clarity's 'Includes time-sensitive or state-sensitive context when it affects the user's decision' partially addresses including specific details. However, no criterion explicitly calls out specificity in confirmation dialogs with quantities or item names."
+      },
+      {
+        "preference": "Empty states should guide the user toward their first action, not just describe the absence of content",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Preemptive Clarity",
+        "explanation": "The dimension 'Every state provides a clear next step \u2014 the user is never left without a path forward' implicitly covers empty states, but empty states are never explicitly mentioned or addressed as a specific UI pattern."
+      },
+      {
+        "preference": "Empty states should feel like a helpful nudge rather than a dead end",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "The rubric's Transactional Directness criterion explicitly avoids emotional padding and warmth, which may conflict with the 'helpful nudge' tone. No criterion addresses the encouraging, guiding tone specifically needed for empty states."
+      },
+      {
+        "preference": "Tone should be warm and celebratory during positive moments like first successful payment",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "The rubric's tone criterion (Transactional Directness) emphasizes clean, calm, and efficient tone with no emotional padding. It does not accommodate warm or celebratory tones for positive moments."
+      },
+      {
+        "preference": "Tone should be calm and precise during error states",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Transactional Directness",
+        "explanation": "The dimension 'Tone is matter-of-fact and neutral, never urgent or anxiety-inducing' directly covers calm and precise tone during errors."
+      },
+      {
+        "preference": "Tone should be invisible and unobtrusive during routine actions",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Transactional Directness",
+        "explanation": "Transactional Directness's emphasis on no emotional padding, no filler, and matter-of-fact tone effectively describes invisible and unobtrusive tone during routine actions."
+      },
+      {
+        "preference": "Tone should shift appropriately based on the context of the interaction, not be uniform throughout",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "The rubric prescribes a single tone (Transactional Directness) across all contexts. There is no criterion addressing tonal variation or context-dependent tone shifting."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 12,
+    "partially_covered_count": 5,
+    "not_covered_count": 3,
+    "coverage_score": 0.725,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-06T12:15:46.829682"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Copy should be short and concise, avoiding unnecessary words",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "The rubric touches on efficiency in routine interactions ('efficient and don't carry unnecessary emotional weight') and the User-as-Agent Voice criterion implies lean copy, but there is no explicit criterion demanding brevity and conciseness as a universal principle across all UI copy."
+      },
+      {
+        "preference": "Copy should be scannable, structured so users can quickly extract meaning",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses scannability, visual structure, or the ability for users to quickly extract meaning from copy."
+      },
+      {
+        "preference": "Copy should be action-oriented, prompting the user toward doing something",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "The CTA criterion ensures buttons are action-oriented and outcome-focused, but the rubric doesn't establish action-orientation as a general principle for all UI copy beyond buttons and CTAs."
+      },
+      {
+        "preference": "Every UI string should make the user's next step obvious",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "Error messages explicitly include 'what to do next' and CTAs signal outcomes, but the rubric doesn't establish this as a universal principle for every UI string \u2014 only for errors and buttons specifically."
+      },
+      {
+        "preference": "No marketing fluff or promotional language within the product UI itself",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "User-as-Agent Voice",
+        "explanation": "The User-as-Agent Voice criterion explicitly states: 'Copy avoids marketing language inside the product \u2014 no benefit pitches or value props aimed at users who have already committed.'"
+      },
+      {
+        "preference": "Error messages should state what happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion explicitly requires 'what happened' as part of the error message structure and dimensions include 'Error copy names what happened.'"
+      },
+      {
+        "preference": "Error messages should explain why it happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion explicitly includes 'why it happened' in the error structure and dimensions include naming the responsible actor or system."
+      },
+      {
+        "preference": "Error messages should tell the user what to do next to resolve the issue",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion explicitly includes 'what the user should do next' and dimensions mention 'suggesting a fix or next step.'"
+      },
+      {
+        "preference": "Error messages should follow the order: what happened, why, what to do next",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion explicitly states 'follow a strict order: what happened, why it happened, what the user should do next' and 'Copy never opens with an instruction before establishing the cause.'"
+      },
+      {
+        "preference": "Error messages should never be vague or generic (e.g., 'Something went wrong')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "The criterion explicitly states: 'An error that only says \"Something went wrong\" is a product failure' and the dimension says 'not \"something went wrong.\"'"
+      },
+      {
+        "preference": "Button labels should describe the outcome of clicking, not just the action (e.g., 'Save changes' not 'Submit')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "The criterion explicitly states buttons 'describe what changes when the user clicks, not just the task being performed' and dimensions prohibit generic labels like 'Submit.'"
+      },
+      {
+        "preference": "Button labels should let the user know what will happen before they click",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "The criterion states 'The user should be able to predict what happens after clicking from the label alone' which directly matches this preference."
+      },
+      {
+        "preference": "Confirmation dialogs should name the specific consequence of the action",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "The Outcome-Signaling CTAs criterion covers naming consequences for buttons/actions generally, which would extend to confirmation dialogs, but confirmation dialogs are never explicitly mentioned as a context."
+      },
+      {
+        "preference": "Confirmation dialogs should include specific details like quantities or item names (e.g., 'Delete 3 invoices permanently?' not 'Are you sure?')",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses the inclusion of specific details like quantities or item names in confirmation dialogs. The rubric discusses outcomes and consequences but not the level of specificity with concrete details."
+      },
+      {
+        "preference": "Empty states should guide the user toward their first action, not just describe the absence of content",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses empty states or how they should guide users toward their first action."
+      },
+      {
+        "preference": "Empty states should feel like a helpful nudge rather than a dead end",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion or dimension addresses empty states or their tone/feel as helpful nudges."
+      },
+      {
+        "preference": "Tone should be warm and celebratory during positive moments like first successful payment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "The criterion explicitly states 'Milestone and first-time moments can carry warmth and acknowledgment' and dimensions include acknowledging 'the user's effort or progress.'"
+      },
+      {
+        "preference": "Tone should be calm and precise during error states",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "Both Moment-Matched Tone ('Error states must be calm and precise') and Diagnosis Before Direction ('Tone in error states is calm and precise') explicitly cover this."
+      },
+      {
+        "preference": "Tone should be invisible and unobtrusive during routine actions",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "The criterion explicitly states 'Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic' and dimensions say 'Routine interactions are efficient and don't carry unnecessary emotional weight.'"
+      },
+      {
+        "preference": "Tone should shift appropriately based on the context of the interaction, not be uniform throughout",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "The criterion explicitly states 'Tone shifts to match the emotional weight of the moment' and 'Applying a single register across all states feels robotic and erodes trust.'"
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 12,
+    "partially_covered_count": 4,
+    "not_covered_count": 4,
+    "coverage_score": 0.7,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 3,
+    "rubric_version": 7,
+    "timestamp": "2026-03-06T12:40:54.312564"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Copy should be short and concise, avoiding unnecessary words",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Coherent Copy Flow",
+        "explanation": "Criterion 5 mentions 'Each element has a distinct role \u2014 no element duplicates or previews the work of another' and criterion 3 mentions 'Routine interactions are efficient and don't carry unnecessary emotional weight,' which touch on conciseness but don't explicitly state copy should be short and avoid unnecessary words as a general principle."
+      },
+      {
+        "preference": "Copy should be scannable, structured so users can quickly extract meaning",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Coherent Copy Flow",
+        "explanation": "Criterion 5 addresses sequential copy reading as a continuous narrative with distinct roles for each element, which supports scannability. However, the rubric doesn't explicitly address scannability or visual structure for quick extraction of meaning."
+      },
+      {
+        "preference": "Copy should be action-oriented, prompting the user toward doing something",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "Criterion 2 focuses on action-oriented CTAs that describe outcomes. Criterion 4 also requires empty states to guide users toward first actions. Together these cover the action-oriented preference."
+      },
+      {
+        "preference": "Every UI string should make the user's next step obvious",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "Criterion 2 requires users to predict what happens after clicking from the label alone. Criterion 1 requires error messages to tell users what to do next. Criterion 4 requires empty states to include clear calls to action. Together these cover making the next step obvious."
+      },
+      {
+        "preference": "No marketing fluff or promotional language within the product UI itself",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Coherent Copy Flow",
+        "explanation": "Criterion 5 explicitly states 'No marketing or benefit language inside the product \u2014 copy assumes the user has already committed.'"
+      },
+      {
+        "preference": "Error messages should state what happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "Criterion 1 explicitly requires error states to follow the order: what happened, why it happened, what the user should do next. The dimension 'Error copy names what happened and why before suggesting a fix' directly addresses this."
+      },
+      {
+        "preference": "Error messages should explain why it happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "Criterion 1 explicitly includes 'why it happened' in the error copy structure and the dimension 'Copy names the responsible actor or system' addresses explaining the cause."
+      },
+      {
+        "preference": "Error messages should tell the user what to do next to resolve the issue",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "Criterion 1 includes 'what the user should do next' and the dimension mentions 'suggesting a fix or next step.'"
+      },
+      {
+        "preference": "Error messages should follow the order: what happened, why, what to do next",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "Criterion 1 explicitly requires 'a strict order: what happened, why it happened, what the user should do next' and states 'Copy never opens with an instruction before establishing the cause.'"
+      },
+      {
+        "preference": "Error messages should never be vague or generic (e.g., 'Something went wrong')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Diagnosis Before Direction",
+        "explanation": "Criterion 1 explicitly states 'An error that only says \"Something went wrong\" is a product failure, not just a copy failure' and requires naming the responsible actor or system."
+      },
+      {
+        "preference": "Button labels should describe the outcome of clicking, not just the action (e.g., 'Save changes' not 'Submit')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "Criterion 2 directly addresses this: 'Buttons and action prompts describe what changes when the user clicks, not just the task being performed' and 'No generic labels like Submit.'"
+      },
+      {
+        "preference": "Button labels should let the user know what will happen before they click",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "Criterion 2 states 'The user should be able to predict what happens after clicking from the label alone' which directly matches this preference."
+      },
+      {
+        "preference": "Confirmation dialogs should name the specific consequence of the action",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Outcome-Signaling CTAs",
+        "explanation": "Criterion 2 covers outcome-signaling for CTAs generally, but confirmation dialogs are not specifically called out. The principle of naming consequences applies but the specific context of confirmation dialogs (with their unique structure of question + consequence) is not explicitly addressed."
+      },
+      {
+        "preference": "Confirmation dialogs should include specific details like quantities or item names (e.g., 'Delete 3 invoices permanently?' not 'Are you sure?')",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses including specific details like quantities or item names in confirmation dialogs. While the general principle of specificity is present, the particular requirement for concrete details in confirmation dialogs is not covered."
+      },
+      {
+        "preference": "Empty states should guide the user toward their first action, not just describe the absence of content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Empty States as Entry Points",
+        "explanation": "Criterion 4 directly addresses this: 'Empty and zero-data states guide the user toward their first meaningful action \u2014 they are not dead ends.'"
+      },
+      {
+        "preference": "Empty states should feel like a helpful nudge rather than a dead end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Empty States as Entry Points",
+        "explanation": "Criterion 4 dimension explicitly states 'Tone feels like a nudge, not a dead end' and the description says 'Copy feels like a nudge from someone who's done it before.'"
+      },
+      {
+        "preference": "Tone should be warm and celebratory during positive moments like first successful payment",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "Criterion 3 states 'Milestone and first-time moments can carry warmth and acknowledgment' and the dimension says 'Milestone and first-time moments acknowledge the user's effort or progress before pointing forward.'"
+      },
+      {
+        "preference": "Tone should be calm and precise during error states",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "Criterion 3 explicitly states 'Error states must be calm and precise' and the dimension says 'Error states are composed and diagnostic \u2014 no drama, no coddling, no false cheerfulness.' Also reinforced in Criterion 1."
+      },
+      {
+        "preference": "Tone should be invisible and unobtrusive during routine actions",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "Criterion 3 explicitly states 'Routine actions should feel invisible' and the dimension says 'Routine interactions are efficient and don't carry unnecessary emotional weight or enthusiasm.'"
+      },
+      {
+        "preference": "Tone should shift appropriately based on the context of the interaction, not be uniform throughout",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Moment-Matched Tone",
+        "explanation": "Criterion 3 is entirely about tone shifting to match context: 'Tone shifts to match the emotional weight of the moment.' The dimension 'Copy within a single set shifts register between setup and payoff \u2014 the emotional temperature is not flat throughout' directly addresses this."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 16,
+    "partially_covered_count": 3,
+    "not_covered_count": 1,
+    "coverage_score": 0.875,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 4,
+    "rubric_version": 11,
+    "timestamp": "2026-03-06T12:55:22.418173"
+  }
+]

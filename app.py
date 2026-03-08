@@ -743,7 +743,7 @@ def regenerate_draft_from_rubric_changes(original_rubric: list, updated_rubric: 
     """
     from prompts import DRAFT_REGENERATE_SYSTEM_PROMPT, DRAFT_regenerate_prompt
 
-    with st.spinner("Regenerating draft based on rubric changes..."):
+    with st.spinner("Regenerating draft based on edit feedback..."):
         try:
             client = anthropic.Anthropic()
             original_clean = _rubric_list_for_json(original_rubric)
@@ -2388,30 +2388,46 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list, apply_
                         "old_version": _apply_old_ver,
                         "draft_regenerated": False,
                     })
-                # Generate a new draft based on the updated rubric + user edit feedback
+                # Use the preview draft from suggestion if available, otherwise regenerate
                 _apply_last_draft, _ = get_last_draft_from_messages()
-                if _apply_last_draft and current_rubric:
-                    # Gather conversation history
+                _apply_preview = message.get("rubric_suggestion", {}).get("preview_draft") if message else None
+                if _apply_preview and _apply_preview.get("revised_draft"):
+                    # Use the already-generated preview draft
+                    _apply_new_draft = _apply_preview["revised_draft"]
+                    _apply_draft_msg = {
+                        "role": "assistant",
+                        "content": f"Here's an updated draft based on the rubric changes you just applied (v{new_version}):\n\n<draft>{_apply_new_draft}</draft>",
+                        "display_content": f"Here's an updated draft based on the rubric changes you just applied (v{new_version}):\n\n<draft>{_apply_new_draft}</draft>",
+                        "rubric_version": new_version,
+                        "is_system_generated": True,
+                        "is_post_apply_draft": True,
+                        "post_apply_data": {
+                            "previous_draft": _apply_last_draft or "",
+                            "new_draft": _apply_new_draft,
+                            "rubric_version": new_version,
+                        },
+                        "message_id": f"post_apply_{int(time.time() * 1000000)}",
+                    }
+                    st.session_state.messages.append(_apply_draft_msg)
+                elif _apply_last_draft and current_rubric:
+                    # Fallback: regenerate draft (for non-suggestion Apply All, e.g. probe results)
                     _conv_parts = []
                     for _cm in st.session_state.messages:
                         _cm_role = _cm.get("role", "")
                         _cm_content = _cm.get("display_content") or _cm.get("content", "")
                         if _cm_role in ("user", "assistant") and _cm_content:
                             _conv_parts.append(f"[{_cm_role.upper()}]: {_cm_content[:2000]}")
-                    _conv_history = "\n\n".join(_conv_parts[-20:]) if _conv_parts else None  # last 20 messages
+                    _conv_history = "\n\n".join(_conv_parts[-20:]) if _conv_parts else None
 
-                    # Gather rubric suggestion text from the message
                     _apply_suggestion_text = None
                     if message:
                         _rs = message.get("rubric_suggestion", {})
                         if _rs:
                             _apply_suggestion_text = _rs.get("suggestion_text", "")
-                        # Also check diagnostic_data for alignment-sourced suggestions
                         _dd = message.get("diagnostic_data", {})
                         if not _apply_suggestion_text and _dd:
                             _apply_suggestion_text = _dd.get("suggestion_text", "")
 
-                    # Gather user edit feedback from annotated_changes
                     _apply_edit_fb = None
                     if message:
                         _rr = message.get("rubric_revision", {})
@@ -5292,10 +5308,39 @@ with tab1:
                                                     raw += b.text
                                             json_match = re.search(r'\[[\s\S]*\]', raw)
                                             modified_rubric = json.loads(json_match.group()) if json_match else []
+                                            # Also regenerate the draft preview so user sees both at once
+                                            _sg_last_draft, _ = get_last_draft_from_messages()
+                                            _sg_preview_draft = None
+                                            if _sg_last_draft and active_rubric_list:
+                                                _sg_conv_parts = []
+                                                for _cm in st.session_state.messages:
+                                                    _cm_role = _cm.get("role", "")
+                                                    _cm_content = _cm.get("display_content") or _cm.get("content", "")
+                                                    if _cm_role in ("user", "assistant") and _cm_content:
+                                                        _sg_conv_parts.append(f"[{_cm_role.upper()}]: {_cm_content[:2000]}")
+                                                _sg_conv_history = "\n\n".join(_sg_conv_parts[-20:]) if _sg_conv_parts else None
+                                                _sg_edit_fb = None
+                                                _fb_parts = []
+                                                for _fb_ac in edits_with_feedback:
+                                                    _fb_text = _fb_ac.get("user_feedback", "")
+                                                    if _fb_text and _fb_text.strip():
+                                                        _fb_parts.append(f"- Edit: \"{_fb_ac.get('original_text', '')}\" → \"{_fb_ac.get('new_text', '')}\"\n  User feedback: {_fb_text}")
+                                                if _fb_parts:
+                                                    _sg_edit_fb = "\n".join(_fb_parts)
+                                                _sg_regen = regenerate_draft_from_rubric_changes(
+                                                    active_rubric_list, modified_rubric, _sg_last_draft,
+                                                    conversation_history=_sg_conv_history,
+                                                    rubric_suggestion_text=suggestion_text,
+                                                    user_edit_feedback=_sg_edit_fb,
+                                                )
+                                                if _sg_regen and _sg_regen.get("revised_draft") and not _sg_regen.get("error"):
+                                                    _sg_preview_draft = _sg_regen
                                             message["rubric_suggestion"] = {
                                                 "suggestion_text": suggestion_text,
                                                 "modified_rubric": modified_rubric,
                                                 "edited_rubric": edited_rubric_list,
+                                                "preview_draft": _sg_preview_draft,
+                                                "original_draft": rr.get("original_draft", ""),
                                             }
                                             # Save suggestion + feedback to database immediately
                                             _sg_pid = st.session_state.get("current_project_id")
@@ -5328,43 +5373,120 @@ with tab1:
                                         if _sg_applied:
                                             st.success(f"Applied as rubric v{suggestion_data['applied_version']}")
                                         else:
-                                            st.caption("Review the suggested changes below, then apply all at once. Changes appear in **Rubric Configuration** in the sidebar.")
+                                            st.caption("Review the suggested rubric changes and draft preview below, then apply all at once.")
+                                            # Show draft diff between suggestion text and rubric changes
+                                            _sg_preview = suggestion_data.get("preview_draft")
+                                            _sg_orig_for_diff = suggestion_data.get("original_draft", "") or rr.get("original_draft", "")
+                                            if _sg_preview and _sg_preview.get("revised_draft") and _sg_orig_for_diff:
+                                                st.markdown("**Draft preview:**")
+                                                _sg_diff_html = _word_level_diff(_sg_orig_for_diff, _sg_preview["revised_draft"])
+                                                st.markdown(f'<div style="padding:8px 12px;border:1px solid #444;border-radius:6px;line-height:1.8;">{_sg_diff_html}</div>', unsafe_allow_html=True)
+                                                st.markdown("---")
+                                            elif _sg_preview and _sg_preview.get("revised_draft"):
+                                                st.markdown("**Draft preview:**")
+                                                st.markdown(_sg_preview["revised_draft"])
+                                                st.markdown("---")
                                             display_rubric_comparison(
                                                 suggestion_data.get("edited_rubric", []),
                                                 suggestion_data.get("modified_rubric", []),
                                                 apply_context={"safe_msg_id": safe_msg_id, "message": message, "message_id": message_id},
                                             )
+                                            # Revert button (reverts both draft and rubric)
+                                            if st.button("↩️ Revert to Original", key=f"rr_revert_{safe_msg_id}", width="stretch"):
+                                                _rr_orig_draft = rr.get('original_draft', '')
+                                                rr['_decision'] = 'reverted'
+                                                if _rr_orig_draft:
+                                                    st.session_state.messages.append({
+                                                        "role": "assistant",
+                                                        "content": f"<draft>{_rr_orig_draft}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                        "display_content": f"<draft>{_rr_orig_draft}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                        "is_system_generated": True,
+                                                        "message_id": f"revert_{int(time.time() * 1000000)}",
+                                                    })
+                                                _rr_old_rubric = rr.get('old_rubric')
+                                                if _rr_old_rubric:
+                                                    _rr_old_rubric_copy = copy.deepcopy(_rr_old_rubric)
+                                                    st.session_state.rubric = _rr_old_rubric_copy
+                                                    st.session_state.editing_criteria = _rr_old_rubric_copy
+                                                    st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                                                    _rr_revert_ver = message.get("rubric_version")
+                                                    if _rr_revert_ver is not None:
+                                                        _rr_hist = load_rubric_history()
+                                                        for _rr_hi, _rr_hentry in enumerate(_rr_hist):
+                                                            if _rr_hentry.get("version") == _rr_revert_ver:
+                                                                st.session_state.active_rubric_idx = _rr_hi
+                                                                st.session_state["rubric_version_selector"] = f"v{_rr_revert_ver}"
+                                                                break
+                                                _auto_save_conversation()
+                                                st.rerun()
 
-                            # --- Accept / Revert buttons for revised draft ---
-                            _rr_decision = rr.get('_decision')
-                            _rr_applied_all = message.get("rubric_suggestion", {}).get("applied", False)
-                            if not _rr_decision:
-                                _rr_accept_col, _rr_revert_col, _ = st.columns([1, 1, 1])
-                                with _rr_accept_col:
-                                    _rr_btn_type = "secondary" if _rr_applied_all else "primary"
-                                    if st.button("✅ Use Revised Draft", key=f"rr_accept_{safe_msg_id}", width="stretch", type=_rr_btn_type):
-                                        rr['_decision'] = 'accepted'
-                                        st.session_state.messages.append({
-                                            "role": "system",
-                                            "content": "✅ **Accepted revised draft.**",
-                                            "conversation_id": st.session_state.get("selected_conversation"),
-                                        })
-                                        _auto_save_conversation()
-                                        st.rerun()
-                                with _rr_revert_col:
-                                    if st.button("↩️ Revert to Original", key=f"rr_revert_{safe_msg_id}", width="stretch"):
-                                        _rr_orig_draft = rr.get('original_draft', '')
-                                        rr['_decision'] = 'reverted'
-                                        if _rr_orig_draft:
-                                            st.session_state.messages.append({
-                                                "role": "assistant",
-                                                "content": f"<draft>{_rr_orig_draft}</draft>\n\n*Reverted to original draft.*",
-                                                "display_content": f"<draft>{_rr_orig_draft}</draft>\n\n*Reverted to original draft.*",
-                                                "is_system_generated": True,
-                                                "message_id": f"revert_{int(time.time() * 1000000)}",
-                                            })
-                                        _auto_save_conversation()
-                                        st.rerun()
+                            # --- Accept / Revert for manual Log Changes (no edit feedback) ---
+                            if not message.get("rubric_suggestion"):
+                                _rr_decision = rr.get('_decision')
+                                if not _rr_decision:
+                                    _rr_accept_col, _rr_revert_col, _ = st.columns([1, 1, 1])
+                                    with _rr_accept_col:
+                                        if st.button("✅ Accept Draft", key=f"rr_accept_{safe_msg_id}", width="stretch", type="primary"):
+                                            rr['_decision'] = 'accepted'
+                                            # Save the rubric edits as a new version
+                                            _rr_new_rubric = rr.get('new_rubric')
+                                            if _rr_new_rubric:
+                                                _rr_new_criteria = copy.deepcopy(_rr_new_rubric)
+                                                hist = load_rubric_history()
+                                                _rr_new_ver = next_version_number()
+                                                hist.append({"version": _rr_new_ver, "rubric": copy.deepcopy(_rr_new_criteria), "source": "log_changes_accepted", "conversation_id": st.session_state.get("selected_conversation")})
+                                                save_rubric_history(hist)
+                                                st.session_state.active_rubric_idx = len(hist) - 1
+                                                st.session_state.rubric = _rr_new_criteria
+                                                st.session_state.editing_criteria = _rr_new_criteria
+                                                st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                                                st.session_state["rubric_version_selector"] = f"v{_rr_new_ver}"
+                                                message["rubric_version"] = _rr_new_ver
+                                            # Append the revised draft as a new assistant message
+                                            _rr_accepted_draft = rr.get('revised_draft', '')
+                                            if _rr_accepted_draft:
+                                                st.session_state.messages.append({
+                                                    "role": "assistant",
+                                                    "content": f"<draft>{_rr_accepted_draft}</draft>",
+                                                    "display_content": f"<draft>{_rr_accepted_draft}</draft>",
+                                                    "is_system_generated": True,
+                                                    "message_id": f"accepted_draft_{int(time.time() * 1000000)}",
+                                                })
+                                            _auto_save_conversation()
+                                            st.rerun()
+                                    with _rr_revert_col:
+                                        if st.button("↩️ Revert to Original", key=f"rr_revert_nofb_{safe_msg_id}", width="stretch"):
+                                            _rr_orig_draft = rr.get('original_draft', '')
+                                            rr['_decision'] = 'reverted'
+                                            if _rr_orig_draft:
+                                                st.session_state.messages.append({
+                                                    "role": "assistant",
+                                                    "content": f"<draft>{_rr_orig_draft}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                    "display_content": f"<draft>{_rr_orig_draft}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                    "is_system_generated": True,
+                                                    "message_id": f"revert_{int(time.time() * 1000000)}",
+                                                })
+                                            _rr_old_rubric = rr.get('old_rubric')
+                                            if _rr_old_rubric:
+                                                _rr_old_rubric_copy = copy.deepcopy(_rr_old_rubric)
+                                                st.session_state.rubric = _rr_old_rubric_copy
+                                                st.session_state.editing_criteria = _rr_old_rubric_copy
+                                                st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                                                _rr_revert_ver = message.get("rubric_version")
+                                                if _rr_revert_ver is not None:
+                                                    _rr_hist = load_rubric_history()
+                                                    for _rr_hi, _rr_hentry in enumerate(_rr_hist):
+                                                        if _rr_hentry.get("version") == _rr_revert_ver:
+                                                            st.session_state.active_rubric_idx = _rr_hi
+                                                            st.session_state["rubric_version_selector"] = f"v{_rr_revert_ver}"
+                                                            break
+                                            _auto_save_conversation()
+                                            st.rerun()
+                                elif _rr_decision == 'accepted':
+                                    st.success("Draft accepted.")
+                                elif _rr_decision == 'reverted':
+                                    st.info("Reverted to original draft and rubric.")
+
                         if message.get('is_probe_log'):
                             _pld = message.get("probe_log_data", {})
                             _pld_va = _pld.get("variant_a", "")
@@ -5598,45 +5720,9 @@ with tab1:
                             else:
                                 # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
                                 _draft_source = message.get('content', content_to_display)
-                                # Post-apply drafts are read-only until accepted
-                                _pa_editable = True
-                                if message.get('is_post_apply_draft'):
-                                    _pa_data_check = message.get('post_apply_data', {})
-                                    if _pa_data_check.get('_decision') != 'accepted':
-                                        _pa_editable = False
-                                has_draft = render_message_with_draft(_draft_source, message_id, editable=_pa_editable)
+                                has_draft = render_message_with_draft(_draft_source, message_id, editable=True)
                                 if not has_draft:
                                     st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
-                                # --- Accept / Revert buttons for post-Apply-All draft ---
-                                if message.get('is_post_apply_draft'):
-                                    _pa_data = message.get('post_apply_data', {})
-                                    _pa_decision = _pa_data.get('_decision')
-                                    if _pa_decision == 'accepted':
-                                        st.success("Draft accepted.")
-                                    elif _pa_decision == 'reverted':
-                                        st.info("Reverted to previous draft.")
-                                    elif not _pa_decision:
-                                        st.caption("This draft was generated using your updated rubric. Accept it, or revert to the previous draft.")
-                                        _pa_col_a, _pa_col_r, _pa_col_sp = st.columns([1, 1, 1])
-                                        with _pa_col_a:
-                                            if st.button("✅ Accept Draft", key=f"pa_accept_{safe_msg_id}", width="stretch", type="primary"):
-                                                _pa_data['_decision'] = 'accepted'
-                                                st.session_state.messages.append({
-                                                    "role": "system",
-                                                    "content": "✅ **Accepted draft based on updated rubric.**",
-                                                    "conversation_id": st.session_state.get("selected_conversation"),
-                                                })
-                                                _auto_save_conversation()
-                                                st.rerun()
-                                        with _pa_col_r:
-                                            if st.button("↩️ Revert to Previous Draft", key=f"pa_revert_{safe_msg_id}", width="stretch"):
-                                                _pa_prev = _pa_data.get('previous_draft', '')
-                                                if _pa_prev:
-                                                    message['content'] = f"<draft>{_pa_prev}</draft>\n\n*Reverted to previous draft.*"
-                                                    message['display_content'] = message['content']
-                                                _pa_data['_decision'] = 'reverted'
-                                                _auto_save_conversation()
-                                                st.rerun()
                         else:
                             st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
                         # Show non-preferred A/B draft inline (blind labels)
@@ -5787,10 +5873,39 @@ with tab1:
                                                 raw += b.text
                                         json_match = re.search(r'\[[\s\S]*\]', raw)
                                         modified_rubric = json.loads(json_match.group()) if json_match else []
+                                        # Also regenerate the draft preview so user sees both at once
+                                        _sg_last_draft2, _ = get_last_draft_from_messages()
+                                        _sg_preview_draft2 = None
+                                        if _sg_last_draft2 and active_rubric_list:
+                                            _sg_conv_parts2 = []
+                                            for _cm in st.session_state.messages:
+                                                _cm_role = _cm.get("role", "")
+                                                _cm_content = _cm.get("display_content") or _cm.get("content", "")
+                                                if _cm_role in ("user", "assistant") and _cm_content:
+                                                    _sg_conv_parts2.append(f"[{_cm_role.upper()}]: {_cm_content[:2000]}")
+                                            _sg_conv_history2 = "\n\n".join(_sg_conv_parts2[-20:]) if _sg_conv_parts2 else None
+                                            _sg_edit_fb2 = None
+                                            _fb_parts2 = []
+                                            for _fb_ac in edits_with_feedback:
+                                                _fb_text = _fb_ac.get("user_feedback", "")
+                                                if _fb_text and _fb_text.strip():
+                                                    _fb_parts2.append(f"- Edit: \"{_fb_ac.get('original_text', '')}\" → \"{_fb_ac.get('new_text', '')}\"\n  User feedback: {_fb_text}")
+                                            if _fb_parts2:
+                                                _sg_edit_fb2 = "\n".join(_fb_parts2)
+                                            _sg_regen2 = regenerate_draft_from_rubric_changes(
+                                                active_rubric_list, modified_rubric, _sg_last_draft2,
+                                                conversation_history=_sg_conv_history2,
+                                                rubric_suggestion_text=suggestion_text,
+                                                user_edit_feedback=_sg_edit_fb2,
+                                            )
+                                            if _sg_regen2 and _sg_regen2.get("revised_draft") and not _sg_regen2.get("error"):
+                                                _sg_preview_draft2 = _sg_regen2
                                         message["rubric_suggestion"] = {
                                             "suggestion_text": suggestion_text,
                                             "modified_rubric": modified_rubric,
                                             "edited_rubric": edited_rubric_list,
+                                            "preview_draft": _sg_preview_draft2,
+                                            "original_draft": rr.get("original_draft", ""),
                                         }
                                         # Save suggestion + feedback to database immediately
                                         _sg_pid2 = st.session_state.get("current_project_id")
@@ -5823,43 +5938,120 @@ with tab1:
                                     if _sg_applied:
                                         st.success(f"Applied as rubric v{suggestion_data['applied_version']}")
                                     else:
-                                        st.caption("Review the suggested changes below, then apply all at once. Changes appear in **Rubric Configuration** in the sidebar.")
+                                        st.caption("Review the suggested rubric changes and draft preview below, then apply all at once.")
+                                        # Show draft diff between suggestion text and rubric changes
+                                        _sg_preview2 = suggestion_data.get("preview_draft")
+                                        _sg_orig_for_diff2 = suggestion_data.get("original_draft", "") or rr.get("original_draft", "")
+                                        if _sg_preview2 and _sg_preview2.get("revised_draft") and _sg_orig_for_diff2:
+                                            st.markdown("**Draft preview:**")
+                                            _sg_diff_html2 = _word_level_diff(_sg_orig_for_diff2, _sg_preview2["revised_draft"])
+                                            st.markdown(f'<div style="padding:8px 12px;border:1px solid #444;border-radius:6px;line-height:1.8;">{_sg_diff_html2}</div>', unsafe_allow_html=True)
+                                            st.markdown("---")
+                                        elif _sg_preview2 and _sg_preview2.get("revised_draft"):
+                                            st.markdown("**Draft preview:**")
+                                            st.markdown(_sg_preview2["revised_draft"])
+                                            st.markdown("---")
                                         display_rubric_comparison(
                                             suggestion_data.get("edited_rubric", []),
                                             suggestion_data.get("modified_rubric", []),
                                             apply_context={"safe_msg_id": safe_msg_id, "message": message, "message_id": message_id},
                                         )
+                                        # Revert button (reverts both draft and rubric)
+                                        if st.button("↩️ Revert to Original", key=f"rr_revert_else_{safe_msg_id}", width="stretch"):
+                                            _rr_orig_draft2 = rr.get('original_draft', '')
+                                            rr['_decision'] = 'reverted'
+                                            if _rr_orig_draft2:
+                                                st.session_state.messages.append({
+                                                    "role": "assistant",
+                                                    "content": f"<draft>{_rr_orig_draft2}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                    "display_content": f"<draft>{_rr_orig_draft2}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                    "is_system_generated": True,
+                                                    "message_id": f"revert_{int(time.time() * 1000000)}",
+                                                })
+                                            _rr_old_rubric2 = rr.get('old_rubric')
+                                            if _rr_old_rubric2:
+                                                _rr_old_rubric_copy2 = copy.deepcopy(_rr_old_rubric2)
+                                                st.session_state.rubric = _rr_old_rubric_copy2
+                                                st.session_state.editing_criteria = _rr_old_rubric_copy2
+                                                st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                                                _rr_revert_ver2 = message.get("rubric_version")
+                                                if _rr_revert_ver2 is not None:
+                                                    _rr_hist2 = load_rubric_history()
+                                                    for _rr_hi2, _rr_hentry2 in enumerate(_rr_hist2):
+                                                        if _rr_hentry2.get("version") == _rr_revert_ver2:
+                                                            st.session_state.active_rubric_idx = _rr_hi2
+                                                            st.session_state["rubric_version_selector"] = f"v{_rr_revert_ver2}"
+                                                            break
+                                            _auto_save_conversation()
+                                            st.rerun()
 
-                        # --- Accept / Revert buttons for revised draft ---
-                        _rr_decision2 = rr.get('_decision')
-                        _rr_applied_all2 = message.get("rubric_suggestion", {}).get("applied", False)
-                        if not _rr_decision2:
-                            _rr_accept_col2, _rr_revert_col2, _2 = st.columns([1, 1, 1])
-                            with _rr_accept_col2:
-                                _rr_btn_type2 = "secondary" if _rr_applied_all2 else "primary"
-                                if st.button("✅ Use Revised Draft", key=f"rr_accept_else_{safe_msg_id}", width="stretch", type=_rr_btn_type2):
-                                    rr['_decision'] = 'accepted'
-                                    st.session_state.messages.append({
-                                        "role": "system",
-                                        "content": "✅ **Accepted revised draft.**",
-                                        "conversation_id": st.session_state.get("selected_conversation"),
-                                    })
-                                    _auto_save_conversation()
-                                    st.rerun()
-                            with _rr_revert_col2:
-                                if st.button("↩️ Revert to Original", key=f"rr_revert_else_{safe_msg_id}", width="stretch"):
-                                    _rr_orig_draft2 = rr.get('original_draft', '')
-                                    rr['_decision'] = 'reverted'
-                                    if _rr_orig_draft2:
-                                        st.session_state.messages.append({
-                                            "role": "assistant",
-                                            "content": f"<draft>{_rr_orig_draft2}</draft>\n\n*Reverted to original draft.*",
-                                            "display_content": f"<draft>{_rr_orig_draft2}</draft>\n\n*Reverted to original draft.*",
-                                            "is_system_generated": True,
-                                            "message_id": f"revert_{int(time.time() * 1000000)}",
-                                        })
-                                    _auto_save_conversation()
-                                    st.rerun()
+                            # --- Accept / Revert for manual Log Changes (no edit feedback) ---
+                            if not message.get("rubric_suggestion"):
+                                _rr_decision2 = rr.get('_decision')
+                                if not _rr_decision2:
+                                    _rr_accept_col2, _rr_revert_col2, _2 = st.columns([1, 1, 1])
+                                    with _rr_accept_col2:
+                                        if st.button("✅ Accept Draft", key=f"rr_accept_else_{safe_msg_id}", width="stretch", type="primary"):
+                                            rr['_decision'] = 'accepted'
+                                            # Save the rubric edits as a new version
+                                            _rr_new_rubric2 = rr.get('new_rubric')
+                                            if _rr_new_rubric2:
+                                                _rr_new_criteria2 = copy.deepcopy(_rr_new_rubric2)
+                                                hist = load_rubric_history()
+                                                _rr_new_ver2 = next_version_number()
+                                                hist.append({"version": _rr_new_ver2, "rubric": copy.deepcopy(_rr_new_criteria2), "source": "log_changes_accepted", "conversation_id": st.session_state.get("selected_conversation")})
+                                                save_rubric_history(hist)
+                                                st.session_state.active_rubric_idx = len(hist) - 1
+                                                st.session_state.rubric = _rr_new_criteria2
+                                                st.session_state.editing_criteria = _rr_new_criteria2
+                                                st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                                                st.session_state["rubric_version_selector"] = f"v{_rr_new_ver2}"
+                                                message["rubric_version"] = _rr_new_ver2
+                                            # Append the revised draft as a new assistant message
+                                            _rr_accepted_draft2 = rr.get('revised_draft', '')
+                                            if _rr_accepted_draft2:
+                                                st.session_state.messages.append({
+                                                    "role": "assistant",
+                                                    "content": f"<draft>{_rr_accepted_draft2}</draft>",
+                                                    "display_content": f"<draft>{_rr_accepted_draft2}</draft>",
+                                                    "is_system_generated": True,
+                                                    "message_id": f"accepted_draft_{int(time.time() * 1000000)}",
+                                                })
+                                            _auto_save_conversation()
+                                            st.rerun()
+                                    with _rr_revert_col2:
+                                        if st.button("↩️ Revert to Original", key=f"rr_revert_nofb_else_{safe_msg_id}", width="stretch"):
+                                            _rr_orig_draft2 = rr.get('original_draft', '')
+                                            rr['_decision'] = 'reverted'
+                                            if _rr_orig_draft2:
+                                                st.session_state.messages.append({
+                                                    "role": "assistant",
+                                                    "content": f"<draft>{_rr_orig_draft2}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                    "display_content": f"<draft>{_rr_orig_draft2}</draft>\n\n*Reverted to original draft and rubric.*",
+                                                    "is_system_generated": True,
+                                                    "message_id": f"revert_{int(time.time() * 1000000)}",
+                                                })
+                                            _rr_old_rubric2 = rr.get('old_rubric')
+                                            if _rr_old_rubric2:
+                                                _rr_old_rubric_copy2 = copy.deepcopy(_rr_old_rubric2)
+                                                st.session_state.rubric = _rr_old_rubric_copy2
+                                                st.session_state.editing_criteria = _rr_old_rubric_copy2
+                                                st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
+                                                _rr_revert_ver2 = message.get("rubric_version")
+                                                if _rr_revert_ver2 is not None:
+                                                    _rr_hist2 = load_rubric_history()
+                                                    for _rr_hi2, _rr_hentry2 in enumerate(_rr_hist2):
+                                                        if _rr_hentry2.get("version") == _rr_revert_ver2:
+                                                            st.session_state.active_rubric_idx = _rr_hi2
+                                                            st.session_state["rubric_version_selector"] = f"v{_rr_revert_ver2}"
+                                                            break
+                                            _auto_save_conversation()
+                                            st.rerun()
+                                elif _rr_decision2 == 'accepted':
+                                    st.success("Draft accepted.")
+                                elif _rr_decision2 == 'reverted':
+                                    st.info("Reverted to original draft and rubric.")
+
                     if message.get('is_probe_log'):
                         _pld2 = message.get("probe_log_data", {})
                         _pld2_va = _pld2.get("variant_a", "")
@@ -6093,45 +6285,9 @@ with tab1:
                         else:
                             # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
                             _draft_source2 = message.get('content', content_to_display)
-                            # Post-apply drafts are read-only until accepted
-                            _pa_editable2 = True
-                            if message.get('is_post_apply_draft'):
-                                _pa_data_check2 = message.get('post_apply_data', {})
-                                if _pa_data_check2.get('_decision') != 'accepted':
-                                    _pa_editable2 = False
-                            has_draft = render_message_with_draft(_draft_source2, message_id, editable=_pa_editable2)
+                            has_draft = render_message_with_draft(_draft_source2, message_id, editable=True)
                             if not has_draft:
                                 st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
-                            # --- Accept / Revert buttons for post-Apply-All draft ---
-                            if message.get('is_post_apply_draft'):
-                                _pa_data2 = message.get('post_apply_data', {})
-                                _pa_decision2 = _pa_data2.get('_decision')
-                                if _pa_decision2 == 'accepted':
-                                    st.success("Draft accepted.")
-                                elif _pa_decision2 == 'reverted':
-                                    st.info("Reverted to previous draft.")
-                                elif not _pa_decision2:
-                                    st.caption("This draft was generated using your updated rubric. Accept it, or revert to the previous draft.")
-                                    _pa_col_a2, _pa_col_r2, _pa_col_sp2 = st.columns([1, 1, 1])
-                                    with _pa_col_a2:
-                                        if st.button("✅ Accept Draft", key=f"pa_accept_else_{safe_msg_id}", width="stretch", type="primary"):
-                                            _pa_data2['_decision'] = 'accepted'
-                                            st.session_state.messages.append({
-                                                "role": "system",
-                                                "content": "✅ **Accepted draft based on updated rubric.**",
-                                                "conversation_id": st.session_state.get("selected_conversation"),
-                                            })
-                                            _auto_save_conversation()
-                                            st.rerun()
-                                    with _pa_col_r2:
-                                        if st.button("↩️ Revert to Previous Draft", key=f"pa_revert_else_{safe_msg_id}", width="stretch"):
-                                            _pa_prev2 = _pa_data2.get('previous_draft', '')
-                                            if _pa_prev2:
-                                                message['content'] = f"<draft>{_pa_prev2}</draft>\n\n*Reverted to previous draft.*"
-                                                message['display_content'] = message['content']
-                                            _pa_data2['_decision'] = 'reverted'
-                                            _auto_save_conversation()
-                                            st.rerun()
                     else:
                         st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
                     # Backward compat: render old A/B comparison results

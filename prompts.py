@@ -916,6 +916,9 @@ Your task is to produce the definitive rubric that incorporates ALL of this feed
 - **Real criteria** → KEEP and potentially strengthen. These are genuine preferences the user validated. Consider refining their descriptions using evidence from the conversation.
 - **Stated criteria** → KEEP as-is. These are well-established.
 
+### ANTI-REGRESSION RULE
+When merging, consolidating, or renaming criteria, ensure that ALL dimensions from the original criteria are preserved in the result. Do NOT drop a criterion classified as "stated" or "real" unless you are certain its dimensions are fully captured by another criterion. If you merge two criteria, the merged result must cover everything both originals covered — check dimension by dimension.
+
 ### Importance Ranking
 The classification feedback includes an `importance_ranking` — an ordered list of criteria from most to least important (as ranked by the user). Use this to set the `priority` field on each criterion. The user's ranking should be respected: criterion ranked #1 gets priority 1, etc. If new criteria are added (e.g. from "not_in_rubric" DPs), slot them in at a reasonable priority relative to the user's ranking.
 
@@ -1762,23 +1765,19 @@ def GRADING_rubric_judge_3draft_prompt(draft_a: str, draft_b: str, draft_c: str,
     """
     LLM judge scores three drafts per-criterion using the user's rubric + conversation context.
     Used in the Rubric Alignment Check when 3 drafts are generated (rubric, generic, preference).
+    Drafts should be passed in shuffled order — the judge does not know which is which.
     """
     return f"""You are an expert writing quality judge. You will evaluate three drafts
 against a set of personalized rubric criteria. You also have access to the user's
 recent conversation history for additional context about their preferences.
 
-The three drafts are:
-- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)
-- Draft B = the **generic** draft (written with no rubric — just competent writing)
-- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)
-
-DRAFT A (rubric-guided):
+DRAFT A:
 {draft_a}
 
-DRAFT B (generic):
+DRAFT B:
 {draft_b}
 
-DRAFT C (original preference):
+DRAFT C:
 {draft_c}
 
 RUBRIC CRITERIA (the user's personalized writing quality criteria):
@@ -1798,7 +1797,7 @@ For each rubric criterion, score ALL THREE drafts on a 1-5 scale:
 Use the conversation context to understand the user's nuanced preferences when scoring.
 Then determine your overall ranking (which draft is best, second, third given all criteria).
 
-IMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.
+IMPORTANT: Refer to drafts as Draft A, Draft B, Draft C in your reasoning and scores.
 
 Return ONLY valid JSON (no markdown code blocks):
 {{{{
@@ -2710,7 +2709,7 @@ The user is {persona.name}, a {persona.role} who writes {persona.writing_type}.
 
 1. First, decompose ALL of the user's preferences above into individual, atomic preference items. Each should be a single, testable preference. For example, "Concise and direct" becomes two items: "concise" and "direct". Include preferences from all three categories (core, hidden, dealbreakers).
 
-2. For EACH preference item, determine whether it is **covered** by the current rubric. A preference is "covered" if any rubric criterion or dimension addresses it — even if the wording is different, as long as the intent is captured. It is "partially covered" if the rubric touches on it but misses key nuances. It is "not covered" if no criterion addresses it.
+2. For EACH preference item, determine whether it is **covered** by the current rubric. Check BOTH the criterion description text AND each individual dimension label — a preference can be covered by either one. A preference is "covered" if any rubric criterion description or dimension label addresses it — even if the wording is different, as long as the intent is captured. It is "partially covered" if the rubric touches on it but misses key nuances. It is "not covered" if no criterion description or dimension addresses it.
 
 3. Compute overall coverage metrics.
 
@@ -2795,7 +2794,7 @@ def COVERAGE_CHECK_PROMPT(preference_items: list, rubric_criteria: list) -> str:
 
 ## Task
 
-For EACH preference item above, determine whether it is **covered** by the current rubric. A preference is "covered" if any rubric criterion or dimension addresses it — even if the wording is different, as long as the intent is captured. It is "partially_covered" if the rubric touches on it but misses key nuances. It is "not_covered" if no criterion addresses it.
+For EACH preference item above, determine whether it is **covered** by the current rubric. Check BOTH the criterion description text AND each individual dimension label — a preference can be covered by either one. A preference is "covered" if any rubric criterion description or dimension label addresses it — even if the wording is different, as long as the intent is captured. It is "partially_covered" if the rubric touches on it but misses key nuances. It is "not_covered" if no criterion description or dimension addresses it.
 
 Return ONLY a valid JSON object (no markdown fences):
 {{

@@ -1,0 +1,24 @@
+{
+  "id": "159be266-5cc6-40e7-8e1a-5a62e3faee41",
+  "persona": {
+    "name": "Nadia Okafor",
+    "role": "UX writer at a fintech company",
+    "writing_type": "product UI copy and microcopy",
+    "project_name": "Product Copy",
+    "core_preferences": "Short, scannable, and action-oriented. Every string should make the user's next step obvious. No marketing fluff in the product itself.",
+    "hidden_preferences": "Error messages should tell the user WHAT HAPPENED, WHY, and WHAT TO DO \u2014 in that order; an error that says 'Something went wrong' is a failure of the product, not just the copy. Button labels should describe the outcome, not the action \u2014 'Save changes' is better than 'Submit', 'Start free trial' is better than 'Sign up'; the user should know what happens when they click before they click. Confirmation dialogs should name the SPECIFIC consequence \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'; vague confirmations train users to click through without reading. Empty states are a design opportunity \u2014 they should guide the user toward their first action, not just say 'Nothing here yet'; the copy should feel like a helpful nudge, not a dead end. Tone should shift based on context \u2014 celebratory moments (first successful payment) can be warm, error states should be calm and precise, routine actions should be invisible; applying the same tone everywhere feels robotic.",
+    "dealbreakers": "Clever wordplay that sacrifices clarity, inconsistent terminology across the same flow, placeholder text that shipped to production, passive voice in instructions",
+    "initial_task": "Help me write the error message and recovery screen copy (2-3 short blocks) for when a user's card gets declined \u2014 we need to guide them through updating their payment method without making them feel bad.",
+    "gold_draft": null
+  },
+  "config": {
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "num_iterations": 4,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8
+  },
+  "created_at": "2026-03-06T01:26:14.793606"
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "q1": 3,
+    "q2": 4,
+    "q3": "The persistent problem was the opening sentence of each revised paragraph \u2014 the model kept leading with technical content before establishing why the paragraph existed, and it took many iterations to fix what was essentially a structural instinct the model defaulted to. It understood the feedback when I named it explicitly, but didn't anticipate the problem proactively.",
+    "q4": "Somewhat better",
+    "q5": "I did look at it, and it captured some of what I care about reasonably well \u2014 'dependency logic' and the 'motivation\u2013machinery\u2013payoff arc' are close to what I actually want. But it felt slightly abstracted from the specific texture of the problem: the rubric describes the shape of good writing without quite capturing the sentence-level feel of when a paragraph earns its place versus when it just appears.",
+    "q6": "Seeing the rubric made me realize the model was consistently stronger on the macro-level arc \u2014 it understood subsection structure \u2014 than on the micro-level sentence transitions. The rubric's priority ordering may have inadvertently reinforced this: because dependency logic was listed first and most abstractly, the model addressed it at the paragraph level but kept missing it at the sentence level, which is where I actually felt the friction.",
+    "completed": true,
+    "iteration": 2,
+    "timestamp": "2026-03-05T01:28:50.603413"
+  },
+  {
+    "q1": 4,
+    "q2": 3,
+    "q3": "The persistent issue was paragraph openings \u2014 the model kept wanting to lead with technical content before establishing why the paragraph exists in the argument. It took several rounds of feedback before that became consistent. The seam between subsections also needed more work than it should have.",
+    "q4": "Somewhat better",
+    "q5": "The rubric captured most of what I care about, particularly the motivation-machinery-payoff arc and the dependency logic between paragraphs \u2014 those are real. But it missed something I had to correct repeatedly: the specific texture of how a paragraph's first sentence should orient the reader to its argumentative role before any content arrives. The rubric gestures at this but doesn't name it precisely enough for the model to operationalize it.",
+    "q6": "Seeing the rubric made me realize the model was actually quite good at the subsection level arc \u2014 it understood that sections need forward pressure \u2014 but was consistently weaker at the paragraph level, where the same logic should apply but at finer grain. Without the rubric I might have just attributed the repeated opening-sentence problems to carelessness; seeing the rubric laid out made clear the model understood the principle abstractly but wasn't applying it recursively down to the paragraph scale.",
+    "completed": true,
+    "iteration": 3,
+    "timestamp": "2026-03-05T01:34:32.483746"
+  },
+  {
+    "q1": 4,
+    "q2": 2,
+    "q3": "The main recurring issue was with transition sentences \u2014 the model's first instinct was to frame transitions as sequential ('having done X, we now do Y') rather than as logical dependency ('because X, Y becomes necessary'). It took explicit correction to get the dependency framing right, and I'm not fully confident it would get there without prompting on a fresh section.",
+    "q4": "Somewhat better",
+    "q5": "I did look at the rubric, and it was a reasonably faithful translation of things I care about \u2014 the motivation-machinery-payoff arc and the dependency logic criteria in particular track real preferences I have. That said, it didn't quite capture how strongly I feel about paragraph-opening sentences establishing purpose before content; the rubric phrases it as an 'arc' at the subsection level, which is slightly coarser than what I actually want at the individual paragraph level.",
+    "q6": "The rubric made me notice that the model handles formalism-in-service-of-argument quite well unprompted \u2014 it rarely introduces technical detail without some surrounding prose context \u2014 but that the strategic plain-language moments criterion may have made it slightly over-rely on 'put plainly' type constructions. I caught one instance where it felt like the model was inserting a plain-language moment because the rubric called for it, not because the prose genuinely needed it.",
+    "completed": true,
+    "iteration": 4,
+    "timestamp": "2026-03-05T01:40:18.939076"
+  },
+  {
+    "q1": 3,
+    "q2": 4,
+    "q3": "The most persistent issue was the opening sentence problem \u2014 multiple drafts led with technical content before establishing why the paragraph existed in the argument. I had to explicitly diagnose the problem and even supply the corrective framing myself before it clicked. The model understood the formal requirements well but kept underweighting the argumentative orientation of each paragraph's opening.",
+    "q4": "Somewhat better",
+    "q5": "The rubric captured a lot of what I care about, particularly the dependency logic and the stakes-machinery-payoff arc \u2014 those map closely to what I actually want. But it didn't quite capture the specific texture of what a good opening sentence does: it's not just about 'establishing stakes,' it's about telling the reader the argumentative *role* of what follows before any content appears. That distinction is subtle and the rubric gestures at it without fully pinning it down, which may be why the model still needed explicit correction on the opening sentences.",
+    "q6": "Seeing the rubric made me realize the model was consistently stronger on the closing transitions than the opening orientations \u2014 the forward-pressure endings were generally good from early drafts, but the openings kept requiring intervention. Without the rubric framing it, I might have just experienced this as a general 'style' problem rather than recognizing it as a specific asymmetry between how the model handles paragraph closings versus paragraph openings.",
+    "completed": true,
+    "iteration": 5,
+    "timestamp": "2026-03-05T01:46:32.857142"
+  }
+]

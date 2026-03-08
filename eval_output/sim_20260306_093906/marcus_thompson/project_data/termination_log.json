@@ -1,0 +1,317 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 6,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.547,
+              "reasoning": "The draft is competent and readable, but it explains what decisions were made without ever saying what was considered and rejected \u2014 which is where the real learning is. The code example also grew into a small library when it should show one thing clearly.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.687,
+              "reasoning": "H1 lands well and H5 is solid, but the code example is more boilerplate than minimal \u2014 two full functions plus a usage block is doing too much \u2014 and there's no warning anywhere before the rotation mechanics that a mishandled refresh will invalidate the token and lock out the user. That's a pitfall someone will absolutely hit before they understand it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.827,
+              "reasoning": "The warning placement and rejected-alternative framing are genuinely good now. The code is tighter but still has two comment lines doing slightly different jobs \u2014 one explaining the response shape, one giving usage guidance \u2014 which blurs whether the prose was supposed to cover one of those. The bigger gap is that the section still reads more like labeled paragraphs than a story moving somewhere; the headers aren't pulling their weight as narrative signposts.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.933,
+              "reasoning": "Almost everything is landing \u2014 the rejected-alternative framing, the warning placement, the tight code block. The one thing that's still a little flat is the header: 'Getting Started' is just a label, and the rest of the section actually tells a coherent story about why this service is designed the way it is. The header doesn't do any of that work.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "Every preference is fully met: rejected alternatives anchor each architectural decision, the code is minimal with a single meaningful comment, the warning lands before the relevant implementation section, the header tells a story rather than labeling a drawer, and the tone treats the reader as capable throughout. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "The draft is solid overall \u2014 warnings are well-placed, the code snippet is clean, and the tone respects the reader. But the architectural 'why' feels incomplete: it describes the problem with sharing but never explicitly names what was considered and rejected (e.g., Redis DB namespacing, separate logical DBs, connection pooling strategies), so an engineer reading this still doesn't know what alternatives were evaluated before landing here."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.866,
+              "reasoning": "H1, H3, and H5 are all solid \u2014 the rejected alternatives are there, warnings land before the code, and the tone treats the reader like an adult. The two things dragging it down are the code snippet and the overall narrative flow: the comment in the snippet explains the wrong thing, and the doc reads more like a reference page than something that pulls you through a decision.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "partial_draft": true
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences are fully met: rejected alternatives are explained with clear reasoning, the code snippet is minimal with a purposeful comment, warnings precede the relevant section, the narrative flows naturally from problem to decision, and the tone respects the reader's competence throughout. No dealbreakers violated.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 11,
+        "max_drafts": 20,
+        "total_turns": 12,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.7583,
+              "reasoning": "H1, H4, and H5 are all solid \u2014 the rejected-alternative framing is exactly right, and the tone treats the reader like a competent person dealing with a genuinely non-obvious system. The main thing pulling this down is H3: the multi-instance / distributed counter pitfall is buried at the end of the last paragraph, after the reader has already worked through the 'what to check' section where they'd naturally act on it."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7933,
+              "reasoning": "The structural fix landed well \u2014 warnings are front-loaded, the narrative flows, tone is solid, and the multi-instance problem is now a real diagnostic fork. The one consistent gap is code examples: the 'What to check' section references config keys and a formula in prose, but those are exactly the places where a runnable snippet would do more work than the paragraph.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.9,
+              "reasoning": "Almost everything is working well \u2014 the structure, the narrative flow, the multi-instance warning placement, and the prose tone are all solid. The one thing holding it back is the code block: it's grown to the point where the comments inside the snippet are doing explanatory work that the prose should have already handled, which means the example isn't quite minimal \u2014 it's compensating.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H3, and H4 are fully satisfied \u2014 the structure flows well, the multi-instance warning lands before the diagnostic fork, and the rejected alternative is explained with genuine reasoning. H2 and H5 are both partial: the code block has inline output comments that blur the line between 'runnable command' and 'annotated expected output,' and the phrase 'almost certainly' in the burst explanation has a slight hand-wavy quality that doesn't fully respect the complexity of what the engineer is troubleshooting.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.933,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.933,
+              "reasoning": "Almost everything landed \u2014 the multi-instance fork, the CLI block, the option 1 language, all solid. H4 is the one thing still slightly off: the single header does story-work but the section transitions feel more like reference chunks than a continuous diagnostic narrative \u2014 the reader doesn't quite feel guided from 'I see a burst' through to 'here's what I do about it.'",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 0.933,
+              "reasoning": "Almost everything is working \u2014 the structural fix is solid, the CLI block is clean, and the warning lands before the engineer would hit the problem. The one thing still nagging at me is H5: the closing sentence 'no violation was recorded and the limiter behaved as configured' is accurate but it reads like a verdict, and a verdict implies certainty the data doesn't actually give you.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 12,
+            "has_draft": true,
+            "draft_number": 11,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden and core preferences are fully met: rejected alternatives are named with reasons, CLI examples are minimal with one-line comments, the multi-instance warning lands before the diagnostic section, the header tells a story, and the final sentence makes a narrowly scoped claim without overstating system health. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 9,
+        "max_drafts": 20,
+        "total_turns": 10,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H2, H5 are solid \u2014 the rejected-alternative framing and code example are exactly right. But H3 and H4 both fall short: the ambiguity warning about environment names embedded in branch names only lands after the reader has already processed the scenario, and the header doesn't really tell a story so much as label the section."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything lands well \u2014 the warning placement, the rejected alternative, the code example. The one thing that still feels slightly flat is the header: 'How Branch Names Resolve to Deployment Targets' is accurate but it reads like a label, not a story. The rest of the doc has a strong narrative pull; the header doesn't quite match that energy.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9,
+              "reasoning": "Nearly everything lands well \u2014 the rejected-alternative explanation is strong, the code example is tight, the pitfall is front-loaded, and the tone respects the reader. The one gap is H4: the header does its job but the section still reads more like labeled reference material than something that flows as a story. The header 'How Branch Names Resolve to Deployment Targets' tells you what the section covers, not what journey you're about to take through it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the warning placement, the rejected-alternative framing, the code block, the header. The one thing that's still slightly off is H5: the diagnostic section tells the reader to check two things in a specific order, but the framing of why that sequence matters reads a bit procedural. The sentence 'the second check only makes sense once you know what the first one found' is doing real work, but the overall register in that paragraph still feels a little clinical \u2014 it explains what to do without quite acknowledging that this is a genuinely non-obvious failure mode to be standing in front of.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H5 is the one thing still holding this back \u2014 the draft gestures at the difficulty of the debugging experience but then pivots immediately into procedural steps, so the acknowledgment doesn't actually land before the reader is already in task mode. Everything else is solid.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.933,
+              "reasoning": "Almost everything is working \u2014 the header, the rejected-alternative paragraph, the warning placement, and the code block are all solid. The one gap is H5: the diagnostic paragraph acknowledges the difficulty but then shifts into a fairly procedural register that smooths over the actual disorientation of debugging a silent mismatch. The acknowledgment is there but it doesn't quite stay with the reader through the steps.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T11:39:15.322984"
+  }
+]

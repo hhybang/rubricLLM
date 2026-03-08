@@ -1,0 +1,1023 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "--- Iteration 1/4 ---",
+      "iteration": 1
+    },
+    {
+      "role": "user",
+      "content": "Help me draft an email to our engineering team about pushing the product launch date by two weeks due to a critical bug we found in testing."
+    },
+    {
+      "role": "assistant",
+      "content": "Here are a few questions to help me tailor the draft before I write it:\n\n1. **Tone** \u2014 Is your team culture fairly formal, or more casual/direct?\n2. **The bug** \u2014 How much detail do you want to share about the nature of the bug? (e.g. vague/high-level vs. specific)\n3. **The new date** \u2014 Do you have a confirmed new launch date, or is it still tentative?\n4. **Ownership** \u2014 Do you want to assign next steps to specific people, or keep it general?\n\nIn the meantime, here's a solid general draft to start from:\n\n---\n\n<draft>\n**Subject: Product Launch Date Update \u2014 Two-Week Delay**\n\nHi team,\n\nI wanted to give you a heads-up that we are pushing our product launch date back by two weeks, from **[original date]** to **[new date]**.\n\nDuring final testing, we identified a critical bug that needs to be resolved before we can ship. Launching with this issue would create an unacceptable risk to [user experience / data integrity / system stability \u2014 pick what applies], and we're committed to getting this right.\n\nHere's what happens next:\n\n- **[Owner/Team]** will lead the investigation and fix\n- We are targeting a fix and re-test cycle completed by **[internal deadline]**\n- A full regression test will follow before we clear for launch\n- We'll send a status update by **[check-in date]**\n\nI know this isn't the news anyone wanted, but taking the time now will save us from a much harder situation post-launch. Thank you for your flexibility and continued hard work \u2014 we're close.\n\nPlease reach out if you have questions or concerns.\n\n[Your name]\n</draft>\n\n---\n\nShare those details and I can tighten it up significantly!"
+    },
+    {
+      "role": "user",
+      "content": "The ending really kills it for me. 'Thank you for your flexibility and continued hard work \u2014 we're close' \u2014 that reads like something you'd put on a motivational poster, not a note to your engineering team. It just kind of deflates after the actual substance of the email. The whole thing should land on something that moves us forward, not trail off into sentiment. Also, the part where you explain why the delay matters \u2014 it's framed around what we want ('committed to getting this right') rather than what this means for them and their work. The team has been building toward this date; that's the thing that actually makes this news land."
+    },
+    {
+      "role": "assistant",
+      "content": "Both of those are sharp observations. The ending is doing closing-remarks work when it should be doing forward-momentum work, and the framing on the delay explanation is inside-out \u2014 it's about the company's commitment rather than acknowledging what this actually disrupts for the people who've been executing against that date.\n\nHere's a revised draft:\n\n<draft>\n**Subject: Product Launch Date Update \u2014 Two-Week Delay**\n\nHi team,\n\nWe're pushing the launch date back two weeks, from **[original date]** to **[new date]**.\n\nTesting caught a critical bug that we can't ship with. I know a lot of you have been building and planning around this date, and moving it isn't a small thing \u2014 but shipping something broken would undo the work that got us here, and that's not a trade worth making.\n\nHere's where we stand and what comes next:\n\n- **[Owner/Team]** is leading the investigation and fix\n- We're targeting a completed fix and re-test by **[internal deadline]**\n- Full regression test follows before we clear for launch\n- Status update from me by **[check-in date]**\n\nIf you have questions or think something in this plan needs to change, let's talk \u2014 reply here or grab time on my calendar.\n\n[Your name]\n</draft>\n\nThe ending now puts the ball back in their court rather than signing off with a sentiment. And the delay explanation leads with what it costs the team before making the case for why it's still the right call."
+    },
+    {
+      "role": "user",
+      "content": "This is a lot closer. The ending lands right, and the 'why' framing finally feels like it's talking to the team rather than at them. The one thing that's still bugging me: the email just opens cold with the news. We jump straight into 'we're pushing the date' before there's any acknowledgment that this is landing on people who've been grinding toward this. It's not that the acknowledgment is missing \u2014 it shows up \u2014 but by then I've already been hit with the headline and the context feels like it's playing catch-up. The order of it just feels a little off."
+    },
+    {
+      "role": "assistant",
+      "content": "That makes sense \u2014 the acknowledgment is doing damage control instead of setting the frame. If it comes first, it changes how the reader receives the news rather than chasing after it.\n\n<draft>\n**Subject: Product Launch Date Update \u2014 Two-Week Delay**\n\nHi team,\n\nA lot of you have been heads-down pushing hard toward our launch date, and I want to be straight with you about where things stand.\n\nTesting caught a critical bug we can't ship with. We're pushing the launch back two weeks, from **[original date]** to **[new date]**. Moving the date isn't a small thing \u2014 but shipping something broken would undo the work that got us here, and that's not a trade worth making.\n\nHere's where we stand and what comes next:\n\n- **[Owner/Team]** is leading the investigation and fix\n- We're targeting a completed fix and re-test by **[internal deadline]**\n- Full regression test follows before we clear for launch\n- Status update from me by **[check-in date]**\n\nIf you have questions or think something in this plan needs to change, let's talk \u2014 reply here or grab time on my calendar.\n\n[Your name]\n</draft>\n\nNow the acknowledgment earns the news rather than softening it after the fact. The reader knows you see what this costs before they find out what's changing."
+    },
+    {
+      "role": "user",
+      "content": "Getting a lot closer \u2014 the opening and closing are working now. The part that's still not quite landing for me is the middle section. Once we get past the news and the reason, the email kind of fans out into a list of moving parts. I end up scanning it like a project tracker rather than reading it like a message from a person. I think there's a version where all of that resolves into one clear thing \u2014 who's on it, by when \u2014 rather than four separate items that each feel like their own action. The list format is doing a lot of work that maybe one sentence could do better."
+    },
+    {
+      "role": "assistant",
+      "content": "Agreed \u2014 the list is creating the feeling of a status report right when the email should be closing the loop and moving forward.\n\n<draft>\n**Subject: Product Launch Date Update \u2014 Two-Week Delay**\n\nHi team,\n\nA lot of you have been heads-down pushing hard toward our launch date, and I want to be straight with you about where things stand.\n\nTesting caught a critical bug we can't ship with. We're pushing the launch back two weeks, from **[original date]** to **[new date]**. Moving the date isn't a small thing \u2014 but shipping something broken would undo the work that got us here, and that's not a trade worth making.\n\n**[Owner/Team]** is leading the fix, and we're targeting **[internal deadline]** to have it resolved and re-tested. I'll send a full update by **[check-in date]**.\n\nIf you have questions or think something in this plan needs to change, let's talk \u2014 reply here or grab time on my calendar.\n\n[Your name]\n</draft>\n\nTwo sentences instead of four bullets. It still covers who's on it, by when, and when they'll hear from you again \u2014 but now it reads like a person finishing a thought rather than a project tracker."
+    },
+    {
+      "role": "user",
+      "content": "This is really close. The structure feels right, the ending is clean, the ownership is clear. The one thing that's still not quite landing is that middle line \u2014 'shipping something broken would undo the work that got us here.' I get what it's trying to do, but it still reads a little like a company-values statement. The team has been planning around a specific date \u2014 schedules, dependencies, probably things they've already communicated to other people. That's the actual disruption. When the 'why' names something concrete about their situation rather than speaking in terms of work quality or outcomes in the abstract, it'll feel like you're talking to them, not explaining yourself."
+    },
+    {
+      "role": "assistant",
+      "content": "Right \u2014 \"undo the work\" is still abstract and outcome-focused. The real disruption is logistical and personal: they've made commitments around this date, and now those commitments have to be unwound.\n\n<draft>\n**Subject: Product Launch Date Update \u2014 Two-Week Delay**\n\nHi team,\n\nA lot of you have been heads-down pushing hard toward our launch date, and I want to be straight with you about where things stand.\n\nTesting caught a critical bug we can't ship with. We're pushing the launch back two weeks, from **[original date]** to **[new date]**. I know a lot of you have already built plans around this date \u2014 dependencies lined up, people informed \u2014 and this means revisiting some of that. That's a real ask, and I don't want to gloss over it.\n\n**[Owner/Team]** is leading the fix, and we're targeting **[internal deadline]** to have it resolved and re-tested. I'll send a full update by **[check-in date]**.\n\nIf you have questions or think something in this plan needs to change, let's talk \u2014 reply here or grab time on my calendar.\n\n[Your name]\n</draft>\n\n\"Dependencies lined up, people informed\" names the actual texture of the disruption \u2014 the downstream conversations they now have to have again. That's what makes it land as acknowledgment rather than explanation."
+    },
+    {
+      "role": "user",
+      "content": "Yeah, this one's there. The middle section finally reads like it's talking to the team \u2014 'dependencies lined up, people informed' is exactly the kind of concrete disruption I wanted acknowledged, not some abstract statement about quality. The structure flows, the ending lands clean, and the ownership is clear without over-specifying anything. I'd take this as-is."
+    },
+    {
+      "role": "system",
+      "content": "--- Iteration 2/4 ---",
+      "iteration": 2
+    },
+    {
+      "role": "user",
+      "content": "I need to email a key customer \u2014 Priya at Northfield Logistics \u2014 letting her know that a feature she requested six months ago is finally shipping next week. She'll need to coordinate with her IT team to enable it, so there's a clear action item on her end."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nTo actually turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically. Given that it touches your data pipeline, they'll probably want a day or two to review the settings before flipping it on.\n\nDoes it make sense to get a quick call on the calendar so I can walk them through what to expect?</draft>",
+      "is_alignment_start_draft": true
+    },
+    {
+      "role": "user",
+      "content": "The structure feels like it skips a beat. You've got the acknowledgment, you've got the news, you've got the ask \u2014 but there's nothing in the middle that makes Priya feel why this matters *to her*. Like, she waited six months for this. What does it actually unlock for her team? Right now it reads like a heads-up about a software update rather than a moment she's been waiting for. That gap between 'it's shipping' and 'your IT team needs to do X' is where the email loses me."
+    },
+    {
+      "role": "assistant",
+      "content": "Good catch \u2014 that middle section needs to land the *so what* for Priya before it pivots to logistics. I need a bit more to work with though: what does the advanced reporting feature actually do for her team? What was she trying to solve when she requested it six months ago?\n\nEven a rough sense would help \u2014 for example:\n- Was she trying to cut down on manual reporting work?\n- Get visibility into something she couldn't see before?\n- Share cleaner data with her own stakeholders?\n\nThe more specific you can be about what this unlocks for her, the more that middle section will feel like a payoff rather than a product update."
+    },
+    {
+      "role": "user",
+      "content": "The feature gives her team automated weekly reports on carrier performance \u2014 she was doing this manually in Excel before, which was eating up like 3-4 hours every week. She also mentioned wanting to share cleaner dashboards with her ops director. Go ahead and work that into the draft."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nTo turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically. Given that it touches your data pipeline, they'll probably want a day or two to review the settings before it goes live.\n\nWorth getting a quick call on the calendar so I can walk them through what to expect? Happy to work around their schedule.</draft>"
+    },
+    {
+      "role": "system",
+      "content": "**Rubric Changes have been made:**\n- **Added:** \"Action Ownership\"\n- **Added:** \"Conciseness and Directness\"\n- **Removed:** \"Concrete Specificity\"\n- **Removed:** \"Concise Consolidation\"\n- **Reweighted:** \"Forward-Momentum Closings\" (3 \u2192 4)\n- **Reworded:** \"Emotional Sequencing\" description changed\n- **Reworded:** \"Reader-Centered Framing\" description changed\n- **Reworded:** \"Forward-Momentum Closings\" description changed\n- **Reworded:** \"Human Voice\" description changed\n- **Dimensions:** \"Emotional Sequencing\" (+There is exactly one concrete next step at the end, not a list of follow-ups, Opening acknowledgment is one sentence max \u2014 not a preamble or extended softening, The 'why it matters' section appears before the next step, not after or mixed in, Acknowledgment or situation framing appears before the key news or ask, not after; -The opening sets a frame that shapes how the reader receives what follows, Each section flows naturally from the emotional state established by the prior one, Context or acknowledgment appears before the key news or ask, not after)\n- **Dimensions:** \"Reader-Centered Framing\" (+Rationale does not center the sender's values, commitments, or organizational priorities, Stakes are described in terms of what the reader is actually dealing with \u2014 schedules, dependencies, downstream conversations; -Rationale is not framed around the sender's or organization's values or commitments, Impact descriptions reference what the reader is actually experiencing or dealing with, not abstract outcomes)\n- **Dimensions:** \"Forward-Momentum Closings\" (+The closing is clean \u2014 no padding, no lingering, No additional sentences appear after the call to action, No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases, The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase; -The closing is clean and doesn't linger or add unnecessary padding, The ending puts agency in the reader's hands (e.g., invites questions, opens a door), No motivational-poster language, generic affirmations, or canned encouragement, The closing moves the reader toward a next step or invitation rather than signing off with sentiment)\n- **Dimensions:** \"Human Voice\" (+Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence, Tone is direct and neutral \u2014 no passive-aggressive undertones, Reads like a person talking to their team, not an institutional communication, Free of corporate jargon and canned phrases, Exclamation marks are used sparingly or not at all; -The overall message reads like a person talking to their team, not an institutional communication, Uses flowing prose where bullet lists would make the message feel like a status report, Sentences have natural, conversational rhythm rather than formal or bureaucratic cadence, Avoids corporate communication clich\u00e9s and canned phrases)\n<!--RUBRIC_EDIT_LOG:{\"version_from\": 2, \"version_to\": \"2*\", \"edits\": {\"added\": [{\"name\": \"Action Ownership\", \"description\": \"When something needs to happen, there is one clear owner with a deadline \\u2014 not a group ask. 'Everyone please review' is a non-action. At the same time, action items should not be over-specified in ways that assume org structure details the email shouldn't contain. The goal is clarity of ownership, not a task breakdown.\", \"weight\": 3}, {\"name\": \"Conciseness and Directness\", \"description\": \"Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. The email should feel like it respects the reader's time.\", \"weight\": 5}], \"removed\": [{\"name\": \"Concrete Specificity\", \"description\": \"Impact, reasoning, and disruptions are named in tangible, specific terms \\u2014 the actual texture of the situation \\u2014 rather than in abstract quality or outcome language. 'Dependencies lined up, people informed' over 'undo the work that got us here.'\"}, {\"name\": \"Concise Consolidation\", \"description\": \"Multiple related items resolve into one clear, unified statement rather than fanning out into separate line items. Information is covered efficiently \\u2014 every section serves a purpose and nothing is over-specified when a consolidated summary does the job.\"}], \"reweighted\": [{\"name\": \"Forward-Momentum Closings\", \"old_weight\": 3, \"new_weight\": 4}], \"reworded\": [{\"name\": \"Emotional Sequencing\", \"field\": \"description\", \"old\": \"The order in which information arrives shapes how the reader receives it. Acknowledgment and context come before the news or ask \\u2014 they set the frame rather than chasing after it. Each section builds on the emotional state the previous section creates.\", \"new\": \"Information arrives in a specific order: acknowledge the effort or situation first (one sentence max), then deliver the news, then explain why it matters, then give one concrete next step. Violating this order \\u2014 even if all the pieces are present \\u2014 breaks the flow. This isn't just about being considerate; it's about making the message actually land.\"}, {\"name\": \"Reader-Centered Framing\", \"field\": \"description\", \"old\": \"The message is framed around what it means for the reader \\u2014 their situation, their disruptions, their plans \\u2014 not around the sender's values, commitments, or organizational rationale. When the 'why' names something concrete about the reader's experience, it lands as acknowledgment; when it centers the sender, it reads as self-explanation.\", \"new\": \"The 'why it matters' is always framed around what it costs or disrupts for the reader \\u2014 their plans, their team, their timeline \\u2014 not around the sender's values, commitments, or organizational rationale. 'This matters because your team planned around this date' not 'This matters because we want quality.' Drafts that center the sender's reasoning feel tone-deaf even when technically correct.\"}, {\"name\": \"Forward-Momentum Closings\", \"field\": \"description\", \"old\": \"Endings land on something that moves people forward \\u2014 a next step, an invitation, a clear action \\u2014 rather than trailing into sentiment, gratitude, or motivational language. The closing puts the ball in the reader's court.\", \"new\": \"The closing lands on the next step or an open door \\u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment. Any gratitude or warmth that comes after the CTA weakens the email. The last thing the reader sees should be something that moves things forward.\"}, {\"name\": \"Human Voice\", \"field\": \"description\", \"old\": \"The message reads like it's from a person finishing a thought, not from a project tracker, corporate template, or status report. Prose is preferred over bureaucratic structure when it can carry the same information with more warmth and directness.\", \"new\": \"The message reads like a person finishing a thought, not a corporate template or status report. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \\u2014 the kind of email a sharp colleague would send.\"}], \"dimensions_changed\": [{\"name\": \"Emotional Sequencing\", \"added_dims\": [\"There is exactly one concrete next step at the end, not a list of follow-ups\", \"Opening acknowledgment is one sentence max \\u2014 not a preamble or extended softening\", \"The 'why it matters' section appears before the next step, not after or mixed in\", \"Acknowledgment or situation framing appears before the key news or ask, not after\"], \"removed_dims\": [\"The opening sets a frame that shapes how the reader receives what follows\", \"Each section flows naturally from the emotional state established by the prior one\", \"Context or acknowledgment appears before the key news or ask, not after\"]}, {\"name\": \"Reader-Centered Framing\", \"added_dims\": [\"Rationale does not center the sender's values, commitments, or organizational priorities\", \"Stakes are described in terms of what the reader is actually dealing with \\u2014 schedules, dependencies, downstream conversations\"], \"removed_dims\": [\"Rationale is not framed around the sender's or organization's values or commitments\", \"Impact descriptions reference what the reader is actually experiencing or dealing with, not abstract outcomes\"]}, {\"name\": \"Forward-Momentum Closings\", \"added_dims\": [\"The closing is clean \\u2014 no padding, no lingering\", \"No additional sentences appear after the call to action\", \"No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases\", \"The closing is the next step or an invitation \\u2014 not a sentiment or sign-off phrase\"], \"removed_dims\": [\"The closing is clean and doesn't linger or add unnecessary padding\", \"The ending puts agency in the reader's hands (e.g., invites questions, opens a door)\", \"No motivational-poster language, generic affirmations, or canned encouragement\", \"The closing moves the reader toward a next step or invitation rather than signing off with sentiment\"]}, {\"name\": \"Human Voice\", \"added_dims\": [\"Sentences have natural, conversational rhythm \\u2014 not formal or bureaucratic cadence\", \"Tone is direct and neutral \\u2014 no passive-aggressive undertones\", \"Reads like a person talking to their team, not an institutional communication\", \"Free of corporate jargon and canned phrases\", \"Exclamation marks are used sparingly or not at all\"], \"removed_dims\": [\"The overall message reads like a person talking to their team, not an institutional communication\", \"Uses flowing prose where bullet lists would make the message feel like a status report\", \"Sentences have natural, conversational rhythm rather than formal or bureaucratic cadence\", \"Avoids corporate communication clich\\u00e9s and canned phrases\"]}]}, \"source\": \"simulation_log_changes\"}-->"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring \u2014 I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting.\n\nTo turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically.\n\nWorth getting a quick call on the calendar before next week so I can walk them through what to expect?</draft>\n\n*Draft updated based on rubric changes.*",
+      "rubric_revision": {
+        "change_summary": "Four rubric changes drove edits here. The updated Emotional Sequencing rule \u2014 acknowledgment must be one sentence max \u2014 led to collapsing the two-sentence opener into one. The new Action Ownership criterion (requires one owner and a deadline, no over-specification) led to trimming the IT paragraph's internal speculation about review timelines. The tightened Forward-Momentum Closings rule \u2014 nothing after the CTA \u2014 kept the closing question but removed the trailing 'Happy to work around their schedule,' which was post-CTA sentiment. The new 'short_paragraphs' dimension under Conciseness and Directness drove tightening the third paragraph to remove over-explanation.",
+        "annotated_changes": [
+          {
+            "original_text": "You flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.",
+            "new_text": "You flagged the advanced reporting feature back in the spring \u2014 I wanted to make sure you heard it from me directly: it's shipping next week.",
+            "reason": "Emotional Sequencing (new dimension 'acknowledgment_is_brief': opening acknowledgment must be one sentence max): Two-sentence opener collapsed into one by removing 'and I know it's been a long wait since then' and joining the clauses with an em dash."
+          },
+          {
+            "original_text": "won't require an extra round of formatting before it goes out.",
+            "new_text": "won't require an extra round of formatting.",
+            "reason": "Conciseness and Directness (new dimension 'no_over_explanation': reasoning stated once, cleanly): 'before it goes out' is redundant \u2014 the sentence already implies the formatting step is eliminated before sharing."
+          },
+          {
+            "original_text": "To turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically. Given that it touches your data pipeline, they'll probably want a day or two to review the settings before it goes live.",
+            "new_text": "To turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically.",
+            "reason": "Action Ownership (new criterion, dimension 'no_over_specification': action items should not assume internal org details the email shouldn't contain): Removed speculation about how long IT will need and what they'll review \u2014 this over-specifies internal process details the sender wouldn't know and the reader doesn't need."
+          },
+          {
+            "original_text": "Worth getting a quick call on the calendar so I can walk them through what to expect? Happy to work around their schedule.",
+            "new_text": "Worth getting a quick call on the calendar before next week so I can walk them through what to expect?",
+            "reason": "Forward-Momentum Closings (new dimension 'nothing_after_cta': no additional sentences after the call to action): 'Happy to work around their schedule' is post-CTA sentiment that trails after the closing action. Removed it. Also added 'before next week' to anchor the ask with a concrete timeframe per Action Ownership's 'has_deadline' dimension."
+          }
+        ],
+        "original_draft": "Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nTo turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically. Given that it touches your data pipeline, they'll probably want a day or two to review the settings before it goes live.\n\nWorth getting a quick call on the calendar so I can walk them through what to expect? Happy to work around their schedule.",
+        "old_rubric": [
+          {
+            "name": "Emotional Sequencing",
+            "category": "Structure",
+            "description": "The order in which information arrives shapes how the reader receives it. Acknowledgment and context come before the news or ask \u2014 they set the frame rather than chasing after it. Each section builds on the emotional state the previous section creates.",
+            "dimensions": [
+              {
+                "id": "context_before_news",
+                "label": "Context or acknowledgment appears before the key news or ask, not after"
+              },
+              {
+                "id": "frame_earns_reception",
+                "label": "The opening sets a frame that shapes how the reader receives what follows"
+              },
+              {
+                "id": "no_retroactive_softening",
+                "label": "Acknowledgment is not positioned as damage control after the headline has already landed"
+              },
+              {
+                "id": "natural_buildup",
+                "label": "Each section flows naturally from the emotional state established by the prior one"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Reader-Centered Framing",
+            "category": "Audience",
+            "description": "The message is framed around what it means for the reader \u2014 their situation, their disruptions, their plans \u2014 not around the sender's values, commitments, or organizational rationale. When the 'why' names something concrete about the reader's experience, it lands as acknowledgment; when it centers the sender, it reads as self-explanation.",
+            "dimensions": [
+              {
+                "id": "names_reader_reality",
+                "label": "Impact descriptions reference what the reader is actually experiencing or dealing with, not abstract outcomes"
+              },
+              {
+                "id": "avoids_org_centering",
+                "label": "Rationale is not framed around the sender's or organization's values or commitments"
+              },
+              {
+                "id": "acknowledges_cost",
+                "label": "Explicitly acknowledges what the message costs or asks of the reader"
+              },
+              {
+                "id": "speaks_to_not_at",
+                "label": "Language addresses the reader's situation rather than explaining the sender's position"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Forward-Momentum Closings",
+            "category": "Structure",
+            "description": "Endings land on something that moves people forward \u2014 a next step, an invitation, a clear action \u2014 rather than trailing into sentiment, gratitude, or motivational language. The closing puts the ball in the reader's court.",
+            "dimensions": [
+              {
+                "id": "ends_on_action",
+                "label": "The closing moves the reader toward a next step or invitation rather than signing off with sentiment"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No motivational-poster language, generic affirmations, or canned encouragement"
+              },
+              {
+                "id": "reader_agency",
+                "label": "The ending puts agency in the reader's hands (e.g., invites questions, opens a door)"
+              },
+              {
+                "id": "clean_exit",
+                "label": "The closing is clean and doesn't linger or add unnecessary padding"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Concrete Specificity",
+            "category": "Content",
+            "description": "Impact, reasoning, and disruptions are named in tangible, specific terms \u2014 the actual texture of the situation \u2014 rather than in abstract quality or outcome language. 'Dependencies lined up, people informed' over 'undo the work that got us here.'",
+            "dimensions": [
+              {
+                "id": "tangible_disruptions",
+                "label": "Disruptions or stakes are described in terms of specific, real-world consequences (schedules, dependencies, downstream conversations)"
+              },
+              {
+                "id": "avoids_abstraction",
+                "label": "Avoids abstract quality or outcome language ('getting this right,' 'undo the work') as the primary framing"
+              },
+              {
+                "id": "names_texture",
+                "label": "References the actual texture of the reader's situation rather than generalized statements"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Concise Consolidation",
+            "category": "Style",
+            "description": "Multiple related items resolve into one clear, unified statement rather than fanning out into separate line items. Information is covered efficiently \u2014 every section serves a purpose and nothing is over-specified when a consolidated summary does the job.",
+            "dimensions": [
+              {
+                "id": "unified_statements",
+                "label": "Related action items or details are consolidated into clear, unified statements rather than broken into separate components"
+              },
+              {
+                "id": "no_over_specification",
+                "label": "Next steps and details are not over-specified when a brief summary would suffice"
+              },
+              {
+                "id": "lean_structure",
+                "label": "Every section serves a clear purpose with no padding or filler"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Human Voice",
+            "category": "Style",
+            "description": "The message reads like it's from a person finishing a thought, not from a project tracker, corporate template, or status report. Prose is preferred over bureaucratic structure when it can carry the same information with more warmth and directness.",
+            "dimensions": [
+              {
+                "id": "prose_over_lists",
+                "label": "Uses flowing prose where bullet lists would make the message feel like a status report"
+              },
+              {
+                "id": "reads_as_person",
+                "label": "The overall message reads like a person talking to their team, not an institutional communication"
+              },
+              {
+                "id": "avoids_corporate_templates",
+                "label": "Avoids corporate communication clich\u00e9s and canned phrases"
+              },
+              {
+                "id": "natural_rhythm",
+                "label": "Sentences have natural, conversational rhythm rather than formal or bureaucratic cadence"
+              }
+            ],
+            "priority": 6
+          }
+        ],
+        "new_rubric": [
+          {
+            "name": "Emotional Sequencing",
+            "category": "Structure",
+            "description": "Information arrives in a specific order: acknowledge the effort or situation first (one sentence max), then deliver the news, then explain why it matters, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow. This isn't just about being considerate; it's about making the message actually land.",
+            "dimensions": [
+              {
+                "id": "context_before_news",
+                "label": "Acknowledgment or situation framing appears before the key news or ask, not after"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "Opening acknowledgment is one sentence max \u2014 not a preamble or extended softening"
+              },
+              {
+                "id": "no_retroactive_softening",
+                "label": "Acknowledgment is not positioned as damage control after the headline has already landed"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "The 'why it matters' section appears before the next step, not after or mixed in"
+              },
+              {
+                "id": "one_next_step",
+                "label": "There is exactly one concrete next step at the end, not a list of follow-ups"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Reader-Centered Framing",
+            "category": "Audience",
+            "description": "The 'why it matters' is always framed around what it costs or disrupts for the reader \u2014 their plans, their team, their timeline \u2014 not around the sender's values, commitments, or organizational rationale. 'This matters because your team planned around this date' not 'This matters because we want quality.' Drafts that center the sender's reasoning feel tone-deaf even when technically correct.",
+            "dimensions": [
+              {
+                "id": "names_reader_reality",
+                "label": "Stakes are described in terms of what the reader is actually dealing with \u2014 schedules, dependencies, downstream conversations"
+              },
+              {
+                "id": "avoids_org_centering",
+                "label": "Rationale does not center the sender's values, commitments, or organizational priorities"
+              },
+              {
+                "id": "acknowledges_cost",
+                "label": "Explicitly acknowledges what the message costs or asks of the reader"
+              },
+              {
+                "id": "speaks_to_not_at",
+                "label": "Language addresses the reader's situation rather than explaining the sender's position"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Action Ownership",
+            "category": "Content",
+            "description": "When something needs to happen, there is one clear owner with a deadline \u2014 not a group ask. 'Everyone please review' is a non-action. At the same time, action items should not be over-specified in ways that assume org structure details the email shouldn't contain. The goal is clarity of ownership, not a task breakdown.",
+            "dimensions": [
+              {
+                "id": "single_owner",
+                "label": "There is one named or clearly implied owner for the next step, not a group or committee"
+              },
+              {
+                "id": "has_deadline",
+                "label": "The next step includes a concrete deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids 'everyone please...' or other diffuse asks that produce no clear accountability"
+              },
+              {
+                "id": "no_over_specification",
+                "label": "Action items are not broken into sub-tasks or over-specified in ways that assume internal org details"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Forward-Momentum Closings",
+            "category": "Structure",
+            "description": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment. Any gratitude or warmth that comes after the CTA weakens the email. The last thing the reader sees should be something that moves things forward.",
+            "dimensions": [
+              {
+                "id": "ends_on_action",
+                "label": "The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase"
+              },
+              {
+                "id": "nothing_after_cta",
+                "label": "No additional sentences appear after the call to action"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases"
+              },
+              {
+                "id": "clean_exit",
+                "label": "The closing is clean \u2014 no padding, no lingering"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Conciseness and Directness",
+            "category": "Style",
+            "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. The email should feel like it respects the reader's time.",
+            "dimensions": [
+              {
+                "id": "short_paragraphs",
+                "label": "Paragraphs are short \u2014 typically 1-3 sentences"
+              },
+              {
+                "id": "unified_statements",
+                "label": "Related details are consolidated rather than broken into separate bullet points or line items"
+              },
+              {
+                "id": "lean_structure",
+                "label": "Every section serves a clear purpose \u2014 no padding or filler"
+              },
+              {
+                "id": "no_over_explanation",
+                "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Human Voice",
+            "category": "Style",
+            "description": "The message reads like a person finishing a thought, not a corporate template or status report. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \u2014 the kind of email a sharp colleague would send.",
+            "dimensions": [
+              {
+                "id": "no_jargon",
+                "label": "Free of corporate jargon and canned phrases"
+              },
+              {
+                "id": "reads_as_person",
+                "label": "Reads like a person talking to their team, not an institutional communication"
+              },
+              {
+                "id": "no_passive_aggression",
+                "label": "Tone is direct and neutral \u2014 no passive-aggressive undertones"
+              },
+              {
+                "id": "no_exclamation_overuse",
+                "label": "Exclamation marks are used sparingly or not at all"
+              },
+              {
+                "id": "natural_rhythm",
+                "label": "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence"
+              }
+            ],
+            "priority": 6
+          }
+        ]
+      }
+    },
+    {
+      "role": "user",
+      "content": "Here's my feedback on the draft edits:\n- Edit \"You flagged the advanced reporting feature back in the spring, and I know it's been a long wait sinc\" \u2192 \"You flagged the advanced reporting feature back in the spring \u2014 I wanted to make sure you heard it f\": I get what it's trying to do, but the em dash version feels abrupt and a little cold. The original two-sentence opener was warm without being bloated \u2014 I'd rather trim 'and I know it's been a long wait since then' and just keep it as two short sentences than jam it into one with an em dash that reads awkwardly.\n- Edit \"To turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate aut\" \u2192 \"To turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate aut\": I can't tell what actually changed here \u2014 the original and new text look identical based on what's shown. If nothing changed, this edit shouldn't exist. If something did change that I'm not seeing, I'd need to see the full text to weigh in."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nBecause it touches your data pipeline, your IT team will want to review the settings before it goes live \u2014 it won't activate automatically. I'd suggest getting that review on their calendar this week so it's ready to go at launch.\n\nWorth a quick call to walk them through what to expect? I can work around their schedule.</draft>\n\n*Draft updated based on accepted rubric suggestion.*",
+      "is_post_apply_draft": true
+    },
+    {
+      "role": "assistant",
+      "content": "[Error generating response]"
+    },
+    {
+      "role": "user",
+      "content": "It looks like the assistant hit an error before finishing the draft. Can you just go ahead and complete it? The email should end with a clear action item for Priya \u2014 something like \"have someone on your IT team enable it through the admin console before [date].\" Let's say the feature goes live Tuesday, so ideally they'd enable it by Monday EOD. Work that into the closing and make sure there's no trailing sentiment after the CTA."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nTo be ready at launch, have someone on your IT team enable it through the admin console by Monday EOD \u2014 it won't activate automatically, and the feature goes live Tuesday.</draft>"
+    },
+    {
+      "role": "user",
+      "content": "This is really close. The middle paragraph is exactly what was missing before \u2014 it earns the ask. My only hang-up is the closing action item. 'Have someone on your IT team' is doing a lot of work there, and in my experience that phrasing is how things don't get done. Priya needs to know who's actually responsible for this \u2014 not a job title or org chart detail, just enough specificity that she knows exactly who to tap on the shoulder. Right now it reads like I'm trusting her to figure out the internal routing, which puts the ambiguity back on her side."
+    },
+    {
+      "role": "assistant",
+      "content": "Good instinct \u2014 but this is one I'd push back to you on. I don't know who Priya's actual IT contact is, and if I invent a role or name, the email risks sounding presumptuous or just wrong. \n\nDo you know who on her side typically handles this kind of enablement? Even a first name, or a rough description like \"your IT admin\" or \"whoever manages your logistics platform access,\" would let me write something that points at a real person rather than a vague team."
+    },
+    {
+      "role": "user",
+      "content": "Her IT contact is Marcus \u2014 he's the one who handles their platform integrations. Go ahead and update the closing to point at him specifically, and make sure there's still a clear Monday EOD deadline in there."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nCan you loop in Marcus to enable it through the admin console by Monday EOD? The feature goes live Tuesday, so that'll make sure his side is ready at launch.</draft>"
+    },
+    {
+      "role": "user",
+      "content": "This is really close \u2014 the middle paragraph is doing exactly what it needs to, and naming Marcus with a hard deadline is so much better than before. My only remaining issue is the last sentence: 'The feature goes live Tuesday, so that'll make sure his side is ready at launch' is basically explaining why Monday matters, which Priya can figure out herself. It reads like we're nervous she won't act, so we're adding a little reasoning nudge after the ask. I'd rather the email just end on the action \u2014 once you've made the ask with a deadline, stop. That trailing sentence is diluting it."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: The reporting feature you requested is shipping next week\n\nHi Priya,\n\nYou flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.\n\nThis is the one that replaces the manual Excel work your team has been doing every week \u2014 carrier performance reports will run automatically on a weekly cadence, which gets those 3-4 hours back. The dashboards are also built to be shareable, so getting clean data in front of your ops director won't require an extra round of formatting before it goes out.\n\nCan you loop in Marcus to enable it through the admin console by Monday EOD?</draft>"
+    },
+    {
+      "role": "user",
+      "content": "Yeah, this is it. The middle paragraph finally earns the ask \u2014 it's specific, it's about her team's time, not our shipping schedule. And ending on 'Can you loop in Marcus to enable it through the admin console by Monday EOD?' is exactly right. No hedging, no 'thanks for your patience,' just a clean stop. Send it."
+    },
+    {
+      "role": "system",
+      "content": "--- Iteration 3/4 ---",
+      "iteration": 3
+    },
+    {
+      "role": "user",
+      "content": "Help me write an email to our head of sales letting him know we're killing a feature that his team has been demoing to prospects \u2014 we discovered it creates a security liability and can't ship it. He needs to update his team's pitch decks before the conference next Thursday."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Feature removal before the conference\n\nHi [Name],\n\nYour team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.\n\nThat means any prospect who saw it in a deck is expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed beforehand.\n\nCan you update the pitch decks by Tuesday?</draft>",
+      "is_alignment_start_draft": true
+    },
+    {
+      "role": "user",
+      "content": "This is pretty close, honestly. The structure feels right and the stakes land well. The one thing that's bugging me is the ask at the end \u2014 'Can you update the pitch decks by Tuesday?' reads more like a suggestion than a real action item. If he's the right person to own this, just say so directly. If it's his team who actually does the work, the ask should still flow through him, but the framing should make clear who's accountable and that Tuesday is a hard deadline, not a preference. Right now it's a little too easy to read as optional."
+    },
+    {
+      "role": "assistant",
+      "content": "Good catch. Here are two options depending on how you want to frame ownership:\n\n**Option 1** \u2014 He owns it directly:\nUpdate the pitch decks before Tuesday EOD.\n\n**Option 2** \u2014 He delegates, but he's accountable:\nGet your team's decks updated before Tuesday EOD \u2014 that's the cutoff before people start prepping for Thursday.\n\nWhich feels closer to the dynamic you want?"
+    },
+    {
+      "role": "user",
+      "content": "Option 2 is closer \u2014 Marcus is the head of sales but his team lead, Priya, is probably the one actually updating the decks. The accountability should sit with Marcus though. Go with that framing and drop it into the full email."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Feature removal before the conference\n\nHi Marcus,\n\nYour team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.\n\nAny prospect who saw it in a deck is now expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed first.\n\nMake sure Priya gets the decks updated before Tuesday EOD.</draft>"
+    },
+    {
+      "role": "user",
+      "content": "Almost there \u2014 one thing is nagging at me near the end. 'Make sure Priya gets the decks updated' puts her name in the email, which feels like it's reaching past Marcus and into his team's structure in a way that could read weird to him. The accountability should sit with Marcus \u2014 I don't need to name who on his team actually does the work. Can you keep the CTA pointed at him without specifying who he delegates to?"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Feature removal before the conference\n\nHi Marcus,\n\nYour team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.\n\nAny prospect who saw it in a deck is now expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed first.\n\nGet the decks updated before Tuesday EOD.</draft>"
+    },
+    {
+      "role": "system",
+      "content": "**Rubric Changes have been made:**\n- **Reweighted:** \"Forward-Momentum Closings\" (5 \u2192 3)\n- **Reweighted:** \"Action Ownership\" (6 \u2192 4)\n- **Reweighted:** \"Human Voice\" (3 \u2192 5)\n- **Reweighted:** \"Conciseness and Directness\" (4 \u2192 6)\n- **Reworded:** \"Emotional Sequencing\" description changed\n- **Reworded:** \"Reader-Centered Framing\" description changed\n- **Reworded:** \"Forward-Momentum Closings\" description changed\n- **Reworded:** \"Action Ownership\" description changed\n- **Reworded:** \"Human Voice\" description changed\n- **Reworded:** \"Conciseness and Directness\" description changed\n- **Dimensions:** \"Emotional Sequencing\" (+Opening acknowledgment is a single sentence \u2014 not two, not merged with an em dash, just one clean sentence; -Opening acknowledgment is brief \u2014 one or two short sentences \u2014 not an extended preamble. Do not merge sentences mechanically (e.g. with an em dash) to hit a sentence count; two short, natural sentences are preferable to one forced one)\n- **Dimensions:** \"Reader-Centered Framing\" (+Value or disruption is named with concrete specifics \u2014 not abstract benefits or quality statements; -Value or disruption is named with concrete specifics \u2014 hours saved, people affected, workflows changed \u2014 not abstract benefits or quality statements)\n- **Dimensions:** \"Forward-Momentum Closings\" (+Does not add explanatory reasoning after the ask that the reader can infer from context; -Does not add explanatory reasoning after the ask that the reader can infer from context (e.g., explaining why a deadline matters when the reason is obvious))\n- **Dimensions:** \"Action Ownership\" (+Action items are not broken into sub-tasks or process steps \u2014 specify who and when, not how; do not assume org structure details the email shouldn't contain; -Action items are not broken into sub-tasks or process steps \u2014 specify who and when, not how)\n- **Dimensions:** \"Human Voice\" (+Reads like a person talking to a peer, not an institutional communication; -Reads like a person talking to their team or peer, not an institutional communication)\n- **Dimensions:** \"Conciseness and Directness\" (+Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult, Related details are consolidated rather than broken into unnecessary bullet points or line items; -Related details are consolidated rather than broken into separate bullet points or line items, Does not explain reasoning or justification the reader can infer from context \u2014 treats the reader as an intelligent adult)\n<!--RUBRIC_EDIT_LOG:{\"version_from\": 5, \"version_to\": \"5*\", \"edits\": {\"added\": [], \"removed\": [], \"reweighted\": [{\"name\": \"Forward-Momentum Closings\", \"old_weight\": 5, \"new_weight\": 3}, {\"name\": \"Action Ownership\", \"old_weight\": 6, \"new_weight\": 4}, {\"name\": \"Human Voice\", \"old_weight\": 3, \"new_weight\": 5}, {\"name\": \"Conciseness and Directness\", \"old_weight\": 4, \"new_weight\": 6}], \"reworded\": [{\"name\": \"Emotional Sequencing\", \"field\": \"description\", \"old\": \"Information arrives in a specific order: acknowledge the effort or situation first (one or two short sentences), then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \\u2014 even if all the pieces are present \\u2014 breaks the flow. Brevity should come from word choice and trimming, not from merging sentences with punctuation that changes the tone.\", \"new\": \"Information arrives in a specific order: acknowledge the effort or situation first (one sentence max), then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \\u2014 even if all the pieces are present \\u2014 breaks the flow.\"}, {\"name\": \"Reader-Centered Framing\", \"field\": \"description\", \"old\": \"The 'why it matters' is always framed around the reader's concrete reality \\u2014 what it costs them (bad news) or what it unlocks for them (good news). Their time, their workflows, their team, their downstream conversations \\u2014 not the sender's values, commitments, or organizational rationale. When this section names something specific and tangible about the reader's situation, it earns whatever ask or action follows.\", \"new\": \"The 'why it matters' is always framed around the reader's concrete reality \\u2014 what it costs them or what it unlocks for them. Their time, their workflows, their team, their downstream conversations \\u2014 not the sender's values, commitments, or organizational rationale. If the 'why' could have been written by someone explaining their own priorities rather than the reader's situation, it's wrong.\"}, {\"name\": \"Forward-Momentum Closings\", \"field\": \"description\", \"old\": \"The closing lands on the next step or an open door \\u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no explanatory reasoning the reader can infer themselves. Once you've made the ask with a deadline, stop. Any sentence after the CTA \\u2014 whether sentiment or justification \\u2014 dilutes it.\", \"new\": \"The closing lands on the next step or an open door \\u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment. Once the ask is made, stop. Any sentence after the CTA \\u2014 whether sentiment or justification \\u2014 dilutes it.\"}, {\"name\": \"Action Ownership\", \"field\": \"description\", \"old\": \"When something needs to happen, there is one clear owner \\u2014 a specific named person or the reader themselves \\u2014 with a concrete deadline. 'Have someone on your IT team' is how things don't get done. Specify WHO and WHEN clearly; don't break the action into sub-tasks or assume process details the email shouldn't contain.\", \"new\": \"When something needs to happen, there is one clear owner \\u2014 a specific named person or the reader themselves \\u2014 with a concrete deadline. Group asks produce no accountability. Specify WHO and WHEN; don't break the action into sub-tasks or assume process details the email shouldn't contain.\"}, {\"name\": \"Human Voice\", \"field\": \"description\", \"old\": \"The message reads like a person finishing a thought, not a corporate template or status report. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \\u2014 the kind of email a sharp colleague would send.\", \"new\": \"The message reads like a person finishing a thought, not a corporate template. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff.\"}, {\"name\": \"Conciseness and Directness\", \"field\": \"description\", \"old\": \"Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. Trusts the reader to connect obvious dots \\u2014 does not explain reasoning they can infer from context.\", \"new\": \"Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Trusts the reader to connect obvious dots.\"}], \"dimensions_changed\": [{\"name\": \"Emotional Sequencing\", \"added_dims\": [\"Opening acknowledgment is a single sentence \\u2014 not two, not merged with an em dash, just one clean sentence\"], \"removed_dims\": [\"Opening acknowledgment is brief \\u2014 one or two short sentences \\u2014 not an extended preamble. Do not merge sentences mechanically (e.g. with an em dash) to hit a sentence count; two short, natural sentences are preferable to one forced one\"]}, {\"name\": \"Reader-Centered Framing\", \"added_dims\": [\"Value or disruption is named with concrete specifics \\u2014 not abstract benefits or quality statements\"], \"removed_dims\": [\"Value or disruption is named with concrete specifics \\u2014 hours saved, people affected, workflows changed \\u2014 not abstract benefits or quality statements\"]}, {\"name\": \"Forward-Momentum Closings\", \"added_dims\": [\"Does not add explanatory reasoning after the ask that the reader can infer from context\"], \"removed_dims\": [\"Does not add explanatory reasoning after the ask that the reader can infer from context (e.g., explaining why a deadline matters when the reason is obvious)\"]}, {\"name\": \"Action Ownership\", \"added_dims\": [\"Action items are not broken into sub-tasks or process steps \\u2014 specify who and when, not how; do not assume org structure details the email shouldn't contain\"], \"removed_dims\": [\"Action items are not broken into sub-tasks or process steps \\u2014 specify who and when, not how\"]}, {\"name\": \"Human Voice\", \"added_dims\": [\"Reads like a person talking to a peer, not an institutional communication\"], \"removed_dims\": [\"Reads like a person talking to their team or peer, not an institutional communication\"]}, {\"name\": \"Conciseness and Directness\", \"added_dims\": [\"Does not explain reasoning the reader can infer from context \\u2014 treats the reader as an intelligent adult\", \"Related details are consolidated rather than broken into unnecessary bullet points or line items\"], \"removed_dims\": [\"Related details are consolidated rather than broken into separate bullet points or line items\", \"Does not explain reasoning or justification the reader can infer from context \\u2014 treats the reader as an intelligent adult\"]}]}, \"source\": \"simulation_log_changes\"}-->"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Feature removal before the conference\n\nHi Marcus,\n\nYour team has been pitching [feature name] in demos, and we're pulling it \u2014 we found a security issue that makes it unshippable.\n\nAny prospect who saw it in a deck is now expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed first.\n\nGet the decks updated before Tuesday EOD.</draft>\n\n*Draft updated based on rubric changes.*",
+      "rubric_revision": {
+        "change_summary": "The main driver was Emotional Sequencing tightening the opening acknowledgment from 'one or two sentences' to exactly one sentence \u2014 the two-sentence opener was merged into a single, clean sentence. No other structural changes were needed: the closing already ends on the action with nothing after it (satisfying the elevated Forward-Momentum Closings priority), and the 'why it matters' paragraph already speaks to Marcus's concrete situation rather than the sender's rationale.",
+        "annotated_changes": [
+          {
+            "original_text": "Your team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.",
+            "new_text": "Your team has been pitching [feature name] in demos, and we're pulling it \u2014 we found a security issue that makes it unshippable.",
+            "reason": "Emotional Sequencing (dimension 'acknowledgment_is_brief' tightened from 'one or two short sentences' to 'a single sentence'): The original was two sentences. Merged into one by folding the context ('pitching in demos') and the news ('we're pulling it') into a single sentence with a natural em dash \u2014 keeping the acknowledgment/situation framing while meeting the one-sentence requirement. Also removed 'to prospects, and I know it's been part of the demo flow' as redundant phrasing, replacing with the tighter 'in demos'."
+          }
+        ],
+        "original_draft": "Subject: Feature removal before the conference\n\nHi Marcus,\n\nYour team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.\n\nAny prospect who saw it in a deck is now expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed first.\n\nGet the decks updated before Tuesday EOD.",
+        "old_rubric": [
+          {
+            "name": "Emotional Sequencing",
+            "category": "Structure",
+            "description": "Information arrives in a specific order: acknowledge the effort or situation first (one or two short sentences), then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow. Brevity should come from word choice and trimming, not from merging sentences with punctuation that changes the tone.",
+            "dimensions": [
+              {
+                "id": "context_before_news",
+                "label": "Acknowledgment or situation framing appears before the key news or ask, not after"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "Opening acknowledgment is brief \u2014 one or two short sentences \u2014 not an extended preamble. Do not merge sentences mechanically (e.g. with an em dash) to hit a sentence count; two short, natural sentences are preferable to one forced one"
+              },
+              {
+                "id": "no_retroactive_softening",
+                "label": "Acknowledgment is not positioned as damage control after the headline has already landed"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "The 'why it matters' section appears before the next step, not after or mixed in"
+              },
+              {
+                "id": "one_next_step",
+                "label": "There is exactly one concrete next step at the end, not a list of follow-ups"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Reader-Centered Framing",
+            "category": "Audience",
+            "description": "The 'why it matters' is always framed around the reader's concrete reality \u2014 what it costs them (bad news) or what it unlocks for them (good news). Their time, their workflows, their team, their downstream conversations \u2014 not the sender's values, commitments, or organizational rationale. When this section names something specific and tangible about the reader's situation, it earns whatever ask or action follows.",
+            "dimensions": [
+              {
+                "id": "names_reader_reality",
+                "label": "Impact is described in terms of the reader's concrete situation \u2014 their time, plans, workflows, dependencies, or downstream conversations"
+              },
+              {
+                "id": "concrete_specifics",
+                "label": "Value or disruption is named with concrete specifics \u2014 hours saved, people affected, workflows changed \u2014 not abstract benefits or quality statements"
+              },
+              {
+                "id": "avoids_org_centering",
+                "label": "Rationale does not center the sender's values, commitments, or organizational priorities"
+              },
+              {
+                "id": "speaks_to_not_at",
+                "label": "Language addresses the reader's situation rather than explaining the sender's position"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Human Voice",
+            "category": "Style",
+            "description": "The message reads like a person finishing a thought, not a corporate template or status report. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \u2014 the kind of email a sharp colleague would send.",
+            "dimensions": [
+              {
+                "id": "no_jargon",
+                "label": "Free of corporate jargon and canned phrases"
+              },
+              {
+                "id": "reads_as_person",
+                "label": "Reads like a person talking to their team or peer, not an institutional communication"
+              },
+              {
+                "id": "no_passive_aggression",
+                "label": "Tone is direct and neutral \u2014 no passive-aggressive undertones"
+              },
+              {
+                "id": "no_exclamation_overuse",
+                "label": "Exclamation marks are used sparingly or not at all"
+              },
+              {
+                "id": "natural_rhythm",
+                "label": "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Conciseness and Directness",
+            "category": "Style",
+            "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. Trusts the reader to connect obvious dots \u2014 does not explain reasoning they can infer from context.",
+            "dimensions": [
+              {
+                "id": "short_paragraphs",
+                "label": "Paragraphs are short \u2014 typically 1-3 sentences"
+              },
+              {
+                "id": "unified_statements",
+                "label": "Related details are consolidated rather than broken into separate bullet points or line items"
+              },
+              {
+                "id": "lean_structure",
+                "label": "Every section serves a clear purpose \u2014 no padding or filler"
+              },
+              {
+                "id": "no_over_explanation",
+                "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
+              },
+              {
+                "id": "trust_the_reader",
+                "label": "Does not explain reasoning or justification the reader can infer from context \u2014 treats the reader as an intelligent adult"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Forward-Momentum Closings",
+            "category": "Structure",
+            "description": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no explanatory reasoning the reader can infer themselves. Once you've made the ask with a deadline, stop. Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it.",
+            "dimensions": [
+              {
+                "id": "ends_on_action",
+                "label": "The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase"
+              },
+              {
+                "id": "nothing_after_cta",
+                "label": "No additional sentences appear after the call to action \u2014 not sentiment, not reasoning, not justification"
+              },
+              {
+                "id": "no_trailing_justification",
+                "label": "Does not add explanatory reasoning after the ask that the reader can infer from context (e.g., explaining why a deadline matters when the reason is obvious)"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Action Ownership",
+            "category": "Content",
+            "description": "When something needs to happen, there is one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline. 'Have someone on your IT team' is how things don't get done. Specify WHO and WHEN clearly; don't break the action into sub-tasks or assume process details the email shouldn't contain.",
+            "dimensions": [
+              {
+                "id": "specific_owner",
+                "label": "There is one named or clearly identified person responsible for the next step \u2014 not a vague team, role, or 'someone on your team'"
+              },
+              {
+                "id": "has_deadline",
+                "label": "The next step includes a concrete deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids 'everyone please...' or other diffuse asks that produce no clear accountability"
+              },
+              {
+                "id": "no_over_specification",
+                "label": "Action items are not broken into sub-tasks or process steps \u2014 specify who and when, not how"
+              }
+            ],
+            "priority": 6
+          }
+        ],
+        "new_rubric": [
+          {
+            "name": "Emotional Sequencing",
+            "category": "Structure",
+            "description": "Information arrives in a specific order: acknowledge the effort or situation first (one sentence max), then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow.",
+            "dimensions": [
+              {
+                "id": "context_before_news",
+                "label": "Acknowledgment or situation framing appears before the key news or ask, not after"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "Opening acknowledgment is a single sentence \u2014 not two, not merged with an em dash, just one clean sentence"
+              },
+              {
+                "id": "no_retroactive_softening",
+                "label": "Acknowledgment is not positioned as damage control after the headline has already landed"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "The 'why it matters' section appears before the next step, not after or mixed in"
+              },
+              {
+                "id": "one_next_step",
+                "label": "There is exactly one concrete next step at the end, not a list of follow-ups"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Reader-Centered Framing",
+            "category": "Audience",
+            "description": "The 'why it matters' is always framed around the reader's concrete reality \u2014 what it costs them or what it unlocks for them. Their time, their workflows, their team, their downstream conversations \u2014 not the sender's values, commitments, or organizational rationale. If the 'why' could have been written by someone explaining their own priorities rather than the reader's situation, it's wrong.",
+            "dimensions": [
+              {
+                "id": "names_reader_reality",
+                "label": "Impact is described in terms of the reader's concrete situation \u2014 their time, plans, workflows, dependencies, or downstream conversations"
+              },
+              {
+                "id": "concrete_specifics",
+                "label": "Value or disruption is named with concrete specifics \u2014 not abstract benefits or quality statements"
+              },
+              {
+                "id": "avoids_org_centering",
+                "label": "Rationale does not center the sender's values, commitments, or organizational priorities"
+              },
+              {
+                "id": "speaks_to_not_at",
+                "label": "Language addresses the reader's situation rather than explaining the sender's position"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Forward-Momentum Closings",
+            "category": "Structure",
+            "description": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment. Once the ask is made, stop. Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it.",
+            "dimensions": [
+              {
+                "id": "ends_on_action",
+                "label": "The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase"
+              },
+              {
+                "id": "nothing_after_cta",
+                "label": "No additional sentences appear after the call to action \u2014 not sentiment, not reasoning, not justification"
+              },
+              {
+                "id": "no_trailing_justification",
+                "label": "Does not add explanatory reasoning after the ask that the reader can infer from context"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Action Ownership",
+            "category": "Content",
+            "description": "When something needs to happen, there is one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline. Group asks produce no accountability. Specify WHO and WHEN; don't break the action into sub-tasks or assume process details the email shouldn't contain.",
+            "dimensions": [
+              {
+                "id": "specific_owner",
+                "label": "There is one named or clearly identified person responsible for the next step \u2014 not a vague team, role, or 'someone on your team'"
+              },
+              {
+                "id": "has_deadline",
+                "label": "The next step includes a concrete deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids 'everyone please...' or other diffuse asks that produce no clear accountability"
+              },
+              {
+                "id": "no_over_specification",
+                "label": "Action items are not broken into sub-tasks or process steps \u2014 specify who and when, not how; do not assume org structure details the email shouldn't contain"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Human Voice",
+            "category": "Style",
+            "description": "The message reads like a person finishing a thought, not a corporate template. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff.",
+            "dimensions": [
+              {
+                "id": "no_jargon",
+                "label": "Free of corporate jargon and canned phrases"
+              },
+              {
+                "id": "reads_as_person",
+                "label": "Reads like a person talking to a peer, not an institutional communication"
+              },
+              {
+                "id": "no_passive_aggression",
+                "label": "Tone is direct and neutral \u2014 no passive-aggressive undertones"
+              },
+              {
+                "id": "no_exclamation_overuse",
+                "label": "Exclamation marks are used sparingly or not at all"
+              },
+              {
+                "id": "natural_rhythm",
+                "label": "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Conciseness and Directness",
+            "category": "Style",
+            "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Trusts the reader to connect obvious dots.",
+            "dimensions": [
+              {
+                "id": "short_paragraphs",
+                "label": "Paragraphs are short \u2014 typically 1-3 sentences"
+              },
+              {
+                "id": "unified_statements",
+                "label": "Related details are consolidated rather than broken into unnecessary bullet points or line items"
+              },
+              {
+                "id": "lean_structure",
+                "label": "Every section serves a clear purpose \u2014 no padding or filler"
+              },
+              {
+                "id": "no_over_explanation",
+                "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
+              },
+              {
+                "id": "trust_the_reader",
+                "label": "Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult"
+              }
+            ],
+            "priority": 6
+          }
+        ]
+      }
+    },
+    {
+      "role": "user",
+      "content": "Here's my feedback on the draft edits:\n- Edit \"Your team has been pitching [feature name] to prospects, and I know it's been part of the demo flow.\" \u2192 \"Your team has been pitching [feature name] in demos, and we're pulling it \u2014 we found a security issu\": The merge feels off to me \u2014 cramming the acknowledgment and the news into the same sentence loses the beat I need between them. The acknowledgment should land first so the reader feels seen before they get the bad news. When you fold both into one sentence with an em dash, it reads like you're rushing past the acknowledgment to get to the point. I'd keep them as two separate sentences even if that technically violates the 'one sentence' rule \u2014 the emotional pacing matters more here."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Feature removal before the conference\n\nHi Marcus,\n\nYour team has been pitching [feature name] in demos and it's been a real part of the pitch flow. We're pulling it \u2014 we found a security issue that makes it unshippable.\n\nAny prospect who saw it in a deck is now expecting something you won't be able to deliver. With the conference next Thursday, your team would walk in with outdated pitches unless this gets fixed first.\n\nGet the decks updated before Tuesday EOD.</draft>\n\n*Draft updated based on accepted rubric suggestion.*",
+      "is_post_apply_draft": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, this is it. The last version was close but naming Priya felt like I was going over Marcus's head \u2014 this keeps the accountability where it belongs without overreaching. Good to go."
+    },
+    {
+      "role": "system",
+      "content": "--- Iteration 4/4 ---",
+      "iteration": 4
+    },
+    {
+      "role": "user",
+      "content": "I need to email our engineering and design leads about a scope change on the dashboard redesign \u2014 the CEO wants us to add real-time alerts, which means the timeline shifts and one of the teams needs to own the new component. Help me draft something that gets both leads aligned without micromanaging who does what."
+    }
+  ],
+  "rubric": {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information arrives in a specific order: acknowledge the effort or situation first, then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow. Structurally distinct beats (acknowledgment, news, impact, ask) must remain separate \u2014 never collapse them into a single sentence. Emotional pacing takes priority over brevity.",
+        "dimensions": [
+          {
+            "id": "context_before_news",
+            "label": "Acknowledgment or situation framing appears before the key news or ask, not after"
+          },
+          {
+            "id": "acknowledgment_is_natural",
+            "label": "Opening acknowledgment is one or two short, natural sentences \u2014 never merged with the news into one sentence using an em dash or other mechanical compression. Two clean sentences are always preferred over one forced merge."
+          },
+          {
+            "id": "no_retroactive_softening",
+            "label": "Acknowledgment is not positioned as damage control after the headline has already landed \u2014 keeping acknowledgment and news as separate sentences is intentional pacing, not retroactive softening"
+          },
+          {
+            "id": "why_before_next_step",
+            "label": "The 'why it matters' section appears before the next step, not after or mixed in"
+          },
+          {
+            "id": "one_next_step",
+            "label": "There is exactly one concrete next step at the end, not a list of follow-ups"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centered Framing",
+        "category": "Audience",
+        "description": "The 'why it matters' is always framed around the reader's concrete reality \u2014 what it costs them or what it unlocks for them. Their time, their workflows, their team, their downstream conversations \u2014 not the sender's values, commitments, or organizational rationale. This section earns whatever ask follows. If the 'why' could have been written by someone explaining their own priorities rather than the reader's situation, it's wrong.",
+        "dimensions": [
+          {
+            "id": "names_reader_reality",
+            "label": "Impact is described in terms of the reader's concrete situation \u2014 their time, plans, workflows, dependencies, or downstream conversations"
+          },
+          {
+            "id": "concrete_specifics",
+            "label": "Value or disruption is named with concrete specifics \u2014 not abstract benefits or quality statements"
+          },
+          {
+            "id": "avoids_org_centering",
+            "label": "Rationale does not center the sender's values, commitments, or organizational priorities"
+          },
+          {
+            "id": "earns_the_ask",
+            "label": "The 'why it matters' section creates enough context that the subsequent ask or action feels justified and natural, not abrupt"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action Ownership",
+        "category": "Content",
+        "description": "When something needs to happen, there is one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline. Group asks produce no accountability, and vague delegation ('have someone on your team') is how things don't get done. Keep accountability with the direct recipient; don't reach past them into their team's structure.",
+        "dimensions": [
+          {
+            "id": "specific_owner",
+            "label": "There is one named or clearly identified person responsible for the next step \u2014 not a vague team, role, or 'someone on your team'"
+          },
+          {
+            "id": "has_deadline",
+            "label": "The next step includes a concrete deadline or timeframe \u2014 not a preference or suggestion"
+          },
+          {
+            "id": "no_group_asks",
+            "label": "Avoids 'everyone please...' or other diffuse asks that produce no clear accountability"
+          },
+          {
+            "id": "respects_recipient_org",
+            "label": "Does not name the recipient's direct reports or team members in the CTA \u2014 accountability stays with the recipient, who decides how to delegate internally"
+          },
+          {
+            "id": "cta_tone_matches_dynamic",
+            "label": "CTA tone matches the authority dynamic \u2014 imperative when the sender has authority, direct request when they don't \u2014 but never phrased as optional when it isn't"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Conciseness and Directness",
+        "category": "Style",
+        "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Trusts the reader to connect obvious dots \u2014 does not spell out reasoning an intelligent adult can infer from context.",
+        "dimensions": [
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 typically 1-3 sentences"
+          },
+          {
+            "id": "unified_statements",
+            "label": "Related details are consolidated rather than broken into unnecessary bullet points or line items"
+          },
+          {
+            "id": "lean_structure",
+            "label": "Every section serves a clear purpose \u2014 no padding or filler"
+          },
+          {
+            "id": "no_over_explanation",
+            "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
+          },
+          {
+            "id": "trust_the_reader",
+            "label": "Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Forward-Momentum Closings",
+        "category": "Structure",
+        "description": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment, no explanatory reasoning the reader can figure out themselves. Once the ask is made, stop. Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase"
+          },
+          {
+            "id": "nothing_after_cta",
+            "label": "No additional sentences appear after the call to action \u2014 not sentiment, not reasoning, not justification"
+          },
+          {
+            "id": "no_trailing_justification",
+            "label": "Does not add explanatory reasoning after the ask that the reader can infer from context"
+          },
+          {
+            "id": "no_motivational_filler",
+            "label": "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Human Voice",
+        "category": "Style",
+        "description": "The message reads like a person finishing a thought, not a corporate template. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \u2014 the kind of email a sharp colleague would send.",
+        "dimensions": [
+          {
+            "id": "no_jargon",
+            "label": "Free of corporate jargon and canned phrases"
+          },
+          {
+            "id": "reads_as_person",
+            "label": "Reads like a person talking to a peer, not an institutional communication"
+          },
+          {
+            "id": "no_passive_aggression",
+            "label": "Tone is direct and neutral \u2014 no passive-aggressive undertones"
+          },
+          {
+            "id": "no_exclamation_overuse",
+            "label": "Exclamation marks are used sparingly or not at all"
+          },
+          {
+            "id": "natural_rhythm",
+            "label": "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 8,
+    "source": "criteria_classification",
+    "writing_type": "professional emails (internal and external stakeholder communications)",
+    "user_goals_summary": "Emails should follow a precise emotional sequence \u2014 acknowledge, deliver, explain why it matters to the reader, then make a clean ask. The 'why it matters' section must be framed around the reader's concrete situation, not the sender's priorities, and it should earn whatever ask follows. Closings end on the action and stop \u2014 no trailing sentiment, reasoning, or filler.",
+    "coaching_notes": "Non-negotiable: structural beats (acknowledge \u2192 news \u2192 why it matters \u2192 ask) must stay as separate sentences \u2014 never collapse for brevity. This user's primary trade-off is always pacing over conciseness. They treat the 'why it matters' paragraph as the section that earns the right to make the ask \u2014 if it doesn't land, the whole email fails. When they push back, it's almost always about something feeling like it's talking AT the reader rather than TO them \u2014 whether that's corporate framing, vague delegation, or trailing justification that implies the reader can't figure things out."
+  },
+  "updated_at": "2026-03-08T18:46:41.031507"
+}

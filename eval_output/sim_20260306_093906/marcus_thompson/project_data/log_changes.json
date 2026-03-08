@@ -1,0 +1,278 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Intent-Signaling Headers That Tell a Story",
+          "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a coherent sense of what the document is walking them through \u2014 the headers together should read like a table of contents for a tutorial, not a filing system. Generic labels like 'Overview' or 'Introduction' are a signal the author hasn't committed to a point.",
+          "weight": 4
+        },
+        {
+          "name": "Respects the Reader's Intelligence Without Abandoning Them",
+          "description": "Documentation assumes the reader is a competent engineer who is simply unfamiliar with this specific system. It does not over-explain general programming concepts, but it also does not use minimizing language \u2014 words like 'simply,' 'just,' 'obviously,' or 'easy' that make a struggling reader feel at fault rather than helped. Difficulty is acknowledged where it exists.",
+          "weight": 5
+        }
+      ],
+      "removed": [
+        {
+          "name": "Intent-Signaling Headers",
+          "description": "Headers signal the section's argument or narrative through-line, not just its topic. A reader scanning only the headers should get a sense of what they're walking into \u2014 the header is the first sentence of the story, not a file folder label."
+        }
+      ],
+      "reweighted": [
+        {
+          "name": "Minimal Happy-Path Code",
+          "old_weight": 4,
+          "new_weight": 3
+        },
+        {
+          "name": "Design Rationale Over Feature Description",
+          "old_weight": 3,
+          "new_weight": 6
+        },
+        {
+          "name": "Prose-Code Non-Redundancy",
+          "old_weight": 6,
+          "new_weight": 7
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Rejected-Alternative Framing",
+          "field": "description",
+          "old": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion.",
+          "new": "Design choices are explained by naming the common alternative that was not chosen and stating concretely why it falls short. The 'common pattern, but...' structure lets the reader see the reasoning through contrast rather than assertion. Without the rejected alternative, you're just restating the code in prose form \u2014 the rejected path is where the actual learning happens."
+        },
+        {
+          "name": "Operational Warnings Surfaced Early",
+          "field": "description",
+          "old": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it.",
+          "new": "Real-world footguns and failure modes are placed prominently before the code a reader will copy \u2014 not buried in a separate troubleshooting section. Each warning is actionable: it names what goes wrong and what to do about it. Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed."
+        },
+        {
+          "name": "Minimal Happy-Path Code",
+          "field": "description",
+          "old": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations. The prose has already done the explaining; the code only needs to show the shape of the call.",
+          "new": "Code examples show the single most common usage path in the most compact form possible. No helper functions to unpack, no multi-scenario demonstrations, no stray imports or boilerplate. The prose has already done the explaining; the code only needs to show the shape of the call. Every example must include exactly one comment explaining what it does \u2014 not what the prose already said."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Rejected-Alternative Framing",
+          "added_dims": [
+            "Does not treat 'we chose X' as a complete explanation \u2014 the choice alone teaches nothing"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Minimal Happy-Path Code",
+          "added_dims": [
+            "Every code example includes exactly one comment that explains what the example does \u2014 not restating surrounding prose",
+            "No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I made four targeted changes: (1) Added a new criterion 'Respects the Reader's Intelligence Without Abandoning Them' at priority 5 to capture my strong feeling about minimizing language and tone \u2014 this wasn't represented at all and it's a real dealbreaker for me. (2) Moved 'Minimal Happy-Path Code' up to priority 3 and added dimensions explicitly calling out the required one-line comment and the no-boilerplate rule, since the existing dimensions didn't capture those specifically. (3) Renamed and expanded the headers criterion to emphasize the 'tells a story' aspect and added a dimension about sequential narrative arc, since isolated good headers aren't enough \u2014 they need to work together. (4) Pushed 'Design Rationale' and 'Prose-Code Non-Redundancy' down one slot each to make room, since they're well-captured already and slightly less critical than the tone issue I added.",
+    "rubric_version": 3,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Both approaches feel cheaper, and in a low-traffic environment they work fine.",
+        "new_text": "Both feel cheaper \u2014 and under low traffic, neither will betray you.",
+        "reason": "Respects the Reader's Intelligence Without Abandoning Them (new criterion, dimension: 'does not use minimizing language that trivializes genuine complexity'): 'they work fine' understates the real risk and subtly dismisses readers who got burned. Reworded to acknowledge the constraint honestly while keeping the collegial register.",
+        "user_feedback": "I get what they were going for, but 'neither will betray you' is doing the opposite of what I want \u2014 it's weirdly dramatic and a little precious. 'They work fine' was honest; the problem was the implied 'so don't worry about it' that followed. I'd rather just say something like 'under low traffic, you probably won't notice the problem' \u2014 that keeps it honest without the theatrical flair."
+      },
+      {
+        "original_text": "The isolation looks real until the moment you need it.",
+        "new_text": "The isolation looks real until the moment you need it. A separate instance is the only boundary that holds under load.",
+        "reason": "Rejected-Alternative Framing (new dimension: 'does not treat we chose X as a complete explanation \u2014 the choice alone teaches nothing'): the paragraph ended on the failure of the alternatives but didn't close the loop on why the chosen path specifically addresses it. The added sentence makes the rejected-alternative framing do teaching work, not just narrative setup.",
+        "user_feedback": "The sentence got cut off in the diff so I can't see what it actually says, which is a problem. But the intent is right \u2014 I do want the rejected-alternative section to land on why the chosen path specifically solves the thing the alternatives failed at. If the completed sentence does that cleanly, I'm on board. I just can't agree to a truncated sentence."
+      },
+      {
+        "original_text": "# separate instance, not db=0",
+        "new_text": "# connects to the isolated job instance",
+        "reason": "Minimal Happy-Path Code (new dimension: 'every code example includes exactly one comment that explains what the example does \u2014 not restating surrounding prose'): 'not db=0' restates the rejected alternative already explained at length in the prose above. The replacement comment explains what the line does (establishes the connection to the isolated instance) without echoing prose content.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "The tradeoff this design accepts is one more Redis instance to operate and monitor. That cost is deliberate: it buys hard isolation between workloads with incompatible failure tolerances, and it keeps a job queue outage from becoming a user-facing incident.",
+        "new_text": "The tradeoff this design accepts is one more Redis instance to operate and monitor. That cost is deliberate: it buys hard isolation between workloads with incompatible failure tolerances, and it keeps a job queue outage from becoming a user-facing incident. The namespacing approaches feel equivalent until a production incident proves they aren't \u2014 that's the gap the separate instance closes.",
+        "reason": "Rejected-Alternative Framing (new dimension: 'does not treat we chose X as a complete explanation \u2014 the choice alone teaches nothing'): the closing paragraph named the tradeoff accepted by the chosen design but didn't complete the contrast loop \u2014 it never returned to why the alternatives specifically fail to provide the same guarantee. The added sentence closes that loop, ensuring the rejected paths do the teaching work.",
+        "user_feedback": "Same issue as edit 2 \u2014 the diff is truncated so I literally can't see what was changed. I can't sign off on something I can't read. Show me the full sentence."
+      }
+    ],
+    "feedback_edits_count": 3,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T11:12:17.689725"
+  },
+  {
+    "iteration": 3,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Minimal Happy-Path Code",
+          "old_weight": 6,
+          "new_weight": 3
+        },
+        {
+          "name": "Intent-Signaling Headers That Tell a Story",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Design Rationale Over Feature Description",
+          "old_weight": 4,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [],
+      "dimensions_changed": [
+        {
+          "name": "Minimal Happy-Path Code",
+          "added_dims": [
+            "If a code example needs more than a handful of lines, that is a signal the surrounding prose has not done its job \u2014 not a reason to add more code"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Respects the Reader's Intelligence Without Abandoning Them",
+          "added_dims": [
+            "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register"
+          ],
+          "removed_dims": [
+            "Replacements for minimizing language are plain and direct \u2014 not dramatic or heightened in register ('you probably won't notice the problem' over 'neither will betray you')"
+          ]
+        }
+      ]
+    },
+    "reasoning": "The main changes: I moved 'Minimal Happy-Path Code' up to priority 3 (swapping with 'Intent-Signaling Headers') because tight, runnable code examples are more central to my day-to-day frustrations with internal docs than header style. I added a new dimension to that criterion (new_1) making explicit that an oversized code block is a prose failure, not a code problem \u2014 that's a point I keep having to make in reviews and it wasn't captured. I also moved 'Design Rationale' down to priority 6 because it substantially overlaps with 'Rejected-Alternative Framing' at priority 1, and having both high was redundant \u2014 the rejected-alternative criterion is the sharper, more actionable version of the same idea.",
+    "rubric_version": 6,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Pull the relevant config values and check whether the client's requests are landing on multiple instances:",
+        "new_text": "Pull the config for the client in question \u2014 `bucket_capacity` is the maximum burst a single instance will allow, `refill_rate_per_second` is the sustained ceiling, and `refill_seconds` is how long a full refill takes. Then check whether requests are landing on multiple instances:",
+        "reason": "Minimal Happy-Path Code (new dimension: 'more than a handful of lines signals prose hasn't done its job'): the config field explanations were living in code comments; moved them into the prose so the code block can be trimmed to its bare commands",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "# Check configured limits for the client in question\nratelimit-cli config get --client <client_id>\n# bucket_capacity: 600       \u2190 maximum burst in a single instance\n# refill_rate_per_second: 10 \u2190 sustained ceiling (600 requests/min)\n# refill_seconds: 60         \u2190 full refill takes this many seconds\n\n# Check instance distribution from load balancer logs\nratelimit-cli requests --client <client_id> --window 5m --by-instance",
+        "new_text": "ratelimit-cli config get --client <client_id>\nratelimit-cli requests --client <client_id> --window 5m --by-instance",
+        "reason": "Minimal Happy-Path Code (new dimension: 'more than a handful of lines signals prose hasn't done its job'): removed all explanatory comments from the code block since that content now lives in the preceding prose sentence, leaving only the two executable commands",
+        "user_feedback": "I actually want to keep at least a one-line comment on each command \u2014 my rule is every example needs a one-liner explaining what it does. Stripping all comments because the prose already explains things misses the point; the comment isn't there to explain the config fields, it's there so someone skimming just the code block knows what they're running at a glance. Something like '# fetch configured limits' and '# sample recent traffic' is all it needs \u2014 two words, not a paragraph."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T11:20:43.656478"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Operational Warnings and Diagnostic Forks Surfaced Early",
+          "old_weight": 3,
+          "new_weight": 2
+        },
+        {
+          "name": "Minimal Happy-Path Code",
+          "old_weight": 4,
+          "new_weight": 3
+        },
+        {
+          "name": "Intent-Signaling Headers That Tell a Story",
+          "old_weight": 5,
+          "new_weight": 4
+        },
+        {
+          "name": "Respects the Reader's Intelligence Without Abandoning Them",
+          "old_weight": 6,
+          "new_weight": 5
+        },
+        {
+          "name": "Design Rationale Over Feature Description",
+          "old_weight": 2,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [],
+      "dimensions_changed": []
+    },
+    "reasoning": "The most meaningful change here is promoting 'Operational Warnings Surfaced Early' from priority 3 to priority 2, swapping it with 'Design Rationale.' Warnings-before-code is a hard structural rule that, when violated, actively causes people to hit problems before they see the caveat \u2014 that failure mode is more immediate than rationale gaps. I also demoted 'Design Rationale' to priority 6 because it largely follows from 'Rejected-Alternative Framing' already being at priority 1; the two criteria overlap enough that rationale without alternatives is less useful than warnings placed correctly. Everything else I left alone \u2014 the criteria themselves are well-formed and match what I care about.",
+    "rubric_version": 9,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "How Branch Names Resolve to Deployment Targets",
+        "new_text": "How Ordered Rules Route Branches \u2014 and Where That Goes Wrong",
+        "reason": "Intent-Signaling Headers That Tell a Story (priority increased from #5 to #4, dimension 'signals_narrative'): original header describes the mechanism neutrally; revised header names the hazard and signals the section's actual argument \u2014 that ordering is the failure point",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "**Before assuming a misconfiguration:** check two things, in order. First, run",
+        "new_text": "**Before assuming a misconfiguration, there are two distinct root causes that produce the same symptom \u2014 a branch deploying to the wrong environment \u2014 and they require different fixes.** If the branch is matching the wrong rule, the fix is to adjust pattern specificity or order. If the rule order was recently changed, the fix is to audit the reorder, not the pattern itself. Conflating them wastes time.\n\n**To identify which case you're in:** First, run",
+        "reason": "Operational Warnings and Diagnostic Forks Surfaced Early (priority increased from #3 to #2, dimension 'diagnostic_forks_before_conclusions'): the original jumped straight into the two investigative steps without first surfacing that there are two distinct root causes requiring different fixes; the fork itself needed to be named before any individual conclusion was drawn",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "**Before assuming a misconfiguration:**",
+        "new_text": "**To identify which case you're in:**",
+        "reason": "Operational Warnings and Diagnostic Forks Surfaced Early (priority increased from #3 to #2, dimension 'visually_prominent'): the bold lead-in now follows the fork-framing paragraph and signals the diagnostic action step clearly, rather than preemptively narrowing to 'misconfiguration' before the two cases have been named",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "check two things, in order. First, run",
+        "new_text": "First, run",
+        "reason": "Operational Warnings and Diagnostic Forks Surfaced Early (priority increased from #3 to #2, dimension 'diagnostic_forks_before_conclusions'): 'check two things, in order' was redundant once the fork paragraph above established the two-case structure; removing it tightens the transition",
+        "user_feedback": "I'd keep some version of 'in order' here. The two cases aren't just distinct root causes \u2014 the diagnostic steps have to be run sequentially because the second check only makes sense after the first. Dropping that guidance loses something real. The fork paragraph above explains *what* the two cases are, but it doesn't tell the reader that the steps are ordered. 'First, run' implies sequence but doesn't make it explicit enough when the order actually matters."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T11:32:09.408192"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 9,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Respects the Reader's Intelligence Without Abandoning Them",
+          "old_weight": 5,
+          "new_weight": 4
+        },
+        {
+          "name": "Intent-Signaling Headers That Tell a Story",
+          "old_weight": 4,
+          "new_weight": 5
+        }
+      ],
+      "reworded": [],
+      "dimensions_changed": []
+    },
+    "reasoning": "I moved 'Respects the Reader's Intelligence' up to priority 4 and pushed 'Intent-Signaling Headers' to 5 \u2014 tone failures that make readers feel stupid are more immediately damaging than header quality, and I've seen docs with decent headers still alienate people through condescending language. I also removed the 'Design Rationale Over Feature Description' criterion as a standalone item since it's largely redundant with 'Rejected-Alternative Framing' \u2014 if you're naming what was rejected and why, you're already doing the rationale work; having both creates overlap that dilutes focus. I kept the priority ordering otherwise intact since the existing sequence reflects how I actually think about quality in this order.",
+    "rubric_version": 9,
+    "draft_regenerated": false,
+    "reviewed_changes": [],
+    "feedback_edits_count": 0,
+    "suggestion_applied": false,
+    "user_reverted": true,
+    "timestamp": "2026-03-06T11:36:03.821173"
+  }
+]

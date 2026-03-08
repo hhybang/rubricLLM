@@ -1,0 +1,1827 @@
+[
+  {
+    "version": 1,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should equip engineers to make downstream design decisions, not just use an API. This means explaining why choices were made and what was rejected, placing warnings and context exactly where they're needed in the reading flow, and writing in a voice that sounds like institutional knowledge from someone who built or operated the system.",
+    "rubric": [
+      {
+        "name": "Design Rationale",
+        "category": "Content",
+        "description": "Every significant design choice is accompanied by the reasoning behind it \u2014 what alternatives were considered, why they were rejected, and what tradeoffs were accepted. Rationale should reflect actual history (incidents, benchmarks, constraints), not reconstructed justification. Engineers reading this should be able to make informed downstream decisions, not just follow instructions.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "grounded_in_history",
+            "label": "Rationale references real constraints, incidents, or data rather than sounding generically plausible"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the design choice for the reader's own decisions are made explicit"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and contextual information appear immediately before the content they govern \u2014 never in a catch-all section at the end. If a reader encounters a code example or instruction before being told about its risks or prerequisites, the document has failed at placement.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it's topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples show only what is new at that point in the document's flow. They assume prior context rather than re-establishing it, and lean on surrounding prose to handle setup and explanation. Each snippet includes a one-line plain-language comment at the top describing what it accomplishes.",
+        "dimensions": [
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "plain_language_comment",
+            "label": "Each code block opens with a one-line comment describing what the snippet accomplishes in plain language"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, or configuration in the snippet"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair') rather than passive labels ('Token Retrieval'). Each section pulls the reader forward into the next.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          },
+          {
+            "id": "narrative_cohesion",
+            "label": "Later sections can reference earlier ones naturally because the reading order is assumed"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Institutional Voice",
+        "category": "Style",
+        "description": "The writing sounds like it comes from someone who built or operated the system \u2014 direct, confident, and grounded in real experience. Tone is conversational but not casual, authoritative but not formal. It reads like institutional knowledge passed between engineers, not generated spec prose.",
+        "dimensions": [
+          {
+            "id": "confident_direct_tone",
+            "label": "Prose uses direct, confident language without excessive hedging or qualification"
+          },
+          {
+            "id": "operational_grounding",
+            "label": "Explanations reference real operational concerns (what breaks, what was tried, what costs were measured)"
+          },
+          {
+            "id": "conversational_not_casual",
+            "label": "Tone is conversational enough to be engaging but professional enough to be trustworthy"
+          },
+          {
+            "id": "no_spec_prose",
+            "label": "Avoids stiff, specification-style language in favor of how engineers actually talk about systems"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Actionable Reference Material",
+        "category": "Audience",
+        "description": "Tables, error references, and lookup sections tell the reader what to do, not just what things mean. Every reference entry pairs a condition with a recommended action. Configuration values are contextualized \u2014 the reader understands why a value is set, not just what it is.",
+        "dimensions": [
+          {
+            "id": "actions_not_just_definitions",
+            "label": "Reference entries include a recommended action or response, not just a description of the condition"
+          },
+          {
+            "id": "config_values_contextualized",
+            "label": "Configuration values and defaults are explained in terms of why they're set that way and what changing them would affect"
+          },
+          {
+            "id": "scannable_format",
+            "label": "Reference material uses tables or structured formats that support quick lookup"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user's top non-negotiable is design rationale \u2014 documentation that describes 'what' without 'why' is fundamentally incomplete to them, and invented rationale is worse than none. They are highly sensitive to information placement: correct content in the wrong location is treated as a defect, not a style preference. When reviewing drafts, they focus on whether the document works as a linear reading experience for an engineer encountering the system for the first time \u2014 every element must earn its position in the flow.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale",
+        "category": "Content",
+        "description": "Every significant design choice is accompanied by the reasoning behind it \u2014 what alternatives were considered, why they were rejected, and what tradeoffs were accepted. Rationale should reflect actual history (incidents, benchmarks, constraints), not reconstructed justification. Engineers reading this should be able to make informed downstream decisions, not just follow instructions.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "grounded_in_history",
+            "label": "Rationale references real constraints, incidents, or data rather than sounding generically plausible"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the design choice for the reader's own decisions are made explicit"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and contextual information appear immediately before the content they govern \u2014 never in a catch-all section at the end. If a reader encounters a code example or instruction before being told about its risks or prerequisites, the document has failed at placement.",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it's topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair') rather than passive labels ('Token Retrieval'). Each section pulls the reader forward into the next.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          },
+          {
+            "id": "narrative_cohesion",
+            "label": "Later sections can reference earlier ones naturally because the reading order is assumed"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples show only what is new at that point in the document's flow. They assume prior context rather than re-establishing it, and lean on surrounding prose to handle setup and explanation. Each snippet includes a one-line plain-language comment at the top describing what it accomplishes.",
+        "dimensions": [
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "plain_language_comment",
+            "label": "Each code block opens with a one-line comment describing what the snippet accomplishes in plain language"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, or configuration in the snippet"
+          }
+        ],
+        "priority": 4
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should equip engineers to make downstream design decisions, not just use an API. This means explaining why choices were made and what was rejected, placing warnings and context exactly where they're needed in the reading flow, and writing in a voice that sounds like institutional knowledge from someone who built or operated the system.",
+    "coaching_notes": "This user's top non-negotiable is design rationale \u2014 documentation that describes 'what' without 'why' is fundamentally incomplete to them, and invented rationale is worse than none. They are highly sensitive to information placement: correct content in the wrong location is treated as a defect, not a style preference. When reviewing drafts, they focus on whether the document works as a linear reading experience for an engineer encountering the system for the first time \u2014 every element must earn its position in the flow."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design choice names what was considered and rejected, and explains why. 'We use JWT tokens' is not rationale \u2014 it restates the code. 'We chose JWT over session tokens because X, and we rejected option Y because Z' is rationale. The rejected alternatives are what actually teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the design choice for the reader's own decisions are made explicit"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it's topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Handle Token Expiration') rather than passive labels ('Token Retrieval', 'Error Handling'). This applies even to reference material \u2014 the headers should tell a story.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          },
+          {
+            "id": "narrative_cohesion",
+            "label": "Later sections can reference earlier ones naturally because the reading order is assumed"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and runnable \u2014 they show the exact happy path with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does \u2014 all significant actions, not just the first one. Surrounding prose explains why or how; the comment tells a skimming reader what. Examples assume prior context rather than re-establishing it.",
+        "dimensions": [
+          {
+            "id": "plain_language_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 if the block creates a producer and registers a flush hook, the comment names both"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          },
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, or configuration in the snippet"
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Instead, use action-result language: 'Run X, which returns Y' rather than 'Simply run X'. Walls of text without structure are a hard failure.",
+        "dimensions": [
+          {
+            "id": "new_1",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language"
+          },
+          {
+            "id": "new_2",
+            "label": "Uses action-result framing: describes what a command or call does, not just what to run"
+          },
+          {
+            "id": "new_3",
+            "label": "Assumes engineering competence \u2014 does not over-explain general concepts, only system-specific ones"
+          },
+          {
+            "id": "new_4",
+            "label": "No walls of text \u2014 prose is broken up with headers, lists, or code at a cadence that matches the density of information"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 3,
+    "source": "user_log_changes",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Documentation should equip engineers to make downstream design decisions, not just use an API. This means explaining why choices were made and what was rejected, placing warnings and context exactly where they're needed in the reading flow, and writing in a voice that sounds like institutional knowledge from someone who built or operated the system.",
+    "coaching_notes": "This user's top non-negotiable is design rationale \u2014 documentation that describes 'what' without 'why' is fundamentally incomplete to them, and invented rationale is worse than none. They are highly sensitive to information placement: correct content in the wrong location is treated as a defect, not a style preference. When reviewing drafts, they focus on whether the document works as a linear reading experience for an engineer encountering the system for the first time \u2014 every element must earn its position in the flow."
+  },
+  {
+    "version": 4,
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Documentation should teach engineers not just how a system works but why it was built that way, so they can make informed downstream decisions. The reader's experience is strictly linear \u2014 every warning, explanation, and setup step must resolve before the code or instruction that depends on it. Language must be precise and respectful of the reader's competence without minimizing complexity.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design choice names what was considered and rejected, and explains why. 'We use JWT tokens' is not rationale \u2014 it restates the code. 'We chose JWT over session tokens because X, and we rejected option Y because Z' is rationale. The rejected alternatives are what actually teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios \u2014 'dropped 200 events in staging' over 'could potentially lose events'"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the design choice for the reader's own decisions are made explicit"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). Later sections assume the reader has followed earlier ones.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          },
+          {
+            "id": "narrative_cohesion",
+            "label": "Later sections reference earlier ones naturally because the linear reading order is assumed"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does \u2014 if the block creates a producer and registers a flush hook, the comment names both. Examples assume prior context rather than re-establishing it.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          },
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, or configuration in the snippet"
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Instead, use action-result language: 'Run X, which returns Y' rather than 'Simply run X'. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "This user's north star is the reader's mental model at every point in the flow \u2014 every piece of feedback is framed as 'what would the reader know or not know at this exact moment.' Design rationale grounded in real incidents is non-negotiable; invented or hypothetical reasoning is worse than no reasoning. When choosing between conciseness and completeness, this user will always ask: did the prose finish its job before the code started? If the code is doing explanatory work, the prose failed.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design choice names what was considered and rejected, and explains why. 'We use JWT tokens' is not rationale \u2014 it restates the code. 'We chose JWT over session tokens because X, and we rejected option Y because Z' is rationale. The rejected alternatives are what actually teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios \u2014 'dropped 200 events in staging' over 'could potentially lose events'"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the design choice for the reader's own decisions are made explicit"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). This applies at every level of the document \u2014 rationale sections, operational notes, and prerequisite blocks all need headers that signal what the reader is about to resolve or accomplish, not just what the section covers. Later sections assume the reader has followed earlier ones.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          },
+          {
+            "id": "narrative_cohesion",
+            "label": "Later sections reference earlier ones naturally because the linear reading order is assumed"
+          },
+          {
+            "id": "subsection_headers_action",
+            "label": "Rationale blocks, operational consequence sections, and prerequisite notes carry their own action-oriented headers \u2014 they are not buried in undifferentiated prose under a parent section"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does \u2014 if the block creates a producer and registers a flush hook, the comment names both. Examples assume prior context rather than re-establishing it.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          },
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, or configuration in the snippet"
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Instead, use action-result language: 'Run X, which returns Y' rather than 'Simply run X'. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 5,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation for engineers",
+    "user_goals_summary": "Documentation should teach engineers not just how a system works but why it was built that way, so they can make informed downstream decisions. The reader's experience is strictly linear \u2014 every warning, explanation, and setup step must resolve before the code or instruction that depends on it. Language must be precise and respectful of the reader's competence without minimizing complexity.",
+    "coaching_notes": "This user's north star is the reader's mental model at every point in the flow \u2014 every piece of feedback is framed as 'what would the reader know or not know at this exact moment.' Design rationale grounded in real incidents is non-negotiable; invented or hypothetical reasoning is worse than no reasoning. When choosing between conciseness and completeness, this user will always ask: did the prose finish its job before the code started? If the code is doing explanatory work, the prose failed."
+  },
+  {
+    "version": 6,
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation should teach engineers how to think about a system, not just how to use it. Every design and configuration choice needs rejected alternatives and concrete failure evidence so readers can make informed downstream decisions. The document must be followable top-to-bottom without encountering a problem that was explained later.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete evidence. This applies to architectural decisions and to operational settings alike. 'We use acks=all' restates the config; 'We chose acks=all over acks=1 because acks=1 dropped 200 events in staging during a broker restart' is rationale. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios \u2014 'dropped 200 events in staging' over 'could potentially lose events'"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). This applies at every level \u2014 rationale blocks, operational notes, and prerequisite sections all carry headers that signal what the reader is about to resolve or accomplish.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          },
+          {
+            "id": "narrative_cohesion",
+            "label": "Later sections reference and build on earlier ones because the linear reading order is assumed"
+          },
+          {
+            "id": "subsection_headers_action",
+            "label": "Subsections including rationale blocks, operational notes, and prerequisites carry their own action-oriented headers rather than being buried in undifferentiated prose"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does \u2014 if the block creates a producer and registers a flush hook, the comment names both. Examples assume prior context rather than re-establishing it.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          },
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet"
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. The voice reads as institutional knowledge from someone who has operated the system, not as a spec transcription. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "practitioner_voice",
+            "label": "Reads as institutional knowledge from someone who has operated the system \u2014 not as a spec transcription or textbook explanation"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiables: warnings must precede the code they govern (never a catch-all section), every significant choice needs a named rejected alternative with a concrete failure story, and minimizing language is a hard veto. This user gives precise, scoped feedback \u2014 typically 1-2 specific issues per round \u2014 and expects changes to be structural rather than cosmetic. They consistently prioritize the reader's ability to make downstream decisions over the reader's ability to follow instructions, which means rationale and failure modes outrank procedural completeness.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete evidence. This applies to architectural decisions and to operational settings alike. 'We use acks=all' restates the config; 'We chose acks=all over acks=1 because acks=1 dropped 200 events in staging during a broker restart' is rationale. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios \u2014 'dropped 200 events in staging' over 'could potentially lose events'"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). This applies at every level \u2014 rationale blocks, operational notes, and prerequisite sections all carry headers that signal what the reader is about to resolve or accomplish. Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are a failure mode: they signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "no_noun_phrase_headers",
+            "label": "Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          },
+          {
+            "id": "narrative_cohesion",
+            "label": "Later sections reference and build on earlier ones because the linear reading order is assumed"
+          },
+          {
+            "id": "subsection_headers_action",
+            "label": "Subsections including rationale blocks, operational notes, and prerequisites carry their own action-oriented headers rather than being buried in undifferentiated prose"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does \u2014 if the block creates a producer and registers a flush hook, the comment names both. Examples assume prior context rather than re-establishing it.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          },
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet"
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. The voice reads as institutional knowledge from someone who has operated the system, not as a spec transcription. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "practitioner_voice",
+            "label": "Reads as institutional knowledge from someone who has operated the system \u2014 not as a spec transcription or textbook explanation"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 7,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation should teach engineers how to think about a system, not just how to use it. Every design and configuration choice needs rejected alternatives and concrete failure evidence so readers can make informed downstream decisions. The document must be followable top-to-bottom without encountering a problem that was explained later.",
+    "coaching_notes": "Non-negotiables: warnings must precede the code they govern (never a catch-all section), every significant choice needs a named rejected alternative with a concrete failure story, and minimizing language is a hard veto. This user gives precise, scoped feedback \u2014 typically 1-2 specific issues per round \u2014 and expects changes to be structural rather than cosmetic. They consistently prioritize the reader's ability to make downstream decisions over the reader's ability to follow instructions, which means rationale and failure modes outrank procedural completeness."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why. This applies to architectural decisions and to operational settings alike. 'We use JWT tokens' restates the code; 'We chose JWT over session tokens because session tokens require shared state across services, which broke our horizontal scaling in load testing' is rationale. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Examples assume prior context rather than re-establishing it.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one. Comments that define the relationship between values \u2014 such as a ratio or formula \u2014 are appropriate when the prose does not already establish it; cross-references to warning sections are not."
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          },
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections"
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet. Prose must fully resolve the context, including any derivation or ratio behind a specific value, before the comment can be dropped from the snippet."
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "new_1",
+            "label": "Examples show the happy path only \u2014 operational warnings, cross-references, and edge-case caveats belong in prose, not mixed into the primary example. Inline comments that define what a numeric value means (e.g. its derivation or ratio) may remain when the prose does not already state it."
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "no_noun_phrase_headers",
+            "label": "Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Use action-result framing: 'Run X, which returns Y' rather than 'Simply run X'. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language throughout"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 8,
+    "source": "user_log_changes",
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation should teach engineers how to think about a system, not just how to use it. Every design and configuration choice needs rejected alternatives and concrete failure evidence so readers can make informed downstream decisions. The document must be followable top-to-bottom without encountering a problem that was explained later.",
+    "coaching_notes": "Non-negotiables: warnings must precede the code they govern (never a catch-all section), every significant choice needs a named rejected alternative with a concrete failure story, and minimizing language is a hard veto. This user gives precise, scoped feedback \u2014 typically 1-2 specific issues per round \u2014 and expects changes to be structural rather than cosmetic. They consistently prioritize the reader's ability to make downstream decisions over the reader's ability to follow instructions, which means rationale and failure modes outrank procedural completeness."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why. This applies to architectural decisions and to operational settings alike. 'We use JWT tokens' restates the code; 'We chose JWT over session tokens because session tokens require shared state across services, which broke our horizontal scaling in load testing' is rationale. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example or instruction before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without hitting a problem that was explained below where they encountered it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling'). Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "no_noun_phrase_headers",
+            "label": "Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Examples assume prior context rather than re-establishing it. Code snippets are routinely read outside their surrounding prose \u2014 in IDEs, copy-paste workflows, and incident runbooks \u2014 so comments that prevent a value or call from appearing arbitrary to an out-of-context reader are not redundant even when the prose covers the same ground.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context"
+          },
+          {
+            "id": "no_redundant_setup",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections. Redundancy applies to setup and boilerplate \u2014 not to inline comments that anchor a specific value's derivation, formula, or ratio for readers who encounter the code outside its surrounding prose."
+          },
+          {
+            "id": "prose_carries_context",
+            "label": "Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet. Prose must establish the derivation or formula behind any numeric value; however, an inline comment restating that derivation (e.g. '# 1.5x refill_rate') may remain in the snippet for readers who encounter the code in isolation."
+          },
+          {
+            "id": "builds_on_prior_context",
+            "label": "Each example starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "happy_path_only",
+            "label": "Examples show the happy path only \u2014 operational warnings, cross-references, and edge-case caveats belong in prose, not mixed into the primary example. Exception: inline comments that show where a specific numeric value comes from \u2014 its formula, ratio, or derivation \u2014 may remain in the snippet when removing them would make the value look arbitrary to a reader who has not read the surrounding prose."
+          },
+          {
+            "id": "code_in_isolation",
+            "label": "Comments that prevent a value or call from appearing magical to an out-of-context reader are treated as first-class documentation, not tolerated exceptions \u2014 code is read in IDEs, copied into runbooks, and encountered without surrounding prose, so value-provenance annotations serve a distinct purpose from operational warnings."
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Use action-result framing: 'Run X, which returns Y' rather than 'Simply run X'. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language throughout"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 9,
+    "source": "user_log_changes",
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation should teach engineers how to think about a system, not just how to use it. Every design and configuration choice needs rejected alternatives and concrete failure evidence so readers can make informed downstream decisions. The document must be followable top-to-bottom without encountering a problem that was explained later.",
+    "coaching_notes": "Non-negotiables: warnings must precede the code they govern (never a catch-all section), every significant choice needs a named rejected alternative with a concrete failure story, and minimizing language is a hard veto. This user gives precise, scoped feedback \u2014 typically 1-2 specific issues per round \u2014 and expects changes to be structural rather than cosmetic. They consistently prioritize the reader's ability to make downstream decisions over the reader's ability to follow instructions, which means rationale and failure modes outrank procedural completeness."
+  },
+  {
+    "version": 10,
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation that teaches engineers how to think about a system, not just how to operate it. Every design and configuration choice should name what was rejected and why, grounded in real incidents and measured data. The document should read as a guided walkthrough with warnings placed before the decisions they govern, code examples that are minimal yet self-explanatory when read in isolation, and language that respects the reader's competence without minimizing complexity.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete failure stories, not just careful deliberation. This applies to architectural decisions and operational settings alike. 'We use token bucket' restates the config; 'We rejected fixed window after 847 requests hit auth in a two-second boundary burst against a 500/min limit' is rationale. The goal is for the reader to understand the decision as painful and evidence-based. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example, configuration value, or decision point before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without encountering a problem that was explained below where they first needed it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Choose the Right Scope for Your Service') rather than passive labels ('Token Retrieval', 'Scope Configuration'). Passive noun-phrase headers signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "no_noun_phrase_headers",
+            "label": "Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Code is routinely read outside its surrounding prose \u2014 in IDEs, copy-paste workflows, and incident runbooks \u2014 so inline comments that explain where a value comes from are first-class documentation, not redundancy with the prose.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, the surrounding prose needs to carry more context"
+          },
+          {
+            "id": "assumes_prior_context",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections \u2014 each starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "prose_resolves_context",
+            "label": "Surrounding prose resolves any context the code needs before it appears \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet"
+          },
+          {
+            "id": "value_provenance_in_code",
+            "label": "Inline comments that define where a specific value comes from \u2014 its ratio, formula, or derivation \u2014 are preserved for readers who encounter the code in isolation, even when the surrounding prose covers the same ground"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Use action-result framing: 'Run X, which returns Y' rather than 'Simply run X'. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language throughout"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Design rationale is this user's highest-priority feature \u2014 if a reader can't understand why decisions were made (with real failure stories, not hypothetical caution), the doc has failed regardless of how clean the code is. Warning placement is a non-negotiable: any warning that appears after the code or decision it governs will be flagged every time. The user treats inline value-provenance comments in code as first-class documentation distinct from prose \u2014 they will push back on removing them even when the surrounding text covers the same ground, because code is read in isolation.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete failure stories, not just careful deliberation. This applies to architectural decisions and operational settings alike. 'We use token bucket' restates the config; 'We rejected fixed window after 847 requests hit auth in a two-second boundary burst against a 500/min limit' is rationale. The goal is for the reader to understand the decision as painful and evidence-based. The rejected alternatives and their specific failure modes are what teach the reader how to think about the system.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example, configuration value, or decision point before being told about its risks or requirements, the document has failed. The test: can a reader follow the doc top-to-bottom without encountering a problem that was explained below where they first needed it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Choose the Right Scope for Your Service') rather than passive labels ('Token Retrieval', 'Scope Configuration'). Passive noun-phrase headers signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "no_noun_phrase_headers",
+            "label": "Passive noun-phrase headers ('Architecture', 'Configuration API', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Use action-result framing: 'Run X, which returns Y' rather than 'Simply run X'. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language throughout"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Code is routinely read outside its surrounding prose \u2014 in IDEs, copy-paste workflows, and incident runbooks \u2014 so inline comments that explain where a value comes from are first-class documentation, not redundancy with the prose.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, the surrounding prose needs to carry more context"
+          },
+          {
+            "id": "assumes_prior_context",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections \u2014 each starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "prose_resolves_context",
+            "label": "Surrounding prose resolves any context the code needs before it appears \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet"
+          },
+          {
+            "id": "value_provenance_in_code",
+            "label": "Inline comments that define where a specific value comes from \u2014 its ratio, formula, or derivation \u2014 are preserved for readers who encounter the code in isolation, even when the surrounding prose covers the same ground"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 11,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation that teaches engineers how to think about a system, not just how to operate it. Every design and configuration choice should name what was rejected and why, grounded in real incidents and measured data. The document should read as a guided walkthrough with warnings placed before the decisions they govern, code examples that are minimal yet self-explanatory when read in isolation, and language that respects the reader's competence without minimizing complexity.",
+    "coaching_notes": "Design rationale is this user's highest-priority feature \u2014 if a reader can't understand why decisions were made (with real failure stories, not hypothetical caution), the doc has failed regardless of how clean the code is. Warning placement is a non-negotiable: any warning that appears after the code or decision it governs will be flagged every time. The user treats inline value-provenance comments in code as first-class documentation distinct from prose \u2014 they will push back on removing them even when the surrounding text covers the same ground, because code is read in isolation."
+  },
+  {
+    "version": 12,
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation should explain why the system is shaped the way it is \u2014 not just what it does \u2014 by naming rejected alternatives with their concrete failure modes. It should read as a guided walkthrough that an engineer can follow top-to-bottom without hitting a warning after they've already made the mistake, with minimal code examples that lean on surrounding prose to carry setup and context.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete failure stories, not careful deliberation. 'We use token bucket' restates the config; 'We rejected fixed window after 847 requests hit auth in a two-second boundary burst against a 500/min limit' is rationale. The reader should understand the decision as painful and evidence-based. Invented rationale is worse than no rationale \u2014 if the real history isn't known, ask for it rather than reconstructing something plausible.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, consequences, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example, configuration value, or decision point before being told about its risks, requirements, or failure modes of omission, the document has failed. The test: can a reader follow the doc top-to-bottom without encountering a problem that was explained below where they first needed it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "consequences_before_config",
+            "label": "The failure mode of omitting or misconfiguring a setting is stated before the reader encounters the configuration, not after"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Code is routinely read outside its surrounding prose \u2014 in IDEs, copy-paste workflows, and incident runbooks \u2014 so inline comments that explain where a value comes from are first-class documentation, not redundancy with the prose.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, the surrounding prose needs to carry more context"
+          },
+          {
+            "id": "assumes_prior_context",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections \u2014 each starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "prose_resolves_context",
+            "label": "Surrounding prose resolves any context the code needs before it appears \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet"
+          },
+          {
+            "id": "value_provenance_in_code",
+            "label": "Inline comments that define where a specific value comes from \u2014 its ratio, formula, or derivation \u2014 are preserved for readers who encounter the code in isolation, even when the surrounding prose covers the same ground"
+          },
+          {
+            "id": "copyable_structure",
+            "label": "Examples include enough structural context (parent keys, indentation hierarchy) that a reader can copy the block directly into their own file without inferring the surrounding shape"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Choose the Right Scope for Your Service') rather than passive labels ('Token Retrieval', 'Scope Configuration'). When read in sequence, the headers should tell a story. Passive noun-phrase headers signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "no_noun_phrase_headers",
+            "label": "Passive noun-phrase headers ('Architecture', 'Configuration', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Use action-result framing: 'Run X, which returns Y' rather than 'Simply run X'. The voice should read as institutional knowledge from someone who has operated the system, not as a spec transcription or textbook explanation. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language throughout"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "institutional_knowledge_voice",
+            "label": "Reads as institutional knowledge from someone who has operated the system \u2014 not as a spec transcription or textbook explanation"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: warnings and consequences must appear before the code or configuration they govern \u2014 this user will flag every single violation. Design rationale without real rejected alternatives is treated as incomplete documentation regardless of how well everything else reads. When the real decision history is unknown, ask the user for it rather than constructing plausible-sounding justifications \u2014 the user explicitly values authentic rationale and will provide incident details when prompted. Inline code comments that explain value derivation (ratios, formulas) are load-bearing documentation for this user, even when prose covers the same ground \u2014 do not strip them.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Information Placement",
+        "category": "Structure",
+        "description": "Warnings, caveats, consequences, and prerequisites appear immediately before the content they govern \u2014 never after. If a reader hits a code example, configuration value, or decision point before being told about its risks, requirements, or failure modes of omission, the document has failed. The test: can a reader follow the doc top-to-bottom without encountering a problem that was explained below where they first needed it?",
+        "dimensions": [
+          {
+            "id": "warnings_before_code",
+            "label": "Warnings and caveats appear directly before the code or procedure they apply to"
+          },
+          {
+            "id": "context_before_examples",
+            "label": "Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets"
+          },
+          {
+            "id": "consequences_before_config",
+            "label": "The failure mode of omitting or misconfiguring a setting is stated before the reader encounters the configuration, not after"
+          },
+          {
+            "id": "no_deferred_gotchas",
+            "label": "No critical operational knowledge is deferred to a bottom-of-page catch-all section"
+          },
+          {
+            "id": "proximity_to_relevance",
+            "label": "Each piece of information sits at the point in the flow where the reader needs it, not where it is topically categorized"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Design Rationale with Rejected Alternatives",
+        "category": "Content",
+        "description": "Every significant design or configuration choice names what was considered and rejected, and explains why \u2014 with concrete failure stories, not careful deliberation. 'We use token bucket' restates the config; 'We rejected fixed window after 847 requests hit auth in a two-second boundary burst against a 500/min limit' is rationale. The reader should understand the decision as painful and evidence-based. Invented rationale is worse than no rationale \u2014 if the real history isn't known, ask for it rather than reconstructing something plausible.",
+        "dimensions": [
+          {
+            "id": "alternatives_named",
+            "label": "Rejected alternatives are explicitly named for each major design or configuration choice"
+          },
+          {
+            "id": "tradeoffs_stated",
+            "label": "Accepted tradeoffs are stated clearly, not hidden or minimized"
+          },
+          {
+            "id": "concrete_evidence",
+            "label": "Rationale uses real incidents, benchmarks, or measured data rather than hypothetical scenarios where available"
+          },
+          {
+            "id": "inline_placement",
+            "label": "Rationale appears at the point where the reader first encounters the concept, not in a separate appendix"
+          },
+          {
+            "id": "downstream_implications",
+            "label": "Consequences of the choice for the reader's own decisions are made explicit \u2014 including what breaks if the reader changes the setting"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action-Oriented Narrative Flow",
+        "category": "Structure",
+        "description": "The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic. Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Choose the Right Scope for Your Service') rather than passive labels ('Token Retrieval', 'Scope Configuration'). When read in sequence, the headers should tell a story. Passive noun-phrase headers signal a reference manual, not a walkthrough, and make documents unscannable for engineers responding to an incident.",
+        "dimensions": [
+          {
+            "id": "headers_imply_action",
+            "label": "Section headers describe what the reader is about to do or accomplish, not just what the section covers"
+          },
+          {
+            "id": "no_noun_phrase_headers",
+            "label": "Passive noun-phrase headers ('Architecture', 'Configuration', 'Error Responses') are absent \u2014 every header resolves a question or names a task"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Sections connect to each other so the document reads as a progressive sequence, not isolated chapters"
+          },
+          {
+            "id": "process_over_taxonomy",
+            "label": "Organization follows the engineer's workflow order rather than a taxonomic grouping of concepts"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Precise, Non-Condescending Language",
+        "category": "Style",
+        "description": "Language is precise and treats the reader as a competent engineer who is new to this specific system \u2014 not new to engineering. Words like 'simply', 'just', 'easy', and 'straightforward' are avoided because they make the reader feel stupid when they struggle. Use action-result framing: 'Run X, which returns Y' rather than 'Simply run X'. The voice should read as institutional knowledge from someone who has operated the system, not as a spec transcription or textbook explanation. Dense prose without structural relief is a hard failure.",
+        "dimensions": [
+          {
+            "id": "no_minimizing_language",
+            "label": "Avoids 'simply', 'just', 'easy', 'straightforward', and similar minimizing language throughout"
+          },
+          {
+            "id": "action_result_framing",
+            "label": "Uses action-result framing: describes what a command or call does and what it returns, not just what to run"
+          },
+          {
+            "id": "calibrated_explanation_depth",
+            "label": "Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows"
+          },
+          {
+            "id": "institutional_knowledge_voice",
+            "label": "Reads as institutional knowledge from someone who has operated the system \u2014 not as a spec transcription or textbook explanation"
+          },
+          {
+            "id": "structural_relief",
+            "label": "Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Code Example Economy",
+        "category": "Content",
+        "description": "Code examples are minimal and focused \u2014 they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate. If an example needs more than 15 lines, the surrounding prose didn't do its job. Every example opens with a one-line plain-language comment that covers the full scope of what the block does. Code is routinely read outside its surrounding prose \u2014 in IDEs, copy-paste workflows, and incident runbooks \u2014 so inline comments that explain where a value comes from are first-class documentation, not redundancy with the prose.",
+        "dimensions": [
+          {
+            "id": "full_scope_comment",
+            "label": "Each code block opens with a one-line comment describing everything the snippet does \u2014 all significant actions, not just the primary one"
+          },
+          {
+            "id": "fifteen_line_limit",
+            "label": "No code example exceeds 15 lines; if it does, the surrounding prose needs to carry more context"
+          },
+          {
+            "id": "assumes_prior_context",
+            "label": "Examples do not repeat setup, imports, or boilerplate already covered in earlier sections \u2014 each starts from the state the reader should have after following the preceding sections"
+          },
+          {
+            "id": "prose_resolves_context",
+            "label": "Surrounding prose resolves any context the code needs before it appears \u2014 no unexplained addresses, credentials, variables, or configuration in the snippet"
+          },
+          {
+            "id": "value_provenance_in_code",
+            "label": "Inline comments that define where a specific value comes from \u2014 its ratio, formula, or derivation \u2014 are preserved for readers who encounter the code in isolation, even when the surrounding prose covers the same ground"
+          },
+          {
+            "id": "copyable_structure",
+            "label": "Examples include enough structural context (parent keys, indentation hierarchy) that a reader can copy the block directly into their own file without inferring the surrounding shape"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 13,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation for backend engineers",
+    "user_goals_summary": "Documentation should explain why the system is shaped the way it is \u2014 not just what it does \u2014 by naming rejected alternatives with their concrete failure modes. It should read as a guided walkthrough that an engineer can follow top-to-bottom without hitting a warning after they've already made the mistake, with minimal code examples that lean on surrounding prose to carry setup and context.",
+    "coaching_notes": "Non-negotiable: warnings and consequences must appear before the code or configuration they govern \u2014 this user will flag every single violation. Design rationale without real rejected alternatives is treated as incomplete documentation regardless of how well everything else reads. When the real decision history is unknown, ask the user for it rather than constructing plausible-sounding justifications \u2014 the user explicitly values authentic rationale and will provide incident details when prompted. Inline code comments that explain value derivation (ratios, formulas) are load-bearing documentation for this user, even when prose covers the same ground \u2014 do not strip them."
+  }
+]

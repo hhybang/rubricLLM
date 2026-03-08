@@ -1,0 +1,1363 @@
+[
+  {
+    "version": 1,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "This user writes internal technical documentation for experienced engineers. They prioritize explaining design rationale and rejected alternatives over describing system behavior, expect code examples to confirm what prose already taught rather than introduce new concepts, and care deeply about the reader's navigation experience and emotional respect when encountering difficult material.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were considered and what specific problems they would have created. This is what teaches the reader the system's design philosophy and helps them make good decisions when their use case doesn't fit the happy path.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "supports_edge_case_reasoning",
+            "label": "The rationale equips the reader to reason about edge cases and make decisions when things go wrong"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form, trusting that the prose already covered what each step means. If the code needs scaffolding or verbose comments to make sense on its own, the prose above it didn't do its job.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "comments_reinforce_not_duplicate",
+            "label": "Inline code comments reinforce or anchor the reader in the flow rather than re-explaining from scratch"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic. A warning buried in an explanation paragraph forces the reader to scroll back when they hit the error, which means the docs didn't do their job. Each warning should also name the specific failure mode and what makes it hard to debug.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure of a section should reflect the logical structure of its content and give the reader a sense of momentum. Headers should feel like questions the reader is already holding \u2014 each one answering something the previous section raised \u2014 not just topic labels. Someone returning to the doc should be able to locate a specific topic by scanning headers alone.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_reflect_reader_questions",
+            "label": "Headers are framed as questions or concerns the reader is already holding, resembling their internal monologue"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "structure_mirrors_content",
+            "label": "The visual divisions in the section match the logical divisions in the content"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Reader-Respectful Tone Around Difficulty",
+        "category": "Style",
+        "description": "When the documentation describes something genuinely tricky, the tone should treat the difficulty as inherent to the problem, not as a gap in the reader's experience. Language should never imply that a failure mode or concept 'should have been obvious.' State difficulty plainly \u2014 name what makes it hard to reason about \u2014 and trust that the reader is competent.",
+        "dimensions": [
+          {
+            "id": "acknowledges_inherent_difficulty",
+            "label": "Describes genuinely tricky concepts as inherently difficult rather than things the reader should have caught"
+          },
+          {
+            "id": "no_condescension_or_softening",
+            "label": "Avoids language that implies failure modes should have been obvious or that softens genuine complexity"
+          },
+          {
+            "id": "names_what_makes_it_hard",
+            "label": "States plainly what makes something hard to reason about rather than hedging or hand-waving"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes the reader is technically capable and addresses them as a peer"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every design decision must name rejected alternatives and their specific downsides \u2014 stating what the system does without explaining what it was chosen over is treated as fundamentally incomplete. This user iterates on exactly one concern per round and never reverts prior approvals; when they say something is done, focus only on the newly flagged issue. Tone precision is extremely high-stakes: the difference between 'non-obvious failure mode' and 'genuinely hard to reason about' warranted a full revision round \u2014 language around difficulty must validate the reader's experience, never imply they should have known better.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were considered and what specific problems they would have created. This is what teaches the reader the system's design philosophy and helps them make good decisions when their use case doesn't fit the happy path.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "supports_edge_case_reasoning",
+            "label": "The rationale equips the reader to reason about edge cases and make decisions when things go wrong"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic. A warning buried in an explanation paragraph forces the reader to scroll back when they hit the error, which means the docs didn't do their job. Each warning should also name the specific failure mode and what makes it hard to debug.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form, trusting that the prose already covered what each step means. If the code needs scaffolding or verbose comments to make sense on its own, the prose above it didn't do its job.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "comments_reinforce_not_duplicate",
+            "label": "Inline code comments reinforce or anchor the reader in the flow rather than re-explaining from scratch"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure of a section should reflect the logical structure of its content and give the reader a sense of momentum. Headers should feel like questions the reader is already holding \u2014 each one answering something the previous section raised \u2014 not just topic labels. Someone returning to the doc should be able to locate a specific topic by scanning headers alone.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_reflect_reader_questions",
+            "label": "Headers are framed as questions or concerns the reader is already holding, resembling their internal monologue"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "structure_mirrors_content",
+            "label": "The visual divisions in the section match the logical divisions in the content"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Reader-Respectful Tone Around Difficulty",
+        "category": "Style",
+        "description": "When the documentation describes something genuinely tricky, the tone should treat the difficulty as inherent to the problem, not as a gap in the reader's experience. Language should never imply that a failure mode or concept 'should have been obvious.' State difficulty plainly \u2014 name what makes it hard to reason about \u2014 and trust that the reader is competent.",
+        "dimensions": [
+          {
+            "id": "acknowledges_inherent_difficulty",
+            "label": "Describes genuinely tricky concepts as inherently difficult rather than things the reader should have caught"
+          },
+          {
+            "id": "no_condescension_or_softening",
+            "label": "Avoids language that implies failure modes should have been obvious or that softens genuine complexity"
+          },
+          {
+            "id": "names_what_makes_it_hard",
+            "label": "States plainly what makes something hard to reason about rather than hedging or hand-waving"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes the reader is technically capable and addresses them as a peer"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "This user writes internal technical documentation for experienced engineers. They prioritize explaining design rationale and rejected alternatives over describing system behavior, expect code examples to confirm what prose already taught rather than introduce new concepts, and care deeply about the reader's navigation experience and emotional respect when encountering difficult material.",
+    "coaching_notes": "Non-negotiable: every design decision must name rejected alternatives and their specific downsides \u2014 stating what the system does without explaining what it was chosen over is treated as fundamentally incomplete. This user iterates on exactly one concern per round and never reverts prior approvals; when they say something is done, focus only on the newly flagged issue. Tone precision is extremely high-stakes: the difference between 'non-obvious failure mode' and 'genuinely hard to reason about' warranted a full revision round \u2014 language around difficulty must validate the reader's experience, never imply they should have known better."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were considered and what specific problems they would have created. This is what teaches the reader the system's design philosophy and helps them make good decisions when their use case doesn't fit the happy path.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "supports_edge_case_reasoning",
+            "label": "The rationale equips the reader to reason about edge cases and make decisions when things go wrong"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic. A warning buried in an explanation paragraph forces the reader to scroll back when they hit the error, which means the docs didn't do their job. Each warning should also name the specific failure mode and what makes it hard to debug. A warning that arrives after the fact \u2014 as a retrospective observation or clever summary \u2014 does not count as a warning; it's a postmortem.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          },
+          {
+            "id": "no_retrospective_warnings",
+            "label": "Warnings are not framed as retrospective observations or after-the-fact heuristics \u2014 they appear before the decision, not as a summary of what went wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Prose Economy and Sentence-Level Precision",
+        "category": "Style",
+        "description": "Every sentence should do distinct work. Padding, clever-sounding summaries that don't add information, and sentences that restate what was just said in different words all signal that the draft has not been tightened enough. A quip or memorable turn of phrase is not a substitute for a precisely placed warning or a concrete decision rule. The test: if a sentence were deleted, would the reader lose something they needed?",
+        "dimensions": [
+          {
+            "id": "no_redundant_sentences",
+            "label": "No sentence restates what an adjacent sentence already said"
+          },
+          {
+            "id": "no_quips_in_place_of_guidance",
+            "label": "Clever or memorable phrasings are not used as substitutes for concrete guidance or warnings"
+          },
+          {
+            "id": "concrete_over_abstract",
+            "label": "Decision rules and heuristics are stated concretely enough to apply without interpretation"
+          },
+          {
+            "id": "deletion_test",
+            "label": "Each sentence would leave a gap if removed \u2014 none exist purely for rhetorical effect"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form, trusting that the prose already covered what each step means. If the code needs scaffolding or verbose comments to make sense on its own, the prose above it didn't do its job.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "comments_reinforce_not_duplicate",
+            "label": "Inline code comments reinforce or anchor the reader in the flow rather than re-explaining from scratch"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure of a section should reflect the logical structure of its content and give the reader a sense of momentum. Headers should feel like questions the reader is already holding \u2014 each one answering something the previous section raised \u2014 not just topic labels. Someone returning to the doc should be able to locate a specific topic by scanning headers alone.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_reflect_reader_questions",
+            "label": "Headers are framed as questions or concerns the reader is already holding, resembling their internal monologue"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "structure_mirrors_content",
+            "label": "The visual divisions in the section match the logical divisions in the content"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Reader-Respectful Tone Around Difficulty",
+        "category": "Style",
+        "description": "When the documentation describes something genuinely tricky, the tone should treat the difficulty as inherent to the problem, not as a gap in the reader's experience. Language should never imply that a failure mode or concept 'should have been obvious.' State difficulty plainly \u2014 name what makes it hard to reason about \u2014 and trust that the reader is competent.",
+        "dimensions": [
+          {
+            "id": "acknowledges_inherent_difficulty",
+            "label": "Describes genuinely tricky concepts as inherently difficult rather than things the reader should have caught"
+          },
+          {
+            "id": "no_condescension_or_softening",
+            "label": "Avoids language that implies failure modes should have been obvious or that softens genuine complexity"
+          },
+          {
+            "id": "names_what_makes_it_hard",
+            "label": "States plainly what makes something hard to reason about rather than hedging or hand-waving"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Assumes the reader is technically capable and addresses them as a peer"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 3,
+    "source": "alignment_suggestion",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "This user writes internal technical documentation for experienced engineers. They prioritize explaining design rationale and rejected alternatives over describing system behavior, expect code examples to confirm what prose already taught rather than introduce new concepts, and care deeply about the reader's navigation experience and emotional respect when encountering difficult material.",
+    "coaching_notes": "Non-negotiable: every design decision must name rejected alternatives and their specific downsides \u2014 stating what the system does without explaining what it was chosen over is treated as fundamentally incomplete. This user iterates on exactly one concern per round and never reverts prior approvals; when they say something is done, focus only on the newly flagged issue. Tone precision is extremely high-stakes: the difference between 'non-obvious failure mode' and 'genuinely hard to reason about' warranted a full revision round \u2014 language around difficulty must validate the reader's experience, never imply they should have known better."
+  },
+  {
+    "version": 4,
+    "writing_type": "internal engineering documentation",
+    "user_goals_summary": "Docs should teach the reader the system's design philosophy \u2014 not just what it does, but why it works this way and what was rejected. When something is genuinely hard, the writing should name the source of difficulty plainly and respect the reader's competence, never implying they should have seen it coming. Structure, code, and warnings should all be precisely placed to serve the reader at the moment they need it.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were rejected and what specific problems they would have created. Name the mistaken pattern the reader is likely to reach for and explain why it fails. Use genuinely ambiguous boundary cases to teach judgment, not easy examples with obvious answers.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "names_mistaken_patterns",
+            "label": "Names the specific wrong approach the reader is likely to reach for and explains why it fails in practice"
+          },
+          {
+            "id": "boundary_case_examples",
+            "label": "Uses genuinely ambiguous examples that sit at the real decision boundary rather than cases with obvious answers"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Honest Treatment of Difficulty",
+        "category": "Style",
+        "description": "When something is genuinely hard, locate the difficulty in the problem itself \u2014 not in missing information, not in the reader's experience, not in a gap that better tooling would close. Some decisions are genuine judgment calls where both answers are defensible and the information won't make the choice for you. Say so plainly. Never imply a failure mode or complexity 'should have been obvious' or is just 'harder than it sounds.'",
+        "dimensions": [
+          {
+            "id": "difficulty_in_the_problem",
+            "label": "Locates difficulty in the inherent nature of the problem, not in gaps in the reader's information or experience"
+          },
+          {
+            "id": "no_softening_phrases",
+            "label": "Avoids phrases like 'harder than it sounds,' 'non-obvious,' or 'tricky' that imply the reader should eventually find it easy"
+          },
+          {
+            "id": "names_source_of_difficulty",
+            "label": "States plainly what makes something hard to reason about \u2014 names the specific mechanism rather than just flagging that it's complex"
+          },
+          {
+            "id": "acknowledges_irreducible_judgment",
+            "label": "When a decision is a genuine judgment call with defensible answers on both sides, says so rather than implying more information would resolve it"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Treats the reader as someone standing in front of a real system with real constraints, not someone who needs reassurance"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic, or before they've gotten comfortable with the wrong choice. Each warning should name the specific failure mode and what makes it hard to debug or recover from.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          },
+          {
+            "id": "before_not_after",
+            "label": "Warnings land before the reader has committed to a path, not as retrospective observations or after-the-fact summaries"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure should reflect the logical structure and give the reader a sense of momentum. Headers should feel like questions the reader is already holding \u2014 resembling their internal monologue \u2014 with each one answering something the previous section raised. The reader should feel walked through a thought process, not handed separate verdicts to check off.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_reflect_reader_questions",
+            "label": "Headers are framed as questions or concerns the reader is already holding, resembling their internal monologue"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "argument_not_list",
+            "label": "The overall structure reads as one argument building toward understanding, not separate blocks of reasoning stacked together"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form \u2014 a gut-check moment where the reader recognizes their own situation. If the code needs scaffolding or verbose comments to make sense, the prose above it didn't do its job.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "comments_reinforce_not_duplicate",
+            "label": "Inline code comments anchor the reader in the flow rather than re-explaining what the prose already covered"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Prose Economy and Sentence-Level Precision",
+        "category": "Style",
+        "description": "Every sentence should do distinct work. No padding, no clever summaries that don't add information, no restating what was just said in different words. Decision rules and heuristics should be concrete enough to apply without interpretation. The test: if a sentence were deleted, would the reader lose something they needed?",
+        "dimensions": [
+          {
+            "id": "no_redundant_sentences",
+            "label": "No sentence restates what an adjacent sentence already said"
+          },
+          {
+            "id": "no_quips_in_place_of_guidance",
+            "label": "Clever or memorable phrasings are not used as substitutes for concrete guidance or warnings"
+          },
+          {
+            "id": "concrete_over_abstract",
+            "label": "Decision rules and heuristics are stated concretely enough to apply without interpretation"
+          },
+          {
+            "id": "deletion_test",
+            "label": "Each sentence would leave a gap if removed \u2014 none exist purely for rhetorical effect"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user iterates relentlessly on tone \u2014 particularly on how difficulty and complexity are described. They will reject formulations that locate difficulty in missing information, timing gaps, or the reader's experience; they want difficulty located in the problem itself. The word 'defensible' is preferred over 'valid' or 'correct' when describing judgment calls. They treat code as the payoff moment, not the explanation \u2014 if code is doing explanatory work, they read it as a failure of the prose. They strongly prefer naming rejected alternatives and anti-patterns over simply stating the right answer, because 'the rejected path is where the actual learning is.'",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were rejected and what specific problems they would have created. Name the mistaken pattern the reader is likely to reach for and explain why it fails. Use genuinely ambiguous boundary cases to teach judgment, not easy examples with obvious answers.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "names_mistaken_patterns",
+            "label": "Names the specific wrong approach the reader is likely to reach for and explains why it fails in practice"
+          },
+          {
+            "id": "boundary_case_examples",
+            "label": "Uses genuinely ambiguous examples that sit at the real decision boundary rather than cases with obvious answers"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic, or before they've gotten comfortable with the wrong choice. Each warning should name the specific failure mode and what makes it hard to debug or recover from.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          },
+          {
+            "id": "before_not_after",
+            "label": "Warnings land before the reader has committed to a path, not as retrospective observations or after-the-fact summaries"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure should reflect the logical structure and give the reader a sense of momentum. Headers should feel like questions the reader is already holding \u2014 resembling their internal monologue \u2014 with each one answering something the previous section raised. The reader should feel walked through a thought process, not handed separate verdicts to check off.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_reflect_reader_questions",
+            "label": "Headers are framed as questions or concerns the reader is already holding, resembling their internal monologue"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "argument_not_list",
+            "label": "The overall structure reads as one argument building toward understanding, not separate blocks of reasoning stacked together"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Honest Treatment of Difficulty",
+        "category": "Style",
+        "description": "When something is genuinely hard, locate the difficulty in the problem itself \u2014 not in missing information, not in the reader's experience, not in a gap that better tooling would close. Some decisions are genuine judgment calls where both answers are defensible and the information won't make the choice for you. Say so plainly. Never imply a failure mode or complexity 'should have been obvious' or is just 'harder than it sounds.'",
+        "dimensions": [
+          {
+            "id": "difficulty_in_the_problem",
+            "label": "Locates difficulty in the inherent nature of the problem, not in gaps in the reader's information or experience"
+          },
+          {
+            "id": "no_softening_phrases",
+            "label": "Avoids phrases like 'harder than it sounds,' 'non-obvious,' or 'tricky' that imply the reader should eventually find it easy"
+          },
+          {
+            "id": "names_source_of_difficulty",
+            "label": "States plainly what makes something hard to reason about \u2014 names the specific mechanism rather than just flagging that it's complex"
+          },
+          {
+            "id": "acknowledges_irreducible_judgment",
+            "label": "When a decision is a genuine judgment call with defensible answers on both sides, says so rather than implying more information would resolve it"
+          },
+          {
+            "id": "assumes_competence",
+            "label": "Treats the reader as someone standing in front of a real system with real constraints, not someone who needs reassurance"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form \u2014 a gut-check moment where the reader recognizes their own situation. If the code needs scaffolding or verbose comments to make sense, the prose above it didn't do its job.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "comments_reinforce_not_duplicate",
+            "label": "Inline code comments anchor the reader in the flow rather than re-explaining what the prose already covered"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 5,
+    "source": "criteria_classification",
+    "writing_type": "internal engineering documentation",
+    "user_goals_summary": "Docs should teach the reader the system's design philosophy \u2014 not just what it does, but why it works this way and what was rejected. When something is genuinely hard, the writing should name the source of difficulty plainly and respect the reader's competence, never implying they should have seen it coming. Structure, code, and warnings should all be precisely placed to serve the reader at the moment they need it.",
+    "coaching_notes": "This user iterates relentlessly on tone \u2014 particularly on how difficulty and complexity are described. They will reject formulations that locate difficulty in missing information, timing gaps, or the reader's experience; they want difficulty located in the problem itself. The word 'defensible' is preferred over 'valid' or 'correct' when describing judgment calls. They treat code as the payoff moment, not the explanation \u2014 if code is doing explanatory work, they read it as a failure of the prose. They strongly prefer naming rejected alternatives and anti-patterns over simply stating the right answer, because 'the rejected path is where the actual learning is.'"
+  },
+  {
+    "version": 6,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes internal technical docs for engineers who are competent but unfamiliar with a specific system. Values explaining why a system works this way over what it does, including naming rejected alternatives. Treats difficulty and complexity as inherent to the problem, never as a gap in the reader's competence, and validates the reader's prior experience before correcting course.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were rejected and what specific problems they would have created. Name the mistaken pattern the reader is likely to reach for and explain why it fails. Use genuinely ambiguous boundary cases to teach judgment, not easy examples with obvious answers.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "names_mistaken_patterns",
+            "label": "Names the specific wrong approach the reader is likely to reach for and explains why it fails in practice"
+          },
+          {
+            "id": "boundary_case_examples",
+            "label": "Uses genuinely ambiguous examples that sit at the real decision boundary rather than cases with obvious answers"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Honest Treatment of Difficulty",
+        "category": "Style",
+        "description": "When something is genuinely hard, locate the difficulty in the problem itself \u2014 not in missing information, not in the reader's experience level, not in a gap that better visibility would close. Some decisions are genuine judgment calls where both answers are defensible and the information won't make the choice for you. Say so plainly. The doc should sit with the tension rather than rush past it.",
+        "dimensions": [
+          {
+            "id": "difficulty_in_the_problem",
+            "label": "Locates difficulty in the inherent nature of the problem, not in gaps in the reader's information or experience"
+          },
+          {
+            "id": "no_softening_phrases",
+            "label": "Avoids phrases like 'harder than it sounds,' 'non-obvious,' or 'tricky' that imply the reader should eventually find it easy"
+          },
+          {
+            "id": "names_source_of_difficulty",
+            "label": "States plainly what makes something hard to reason about \u2014 names the specific mechanism rather than just flagging that it's complex"
+          },
+          {
+            "id": "acknowledges_irreducible_judgment",
+            "label": "When a decision is a genuine judgment call with defensible answers on both sides, says so rather than implying more information would resolve it"
+          },
+          {
+            "id": "sits_with_tension",
+            "label": "Stays with the difficulty long enough for it to land rather than rushing to resolve it with a correction or answer"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Validating Reader Experience",
+        "category": "Audience",
+        "description": "When correcting a likely wrong instinct, treat the reader's prior experience as the source of that instinct, not the source of an error. Validate that the approach they're reaching for is exactly right in other contexts before explaining why this system is different. Write directly to the reader's experience \u2014 speak to them in the moment they're in, not about them from a distance.",
+        "dimensions": [
+          {
+            "id": "instinct_from_competence",
+            "label": "Frames the reader's wrong instinct as coming from competence in other systems, not from ignorance or carelessness"
+          },
+          {
+            "id": "validate_before_correct",
+            "label": "Acknowledges the reader's likely approach as reasonable before explaining why it doesn't apply here"
+          },
+          {
+            "id": "write_to_not_about",
+            "label": "Addresses the reader directly in their experience ('you'll know it's clicked when...') rather than describing them from the outside ('the adjustment will happen')"
+          },
+          {
+            "id": "names_specific_wrong_instincts",
+            "label": "Lists the specific things the reader will be tempted to do (e.g., checking expiry themselves, wrapping the SDK) rather than vaguely warning against deviation"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic, or before they've mentally committed to a wrong pattern. Each warning should name the specific failure mode and what makes it hard to debug or recover from.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          },
+          {
+            "id": "before_not_after",
+            "label": "Warnings land before the reader has committed to a path, not as retrospective observations or after-the-fact summaries"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure should reflect the logical structure and give the reader a sense of momentum. Headers should tell a progression story \u2014 each one answering something the previous section raised \u2014 so the reader feels walked through a thought process rather than handed separate verdicts. The document should close on something that belongs to the reader's experience in this document, not hand off to another one.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_match_content_shape",
+            "label": "Header style matches the doc's context and conventions \u2014 whether framed as reader questions, reasoning steps, or diagnostic labels"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "argument_not_list",
+            "label": "The overall structure reads as one argument building toward understanding, not separate blocks of reasoning stacked together"
+          },
+          {
+            "id": "closes_in_this_document",
+            "label": "The document ends on something that belongs to the reader's experience here \u2014 not a redirect, logistics pointer, or handoff to another doc"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form \u2014 a gut-check moment where the reader recognizes their own situation. Each snippet should be self-contained when skimmed, anchored by a single comment that orients without re-explaining.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "self_contained_with_anchor_comment",
+            "label": "Each code snippet includes a brief anchoring comment that makes it self-contained for someone skimming, without duplicating the prose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: never imply difficulty comes from the reader's inexperience \u2014 locate it in the problem itself. This user's preferred trade-off is spending more words on 'why this is hard' and 'what we rejected' over exhaustive 'how-to' detail. They iterate most intensely on tone at moments of correction \u2014 where the doc tells the reader their instinct is wrong \u2014 and on endings, which must land in the document rather than hand off. When offering options, provide 2-3 with a clear recommendation; this user has strong register preferences and decides quickly when given concrete alternatives.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were rejected and what specific problems they would have created. Name the mistaken pattern the reader is likely to reach for and explain why it fails. Use genuinely ambiguous boundary cases to teach judgment, not easy examples with obvious answers.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "names_mistaken_patterns",
+            "label": "Names the specific wrong approach the reader is likely to reach for and explains why it fails in practice"
+          },
+          {
+            "id": "boundary_case_examples",
+            "label": "Uses genuinely ambiguous examples that sit at the real decision boundary rather than cases with obvious answers"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic, or before they've mentally committed to a wrong pattern. Each warning should name the specific failure mode and what makes it hard to debug or recover from.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          },
+          {
+            "id": "before_not_after",
+            "label": "Warnings land before the reader has committed to a path, not as retrospective observations or after-the-fact summaries"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form \u2014 a gut-check moment where the reader recognizes their own situation. Each snippet should be self-contained when skimmed, anchored by a single comment that orients without re-explaining.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "self_contained_with_anchor_comment",
+            "label": "Each code snippet includes a brief anchoring comment that makes it self-contained for someone skimming, without duplicating the prose"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure should reflect the logical structure and give the reader a sense of momentum. Headers should tell a progression story \u2014 each one answering something the previous section raised \u2014 so the reader feels walked through a thought process rather than handed separate verdicts. The document should close on something that belongs to the reader's experience in this document, not hand off to another one.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_match_content_shape",
+            "label": "Header style matches the doc's context and conventions \u2014 whether framed as reader questions, reasoning steps, or diagnostic labels"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "argument_not_list",
+            "label": "The overall structure reads as one argument building toward understanding, not separate blocks of reasoning stacked together"
+          },
+          {
+            "id": "closes_in_this_document",
+            "label": "The document ends on something that belongs to the reader's experience here \u2014 not a redirect, logistics pointer, or handoff to another doc"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Honest Treatment of Difficulty",
+        "category": "Style",
+        "description": "When something is genuinely hard, locate the difficulty in the problem itself \u2014 not in missing information, not in the reader's experience level, not in a gap that better visibility would close. Some decisions are genuine judgment calls where both answers are defensible and the information won't make the choice for you. Say so plainly. The doc should sit with the tension rather than rush past it.",
+        "dimensions": [
+          {
+            "id": "difficulty_in_the_problem",
+            "label": "Locates difficulty in the inherent nature of the problem, not in gaps in the reader's information or experience"
+          },
+          {
+            "id": "no_softening_phrases",
+            "label": "Avoids phrases like 'harder than it sounds,' 'non-obvious,' or 'tricky' that imply the reader should eventually find it easy"
+          },
+          {
+            "id": "names_source_of_difficulty",
+            "label": "States plainly what makes something hard to reason about \u2014 names the specific mechanism rather than just flagging that it's complex"
+          },
+          {
+            "id": "acknowledges_irreducible_judgment",
+            "label": "When a decision is a genuine judgment call with defensible answers on both sides, says so rather than implying more information would resolve it"
+          },
+          {
+            "id": "sits_with_tension",
+            "label": "Stays with the difficulty long enough for it to land rather than rushing to resolve it with a correction or answer"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Validating Reader Experience",
+        "category": "Audience",
+        "description": "When correcting a likely wrong instinct, treat the reader's prior experience as the source of that instinct, not the source of an error. Validate that the approach they're reaching for is exactly right in other contexts before explaining why this system is different. Write directly to the reader's experience \u2014 speak to them in the moment they're in, not about them from a distance.",
+        "dimensions": [
+          {
+            "id": "instinct_from_competence",
+            "label": "Frames the reader's wrong instinct as coming from competence in other systems, not from ignorance or carelessness"
+          },
+          {
+            "id": "validate_before_correct",
+            "label": "Acknowledges the reader's likely approach as reasonable before explaining why it doesn't apply here"
+          },
+          {
+            "id": "write_to_not_about",
+            "label": "Addresses the reader directly in their experience ('you'll know it's clicked when...') rather than describing them from the outside ('the adjustment will happen')"
+          },
+          {
+            "id": "names_specific_wrong_instincts",
+            "label": "Lists the specific things the reader will be tempted to do (e.g., checking expiry themselves, wrapping the SDK) rather than vaguely warning against deviation"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 7,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes internal technical docs for engineers who are competent but unfamiliar with a specific system. Values explaining why a system works this way over what it does, including naming rejected alternatives. Treats difficulty and complexity as inherent to the problem, never as a gap in the reader's competence, and validates the reader's prior experience before correcting course.",
+    "coaching_notes": "Non-negotiable: never imply difficulty comes from the reader's inexperience \u2014 locate it in the problem itself. This user's preferred trade-off is spending more words on 'why this is hard' and 'what we rejected' over exhaustive 'how-to' detail. They iterate most intensely on tone at moments of correction \u2014 where the doc tells the reader their instinct is wrong \u2014 and on endings, which must land in the document rather than hand off. When offering options, provide 2-3 with a clear recommendation; this user has strong register preferences and decides quickly when given concrete alternatives."
+  },
+  {
+    "version": 8,
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes internal docs that teach engineers how to make good decisions with a system, not just use it. Every design choice should name what was rejected and why; warnings should land at the exact moment the reader is about to write the wrong code; and when something is genuinely hard, the doc should say so plainly rather than softening, hand-waving, or implying the reader should have seen it coming.",
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were rejected and what specific problems they would have created. Name the mistaken pattern the reader is likely to reach for and explain why it fails. Use genuinely ambiguous boundary cases to teach judgment, not easy examples with obvious answers.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "names_mistaken_patterns",
+            "label": "Names the specific wrong approach the reader is likely to reach for and explains why it fails in practice"
+          },
+          {
+            "id": "boundary_case_examples",
+            "label": "Uses genuinely ambiguous examples that sit at the real decision boundary rather than cases with obvious answers"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic, or before they've mentally committed to a wrong pattern. Each warning should name the specific failure mode and what makes it hard to debug or recover from.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          },
+          {
+            "id": "before_not_after",
+            "label": "Warnings land before the reader has committed to a path, not as retrospective observations or after-the-fact summaries"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Honest Treatment of Difficulty",
+        "category": "Style",
+        "description": "When something is genuinely hard, locate the difficulty in the problem itself \u2014 not in missing information, not in the reader's experience level, not in a gap that better visibility would close. Some decisions are genuine judgment calls where both answers are defensible and the information won't make the choice for you. Say so plainly. The doc should sit with the tension rather than rush past it.",
+        "dimensions": [
+          {
+            "id": "difficulty_in_the_problem",
+            "label": "Locates difficulty in the inherent nature of the problem, not in gaps in the reader's information or experience"
+          },
+          {
+            "id": "no_softening_phrases",
+            "label": "Avoids phrases like 'harder than it sounds,' 'non-obvious,' or 'tricky' that imply the reader should eventually find it easy"
+          },
+          {
+            "id": "names_source_of_difficulty",
+            "label": "States plainly what makes something hard to reason about \u2014 names the specific mechanism rather than just flagging that it's complex"
+          },
+          {
+            "id": "acknowledges_irreducible_judgment",
+            "label": "When a decision is a genuine judgment call with defensible answers on both sides, says so rather than implying more information would resolve it"
+          },
+          {
+            "id": "sits_with_tension",
+            "label": "Stays with the difficulty long enough for it to land rather than rushing to resolve it with a correction or answer"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure should reflect the logical structure and give the reader a sense of momentum. Headers should tell a progression story \u2014 each one answering something the previous section raised \u2014 so the reader feels walked through a thought process rather than handed separate verdicts. Headers at action points should match the stakes and energy of the moment, not go flat when the reader is ready to act. The document should close on something that belongs to the reader's experience in this document, not hand off to another one.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_match_stakes",
+            "label": "Header tone and energy match the moment \u2014 action-point headers carry weight rather than defaulting to flat labels"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "argument_not_list",
+            "label": "The overall structure reads as one argument building toward understanding, not separate blocks of reasoning stacked together"
+          },
+          {
+            "id": "closes_in_this_document",
+            "label": "The document ends on something that belongs to the reader's experience here \u2014 not a redirect, logistics pointer, or handoff to another doc"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Validating Reader Experience",
+        "category": "Audience",
+        "description": "When correcting a likely wrong instinct, treat the reader's prior experience as the source of that instinct, not the source of an error. Validate that the approach they're reaching for is exactly right in other contexts before explaining why this system is different. Write directly to the reader's experience \u2014 speak to them in the moment they're in, not about them from a distance.",
+        "dimensions": [
+          {
+            "id": "instinct_from_competence",
+            "label": "Frames the reader's wrong instinct as coming from competence in other systems, not from ignorance or carelessness"
+          },
+          {
+            "id": "validate_before_correct",
+            "label": "Acknowledges the reader's likely approach as reasonable before explaining why it doesn't apply here"
+          },
+          {
+            "id": "write_to_not_about",
+            "label": "Addresses the reader directly in their experience ('you'll know it's clicked when...') rather than describing them from the outside ('the adjustment will happen')"
+          },
+          {
+            "id": "names_specific_wrong_instincts",
+            "label": "Lists the specific things the reader will be tempted to do rather than vaguely warning against deviation"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form \u2014 a gut-check moment where the reader recognizes their own situation. Each snippet should be self-contained when skimmed, anchored by a single comment that orients without re-explaining.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "self_contained_with_anchor_comment",
+            "label": "Each code snippet includes a brief anchoring comment that makes it self-contained for someone skimming, without duplicating the prose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user iterates most persistently on tone and framing \u2014 they'll accept a first draft's content but push for 5-10 rounds on how difficulty is described and how the reader is addressed. Non-negotiables: every design choice must name the rejected alternative; warnings must precede action points; difficulty must be located in the problem itself, never in the reader. Preferred trade-off: will always sacrifice brevity to sit honestly with complexity rather than gloss over it. When stuck on a subjective choice (headers, phrasing), present 2-3 options with distinct tradeoffs and let them pick \u2014 they give very precise directional feedback and know what they want when they see it.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Design Rationale with Named Alternatives",
+        "category": "Content",
+        "description": "Every design decision should be a design argument: not just what the system does and why, but what alternatives were rejected and what specific problems they would have created. Name the mistaken pattern the reader is likely to reach for and explain why it fails. Use genuinely ambiguous boundary cases to teach judgment, not easy examples with obvious answers.",
+        "dimensions": [
+          {
+            "id": "names_rejected_alternatives",
+            "label": "Each significant design decision names at least one alternative that was considered or rejected"
+          },
+          {
+            "id": "explains_alternative_downsides",
+            "label": "Explains the specific problems or tradeoffs the rejected alternatives would have introduced"
+          },
+          {
+            "id": "why_not_just_what",
+            "label": "Explains why the system works this way, not just what it does \u2014 the 'what' the reader can get from the API"
+          },
+          {
+            "id": "names_mistaken_patterns",
+            "label": "Names the specific wrong approach the reader is likely to reach for and explains why it fails in practice"
+          },
+          {
+            "id": "boundary_case_examples",
+            "label": "Uses genuinely ambiguous examples that sit at the real decision boundary rather than cases with obvious answers"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Warning and Gotcha Placement",
+        "category": "Audience",
+        "description": "Warnings earn their place by landing where the mistake is about to happen \u2014 right before the reader writes or executes the relevant logic, or before they've mentally committed to a wrong pattern. Each warning should name the specific failure mode and what makes it hard to debug or recover from.",
+        "dimensions": [
+          {
+            "id": "warnings_at_action_point",
+            "label": "Warnings appear immediately before the point where the reader will write or execute the relevant logic"
+          },
+          {
+            "id": "names_specific_failure_mode",
+            "label": "Each warning names the specific failure scenario rather than offering a generic 'be careful'"
+          },
+          {
+            "id": "explains_what_makes_it_hard",
+            "label": "Explains what makes the failure mode difficult to identify or recover from"
+          },
+          {
+            "id": "before_not_after",
+            "label": "Warnings land before the reader has committed to a path, not as retrospective observations or after-the-fact summaries"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Code-Prose Complementarity",
+        "category": "Structure",
+        "description": "Prose does all the explanatory work; code is the moment everything clicks, not a second tutorial. Code examples should show the core sequence in the tightest possible form \u2014 a gut-check moment where the reader recognizes their own situation. Each snippet should be self-contained when skimmed, anchored by a single comment that orients without re-explaining.",
+        "dimensions": [
+          {
+            "id": "prose_carries_explanation",
+            "label": "Prose fully explains concepts and flow before code appears"
+          },
+          {
+            "id": "code_confirms_not_teaches",
+            "label": "Code demonstrates what prose already explained rather than introducing new concepts"
+          },
+          {
+            "id": "minimal_scaffolding",
+            "label": "Code uses the minimum scaffolding needed to show the core sequence \u2014 no wrapper functions or boilerplate that exist only for the example"
+          },
+          {
+            "id": "self_contained_with_anchor_comment",
+            "label": "Each code snippet includes a brief anchoring comment that makes it self-contained for someone skimming, without duplicating the prose"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Narrative-Driven Section Structure",
+        "category": "Structure",
+        "description": "The visual structure should reflect the logical structure and give the reader a sense of momentum. Headers should tell a progression story \u2014 each one answering something the previous section raised \u2014 so the reader feels walked through a thought process rather than handed separate verdicts. Headers at action points should match the stakes and energy of the moment, not go flat when the reader is ready to act. The document should close on something that belongs to the reader's experience in this document, not hand off to another one.",
+        "dimensions": [
+          {
+            "id": "headers_create_momentum",
+            "label": "Section headers give a sense of progression, with each one feeling like it follows from the previous"
+          },
+          {
+            "id": "headers_match_stakes",
+            "label": "Header tone and energy match the moment \u2014 action-point headers carry weight rather than defaulting to flat labels"
+          },
+          {
+            "id": "scannable_for_return_visits",
+            "label": "Someone returning to the doc can locate a specific topic by scanning headers alone"
+          },
+          {
+            "id": "argument_not_list",
+            "label": "The overall structure reads as one argument building toward understanding, not separate blocks of reasoning stacked together"
+          },
+          {
+            "id": "closes_in_this_document",
+            "label": "The document ends on something that belongs to the reader's experience here \u2014 not a redirect, logistics pointer, or handoff to another doc"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Honest Treatment of Difficulty",
+        "category": "Style",
+        "description": "When something is genuinely hard, locate the difficulty in the problem itself \u2014 not in missing information, not in the reader's experience level, not in a gap that better visibility would close. Some decisions are genuine judgment calls where both answers are defensible and the information won't make the choice for you. Say so plainly. The doc should sit with the tension rather than rush past it.",
+        "dimensions": [
+          {
+            "id": "difficulty_in_the_problem",
+            "label": "Locates difficulty in the inherent nature of the problem, not in gaps in the reader's information or experience"
+          },
+          {
+            "id": "no_softening_phrases",
+            "label": "Avoids phrases like 'harder than it sounds,' 'non-obvious,' or 'tricky' that imply the reader should eventually find it easy"
+          },
+          {
+            "id": "names_source_of_difficulty",
+            "label": "States plainly what makes something hard to reason about \u2014 names the specific mechanism rather than just flagging that it's complex"
+          },
+          {
+            "id": "acknowledges_irreducible_judgment",
+            "label": "When a decision is a genuine judgment call with defensible answers on both sides, says so rather than implying more information would resolve it"
+          },
+          {
+            "id": "sits_with_tension",
+            "label": "Stays with the difficulty long enough for it to land rather than rushing to resolve it with a correction or answer"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Validating Reader Experience",
+        "category": "Audience",
+        "description": "When correcting a likely wrong instinct, treat the reader's prior experience as the source of that instinct, not the source of an error. Validate that the approach they're reaching for is exactly right in other contexts before explaining why this system is different. Write directly to the reader's experience \u2014 speak to them in the moment they're in, not about them from a distance.",
+        "dimensions": [
+          {
+            "id": "instinct_from_competence",
+            "label": "Frames the reader's wrong instinct as coming from competence in other systems, not from ignorance or carelessness"
+          },
+          {
+            "id": "validate_before_correct",
+            "label": "Acknowledges the reader's likely approach as reasonable before explaining why it doesn't apply here"
+          },
+          {
+            "id": "write_to_not_about",
+            "label": "Addresses the reader directly in their experience ('you'll know it's clicked when...') rather than describing them from the outside ('the adjustment will happen')"
+          },
+          {
+            "id": "names_specific_wrong_instincts",
+            "label": "Lists the specific things the reader will be tempted to do rather than vaguely warning against deviation"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 9,
+    "source": "criteria_classification",
+    "writing_type": "internal technical documentation",
+    "user_goals_summary": "Writes internal docs that teach engineers how to make good decisions with a system, not just use it. Every design choice should name what was rejected and why; warnings should land at the exact moment the reader is about to write the wrong code; and when something is genuinely hard, the doc should say so plainly rather than softening, hand-waving, or implying the reader should have seen it coming.",
+    "coaching_notes": "This user iterates most persistently on tone and framing \u2014 they'll accept a first draft's content but push for 5-10 rounds on how difficulty is described and how the reader is addressed. Non-negotiables: every design choice must name the rejected alternative; warnings must precede action points; difficulty must be located in the problem itself, never in the reader. Preferred trade-off: will always sacrifice brevity to sit honestly with complexity rather than gloss over it. When stuck on a subjective choice (headers, phrasing), present 2-3 options with distinct tradeoffs and let them pick \u2014 they give very precise directional feedback and know what they want when they see it."
+  }
+]

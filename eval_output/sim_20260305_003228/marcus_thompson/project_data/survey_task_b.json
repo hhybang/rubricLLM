@@ -1,0 +1,46 @@
+[
+  {
+    "q1": 4,
+    "q2": 3,
+    "q3": "The 'just' and 'simply' problem kept creeping back in \u2014 I had to call it out explicitly more than once, and even then it took a couple of passes to fully clear it. The comment truncation issue in iteration 5 was also a miss: cutting a comment mid-thought because of a line limit is worse than leaving it long.",
+    "q4": "Somewhat better",
+    "q5": "I looked at it, and it captured the important stuff reasonably well \u2014 the rejected alternatives criterion and the information placement criterion are exactly right. What it missed is the comment-scope rule: that a one-line comment has to cover the full scope of what the block does, not just the first operation. That nuance didn't make it into the rubric and the model kept getting it slightly wrong until I flagged it in feedback.",
+    "q6": "The rubric made me realize the model was consistently good at the macro structure \u2014 narrative flow, warning placement \u2014 but consistently loose on micro-precision: word choice ('just', 'simply') and comment accuracy. Those small failures don't show up as rubric violations because the rubric operates at the section level, not the sentence level, so the model could score well on the rubric and still ship something I'd send back.",
+    "completed": true,
+    "iteration": 2,
+    "timestamp": "2026-03-05T02:38:15.032911"
+  },
+  {
+    "q1": 4,
+    "q2": 2,
+    "q3": "The one recurring issue was warning placement \u2014 the model understood the principle but needed a nudge to apply it consistently across the whole document, not just the section I flagged. It also had a tendency on the first pass to write code comments that were either too vague or got cut off mid-thought.",
+    "q4": "Somewhat better",
+    "q5": "The rubric captured the things I care about pretty accurately, especially the rejected-alternatives criterion and the information placement rule. Seeing those spelled out explicitly seemed to help the model prioritize them rather than treating them as nice-to-haves \u2014 the fail-open/fail-closed section with real operational context wouldn't have landed as well without that framing.",
+    "q6": "Having the rubric made me notice that the model is genuinely strong on narrative flow and rejected-alternatives reasoning once it has clear criteria, but warning placement is the last thing it checks rather than the first \u2014 it gets the structure right globally and then misses local ordering problems. Without the rubric making that a named criterion, I might have just thought it was a one-off oversight rather than a consistent pattern.",
+    "completed": true,
+    "iteration": 3,
+    "timestamp": "2026-03-05T02:45:49.895143"
+  },
+  {
+    "q1": 3,
+    "q2": 4,
+    "q3": "The header placement kept slipping \u2014 we'd agree on something, it would disappear in the next draft, and I'd have to call it out again. The model also had a recurring instinct to strip the inline comment from the YAML block, which I had to push back on multiple times even though the reasoning was clear from the start.",
+    "q4": "Somewhat better",
+    "q5": "The rubric captured the important stuff \u2014 the rejected alternatives pattern, the pre-warning placement, the action-oriented headers. Those are exactly the things I care about. Whether it actively helped the model is harder to say; some of those issues persisted across iterations anyway, which makes me think the rubric was well-calibrated but the model wasn't always applying it consistently.",
+    "q6": "Looking at the rubric made me notice that the model was actually pretty good at the rejected-alternatives pattern once it had concrete material to work with \u2014 the NAT incident landed well and stayed intact. What the rubric helped surface is that the model's weaker area was structural persistence: it would get something right, then quietly regress on it in the next draft without flagging the change.",
+    "completed": true,
+    "iteration": 4,
+    "timestamp": "2026-03-05T03:03:24.213243"
+  },
+  {
+    "q1": 3,
+    "q2": 4,
+    "q3": "The `require_approval` snippet kept coming back wrong \u2014 it either had the comment in the wrong place, was missing the comment entirely, or had extra boilerplate that bloated it past what the surrounding prose justified. I had to call that out multiple times and it still wasn't fully resolved by iteration 5.",
+    "q4": "Somewhat better",
+    "q5": "The rubric captured most of what I care about, and the prioritization was roughly right \u2014 information placement first, rejected alternatives second. What it didn't fully capture is the inline comment requirement for code examples specifically: the rubric says 'every example opens with a one-line comment' but the model kept treating that as optional or misplacing it as a trailing comment rather than a header comment. The rubric was close but not tight enough on that specific mechanic.",
+    "q6": "The rubric made it clearer that the model has a pattern of locking in prose correctly but then re-introducing small code example errors on subsequent iterations \u2014 like it treats the code block as a separate artifact that doesn't fully inherit the corrections applied to the surrounding text. I wouldn't have framed it that way without seeing the rubric criteria laid out explicitly alongside the iteration history.",
+    "completed": true,
+    "iteration": 5,
+    "timestamp": "2026-03-05T03:15:09.954524"
+  }
+]

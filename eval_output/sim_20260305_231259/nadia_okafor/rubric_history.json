@@ -1,0 +1,1805 @@
+[
+  {
+    "version": 1,
+    "writing_type": "UX/product copy (error states, recovery flows, and transactional screens)",
+    "user_goals_summary": "Writes interface copy that feels like a calm, competent presence alongside the user \u2014 not narrating their situation from above, not performing empathy, just plainly and precisely meeting them where they are. Every word must do specific work for the specific moment it appears in, and the user should always feel like the subject of the copy, never the object of it.",
+    "rubric": [
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is 'the copy equivalent of a calm nod' \u2014 the way a competent colleague would talk to you after a snag. No pep talks, no customer-service voice, no sardonic edge, no shrugging.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth"
+          },
+          {
+            "id": "not_clinical",
+            "label": "Does not read like a system log, support article, or procedure document"
+          },
+          {
+            "id": "calm_not_breezy",
+            "label": "Reads as grounded and steady rather than casual or dismissive"
+          },
+          {
+            "id": "no_sardonic_edge",
+            "label": "Never anticipates negative user behavior or introduces anxiety that wasn't already there"
+          },
+          {
+            "id": "human_register",
+            "label": "Sounds like something a real person would actually say \u2014 plain, direct, conversational without performing conversational"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a generic pattern library. It should be clear from the copy alone what just happened, without the copy explicitly narrating or commenting on the situation. The line should feel like it knows where the user is.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking, not an adjacent or assumed question"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing or commenting on it from the outside"
+          },
+          {
+            "id": "no_editorializing",
+            "label": "Does not comment on the difficulty, commonality, or expected duration of the situation"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "names_the_problem",
+            "label": "Clearly states what happened or went wrong"
+          },
+          {
+            "id": "provides_context",
+            "label": "Gives enough 'why' for the user to understand the situation without guessing"
+          },
+          {
+            "id": "points_to_action",
+            "label": "Includes a clear next step or direction within the same element"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Element makes sense and feels complete if the user never sees the next screen"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion \u2014 they are the one acting, finding, fixing \u2014 rather than watching the product assess or narrate. CTAs tell the user exactly what will happen when they click. Second person, present tense by default.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent doing the action, not the product"
+          },
+          {
+            "id": "cta_specificity",
+            "label": "Buttons and links describe the outcome of clicking, not vague verbs like 'try again' or 'submit'"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Copy orients toward the next action rather than dwelling on or explaining the current state"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. Copy is short and scannable. If a list has clear labels and descriptions, the line above it doesn't need to explain what the list is.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language ('don't worry,' 'no problem'). Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my cart?')"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user has an extraordinarily fine-grained sense of tonal register \u2014 they can distinguish between 'calm' and 'breezy,' between 'confident' and 'cheerleading,' between 'present' and 'narrating.' Expect many rounds of iteration on tone, especially on transitional or introductory lines. They will consistently reject copy that feels generic or interchangeable across contexts, even if it's technically correct. Their north star is copy that feels like a competent person standing next to the user \u2014 not above the moment looking down at it. When they say 'present,' they mean the copy should feel like it was written by someone who knows what screen the user is on and what just happened, without explicitly saying so.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "names_the_problem",
+            "label": "Clearly states what happened or went wrong"
+          },
+          {
+            "id": "provides_context",
+            "label": "Gives enough 'why' for the user to understand the situation without guessing"
+          },
+          {
+            "id": "points_to_action",
+            "label": "Includes a clear next step or direction within the same element"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Element makes sense and feels complete if the user never sees the next screen"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion \u2014 they are the one acting, finding, fixing \u2014 rather than watching the product assess or narrate. CTAs tell the user exactly what will happen when they click. Second person, present tense by default.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent doing the action, not the product"
+          },
+          {
+            "id": "cta_specificity",
+            "label": "Buttons and links describe the outcome of clicking, not vague verbs like 'try again' or 'submit'"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Copy orients toward the next action rather than dwelling on or explaining the current state"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language ('don't worry,' 'no problem'). Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my cart?')"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. Copy is short and scannable. If a list has clear labels and descriptions, the line above it doesn't need to explain what the list is.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is 'the copy equivalent of a calm nod' \u2014 the way a competent colleague would talk to you after a snag. No pep talks, no customer-service voice, no sardonic edge, no shrugging.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth"
+          },
+          {
+            "id": "not_clinical",
+            "label": "Does not read like a system log, support article, or procedure document"
+          },
+          {
+            "id": "calm_not_breezy",
+            "label": "Reads as grounded and steady rather than casual or dismissive"
+          },
+          {
+            "id": "no_sardonic_edge",
+            "label": "Never anticipates negative user behavior or introduces anxiety that wasn't already there"
+          },
+          {
+            "id": "human_register",
+            "label": "Sounds like something a real person would actually say \u2014 plain, direct, conversational without performing conversational"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a generic pattern library. It should be clear from the copy alone what just happened, without the copy explicitly narrating or commenting on the situation. The line should feel like it knows where the user is.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking, not an adjacent or assumed question"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing or commenting on it from the outside"
+          },
+          {
+            "id": "no_editorializing",
+            "label": "Does not comment on the difficulty, commonality, or expected duration of the situation"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "UX/product copy (error states, recovery flows, and transactional screens)",
+    "user_goals_summary": "Writes interface copy that feels like a calm, competent presence alongside the user \u2014 not narrating their situation from above, not performing empathy, just plainly and precisely meeting them where they are. Every word must do specific work for the specific moment it appears in, and the user should always feel like the subject of the copy, never the object of it.",
+    "coaching_notes": "This user has an extraordinarily fine-grained sense of tonal register \u2014 they can distinguish between 'calm' and 'breezy,' between 'confident' and 'cheerleading,' between 'present' and 'narrating.' Expect many rounds of iteration on tone, especially on transitional or introductory lines. They will consistently reject copy that feels generic or interchangeable across contexts, even if it's technically correct. Their north star is copy that feels like a competent person standing next to the user \u2014 not above the moment looking down at it. When they say 'present,' they mean the copy should feel like it was written by someone who knows what screen the user is on and what just happened, without explicitly saying so."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "names_the_problem",
+            "label": "Clearly states what happened or went wrong"
+          },
+          {
+            "id": "provides_context",
+            "label": "Gives enough 'why' for the user to understand the situation without guessing"
+          },
+          {
+            "id": "points_to_action",
+            "label": "Includes a clear next step or direction within the same element"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Element makes sense and feels complete if the user never sees the next screen"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion \u2014 they are the one acting, finding, fixing \u2014 rather than watching the product assess or narrate. CTAs tell the user exactly what will happen when they click. Second person, present tense by default.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent doing the action, not the product"
+          },
+          {
+            "id": "cta_specificity",
+            "label": "Buttons and links describe the outcome of clicking, not vague verbs like 'try again' or 'submit'"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Copy orients toward the next action rather than dwelling on or explaining the current state"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language ('don't worry,' 'no problem'). Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my cart?')"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. Copy is short and scannable. If a list has clear labels and descriptions, the line above it doesn't need to explain what the list is. Completeness never justifies length \u2014 a draft that explains its own mechanics or uses compound constructions to add thoroughness has failed this criterion even if every sentence is technically accurate.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "no_over_explanation",
+            "label": "Does not explain how a feature works when naming what it does is sufficient \u2014 compound constructions and mechanism descriptions are treated as word count failures"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is 'the copy equivalent of a calm nod' \u2014 the way a competent colleague would talk to you after a snag. No pep talks, no customer-service voice, no sardonic edge, no shrugging.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth"
+          },
+          {
+            "id": "not_clinical",
+            "label": "Does not read like a system log, support article, or procedure document"
+          },
+          {
+            "id": "calm_not_breezy",
+            "label": "Reads as grounded and steady rather than casual or dismissive"
+          },
+          {
+            "id": "no_sardonic_edge",
+            "label": "Never anticipates negative user behavior or introduces anxiety that wasn't already there"
+          },
+          {
+            "id": "human_register",
+            "label": "Sounds like something a real person would actually say \u2014 plain, direct, conversational without performing conversational"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a generic pattern library. It should be clear from the copy alone what just happened, without the copy explicitly narrating or commenting on the situation. The line should feel like it knows where the user is.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking, not an adjacent or assumed question"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing or commenting on it from the outside"
+          },
+          {
+            "id": "no_editorializing",
+            "label": "Does not comment on the difficulty, commonality, or expected duration of the situation"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 3,
+    "source": "alignment_suggestion",
+    "writing_type": "UX/product copy (error states, recovery flows, and transactional screens)",
+    "user_goals_summary": "Writes interface copy that feels like a calm, competent presence alongside the user \u2014 not narrating their situation from above, not performing empathy, just plainly and precisely meeting them where they are. Every word must do specific work for the specific moment it appears in, and the user should always feel like the subject of the copy, never the object of it.",
+    "coaching_notes": "This user has an extraordinarily fine-grained sense of tonal register \u2014 they can distinguish between 'calm' and 'breezy,' between 'confident' and 'cheerleading,' between 'present' and 'narrating.' Expect many rounds of iteration on tone, especially on transitional or introductory lines. They will consistently reject copy that feels generic or interchangeable across contexts, even if it's technically correct. Their north star is copy that feels like a competent person standing next to the user \u2014 not above the moment looking down at it. When they say 'present,' they mean the copy should feel like it was written by someone who knows what screen the user is on and what just happened, without explicitly saying so."
+  },
+  {
+    "version": 4,
+    "writing_type": "product/UX copy",
+    "user_goals_summary": "Copy should be functionally complete, tonally precise, and written for the specific moment the user is in. Every element must do its full job independently, CTAs must name concrete outcomes, and the voice should sound like a calm, competent person \u2014 not a product, not a support doc, not a pattern library. The user values economy, but not at the cost of humanity.",
+    "rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "names_the_situation",
+            "label": "Clearly states what happened or what the current state is"
+          },
+          {
+            "id": "provides_context",
+            "label": "Gives enough 'why' for the user to understand the situation without guessing"
+          },
+          {
+            "id": "points_to_action",
+            "label": "Includes a clear next step or direction within the same element"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one piece of writing"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs name the literal thing the user gets after clicking \u2014 not the action, not a metaphor, not wordplay. Benefits are framed as what the user gains, not what they stop worrying about.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing or narrating"
+          },
+          {
+            "id": "cta_names_outcome",
+            "label": "Buttons name the concrete, literal result of clicking \u2014 not a vague verb, metaphor, or clever phrase"
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Copy orients toward what happens next rather than dwelling on or explaining the current state"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is the way a competent colleague would talk to you after a snag \u2014 plain, direct, present. The copy should contain at least one beat that sounds like a person actually said it, and the rhythm should vary so payoffs land like an exhale rather than another list item.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth"
+          },
+          {
+            "id": "calm_grounded",
+            "label": "Reads as steady and present \u2014 not clinical, not breezy, not sardonic, not like a support article"
+          },
+          {
+            "id": "human_beat",
+            "label": "Contains at least one moment that sounds like something a real person would say out loud \u2014 offhand and plain, not performing conversational"
+          },
+          {
+            "id": "no_anxiety_injection",
+            "label": "Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning"
+          },
+          {
+            "id": "tonal_rhythm",
+            "label": "Register varies intentionally \u2014 not one flat temperature throughout; payoff moments land like an exhale, not a list item"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking. All elements on the screen share the same voice and register, with no tonal gaps between headline, body, and CTA.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking, not an adjacent or assumed question"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing, commenting on, or editorializing about it from the outside"
+          },
+          {
+            "id": "voice_consistency",
+            "label": "All elements on the screen share the same voice and register \u2014 no tonal gap between a system-label headline and a human-sounding body"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language. Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee or use metaphors that overstate capability"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my progress?')"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user iterates relentlessly on tonal calibration \u2014 they distinguish between 'calm and present' and 'calm and procedural,' and will not settle for the latter. Non-negotiables: every standalone element must do its full job; CTAs must name concrete outcomes (not metaphors, not clever wordplay); copy must never introduce anxiety or blame. When presenting options, lead with the one that does the least while saying the most \u2014 this user consistently picks the shortest, plainest option that still sounds human.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs name the literal thing the user gets after clicking \u2014 not the action, not a metaphor, not wordplay. Benefits are framed as what the user gains, not what they stop worrying about.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing or narrating"
+          },
+          {
+            "id": "cta_names_outcome",
+            "label": "Buttons name the concrete, literal result of clicking \u2014 not a vague verb, metaphor, or clever phrase"
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Copy orients toward what happens next rather than dwelling on or explaining the current state"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "names_the_situation",
+            "label": "Clearly states what happened or what the current state is"
+          },
+          {
+            "id": "provides_context",
+            "label": "Gives enough 'why' for the user to understand the situation without guessing"
+          },
+          {
+            "id": "points_to_action",
+            "label": "Includes a clear next step or direction within the same element"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one piece of writing"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language. Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee or use metaphors that overstate capability"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my progress?')"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is the way a competent colleague would talk to you after a snag \u2014 plain, direct, present. The copy should contain at least one beat that sounds like a person actually said it, and the rhythm should vary so payoffs land like an exhale rather than another list item.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth"
+          },
+          {
+            "id": "calm_grounded",
+            "label": "Reads as steady and present \u2014 not clinical, not breezy, not sardonic, not like a support article"
+          },
+          {
+            "id": "human_beat",
+            "label": "Contains at least one moment that sounds like something a real person would say out loud \u2014 offhand and plain, not performing conversational"
+          },
+          {
+            "id": "no_anxiety_injection",
+            "label": "Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning"
+          },
+          {
+            "id": "tonal_rhythm",
+            "label": "Register varies intentionally \u2014 not one flat temperature throughout; payoff moments land like an exhale, not a list item"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking. All elements on the screen share the same voice and register, with no tonal gaps between headline, body, and CTA.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking, not an adjacent or assumed question"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing, commenting on, or editorializing about it from the outside"
+          },
+          {
+            "id": "voice_consistency",
+            "label": "All elements on the screen share the same voice and register \u2014 no tonal gap between a system-label headline and a human-sounding body"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 5,
+    "source": "criteria_classification",
+    "writing_type": "product/UX copy",
+    "user_goals_summary": "Copy should be functionally complete, tonally precise, and written for the specific moment the user is in. Every element must do its full job independently, CTAs must name concrete outcomes, and the voice should sound like a calm, competent person \u2014 not a product, not a support doc, not a pattern library. The user values economy, but not at the cost of humanity.",
+    "coaching_notes": "This user iterates relentlessly on tonal calibration \u2014 they distinguish between 'calm and present' and 'calm and procedural,' and will not settle for the latter. Non-negotiables: every standalone element must do its full job; CTAs must name concrete outcomes (not metaphors, not clever wordplay); copy must never introduce anxiety or blame. When presenting options, lead with the one that does the least while saying the most \u2014 this user consistently picks the shortest, plainest option that still sounds human."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs name the literal result the user gets after clicking \u2014 not the action they're performing, not a metaphor, not clever wordplay. The user should know what happens before they click. Benefits are framed as what the user gains, not what they stop worrying about.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing or narrating"
+          },
+          {
+            "id": "cta_names_outcome",
+            "label": "Button labels describe the outcome, not the action \u2014 'Save changes' over 'Submit', 'Start free trial' over 'Sign up'. Outcome framing should be lightweight \u2014 'Add Payee' satisfies this because a payee getting added is the outcome; you don't need to spell it out as 'Save Your First Payee'. CTA labels should remain accurate across repeat visits \u2014 avoid embedding session-specific framing like 'Your First' that breaks on the second use."
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Copy orients toward what happens next rather than dwelling on or explaining the current state"
+          },
+          {
+            "id": "no_passive_voice",
+            "label": "Instructions use active voice \u2014 'Enter your account number' not 'Your account number should be entered'"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: WHAT HAPPENED, WHY, WHAT TO DO \u2014 in that order. A vague error like 'Something went wrong' is a product failure, not just a copy failure. Confirmation dialogs name the specific consequence, not a generic prompt. Empty states guide the user toward their first action rather than announcing absence.",
+        "dimensions": [
+          {
+            "id": "names_the_situation",
+            "label": "Clearly states what happened or what the current state is"
+          },
+          {
+            "id": "provides_context",
+            "label": "Gives enough 'why' for the user to understand the situation without guessing"
+          },
+          {
+            "id": "points_to_action",
+            "label": "Includes a clear next step or direction within the same element"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one piece of writing"
+          },
+          {
+            "id": "new_1",
+            "label": "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy"
+          },
+          {
+            "id": "new_2",
+            "label": "Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'"
+          },
+          {
+            "id": "new_3",
+            "label": "Empty states direct the user toward their first action \u2014 they read as a helpful nudge, not a dead end. Empty-state copy guides toward action without coaching tone \u2014 the nudge is structural (a clear CTA), not verbal (motivational framing)."
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Tone shifts deliberately based on context. Celebratory moments (first successful payment, onboarding complete) can be warm. Error states should be calm and precise \u2014 never panicked, never dismissive. Routine actions should be nearly invisible. Applying a single flat tone across all contexts feels robotic and erodes trust. No marketing register inside the product itself.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth in neutral or error contexts. Avoids pep-talk language in CTAs as well as body copy \u2014 a button label is not a place for encouragement or milestone-marking."
+          },
+          {
+            "id": "calm_grounded",
+            "label": "Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic"
+          },
+          {
+            "id": "context_appropriate_warmth",
+            "label": "Celebratory moments (first payment, milestone reached) are allowed to be warm \u2014 tone matches the emotional weight of the moment"
+          },
+          {
+            "id": "no_anxiety_injection",
+            "label": "Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning"
+          },
+          {
+            "id": "tonal_rhythm",
+            "label": "Register varies intentionally across screens \u2014 not one flat temperature throughout"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "Product UI copy does not use promotional or marketing register \u2014 no superlatives, no value-prop language inside the flow"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language. Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee or use metaphors that overstate capability"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my progress?')"
+          },
+          {
+            "id": "new_4",
+            "label": "Terminology is consistent across the entire flow \u2014 the same action, object, or state is never referred to by two different names"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking. All elements on the screen share the same voice and register, with no tonal gaps between headline, body, and CTA.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking, not an adjacent or assumed question"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing, commenting on, or editorializing about it from the outside. CTA labels do not narrate or editorialize \u2014 they don't tell the user what milestone they're reaching or reflect their journey back at them."
+          },
+          {
+            "id": "voice_consistency",
+            "label": "All elements on the screen share the same voice and register \u2014 no tonal gap between a system-label headline and a human-sounding body"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 6,
+    "source": "user_log_changes",
+    "writing_type": "product/UX copy",
+    "user_goals_summary": "Copy should be functionally complete, tonally precise, and written for the specific moment the user is in. Every element must do its full job independently, CTAs must name concrete outcomes, and the voice should sound like a calm, competent person \u2014 not a product, not a support doc, not a pattern library. The user values economy, but not at the cost of humanity.",
+    "coaching_notes": "This user iterates relentlessly on tonal calibration \u2014 they distinguish between 'calm and present' and 'calm and procedural,' and will not settle for the latter. Non-negotiables: every standalone element must do its full job; CTAs must name concrete outcomes (not metaphors, not clever wordplay); copy must never introduce anxiety or blame. When presenting options, lead with the one that does the least while saying the most \u2014 this user consistently picks the shortest, plainest option that still sounds human."
+  },
+  {
+    "version": 7,
+    "writing_type": "product UI copy (fintech / payments)",
+    "user_goals_summary": "Writes product copy that feels calm, present, and written for the specific moment the user is in \u2014 not lifted from a pattern library. Values economy and precision but insists on at least one human beat per copy unit. Treats the user as a competent adult who needs clear direction, not coaching or cheerleading.",
+    "rubric": [
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking, not an adjacent one. All elements on the screen share the same voice, register, and assumed audience \u2014 no tonal gap between headline, body, and CTA.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context \u2014 it clearly knows what just happened"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking \u2014 not an adjacent question like how long it will take or how common it is"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing, commenting on, or editorializing about it from the outside \u2014 copy is in the moment, not above it"
+          },
+          {
+            "id": "voice_consistency",
+            "label": "All elements on the screen share the same voice, register, and assumed audience \u2014 no tonal gap between a system-label headline and a human-sounding body"
+          },
+          {
+            "id": "one_human_beat",
+            "label": "Contains at least one moment that sounds like something a real person would say out loud \u2014 offhand and plain, not performing conversational"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Tone shifts deliberately based on context. Celebratory or first-time moments can carry warmth. Error states should be calm and precise \u2014 never panicked, never dismissive. Routine actions should be nearly invisible. No marketing register inside the product. The target is how a competent, slightly knowing colleague would talk to you \u2014 plain, direct, present. Never a pep talk, never a shrug.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth \u2014 in body copy, headlines, and button labels alike"
+          },
+          {
+            "id": "calm_grounded",
+            "label": "Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic, not breezy"
+          },
+          {
+            "id": "context_appropriate_warmth",
+            "label": "First-time moments and celebratory moments are allowed to be warm \u2014 tone matches the emotional weight of the moment"
+          },
+          {
+            "id": "no_anxiety_injection",
+            "label": "Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "Product UI copy does not use promotional or marketing register \u2014 no superlatives, no value-prop language inside the flow"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs make it clear what clicking achieves \u2014 simple, literal labels are preferred when the action IS the outcome. Benefits are framed as what the user gains, not what they stop worrying about.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing, investigating, or narrating"
+          },
+          {
+            "id": "cta_names_outcome",
+            "label": "Button labels make it clear what clicking achieves \u2014 'Add Payee' is fine when a payee being added IS the outcome; 'Resubmit order' over 'Try again'; no metaphors or clever wordplay"
+          },
+          {
+            "id": "cta_reusable_across_visits",
+            "label": "CTA labels remain accurate across repeat visits \u2014 no session-specific framing like 'Your First' that breaks on the second use"
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "active_voice",
+            "label": "Instructions use active voice \u2014 'Enter your account number' not 'Your account number should be entered'"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: what happened, why, what to do \u2014 in that order. Confirmation dialogs name the specific consequence. Empty states guide the user toward their first action rather than announcing absence. A user who sees only one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "error_what_why_what",
+            "label": "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Each element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "empty_state_nudge",
+            "label": "Empty states direct the user toward their first action \u2014 they read as a helpful nudge, not a dead end or a system status label"
+          },
+          {
+            "id": "confirmation_specificity",
+            "label": "Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one escalating thought"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language. Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee or use metaphors that overstate capability"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate \u2014 'was I charged?', 'did I lose my progress?'"
+          },
+          {
+            "id": "consistent_terminology",
+            "label": "Terminology is consistent across the entire flow \u2014 the same action, object, or state is never referred to by two different names"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every piece of copy must be functionally self-contained, and CTAs must be clear about what clicking does \u2014 no cleverness, no metaphors, no session-specific framing that breaks on repeat visits. Trade-off pattern: will sacrifice brevity for a 'human beat' (one offhand, knowing line per unit) but will not sacrifice clarity for personality. Responds best to options presented with short rationales; iterates by describing what's wrong with increasing precision until the exact register clicks \u2014 expect many rounds on tonal nuance, especially for opening lines in error and empty states.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: what happened, why, what to do \u2014 in that order. Confirmation dialogs name the specific consequence. Empty states guide the user toward their first action rather than announcing absence. A user who sees only one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "error_what_why_what",
+            "label": "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Each element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "empty_state_nudge",
+            "label": "Empty states direct the user toward their first action \u2014 they read as a helpful nudge, not a dead end or a system status label"
+          },
+          {
+            "id": "confirmation_specificity",
+            "label": "Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one escalating thought"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs make it clear what clicking achieves \u2014 simple, literal labels are preferred when the action IS the outcome. Benefits are framed as what the user gains, not what they stop worrying about.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing, investigating, or narrating"
+          },
+          {
+            "id": "cta_names_outcome",
+            "label": "Button labels make it clear what clicking achieves \u2014 'Add Payee' is fine when a payee being added IS the outcome; 'Resubmit order' over 'Try again'; no metaphors or clever wordplay"
+          },
+          {
+            "id": "cta_reusable_across_visits",
+            "label": "CTA labels remain accurate across repeat visits \u2014 no session-specific framing like 'Your First' that breaks on the second use"
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "active_voice",
+            "label": "Instructions use active voice \u2014 'Enter your account number' not 'Your account number should be entered'"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Tone shifts deliberately based on context. Celebratory or first-time moments can carry warmth. Error states should be calm and precise \u2014 never panicked, never dismissive. Routine actions should be nearly invisible. No marketing register inside the product. The target is how a competent, slightly knowing colleague would talk to you \u2014 plain, direct, present. Never a pep talk, never a shrug.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth \u2014 in body copy, headlines, and button labels alike"
+          },
+          {
+            "id": "calm_grounded",
+            "label": "Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic, not breezy"
+          },
+          {
+            "id": "context_appropriate_warmth",
+            "label": "First-time moments and celebratory moments are allowed to be warm \u2014 tone matches the emotional weight of the moment"
+          },
+          {
+            "id": "no_anxiety_injection",
+            "label": "Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "Product UI copy does not use promotional or marketing register \u2014 no superlatives, no value-prop language inside the flow"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking, not an adjacent one. All elements on the screen share the same voice, register, and assumed audience \u2014 no tonal gap between headline, body, and CTA.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context \u2014 it clearly knows what just happened"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking \u2014 not an adjacent question like how long it will take or how common it is"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing, commenting on, or editorializing about it from the outside \u2014 copy is in the moment, not above it"
+          },
+          {
+            "id": "voice_consistency",
+            "label": "All elements on the screen share the same voice, register, and assumed audience \u2014 no tonal gap between a system-label headline and a human-sounding body"
+          },
+          {
+            "id": "one_human_beat",
+            "label": "Contains at least one moment that sounds like something a real person would say out loud \u2014 offhand and plain, not performing conversational"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 8,
+    "source": "criteria_classification",
+    "writing_type": "product UI copy (fintech / payments)",
+    "user_goals_summary": "Writes product copy that feels calm, present, and written for the specific moment the user is in \u2014 not lifted from a pattern library. Values economy and precision but insists on at least one human beat per copy unit. Treats the user as a competent adult who needs clear direction, not coaching or cheerleading.",
+    "coaching_notes": "Non-negotiable: every piece of copy must be functionally self-contained, and CTAs must be clear about what clicking does \u2014 no cleverness, no metaphors, no session-specific framing that breaks on repeat visits. Trade-off pattern: will sacrifice brevity for a 'human beat' (one offhand, knowing line per unit) but will not sacrifice clarity for personality. Responds best to options presented with short rationales; iterates by describing what's wrong with increasing precision until the exact register clicks \u2014 expect many rounds on tonal nuance, especially for opening lines in error and empty states."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: what happened, why, what to do \u2014 in that order. Confirmation dialogs name the specific consequence. Empty states guide the user toward their first action rather than announcing absence. A user who sees only one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "error_what_why_what",
+            "label": "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy like 'Something went wrong'"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Each element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "empty_state_nudge",
+            "label": "Empty states direct the user toward their first action \u2014 they read as a helpful nudge, not a dead end or a system status label"
+          },
+          {
+            "id": "confirmation_specificity",
+            "label": "Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one escalating thought"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs describe what clicking achieves \u2014 which is sometimes an action the user came to take, not a state they'll arrive in afterward. Benefits are framed as what the user gains, not what they stop worrying about.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing, investigating, or narrating"
+          },
+          {
+            "id": "cta_names_outcome",
+            "label": "Button labels make clear what clicking achieves \u2014 prefer outcome framing unless the action itself is the outcome the user came to complete ('Start Sending Payments', 'Add Payee'); avoid labels like 'Set Up Payments' that imply more work remains or reframe the user's goal as configuration; no metaphors or clever wordplay"
+          },
+          {
+            "id": "cta_reusable_across_visits",
+            "label": "CTA labels remain accurate across repeat visits \u2014 no session-specific framing like 'Your First' that breaks on the second use"
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "active_voice",
+            "label": "Instructions use active voice \u2014 'Enter your account number' not 'Your account number should be entered'"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Tone shifts deliberately based on context. Celebratory or first-time moments can carry warmth. Error states should be calm and precise \u2014 never panicked, never dismissive. Routine actions should be nearly invisible. No marketing register inside the product. Applying the same tone everywhere feels robotic \u2014 the copy should match the emotional weight of the moment.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth \u2014 in body copy, headlines, and button labels alike"
+          },
+          {
+            "id": "calm_grounded",
+            "label": "Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic, not breezy"
+          },
+          {
+            "id": "context_appropriate_warmth",
+            "label": "First-time moments and celebratory moments are allowed to be warm \u2014 tone matches the emotional weight of the moment"
+          },
+          {
+            "id": "no_anxiety_injection",
+            "label": "Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "Product UI copy does not use promotional or marketing register \u2014 no superlatives, no value-prop language inside the flow"
+          },
+          {
+            "id": "new_1",
+            "label": "Routine, repetitive actions use copy that is as invisible as possible \u2014 no warmth or personality injected into mundane confirmations"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Terminology consistency",
+        "category": "Content",
+        "description": "The same thing is always called the same thing, everywhere in the flow. If the UI calls it a 'payment', no screen in the same flow calls it a 'transaction' or a 'transfer'. Inconsistent terminology creates silent doubt \u2014 the user wonders if these are different things. No placeholder text ships to production.",
+        "dimensions": [
+          {
+            "id": "new_2",
+            "label": "The same entity, action, or state uses the same label throughout the entire flow \u2014 no synonyms introduced mid-journey"
+          },
+          {
+            "id": "new_3",
+            "label": "No placeholder text ('Lorem ipsum', 'TBD', 'Label here') appears in any production-facing element"
+          },
+          {
+            "id": "new_4",
+            "label": "Terminology introduced in early steps is carried forward exactly \u2014 if step 1 says 'payee', step 3 does not say 'recipient'"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking, not an adjacent one. All elements on the screen share the same voice, register, and assumed audience \u2014 no tonal gap between headline, body, and CTA.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context \u2014 it clearly knows what just happened"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking \u2014 not an adjacent question like how long it will take or how common it is"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing, commenting on, or editorializing about it from the outside \u2014 copy is in the moment, not above it"
+          },
+          {
+            "id": "voice_consistency",
+            "label": "All elements on the screen share the same voice, register, and assumed audience \u2014 no tonal gap between a system-label headline and a human-sounding body"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 9,
+    "source": "user_log_changes",
+    "writing_type": "product UI copy (fintech / payments)",
+    "user_goals_summary": "Writes product copy that feels calm, present, and written for the specific moment the user is in \u2014 not lifted from a pattern library. Values economy and precision but insists on at least one human beat per copy unit. Treats the user as a competent adult who needs clear direction, not coaching or cheerleading.",
+    "coaching_notes": "Non-negotiable: every piece of copy must be functionally self-contained, and CTAs must be clear about what clicking does \u2014 no cleverness, no metaphors, no session-specific framing that breaks on repeat visits. Trade-off pattern: will sacrifice brevity for a 'human beat' (one offhand, knowing line per unit) but will not sacrifice clarity for personality. Responds best to options presented with short rationales; iterates by describing what's wrong with increasing precision until the exact register clicks \u2014 expect many rounds on tonal nuance, especially for opening lines in error and empty states."
+  },
+  {
+    "version": 10,
+    "writing_type": "product UI copy (fintech / payments)",
+    "user_goals_summary": "Writes UI copy for payment product flows \u2014 error states, empty states, confirmations \u2014 targeting busy, competent users (often small business owners). Values copy that is calm, precise, and contextually present: each element does its full job, knows what moment it's in, and assumes the user's real-world competence. Tonal precision is paramount \u2014 different elements on the same screen should do distinct emotional work, like the same voice shifting gears.",
+    "rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: what happened, why, what to do \u2014 in that order. Confirmation dialogs name the specific consequence. Empty states guide the user toward their first action rather than announcing absence. A user who sees only one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "error_what_why_what",
+            "label": "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy like 'Something went wrong'"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Each element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "empty_state_nudge",
+            "label": "Empty states direct the user toward their first action \u2014 they read as a helpful nudge, not a dead end or a system status label"
+          },
+          {
+            "id": "confirmation_specificity",
+            "label": "Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one escalating thought, not three separate ideas on the same screen"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Tone shifts deliberately based on context and position within a screen. First-time moments can carry warmth; error states should be calm and precise; routine actions should be nearly invisible. Elements on the same screen should do distinct emotional jobs \u2014 like the same voice shifting gears, not one flat temperature throughout. No marketing register inside the product.",
+        "dimensions": [
+          {
+            "id": "no_performative_tone",
+            "label": "Avoids pep-talk language, forced optimism, performative warmth, shrugs, and hedging \u2014 no 'you've got this,' no 'no worries,' no 'likely' covering the copy's confidence"
+          },
+          {
+            "id": "calm_error_states",
+            "label": "Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic, not breezy"
+          },
+          {
+            "id": "register_variation_within_screen",
+            "label": "Elements within a single screen do distinct emotional jobs \u2014 e.g., headline holds the warmth, body shifts to practical, CTA commits to action \u2014 same voice, different gears"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "Product UI copy does not use promotional register, superlatives, or value-prop language inside the flow"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine, repetitive actions use copy that is as invisible as possible \u2014 no warmth or personality injected into mundane confirmations"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking, not an adjacent one. It assumes the user's real-world competence and context rather than explaining their own domain to them.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context \u2014 it clearly knows what just happened and where the user is"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking \u2014 not an adjacent question like how long it will take, how common it is, or how easy it is"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing, commenting on, or editorializing about it from the outside \u2014 copy is in the moment, not above it looking down"
+          },
+          {
+            "id": "assumes_user_competence",
+            "label": "Treats the user as someone with existing knowledge and real-world context \u2014 a business owner who knows their vendors, not a persona being onboarded through a concept"
+          },
+          {
+            "id": "no_anxiety_injection",
+            "label": "Never introduces concerns the user wasn't already having \u2014 no preemptive framing around abandonment, difficulty, or failure"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs tell the user what happens when they click \u2014 defined from the user's perspective, not the system's. Sometimes the action itself IS the outcome ('Add a Payee'); sometimes the outcome is a capability being activated ('Start Sending Payments'). Never reframe the user's goal as configuration ('Set Up Payments').",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing, investigating, or narrating about the situation"
+          },
+          {
+            "id": "cta_names_what_happens",
+            "label": "Button labels tell the user what clicking achieves \u2014 the action itself when that IS the goal ('Add a Payee'), or the capability being unlocked ('Start Sending Payments'); never vague ('Try again'), never metaphorical ('Get Them Out of Your Head'), never system-framed ('Set Up Payments')"
+          },
+          {
+            "id": "cta_reusable_across_visits",
+            "label": "CTA labels remain accurate across repeat visits \u2014 no session-specific framing like 'Your First' that breaks on the second use"
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling \u2014 no away-from framing"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Payoffs land like an exhale, not a list item.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features \u2014 'After that, it just runs' over 'no due dates, no scrambles, nothing to remember'"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content \u2014 no lines that exist only to set up what follows"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Terminology consistency",
+        "category": "Content",
+        "description": "The same thing is always called the same thing, everywhere in the flow. If the UI calls it a 'payment', no screen in the same flow calls it a 'transaction' or a 'transfer'. Inconsistent terminology creates silent doubt \u2014 the user wonders if these are different things.",
+        "dimensions": [
+          {
+            "id": "same_label_throughout",
+            "label": "The same entity, action, or state uses the same label throughout the entire flow \u2014 no synonyms introduced mid-journey"
+          },
+          {
+            "id": "no_placeholder_text",
+            "label": "No placeholder text ('Lorem ipsum', 'TBD', 'Label here') appears in any production-facing element"
+          },
+          {
+            "id": "terminology_carried_forward",
+            "label": "Terminology introduced in early steps is carried forward exactly \u2014 if step 1 says 'payee', step 3 does not say 'recipient'"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user has extraordinarily precise tonal sensibility \u2014 they can feel the difference between 'plain' and 'clinical,' between 'warm' and 'cheerleading,' between 'present' and 'narrating.' They will often approve a line in isolation and then revisit it once they see it in context with the full screen unit; early approval is not final. When they say a CTA should 'name the outcome,' they mean the outcome as the USER defines it \u2014 which is sometimes the high-level action itself ('Start Sending Payments'), not a system-reframing of it ('Set Up Payments'). Their non-negotiable is that copy never feels lifted from a pattern library \u2014 every line must feel written for the specific person in the specific moment, without commentary, narration, or editorializing from the outside.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: what happened, why, what to do \u2014 in that order. Confirmation dialogs name the specific consequence. Empty states guide the user toward their first action rather than announcing absence. A user who sees only one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "error_what_why_what",
+            "label": "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy like 'Something went wrong'"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Each element makes sense and feels complete if the user never sees the next screen"
+          },
+          {
+            "id": "empty_state_nudge",
+            "label": "Empty states direct the user toward their first action \u2014 they read as a helpful nudge, not a dead end or a system status label"
+          },
+          {
+            "id": "confirmation_specificity",
+            "label": "Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'"
+          },
+          {
+            "id": "elements_cohere",
+            "label": "Headline, body, and CTA work as a single coherent unit \u2014 each does distinct work and together they form one escalating thought, not three separate ideas on the same screen"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs tell the user what happens when they click \u2014 defined from the user's perspective, not the system's. Sometimes the action itself IS the outcome ('Add a Payee'); sometimes the outcome is a capability being activated ('Start Sending Payments'). Never reframe the user's goal as configuration ('Set Up Payments').",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent acting, not the product assessing, investigating, or narrating about the situation"
+          },
+          {
+            "id": "cta_names_what_happens",
+            "label": "Button labels tell the user what clicking achieves \u2014 the action itself when that IS the goal ('Add a Payee'), or the capability being unlocked ('Start Sending Payments'); never vague ('Try again'), never metaphorical ('Get Them Out of Your Head'), never system-framed ('Set Up Payments')"
+          },
+          {
+            "id": "cta_reusable_across_visits",
+            "label": "CTA labels remain accurate across repeat visits \u2014 no session-specific framing like 'Your First' that breaks on the second use"
+          },
+          {
+            "id": "toward_framing",
+            "label": "Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling \u2014 no away-from framing"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Payoffs land like an exhale, not a list item.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed"
+          },
+          {
+            "id": "payoff_over_catalog",
+            "label": "When one strong closing statement can do the job, avoids expanding into a list of benefits or features \u2014 'After that, it just runs' over 'no due dates, no scrambles, nothing to remember'"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content \u2014 no lines that exist only to set up what follows"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Tone shifts deliberately based on context and position within a screen. First-time moments can carry warmth; error states should be calm and precise; routine actions should be nearly invisible. Elements on the same screen should do distinct emotional jobs \u2014 like the same voice shifting gears, not one flat temperature throughout. No marketing register inside the product.",
+        "dimensions": [
+          {
+            "id": "no_performative_tone",
+            "label": "Avoids pep-talk language, forced optimism, performative warmth, shrugs, and hedging \u2014 no 'you've got this,' no 'no worries,' no 'likely' covering the copy's confidence"
+          },
+          {
+            "id": "calm_error_states",
+            "label": "Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic, not breezy"
+          },
+          {
+            "id": "register_variation_within_screen",
+            "label": "Elements within a single screen do distinct emotional jobs \u2014 e.g., headline holds the warmth, body shifts to practical, CTA commits to action \u2014 same voice, different gears"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "Product UI copy does not use promotional register, superlatives, or value-prop language inside the flow"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine, repetitive actions use copy that is as invisible as possible \u2014 no warmth or personality injected into mundane confirmations"
+          }
+        ],
+        "priority": 4
+      }
+    ],
+    "version": 11,
+    "source": "criteria_classification",
+    "writing_type": "product UI copy (fintech / payments)",
+    "user_goals_summary": "Writes UI copy for payment product flows \u2014 error states, empty states, confirmations \u2014 targeting busy, competent users (often small business owners). Values copy that is calm, precise, and contextually present: each element does its full job, knows what moment it's in, and assumes the user's real-world competence. Tonal precision is paramount \u2014 different elements on the same screen should do distinct emotional work, like the same voice shifting gears.",
+    "coaching_notes": "This user has extraordinarily precise tonal sensibility \u2014 they can feel the difference between 'plain' and 'clinical,' between 'warm' and 'cheerleading,' between 'present' and 'narrating.' They will often approve a line in isolation and then revisit it once they see it in context with the full screen unit; early approval is not final. When they say a CTA should 'name the outcome,' they mean the outcome as the USER defines it \u2014 which is sometimes the high-level action itself ('Start Sending Payments'), not a system-reframing of it ('Set Up Payments'). Their non-negotiable is that copy never feels lifted from a pattern library \u2014 every line must feel written for the specific person in the specific moment, without commentary, narration, or editorializing from the outside."
+  }
+]

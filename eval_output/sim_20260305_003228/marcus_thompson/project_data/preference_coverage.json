@@ -1,0 +1,797 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly addresses section headers and document structure, requiring headers that describe actions/accomplishments."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 addresses code examples extensively, including how they should be structured and presented."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 mentions assuming prior context and not re-establishing boilerplate, which implies treating the reader as competent. However, the rubric doesn't explicitly state not to over-explain basic programming concepts."
+      },
+      {
+        "preference": "Assumes the reader is new to the specific system being documented (provides necessary system-specific context)",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Information Placement",
+        "explanation": "Criterion 2 mentions resolving setup questions and assumptions before code, and Criterion 4 mentions surrounding prose resolving context. But neither explicitly addresses the balance of providing system-specific context for newcomers to the system."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected and why they were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale",
+        "explanation": "Criterion 1 explicitly requires naming rejected alternatives for each major design choice and explaining why they were rejected."
+      },
+      {
+        "preference": "Code examples are minimal (no more than ~15 lines; surrounding prose handles the conceptual explanation)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 emphasizes showing only what is new, leaning on surrounding prose for explanation, and not repeating boilerplate\u2014all of which enforce minimal code examples."
+      },
+      {
+        "preference": "Code examples are runnable without extra imports, config, or boilerplate not shown",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 says examples assume prior context and that surrounding prose resolves any context the code needs. However, this doesn't explicitly require that examples are runnable as-is; it could mean context is explained in prose but not in the code itself."
+      },
+      {
+        "preference": "Code examples show the exact happy path",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses that code examples should demonstrate the happy path specifically."
+      },
+      {
+        "preference": "Every code example includes a one-line comment above it describing what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 explicitly states: 'Each code block opens with a one-line comment describing what the snippet accomplishes in plain language.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Placement",
+        "explanation": "Criterion 2 explicitly requires warnings and caveats to appear directly before the code or procedure they apply to."
+      },
+      {
+        "preference": "Headers tell a narrative story (e.g., 'Your First Authenticated Request') rather than using generic labels (e.g., 'Usage')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly requires headers that describe actions or accomplishments rather than passive labels, with similar examples."
+      },
+      {
+        "preference": "Document flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 requires the document to read as a linear journey, with sections pulling the reader forward progressively, which captures the tutorial-like flow."
+      },
+      {
+        "preference": "Avoids the word 'simply'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding specific minimizing words like 'simply'."
+      },
+      {
+        "preference": "Avoids the word 'just' (when used to minimize difficulty)",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding the word 'just' as a difficulty minimizer."
+      },
+      {
+        "preference": "Avoids the word 'easy'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding the word 'easy'."
+      },
+      {
+        "preference": "Avoids the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses avoiding the word 'straightforward'."
+      },
+      {
+        "preference": "Uses precise language describing what a command or action does and what it returns, rather than minimizing words",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Design Rationale",
+        "explanation": "Criterion 1 mentions not minimizing tradeoffs, and Criterion 4 mentions plain-language descriptions. But no criterion explicitly requires precise language about what commands do and return."
+      },
+      {
+        "preference": "Does not use a condescending tone",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses tone or condescension. While the narrative flow and competent-engineer assumptions are tangentially related, condescending tone is not directly addressed."
+      },
+      {
+        "preference": "Code snippets include sufficient surrounding context (what file, what function, what preconditions) so the reader knows where and how to use them",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 states 'Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, or configuration in the snippet' and examples start from the state after preceding sections."
+      },
+      {
+        "preference": "Does not present outdated information as if it is current",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Design Rationale",
+        "explanation": "Criterion 1 mentions rationale should reflect actual history and not reconstructed justification, which loosely touches on accuracy. But no criterion explicitly addresses ensuring information is current and not outdated."
+      },
+      {
+        "preference": "Avoids walls of text; content is broken into manageable, structured sections",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 requires organized sections with clear headers and progressive flow, which inherently addresses breaking content into manageable sections."
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 10,
+    "partially_covered_count": 5,
+    "not_covered_count": 6,
+    "coverage_score": 0.595,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-05T02:28:07.729142"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly mentions 'Prose is broken up with headers, lists, or code at a cadence that matches the density of information.' Criterion 3 also heavily addresses header usage and quality."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 extensively addresses code examples, their format, and their usage throughout the document."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly states 'Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows.'"
+      },
+      {
+        "preference": "Assumes the reader is new to the specific system being documented (provides necessary system-specific context)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 states 'treats the reader as a competent engineer who is new to this specific system' and 'explains system-specific behavior.'"
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected and why they were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Rejected Alternatives",
+        "explanation": "Criterion 1 is entirely devoted to this, requiring rejected alternatives to be explicitly named with explanations for each major design choice."
+      },
+      {
+        "preference": "Code examples are minimal (no more than ~15 lines; surrounding prose handles the conceptual explanation)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 explicitly states 'No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context.'"
+      },
+      {
+        "preference": "Code examples are runnable without extra imports, config, or boilerplate not shown",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 states 'they show the exact operation being discussed with no extra imports, config, or boilerplate' and 'Surrounding prose resolves any context the code needs \u2014 no unexplained addresses, credentials, or configuration in the snippet.'"
+      },
+      {
+        "preference": "Code examples show the exact happy path",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 says examples are 'minimal and focused' and show 'the exact operation being discussed,' which implies happy path, but the rubric never explicitly requires showing the happy path specifically."
+      },
+      {
+        "preference": "Every code example includes a one-line comment above it describing what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 explicitly states 'Each code block opens with a one-line comment describing everything the snippet does.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Placement",
+        "explanation": "Criterion 2 is entirely devoted to this, stating 'Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after.'"
+      },
+      {
+        "preference": "Headers tell a narrative story (e.g., 'Your First Authenticated Request') rather than using generic labels (e.g., 'Usage')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly states 'Section headers describe actions or accomplishments ('Get Your First Token Pair', 'Recover from an Expired Token') rather than passive labels ('Token Retrieval', 'Error Handling').'"
+      },
+      {
+        "preference": "Document flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 states 'The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic' and ensures progressive, tutorial-like flow."
+      },
+      {
+        "preference": "Avoids the word 'simply'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'simply' as a word to avoid."
+      },
+      {
+        "preference": "Avoids the word 'just' (when used to minimize difficulty)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'just' as a word to avoid."
+      },
+      {
+        "preference": "Avoids the word 'easy'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'easy' as a word to avoid."
+      },
+      {
+        "preference": "Avoids the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'straightforward' as a word to avoid."
+      },
+      {
+        "preference": "Uses precise language describing what a command or action does and what it returns, rather than minimizing words",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly states 'Uses action-result framing: describes what a command or call does and what it returns, not just what to run.'"
+      },
+      {
+        "preference": "Does not use a condescending tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 is explicitly titled 'Non-Condescending Language' and addresses tone by avoiding minimizing language and treating the reader as competent."
+      },
+      {
+        "preference": "Code snippets include sufficient surrounding context (what file, what function, what preconditions) so the reader knows where and how to use them",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 addresses this: 'Surrounding prose resolves any context the code needs' and 'Each example starts from the state the reader should have after following the preceding sections.' Criterion 2 also contributes with 'Prose resolves all setup questions and assumptions before code examples appear.'"
+      },
+      {
+        "preference": "Does not present outdated information as if it is current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses information currency, versioning, or the risk of presenting outdated information as current."
+      },
+      {
+        "preference": "Avoids walls of text; content is broken into manageable, structured sections",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 states 'Dense prose without structural relief is a hard failure' and 'Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text.'"
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 19,
+    "partially_covered_count": 1,
+    "not_covered_count": 1,
+    "coverage_score": 0.929,
+    "iteration": 2,
+    "rubric_version": 4,
+    "timestamp": "2026-03-05T02:38:37.150781"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly addresses section headers and document structure, and Criterion 5 mentions prose broken up with headers. Clear headers are implicitly required throughout."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 extensively discusses code examples, their format, and their role in the document. The rubric assumes code examples are present and governs their quality."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly states 'Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows.'"
+      },
+      {
+        "preference": "Assumes the reader is new to the specific system being documented (provides necessary system-specific context)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 states the reader is 'a competent engineer who is new to this specific system' and reads as 'institutional knowledge from someone who has operated the system,' implying system-specific context is provided."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected and why they were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Rejected Alternatives",
+        "explanation": "Criterion 1 is entirely dedicated to this, requiring that rejected alternatives are explicitly named for each major design or configuration choice with concrete evidence."
+      },
+      {
+        "preference": "Code examples are minimal (no more than ~15 lines; surrounding prose handles the conceptual explanation)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 explicitly states 'No code example exceeds 15 lines; if it does, surrounding prose needs to carry more context.'"
+      },
+      {
+        "preference": "Code examples are runnable without extra imports, config, or boilerplate not shown",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 states examples show 'no extra imports, config, or boilerplate' and surrounding prose resolves any needed context \u2014 'no unexplained addresses, credentials, variables, or configuration in the snippet.'"
+      },
+      {
+        "preference": "Code examples show the exact happy path",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 requires examples to be 'minimal and focused' showing 'the exact operation being discussed,' which implies the happy path. However, it doesn't explicitly state that examples should show the happy path specifically (as opposed to error paths)."
+      },
+      {
+        "preference": "Every code example includes a one-line comment above it describing what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 explicitly requires 'Each code block opens with a one-line comment describing everything the snippet does.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Placement",
+        "explanation": "Criterion 2 explicitly states 'Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after.'"
+      },
+      {
+        "preference": "Headers tell a narrative story (e.g., 'Your First Authenticated Request') rather than using generic labels (e.g., 'Usage')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly requires headers that 'describe actions or accomplishments' with examples like 'Get Your First Token Pair' rather than 'Token Retrieval.'"
+      },
+      {
+        "preference": "Document flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 states 'The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic' and requires progressive sequencing."
+      },
+      {
+        "preference": "Avoids the word 'simply'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'simply' among words to avoid."
+      },
+      {
+        "preference": "Avoids the word 'just' (when used to minimize difficulty)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'just' among words to avoid."
+      },
+      {
+        "preference": "Avoids the word 'easy'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'easy' among words to avoid."
+      },
+      {
+        "preference": "Avoids the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly lists 'straightforward' among words to avoid."
+      },
+      {
+        "preference": "Uses precise language describing what a command or action does and what it returns, rather than minimizing words",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 explicitly includes 'Uses action-result framing: describes what a command or call does and what it returns, not just what to run.'"
+      },
+      {
+        "preference": "Does not use a condescending tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 is titled 'Precise, Non-Condescending Language' and explicitly addresses avoiding language that 'make[s] the reader feel stupid when they struggle.'"
+      },
+      {
+        "preference": "Code snippets include sufficient surrounding context (what file, what function, what preconditions) so the reader knows where and how to use them",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 4 requires 'Surrounding prose resolves any context the code needs' and Criterion 2 requires 'Prose resolves all setup questions and assumptions before code examples appear \u2014 no unexplained variables or config values in snippets.'"
+      },
+      {
+        "preference": "Does not present outdated information as if it is current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion in the rubric addresses information currency, version accuracy, or the avoidance of presenting outdated information as current."
+      },
+      {
+        "preference": "Avoids walls of text; content is broken into manageable, structured sections",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 5 states 'Dense prose without structural relief is a hard failure' and includes the dimension 'Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text.'"
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 19,
+    "partially_covered_count": 1,
+    "not_covered_count": 1,
+    "coverage_score": 0.929,
+    "iteration": 3,
+    "rubric_version": 6,
+    "timestamp": "2026-03-05T02:46:13.448727"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly addresses section headers and their role in structuring the document, and Criterion 4 mentions breaking prose with headers, lists, or code."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 extensively discusses code examples, their format, and their role in the document. The rubric assumes code examples are present and governs their quality."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly states 'Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows.'"
+      },
+      {
+        "preference": "Assumes the reader is new to the specific system being documented (provides necessary system-specific context)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 states the reader is 'a competent engineer who is new to this specific system' and that the doc should 'explain system-specific behavior.'"
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected and why they were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Rejected Alternatives",
+        "explanation": "Criterion 1 is entirely dedicated to this preference, requiring that rejected alternatives are explicitly named with concrete failure stories."
+      },
+      {
+        "preference": "Code examples are minimal (no more than ~15 lines; surrounding prose handles the conceptual explanation)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 explicitly states 'No code example exceeds 15 lines; if it does, the surrounding prose needs to carry more context.'"
+      },
+      {
+        "preference": "Code examples are runnable without extra imports, config, or boilerplate not shown",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 states examples show 'no extra imports, config, or boilerplate' and that surrounding prose resolves context before code appears, with no unexplained variables or config."
+      },
+      {
+        "preference": "Code examples show the exact happy path",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 explicitly states 'they show the exact happy path for the operation being discussed.'"
+      },
+      {
+        "preference": "Every code example includes a one-line comment above it describing what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 explicitly states 'Every example opens with a one-line plain-language comment that covers the full scope of what the block does.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Placement",
+        "explanation": "Criterion 2 is largely dedicated to this preference: 'Warnings, caveats, and prerequisites appear immediately before the content they govern \u2014 never after.'"
+      },
+      {
+        "preference": "Headers tell a narrative story (e.g., 'Your First Authenticated Request') rather than using generic labels (e.g., 'Usage')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly requires headers that 'describe actions or accomplishments' with examples like 'Get Your First Token Pair' and rejects passive labels."
+      },
+      {
+        "preference": "Document flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 requires 'a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic' and that the document reads as 'a progressive sequence.'"
+      },
+      {
+        "preference": "Avoids the word 'simply'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'simply' among words to avoid."
+      },
+      {
+        "preference": "Avoids the word 'just' (when used to minimize difficulty)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'just' among words to avoid."
+      },
+      {
+        "preference": "Avoids the word 'easy'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'easy' among words to avoid."
+      },
+      {
+        "preference": "Avoids the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'straightforward' among words to avoid."
+      },
+      {
+        "preference": "Uses precise language describing what a command or action does and what it returns, rather than minimizing words",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly requires 'action-result framing: describes what a command or call does and what it returns, not just what to run.'"
+      },
+      {
+        "preference": "Does not use a condescending tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 is titled 'Precise, Non-Condescending Language' and explicitly addresses tone, avoiding words that 'make the reader feel stupid when they struggle.'"
+      },
+      {
+        "preference": "Code snippets include sufficient surrounding context (what file, what function, what preconditions) so the reader knows where and how to use them",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 addresses this through 'Surrounding prose resolves any context the code needs before it appears' and Criterion 2 requires that 'Prose resolves all setup questions and assumptions before code examples appear.'"
+      },
+      {
+        "preference": "Does not present outdated information as if it is current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses the currency or freshness of information, version awareness, or avoidance of outdated content."
+      },
+      {
+        "preference": "Avoids walls of text; content is broken into manageable, structured sections",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly states 'Dense prose without structural relief is a hard failure' and 'Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text.'"
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 20,
+    "partially_covered_count": 0,
+    "not_covered_count": 1,
+    "coverage_score": 0.952,
+    "iteration": 4,
+    "rubric_version": 11,
+    "timestamp": "2026-03-05T03:03:46.669906"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 extensively addresses headers, requiring them to describe actions/accomplishments. Criterion 4 also mentions breaking prose with headers. Both ensure clear header structure."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 extensively covers code examples, their structure, and their role in the document. The rubric assumes code examples are present and governs their quality."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer (does not over-explain basic programming concepts)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly states 'Assumes engineering competence \u2014 explains system-specific behavior, not general concepts the audience already knows.'"
+      },
+      {
+        "preference": "Assumes the reader is new to the specific system being documented (provides necessary system-specific context)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly states the reader is 'new to this specific system \u2014 not new to engineering' and requires explaining 'system-specific behavior.'"
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected and why they were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Design Rationale with Rejected Alternatives",
+        "explanation": "Criterion 2 is entirely dedicated to this preference, requiring rejected alternatives to be explicitly named with concrete rationale for why they were rejected."
+      },
+      {
+        "preference": "Code examples are minimal (no more than ~15 lines; surrounding prose handles the conceptual explanation)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 explicitly states 'No code example exceeds 15 lines; if it does, the surrounding prose needs to carry more context.'"
+      },
+      {
+        "preference": "Code examples are runnable without extra imports, config, or boilerplate not shown",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 addresses this: 'they show the exact happy path for the operation being discussed with no extra imports, config, or boilerplate' and 'Surrounding prose resolves any context the code needs before it appears.'"
+      },
+      {
+        "preference": "Code examples show the exact happy path",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 explicitly states examples 'show the exact happy path for the operation being discussed.'"
+      },
+      {
+        "preference": "Every code example includes a one-line comment above it describing what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 explicitly requires 'Each code block opens with a one-line comment describing everything the snippet does.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Information Placement",
+        "explanation": "Criterion 1 is entirely dedicated to this, stating 'Warnings, caveats, consequences, and prerequisites appear immediately before the content they govern \u2014 never after.'"
+      },
+      {
+        "preference": "Headers tell a narrative story (e.g., 'Your First Authenticated Request') rather than using generic labels (e.g., 'Usage')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 explicitly requires headers that 'describe actions or accomplishments' with examples like 'Get Your First Token Pair' rather than passive labels like 'Token Retrieval.'"
+      },
+      {
+        "preference": "Document flows like a tutorial even when serving as reference material",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action-Oriented Narrative Flow",
+        "explanation": "Criterion 3 requires 'The document reads as a linear journey through what the engineer is doing at each stage, not a reference manual organized by topic' and 'Sections connect to each other so the document reads as a progressive sequence.'"
+      },
+      {
+        "preference": "Avoids the word 'simply'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'simply' among words to avoid: \"Avoids 'simply', 'just', 'easy', 'straightforward'.\""
+      },
+      {
+        "preference": "Avoids the word 'just' (when used to minimize difficulty)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'just' among minimizing language to avoid."
+      },
+      {
+        "preference": "Avoids the word 'easy'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'easy' among words to avoid."
+      },
+      {
+        "preference": "Avoids the word 'straightforward'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly lists 'straightforward' among words to avoid."
+      },
+      {
+        "preference": "Uses precise language describing what a command or action does and what it returns, rather than minimizing words",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly requires 'action-result framing: describes what a command or call does and what it returns, not just what to run.'"
+      },
+      {
+        "preference": "Does not use a condescending tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 is titled 'Precise, Non-Condescending Language' and explicitly addresses this by avoiding minimizing words and treating the reader as competent."
+      },
+      {
+        "preference": "Code snippets include sufficient surrounding context (what file, what function, what preconditions) so the reader knows where and how to use them",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Code Example Economy",
+        "explanation": "Criterion 5 addresses this via 'Examples include enough structural context (parent keys, indentation hierarchy) that a reader can copy the block directly into their own file' and 'Surrounding prose resolves any context the code needs before it appears.' Criterion 1 also requires 'Prose resolves all setup questions and assumptions before code examples appear.'"
+      },
+      {
+        "preference": "Does not present outdated information as if it is current",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses information currency, versioning, or the risk of presenting outdated information as current."
+      },
+      {
+        "preference": "Avoids walls of text; content is broken into manageable, structured sections",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Precise, Non-Condescending Language",
+        "explanation": "Criterion 4 explicitly states 'Dense prose without structural relief is a hard failure' and requires 'Prose is broken up with headers, lists, or code at a cadence that matches the density of information \u2014 no walls of text.'"
+      }
+    ],
+    "total_preferences": 21,
+    "covered_count": 20,
+    "partially_covered_count": 0,
+    "not_covered_count": 1,
+    "coverage_score": 0.952,
+    "iteration": 5,
+    "rubric_version": 13,
+    "timestamp": "2026-03-05T03:15:34.085367"
+  }
+]

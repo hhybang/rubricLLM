@@ -38,6 +38,7 @@ class Persona:
     hidden_preferences: str      # latent preferences (emerge through feedback)
     dealbreakers: str            # hard rejections
     initial_task: str            # first writing request
+    tasks: Optional[list] = None  # pre-defined writing tasks (used in simulation)
     gold_draft: Optional[str] = None  # hand-authored ideal draft; auto-generated if absent
 
     @classmethod

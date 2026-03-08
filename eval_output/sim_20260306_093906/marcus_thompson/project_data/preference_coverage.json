@@ -1,0 +1,422 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers",
+        "explanation": "The 'Intent-Signaling Headers' criterion directly addresses header usage, though it goes beyond just 'clear' to require narrative signaling. Headers that signal intent are inherently clear and structural."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "The 'Minimal Happy-Path Code' criterion assumes code examples are present and specifies how they should be constructed. The rubric implicitly requires code examples where relevant."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "The 'Minimal Happy-Path Code' criterion implies a competent reader by requiring compact code without scaffolding. 'Design Rationale Over Feature Description' also assumes engineering competence. However, no criterion explicitly addresses the audience assumption of competence."
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system and provides appropriate context",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "The 'Rejected-Alternative Framing' and 'Design Rationale Over Feature Description' criteria provide context through explaining design choices and reasoning. However, no criterion explicitly addresses onboarding a reader new to the specific system."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "The 'Rejected-Alternative Framing' criterion directly requires naming the alternative that was not chosen."
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "The dimension 'States concretely why the alternative falls short or creates problems' directly covers this preference."
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "The 'Minimal Happy-Path Code' criterion explicitly requires compact code and the dimension 'Code is tight enough to drop into a codebase without stripping scaffolding' directly addresses no unnecessary boilerplate."
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "The criterion title and dimension 'Code shows one usage path \u2014 the most common one \u2014 and nothing else' directly covers showing the exact happy path."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "The 'Prose-Code Non-Redundancy' criterion actively discourages explanatory comments in code if already covered by prose. The 'Minimal Happy-Path Code' mentions inline comments for data structures/response shapes but not a requirement for every example to have a one-line explanatory comment. This preference is arguably contradicted rather than covered."
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Operational Warnings Surfaced Early",
+        "explanation": "The dimension 'Known footguns appear before the code block they relate to' directly covers placing warnings before the relevant section."
+      },
+      {
+        "preference": "Headers tell a story and flow like a tutorial narrative, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers",
+        "explanation": "The 'Intent-Signaling Headers' criterion explicitly requires headers to signal narrative through-line and avoids generic labels, directly matching this preference."
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when it is reference material",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Intent-Signaling Headers",
+        "explanation": "The 'Intent-Signaling Headers' criterion addresses narrative flow in headers, and 'Design Rationale Over Feature Description' encourages explanatory prose. However, no criterion explicitly requires the overall document to flow like a tutorial even when serving as reference material."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'easy')",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion in the rubric addresses language tone or the avoidance of minimizing/trivializing words."
+      }
+    ],
+    "total_preferences": 13,
+    "covered_count": 8,
+    "partially_covered_count": 3,
+    "not_covered_count": 2,
+    "coverage_score": 0.731,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-06T11:07:18.977544"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 3 explicitly addresses headers and their role in structuring the document, going beyond just 'clear' to require narrative-driven headers."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 6 addresses code examples extensively, specifying how they should be structured and what they should contain."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 5 explicitly states 'Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system.'"
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system and provides appropriate context",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 5 explicitly states the reader is 'simply unfamiliar with this specific system' and the documentation should not abandon them."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "Criterion 1 is entirely about naming rejected alternatives when explaining design choices."
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "Criterion 1 dimension explicitly requires stating 'concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits.'"
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 6 dimension explicitly states 'No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated.'"
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 6 addresses showing 'the single most common usage path' and code that is 'tight enough to drop into a codebase,' implying runnability and happy path focus."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 6 dimension explicitly requires 'exactly one comment providing the most useful contextual fact not already in the prose.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Operational Warnings Surfaced Early",
+        "explanation": "Criterion 2 explicitly states 'footguns and failure modes are placed prominently before the code a reader will copy' and 'Known footguns appear before the code block they relate to.'"
+      },
+      {
+        "preference": "Headers tell a story and flow like a tutorial narrative, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 3 explicitly requires headers that 'signal the section's argument or narrative through-line' and 'read sequentially as a coherent narrative arc.'"
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when it is reference material",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 3 addresses narrative flow through headers and mentions tutorial-like structure, but does not explicitly address making reference material flow like a tutorial in the prose body itself. The concept is partially captured through the header narrative requirement."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'easy')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 5 explicitly addresses this: 'does not use minimizing language \u2014 words like simply, just, obviously, or easy that make a struggling reader feel at fault.'"
+      }
+    ],
+    "total_preferences": 13,
+    "covered_count": 12,
+    "partially_covered_count": 1,
+    "not_covered_count": 0,
+    "coverage_score": 0.962,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 2,
+    "rubric_version": 5,
+    "timestamp": "2026-03-06T11:15:04.533992"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 5 explicitly addresses headers and their role in structuring the document, though it goes further by requiring narrative intent."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 4 addresses the inclusion and form of code examples, specifying they should show the most common usage path."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 6 explicitly states 'Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system.'"
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system and provides appropriate context",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 6 explicitly states the reader is 'simply unfamiliar with this specific system,' capturing the intent of providing context for newcomers to the system."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "Criterion 1 is entirely focused on naming rejected alternatives when explaining design choices."
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "Criterion 1 dimension explicitly requires 'States concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits.'"
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 4 dimension explicitly states 'No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated.'"
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 4 addresses showing 'the single most common usage path' and requires commands to be 'copy-pasteable as-is,' capturing runnability and happy path."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 4 dimension explicitly requires 'Each command or logical unit carries a short orientation comment so a skimmer knows what it does at a glance' and marks this as 'non-negotiable.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Operational Warnings and Diagnostic Forks Surfaced Early",
+        "explanation": "Criterion 3 explicitly requires 'Known footguns appear before the code block they relate to, not buried in a separate troubleshooting section.'"
+      },
+      {
+        "preference": "Headers tell a story and flow like a tutorial narrative, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 5 explicitly requires 'Headers read sequentially as a coherent narrative arc' and that they 'should read like a table of contents for a tutorial.'"
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when it is reference material",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 5 mentions tutorial-like flow in headers and narrative arc, but the broader requirement that the entire document (prose, structure, all elements) flows like a tutorial even when serving as reference material is not fully captured \u2014 only the header aspect is addressed."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'easy')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 6 dimension explicitly states 'Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity.'"
+      }
+    ],
+    "total_preferences": 13,
+    "covered_count": 12,
+    "partially_covered_count": 1,
+    "not_covered_count": 0,
+    "coverage_score": 0.962,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 3,
+    "rubric_version": 8,
+    "timestamp": "2026-03-06T11:27:46.154103"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses clear headers to structure the document",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 4 explicitly addresses headers and their role in structuring the document, going beyond just 'clear' to require narrative intent."
+      },
+      {
+        "preference": "Includes code examples where relevant to the topic",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 5 addresses code examples extensively, specifying how they should be structured and included."
+      },
+      {
+        "preference": "Assumes the reader is a competent engineer",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 6 explicitly states 'Assumes engineering competence \u2014 does not over-explain general concepts unrelated to this specific system.'"
+      },
+      {
+        "preference": "Assumes the reader is new to this specific system and provides appropriate context",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 6 explicitly states the reader is 'simply unfamiliar with this specific system,' capturing this preference directly."
+      },
+      {
+        "preference": "Architectural decision explanations include what alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "Criterion 1 is entirely about naming rejected alternatives in architectural explanations."
+      },
+      {
+        "preference": "Architectural decision explanations include why the rejected alternatives were rejected",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Rejected-Alternative Framing",
+        "explanation": "Criterion 1 explicitly requires stating 'concretely why the alternative falls short \u2014 not just that it was rejected, but what specific failure it permits.'"
+      },
+      {
+        "preference": "Code examples are minimal \u2014 no unnecessary imports, config, or boilerplate",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 5 has a dimension: 'No unnecessary imports, config setup, or boilerplate that isn't central to the point being demonstrated.'"
+      },
+      {
+        "preference": "Code examples are runnable and show the exact happy path",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 5 addresses both runnability ('Runnable commands are not interleaved with inline output annotations \u2014 commands must be copy-pasteable as-is') and happy path ('Code shows one usage path \u2014 the most common one \u2014 and nothing else')."
+      },
+      {
+        "preference": "Every code example includes a one-line comment explaining what it does",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Minimal Happy-Path Code",
+        "explanation": "Criterion 5 has an explicit dimension: 'Each command or logical unit carries a short orientation comment so a skimmer knows what it does at a glance \u2014 this exists for navigation, not elaboration, and is required even when prose covers the topic.'"
+      },
+      {
+        "preference": "Warnings and pitfalls are placed before the section where the reader would encounter the problem, not after",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Operational Warnings and Diagnostic Forks Surfaced Early",
+        "explanation": "Criterion 2 explicitly states 'Known footguns appear before the code block they relate to' and 'Documentation that surfaces a caveat after the reader has already copy-pasted the code has already failed.'"
+      },
+      {
+        "preference": "Headers tell a story and flow like a tutorial narrative, not just label sections",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 4 explicitly requires headers to 'read sequentially as a coherent narrative arc' and 'signal the section's argument or narrative through-line.'"
+      },
+      {
+        "preference": "Documentation flows like a tutorial even when it is reference material",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Intent-Signaling Headers That Tell a Story",
+        "explanation": "Criterion 4 mentions headers reading like a 'table of contents for a tutorial' and narrative flow, but this preference is about the overall documentation prose flowing like a tutorial, not just the headers. The rubric doesn't explicitly address prose flow between sections as tutorial-like for reference material."
+      },
+      {
+        "preference": "Avoids minimizing language that trivializes complexity (e.g., 'simply', 'just', 'easy')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Respects the Reader's Intelligence Without Abandoning Them",
+        "explanation": "Criterion 6 has an explicit dimension: 'Does not use minimizing language ('simply,' 'just,' 'obviously,' 'easy') that trivializes genuine complexity.'"
+      }
+    ],
+    "total_preferences": 13,
+    "covered_count": 12,
+    "partially_covered_count": 1,
+    "not_covered_count": 0,
+    "coverage_score": 0.962,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 4,
+    "rubric_version": 11,
+    "timestamp": "2026-03-06T11:39:15.318821"
+  }
+]

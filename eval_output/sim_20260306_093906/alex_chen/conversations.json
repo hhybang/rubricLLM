@@ -1,0 +1,1590 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "--- Iteration 1/4 ---",
+      "iteration": 1
+    },
+    {
+      "role": "user",
+      "content": "```json\n{\n  \"message\": \"Hey, I need help drafting an email to our engineering team about pushing our product launch back two weeks \u2014 we caught a critical bug in testing that we can't ship with. I want it to be straightforward and professional, not sugarcoated, but also not panic-inducing. Can you draft something for me?\"\n}\n```"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>\nSubject: Product Launch Timeline Update \u2014 2-Week Delay\n\nHi team,\n\nI want to give you a heads-up on a change to our launch timeline.\n\nDuring testing, we identified a critical bug that we're not comfortable shipping. Rather than push forward and deal with the fallout post-launch, we're moving the release date back by two weeks to give us the time needed to fix it properly and validate the fix.\n\nNew target launch date: **[Date]**\n\nThis wasn't a decision we made lightly, but it's the right call. Shipping broken software would cost us more \u2014 in time, trust, and resources \u2014 than a short delay will.\n\nHere's what I need from the team in the meantime:\n\n- **[Bug owner / relevant team]** \u2014 continued focus on the fix and keeping us updated on progress\n- **[QA]** \u2014 plan for re-testing once the fix is in\n- **[Everyone else]** \u2014 hold your launch-related work where it is; we'll sync on any adjustments needed\n\nI'll be looping in [stakeholders / other teams] separately. If you have questions or concerns, bring them to me directly \u2014 I'd rather address them head-on than have them linger.\n\nThanks for staying focused. Let's use these two weeks well.\n\n[Your name]\n</draft>\n\nA few notes on the choices I made:\n\n- **No hedging language** \u2014 I avoided phrases like \"minor setback\" or \"abundance of caution\" that can feel patronizing or evasive to engineers who already know the stakes.\n- **The rationale is explicit** \u2014 Engineers respond better to clear reasoning than to top-down decisions that feel arbitrary.\n- **Action items are concrete** \u2014 Placeholder brackets are there so you can drop in real names and owners, which signals accountability.\n\nWant me to adjust the tone (more direct, warmer, etc.), add any detail about the bug itself, or rework any section?"
+    },
+    {
+      "role": "user",
+      "content": "The ending is where this loses me. 'Thanks for staying focused. Let's use these two weeks well.' \u2014 that's the kind of thing you say to wrap up a town hall, not an operational email. It just kind of... deflates. By the time I get to the bottom I've already absorbed the news and I'm ready to act, and then the email just sighs at me instead of pointing somewhere. Can you tighten that up?"
+    },
+    {
+      "role": "assistant",
+      "content": "Good call. The ending should hand off momentum, not exhale it. Here are a few options depending on how you want to land it:\n\n**Option 1 \u2014 Direct close, no filler:**\n*Questions or concerns, bring them to me directly. More to come once we have a fix timeline confirmed.*\n\n**Option 2 \u2014 Close with a clear next step:**\n*I'll send a follow-up once the fix is confirmed and we have a locked timeline. Questions before then, come to me directly.*\n\n**Option 3 \u2014 Slightly warmer but still operational:**\n*I'll keep you updated as the fix progresses. In the meantime, if something's blocking you or you have questions, come find me.*\n\nAll three cut the motivational sign-off and replace it with either a concrete next action or a clear point of contact \u2014 something the reader can actually do with. Option 1 is the leanest, Option 2 is good if you want to explicitly set expectations on when you'll communicate next, and Option 3 works if your team dynamic calls for a slightly more open-door feel.\n\nWhich direction fits best?"
+    },
+    {
+      "role": "user",
+      "content": "Option 2 works. New launch is November 14th, and Marcus is the lead on the bug fix \u2014 so anything technical should go to him. Can you fold that in?"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>\nSubject: Product Launch Timeline Update \u2014 2-Week Delay\n\nHi team,\n\nI want to give you a heads-up on a change to our launch timeline.\n\nDuring testing, we identified a critical bug that we're not comfortable shipping. Rather than push forward and deal with the fallout post-launch, we're moving the release date back by two weeks to give us the time needed to fix it properly and validate the fix.\n\nNew target launch date: **November 14th**\n\nThis wasn't a decision we made lightly, but it's the right call. Shipping broken software would cost us more \u2014 in time, trust, and resources \u2014 than a short delay will.\n\nHere's what I need from the team in the meantime:\n\n- **Marcus** \u2014 leading the fix; technical questions should go directly to him\n- **[QA]** \u2014 plan for re-testing once the fix is in\n- **[Everyone else]** \u2014 hold your launch-related work where it is; we'll sync on any adjustments needed\n\nI'll be looping in [stakeholders / other teams] separately. I'll send a follow-up once the fix is confirmed and we have a locked timeline. Questions before then, come to me directly.\n\n[Your name]\n</draft>\n\nThe main changes: date is filled in, Marcus is named with a clear lane (technical questions route to him, non-technical still come to you), and the new ending drops in cleanly. Still a few brackets left for you to fill \u2014 QA owner and any stakeholders you're notifying separately."
+    },
+    {
+      "role": "user",
+      "content": "Getting closer, but that bullet list near the bottom is still bothering me. Right now it reads like I'm assigning homework to three different groups, including an '[Everyone else]' catch-all that isn't really an action \u2014 it's just a vague hold. In practice, the only person with a real job here is Marcus. Everyone else is just... waiting. I'd rather the email reflect that: Marcus owns the fix, and I'll come back to the team when there's something concrete to act on. The list is adding noise where there isn't actually a multi-party action to coordinate."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>\nSubject: Product Launch Timeline Update \u2014 2-Week Delay\n\nHi team,\n\nI want to give you a heads-up on a change to our launch timeline.\n\nDuring testing, we identified a critical bug that we're not comfortable shipping. Rather than push forward and deal with the fallout post-launch, we're moving the release date back by two weeks to give us the time needed to fix it properly and validate the fix.\n\nNew target launch date: **November 14th**\n\nThis wasn't a decision we made lightly, but it's the right call. Shipping broken software would cost us more \u2014 in time, trust, and resources \u2014 than a short delay will.\n\nMarcus is leading the fix. Technical questions should go to him directly. I'll be looping in [stakeholders / other teams] separately, and I'll send a follow-up once we have a confirmed timeline. Questions before then, come to me directly.\n\n[Your name]\n</draft>\n\nThe list is gone. Marcus gets a clear lane, you hold the non-technical line of contact, and the follow-up promise does the work the \"[Everyone else]\" bullet was trying to do \u2014 without pretending there's an action where there isn't one. Tighter overall."
+    },
+    {
+      "role": "user",
+      "content": "Almost there. The middle paragraph \u2014 where you explain why the delay is the right call \u2014 still reads like it's justifying the decision from my end. 'This would cost us more in time, trust, and resources' is my reasoning, not theirs. The team has been building toward November, probably coordinating with other people, blocking off time. The 'why' should land for them, not for me. Once that flips, I think this is done."
+    },
+    {
+      "role": "assistant",
+      "content": "Good instinct \u2014 the paragraph is currently facing inward when it should be facing outward. A few ways to reframe it:\n\n**Option 1 \u2014 Acknowledge their investment directly:**\n*You've all been building toward this date, and I know a delay has real downstream effects on your work. Shipping a critical bug would create more of that disruption, not less \u2014 so two weeks now is the cleaner path.*\n\n**Option 2 \u2014 Shorter, assumes shared understanding:**\n*A two-week slip is disruptive, and I know that. But shipping this and dealing with it post-launch would cost everyone more.*\n\n**Option 3 \u2014 Leanest, no acknowledgment, just the logic from their perspective:**\n*Catching this now means two weeks of disruption instead of a much messier situation on the other side of launch.*\n\nOption 1 explicitly names their experience before making the case. Option 2 is a bit more peer-to-peer \u2014 \"I know that, you know that, here's the tradeoff.\" Option 3 skips the acknowledgment entirely and just reframes the delay as the better outcome for everyone, not a judgment call you're defending. Which register feels right for how you normally communicate with this team?"
+    },
+    {
+      "role": "user",
+      "content": "Option 1 lands better \u2014 it names their experience specifically instead of just gesturing at disruption. Go with that and put the full draft together."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>\nSubject: Product Launch Timeline Update \u2014 2-Week Delay\n\nHi team,\n\nI want to give you a heads-up on a change to our launch timeline.\n\nDuring testing, we identified a critical bug that we're not comfortable shipping. Rather than push forward and deal with the fallout post-launch, we're moving the release date back by two weeks to give us the time needed to fix it properly and validate the fix.\n\nNew target launch date: **November 14th**\n\nYou've all been building toward this date, and I know a delay has real downstream effects on your work. Shipping a critical bug would create more of that disruption, not less \u2014 so two weeks now is the cleaner path.\n\nMarcus is leading the fix. Technical questions should go to him directly. I'll be looping in [stakeholders / other teams] separately, and I'll send a follow-up once we have a confirmed timeline. Questions before then, come to me directly.\n\n[Your name]\n</draft>\n\nThat's the full draft with everything folded in. Only remaining placeholder is the stakeholders line \u2014 fill that in or cut it if it's not relevant to this audience. Otherwise I think this is ready."
+    },
+    {
+      "role": "user",
+      "content": "This is really close. The middle paragraph finally reads the way I wanted it to \u2014 it's their experience, not my reasoning. And the close is tight.\n\nThe one thing that's still soft: Marcus is named, but there's no time peg on him. Right now it reads like 'go to Marcus if you have questions,' which is just a redirect, not an ownership statement. I want people to know Marcus is actively working this and when they can expect to hear something \u2014 even a rough window. Something like 'Marcus is targeting a fix by [date]' would do it. Right now he's listed but not really in charge of anything the reader can hold onto."
+    },
+    {
+      "role": "assistant",
+      "content": "Easy fix \u2014 just need one piece of information from you: what's Marcus's target date for the fix? Once you give me that, I can drop it in and the draft is done."
+    },
+    {
+      "role": "user",
+      "content": "Marcus is targeting end of day November 7th for the fix \u2014 that gives us a week to validate before the 14th. Go ahead and fold that in."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>\nSubject: Product Launch Timeline Update \u2014 2-Week Delay\n\nHi team,\n\nI want to give you a heads-up on a change to our launch timeline.\n\nDuring testing, we identified a critical bug that we're not comfortable shipping. Rather than push forward and deal with the fallout post-launch, we're moving the release date back by two weeks to give us the time needed to fix it properly and validate the fix.\n\nNew target launch date: **November 14th**\n\nYou've all been building toward this date, and I know a delay has real downstream effects on your work. Shipping a critical bug would create more of that disruption, not less \u2014 so two weeks now is the cleaner path.\n\nMarcus is leading the fix and is targeting end of day November 7th. Technical questions should go to him directly. I'll be looping in [stakeholders / other teams] separately, and I'll send a follow-up once we have a confirmed timeline. Questions before then, come to me directly.\n\n[Your name]\n</draft>\n\nMarcus now has a date attached to his name, so he reads as actively accountable rather than just a contact to route questions to. The validation window is implicit in the gap between the 7th and the 14th \u2014 you don't need to spell it out, but anyone doing the math will see it. Ready to send whenever you are."
+    },
+    {
+      "role": "user",
+      "content": "The Marcus section is almost exactly right \u2014 naming him with a deadline is exactly what I wanted. But that line right after, 'I'll be looping in [stakeholders / other teams] separately' \u2014 I'd cut it entirely. It's not an action anyone on this team needs to know about, and it kind of implies there's a whole separate conversation happening that they're not part of. If I need to communicate with other groups, I'll do that separately. This email doesn't need to announce that. Just let the Marcus line and the follow-up close carry the weight \u2014 they're doing the job already."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>\nSubject: Product Launch Timeline Update \u2014 2-Week Delay\n\nHi team,\n\nI want to give you a heads-up on a change to our launch timeline.\n\nDuring testing, we identified a critical bug that we're not comfortable shipping. Rather than push forward and deal with the fallout post-launch, we're moving the release date back by two weeks to give us the time needed to fix it properly and validate the fix.\n\nNew target launch date: **November 14th**\n\nYou've all been building toward this date, and I know a delay has real downstream effects on your work. Shipping a critical bug would create more of that disruption, not less \u2014 so two weeks now is the cleaner path.\n\nMarcus is leading the fix and is targeting end of day November 7th. Technical questions should go to him directly. I'll send a follow-up once we have a confirmed timeline. Questions before then, come to me directly.\n\n[Your name]\n</draft>\n\nClean cut. The closing now moves straight from Marcus's deadline to your follow-up commitment \u2014 no detours. I think this one's done."
+    },
+    {
+      "role": "user",
+      "content": "This is it. The middle paragraph finally does what I needed \u2014 it's about what the team was working toward, not about our decision-making process. Marcus having a hard date on him makes the ownership real, not just a redirect. And the close doesn't trail off. Send it."
+    },
+    {
+      "role": "system",
+      "content": "--- Iteration 2/4 ---",
+      "iteration": 2
+    },
+    {
+      "role": "user",
+      "content": "Hey, I need to send an email to a key customer \u2014 Priya at Northfield Logistics \u2014 letting her know that a feature she requested six months ago is finally shipping next week. The tricky part is she's been waiting a long time and I want to acknowledge that without being overly apologetic or making it weird. She'll need to coordinate with her IT team to enable it, so there's a clear action item on her end. Can you draft something short \u2014 two or three paragraphs?"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: [Feature Name] shipping next week \u2014 action needed from your IT team\n\nHi Priya,\n\nThe feature you requested back in March is shipping next week, and I wanted to make sure you had enough lead time to get ahead of it. You've been waiting on this for a while, and I know you've had to work around its absence \u2014 that changes on [specific date].\n\nTo turn it on, your IT team will need to enable it in your account settings before [deadline date]. I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.\n\nI'll follow up on [date] to confirm everything is live. Reach me at [email/phone] if anything comes up before then.</draft>",
+      "is_alignment_start_draft": true
+    },
+    {
+      "role": "user",
+      "content": "This is pretty close to what I was picturing, but something feels missing in the middle. After you tell her it's shipping, the email just moves straight to the action item \u2014 and I keep waiting for a sentence that lands the 'so what.' Like, why does this actually matter to her right now? She's been waiting six months, presumably because this was blocking something real for her team. That context deserves a beat. Right now it reads like we're just announcing a release, not connecting it back to her world."
+    },
+    {
+      "role": "assistant",
+      "content": "Good instinct. The middle paragraph is doing logistics when it should be doing value. Here's a revised version that adds that beat between the announcement and the action item:\n\n<draft>Subject: [Feature Name] shipping next week \u2014 action needed from your IT team\n\nHi Priya,\n\nThe feature you requested back in March is shipping next week, and I wanted to make sure you had enough lead time to get ahead of it. You've been waiting on this for a while, and I know you've had to work around its absence \u2014 that changes on [specific date].\n\n[Feature Name] will let your team [do the specific thing she's been unable to do] \u2014 which means [the downstream thing that was blocked or harder without it]. That's the gap this closes.\n\nTo turn it on, your IT team will need to enable it in your account settings before [deadline date]. I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.\n\nI'll follow up on [date] to confirm everything is live. Reach me at [email/phone] if anything comes up before then.</draft>\n\nThe bracketed sentence in the second paragraph is intentionally left for you to fill in \u2014 the specifics of what she's been blocked from doing will make or break that line. A placeholder like \"manage carrier assignments in bulk\" or \"reconcile billing without the manual export step\" would do a lot more work than anything generic I could write in."
+    },
+    {
+      "role": "system",
+      "content": "**Rubric Changes have been made:**\n- **Added:** \"Emotional Arc and Sequencing\"\n- **Added:** \"Single Owner, Scoped Accountability\"\n- **Removed:** \"Concrete Accountability\"\n- **Reweighted:** \"Audience-Facing Reasoning\" (1 \u2192 2)\n- **Reweighted:** \"Operational Endings\" (2 \u2192 3)\n- **Reweighted:** \"Direct, Non-Alarmist Tone\" (4 \u2192 5)\n- **Reweighted:** \"Signal-to-Noise Discipline\" (5 \u2192 6)\n- **Reweighted:** \"Lean Structure\" (6 \u2192 7)\n- **Reworded:** \"Operational Endings\" description changed\n- **Dimensions:** \"Operational Endings\" (+Nothing follows the CTA \u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail)\n<!--RUBRIC_EDIT_LOG:{\"version_from\": 2, \"version_to\": \"2*\", \"edits\": {\"added\": [{\"name\": \"Emotional Arc and Sequencing\", \"description\": \"The email must follow a specific order: acknowledge the situation or effort first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \\u2014 sequence is the structure.\", \"weight\": 1}, {\"name\": \"Single Owner, Scoped Accountability\", \"description\": \"When action is needed from multiple people, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \\u2014 ownership should be clear without being presumptuous about how teams operate.\", \"weight\": 4}], \"removed\": [{\"name\": \"Concrete Accountability\", \"description\": \"When someone is named as responsible, they must carry a deliverable and a time peg. A name without a deadline is a redirect, not an ownership statement. The reader should be able to hold the named person to something specific.\"}], \"reweighted\": [{\"name\": \"Audience-Facing Reasoning\", \"old_weight\": 1, \"new_weight\": 2}, {\"name\": \"Operational Endings\", \"old_weight\": 2, \"new_weight\": 3}, {\"name\": \"Direct, Non-Alarmist Tone\", \"old_weight\": 4, \"new_weight\": 5}, {\"name\": \"Signal-to-Noise Discipline\", \"old_weight\": 5, \"new_weight\": 6}, {\"name\": \"Lean Structure\", \"old_weight\": 6, \"new_weight\": 7}], \"reworded\": [{\"name\": \"Operational Endings\", \"field\": \"description\", \"old\": \"Closings should hand off momentum with a concrete next step, a follow-up commitment, or a clear point of contact. The reader finishes the email knowing what happens next \\u2014 not sighing through a motivational sign-off.\", \"new\": \"Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \\u2014 no thanks, no encouragement, no trailing sentiment.\"}], \"dimensions_changed\": [{\"name\": \"Operational Endings\", \"added_dims\": [\"Nothing follows the CTA \\u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail\"], \"removed_dims\": []}]}, \"source\": \"simulation_log_changes\"}-->"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: [Feature Name] shipping next week \u2014 action needed\n\nHi Priya,\n\nYou've been waiting on this since March, and it's almost here.\n\n[Feature Name] is shipping on [specific date]. It will let your team [do the specific thing she's been unable to do], which means [the downstream thing that was blocked or harder without it] \u2014 that's the gap this closes.\n\nTo turn it on, someone on your side will need to enable it in your account settings before [deadline date]. I can send the setup documentation directly to whoever handles that \u2014 just let me know.\n\nI'll follow up on [date] to confirm everything is live \u2014 or reach me at [email/phone] if anything comes up before then.</draft>\n\n*Draft updated based on rubric changes.*",
+      "rubric_revision": {
+        "change_summary": "The new top-priority criterion, 'Emotional Arc and Sequencing,' required the most changes: the two-sentence opening acknowledgment was compressed to one sentence (the sequence rule caps it there), and the closing was restructured so a single concrete next step is the last line with nothing trailing after it. The updated 'Operational Endings' criterion added an explicit 'no trailing sentiment' rule, which prompted collapsing the two-sentence close into one line that combines the follow-up commitment and contact information. Finally, the renamed 'Single Owner, Scoped Accountability' criterion added a 'no_org_overreach' dimension \u2014 directing Priya to have 'your IT team' handle setup was reframed so it doesn't presume how her org is structured.",
+        "annotated_changes": [
+          {
+            "original_text": "action needed from your IT team",
+            "new_text": "action needed",
+            "reason": "Single Owner, Scoped Accountability (new dimension 'no_org_overreach'): the subject line named 'your IT team' specifically, which presumes org structure the sender shouldn't dictate; removed to keep routing neutral"
+          },
+          {
+            "original_text": "The feature you requested back in March is shipping next week, and I wanted to make sure you had enough lead time to get ahead of it. You've been waiting on this for a while, and I know you've had to work around its absence \u2014 that changes on [specific date].",
+            "new_text": "You've been waiting on this since March, and it's almost here.",
+            "reason": "Emotional Arc and Sequencing (new criterion, dimension 'acknowledgment_is_brief'): the original opening acknowledgment was two sentences and blended acknowledgment with news delivery; compressed to one sentence of pure acknowledgment so the news can land separately in the next paragraph"
+          },
+          {
+            "original_text": "[Feature Name] will let your team",
+            "new_text": "[Feature Name] is shipping on [specific date]. It will let your team",
+            "reason": "Emotional Arc and Sequencing (new dimension 'news_before_why'): the actual news \u2014 the specific ship date \u2014 was buried in the first paragraph rather than stated as its own beat before the rationale; moved to open the second paragraph so news precedes the 'why it matters' explanation"
+          },
+          {
+            "original_text": "[Feature Name] will let",
+            "new_text": "It will let",
+            "reason": "Emotional Arc and Sequencing (new dimension 'news_before_why'): the feature name now opens its own sentence stating the date; 'It' continues the paragraph naturally without repeating the name"
+          },
+          {
+            "original_text": "[do the specific thing she's been unable to do],",
+            "new_text": "[do the specific thing she's been unable to do] \u2014",
+            "reason": "Signal-to-Noise Discipline (dimension 'nothing_vestigial'): minor punctuation adjustment to match em-dash cadence already established in the sentence; improves rhythm with no content change"
+          },
+          {
+            "original_text": "your IT team will need to",
+            "new_text": "someone on your side will need to",
+            "reason": "Single Owner, Scoped Accountability (new dimension 'no_org_overreach'): 'your IT team' presumes which function handles account settings; 'someone on your side' keeps ownership clear without dictating org structure"
+          },
+          {
+            "original_text": "I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.",
+            "new_text": "I can send the setup documentation directly to whoever handles that \u2014 just let me know.",
+            "reason": "Single Owner, Scoped Accountability (new dimension 'no_org_overreach'): 'send them' still implied 'IT team' as the referent; 'whoever handles that' keeps the offer open without presupposing the recipient's org structure. Also removes 'I'm happy to' hedging filler per Direct, Non-Alarmist Tone."
+          },
+          {
+            "original_text": "I'll follow up on [date] to confirm everything is live. Reach me at [email/phone] if anything comes up before then.",
+            "new_text": "I'll follow up on [date] to confirm everything is live \u2014 or reach me at [email/phone] if anything comes up before then.",
+            "reason": "Operational Endings (updated description + new dimension 'no_trailing_sentiment'): the two-sentence close created two separate next steps; consolidating into one sentence with an em-dash satisfies the 'one_next_step_closes' dimension from Emotional Arc and Sequencing and ensures the email ends on a single, clean CTA with nothing trailing after it"
+          }
+        ],
+        "original_draft": "Subject: [Feature Name] shipping next week \u2014 action needed from your IT team\n\nHi Priya,\n\nThe feature you requested back in March is shipping next week, and I wanted to make sure you had enough lead time to get ahead of it. You've been waiting on this for a while, and I know you've had to work around its absence \u2014 that changes on [specific date].\n\n[Feature Name] will let your team [do the specific thing she's been unable to do] \u2014 which means [the downstream thing that was blocked or harder without it]. That's the gap this closes.\n\nTo turn it on, your IT team will need to enable it in your account settings before [deadline date]. I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.\n\nI'll follow up on [date] to confirm everything is live. Reach me at [email/phone] if anything comes up before then.",
+        "old_rubric": [
+          {
+            "name": "Audience-Facing Reasoning",
+            "category": "Audience",
+            "description": "When explaining a decision, the reasoning should land for the reader \u2014 framed around their experience, their investment, and the impact on their work \u2014 not as a defense of the sender's decision-making process.",
+            "dimensions": [
+              {
+                "id": "names_reader_experience",
+                "label": "Explicitly acknowledges what the audience has been doing, expecting, or working toward"
+              },
+              {
+                "id": "rationale_faces_outward",
+                "label": "The 'why' is framed in terms of outcomes for the reader, not justification for the sender"
+              },
+              {
+                "id": "no_defensive_posture",
+                "label": "Avoids language that reads as defending or justifying the decision to the sender's own benefit"
+              },
+              {
+                "id": "specific_not_gestural",
+                "label": "References the reader's situation with specificity rather than vague gestures at disruption or inconvenience"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Operational Endings",
+            "category": "Structure",
+            "description": "Closings should hand off momentum with a concrete next step, a follow-up commitment, or a clear point of contact. The reader finishes the email knowing what happens next \u2014 not sighing through a motivational sign-off.",
+            "dimensions": [
+              {
+                "id": "ends_with_next_action",
+                "label": "The final lines contain a concrete next step, follow-up commitment, or clear contact channel"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No town-hall-style encouragement, rallying language, or inspirational closings"
+              },
+              {
+                "id": "momentum_preserved",
+                "label": "The ending maintains or accelerates the pace of the email rather than deflating it"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Concrete Accountability",
+            "category": "Content",
+            "description": "When someone is named as responsible, they must carry a deliverable and a time peg. A name without a deadline is a redirect, not an ownership statement. The reader should be able to hold the named person to something specific.",
+            "dimensions": [
+              {
+                "id": "owner_has_deadline",
+                "label": "Every named owner has a specific target date or timeframe attached"
+              },
+              {
+                "id": "owner_has_deliverable",
+                "label": "Every named owner has a clear deliverable or scope of responsibility stated"
+              },
+              {
+                "id": "contact_routing_clear",
+                "label": "It's clear who to go to for what \u2014 routing is explicit, not implied"
+              },
+              {
+                "id": "accountability_not_redirect",
+                "label": "Named individuals read as actively owning work, not just serving as a contact redirect"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Direct, Non-Alarmist Tone",
+            "category": "Style",
+            "description": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases ('minor setback,' 'abundance of caution') that feel patronizing, and no alarm language that induces panic. State the situation plainly.",
+            "dimensions": [
+              {
+                "id": "no_hedging_minimizers",
+                "label": "Avoids softening phrases that downplay the situation or feel evasive"
+              },
+              {
+                "id": "no_alarm_language",
+                "label": "Avoids catastrophizing or panic-inducing framing"
+              },
+              {
+                "id": "plain_factual_framing",
+                "label": "States the situation, its cause, and its implications in plain, factual terms"
+              },
+              {
+                "id": "respects_reader_intelligence",
+                "label": "Trusts the reader to understand stakes without being told how to feel about them"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Signal-to-Noise Discipline",
+            "category": "Content",
+            "description": "Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists.",
+            "dimensions": [
+              {
+                "id": "actionable_for_audience",
+                "label": "Every piece of information included is something the recipient needs or can act on"
+              },
+              {
+                "id": "no_phantom_actions",
+                "label": "No action items or assignments directed at people who don't actually have a concrete task"
+              },
+              {
+                "id": "no_internal_narration",
+                "label": "Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience"
+              },
+              {
+                "id": "nothing_vestigial",
+                "label": "No sentences or sections that remain simply because they seem expected \u2014 every element earns its place"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Lean Structure",
+            "category": "Structure",
+            "description": "Prefer prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist.",
+            "dimensions": [
+              {
+                "id": "format_matches_complexity",
+                "label": "Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items"
+              },
+              {
+                "id": "no_catch_all_buckets",
+                "label": "No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure"
+              },
+              {
+                "id": "prose_when_sufficient",
+                "label": "Uses inline prose rather than lists when there are fewer than three genuinely distinct action items"
+              }
+            ],
+            "priority": 6
+          }
+        ],
+        "new_rubric": [
+          {
+            "name": "Emotional Arc and Sequencing",
+            "category": "Structure",
+            "description": "The email must follow a specific order: acknowledge the situation or effort first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \u2014 sequence is the structure.",
+            "dimensions": [
+              {
+                "id": "acknowledgment_comes_first",
+                "label": "Opens with a brief acknowledgment of the reader's situation, effort, or context \u2014 not the news itself"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "The opening acknowledgment is one sentence max \u2014 does not linger or over-explain"
+              },
+              {
+                "id": "news_before_why",
+                "label": "The actual news or decision is stated before the rationale, not buried after it"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "Stakes or context are explained before the call to action, not after"
+              },
+              {
+                "id": "one_next_step_closes",
+                "label": "A single concrete next step closes the email \u2014 not a summary, not a sentiment"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Audience-Facing Reasoning",
+            "category": "Audience",
+            "description": "When explaining a decision, the reasoning should land for the reader \u2014 framed around their experience, their investment, and the impact on their work \u2014 not as a defense of the sender's decision-making process.",
+            "dimensions": [
+              {
+                "id": "names_reader_experience",
+                "label": "Explicitly acknowledges what the audience has been doing, expecting, or working toward"
+              },
+              {
+                "id": "rationale_faces_outward",
+                "label": "The 'why' is framed in terms of outcomes for the reader, not justification for the sender"
+              },
+              {
+                "id": "no_defensive_posture",
+                "label": "Avoids language that reads as defending or justifying the decision to the sender's own benefit"
+              },
+              {
+                "id": "specific_not_gestural",
+                "label": "References the reader's situation with specificity rather than vague gestures at disruption or inconvenience"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Operational Endings",
+            "category": "Structure",
+            "description": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment.",
+            "dimensions": [
+              {
+                "id": "ends_with_next_action",
+                "label": "The final lines contain a concrete next step, follow-up commitment, or clear contact channel"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No town-hall-style encouragement, rallying language, or inspirational closings"
+              },
+              {
+                "id": "no_trailing_sentiment",
+                "label": "Nothing follows the CTA \u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail"
+              },
+              {
+                "id": "momentum_preserved",
+                "label": "The ending maintains or accelerates the pace of the email rather than deflating it"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Single Owner, Scoped Accountability",
+            "category": "Content",
+            "description": "When action is needed from multiple people, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \u2014 ownership should be clear without being presumptuous about how teams operate.",
+            "dimensions": [
+              {
+                "id": "one_owner_per_ask",
+                "label": "Each action item has a single named or clearly implied owner, not a group"
+              },
+              {
+                "id": "owner_has_deadline",
+                "label": "Every named owner has a specific target date or timeframe attached"
+              },
+              {
+                "id": "owner_has_deliverable",
+                "label": "Every named owner has a clear deliverable or scope of responsibility stated"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "No 'everyone please...' or collective action items that diffuse responsibility"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or prescribe org structure details the sender shouldn't be specifying"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Direct, Non-Alarmist Tone",
+            "category": "Style",
+            "description": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases ('minor setback,' 'abundance of caution') that feel patronizing, and no alarm language that induces panic. State the situation plainly.",
+            "dimensions": [
+              {
+                "id": "no_hedging_minimizers",
+                "label": "Avoids softening phrases that downplay the situation or feel evasive"
+              },
+              {
+                "id": "no_alarm_language",
+                "label": "Avoids catastrophizing or panic-inducing framing"
+              },
+              {
+                "id": "plain_factual_framing",
+                "label": "States the situation, its cause, and its implications in plain, factual terms"
+              },
+              {
+                "id": "respects_reader_intelligence",
+                "label": "Trusts the reader to understand stakes without being told how to feel about them"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Signal-to-Noise Discipline",
+            "category": "Content",
+            "description": "Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists.",
+            "dimensions": [
+              {
+                "id": "actionable_for_audience",
+                "label": "Every piece of information included is something the recipient needs or can act on"
+              },
+              {
+                "id": "no_phantom_actions",
+                "label": "No action items or assignments directed at people who don't actually have a concrete task"
+              },
+              {
+                "id": "no_internal_narration",
+                "label": "Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience"
+              },
+              {
+                "id": "nothing_vestigial",
+                "label": "No sentences or sections that remain simply because they seem expected \u2014 every element earns its place"
+              }
+            ],
+            "priority": 6
+          },
+          {
+            "name": "Lean Structure",
+            "category": "Structure",
+            "description": "Prefer prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist.",
+            "dimensions": [
+              {
+                "id": "format_matches_complexity",
+                "label": "Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items"
+              },
+              {
+                "id": "no_catch_all_buckets",
+                "label": "No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure"
+              },
+              {
+                "id": "prose_when_sufficient",
+                "label": "Uses inline prose rather than lists when there are fewer than three genuinely distinct action items"
+              }
+            ],
+            "priority": 7
+          }
+        ]
+      }
+    },
+    {
+      "role": "user",
+      "content": "Here's my feedback on the draft edits:\n- Edit \"[do the specific thing she's been unable to do],\" \u2192 \"[do the specific thing she's been unable to do] \u2014\": The em-dash here feels like it's adding drama where there isn't any. A comma was fine \u2014 it's a list item, not a pivot point. Swapping punctuation for 'cadence' reasons when there's no actual rhythm problem is just tinkering for its own sake."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: [Feature Name] shipping next week \u2014 action needed from your IT team\n\nHi Priya,\n\nYou've been waiting on this since March, and it's finally here: [Feature Name] ships on [specific date].\n\nThis means your team can [do the specific thing she's been unable to do] \u2014 and [the downstream thing that was blocked or harder without it] is no longer a workaround.\n\nTo turn it on, your IT admin will need to enable it in your account settings before [deadline date]. I'm happy to send the setup documentation directly to them if that's easier \u2014 just say the word.\n\nI'll follow up on [date] to confirm everything is live \u2014 or reach me at [email/phone] if anything comes up before then.</draft>\n\n*Draft updated based on accepted rubric suggestion.*",
+      "is_post_apply_draft": true
+    },
+    {
+      "role": "assistant",
+      "content": "[Error generating response]"
+    },
+    {
+      "role": "user",
+      "content": "The feature is called Route Optimization Rules, it's shipping Tuesday the 15th, and the deadline for IT to enable it is end of day Thursday the 17th so she doesn't lose the first week of availability. The core value is that her team can now set custom routing logic without manual overrides \u2014 which I know was creating bottlenecks in their dispatch workflow. Go ahead and plug those in."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Route Optimization Rules shipping Tuesday \u2014 action needed from your IT team by Thursday\n\nHi Priya,\n\nYou've been waiting on this since March, and it's finally here: Route Optimization Rules ships Tuesday the 15th.\n\nThis means your team can set custom routing logic without manual overrides \u2014 which should clear the bottlenecks that have been slowing down your dispatch workflow.\n\nTo turn it on, your IT admin will need to enable it in your account settings by end of day Thursday the 17th \u2014 otherwise you'll lose the first week of availability. I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.\n\nI'll follow up on Friday the 18th to confirm everything is live. Reach me at [email/phone] if anything comes up before then.</draft>"
+    },
+    {
+      "role": "user",
+      "content": "This is really close. The one thing that still bothers me is the action item paragraph \u2014 'your IT admin' feels like I'm telling her who owns this inside her company, and I genuinely don't know that. Priya might be the one who routes this, or it might go to someone with a totally different title. I'd rather the ask land on her to get the right person moving, without me naming a role I'm just guessing at."
+    },
+    {
+      "role": "assistant",
+      "content": "Good catch \u2014 that's exactly what the \"no org overreach\" criterion is for. Here's the fix:\n\n<draft>Subject: Route Optimization Rules shipping Tuesday \u2014 action needed from your IT team by Thursday\n\nHi Priya,\n\nYou've been waiting on this since March, and it's finally here: Route Optimization Rules ships Tuesday the 15th.\n\nThis means your team can set custom routing logic without manual overrides \u2014 which should clear the bottlenecks that have been slowing down your dispatch workflow.\n\nTo turn it on, whoever handles your account settings on the IT side will need to enable it by end of day Thursday the 17th \u2014 otherwise you'll lose the first week of availability. I'm happy to send the setup documentation directly to them if that's easier \u2014 just say the word.\n\nI'll follow up on Friday the 18th to confirm everything is live. Reach me at [email/phone] if anything comes up before then.</draft>"
+    },
+    {
+      "role": "user",
+      "content": "Yeah, this one's good. The action item fix landed exactly right \u2014 it puts the ball in Priya's court without me pretending I know her org chart. The whole thing flows the way I wanted: acknowledgment, news, why it matters to her, what she needs to do. I'd send this."
+    },
+    {
+      "role": "system",
+      "content": "--- Iteration 3/4 ---",
+      "iteration": 3
+    },
+    {
+      "role": "user",
+      "content": "Hey, I need to draft a quick email to a vendor \u2014 we use their API for document parsing and their support team just told me response times are going to degrade by roughly 40% starting next month due to infrastructure changes on their end. I need to let our internal customer success team know so they can set expectations with clients before anyone gets blindsided. Keep it short \u2014 two or three paragraphs max."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Heads up \u2014 API response time degradation starting next month\n\nYou've been managing client expectations around document parsing turnaround, so I want to get this to you before it becomes a surprise.\n\nOur document parsing vendor notified us that their infrastructure changes will slow API response times by roughly 40% beginning next month. That means any client workflow that depends on near-real-time parsing \u2014 automated ingestion, time-sensitive review queues \u2014 will see a noticeable slowdown. The degradation comes from their end, and they haven't given us a rollback timeline.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?</draft>",
+      "is_alignment_start_draft": true
+    },
+    {
+      "role": "user",
+      "content": "The middle paragraph is where I keep stalling. It tells me what's happening \u2014 40%, infrastructure changes, no rollback timeline \u2014 but it doesn't quite connect to why this is a problem *for the CS team*. Like, the 'so what' from their seat is missing. They're the ones who'll get client calls when SLAs feel off or a workflow breaks unexpectedly. That's the thing that should land before I ask them to do anything. Right now it reads more like a status update than a heads-up that something they care about is at risk."
+    },
+    {
+      "role": "assistant",
+      "content": "Good catch \u2014 the middle paragraph is doing reporter work when it should be doing advocate work. Here's a revision that leads with the CS team's exposure before the technical detail:\n\n<draft>Subject: Heads up \u2014 API response time degradation starting next month\n\nYou've been managing client expectations around document parsing turnaround, so I want to get this to you before it becomes a surprise.\n\nOur document parsing vendor notified us that API response times will slow by roughly 40% starting next month. Before that hits, you need to be ahead of it \u2014 clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared. The change is on the vendor's end with no rollback timeline, which means this is the new baseline for the foreseeable future.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?</draft>"
+    },
+    {
+      "role": "user",
+      "content": "Getting closer \u2014 the CTA is clean and the 'calls will come to you' framing is exactly right. The thing that's still a little off for me is the opening line. 'So I want to get this to you before it becomes a surprise' \u2014 that's about me, not them. It's a small thing but it sets a slightly self-congratulatory tone before the email even gets going. The acknowledgment should land on their situation, not on my intentions."
+    },
+    {
+      "role": "assistant",
+      "content": "Agreed \u2014 the opening should put them in the frame, not you. A few options for that first line:\n\nOption 1: \"You're the first point of contact when client workflows break, so this is yours to get ahead of.\"\n\nOption 2: \"Client-facing SLA conversations land on your team, so this one's time-sensitive.\"\n\nOption 3: \"Your team will be fielding the fallout if clients aren't prepared for this \u2014 here's what's coming.\"\n\nOption 1 is the most grounded in their role. Option 3 is blunter but might feel slightly adversarial depending on your relationship with this team. Option 2 is the most neutral."
+    },
+    {
+      "role": "user",
+      "content": "Option 1 feels right \u2014 \"you're the first point of contact when client workflows break\" is grounded without being dramatic. Go with that and pull the full email together for me."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Heads up \u2014 API response time degradation starting next month\n\nYou're the first point of contact when client workflows break, so this is yours to get ahead of.\n\nOur document parsing vendor notified us that API response times will slow by roughly 40% starting next month. Before that hits, you need to be ahead of it \u2014 clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared. The change is on the vendor's end with no rollback timeline, which means this is the new baseline for the foreseeable future.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?</draft>"
+    },
+    {
+      "role": "system",
+      "content": "**Rubric Changes have been made:**\n- **Reweighted:** \"Operational Endings\" (4 \u2192 3)\n- **Reweighted:** \"Single Owner, Scoped Accountability\" (3 \u2192 4)\n- **Reweighted:** \"Signal-to-Noise Discipline\" (6 \u2192 5)\n- **Reweighted:** \"Direct, Non-Alarmist Tone\" (5 \u2192 6)\n- **Reworded:** \"Audience-Facing Reasoning\" description changed\n- **Reworded:** \"Operational Endings\" description changed\n- **Reworded:** \"Direct, Non-Alarmist Tone\" description changed\n- **Reworded:** \"Lean Structure\" description changed\n- **Dimensions:** \"Operational Endings\" (+The CTA is forward-looking \u2014 it points to what happens next, not back to what just happened)\n- **Dimensions:** \"Direct, Non-Alarmist Tone\" (+No excessive exclamation marks \u2014 punctuation matches the actual energy level of the content)\n- **Dimensions:** \"Lean Structure\" (+Paragraphs are short \u2014 no walls of text; each paragraph carries one idea)\n<!--RUBRIC_EDIT_LOG:{\"version_from\": 5, \"version_to\": \"5*\", \"edits\": {\"added\": [], \"removed\": [], \"reweighted\": [{\"name\": \"Operational Endings\", \"old_weight\": 4, \"new_weight\": 3}, {\"name\": \"Single Owner, Scoped Accountability\", \"old_weight\": 3, \"new_weight\": 4}, {\"name\": \"Signal-to-Noise Discipline\", \"old_weight\": 6, \"new_weight\": 5}, {\"name\": \"Direct, Non-Alarmist Tone\", \"old_weight\": 5, \"new_weight\": 6}], \"reworded\": [{\"name\": \"Audience-Facing Reasoning\", \"field\": \"description\", \"old\": \"When explaining a decision or delivering news, the 'so what' should land for the reader \\u2014 framed around their experience, their investment, and the impact on their work. This applies to both bad news (why a delay is the right tradeoff for them) and good news (why an announcement matters to their specific situation). Not a defense of the sender's process.\", \"new\": \"When explaining a decision or delivering news, the 'so what' should land for the reader \\u2014 framed around their experience, their investment, and the impact on their work. Not a defense of the sender's process. 'This matters because your team planned around this date' not 'This matters because we want quality.'\"}, {\"name\": \"Operational Endings\", \"field\": \"description\", \"old\": \"Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \\u2014 no thanks, no encouragement, no trailing sentiment.\", \"new\": \"Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \\u2014 no thanks, no encouragement, no trailing sentiment. 'Thanks for your patience' is not a closing.\"}, {\"name\": \"Direct, Non-Alarmist Tone\", \"field\": \"description\", \"old\": \"Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases ('minor setback,' 'abundance of caution') that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \\u2014 don't add dramatic emphasis to routine elements.\", \"new\": \"Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content.\"}, {\"name\": \"Lean Structure\", \"field\": \"description\", \"old\": \"Prefer prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \\u2014 bullet lists, tables, numbered steps \\u2014 that implies more moving parts than actually exist.\", \"new\": \"Prefer short paragraphs and prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \\u2014 bullet lists, tables, numbered steps \\u2014 that implies more moving parts than actually exist.\"}], \"dimensions_changed\": [{\"name\": \"Operational Endings\", \"added_dims\": [\"The CTA is forward-looking \\u2014 it points to what happens next, not back to what just happened\"], \"removed_dims\": []}, {\"name\": \"Direct, Non-Alarmist Tone\", \"added_dims\": [\"No excessive exclamation marks \\u2014 punctuation matches the actual energy level of the content\"], \"removed_dims\": []}, {\"name\": \"Lean Structure\", \"added_dims\": [\"Paragraphs are short \\u2014 no walls of text; each paragraph carries one idea\"], \"removed_dims\": []}]}, \"source\": \"simulation_log_changes\"}-->"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Heads up \u2014 API response time degradation starting next month\n\nYou're the first point of contact when client workflows break, so this is yours to get ahead of.\n\nOur document parsing vendor notified us that API response times will slow by roughly 40% starting next month. The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline.\n\nClients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared.\n\nFlag the accounts most likely to feel this and reach out to them by end of next week.</draft>\n\n*Draft updated based on rubric changes.*",
+      "rubric_revision": {
+        "change_summary": "The updated rubric raised Operational Endings to priority #3 and added a new dimension requiring the CTA to be forward-looking, not backward-looking \u2014 the closing question was rewritten to point clearly toward what happens next (outreach to flagged accounts) rather than leaving the action open-ended. The new Lean Structure dimension requiring short paragraphs with one idea each led to splitting the dense middle paragraph into two. The Audience-Facing Reasoning description now explicitly warns against sender-justifying language, which prompted tightening the rationale sentence to keep focus on client impact rather than internal process.",
+        "annotated_changes": [
+          {
+            "original_text": "Before that hits, you need to be ahead of it \u2014 clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared. The change is on the vendor's end with no rollback timeline, which means this is the new baseline for the foreseeable future.",
+            "new_text": "The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline.",
+            "reason": "Lean Structure (new dimension 'new_3': paragraphs are short, each carries one idea): the original paragraph was combining the vendor fact, the client-impact reasoning, and the baseline conclusion into one wall of text. The client-impact sentence was separated into its own paragraph; redundant framing ('Before that hits, you need to be ahead of it') and filler ('for the foreseeable future') were cut to keep this paragraph to a single idea."
+          },
+          {
+            "original_text": "",
+            "new_text": "Clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared.",
+            "reason": "Lean Structure (new dimension 'new_3': paragraphs are short, each carries one idea): the audience-impact reasoning was split into its own paragraph so each paragraph carries exactly one idea \u2014 the vendor news, then the reader-facing consequence, then the action."
+          },
+          {
+            "original_text": "Can you flag the accounts most likely to feel this and reach out to them by end of next week?",
+            "new_text": "Flag the accounts most likely to feel this and reach out to them by end of next week.",
+            "reason": "Operational Endings (new dimension 'new_1': CTA is forward-looking, pointing to what happens next): phrasing it as a question softens the close and introduces uncertainty. A direct imperative is unambiguously forward-looking and hands off momentum cleanly, per the updated Operational Endings criterion."
+          }
+        ],
+        "original_draft": "Subject: Heads up \u2014 API response time degradation starting next month\n\nYou're the first point of contact when client workflows break, so this is yours to get ahead of.\n\nOur document parsing vendor notified us that API response times will slow by roughly 40% starting next month. Before that hits, you need to be ahead of it \u2014 clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared. The change is on the vendor's end with no rollback timeline, which means this is the new baseline for the foreseeable future.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?",
+        "old_rubric": [
+          {
+            "name": "Emotional Arc and Sequencing",
+            "category": "Structure",
+            "description": "The email must follow a specific order: acknowledge the reader's situation or effort first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \u2014 sequence is the structure.",
+            "dimensions": [
+              {
+                "id": "acknowledgment_comes_first",
+                "label": "Opens with a brief acknowledgment of the reader's situation, effort, or context \u2014 not the news itself"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "The opening acknowledgment is one sentence max \u2014 does not linger or over-explain"
+              },
+              {
+                "id": "news_before_why",
+                "label": "The actual news or decision is stated before the rationale, not buried after it"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "The 'so what' \u2014 stakes, value, or context \u2014 is explained before the call to action, not after"
+              },
+              {
+                "id": "one_next_step_closes",
+                "label": "A single concrete next step closes the email \u2014 not a summary, not a sentiment"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Audience-Facing Reasoning",
+            "category": "Audience",
+            "description": "When explaining a decision or delivering news, the 'so what' should land for the reader \u2014 framed around their experience, their investment, and the impact on their work. This applies to both bad news (why a delay is the right tradeoff for them) and good news (why an announcement matters to their specific situation). Not a defense of the sender's process.",
+            "dimensions": [
+              {
+                "id": "names_reader_experience",
+                "label": "Explicitly acknowledges what the audience has been doing, expecting, or working toward"
+              },
+              {
+                "id": "so_what_faces_outward",
+                "label": "The 'why' or 'so what' is framed in terms of outcomes, value, or impact for the reader \u2014 not justification for the sender"
+              },
+              {
+                "id": "no_defensive_posture",
+                "label": "Avoids language that reads as defending, apologizing for, or justifying the sender's own process"
+              },
+              {
+                "id": "specific_not_gestural",
+                "label": "References the reader's situation with specificity (what was blocked, what changes, what they gain) rather than vague gestures at disruption or value"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Single Owner, Scoped Accountability",
+            "category": "Content",
+            "description": "When action is needed, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \u2014 ownership should be clear without being presumptuous about how the reader's team operates.",
+            "dimensions": [
+              {
+                "id": "one_owner_per_ask",
+                "label": "Each action item has a single named or clearly implied owner, not a group"
+              },
+              {
+                "id": "owner_has_deadline",
+                "label": "Every named owner has a specific target date or timeframe attached"
+              },
+              {
+                "id": "owner_has_deliverable",
+                "label": "Every named owner has a clear deliverable or scope of responsibility stated"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "No 'everyone please...' or collective action items that diffuse responsibility"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or prescribe roles, titles, or org structure details the sender has no standing to specify"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Operational Endings",
+            "category": "Structure",
+            "description": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment.",
+            "dimensions": [
+              {
+                "id": "ends_with_next_action",
+                "label": "The final lines contain a concrete next step, follow-up commitment, or clear contact channel"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No town-hall-style encouragement, rallying language, or inspirational closings"
+              },
+              {
+                "id": "no_trailing_sentiment",
+                "label": "Nothing follows the CTA \u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail"
+              },
+              {
+                "id": "momentum_preserved",
+                "label": "The ending doesn't introduce new topics, sentiments, or trailing qualifiers that slow the reader down"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Direct, Non-Alarmist Tone",
+            "category": "Style",
+            "description": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases ('minor setback,' 'abundance of caution') that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \u2014 don't add dramatic emphasis to routine elements.",
+            "dimensions": [
+              {
+                "id": "no_hedging_minimizers",
+                "label": "Avoids softening phrases that downplay the situation or feel evasive"
+              },
+              {
+                "id": "no_alarm_language",
+                "label": "Avoids catastrophizing or panic-inducing framing"
+              },
+              {
+                "id": "plain_factual_framing",
+                "label": "States the situation, its cause, and its implications in plain, factual terms \u2014 no dramatic emphasis on routine content"
+              },
+              {
+                "id": "respects_reader_intelligence",
+                "label": "Trusts the reader to understand stakes without being told how to feel about them"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Signal-to-Noise Discipline",
+            "category": "Content",
+            "description": "Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists.",
+            "dimensions": [
+              {
+                "id": "actionable_for_audience",
+                "label": "Every piece of information included is something the recipient needs or can act on"
+              },
+              {
+                "id": "no_phantom_actions",
+                "label": "No action items or assignments directed at people who don't actually have a concrete task"
+              },
+              {
+                "id": "no_internal_narration",
+                "label": "Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience"
+              },
+              {
+                "id": "nothing_vestigial",
+                "label": "No sentences or sections that remain simply because they seem expected \u2014 every element earns its place"
+              }
+            ],
+            "priority": 6
+          },
+          {
+            "name": "Lean Structure",
+            "category": "Structure",
+            "description": "Prefer prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist.",
+            "dimensions": [
+              {
+                "id": "format_matches_complexity",
+                "label": "Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items"
+              },
+              {
+                "id": "no_catch_all_buckets",
+                "label": "No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure"
+              },
+              {
+                "id": "prose_when_sufficient",
+                "label": "Uses inline prose rather than lists when there are fewer than three genuinely distinct action items"
+              }
+            ],
+            "priority": 7
+          }
+        ],
+        "new_rubric": [
+          {
+            "name": "Emotional Arc and Sequencing",
+            "category": "Structure",
+            "description": "The email must follow a specific order: acknowledge the reader's situation or effort first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \u2014 sequence is the structure.",
+            "dimensions": [
+              {
+                "id": "acknowledgment_comes_first",
+                "label": "Opens with a brief acknowledgment of the reader's situation, effort, or context \u2014 not the news itself"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "The opening acknowledgment is one sentence max \u2014 does not linger or over-explain"
+              },
+              {
+                "id": "news_before_why",
+                "label": "The actual news or decision is stated before the rationale, not buried after it"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "The 'so what' \u2014 stakes, value, or context \u2014 is explained before the call to action, not after"
+              },
+              {
+                "id": "one_next_step_closes",
+                "label": "A single concrete next step closes the email \u2014 not a summary, not a sentiment"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Audience-Facing Reasoning",
+            "category": "Audience",
+            "description": "When explaining a decision or delivering news, the 'so what' should land for the reader \u2014 framed around their experience, their investment, and the impact on their work. Not a defense of the sender's process. 'This matters because your team planned around this date' not 'This matters because we want quality.'",
+            "dimensions": [
+              {
+                "id": "names_reader_experience",
+                "label": "Explicitly acknowledges what the audience has been doing, expecting, or working toward"
+              },
+              {
+                "id": "so_what_faces_outward",
+                "label": "The 'why' or 'so what' is framed in terms of outcomes, value, or impact for the reader \u2014 not justification for the sender"
+              },
+              {
+                "id": "no_defensive_posture",
+                "label": "Avoids language that reads as defending, apologizing for, or justifying the sender's own process"
+              },
+              {
+                "id": "specific_not_gestural",
+                "label": "References the reader's situation with specificity (what was blocked, what changes, what they gain) rather than vague gestures at disruption or value"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Operational Endings",
+            "category": "Structure",
+            "description": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment. 'Thanks for your patience' is not a closing.",
+            "dimensions": [
+              {
+                "id": "ends_with_next_action",
+                "label": "The final lines contain a concrete next step, follow-up commitment, or clear contact channel"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No town-hall-style encouragement, rallying language, or inspirational closings"
+              },
+              {
+                "id": "no_trailing_sentiment",
+                "label": "Nothing follows the CTA \u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail"
+              },
+              {
+                "id": "momentum_preserved",
+                "label": "The ending doesn't introduce new topics, sentiments, or trailing qualifiers that slow the reader down"
+              },
+              {
+                "id": "new_1",
+                "label": "The CTA is forward-looking \u2014 it points to what happens next, not back to what just happened"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Single Owner, Scoped Accountability",
+            "category": "Content",
+            "description": "When action is needed, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \u2014 ownership should be clear without being presumptuous about how the reader's team operates.",
+            "dimensions": [
+              {
+                "id": "one_owner_per_ask",
+                "label": "Each action item has a single named or clearly implied owner, not a group"
+              },
+              {
+                "id": "owner_has_deadline",
+                "label": "Every named owner has a specific target date or timeframe attached"
+              },
+              {
+                "id": "owner_has_deliverable",
+                "label": "Every named owner has a clear deliverable or scope of responsibility stated"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "No 'everyone please...' or collective action items that diffuse responsibility"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or prescribe roles, titles, or org structure details the sender has no standing to specify"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Signal-to-Noise Discipline",
+            "category": "Content",
+            "description": "Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists.",
+            "dimensions": [
+              {
+                "id": "actionable_for_audience",
+                "label": "Every piece of information included is something the recipient needs or can act on"
+              },
+              {
+                "id": "no_phantom_actions",
+                "label": "No action items or assignments directed at people who don't actually have a concrete task"
+              },
+              {
+                "id": "no_internal_narration",
+                "label": "Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience"
+              },
+              {
+                "id": "nothing_vestigial",
+                "label": "No sentences or sections that remain simply because they seem expected \u2014 every element earns its place"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Direct, Non-Alarmist Tone",
+            "category": "Style",
+            "description": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content.",
+            "dimensions": [
+              {
+                "id": "no_hedging_minimizers",
+                "label": "Avoids softening phrases that downplay the situation or feel evasive"
+              },
+              {
+                "id": "no_alarm_language",
+                "label": "Avoids catastrophizing or panic-inducing framing"
+              },
+              {
+                "id": "plain_factual_framing",
+                "label": "States the situation, its cause, and its implications in plain, factual terms \u2014 no dramatic emphasis on routine content"
+              },
+              {
+                "id": "respects_reader_intelligence",
+                "label": "Trusts the reader to understand stakes without being told how to feel about them"
+              },
+              {
+                "id": "new_2",
+                "label": "No excessive exclamation marks \u2014 punctuation matches the actual energy level of the content"
+              }
+            ],
+            "priority": 6
+          },
+          {
+            "name": "Lean Structure",
+            "category": "Structure",
+            "description": "Prefer short paragraphs and prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist.",
+            "dimensions": [
+              {
+                "id": "format_matches_complexity",
+                "label": "Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items"
+              },
+              {
+                "id": "no_catch_all_buckets",
+                "label": "No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure"
+              },
+              {
+                "id": "prose_when_sufficient",
+                "label": "Uses inline prose rather than lists when there are fewer than three genuinely distinct action items"
+              },
+              {
+                "id": "new_3",
+                "label": "Paragraphs are short \u2014 no walls of text; each paragraph carries one idea"
+              }
+            ],
+            "priority": 7
+          }
+        ]
+      }
+    },
+    {
+      "role": "user",
+      "content": "Here's my feedback on the draft edits:\n- Edit \"Before that hits, you need to be ahead of it \u2014 clients running time-sensitive workflows will notice,\" \u2192 \"The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline.\": I actually liked the original framing better here. 'The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline' is fine as a fact, but it's pretty cold and doesn't set up why the reader should care. The original was trying to bridge into the stakes, which is the right instinct. The new version just drops a fact and moves on. It reads more like a changelog than an email."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Heads up \u2014 API response time degradation starting next month\n\nYou're the first point of contact when client workflows break, so this is yours to get ahead of.\n\nOur document parsing vendor notified us that API response times will slow by roughly 40% starting next month. Clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared \u2014 there's no rollback timeline, so this is the new baseline your accounts are working against.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?</draft>\n\n*Draft updated based on accepted rubric suggestion.*",
+      "is_post_apply_draft": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, this is it. The opening lands on their role, the middle paragraph makes the stakes real from where they sit, and the ask is specific without being prescriptive. Send it."
+    },
+    {
+      "role": "system",
+      "content": "--- Iteration 4/4 ---",
+      "iteration": 4
+    },
+    {
+      "role": "user",
+      "content": "Hey, I need to draft a short email to a customer success manager on our team \u2014 her name is Dana \u2014 letting her know that a high-value account she owns is being flagged for churn risk by our data team. She doesn't know yet, and I want to give her a heads-up with enough context to act fast, not just drop a bomb on her."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying this account through a tough renewal cycle, so I want to make sure you have this before it surfaces somewhere else. The data team flagged Northfield as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no logged touchpoints in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield by end of week and share it with me so we can align on next steps?</draft>",
+      "is_alignment_start_draft": true
+    },
+    {
+      "role": "user",
+      "content": "This is pretty close \u2014 the structure feels right and the CTA is clean. But that opening line kind of puts me at the center of it when it should be about Dana. 'I want to make sure you have this before it surfaces somewhere else' \u2014 that's my concern, not hers. The whole thing should feel like it's landing in her world, not mine. The stakes paragraph does a better job of that, but the framing at the top undercuts it a bit."
+    },
+    {
+      "role": "assistant",
+      "content": "Good catch \u2014 that line is doing sender-centering work dressed up as a favor. Here's the fix:\n\n<draft>Subject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying Northfield through a tough renewal cycle, and this affects where that work lands. The data team flagged the account as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no logged touchpoints in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield by end of week and share it with me so we can align on next steps?</draft>"
+    },
+    {
+      "role": "user",
+      "content": "The structure is landing much better \u2014 the opening actually feels like it's about Dana now, not me. But the ending kind of dissolves. The ask itself is fine, but then it keeps going \u2014 'so we can align on next steps' \u2014 and that phrase just deflates it. It's not wrong exactly, it just reads like the email isn't sure it's done yet. The CTA should be able to stand on its own without a trailing explanation of what happens after."
+    },
+    {
+      "role": "assistant",
+      "content": "Agreed \u2014 \"so we can align on next steps\" is the email talking past its own finish line. Here's the trim:\n\n<draft>Subject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying Northfield through a tough renewal cycle, and this affects where that work lands. The data team flagged the account as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no logged touchpoints in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield and send it to me by end of week?</draft>"
+    },
+    {
+      "role": "system",
+      "content": "**Rubric Changes have been made:**\n- **Added:** \"No Corporate Jargon\"\n- **Reweighted:** \"Operational Endings\" (4 \u2192 3)\n- **Reweighted:** \"Single Owner, Scoped Accountability\" (3 \u2192 4)\n- **Reweighted:** \"Signal-to-Noise Discipline\" (5 \u2192 6)\n- **Reweighted:** \"Lean Structure\" (6 \u2192 7)\n- **Reweighted:** \"Direct, Non-Alarmist Tone\" (7 \u2192 8)\n- **Reworded:** \"Direct, Non-Alarmist Tone\" description changed\n- **Dimensions:** \"Direct, Non-Alarmist Tone\" (+Punctuation serves function, not style \u2014 no exclamation marks that exceed the actual energy level of the content, States the situation, its cause, and its implications in plain, factual terms; -States the situation, its cause, and its implications in plain, factual terms \u2014 no dramatic emphasis on routine content, Punctuation serves function, not style \u2014 no swapping commas for em-dashes to add drama, no exclamation marks that exceed the actual energy level of the content)\n<!--RUBRIC_EDIT_LOG:{\"version_from\": 8, \"version_to\": \"8*\", \"edits\": {\"added\": [{\"name\": \"No Corporate Jargon\", \"description\": \"Plain language only. Avoid business-speak, buzzwords, and filler phrases that add length without meaning. 'Synergize,' 'leverage,' 'circle back,' 'move the needle,' 'reach out' used reflexively \\u2014 these erode trust and slow reading. If a simpler word exists, use it.\", \"weight\": 5}], \"removed\": [], \"reweighted\": [{\"name\": \"Operational Endings\", \"old_weight\": 4, \"new_weight\": 3}, {\"name\": \"Single Owner, Scoped Accountability\", \"old_weight\": 3, \"new_weight\": 4}, {\"name\": \"Signal-to-Noise Discipline\", \"old_weight\": 5, \"new_weight\": 6}, {\"name\": \"Lean Structure\", \"old_weight\": 6, \"new_weight\": 7}, {\"name\": \"Direct, Non-Alarmist Tone\", \"old_weight\": 7, \"new_weight\": 8}], \"reworded\": [{\"name\": \"Direct, Non-Alarmist Tone\", \"field\": \"description\", \"old\": \"Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \\u2014 don't tinker with punctuation for cadence or drama when there's no rhythm problem to solve.\", \"new\": \"Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content.\"}], \"dimensions_changed\": [{\"name\": \"Direct, Non-Alarmist Tone\", \"added_dims\": [\"Punctuation serves function, not style \\u2014 no exclamation marks that exceed the actual energy level of the content\", \"States the situation, its cause, and its implications in plain, factual terms\"], \"removed_dims\": [\"States the situation, its cause, and its implications in plain, factual terms \\u2014 no dramatic emphasis on routine content\", \"Punctuation serves function, not style \\u2014 no swapping commas for em-dashes to add drama, no exclamation marks that exceed the actual energy level of the content\"]}]}, \"source\": \"simulation_log_changes\"}-->"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying Northfield through a tough renewal cycle, and this affects where that work lands. The data team flagged the account as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no contact on record in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield and send it to me by end of week?</draft>\n\n*Draft updated based on rubric changes.*",
+      "rubric_revision": {
+        "change_summary": "The main rubric change driving revisions is the new 'No Corporate Jargon' criterion added at priority 5. 'Logged touchpoints' was replaced with plain language ('no contact on record'), as 'touchpoints' is a classic corporate buzzword the new criterion explicitly targets. No other substantive changes were needed \u2014 the draft's structure, sequencing, and tone already meet the updated rubric well.",
+        "annotated_changes": [
+          {
+            "original_text": "no logged touchpoints",
+            "new_text": "no contact on record",
+            "reason": "No Corporate Jargon (new criterion added at priority 5, dimension 'no_buzzwords'): 'touchpoints' is a corporate buzzword explicitly targeted by the new criterion; 'logged' adds nominalization bloat. 'No contact on record' says the same thing in plain language."
+          }
+        ],
+        "original_draft": "Subject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying Northfield through a tough renewal cycle, and this affects where that work lands. The data team flagged the account as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no logged touchpoints in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield and send it to me by end of week?",
+        "old_rubric": [
+          {
+            "name": "Emotional Arc and Sequencing",
+            "category": "Structure",
+            "description": "The email must follow a specific order: acknowledge the reader's situation, effort, or role first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \u2014 sequence is the structure.",
+            "dimensions": [
+              {
+                "id": "acknowledgment_comes_first",
+                "label": "Opens with a brief acknowledgment of the reader's situation, effort, role, or context \u2014 not the news itself and not the sender's intentions"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "The opening acknowledgment is one sentence max \u2014 does not linger or over-explain"
+              },
+              {
+                "id": "news_before_why",
+                "label": "The actual news or decision is stated before the rationale, not buried after it"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "The 'so what' \u2014 stakes, value, or context \u2014 is explained before the call to action, not after"
+              },
+              {
+                "id": "one_next_step_closes",
+                "label": "A single concrete next step closes the email \u2014 not a summary, not a sentiment"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Audience-Facing Reasoning",
+            "category": "Audience",
+            "description": "When explaining a decision or delivering news, the 'so what' should land for the reader \u2014 framed around their experience, their investment, and the impact on their work. Not a defense of the sender's process. 'This matters because your team planned around this date' not 'This matters because we want quality.'",
+            "dimensions": [
+              {
+                "id": "names_reader_experience",
+                "label": "Explicitly acknowledges what the audience has been doing, expecting, or working toward"
+              },
+              {
+                "id": "so_what_faces_outward",
+                "label": "The 'why' or 'so what' is framed in terms of outcomes, value, or impact for the reader \u2014 not justification for the sender"
+              },
+              {
+                "id": "no_sender_centering",
+                "label": "Avoids language that centers the sender \u2014 no self-congratulatory framing ('I wanted to get this to you early'), no defending the sender's process, no positioning the sender as the protagonist"
+              },
+              {
+                "id": "specific_not_gestural",
+                "label": "References the reader's situation with specificity (what was blocked, what changes, what they gain) rather than vague gestures at disruption or value \u2014 a sentence bridging facts to reader stakes is not filler and should not be cut"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Single Owner, Scoped Accountability",
+            "category": "Content",
+            "description": "When action is needed, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \u2014 ownership should be clear without being presumptuous about how the reader's team operates.",
+            "dimensions": [
+              {
+                "id": "one_owner_per_ask",
+                "label": "Each action item has a single named or clearly implied owner, not a group"
+              },
+              {
+                "id": "owner_has_deadline",
+                "label": "Every named owner has a specific target date or timeframe attached"
+              },
+              {
+                "id": "owner_has_deliverable",
+                "label": "Every named owner has a clear deliverable or scope of responsibility stated"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or prescribe roles, titles, or org structure details the sender has no standing to specify"
+              },
+              {
+                "id": "specific_not_prescriptive",
+                "label": "Asks are clear enough to act on but do not dictate how the reader should organize their response internally"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Operational Endings",
+            "category": "Structure",
+            "description": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment. 'Thanks for your patience' is not a closing.",
+            "dimensions": [
+              {
+                "id": "ends_with_next_action",
+                "label": "The final lines contain a concrete next step, follow-up commitment, or clear contact channel"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No town-hall-style encouragement, rallying language, or inspirational closings"
+              },
+              {
+                "id": "no_trailing_sentiment",
+                "label": "Nothing follows the CTA \u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail"
+              },
+              {
+                "id": "cta_forward_looking",
+                "label": "The CTA points forward to a concrete action or next step \u2014 it does not loop back to recap what just happened; interrogative phrasing ('Can you\u2026') is acceptable if ownership and deadline are clear"
+              },
+              {
+                "id": "momentum_preserved",
+                "label": "The ending doesn't introduce new topics, sentiments, or trailing qualifiers that slow the reader down"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "Signal-to-Noise Discipline",
+            "category": "Content",
+            "description": "Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists. But do not cut connective sentences that bridge facts to reader stakes \u2014 those are signal, not noise.",
+            "dimensions": [
+              {
+                "id": "actionable_for_audience",
+                "label": "Every piece of information included is something the recipient needs or can act on"
+              },
+              {
+                "id": "no_phantom_actions",
+                "label": "No action items or assignments directed at people who don't actually have a concrete task"
+              },
+              {
+                "id": "no_internal_narration",
+                "label": "Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience"
+              },
+              {
+                "id": "nothing_vestigial",
+                "label": "No sentences or sections that remain simply because they seem expected \u2014 every element earns its place"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Lean Structure",
+            "category": "Structure",
+            "description": "Prefer short paragraphs and prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist.",
+            "dimensions": [
+              {
+                "id": "format_matches_complexity",
+                "label": "Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items"
+              },
+              {
+                "id": "no_catch_all_buckets",
+                "label": "No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure"
+              },
+              {
+                "id": "prose_when_sufficient",
+                "label": "Uses inline prose rather than lists when there are fewer than three genuinely distinct action items"
+              },
+              {
+                "id": "short_focused_paragraphs",
+                "label": "Paragraphs are short and focused, but may carry a fact and its direct implication together when the two are inseparable \u2014 don't split a cause from its stakes just to hit a one-idea-per-paragraph target"
+              }
+            ],
+            "priority": 6
+          },
+          {
+            "name": "Direct, Non-Alarmist Tone",
+            "category": "Style",
+            "description": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \u2014 don't tinker with punctuation for cadence or drama when there's no rhythm problem to solve.",
+            "dimensions": [
+              {
+                "id": "no_hedging_minimizers",
+                "label": "Avoids softening phrases that downplay the situation or feel evasive"
+              },
+              {
+                "id": "no_alarm_language",
+                "label": "Avoids catastrophizing or panic-inducing framing"
+              },
+              {
+                "id": "plain_factual_framing",
+                "label": "States the situation, its cause, and its implications in plain, factual terms \u2014 no dramatic emphasis on routine content"
+              },
+              {
+                "id": "respects_reader_intelligence",
+                "label": "Trusts the reader to understand stakes without being told how to feel about them"
+              },
+              {
+                "id": "punctuation_matches_content",
+                "label": "Punctuation serves function, not style \u2014 no swapping commas for em-dashes to add drama, no exclamation marks that exceed the actual energy level of the content"
+              }
+            ],
+            "priority": 7
+          }
+        ],
+        "new_rubric": [
+          {
+            "name": "Emotional Arc and Sequencing",
+            "category": "Structure",
+            "description": "The email must follow a specific order: acknowledge the reader's situation, effort, or role first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \u2014 sequence is the structure.",
+            "dimensions": [
+              {
+                "id": "acknowledgment_comes_first",
+                "label": "Opens with a brief acknowledgment of the reader's situation, effort, role, or context \u2014 not the news itself and not the sender's intentions"
+              },
+              {
+                "id": "acknowledgment_is_brief",
+                "label": "The opening acknowledgment is one sentence max \u2014 does not linger or over-explain"
+              },
+              {
+                "id": "news_before_why",
+                "label": "The actual news or decision is stated before the rationale, not buried after it"
+              },
+              {
+                "id": "why_before_next_step",
+                "label": "The 'so what' \u2014 stakes, value, or context \u2014 is explained before the call to action, not after"
+              },
+              {
+                "id": "one_next_step_closes",
+                "label": "A single concrete next step closes the email \u2014 not a summary, not a sentiment"
+              }
+            ],
+            "priority": 1
+          },
+          {
+            "name": "Audience-Facing Reasoning",
+            "category": "Audience",
+            "description": "When explaining a decision or delivering news, the 'so what' should land for the reader \u2014 framed around their experience, their investment, and the impact on their work. Not a defense of the sender's process. 'This matters because your team planned around this date' not 'This matters because we want quality.'",
+            "dimensions": [
+              {
+                "id": "names_reader_experience",
+                "label": "Explicitly acknowledges what the audience has been doing, expecting, or working toward"
+              },
+              {
+                "id": "so_what_faces_outward",
+                "label": "The 'why' or 'so what' is framed in terms of outcomes, value, or impact for the reader \u2014 not justification for the sender"
+              },
+              {
+                "id": "no_sender_centering",
+                "label": "Avoids language that centers the sender \u2014 no self-congratulatory framing ('I wanted to get this to you early'), no defending the sender's process, no positioning the sender as the protagonist"
+              },
+              {
+                "id": "specific_not_gestural",
+                "label": "References the reader's situation with specificity (what was blocked, what changes, what they gain) rather than vague gestures at disruption or value \u2014 a sentence bridging facts to reader stakes is not filler and should not be cut"
+              }
+            ],
+            "priority": 2
+          },
+          {
+            "name": "Operational Endings",
+            "category": "Structure",
+            "description": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment. 'Thanks for your patience' is not a closing.",
+            "dimensions": [
+              {
+                "id": "ends_with_next_action",
+                "label": "The final lines contain a concrete next step, follow-up commitment, or clear contact channel"
+              },
+              {
+                "id": "no_motivational_filler",
+                "label": "No town-hall-style encouragement, rallying language, or inspirational closings"
+              },
+              {
+                "id": "no_trailing_sentiment",
+                "label": "Nothing follows the CTA \u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail"
+              },
+              {
+                "id": "cta_forward_looking",
+                "label": "The CTA points forward to a concrete action or next step \u2014 it does not loop back to recap what just happened; interrogative phrasing ('Can you\u2026') is acceptable if ownership and deadline are clear"
+              },
+              {
+                "id": "momentum_preserved",
+                "label": "The ending doesn't introduce new topics, sentiments, or trailing qualifiers that slow the reader down"
+              }
+            ],
+            "priority": 3
+          },
+          {
+            "name": "Single Owner, Scoped Accountability",
+            "category": "Content",
+            "description": "When action is needed, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \u2014 ownership should be clear without being presumptuous about how the reader's team operates.",
+            "dimensions": [
+              {
+                "id": "one_owner_per_ask",
+                "label": "Each action item has a single named or clearly implied owner, not a group"
+              },
+              {
+                "id": "owner_has_deadline",
+                "label": "Every named owner has a specific target date or timeframe attached"
+              },
+              {
+                "id": "owner_has_deliverable",
+                "label": "Every named owner has a clear deliverable or scope of responsibility stated"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or prescribe roles, titles, or org structure details the sender has no standing to specify"
+              },
+              {
+                "id": "specific_not_prescriptive",
+                "label": "Asks are clear enough to act on but do not dictate how the reader should organize their response internally"
+              }
+            ],
+            "priority": 4
+          },
+          {
+            "name": "No Corporate Jargon",
+            "category": "Style",
+            "description": "Plain language only. Avoid business-speak, buzzwords, and filler phrases that add length without meaning. 'Synergize,' 'leverage,' 'circle back,' 'move the needle,' 'reach out' used reflexively \u2014 these erode trust and slow reading. If a simpler word exists, use it.",
+            "dimensions": [
+              {
+                "id": "no_buzzwords",
+                "label": "No business buzzwords or corporate filler \u2014 'leverage,' 'synergize,' 'bandwidth,' 'circle back,' 'touch base,' etc."
+              },
+              {
+                "id": "no_nominalization_bloat",
+                "label": "Avoids turning verbs into nouns unnecessarily \u2014 'make a decision' when 'decide' works"
+              },
+              {
+                "id": "new_1",
+                "label": "Sentences say what they mean in the fewest words \u2014 no throat-clearing openers like 'I wanted to reach out because...'"
+              }
+            ],
+            "priority": 5
+          },
+          {
+            "name": "Signal-to-Noise Discipline",
+            "category": "Content",
+            "description": "Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists. But do not cut connective sentences that bridge facts to reader stakes \u2014 those are signal, not noise.",
+            "dimensions": [
+              {
+                "id": "actionable_for_audience",
+                "label": "Every piece of information included is something the recipient needs or can act on"
+              },
+              {
+                "id": "no_phantom_actions",
+                "label": "No action items or assignments directed at people who don't actually have a concrete task"
+              },
+              {
+                "id": "no_internal_narration",
+                "label": "Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience"
+              },
+              {
+                "id": "nothing_vestigial",
+                "label": "No sentences or sections that remain simply because they seem expected \u2014 every element earns its place"
+              }
+            ],
+            "priority": 6
+          },
+          {
+            "name": "Lean Structure",
+            "category": "Structure",
+            "description": "Prefer short paragraphs and prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist.",
+            "dimensions": [
+              {
+                "id": "format_matches_complexity",
+                "label": "Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items"
+              },
+              {
+                "id": "no_catch_all_buckets",
+                "label": "No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure"
+              },
+              {
+                "id": "prose_when_sufficient",
+                "label": "Uses inline prose rather than lists when there are fewer than three genuinely distinct action items"
+              },
+              {
+                "id": "short_focused_paragraphs",
+                "label": "Paragraphs are short and focused, but may carry a fact and its direct implication together when the two are inseparable \u2014 don't split a cause from its stakes just to hit a one-idea-per-paragraph target"
+              }
+            ],
+            "priority": 7
+          },
+          {
+            "name": "Direct, Non-Alarmist Tone",
+            "category": "Style",
+            "description": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content.",
+            "dimensions": [
+              {
+                "id": "no_hedging_minimizers",
+                "label": "Avoids softening phrases that downplay the situation or feel evasive"
+              },
+              {
+                "id": "no_alarm_language",
+                "label": "Avoids catastrophizing or panic-inducing framing"
+              },
+              {
+                "id": "plain_factual_framing",
+                "label": "States the situation, its cause, and its implications in plain, factual terms"
+              },
+              {
+                "id": "respects_reader_intelligence",
+                "label": "Trusts the reader to understand stakes without being told how to feel about them"
+              },
+              {
+                "id": "punctuation_matches_content",
+                "label": "Punctuation serves function, not style \u2014 no exclamation marks that exceed the actual energy level of the content"
+              }
+            ],
+            "priority": 8
+          }
+        ]
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying Northfield through a tough renewal cycle, and this affects where that work lands. The data team flagged the account as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no contact on record in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield and send it to me by end of week?</draft>",
+      "is_system_generated": true
+    },
+    {
+      "role": "user",
+      "content": "Yeah, this is it. The ending actually lands now \u2014 it doesn't keep explaining itself. Good to send."
+    }
+  ],
+  "rubric": {
+    "rubric": [
+      {
+        "name": "Emotional Arc and Sequencing",
+        "category": "Structure",
+        "description": "The email must follow a specific order: acknowledge the reader's situation, effort, or role first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \u2014 sequence is the structure.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_comes_first",
+            "label": "Opens with a brief acknowledgment of the reader's situation, effort, role, or context \u2014 not the news itself and not the sender's intentions"
+          },
+          {
+            "id": "acknowledgment_is_brief",
+            "label": "The opening acknowledgment is one sentence max \u2014 does not linger or over-explain"
+          },
+          {
+            "id": "news_before_why",
+            "label": "The actual news or decision is stated before the rationale, not buried after it"
+          },
+          {
+            "id": "why_before_next_step",
+            "label": "The 'so what' \u2014 stakes, value, or context from the reader's perspective \u2014 is explained before the call to action, not after"
+          },
+          {
+            "id": "one_next_step_closes",
+            "label": "A single concrete next step closes the email \u2014 not a summary, not a sentiment"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Audience-Facing Reasoning",
+        "category": "Audience",
+        "description": "When explaining a decision or delivering news, the 'so what' should land for the reader \u2014 framed around their experience, their investment, and the impact on their work. Not a defense of the sender's process. The acknowledgment should land on their situation, not on the sender's intentions. 'This matters because your team planned around this date' not 'This matters because we want quality.'",
+        "dimensions": [
+          {
+            "id": "names_reader_experience",
+            "label": "Explicitly acknowledges what the audience has been doing, expecting, or working toward"
+          },
+          {
+            "id": "so_what_faces_outward",
+            "label": "The 'why' or 'so what' is framed in terms of outcomes, value, or impact for the reader \u2014 not justification for the sender"
+          },
+          {
+            "id": "no_sender_centering",
+            "label": "Avoids language that centers the sender \u2014 no 'I wanted to make sure you had this,' no defending the sender's process, no positioning the sender as protagonist of the reader's situation"
+          },
+          {
+            "id": "specific_not_gestural",
+            "label": "References the reader's situation with specificity (what was blocked, what changes, what they gain) rather than vague gestures at disruption or value \u2014 a sentence bridging facts to reader stakes is signal, not filler"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Single Owner, Scoped Accountability",
+        "category": "Content",
+        "description": "When action is needed, name one clear owner with a deadline rather than issuing a group ask. A name without a deadline is a redirect, not an ownership statement. At the same time, don't over-specify roles or org structure the sender has no standing to define \u2014 ownership should be clear without being presumptuous about how the reader's team operates.",
+        "dimensions": [
+          {
+            "id": "one_owner_per_ask",
+            "label": "Each action item has a single named or clearly implied owner, not a group"
+          },
+          {
+            "id": "owner_has_deadline",
+            "label": "Every named owner has a specific target date or timeframe attached"
+          },
+          {
+            "id": "owner_has_deliverable",
+            "label": "Every named owner has a clear deliverable or scope of responsibility stated"
+          },
+          {
+            "id": "no_org_overreach",
+            "label": "Does not assume or prescribe roles, titles, or org structure details the sender has no standing to specify \u2014 puts the ball in the reader's court to route internally"
+          },
+          {
+            "id": "specific_not_prescriptive",
+            "label": "Asks are clear enough to act on but do not dictate how the reader should organize their response internally"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Operational Endings",
+        "category": "Structure",
+        "description": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing qualifiers. The CTA should stand on its own without explaining what happens after it.",
+        "dimensions": [
+          {
+            "id": "ends_with_next_action",
+            "label": "The final lines contain a concrete next step, follow-up commitment, or clear contact channel"
+          },
+          {
+            "id": "no_motivational_filler",
+            "label": "No town-hall-style encouragement, rallying language, or inspirational closings"
+          },
+          {
+            "id": "no_trailing_qualifiers",
+            "label": "Nothing follows the CTA \u2014 no 'so we can align on next steps,' no 'thanks for your patience,' no softening tail, no trailing explanation of what the CTA leads to"
+          },
+          {
+            "id": "cta_forward_looking",
+            "label": "The CTA points forward to a concrete action \u2014 it does not loop back to recap what just happened"
+          },
+          {
+            "id": "momentum_preserved",
+            "label": "The ending doesn't introduce new topics, sentiments, or qualifiers that slow the reader down after the ask has landed"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "No Corporate Jargon",
+        "category": "Style",
+        "description": "Plain language only. Avoid business-speak, buzzwords, and filler phrases that add length without meaning. 'Align on next steps,' 'circle back,' 'logged touchpoints' \u2014 these erode trust and slow reading. If a simpler, more concrete phrase exists, use it.",
+        "dimensions": [
+          {
+            "id": "no_buzzwords",
+            "label": "No business buzzwords or corporate filler \u2014 'leverage,' 'synergize,' 'align,' 'circle back,' 'touch base,' 'bandwidth,' etc."
+          },
+          {
+            "id": "no_nominalization_bloat",
+            "label": "Avoids turning verbs into nouns unnecessarily \u2014 'make a decision' when 'decide' works"
+          },
+          {
+            "id": "direct_phrasing",
+            "label": "Sentences say what they mean in the fewest words \u2014 no throat-clearing openers like 'I wanted to reach out because...'"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Signal-to-Noise Discipline",
+        "category": "Content",
+        "description": "Every element in the email \u2014 content and formatting \u2014 must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing or implies separate conversations the reader isn't part of. Don't manufacture structural complexity (bullets, lists) that implies more moving parts than exist. But do not cut sentences that bridge facts to reader stakes \u2014 those are signal, not noise.",
+        "dimensions": [
+          {
+            "id": "actionable_for_audience",
+            "label": "Every piece of information included is something the recipient needs or can act on"
+          },
+          {
+            "id": "no_phantom_actions",
+            "label": "No action items or assignments directed at people who don't actually have a concrete task \u2014 no vague catch-all groups"
+          },
+          {
+            "id": "no_internal_narration",
+            "label": "Does not announce sender-side logistics (side conversations, stakeholder loops, internal processes) that are irrelevant to the audience"
+          },
+          {
+            "id": "format_matches_content",
+            "label": "Structural formatting (bullets, lists, headers) is only used when content has genuinely distinct parallel items \u2014 prose is preferred when fewer than three distinct action items exist"
+          },
+          {
+            "id": "nothing_vestigial",
+            "label": "No sentences, sections, or structural elements that remain simply because they seem expected \u2014 every element earns its place"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Direct, Non-Alarmist Tone",
+        "category": "Style",
+        "description": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \u2014 don't tinker with punctuation for stylistic reasons when there's no functional problem to solve.",
+        "dimensions": [
+          {
+            "id": "no_hedging_minimizers",
+            "label": "Avoids softening phrases that downplay the situation or feel evasive \u2014 'minor setback,' 'abundance of caution'"
+          },
+          {
+            "id": "no_alarm_language",
+            "label": "Avoids catastrophizing or panic-inducing framing"
+          },
+          {
+            "id": "plain_factual_framing",
+            "label": "States the situation, its cause, and its implications in plain, factual terms"
+          },
+          {
+            "id": "respects_reader_intelligence",
+            "label": "Trusts the reader to understand stakes without being told how to feel about them"
+          },
+          {
+            "id": "punctuation_matches_content",
+            "label": "Punctuation serves function, not style \u2014 no swapping commas for em-dashes to add cadence, no exclamation marks that exceed the energy level of the content"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "version": 11,
+    "source": "criteria_classification",
+    "writing_type": "professional operational emails",
+    "user_goals_summary": "Writes short, direct operational emails that acknowledge the reader's situation first, deliver news with reader-facing reasoning, and close with a clean action item. Values audience-awareness over sender justification, specificity over brevity, and structure that matches actual complexity \u2014 no manufactured formatting, no trailing sentiment, no corporate filler.",
+    "coaching_notes": "Non-negotiable: every email must face the reader, not the sender \u2014 this user catches sender-centering language ('I wanted to give you a heads-up') instinctively and treats it as a structural flaw, not a style preference. Preferred trade-off: will always choose specificity over brevity \u2014 a sentence that bridges facts to reader stakes is never filler, even if the email gets slightly longer. Responds best to options presented with clear tradeoff descriptions rather than a single revised draft, but once a direction is chosen, wants fast execution with minimal re-explanation."
+  },
+  "updated_at": "2026-03-06T10:04:33.706007"
+}

@@ -1,0 +1,832 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "The 'Economy of Language' criterion directly addresses conciseness by requiring every sentence to do distinct work, no redundant phrases, and no padding."
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the message",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "The 'Direct, Non-Performative Tone' criterion addresses stating decisions directly without excessive hedging. 'Emotional Sequencing' also addresses not burying the message."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "The criterion explicitly mentions 'professional and conversational' language and 'natural workplace communication.'"
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "The criterion explicitly says 'without being stiff or formal' and 'not template-like or overly formal.'"
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "The 'Decisive Closure' criterion requires the final substantive line to be the key ask or call to action. 'Concrete, Accountable Action Items' also addresses this."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Economy of Language addresses structural choices serving content, but doesn't explicitly require short paragraphs. It implies brevity but doesn't directly address paragraph length."
+      },
+      {
+        "preference": "The email should begin by acknowledging effort or the current situation in one sentence maximum before delivering the main news",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Emotional Sequencing requires acknowledgment before the news, and the 'even if brief' language hints at brevity. Reader-Centric Framing recognizes existing effort. However, the 'one sentence maximum' constraint is not explicitly captured."
+      },
+      {
+        "preference": "The main news or update should be delivered immediately after the acknowledgment, not delayed or buried",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "The sequencing criterion specifies context \u2192 news \u2192 implications \u2192 action ordering, and the overall structure prevents burying the news."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters in terms of stakes and impact, not just state facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "Reader-Centric Framing requires impact described in terms of concrete effects on the reader's work. Emotional Sequencing includes 'implications' in the sequence."
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "Directly addressed: 'framed from the audience's point of view, not the sender's operational logic.'"
+      },
+      {
+        "preference": "The email should end with one concrete next step as the final substantive element",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Decisive Closure requires the final substantive line to be the key ask or call to action, with nothing trailing after it."
+      },
+      {
+        "preference": "The emotional arc must follow the strict order: acknowledge, deliver news, explain why it matters, then next step \u2014 all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Emotional Sequencing explicitly defines the order as context \u2192 news \u2192 implications \u2192 action and states the email should unfold in this sequence without circling back."
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Decisive Closure requires the final line to be the call to action, which is inherently forward-looking and action-oriented."
+      },
+      {
+        "preference": "No trailing sentiment or pleasantries after the call to action (e.g., 'thanks for your patience')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Directly addressed: 'No sentences appear after the action that dilute the close (status-quo reminders, generic sign-offs).'"
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Directly addressed: 'No pep talks, rallying cries, or forced optimism at the end.' Also covered by Direct, Non-Performative Tone's 'Avoids motivational phrases, forced optimism.'"
+      },
+      {
+        "preference": "When multiple people need to act, one clear owner with a deadline should be specified rather than a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "The criterion requires every action item to have 'a specific, named owner' and 'a clear deadline,' which directly addresses preferring a single owner over group asks."
+      },
+      {
+        "preference": "Vague group requests like 'everyone please review' should be avoided in favor of specific ownership",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "The requirement for 'a specific, named owner \u2014 no [TBD] or unnamed accountability' directly prevents vague group requests."
+      },
+      {
+        "preference": "Action items should not be over-specified to the point of assuming organizational structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses the risk of over-specifying action items or assuming organizational details. The rubric pushes toward maximum specificity without guarding against over-specification."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "Reader-Centric Framing mentions avoiding 'internal process language' and Direct, Non-Performative Tone requires natural language. However, the broader prohibition on corporate jargon (e.g., 'synergize,' 'leverage,' 'circle back') is not explicitly called out as a dealbreaker."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses passive-aggressive tone. The rubric covers directness and professionalism but doesn't specifically flag passive aggression."
+      },
+      {
+        "preference": "No walls of text \u2014 the email must have clear visual breaks and not present as a dense block",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Economy of Language addresses structural choices and brevity, which indirectly helps avoid walls of text, but the specific requirement for visual breaks and avoiding dense blocks is not explicitly stated."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion addresses punctuation usage or excessive exclamation marks specifically."
+      }
+    ],
+    "total_preferences": 22,
+    "covered_count": 15,
+    "partially_covered_count": 4,
+    "not_covered_count": 3,
+    "coverage_score": 0.773,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-05T00:37:01.793435"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 6 explicitly requires every sentence to do distinct work, no redundant phrases, and no padding."
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the message",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 requires decisions to be stated directly without excessive hedging, and Criterion 1 requires news not to be buried."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 explicitly states language should be 'professional and conversational.'"
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 specifies 'without being stiff or formal' and reads as 'natural workplace communication \u2014 not template-like or overly formal.'"
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 requires the final substantive line to be the key ask or call to action, and Criterion 3 covers concrete action items."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 6 explicitly states 'Paragraphs are short \u2014 no dense blocks of text.'"
+      },
+      {
+        "preference": "The email should begin by acknowledging effort or the current situation in one sentence maximum before delivering the main news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 explicitly requires 'Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max.'"
+      },
+      {
+        "preference": "The main news or update should be delivered immediately after the acknowledgment, not delayed or buried",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 specifies the strict arc: acknowledge \u2192 news \u2192 why it matters \u2192 next step, and the arc never loops back, meaning news comes immediately after acknowledgment."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters in terms of stakes and impact, not just state facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 includes 'explain why it matters to the reader' as a required beat in the arc, and Criterion 2 reinforces framing in terms of stakes from the reader's perspective."
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "Criterion 2 explicitly requires the 'why this matters' to be framed from the audience's point of view, not the sender's operational logic."
+      },
+      {
+        "preference": "The email should end with one concrete next step as the final substantive element",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 requires 'The final substantive line is the key ask or call to action' and Criterion 1 ends the arc with 'one concrete next step.'"
+      },
+      {
+        "preference": "The emotional arc must follow the strict order: acknowledge, deliver news, explain why it matters, then next step \u2014 all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 explicitly states 'Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats' and 'The arc never loops back.'"
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 requires the final line to be the call to action, which is inherently forward-looking and action-oriented."
+      },
+      {
+        "preference": "No trailing sentiment or pleasantries after the call to action (e.g., 'thanks for your patience')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 explicitly prohibits 'No gratitude, no status reminders, no sign-offs beyond a name' and 'no thanks for your patience at the end.'"
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 explicitly prohibits 'No pep talks, rallying cries, forced optimism' and Criterion 5 avoids 'motivational phrases, forced optimism, or we've got this language.'"
+      },
+      {
+        "preference": "When multiple people need to act, one clear owner with a deadline should be specified rather than a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 3 explicitly requires 'Each action item has one specific owner \u2014 no group asks' and 'a clear deadline.'"
+      },
+      {
+        "preference": "Vague group requests like 'everyone please review' should be avoided in favor of specific ownership",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 3 prohibits 'no group asks' and requires 'one specific owner.'"
+      },
+      {
+        "preference": "Action items should not be over-specified to the point of assuming organizational structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 3 includes 'CTA specificity matches the relationship \u2014 offers concrete options without presuming the reader's calendar or constraints.'"
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 addresses natural workplace communication and avoiding template-like language, and Criterion 2 avoids 'internal process language,' but there is no explicit prohibition on corporate jargon as a category (e.g., 'synergy,' 'leverage,' 'circle back')."
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 explicitly prohibits 'No passive-aggressive softeners like not to push, just checking in, or no pressure but.'"
+      },
+      {
+        "preference": "No walls of text \u2014 the email must have clear visual breaks and not present as a dense block",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 6 explicitly states 'Short paragraphs \u2014 no walls of text' and 'no dense blocks of text.'"
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses punctuation choices or excessive exclamation marks specifically."
+      }
+    ],
+    "total_preferences": 22,
+    "covered_count": 20,
+    "partially_covered_count": 1,
+    "not_covered_count": 1,
+    "coverage_score": 0.932,
+    "iteration": 2,
+    "rubric_version": 5,
+    "timestamp": "2026-03-05T00:45:01.557565"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "The 'Economy of Language' criterion directly addresses conciseness: 'Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding.'"
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the message",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "The criterion explicitly states 'Decisions are stated directly without excessive hedging, apologizing, or softening' and the Emotional Sequencing criterion ensures news is not buried."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "The criterion states 'Language is professional and conversational without being stiff or formal.'"
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Explicitly addressed: 'Language reads as natural workplace communication \u2014 not template-like or overly formal.'"
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "The 'Decisive Closure' criterion requires the final substantive line to be the key ask or call to action, and 'Concrete, Accountable Action Items' ensures CTAs are specific."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Directly addressed: 'Paragraphs are short \u2014 no dense blocks of text.'"
+      },
+      {
+        "preference": "The email should begin by acknowledging effort or the current situation in one sentence maximum before delivering the main news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Directly addressed: 'Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max.'"
+      },
+      {
+        "preference": "The main news or update should be delivered immediately after the acknowledgment, not delayed or buried",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "The criterion specifies the strict order 'acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations' ensuring news comes immediately after acknowledgment."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters in terms of stakes and impact, not just state facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "The 'Reader-Centric Framing' criterion requires 'The stakes paragraph names specific operational implications for the reader' and Emotional Sequencing places 'why it matters' after the news."
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "Directly and thoroughly addressed: 'The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision.'"
+      },
+      {
+        "preference": "The email should end with one concrete next step as the final substantive element",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Covered by both 'Decisive Closure' ('The final substantive line is the key ask or call to action') and 'Emotional Sequencing' (ending with 'one concrete next step')."
+      },
+      {
+        "preference": "The emotional arc must follow the strict order: acknowledge, deliver news, explain why it matters, then next step \u2014 all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Directly addressed: 'Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats. The arc never loops back.'"
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "The criterion requires the final line to be the call to action, which is inherently forward-looking and action-oriented, and prohibits trailing sentiment."
+      },
+      {
+        "preference": "No trailing sentiment or pleasantries after the call to action (e.g., 'thanks for your patience')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Explicitly addressed: 'No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders' and 'No pep talks, rallying cries, forced optimism, or \"thanks for your patience\" at the end.'"
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Directly addressed: 'No pep talks, rallying cries, forced optimism' at the end."
+      },
+      {
+        "preference": "When multiple people need to act, one clear owner with a deadline should be specified rather than a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Directly addressed: 'Each action item has one specific owner \u2014 no [TBD], no unnamed accountability, no group asks' and 'Each ask includes a clear deadline.'"
+      },
+      {
+        "preference": "Vague group requests like 'everyone please review' should be avoided in favor of specific ownership",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Covered by the 'no group asks' dimension and the requirement for one specific owner per action item."
+      },
+      {
+        "preference": "Action items should not be over-specified to the point of assuming organizational structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "The criterion addresses calibrating specificity to relationship and power dynamic ('CTA specificity matches the relationship \u2014 offers concrete date options without presuming or commanding'), which partially captures this. However, the specific concern about not assuming organizational structure details is not explicitly addressed."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Directly addressed: 'No corporate buzzwords or jargon \u2014 plain, direct language throughout.'"
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Directly addressed: 'No passive-aggressive softeners like \"not to push,\" \"just checking in,\" or \"no pressure but\"' and the description calls these 'tone-deaf.'"
+      },
+      {
+        "preference": "No walls of text \u2014 the email must have clear visual breaks and not present as a dense block",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Directly addressed: 'Paragraphs are short \u2014 no dense blocks of text' and the Emotional Sequencing criterion also supports this with 'Each major beat gets its own sentence or paragraph.'"
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses exclamation mark usage. While the tone criteria address forced optimism and cheerleading (which often correlate), the specific punctuation concern about excessive exclamation marks is not mentioned."
+      }
+    ],
+    "total_preferences": 22,
+    "covered_count": 20,
+    "partially_covered_count": 1,
+    "not_covered_count": 1,
+    "coverage_score": 0.932,
+    "iteration": 3,
+    "rubric_version": 8,
+    "timestamp": "2026-03-05T00:50:57.174802"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 4 directly addresses conciseness: 'Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding.'"
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the message",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 6 addresses directness: 'Decisions are stated directly without excessive hedging, apologizing, or softening.' Also Criterion 1 ensures the news is not buried."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 6 explicitly states 'Language is professional and conversational.'"
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 6 states 'professional and conversational without being stiff or formal' and its dimension says 'not template-like or overly formal.'"
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 3 requires 'The final substantive line is the key ask or call to action.' Criterion 5 also addresses concrete action items."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 4 explicitly states 'Short paragraphs \u2014 no walls of text' and its dimension says 'Paragraphs are short \u2014 no dense blocks of text.'"
+      },
+      {
+        "preference": "The email should begin by acknowledging effort or the current situation in one sentence maximum before delivering the main news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 explicitly requires 'acknowledge the situation first (brief \u2014 one sentence max)' and its first dimension captures this exactly."
+      },
+      {
+        "preference": "The main news or update should be delivered immediately after the acknowledgment, not delayed or buried",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 specifies the arc: acknowledge \u2192 news \u2192 why it matters \u2192 next step. The news comes immediately after acknowledgment with no deviations."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters in terms of stakes and impact, not just state facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 includes 'explain why it matters to the reader' as a required beat, and Criterion 2 (Reader-Centric Framing) reinforces this with 'names specific operational implications.'"
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "Criterion 2 is entirely dedicated to this: 'always framed from the reader's side \u2014 their plans, their team, their operational burden. Never from the sender's internal reasoning or process.'"
+      },
+      {
+        "preference": "The email should end with one concrete next step as the final substantive element",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 3 requires 'The final substantive line is the key ask or call to action' and Criterion 1 ends the arc with 'one concrete next step.'"
+      },
+      {
+        "preference": "The emotional arc must follow the strict order: acknowledge, deliver news, explain why it matters, then next step \u2014 all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 explicitly states 'Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats' and 'The arc never loops back.'"
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 3 requires the final line to be the call to action, which is inherently forward-looking and action-oriented, with nothing trailing after it."
+      },
+      {
+        "preference": "No trailing sentiment or pleasantries after the call to action (e.g., 'thanks for your patience')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 3 explicitly addresses this: 'No gratitude, pep talks, optional actions, or trailing sentiment after it' and its dimension mentions 'no gratitude, no status reminders.'"
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 3 states 'No pep talks, rallying cries, forced optimism' and Criterion 6 also addresses 'no cheerleading, no forced optimism.'"
+      },
+      {
+        "preference": "When multiple people need to act, one clear owner with a deadline should be specified rather than a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 5 explicitly requires 'Each action item has one specific owner \u2014 no group asks' and 'Each ask includes a clear deadline.'"
+      },
+      {
+        "preference": "Vague group requests like 'everyone please review' should be avoided in favor of specific ownership",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 5 dimension explicitly states 'no group asks' and requires 'one specific owner.'"
+      },
+      {
+        "preference": "Action items should not be over-specified to the point of assuming organizational structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 5 addresses calibrating specificity ('CTA specificity matches the relationship') and handling ambiguous org structure, but doesn't explicitly warn against over-specifying organizational details. The dimension about defaulting to the addressee when org structure is unclear touches on this but from a different angle."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 6 explicitly states 'No corporate buzzwords or jargon \u2014 plain, direct language throughout.'"
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 6 explicitly addresses this: 'No passive-aggressive hedging ('not to push, but...') \u2014 these are considered tone-deaf' and its dimension captures passive-aggressive softeners."
+      },
+      {
+        "preference": "No walls of text \u2014 the email must have clear visual breaks and not present as a dense block",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 4 explicitly states 'Short paragraphs \u2014 no walls of text' and Criterion 1 also supports this with 'Each major beat occupies its own sentence or paragraph.'"
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses punctuation choices like exclamation marks. While 'no cheerleading' and 'no forced optimism' might correlate, excessive exclamation marks as a specific formatting issue is not mentioned."
+      }
+    ],
+    "total_preferences": 22,
+    "covered_count": 20,
+    "partially_covered_count": 1,
+    "not_covered_count": 1,
+    "coverage_score": 0.932,
+    "iteration": 4,
+    "rubric_version": 10,
+    "timestamp": "2026-03-05T00:58:56.188959"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or elaboration",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 6 explicitly requires every sentence to do distinct work, no redundant phrases or padding."
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the message",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 requires decisions to be stated directly without excessive hedging, and Criterion 1 requires delivering the news early without burying it."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 explicitly states 'Language is professional and conversational.'"
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 specifies 'conversational without being stiff or formal' and 'not template-like or overly formal.'"
+      },
+      {
+        "preference": "Email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 requires the final substantive line to be the call to action, and Criterion 3 addresses concrete action items."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 6 explicitly states 'Paragraphs are short \u2014 no dense blocks of text.'"
+      },
+      {
+        "preference": "The email should begin by acknowledging effort or the current situation in one sentence maximum before delivering the main news",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 specifies 'acknowledge the situation or the reader first (brief \u2014 one sentence max)' before delivering the news."
+      },
+      {
+        "preference": "The main news or update should be delivered immediately after the acknowledgment, not delayed or buried",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 specifies the arc: acknowledge \u2192 deliver news, with no looping back or delay."
+      },
+      {
+        "preference": "After delivering the news, the email should explain why it matters in terms of stakes and impact, not just state facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 includes 'explain why it matters to the reader' as a required beat after delivering the news."
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centric Framing",
+        "explanation": "Criterion 2 is entirely dedicated to ensuring stakes are framed from the reader's perspective, not the sender's."
+      },
+      {
+        "preference": "The email should end with one concrete next step as the final substantive element",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 requires 'The final substantive line is the key ask or call to action' and Criterion 3 requires concrete action items."
+      },
+      {
+        "preference": "The emotional arc must follow the strict order: acknowledge, deliver news, explain why it matters, then next step \u2014 all elements present but in wrong order is still a violation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Criterion 1 explicitly specifies the order 'acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats' and states 'The arc never loops back.'"
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 requires the final line to be the call to action, which is inherently forward-looking and action-oriented."
+      },
+      {
+        "preference": "No trailing sentiment or pleasantries after the call to action (e.g., 'thanks for your patience')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 explicitly prohibits 'no gratitude... no trailing sentiment after it' and specifically mentions 'no thanks for your patience.'"
+      },
+      {
+        "preference": "No motivational platitudes in closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Decisive Closure",
+        "explanation": "Criterion 4 explicitly prohibits 'No pep talks, rallying cries, forced optimism' at the end, and Criterion 5 prohibits 'no cheerleading, no forced optimism.'"
+      },
+      {
+        "preference": "When multiple people need to act, one clear owner with a deadline should be specified rather than a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 3 explicitly requires 'Each action item has one specific owner \u2014 no group asks' and includes deadlines."
+      },
+      {
+        "preference": "Vague group requests like 'everyone please review' should be avoided in favor of specific ownership",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 3 prohibits group asks and requires specific ownership, directly addressing this preference."
+      },
+      {
+        "preference": "Action items should not be over-specified to the point of assuming organizational structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Concrete, Accountable Action Items",
+        "explanation": "Criterion 3 addresses calibrating CTA specificity to the relationship and handling ambiguous org structure by defaulting to the addressee, which partially captures this. However, the explicit concern about over-specifying organizational details isn't directly stated \u2014 the rubric focuses more on ensuring ownership rather than warning against presuming too much structure."
+      },
+      {
+        "preference": "No corporate jargon",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 explicitly states 'No corporate buzzwords or jargon \u2014 plain, direct language throughout.'"
+      },
+      {
+        "preference": "No passive aggressive tone",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Direct, Non-Performative Tone",
+        "explanation": "Criterion 5 explicitly prohibits passive-aggressive hedges and labels them as 'insincere' and 'tone-deaf.'"
+      },
+      {
+        "preference": "No walls of text \u2014 the email must have clear visual breaks and not present as a dense block",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Economy of Language",
+        "explanation": "Criterion 6 explicitly states 'no dense blocks of text' and requires short paragraphs, and Criterion 1 requires each beat to get its own sentence or paragraph."
+      },
+      {
+        "preference": "No excessive exclamation marks",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No criterion explicitly addresses punctuation choices such as excessive exclamation marks. While the tone criteria prohibit cheerleading and forced optimism, the specific mechanical issue of exclamation mark usage is not mentioned."
+      }
+    ],
+    "total_preferences": 22,
+    "covered_count": 20,
+    "partially_covered_count": 1,
+    "not_covered_count": 1,
+    "coverage_score": 0.932,
+    "iteration": 5,
+    "rubric_version": 13,
+    "timestamp": "2026-03-05T01:04:37.972834"
+  }
+]

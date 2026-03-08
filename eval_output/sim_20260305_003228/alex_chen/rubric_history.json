@@ -1,0 +1,2247 @@
+[
+  {
+    "version": 1,
+    "writing_type": "internal team communications",
+    "user_goals_summary": "This user writes internal communications that deliver difficult or consequential news to their team. They prioritize precise emotional sequencing, reader-centric framing of impact, and ending on a single concrete action. Every sentence must do distinct work \u2014 no trailing context, no performative language, no filler.",
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information is ordered by how it needs to land on the reader. Acknowledgment of impact comes before the news itself, and the email unfolds context \u2192 news \u2192 implications \u2192 action without circling back to emotional ground already covered.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of impact appears before the difficult news, even if brief"
+          },
+          {
+            "id": "logical_information_flow",
+            "label": "Information unfolds in the order the reader needs to process it, not the order the sender thought of it"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has a named owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks \u2014 background information does not masquerade as a next step.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Every action item has a specific, named owner \u2014 no '[TBD]' or unnamed accountability"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or timeframe"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close (status-quo reminders, generic sign-offs)"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, or forced optimism at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "Impact and reasoning are framed from the audience's side of the table \u2014 what this means for their work, plans, and priorities. Avoids sender-side process justifications like 'this gives us runway.' Acknowledges the audience's existing effort and practical reality.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The 'why this matters' is framed from the audience's point of view, not the sender's operational logic"
+          },
+          {
+            "id": "acknowledges_audience_effort",
+            "label": "Recognizes work the audience has already done or plans they have already made"
+          },
+          {
+            "id": "practical_not_abstract",
+            "label": "Impact is described in terms of concrete effects on the reader's work, not abstract reasoning"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through internal process language ('this gives us the runway to...')"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence, without excessive hedging or cheerleading.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids motivational phrases, forced optimism, or 'we've got this' language"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. When a single clear sentence can replace a bullet list, it should. Format follows function \u2014 structure is chosen because it serves the content, not convention.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice in the email \u2014 each sentence does unique work"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, headers) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user's primary concern is structural \u2014 the order in which information lands on the reader matters as much as the content itself. They will iterate on sequencing and closure long after tone is settled. When offering options, lead with the leanest version; this user consistently prefers cutting over adding. Never include placeholder action items or unassigned owners \u2014 if it's not concrete, hold it back entirely.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information is ordered by how it needs to land on the reader. Acknowledgment of impact comes before the news itself, and the email unfolds context \u2192 news \u2192 implications \u2192 action without circling back to emotional ground already covered.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of impact appears before the difficult news, even if brief"
+          },
+          {
+            "id": "logical_information_flow",
+            "label": "Information unfolds in the order the reader needs to process it, not the order the sender thought of it"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "Impact and reasoning are framed from the audience's side of the table \u2014 what this means for their work, plans, and priorities. Avoids sender-side process justifications like 'this gives us runway.' Acknowledges the audience's existing effort and practical reality.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The 'why this matters' is framed from the audience's point of view, not the sender's operational logic"
+          },
+          {
+            "id": "acknowledges_audience_effort",
+            "label": "Recognizes work the audience has already done or plans they have already made"
+          },
+          {
+            "id": "practical_not_abstract",
+            "label": "Impact is described in terms of concrete effects on the reader's work, not abstract reasoning"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through internal process language ('this gives us the runway to...')"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close (status-quo reminders, generic sign-offs)"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, or forced optimism at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. When a single clear sentence can replace a bullet list, it should. Format follows function \u2014 structure is chosen because it serves the content, not convention.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice in the email \u2014 each sentence does unique work"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, headers) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has a named owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks \u2014 background information does not masquerade as a next step.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Every action item has a specific, named owner \u2014 no '[TBD]' or unnamed accountability"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or timeframe"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence, without excessive hedging or cheerleading.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids motivational phrases, forced optimism, or 'we've got this' language"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "internal team communications",
+    "user_goals_summary": "This user writes internal communications that deliver difficult or consequential news to their team. They prioritize precise emotional sequencing, reader-centric framing of impact, and ending on a single concrete action. Every sentence must do distinct work \u2014 no trailing context, no performative language, no filler.",
+    "coaching_notes": "This user's primary concern is structural \u2014 the order in which information lands on the reader matters as much as the content itself. They will iterate on sequencing and closure long after tone is settled. When offering options, lead with the leanest version; this user consistently prefers cutting over adding. Never include placeholder action items or unassigned owners \u2014 if it's not concrete, hold it back entirely."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information is ordered by how it needs to land on the reader. Acknowledgment of impact comes before the news itself, and the email unfolds context \u2192 news \u2192 implications \u2192 action without circling back to emotional ground already covered.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of impact appears before the difficult news, even if brief"
+          },
+          {
+            "id": "logical_information_flow",
+            "label": "Information unfolds in the order the reader needs to process it, not the order the sender thought of it"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "Impact and reasoning are framed from the audience's side of the table \u2014 what this means for their work, plans, and priorities. Every element, including the offer, the options, and any off-ramp, is named as belonging to the reader's decision, not the sender's generosity or anxiety. Avoids sender-side process justifications and avoids language that centers the sender's uncertainty, preference, or stake in the outcome.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The 'why this matters' is framed from the audience's point of view, not the sender's operational logic"
+          },
+          {
+            "id": "acknowledges_audience_effort",
+            "label": "Recognizes work the audience has already done or plans they have already made"
+          },
+          {
+            "id": "practical_not_abstract",
+            "label": "Impact is described in terms of concrete effects on the reader's work, not abstract reasoning"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through internal process language ('this gives us the runway to...')"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions or preferences of the sender"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close (status-quo reminders, generic sign-offs)"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, or forced optimism at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. When a single clear sentence can replace a bullet list, it should. Format follows function \u2014 structure is chosen because it serves the content, not convention.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice in the email \u2014 each sentence does unique work"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, headers) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has a named owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks \u2014 background information does not masquerade as a next step. In external-facing contexts where the recipient is not named, specificity means anchoring the ask to a concrete day or narrow window rather than open-ended ranges like 'this week or next.'",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Every action item has a specific, named owner \u2014 no '[TBD]' or unnamed accountability"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or timeframe"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence, without excessive hedging or cheerleading.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids motivational phrases, forced optimism, or 'we've got this' language"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 3,
+    "source": "alignment_suggestion",
+    "writing_type": "internal team communications",
+    "user_goals_summary": "This user writes internal communications that deliver difficult or consequential news to their team. They prioritize precise emotional sequencing, reader-centric framing of impact, and ending on a single concrete action. Every sentence must do distinct work \u2014 no trailing context, no performative language, no filler.",
+    "coaching_notes": "This user's primary concern is structural \u2014 the order in which information lands on the reader matters as much as the content itself. They will iterate on sequencing and closure long after tone is settled. When offering options, lead with the leanest version; this user consistently prefers cutting over adding. Never include placeholder action items or unassigned owners \u2014 if it's not concrete, hold it back entirely."
+  },
+  {
+    "version": 4,
+    "writing_type": "professional emails (internal and external)",
+    "user_goals_summary": "The user writes emails that land on the reader's terms \u2014 structurally ordered by how the reader needs to process information, framed from the reader's perspective rather than the sender's, and ending cleanly on a single concrete ask. Tone is conversational and confident, never performative or passive-aggressive.",
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own space \u2014 compressing two beats into one sentence robs them of weight. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) gets its own sentence or paragraph \u2014 no compressing two beats into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their work, their cost of inaction. Never from the sender's internal reasoning, process, or preferences. Does not diagnose or interpret the reader's behavior or internal state \u2014 framing from their perspective is not the same as explaining their own silence back to them.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The 'why this matters' is framed from the audience's point of view, not the sender's operational logic"
+          },
+          {
+            "id": "acknowledges_audience_effort",
+            "label": "Recognizes work the audience has already done or plans they have already made"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through internal process language ('this gives us the runway to...')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging, softening, or qualifiers immediately before the CTA. No gratitude, pep talks, or 'thanks for your patience' after it. Necessary context is folded into the action line rather than appended.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, headers) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. CTA specificity is calibrated to the relationship \u2014 specific enough to act on, but not so specific that it presumes the reader's constraints or schedule.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA specificity matches the relationship \u2014 offers concrete options without presuming the reader's calendar or constraints"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...'), no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness"
+          },
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids motivational phrases, forced optimism, or 'we've got this' language"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "1. This user has an extremely precise sense of information ordering \u2014 not just what comes first, but how much space each idea gets. Compressing two ideas into one sentence is as much a structural violation as putting them in the wrong order. 2. 'Reader-centric' does NOT mean 'diagnose the reader.' Framing impact from their perspective is valued; interpreting their behavior or silence is presumptuous and will be flagged. 3. Passive-aggressive hedging ('not to push, but...') is a deal-breaker \u2014 the user called it out with 'I hate it.' When in doubt, be direct rather than softened.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own space \u2014 compressing two beats into one sentence robs them of weight. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) gets its own sentence or paragraph \u2014 no compressing two beats into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their work, their cost of inaction. Never from the sender's internal reasoning, process, or preferences. Does not diagnose or interpret the reader's behavior or internal state \u2014 framing from their perspective is not the same as explaining their own silence back to them.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The 'why this matters' is framed from the audience's point of view, not the sender's operational logic"
+          },
+          {
+            "id": "acknowledges_audience_effort",
+            "label": "Recognizes work the audience has already done or plans they have already made"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through internal process language ('this gives us the runway to...')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. CTA specificity is calibrated to the relationship \u2014 specific enough to act on, but not so specific that it presumes the reader's constraints or schedule.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA specificity matches the relationship \u2014 offers concrete options without presuming the reader's calendar or constraints"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging, softening, or qualifiers immediately before the CTA. No gratitude, pep talks, or 'thanks for your patience' after it. Necessary context is folded into the action line rather than appended.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...'), no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness"
+          },
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids motivational phrases, forced optimism, or 'we've got this' language"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, headers) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 5,
+    "source": "criteria_classification",
+    "writing_type": "professional emails (internal and external)",
+    "user_goals_summary": "The user writes emails that land on the reader's terms \u2014 structurally ordered by how the reader needs to process information, framed from the reader's perspective rather than the sender's, and ending cleanly on a single concrete ask. Tone is conversational and confident, never performative or passive-aggressive.",
+    "coaching_notes": "1. This user has an extremely precise sense of information ordering \u2014 not just what comes first, but how much space each idea gets. Compressing two ideas into one sentence is as much a structural violation as putting them in the wrong order. 2. 'Reader-centric' does NOT mean 'diagnose the reader.' Framing impact from their perspective is valued; interpreting their behavior or silence is presumptuous and will be flagged. 3. Passive-aggressive hedging ('not to push, but...') is a deal-breaker \u2014 the user called it out with 'I hate it.' When in doubt, be direct rather than softened."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own space \u2014 compressing two beats into one sentence robs them of weight. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) gets its own sentence or paragraph \u2014 no compressing two beats into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their work, their cost of inaction. Never from the sender's internal reasoning, process, or preferences. The stakes paragraph must name concrete, specific implications for the reader's operations (e.g. what they will need to provide, what will be required of their team, what timeline they are working against) \u2014 not just gesture toward reader impact in the abstract. Does not diagnose or interpret the reader's behavior or internal state \u2014 framing from their perspective is not the same as explaining their own silence back to them.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The 'why this matters' is framed from the audience's point of view, not the sender's operational logic"
+          },
+          {
+            "id": "acknowledges_audience_effort",
+            "label": "Recognizes work the audience has already done or plans they have already made"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through internal process language ('this gives us the runway to...')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 not abstract impact, but what they will actually need to do, provide, or plan for"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. CTA specificity is calibrated to the relationship \u2014 specific enough to act on, but not so specific that it presumes the reader's constraints or schedule. Bracketed placeholders (e.g. '[specific date]') and open-ended windows (e.g. 'this week') are failures of specificity \u2014 the ask must include a real date or named narrow window the sender has already committed to.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'this week', not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA specificity matches the relationship \u2014 offers concrete options without presuming the reader's calendar or constraints"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging, softening, or qualifiers immediately before the CTA. No gratitude, pep talks, or 'thanks for your patience' after it. Necessary context is folded into the action line rather than appended.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...'), no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness"
+          },
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids motivational phrases, forced optimism, or 'we've got this' language"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, headers) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 6,
+    "source": "alignment_suggestion",
+    "writing_type": "professional emails (internal and external)",
+    "user_goals_summary": "The user writes emails that land on the reader's terms \u2014 structurally ordered by how the reader needs to process information, framed from the reader's perspective rather than the sender's, and ending cleanly on a single concrete ask. Tone is conversational and confident, never performative or passive-aggressive.",
+    "coaching_notes": "1. This user has an extremely precise sense of information ordering \u2014 not just what comes first, but how much space each idea gets. Compressing two ideas into one sentence is as much a structural violation as putting them in the wrong order. 2. 'Reader-centric' does NOT mean 'diagnose the reader.' Framing impact from their perspective is valued; interpreting their behavior or silence is presumptuous and will be flagged. 3. Passive-aggressive hedging ('not to push, but...') is a deal-breaker \u2014 the user called it out with 'I hate it.' When in doubt, be direct rather than softened."
+  },
+  {
+    "version": 7,
+    "writing_type": "professional workplace emails",
+    "user_goals_summary": "This user writes emails that are honest, direct, and structurally disciplined. They value a strict information arc where each beat lands independently, and they are especially attuned to whether the 'why this matters' is framed from the reader's side \u2014 not just addressed to them but genuinely written for them. They prefer emails that end the moment the work is done, with one clean, actionable ask.",
+    "rubric": [
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their team, their operational burden. Never from the sender's internal reasoning or process. Critically, even framing the sender's transparency or early notice as a considerate gesture still centers the sender. The test: does this sentence describe a consequence the reader faces, or an action the sender is taking? Only the former passes.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 what they will need to do, provide, or plan for \u2014 not abstract impact"
+          },
+          {
+            "id": "no_sender_as_hero",
+            "label": "The sender's actions (flagging early, being transparent, giving notice) are not framed as gestures of consideration \u2014 consequences are stated as facts about the reader's situation"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through sender-side process language ('this gives us the runway to...', 'we want to ensure quality')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own sentence or paragraph \u2014 compressing two beats into one robs them of weight. Letting an acknowledgment sit alone before the consequence lands gives it room to breathe. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) gets its own sentence or paragraph \u2014 no compressing two beats into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. CTA specificity is calibrated to the relationship and power dynamic \u2014 offer specific dates as options the reader can accept or decline, but don't presume their calendar or box them in. Bracketed placeholders and open-ended windows are failures of specificity.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA specificity matches the relationship \u2014 offers concrete date options without presuming or commanding the reader's availability"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging or softening immediately before the CTA. No gratitude, pep talks, or trailing sentiment after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...') \u2014 the user considers these tone-deaf. No corporate jargon, no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness and read as insincere"
+          },
+          {
+            "id": "no_corporate_jargon",
+            "label": "No corporate buzzwords or jargon \u2014 plain, direct language throughout"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention. When a single clear sentence can replace a bullet list, it should.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, single sentences) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Reader-centric framing is this user's deepest concern and most refined instinct \u2014 they detect subtle sender-centering that most writers wouldn't notice, including framing early notice as the sender's courtesy rather than the reader's operational reality. They want each structural beat to have its own space; compressing two ideas into one sentence is a consistent trigger for revision. They have a visceral negative reaction to passive-aggressive hedges ('not to push, but') and pep-talk closings \u2014 both are non-negotiable cuts.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own sentence or paragraph \u2014 compressing two beats into one robs them of weight. Letting an acknowledgment sit alone before the consequence lands gives it room to breathe. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) gets its own sentence or paragraph \u2014 no compressing two beats into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their team, their operational burden. Never from the sender's internal reasoning or process. Critically, even framing the sender's transparency or early notice as a considerate gesture still centers the sender. The test: does this sentence describe a consequence the reader faces, or an action the sender is taking? Only the former passes.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 what they will need to do, provide, or plan for \u2014 not abstract impact"
+          },
+          {
+            "id": "no_sender_as_hero",
+            "label": "The sender's actions (flagging early, being transparent, giving notice) are not framed as gestures of consideration \u2014 consequences are stated as facts about the reader's situation"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through sender-side process language ('this gives us the runway to...', 'we want to ensure quality')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...') \u2014 the user considers these tone-deaf. No corporate jargon, no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness and read as insincere"
+          },
+          {
+            "id": "no_corporate_jargon",
+            "label": "No corporate buzzwords or jargon \u2014 plain, direct language throughout"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention. When a single clear sentence can replace a bullet list, it should.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, single sentences) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. CTA specificity is calibrated to the relationship and power dynamic \u2014 offer specific dates as options the reader can accept or decline, but don't presume their calendar or box them in. Bracketed placeholders and open-ended windows are failures of specificity.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA specificity matches the relationship \u2014 offers concrete date options without presuming or commanding the reader's availability"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging or softening immediately before the CTA. No gratitude, pep talks, or trailing sentiment after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 8,
+    "source": "criteria_classification",
+    "writing_type": "professional workplace emails",
+    "user_goals_summary": "This user writes emails that are honest, direct, and structurally disciplined. They value a strict information arc where each beat lands independently, and they are especially attuned to whether the 'why this matters' is framed from the reader's side \u2014 not just addressed to them but genuinely written for them. They prefer emails that end the moment the work is done, with one clean, actionable ask.",
+    "coaching_notes": "Reader-centric framing is this user's deepest concern and most refined instinct \u2014 they detect subtle sender-centering that most writers wouldn't notice, including framing early notice as the sender's courtesy rather than the reader's operational reality. They want each structural beat to have its own space; compressing two ideas into one sentence is a consistent trigger for revision. They have a visceral negative reaction to passive-aggressive hedges ('not to push, but') and pep-talk closings \u2014 both are non-negotiable cuts."
+  },
+  {
+    "version": 9,
+    "writing_type": "professional emails",
+    "user_goals_summary": "This user writes professional emails that land information in a deliberate emotional sequence, always framing stakes from the reader's perspective rather than the sender's. They value directness without stiffness, concrete accountability in every ask, and emails that stop cleanly the moment the work is done \u2014 no trailing sentiment, no pep talks, no hedging.",
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own sentence or paragraph \u2014 compressing two beats into one robs them of weight. When an acknowledgment and a consequence share the same sentence, they fight each other. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) occupies its own sentence or paragraph \u2014 no two beats compressed into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their team, their operational burden. Never from the sender's internal reasoning or process. Framing the sender's transparency, early notice, or restraint as a considerate gesture still centers the sender. The test: does this sentence describe a consequence the reader faces, or an action the sender is taking? Only the former passes.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 what they will need to do, provide, or plan for \u2014 not abstract impact"
+          },
+          {
+            "id": "no_sender_as_hero",
+            "label": "The sender's actions (flagging early, being transparent, giving notice) are not framed as gestures of consideration \u2014 consequences are stated as facts about the reader's situation"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through sender-side process language ('this gives us the runway to...', 'we want to ensure quality')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...') \u2014 these are considered tone-deaf. No corporate jargon, no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness and read as insincere"
+          },
+          {
+            "id": "no_corporate_jargon",
+            "label": "No corporate buzzwords or jargon \u2014 plain, direct language throughout"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging or softening immediately before the CTA. No gratitude, pep talks, optional actions, or trailing sentiment after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no optional follow-ups, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. When org structure is unclear, ownership defaults to the addressee rather than being diffused with optional forwards or vague 'loop someone in' language. CTA specificity is calibrated to the relationship \u2014 offer specific dates as options, don't presume or command.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "ownership_defaults_to_addressee",
+            "label": "When org structure or ownership is ambiguous, the ask lands with the person being emailed \u2014 no diffuse optional forwards or 'pass this along if needed'"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA specificity matches the relationship \u2014 offers concrete date options without presuming or commanding the reader's availability"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention. When a single clear sentence can replace a bullet list, it should.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, single sentences) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiable: the sender-as-hero pattern ('I wanted to flag this early so you'd have time') is this user's most persistent revision target \u2014 it appears in nearly every first draft and always gets cut. They want consequences stated as the reader's reality, never as evidence of the sender's consideration. Trade-off preference: when forced to choose between warmth and precision, this user always chooses precision \u2014 empathy is valued but must be brief and must not delay the information. Feedback style: this user gives surgical structural feedback ('the order feels off,' 'these two ideas are compressed') and expects targeted fixes rather than full rewrites.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own sentence or paragraph \u2014 compressing two beats into one robs them of weight. When an acknowledgment and a consequence share the same sentence, they fight each other. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) occupies its own sentence or paragraph \u2014 no two beats compressed into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their team, their operational burden. Never from the sender's internal reasoning or process. Framing the sender's transparency, early notice, or restraint as a considerate gesture still centers the sender. The test: does this sentence describe a consequence the reader faces, or an action the sender is taking? Only the former passes.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 what they will need to do, provide, or plan for \u2014 not abstract impact"
+          },
+          {
+            "id": "no_sender_as_hero",
+            "label": "The sender's actions (flagging early, being transparent, giving notice) are not framed as gestures of consideration \u2014 consequences are stated as facts about the reader's situation"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through sender-side process language ('this gives us the runway to...', 'we want to ensure quality')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging or softening immediately before the CTA. No gratitude, pep talks, optional actions, or trailing sentiment after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no optional follow-ups, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention. When a single clear sentence can replace a bullet list, it should.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, single sentences) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. When org structure is unclear, ownership defaults to the addressee rather than being diffused with optional forwards or vague 'loop someone in' language. CTA specificity is calibrated to the relationship \u2014 offer specific dates as options, don't presume or command.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "ownership_defaults_to_addressee",
+            "label": "When org structure or ownership is ambiguous, the ask lands with the person being emailed \u2014 no diffuse optional forwards or 'pass this along if needed'"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA specificity matches the relationship \u2014 offers concrete date options without presuming or commanding the reader's availability"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...') \u2014 these are considered tone-deaf. No corporate jargon, no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness and read as insincere"
+          },
+          {
+            "id": "no_corporate_jargon",
+            "label": "No corporate buzzwords or jargon \u2014 plain, direct language throughout"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 10,
+    "source": "criteria_classification",
+    "writing_type": "professional emails",
+    "user_goals_summary": "This user writes professional emails that land information in a deliberate emotional sequence, always framing stakes from the reader's perspective rather than the sender's. They value directness without stiffness, concrete accountability in every ask, and emails that stop cleanly the moment the work is done \u2014 no trailing sentiment, no pep talks, no hedging.",
+    "coaching_notes": "Non-negotiable: the sender-as-hero pattern ('I wanted to flag this early so you'd have time') is this user's most persistent revision target \u2014 it appears in nearly every first draft and always gets cut. They want consequences stated as the reader's reality, never as evidence of the sender's consideration. Trade-off preference: when forced to choose between warmth and precision, this user always chooses precision \u2014 empathy is valued but must be brief and must not delay the information. Feedback style: this user gives surgical structural feedback ('the order feels off,' 'these two ideas are compressed') and expects targeted fixes rather than full rewrites."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation first (brief \u2014 one sentence max), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own sentence or paragraph \u2014 compressing two beats into one robs them of weight. When an acknowledgment and a consequence share the same sentence, they fight each other. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or shared context appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) occupies its own sentence or paragraph \u2014 no two beats compressed into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their work, their consequences. Never from the sender's internal reasoning, process, or convenience. Framing the sender's transparency, early notice, or restraint as a considerate gesture still centers the sender. The test: does this sentence describe a consequence the reader faces, or an action the sender is taking? Only the former passes. This extends beyond the stakes paragraph \u2014 scheduling details, framing of correction, and even sentence-level word choice must stay in the reader's frame. 'This affects your accounts' passes. 'This works on my end' or 'I'm raising this so you can course-correct' does not.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 what they will need to do, provide, or plan for \u2014 not abstract impact"
+          },
+          {
+            "id": "no_sender_as_hero",
+            "label": "The sender's actions (flagging early, being transparent, giving notice) are not framed as gestures of consideration \u2014 consequences are stated as facts about the reader's situation"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through sender-side process language ('this gives us the runway to...', 'we want to ensure quality')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          },
+          {
+            "id": "no_sender_frame_in_logistics",
+            "label": "Scheduling details, date offers, and logistical language do not anchor to the sender's availability or preference \u2014 they are offered as neutral options for the reader to accept or redirect"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging or softening immediately before the CTA. No gratitude, pep talks, optional actions, or trailing sentiment after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no optional follow-ups, no sign-offs beyond a name"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention. When a single clear sentence can replace a bullet list, it should.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, single sentences) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. When org structure is unclear, ownership defaults to the addressee rather than being diffused with optional forwards or vague 'loop someone in' language. CTA specificity is calibrated to the relationship \u2014 offer specific dates as neutral options, don't anchor them to the sender's availability, and don't presume or command the reader's schedule.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "ownership_defaults_to_addressee",
+            "label": "When org structure or ownership is ambiguous, the ask lands with the person being emailed \u2014 no diffuse optional forwards or 'pass this along if needed'"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA offers concrete date options as neutral choices \u2014 not anchored to the sender's availability ('works on my end') and not so over-specified that the framing centers the sender's schedule"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedging ('not to push, but...') \u2014 these are considered tone-deaf. No corporate jargon, no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness and read as insincere"
+          },
+          {
+            "id": "no_corporate_jargon",
+            "label": "No corporate buzzwords or jargon \u2014 plain, direct language throughout"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or softening"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 11,
+    "source": "alignment_suggestion",
+    "writing_type": "professional emails",
+    "user_goals_summary": "This user writes professional emails that land information in a deliberate emotional sequence, always framing stakes from the reader's perspective rather than the sender's. They value directness without stiffness, concrete accountability in every ask, and emails that stop cleanly the moment the work is done \u2014 no trailing sentiment, no pep talks, no hedging.",
+    "coaching_notes": "Non-negotiable: the sender-as-hero pattern ('I wanted to flag this early so you'd have time') is this user's most persistent revision target \u2014 it appears in nearly every first draft and always gets cut. They want consequences stated as the reader's reality, never as evidence of the sender's consideration. Trade-off preference: when forced to choose between warmth and precision, this user always chooses precision \u2014 empathy is valued but must be brief and must not delay the information. Feedback style: this user gives surgical structural feedback ('the order feels off,' 'these two ideas are compressed') and expects targeted fixes rather than full rewrites."
+  },
+  {
+    "version": 12,
+    "writing_type": "professional workplace emails",
+    "user_goals_summary": "This user writes emails that are structurally clean, reader-centric, and end the moment the work is done. They value a strict emotional arc (acknowledge \u2192 news \u2192 reader-side stakes \u2192 one concrete ask), and they are exceptionally attuned to sender-framed language masquerading as reader empathy. Tone should be direct and conversational without hedging, cheerleading, or performative gestures.",
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation or the reader first (brief \u2014 one sentence max, can be appreciative or sympathetic depending on context), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own sentence or paragraph \u2014 compressing two beats into one robs them of weight. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or relationship appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) occupies its own sentence or paragraph \u2014 no two beats compressed into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their credibility, their work, their consequences. Never from the sender's reasoning, process, or considerate intent. Framing early notice, transparency, or restraint as a gesture still centers the sender. The test: does this sentence describe a consequence the reader faces, or an action the sender is taking? Only the former passes. This extends to every sentence in the email \u2014 scheduling, correction, logistics, and word choice all stay in the reader's frame.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 what they will need to do, provide, or manage \u2014 not abstract impact"
+          },
+          {
+            "id": "no_sender_as_hero",
+            "label": "The sender's actions (flagging early, being transparent, giving notice) are not framed as gestures of consideration \u2014 consequences are stated as facts about the reader's situation"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through sender-side process language ('this gives us the runway to...', 'we want to ensure quality')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          },
+          {
+            "id": "no_sender_frame_in_logistics",
+            "label": "Scheduling details and logistical language do not anchor to the sender's availability or preference \u2014 they are offered as neutral options for the reader to accept or redirect"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging or softening immediately before the CTA. No gratitude, pep talks, optional actions, vague 'pass this along' language, or trailing sentiment after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no optional follow-ups, no vague 'forward this along' invitations"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention. When a single clear sentence can replace a bullet list, it should.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, single sentences) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. When org structure is unclear, ownership defaults to the addressee rather than being diffused with optional forwards or vague 'loop someone in' language. CTA specificity is calibrated to the relationship \u2014 offer specific dates as neutral options without presuming or commanding the reader's schedule.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "ownership_defaults_to_addressee",
+            "label": "When org structure or ownership is ambiguous, the ask lands with the person being emailed \u2014 no diffuse optional forwards or 'pass this along if needed'"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA offers concrete date options as neutral choices \u2014 not so loose as to be non-committal ('sometime soon'), not so narrow as to presume the reader's calendar"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedges ('not to push, but...', 'just checking in') \u2014 these read as insincere and are considered tone-deaf. No corporate jargon, no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness and read as insincere"
+          },
+          {
+            "id": "no_corporate_jargon",
+            "label": "No corporate buzzwords or jargon \u2014 plain, direct language throughout"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or passive-aggressive softening"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user's non-negotiable is reader-centric framing \u2014 they will catch sender-framed language in every draft, including subtle forms like 'I'm flagging this early so you can plan.' They have a precise internal sense of emotional sequencing and will feel when two beats are compressed or out of order even before they can articulate why. Their instinct is always to tighten and cut: pep talks, trailing sentiment, vague optional actions, and placeholder asks are all reliably rejected. When offering options, present 2\u20133 concrete choices and let them select rather than asking open-ended questions.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict arc: acknowledge the situation or the reader first (brief \u2014 one sentence max, can be appreciative or sympathetic depending on context), then deliver the news, then explain why it matters to the reader, then one concrete next step. Each beat gets its own sentence or paragraph \u2014 compressing two beats into one robs them of weight. The arc never loops back.",
+        "dimensions": [
+          {
+            "id": "acknowledgment_before_news",
+            "label": "Acknowledgment of effort, situation, or relationship appears before the news \u2014 brief, one sentence max"
+          },
+          {
+            "id": "one_beat_per_thought",
+            "label": "Each major beat (acknowledgment, news, stakes, ask) occupies its own sentence or paragraph \u2014 no two beats compressed into one"
+          },
+          {
+            "id": "no_retroactive_empathy",
+            "label": "The email does not circle back to acknowledge feelings after already delivering the news"
+          },
+          {
+            "id": "framing_before_detail",
+            "label": "The reader knows the general shape of what's coming before specifics land"
+          },
+          {
+            "id": "arc_does_not_loop",
+            "label": "Order is: acknowledge \u2192 news \u2192 why it matters \u2192 next step \u2014 no deviations or revisiting earlier beats"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centric Framing",
+        "category": "Audience",
+        "description": "The 'why this matters' is always framed from the reader's side \u2014 their plans, their credibility, their work, their consequences. Never from the sender's reasoning, process, or considerate intent. Framing early notice, transparency, or restraint as a gesture still centers the sender. The test: does this sentence describe a consequence the reader faces, or an action the sender is taking? Only the former passes. This extends to every sentence in the email \u2014 scheduling, correction, logistics, and word choice all stay in the reader's frame.",
+        "dimensions": [
+          {
+            "id": "impact_from_reader_perspective",
+            "label": "The stakes or consequences are framed from the audience's point of view \u2014 what changes for them, not why the sender made the decision"
+          },
+          {
+            "id": "concrete_reader_implications",
+            "label": "The stakes paragraph names specific operational implications for the reader \u2014 what they will need to do, provide, or manage \u2014 not abstract impact"
+          },
+          {
+            "id": "no_sender_as_hero",
+            "label": "The sender's actions (flagging early, being transparent, giving notice) are not framed as gestures of consideration \u2014 consequences are stated as facts about the reader's situation"
+          },
+          {
+            "id": "no_process_justification",
+            "label": "Avoids justifying decisions through sender-side process language ('this gives us the runway to...', 'we want to ensure quality')"
+          },
+          {
+            "id": "no_diagnosing_reader",
+            "label": "Does not interpret or diagnose the reader's behavior, motivations, or silence \u2014 observation is fine, attribution is not"
+          },
+          {
+            "id": "reader_owns_the_decision",
+            "label": "Options, offers, and off-ramps are framed as the reader's to take \u2014 not as concessions from the sender"
+          },
+          {
+            "id": "no_sender_frame_in_logistics",
+            "label": "Scheduling details and logistical language do not anchor to the sender's availability or preference \u2014 they are offered as neutral options for the reader to accept or redirect"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Concrete, Accountable Action Items",
+        "category": "Content",
+        "description": "Every ask has one clear owner and a specific deadline. If an action item can't be made concrete yet, it's held back rather than included as a placeholder. Context is clearly distinguished from asks. When org structure is unclear, ownership defaults to the addressee rather than being diffused with optional forwards or vague 'loop someone in' language. CTA specificity is calibrated to the relationship \u2014 offer specific dates as neutral options without presuming or commanding the reader's schedule.",
+        "dimensions": [
+          {
+            "id": "named_owners",
+            "label": "Each action item has one specific owner \u2014 no '[TBD]', no unnamed accountability, no group asks"
+          },
+          {
+            "id": "explicit_deadlines",
+            "label": "Each ask includes a clear deadline with a specific date or narrow timeframe \u2014 not a bracket, not 'soon'"
+          },
+          {
+            "id": "action_vs_context",
+            "label": "Action items are distinguishable from background context \u2014 status-quo statements are not framed as asks"
+          },
+          {
+            "id": "no_placeholder_asks",
+            "label": "Nothing is included as an action item unless it is fully actionable right now \u2014 no bracketed stand-ins or deferred specifics"
+          },
+          {
+            "id": "ownership_defaults_to_addressee",
+            "label": "When org structure or ownership is ambiguous, the ask lands with the person being emailed \u2014 no diffuse optional forwards or 'pass this along if needed'"
+          },
+          {
+            "id": "calibrated_specificity",
+            "label": "CTA offers concrete date options as neutral choices \u2014 not so loose as to be non-committal ('sometime soon'), not so narrow as to presume the reader's calendar"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Decisive Closure",
+        "category": "Structure",
+        "description": "The email ends the moment its work is done. The final substantive line is the call to action \u2014 nothing trails after it. No hedging or softening immediately before the CTA. No gratitude, pep talks, optional actions, vague 'pass this along' language, or trailing sentiment after it. Necessary context is folded into the action line rather than appended as a separate sentence.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The final substantive line is the key ask or call to action"
+          },
+          {
+            "id": "no_trailing_sentences",
+            "label": "No sentences appear after the action that dilute the close \u2014 no gratitude, no status reminders, no optional follow-ups, no vague 'forward this along' invitations"
+          },
+          {
+            "id": "no_hedge_before_cta",
+            "label": "No hedging or softening language ('either way,' 'no pressure,' 'if you have time') immediately before the ask"
+          },
+          {
+            "id": "context_folded_into_action",
+            "label": "Supporting context is integrated into the action line rather than split into a separate trailing sentence"
+          },
+          {
+            "id": "no_motivational_close",
+            "label": "No pep talks, rallying cries, forced optimism, or 'thanks for your patience' at the end"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Direct, Non-Performative Tone",
+        "category": "Style",
+        "description": "Language is professional and conversational without being stiff or formal. Empathy is genuine but brief \u2014 not drawn out or performative. Decisions are delivered with confidence. No passive-aggressive hedges ('not to push, but...', 'just checking in') \u2014 these read as insincere and are considered tone-deaf. No corporate jargon, no cheerleading, no forced optimism.",
+        "dimensions": [
+          {
+            "id": "conversational_not_stiff",
+            "label": "Language reads as natural workplace communication \u2014 not template-like or overly formal"
+          },
+          {
+            "id": "brief_genuine_empathy",
+            "label": "Empathy and acknowledgment are present but concise \u2014 not extended or performative"
+          },
+          {
+            "id": "no_passive_aggressive_hedging",
+            "label": "No passive-aggressive softeners like 'not to push,' 'just checking in,' or 'no pressure but' \u2014 these undermine directness and read as insincere"
+          },
+          {
+            "id": "no_corporate_jargon",
+            "label": "No corporate buzzwords or jargon \u2014 plain, direct language throughout"
+          },
+          {
+            "id": "confident_delivery",
+            "label": "Decisions are stated directly without excessive hedging, apologizing, or passive-aggressive softening"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Economy of Language",
+        "category": "Style",
+        "description": "Every sentence does distinct work. No redundant phrases, repeated ideas, or sections that exist for padding. Short paragraphs \u2014 no walls of text. Format follows function: structure is chosen because it serves the content, not convention. When a single clear sentence can replace a bullet list, it should.",
+        "dimensions": [
+          {
+            "id": "no_redundancy",
+            "label": "No idea or phrase appears twice \u2014 each sentence does unique work"
+          },
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 no dense blocks of text"
+          },
+          {
+            "id": "format_follows_function",
+            "label": "Structural choices (bullets, paragraphs, single sentences) are used because they serve the content, not by default"
+          },
+          {
+            "id": "no_filler_sections",
+            "label": "No sections exist solely for convention \u2014 every block advances the email's purpose"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 13,
+    "source": "criteria_classification",
+    "writing_type": "professional workplace emails",
+    "user_goals_summary": "This user writes emails that are structurally clean, reader-centric, and end the moment the work is done. They value a strict emotional arc (acknowledge \u2192 news \u2192 reader-side stakes \u2192 one concrete ask), and they are exceptionally attuned to sender-framed language masquerading as reader empathy. Tone should be direct and conversational without hedging, cheerleading, or performative gestures.",
+    "coaching_notes": "This user's non-negotiable is reader-centric framing \u2014 they will catch sender-framed language in every draft, including subtle forms like 'I'm flagging this early so you can plan.' They have a precise internal sense of emotional sequencing and will feel when two beats are compressed or out of order even before they can articulate why. Their instinct is always to tighten and cut: pep talks, trailing sentiment, vague optional actions, and placeholder asks are all reliably rejected. When offering options, present 2\u20133 concrete choices and let them select rather than asking open-ended questions."
+  }
+]

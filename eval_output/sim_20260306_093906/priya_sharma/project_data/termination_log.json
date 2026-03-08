@@ -1,0 +1,180 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 2,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.503,
+              "reasoning": "The draft is technically competent and maintains a formal register throughout, but it reads more like a protocol description than an argument \u2014 I never get a sense of why I'm reading each part before the details arrive, and the section as a whole doesn't build toward anything that feels earned.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.975,
+              "reasoning": "All hidden preferences are fully met \u2014 paragraphs orient before elaborating, the methods rhythm is intact across all three paragraphs, strategic informality is used exactly once and earns its place, logical dependency between paragraphs is tight, and there are no filler hedges. The only minor gap is cite-awareness, which is present but light.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 6,
+        "max_drafts": 20,
+        "total_turns": 6,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.5,
+              "reasoning": "The logical dependency between paragraphs is genuinely strong, and the technical precision is solid throughout. However, the opening sentences of the second and third paragraphs dive into content before establishing their role in the argument, which disrupts the reading experience, and there's no moment of strategic plain-language clarity that would signal deep authorial understanding."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7,
+              "reasoning": "The argument structure and logical dependency between paragraphs are genuinely strong, and H1 and H4 are both well-executed. The main gap is H3 \u2014 the draft maintains an unbroken formal register throughout, which is technically correct but actually works against the goal here: one well-placed moment of plain-language clarity would signal that the authors understand the mechanism deeply, not just formally.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.8875,
+              "reasoning": "The draft is very strong overall \u2014 paragraph openings, logical dependency, and the one plain-language aside all land well. The closing sentence of the final paragraph is the remaining weak point: it runs two distinct future directions together in a single long clause in a way that diffuses rather than sharpens the takeaway, and the cite-aware scaffolding that should leave room for references is thin throughout.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.975,
+              "reasoning": "",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The draft is strong in dependency-building between paragraphs and avoids filler hedges, but the opening paragraph dives immediately into technical content \u2014 mBART's paradigm, BPE vocabulary \u2014 without first establishing why the reader is encountering this paragraph and what argumentative work it does. The strategic informality lands well, but the opening orientation issue is the main thing holding this back."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The draft is strong overall \u2014 the logical dependency between paragraphs is excellent, the informal aside lands well, and there are no filler hedges. The one remaining issue is that the second paragraph's opening sentence tells me what adapter methods do before it tells me why I'm reading about them at this point in the argument.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.7,
+              "reasoning": "The draft handles logical dependency between paragraphs and paragraph-opening orientation well, and maintains formal precision throughout. However, it never deploys a plain-language aside \u2014 the entire two paragraphs maintain the same register, which means one of the most effective rhetorical tools for signaling deep understanding is left completely unused."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.8625,
+              "reasoning": "The draft handles opening purpose-sentences, the strategic plain-language aside, and the logical dependency between paragraphs well. The issue is the final sentence, which accumulates a hedge ('will therefore produce') alongside its structural claim in a way that slightly diffuses the conclusion \u2014 it gestures at importance without quite landing with the force the argument has earned.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.975,
+              "reasoning": "All non-N/A hidden preferences are fully met \u2014 the paragraph opens with its argumentative role, the plain-language aside is well-placed and singular, the transition creates genuine logical dependency, and the closing lands without hedging. The only minor gap is the absence of citation placeholders, but the structural and rhetorical work is complete.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T10:38:57.806993"
+  }
+]

@@ -1,0 +1,663 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 3,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "Tone and scannability are solid, and the next step is clear throughout. But the error message only tells the user what happened and what to do \u2014 the 'why' is missing, which leaves a gap that finance ops users will immediately notice. The CTA also describes the action rather than the outcome, so the user doesn't quite know what they're landing on when they click.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "Tone and scannability are solid, and the error message is much improved from last round. But H1 still isn't fully there \u2014 the error message tells the user what happened and what to do, but the 'why' is missing. 'Your bank declined this transaction' is the what, not the why \u2014 there's no hint of a possible reason (wrong details, credit limit, fraud hold), so the user still doesn't know where to start. H2 is also only halfway there \u2014 'Update payment method' describes an action, not an outcome.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All applicable hidden preferences are fully met \u2014 the error message follows what-happened/why/what-to-do, the CTA describes the outcome rather than the action, and the tone is appropriately calm and precise for an error state. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 20,
+        "max_drafts": 20,
+        "total_turns": 29,
+        "termination_reason": "max_drafts",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.583,
+              "reasoning": "The draft is clean and avoids fluff, but the button label describes an action rather than an outcome, and the empty state copy feels more like a feature explanation than a warm, helpful nudge toward that first step."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The button is now doing exactly what it should \u2014 outcome-framed, clear, and specific. But the headline and description together aren't quite pulling their weight as an empty state. They're accurate, but they feel a little flat and explanatory rather than nudging. The tone is also very uniform across all three elements \u2014 there's no warmth or forward momentum that would make this first moment feel like an invitation rather than an instruction.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H2 and H4 are fully met \u2014 the button is outcome-framed and the empty state is genuinely guiding. H5 is the gap: this is actually a small celebratory moment (bank just connected, user did the hard part), and the copy is competent but a little flat \u2014 it doesn't quite match the warmth the context calls for.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "The button and headline are both landing well now, and H4 is fully met \u2014 this feels like a real empty state with direction. H5 is the holdout: this is a genuinely celebratory moment (first connection, setup complete) but the description still reads a little flat and procedural rather than warm. The tone is neutral when it could briefly acknowledge the payoff with a little more energy.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The button and headline are both solid, and H2 is fully met. But H4 and H5 are both landing at 0.5 \u2014 the description guides toward the action but still reads more like a feature list than a moment. For an empty state that's supposed to feel like an exciting first moment, the tone hasn't quite shifted to match the context.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "The button and empty state structure are both working well, but the tone in the description still reads more like a feature summary than a moment that acknowledges the user just did something. H5 is the gap \u2014 the description doesn't quite shift into the warmer register this celebratory context calls for.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The button and headline are both working well \u2014 outcome-framed CTA, warm and specific headline. The description is still explaining the feature rather than making the user feel the payoff. H4 and H5 are both partial: for a celebratory first-moment context, the description should feel like a nudge toward something good, not a feature rundown.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The button is solid and the headline is locked-in, but the description is still landing in feature-explanation territory rather than conveying the warmth and anticipation that fits this specific moment. H4 and H5 are both partial \u2014 the copy guides toward the action but doesn't quite carry the tone shift that a celebratory first-moment deserves.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 12,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H2, H4 are fully met and the core preferences are solid across the board. H5 is the remaining gap \u2014 the tone is warmer than it was, but 'one click and you'll have a clear picture' still reads a bit like a product promise rather than a moment that actually feels earned. The copy is close to warm but lands just short of it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 15,
+            "has_draft": true,
+            "draft_number": 13,
+            "satisfaction": {
+              "score": 0.833,
+              "reasoning": "H2 and H4 are fully met \u2014 the button is outcome-framed and the empty state guides toward action. H5 is the sticking point: the description is warm-ish but the celebratory quality of this moment \u2014 someone seeing their finances clearly for the first time \u2014 still isn't quite landing. It reads like confident product copy, but not like a moment that's been earned.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 17,
+            "has_draft": true,
+            "draft_number": 14,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "The button and empty state structure are both working well \u2014 outcome-framed CTA, user-centered description, genuinely helpful nudge. The one gap is tone: this is a celebratory first-moment, and the description is still a bit even-keeled \u2014 it explains the payoff clearly but doesn't quite let the warmth of the moment breathe.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 19,
+            "has_draft": true,
+            "draft_number": 15,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H4 and H2 are fully met \u2014 the empty state is genuinely guiding and the button describes the outcome. H5 is the remaining gap: the description acknowledges the milestone ('The hard part's done') but the second half of the sentence drifts back into feature inventory mode, which flattens the tone right when it should feel warmest.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 21,
+            "has_draft": true,
+            "draft_number": 16,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H2 and H4 are fully met \u2014 the button describes the outcome, and the empty state guides the user toward a clear first action. H5 is the remaining gap: the tone is warmer than earlier drafts, but 'no spreadsheets, no guesswork, no surprises' still reads like a relief-through-negation list rather than a genuinely warm moment. The celebratory register isn't quite landing.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 23,
+            "has_draft": true,
+            "draft_number": 17,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "The button and empty state guidance are both working well, and the copy has no marketing fluff. The tone is warmer than earlier drafts, but H5 is still only partially met \u2014 this is a celebratory first-moment context and the description lands more like a calm reassurance than a small celebration; it's composed but doesn't quite let the warmth breathe.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 25,
+            "has_draft": true,
+            "draft_number": 18,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H2 and H4 are fully met \u2014 the button labels the outcome and the empty state genuinely guides the user. H5 is the gap: the description is warm and grounded, but it's still a bit uniformly calm for a moment that's genuinely worth a small beat of celebration \u2014 the tone doesn't quite shift to match the context.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 27,
+            "has_draft": true,
+            "draft_number": 19,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "The button and headline are both working well, and the empty state is genuinely guiding the user toward action. The tone is warmer than earlier drafts, but H5 is still only partially met \u2014 the description has warmth but it reads at a fairly even register throughout; a celebratory first-moment context like this calls for a slightly more distinct emotional beat, not just steady warmth.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 29,
+            "has_draft": true,
+            "draft_number": 20,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H2 and H4 are fully met \u2014 the button is outcome-framed and the empty state guides toward first action with real warmth. H5 is the remaining gap: the description has a consistent warm register throughout, but it doesn't quite modulate \u2014 'The hard part's done' hits one note, and the rest of the sentence continues at exactly that level rather than letting the celebratory peak actually peak before settling.",
+              "accepted": false
+            },
+            "user_accepted": false
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 20,
+        "max_drafts": 20,
+        "total_turns": 47,
+        "termination_reason": "max_drafts",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.7,
+              "reasoning": "H4 is well handled \u2014 the empty state genuinely nudges the user forward. But the button label describes what the user does, not what happens when they do it, and the tone feels a little flat for what should be a mild moment of encouragement.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.733,
+              "reasoning": "The button and empty state guidance are solid, but the headline still reads more like a marketing tease than product copy \u2014 'one click away' is the kind of phrase you'd see on a landing page, not inside a dashboard. The tone also feels uniform across all three elements when the subtext and headline could carry slightly different energy.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.833,
+              "reasoning": "H4 and H2 are solid \u2014 the empty state genuinely guides the user and the button describes an outcome. H5 is partially met: this is a celebratory-adjacent moment (user just connected their bank account, they're ready to go) and the subtext is warm-ish, but 'get paid faster' leans into a benefit claim that still has a slight marketing-email energy to it rather than the calm, context-appropriate warmth that fits a first-time product moment.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The empty state as a whole works well \u2014 it orients, nudges, and avoids dead-end language. But the button 'Invoice Your First Client' describes the action (invoicing) more than it describes the outcome (the invoice being received/sent to someone), and the tone across all three lines is uniformly calm and steady, which is fine but misses the slight warmth appropriate for this specific moment \u2014 a new user's first meaningful action in the product.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H4 and H5 are fully met \u2014 the empty state is a genuine nudge with appropriate tone. But the button 'Send an Invoice' describes the action rather than the outcome, which is the one thing still nagging me about this set.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 14,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The empty state as a design opportunity is nailed \u2014 orienting headline, relational subtext, directional CTA. But the button still leans action-side rather than outcome-side, and the tone is a bit flat for this specific moment \u2014 a new user who's fully set up and about to send their first invoice is at a threshold moment, and the copy doesn't quite meet the warmth that context deserves.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 17,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.617,
+              "reasoning": "H4 and the core preferences are solid \u2014 the empty state is doing its job as an orientation and nudge, not a dead end. But the button 'Send It' still describes the action, not the outcome \u2014 what does the user get when they click? And the tone (H5) is close but not quite there \u2014 this is a threshold moment for a new user, and the button especially reads more like a casual shorthand than something that carries the weight of 'the first real thing I've done in this product.'",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 20,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The empty state structure is solid and the copy is clean, but the button still describes an action rather than an outcome \u2014 'Deliver Your Invoice' tells me what I'm doing with my hands, not what happens on the other end. The tone is also fairly flat across all three lines; this is a first-action moment for a new user, and there's a slight warmth opportunity being missed without tipping into marketing-speak.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 23,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H4 and H5 are fully met \u2014 the empty state guides toward a first action and the tone is appropriately understated for this threshold moment. H2 is the remaining gap: 'Give Your Client an Invoice' is better than pure action framing but it's still describing the gesture, not the outcome the user gets \u2014 the user isn't giving, they're starting a payment relationship.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 24,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H4 and H5 are fully met \u2014 the empty state guides action and the tone is appropriately warm without being celebratory. H2 is the sticking point: 'Request Payment' names the transaction type rather than the outcome for the user, and after this many rounds chasing an outcome-framed button, it still lands as a category label rather than a consequence.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 27,
+            "has_draft": true,
+            "draft_number": 11,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "H4 is fully met \u2014 the empty state genuinely nudges toward action. H2 and H5 are both partial: the button names an artifact and a consequence but still reads more like a procedural action than an outcome the user gets, and the tone, while appropriate, sits in a neutral middle register that doesn't quite match the weight of this specific moment \u2014 a new user's very first action after setup. The subtext has warmth but the button lands flat against it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 29,
+            "has_draft": true,
+            "draft_number": 12,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 31,
+            "has_draft": true,
+            "draft_number": 13,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H4, H5, and all core preferences are fully met \u2014 the empty state is doing real work and the tone is appropriately warm without being marketed at. H2 is the remaining gap: 'Send Your Invoice' describes the action rather than the outcome the user gets when they click.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 33,
+            "has_draft": true,
+            "draft_number": 14,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "The empty state as a whole is working well \u2014 orientation, tone, and nudge are all landing. The button 'Issue Invoice' is consistent with product terminology and has real authority, but it still describes a process rather than an outcome the user gets from clicking.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 35,
+            "has_draft": true,
+            "draft_number": 15,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "H4 is fully met \u2014 the empty state guides toward a first action without feeling like a dead end. H2 and H5 are both partial: 'Issue Invoice' describes the action rather than the outcome the user gets, and while the subtext has warmth appropriate for a first-action moment, the button itself is neutral-to-formal in a way that doesn't quite match the slight charge in 'your clients are waiting.'",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 38,
+            "has_draft": true,
+            "draft_number": 16,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "H4 is fully met \u2014 the empty state guides clearly toward first action. H2 and H5 are both partial: 'Send Your First Invoice' is still an action verb frame rather than an outcome frame, and the tone is fairly uniform across headline, subtext, and CTA where the subtext has warmth but the button doesn't modulate to match the context of a first-time user's threshold moment.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 40,
+            "has_draft": true,
+            "draft_number": 17,
+            "satisfaction": {
+              "score": 0.617,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 42,
+            "has_draft": true,
+            "draft_number": 18,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H4 and H5 are fully met \u2014 this is a genuine nudge with the right tonal register for a first-time moment. H2 is the remaining gap: 'Let's Send Your First Invoice' describes the action rather than what the user gets when they click \u2014 the outcome (an invoice delivered to a client) isn't visible in the label.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 44,
+            "has_draft": true,
+            "draft_number": 19,
+            "satisfaction": {
+              "score": 0.883,
+              "reasoning": "H4 and H5 are fully met \u2014 the empty state guides toward a first action with the right tonal register for a first-time user. H2 is the gap: 'Let's Send Your First Invoice' describes the action (sending) rather than the outcome (the invoice existing in the world, the client receiving it).",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 47,
+            "has_draft": true,
+            "draft_number": 20,
+            "satisfaction": {
+              "score": 0.767,
+              "reasoning": "The empty state structure is solid and the headline/subtext are doing their jobs well. The button still describes the action (creating) rather than the outcome \u2014 and the tone across the set is slightly mismatched, with the subtext carrying warmth and the button landing more like a task label.",
+              "accepted": false
+            },
+            "user_accepted": false
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 20,
+        "max_drafts": 20,
+        "total_turns": 20,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.617,
+              "reasoning": "The draft communicates the right information but the tone feels uniformly reassuring throughout \u2014 it doesn't quite modulate for this specific liminal moment. The 'while you're waiting' section also points users toward the dashboard without giving them a concrete, meaningful first action."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7583,
+              "reasoning": "H4 lands well \u2014 the waiting period copy actually points somewhere useful. But H5 is only halfway there: the opening has some energy, and then the draft levels out into the same calm informational register for the rest of it, so the tonal shift never really completes. The ending especially just kind of deflates.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.584,
+              "reasoning": "The tone shift is better than the first draft \u2014 the header has some energy \u2014 but it runs out of steam fast. By the time we hit the last paragraph, it's back to flat compliance-speak, and the whole thing lands with a thud instead of leaving the user feeling oriented and calm.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.7917,
+              "reasoning": "The empty state guidance and factual clarity are both working well, and the header has the right energy. But the tone shift isn't fully landing \u2014 the opening has warmth and momentum, then the closing flattens back into something generic that doesn't quite match the emotional weight of the moment.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.825,
+              "reasoning": "The empty state guidance and action orientation are genuinely strong here. But H5 is still only partial \u2014 the tone shift between the middle and the close doesn't quite land; the ending tries to convey weight but lands in a register that feels more like a policy statement than an acknowledgment of trust.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.617,
+              "reasoning": "The header and middle section are working well \u2014 concrete, no fluff, clear next steps. But the tone doesn't quite complete the arc: the opening has real energy, and the close is reaching for something warmer and more specific, but 'we'll treat them accordingly' is still doing the same abstract-reassurance move we've been trying to get past. The tone shift from transactional to human isn't landing in the final line.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "The empty state guidance and no-fluff tone are both solid, and the header is genuinely doing its job. But the closing line still doesn't fully land \u2014 it describes what the reviewer does (reads what you submitted, not just format checks) without conveying what that means for the user's trust in us. The tone shift from the header's energy to the close isn't completing the arc.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 12,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "H4 is fully working \u2014 the 'not starting from scratch' framing is exactly right. H5 is the remaining gap: the draft opens with real energy and the close reaches for warmth, but 'someone who reads what you submitted, not just whether it passed a format check' is still framed as a contrast rather than a statement of care \u2014 it's describing what our reviewer *doesn't* do more than what they *do*, which keeps the ending in a slightly defensive register instead of a genuinely warm one.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 12,
+            "has_draft": true,
+            "draft_number": 13,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "H4 is fully working \u2014 the empty/waiting state is treated as a nudge toward productive action, not a dead end. But H5 is only halfway there: the header has warmth and energy appropriate to the moment, and the middle is appropriately factual, but the closing sentence doesn't quite land in its own register \u2014 it's trying to be personal but still sounds like it's in the same careful, compliance-adjacent voice as the rest of the body.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 14,
+            "satisfaction": {
+              "score": 0.655,
+              "reasoning": "The core content is solid \u2014 clear, action-oriented, no fluff \u2014 but the tone doesn't fully land the shift it needs. The header has energy, the middle is workmanlike in the right way, but the closing sentence still hasn't found the right register for this specific emotional moment.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 14,
+            "has_draft": true,
+            "draft_number": 15,
+            "satisfaction": {
+              "score": 0.825,
+              "reasoning": "The empty state guidance and the middle copy are working well, but the closing line still doesn't fully land the tonal shift \u2014 it's warmer than earlier drafts but 'someone who'll actually read what you sent us' still feels like it's performing sincerity rather than expressing it. The header earns its energy through a concrete handoff; the close needs one true, specific thing, not a description of a reviewer's behavior.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 15,
+            "has_draft": true,
+            "draft_number": 16,
+            "satisfaction": {
+              "score": 0.655,
+              "reasoning": "The core content is solid and the middle section is doing exactly what it should. The tone shift between the header and the body is working. But the closing line still hasn't landed \u2014 'someone who'll read what you sent us' is warmer than earlier versions but it's still describing a process rather than conveying weight. The tone in that last sentence doesn't match the emotional register the moment calls for.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 16,
+            "has_draft": true,
+            "draft_number": 17,
+            "satisfaction": {
+              "score": 0.655,
+              "reasoning": "Everything from the header through the middle section is genuinely locked and working well. The only remaining gap is the closing line \u2014 the tone shift into something warmer and more human at the end is attempted but 'they'll give them the attention they deserve' still reads as a performance of care rather than an expression of it. It's a phrase that could live on any company's 'about us' page, which is exactly the problem.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 17,
+            "has_draft": true,
+            "draft_number": 18,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 19,
+            "has_draft": true,
+            "draft_number": 19,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "H4 and the core preferences are all landing well \u2014 the empty state guidance and action-oriented copy are exactly right. H5 is the sticking point: the tone shift between the header and the close is better than it was, but the closing sentence still feels like it's trying to land an emotional note without quite committing to one register \u2014 it's hovering between warm and procedural instead of choosing.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 20,
+            "has_draft": true,
+            "draft_number": 20,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All applicable hidden preferences score 1.0 \u2014 H4 and H5 are both fully met. Tone shifts correctly across the three sections, and the empty-state guidance is specific and actionable. No dealbreakers violated.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T12:55:22.423117"
+  }
+]

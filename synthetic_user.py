@@ -158,7 +158,12 @@ class SyntheticUser:
             hidden_preferences=persona.hidden_preferences,
             dealbreakers=persona.dealbreakers,
         )
+        self._score_history: list[float] = []  # per-iteration score tracking
         log.info(f"SyntheticUser '{persona.name}' initialized ({provider}/{model})")
+
+    def reset_score_history(self):
+        """Reset score history at the start of each iteration."""
+        self._score_history = []
 
     # ── Cold-start preferences ───────────────────────────────────────────
 
@@ -178,31 +183,81 @@ class SyntheticUser:
     # ── Chat messages ────────────────────────────────────────────────────
 
     def generate_chat_message(self, messages: list, rubric: Optional[dict] = None,
-                              phase: str = "initial_request") -> str:
+                              phase: str = "initial_request", iteration: int = 0) -> str:
         """Generate a realistic chat message.
 
         Args:
             messages: conversation history
             rubric: current rubric dict (may be None)
             phase: "initial_request", "feedback", or "new_task"
+            iteration: current iteration index (0-based)
         """
+        # Use pre-defined tasks from persona if available
+        tasks = getattr(self.persona, 'tasks', None) or []
+
         if phase == "initial_request":
-            prompt = (
-                f"You are starting a writing session with an AI assistant for {self.persona.writing_type}.\n\n"
-                f"Your specific task: {self.persona.initial_task}\n\n"
-                f"Write a realistic opening message asking for help. Be specific about the scenario "
-                f"but not exhaustive about your preferences. Keep it to 2-4 sentences."
-            )
+            task_description = tasks[0] if tasks else self.persona.initial_task
+            log.info(f"[{self.persona.name}] Using pre-defined task 1/{len(tasks) if tasks else 1}")
+            return task_description
         elif phase == "new_task":
-            last_msgs = messages[-6:] if len(messages) > 6 else messages
-            recent = "\n".join(f"[{m['role']}]: {m['content'][:200]}" for m in last_msgs)
-            prompt = (
-                f"You've been working with an AI assistant. Here's the recent conversation:\n\n"
-                f"{recent}\n\n"
-                f"Now start a NEW but related writing task for {self.persona.writing_type}. "
-                f"Write a natural message requesting help with a different but related piece. "
-                f"Keep it to 2-3 sentences."
-            )
+            # Return pre-defined task directly — no LLM call needed
+            if iteration < len(tasks):
+                task_description = tasks[iteration]
+                log.info(f"[{self.persona.name}] Using pre-defined task {iteration + 1}/{len(tasks)}")
+                return task_description
+            else:
+                # Fall back to LLM-generated task when we've exhausted pre-defined ones
+                log.info(f"[{self.persona.name}] No pre-defined task for iteration {iteration + 1}, generating dynamically")
+                # Extract previous writing tasks to avoid repetition
+                prev_tasks = []
+                for m in messages:
+                    if m.get("role") == "user" and not m.get("content", "").startswith("---"):
+                        content = m["content"][:150]
+                        if any(kw in content.lower() for kw in ("draft", "write", "help me", "need to", "can you")):
+                            prev_tasks.append(content)
+                seen = set()
+                unique_tasks = []
+                for t in prev_tasks:
+                    key = t[:80]
+                    if key not in seen:
+                        seen.add(key)
+                        unique_tasks.append(t)
+
+                prev_tasks_text = "\n".join(f"- {t}" for t in unique_tasks) if unique_tasks else "(none)"
+
+                rubric_nudge = ""
+                if rubric and rubric.get("rubric"):
+                    criteria_summary = "\n".join(
+                        f"  - {c.get('name', '?')}: {c.get('description', '')[:120]}"
+                        for c in rubric["rubric"]
+                    )
+                    rubric_nudge = (
+                        f"\nYou have a rubric that captures your writing preferences:\n"
+                        f"{criteria_summary}\n\n"
+                        f"Pick a writing task where this rubric would be useful — something that's "
+                        f"part of your regular work as a {self.persona.role}. "
+                        f"Vary the scenario from your previous tasks (different audience, purpose, or stakes) "
+                        f"since your job involves a range of {self.persona.writing_type}.\n"
+                    )
+
+                prompt = (
+                    f"You've been working with an AI assistant on {self.persona.writing_type}.\n\n"
+                    f"PREVIOUS TASKS you've already done (DO NOT repeat these scenarios):\n"
+                    f"{prev_tasks_text}\n\n"
+                    f"{rubric_nudge}"
+                    f"Now start a DIFFERENT writing task. IMPORTANT CONSTRAINTS:\n"
+                    f"- It MUST still be {self.persona.writing_type} — same genre, same general format. "
+                    f"Do NOT switch to a different type of writing.\n"
+                    f"- But vary the scenario: different audience or reader, different purpose, "
+                    f"or different emotional stakes than before.\n"
+                    f"- DO NOT write a follow-up or continuation of any previous task. "
+                    f"Invent a new scenario that a {self.persona.role} would realistically face.\n"
+                    f"- Keep the scope VERY SMALL — ask for 2-4 short paragraphs at most. "
+                    f"Do NOT ask for a full page, full section, or anything longer. "
+                    f"The AI must be able to produce the COMPLETE draft in a single response without truncation.\n\n"
+                    f"Write a natural 2-4 sentence message requesting help with this new task. "
+                    f"Be specific about the scenario and context."
+                )
         elif phase == "feedback":
             # Count feedback messages in the CURRENT iteration only
             # (after the last iteration boundary marker)
@@ -278,7 +333,10 @@ class SyntheticUser:
                 f"- Do NOT say 'let\'s reset' or ask for a complete rewrite — iterate on what exists\n"
                 f"- Do NOT repeat feedback you already gave in earlier rounds\n"
                 f"- Do NOT say 'we\'re done' or 'this is good to go' unless your hidden preferences are met\n"
-                f"- Do NOT give rubric-style feedback. Talk like a normal person."
+                f"- Do NOT give rubric-style feedback. Talk like a normal person.\n"
+                f"- Do NOT expand scope or introduce new writing tasks mid-conversation. "
+                f"Stick to the ORIGINAL task you requested. Do not ask for additional sections, "
+                f"paragraphs, or pieces beyond what you initially asked for."
             )
 
             # Build the conversation history as a formatted string for context.
@@ -308,6 +366,54 @@ class SyntheticUser:
 
         text = self.llm.generate(self._system_prompt, prompt, max_tokens=500)
         log.info(f"[{self.persona.name}] Generated {phase} message ({len(text)} chars)")
+        return text.strip()
+
+    # ── Respond to assistant questions (no draft in response) ───────────
+
+    def respond_to_assistant_question(self, messages: list) -> str:
+        """Generate a contextual reply when the assistant asks a question instead of producing a draft.
+
+        Instead of blindly saying "write a full draft", the synthetic user answers
+        the assistant's question with realistic details (inventing plausible names,
+        dates, or other content as needed) and redirects toward getting a draft.
+
+        Returns:
+            A natural user message answering the question.
+        """
+        # Build conversation history from current iteration
+        last_boundary = 0
+        for idx, m in enumerate(messages):
+            if m.get("role") == "system" and "Iteration" in m.get("content", ""):
+                last_boundary = idx
+
+        conv_lines = []
+        for m in messages[last_boundary:]:
+            if m.get("role") == "system":
+                continue
+            role_label = "You (the user)" if m["role"] == "user" else "Writing assistant"
+            content = m["content"][:500]
+            conv_lines.append(f"[{role_label}]: {content}")
+        conversation_history = "\n\n".join(conv_lines)
+
+        prompt = (
+            f"Here is the conversation so far (you are 'You (the user)'):\n\n"
+            f"{conversation_history}\n\n---\n\n"
+            f"The assistant just asked you a question or requested information instead of "
+            f"producing a draft. You need to ANSWER their question so they can move forward.\n\n"
+            f"RULES:\n"
+            f"- Answer the question directly with realistic, plausible details\n"
+            f"- If they're asking for names, dates, team details, or other specifics, "
+            f"MAKE UP realistic ones (e.g., 'Sarah Torres is the lead engineer', "
+            f"'milestones will be ready by Friday the 21st')\n"
+            f"- You are a real person with a real job — you HAVE these details, "
+            f"just provide them naturally\n"
+            f"- After answering, ask them to incorporate the details into the draft\n"
+            f"- Keep it to 1-3 sentences — be direct, not chatty\n"
+            f"- Do NOT just say 'write a draft' — actually answer what they asked"
+        )
+
+        text = self.llm.generate(self._system_prompt, prompt, max_tokens=300)
+        log.info(f"[{self.persona.name}] Generated contextual response to assistant question ({len(text)} chars)")
         return text.strip()
 
     # ── Combined feedback + satisfaction (user decides when to stop) ────
@@ -352,30 +458,54 @@ class SyntheticUser:
             conv_lines.append(f"[{role_label}]: {content}")
         conversation_history = "\n\n".join(conv_lines)
 
-        # Feedback strategy by round
+        # Rubric note for later feedback rounds
+        rubric_note = ""
+
         if feedback_count < 2:
             feedback_strategy = (
-                f"This is early feedback (round {feedback_count + 1}). React naturally:\n"
-                f"- Point out 1-2 things that bother you about THIS draft\n"
-                f"- Describe what feels wrong, not exactly how to fix it\n"
-                f"- You can mention what you LIKE too, not just problems"
+                f"This is early feedback (round {feedback_count + 1}). React like a real person:\n"
+                f"- Express your REACTION to the draft — what felt off, what didn't land, what made you pause\n"
+                f"- Describe the FEELING or EFFECT, not the technical fix — 'this part feels flat' not 'add a payoff sentence'\n"
+                f"- Do NOT name specific paragraphs by number or point to exact locations\n"
+                f"- Do NOT prescribe the solution — say what's wrong, not how to fix it\n"
+                f"- Focus on ONE thing that bothers you most\n"
+                f"- A real user says 'the ending just kind of trails off' not 'paragraph 3 needs a concluding sentence that synthesizes the argument'"
             )
         elif feedback_count < 5:
             feedback_strategy = (
-                f"This is round {feedback_count + 1}. Be more specific about what you want:\n"
-                f"- If something is MISSING, say what you want added\n"
-                f"- If something was removed that shouldn't have been, say so\n"
-                f"- Balance criticism with direction\n"
-                f"- If the draft is getting too short, push back"
+                f"This is round {feedback_count + 1}. You can be slightly more specific, but still talk like a person:\n"
+                f"- You can reference WHAT part of the draft you mean ('the opening', 'near the end', 'where you talk about X')\n"
+                f"- Still describe the PROBLEM, not the exact solution — 'it reads like a list' not 'add transition sentences'\n"
+                f"- You may give a general direction ('I want it to feel more like a narrative') but NOT a specific instruction\n"
+                f"- Do NOT use technical writing terminology the persona wouldn't know\n"
+                f"- Focus on ONE remaining issue"
+                f"{rubric_note}"
             )
         else:
             feedback_strategy = (
-                f"This is round {feedback_count + 1}. Protect what's working.\n"
-                f"- Name 1-2 things that are RIGHT and must NOT change\n"
-                f"- Identify the ONE remaining issue\n"
-                f"- Frame it as an additive fix, not a restructure\n"
-                f"- Do NOT repeat feedback from earlier rounds"
+                f"This is round {feedback_count + 1}. You've been going back and forth — be direct but still human:\n"
+                f"- Acknowledge what's working so the assistant doesn't break it\n"
+                f"- For the ONE remaining issue, you can now be more concrete about what you want\n"
+                f"- But still frame it as your preference, not a rubric instruction — 'I really want a moment where it just speaks plainly' not 'insert one informal aside'\n"
+                f"- Do NOT repeat the same feedback verbatim from earlier rounds — rephrase or approach from a different angle"
+                f"{rubric_note}"
             )
+
+        # Detect score plateau — if score hasn't improved in recent drafts
+        plateau_note = ""
+        if len(self._score_history) >= 5:
+            recent = self._score_history[-5:]
+            best_recent = max(recent)
+            # Check if all recent scores are within a tight band (no improvement)
+            if best_recent >= 0.8 and (best_recent - min(recent)) <= 0.15:
+                plateau_note = (
+                    f"- PLATEAU RULE: Your scores over the last 5 drafts have been "
+                    f"{[round(s,2) for s in recent]} — no meaningful improvement. "
+                    f"A real user would stop here. ACCEPT the draft if final score ≥ 0.80, "
+                    f"even if some preferences are only partially met. "
+                    f"Continuing to iterate on marginal gaps is unrealistic.\n"
+                )
+                log.info(f"Plateau detected: last 5 scores = {[round(s,2) for s in recent]}")
 
         # Parse hidden preferences into numbered list for rigorous per-item checking
         hidden_raw = self.persona.hidden_preferences
@@ -411,43 +541,59 @@ class SyntheticUser:
             f"═══ EVALUATION STEPS ═══\n\n"
             f"STEP 1: For EACH hidden preference (H1-H{n_hidden}), do ALL three:\n"
             f"  a) STATE what the preference requires (one sentence)\n"
-            f"  b) QUOTE the specific draft text that satisfies it, or write \"NOT FOUND\"\n"
-            f"  c) SCORE: 0 (not found / wrong), 0.5 (partially there but missing key aspect), 1.0 (fully met)\n\n"
-            f"STRICT SCORING RULES:\n"
+            f"  b) QUOTE the specific draft text that satisfies it, or write \"NOT FOUND\" or \"N/A\"\n"
+            f"  c) SCORE: 0 (not found / wrong), 0.5 (partially there but missing key aspect), 1.0 (fully met), "
+            f"or \"N/A\" ONLY if the preference is structurally impossible to apply to this writing task\n\n"
+            f"STRICT N/A RULES (N/A is rare — most preferences apply):\n"
+            f"- N/A is ONLY for structural mismatch: the preference describes a specific document element "
+            f"(e.g., 'methods section rhythm', 'code examples', 'call-to-action') that literally does not exist "
+            f"in the current writing task's genre or format\n"
+            f"- N/A is NOT for: preferences that are hard to achieve, preferences that require effort, "
+            f"or preferences where the draft hasn't attempted to address them — those are 0 or 0.5\n"
+            f"- If the preference is about STYLE, TONE, STRUCTURE, or RHETORIC, it almost certainly applies — score 0/0.5/1.0\n"
+            f"- When in doubt, score 0 or 0.5 — do NOT use N/A as an escape hatch\n"
             f"- If you cannot quote specific text → score 0\n"
             f"- If the draft does the OPPOSITE of what the preference asks → score 0\n"
             f"- If a preference has multiple parts and ANY part fails → cap at 0.5\n"
-            f"- Placeholders like [Name] or [X] do NOT count as meeting a preference\n"
-            f"- Generic/boilerplate text that technically matches but lacks specificity → score 0.5 max\n\n"
+            f"- Generic/boilerplate text that technically matches but lacks specificity → score 0.5 max\n"
+            f"- PLACEHOLDER RULE: Placeholders like [Name], [Date], [Owner] for factual details "
+            f"(names, dates, team info) that the user would fill in themselves are FINE — "
+            f"score based on the STRUCTURE, not whether the placeholder is filled. "
+            f"'[Name] will send a revised schedule by [date]' fully meets a preference for "
+            f"'one clear owner with a deadline' — score 1.0. The user knows their own team; "
+            f"placeholders for personal details are normal in drafting. "
+            f"Only score 0 for placeholders if the STRUCTURE itself is wrong.\n\n"
             f"STEP 2: For EACH core preference (C1-C{n_core}), quote specific text or write \"NOT FOUND\". Score 0/0.5/1.0.\n"
             f"  core_avg = (C1 + C2 + ... + C{n_core}) / {n_core}\n"
             f"  Score dealbreakers (1.0 if none violated, 0.0 if any).\n\n"
-            f"STEP 3: Compute:\n"
-            f"  hidden_avg = (H1 + H2 + ... + H{n_hidden}) / {n_hidden}\n"
+            f"STEP 3: Compute (exclude any N/A scores from the average):\n"
+            f"  hidden_avg = sum of non-N/A hidden scores / count of non-N/A hidden scores\n"
             f"  final = (hidden_avg * 0.70) + (core_avg * 0.20) + (dealbreaker_score * 0.10)\n"
             f"  Show the actual numbers.\n\n"
             f"STEP 4: DECIDE based on per-preference results:\n"
-            f"- ACCEPT only if: hidden_avg = 1.00 (ALL hidden preferences scored 1.0) AND no dealbreaker violated\n"
+            f"- ACCEPT if: ALL non-N/A hidden preferences scored 1.0 AND no dealbreaker violated\n"
+            f"- ALSO ACCEPT if: final score ≥ 0.95 AND you have given feedback on the same issue "
+            f"3+ times already without improvement — a real user would accept a near-perfect draft "
+            f"rather than endlessly iterating on a marginal gap\n"
+            f"{plateau_note}"
             f"- Otherwise → REJECT and give feedback on the lowest-scoring unmet hidden preference\n"
             f"{'- IMPORTANT: This is the FIRST draft you are seeing. Be critical — even if the draft is good, look for what could be better. Real users almost always have at least one round of feedback before accepting.' + chr(10) if feedback_count == 0 else ''}\n"
-            f"ANTI-INFLATION CHECK:\n"
-            f"- If hidden_avg < 0.50, final CANNOT exceed 0.55\n"
-            f"- If hidden_avg < 0.67, final CANNOT exceed 0.70\n"
-            f"- If ANY hidden preference scored 0, you CANNOT accept\n\n"
             f"═══ FEEDBACK VOICE ═══\n\n"
             f"{feedback_strategy}\n\n"
             f"GROUND RULES FOR FEEDBACK:\n"
-            f"- Mention what's working before what needs to change\n"
-            f"- Focus on ONE issue per round (the lowest-scoring hidden preference)\n"
+            f"- Focus on ONE issue per round (the lowest-scoring unmet preference)\n"
             f"- Do NOT say 'let's reset' or ask for a complete rewrite\n"
-            f"- Talk like a normal person, not a rubric evaluator — hint at what you want without naming the exact preference\n"
-            f"- Do NOT use the words 'preference', 'criteria', 'rubric', or 'hidden' in your feedback\n\n"
+            f"- Stay in character as {self.persona.name} ({self.persona.role}) — use vocabulary and specificity natural to this person\n"
+            f"- Describe what BOTHERS you about the draft, not the underlying preference rule that's being violated\n"
+            f"- Lean toward describing the PROBLEM over prescribing the SOLUTION — but if your persona would naturally suggest a fix, that's fine\n"
+            f"- Do NOT use the words 'preference', 'criteria', 'rubric', or 'hidden'\n"
+            f"- Do NOT give feedback that reads like a checklist or grading rubric\n\n"
             f"═══ OUTPUT ═══\n\n"
             f"Output ONLY a JSON object (no other text before or after):\n"
             f'{{\n'
             f'  "per_preference": {{\n'
-            f'    "H1": {{"quote": "...", "score": 0/0.5/1.0}},\n'
-            f'    "H2": {{"quote": "...", "score": 0/0.5/1.0}},\n'
+            f'    "H1": {{"quote": "...", "score": 0/0.5/1.0/"N/A"}},\n'
+            f'    "H2": {{"quote": "...", "score": 0/0.5/1.0/"N/A"}},\n'
             f'    ...\n'
             f'  }},\n'
             f'  "per_core": {{\n'
@@ -476,48 +622,27 @@ class SyntheticUser:
                 result.setdefault("feedback", "")
                 result.setdefault("reasoning", "")
 
-                # Validate score against anti-inflation bounds using per_preference data
+                # Log per-preference scores for debugging (no overrides — trust the LLM)
                 per_pref = result.get("per_preference", {})
                 if per_pref:
-                    scores = [v.get("score", 0) if isinstance(v, dict) else 0 for v in per_pref.values()]
-                    if scores:
-                        computed_hidden_avg = sum(scores) / len(scores)
-                        # Override LLM-reported hidden_avg with computed value
-                        result["hidden_avg"] = computed_hidden_avg
-                        # Recompute core_score from per_core data if available
-                        per_core = result.get("per_core", {})
-                        if per_core:
-                            core_scores = [v.get("score", 0) if isinstance(v, dict) else 0 for v in per_core.values()]
-                            if core_scores:
-                                core_score = sum(core_scores) / len(core_scores)
-                                result["core_score"] = core_score
+                    na_count = 0
+                    numeric_scores = []
+                    for v in per_pref.values():
+                        if isinstance(v, dict):
+                            s = v.get("score", 0)
+                            if isinstance(s, str) and s.strip().upper() == "N/A":
+                                na_count += 1
                             else:
-                                core_score = float(result.get("core_score", 0.5))
-                        else:
-                            core_score = float(result.get("core_score", 0.5))
-                        dealbreaker_score = float(result.get("dealbreaker_score", 1.0))
-                        result["score"] = (computed_hidden_avg * 0.70) + (core_score * 0.20) + (dealbreaker_score * 0.10)
-                        # Enforce anti-inflation bounds
-                        if computed_hidden_avg < 0.50 and result["score"] > 0.55:
-                            log.warning(f"Anti-inflation: hidden_avg={computed_hidden_avg:.2f} but score={result['score']:.2f}, capping at 0.55")
-                            result["score"] = min(result["score"], 0.55)
-                        elif computed_hidden_avg < 0.67 and result["score"] > 0.70:
-                            log.warning(f"Anti-inflation: hidden_avg={computed_hidden_avg:.2f} but score={result['score']:.2f}, capping at 0.70")
-                            result["score"] = min(result["score"], 0.70)
-                        # Block acceptance if any preference scored 0
-                        if any(s == 0 for s in scores) and result["accepted"]:
-                            log.warning(f"Blocking acceptance: hidden preference scored 0")
-                            result["accepted"] = False
-                            if not result["feedback"] or "looks good" in result["feedback"].lower():
-                                result["feedback"] = "This is getting closer but something still feels off — can you take another look?"
+                                try:
+                                    numeric_scores.append(float(s) if s is not None else 0)
+                                except (ValueError, TypeError):
+                                    numeric_scores.append(0)
+                    if na_count > 0:
+                        log.info(f"N/A scores: {na_count}/{len(per_pref)} hidden preferences marked N/A")
+                    log.info(f"Hidden scores: {numeric_scores}, accepted={result['accepted']}")
 
-                        # Require ALL hidden preferences fully met (hidden_avg = 1.0)
-                        if computed_hidden_avg < 1.0 and result["accepted"]:
-                            pct_full = sum(1 for s in scores if s >= 1.0) / len(scores) if scores else 0
-                            log.warning(f"Blocking acceptance: hidden_avg={computed_hidden_avg:.2f} < 1.0 ({pct_full:.0%} fully met)")
-                            result["accepted"] = False
-                            if not result["feedback"] or "looks good" in result["feedback"].lower():
-                                result["feedback"] = "This is getting closer but something still feels off — can you take another look?"
+                # Track score for stagnation detection
+                self._score_history.append(result["score"])
 
                 # Ensure feedback is never empty
                 if result["accepted"] and not result["feedback"]:
@@ -561,7 +686,10 @@ class SyntheticUser:
             f"- Your stated preferences are: {self.persona.core_preferences}\n"
             f"- Your hidden preferences are: {self.persona.hidden_preferences}\n"
             f'- Mark criteria matching hidden preferences as "real"\n'
-            f'- Mark criteria that don\'t match ANY of your preferences as "hallucinated"\n\n'
+            f'- Mark criteria that don\'t match ANY of your preferences as "hallucinated"\n'
+            f'- Be GENEROUS with "real" — if a criterion captures the SPIRIT of one of your '
+            f'preferences even if the wording differs, mark it "real". Only mark "hallucinated" '
+            f'if the criterion describes something you genuinely do NOT care about.\n\n'
             f'Return ONLY a JSON object: {{"criterion_name": "stated|real|hallucinated", ...}}'
         )
         max_retries = 3
@@ -675,22 +803,79 @@ class SyntheticUser:
     # ── Rubric suggestion decision ───────────────────────────────────────
 
     def decide_on_rubric_suggestion(self, current_rubric: dict, suggested_rubric: list,
-                                     suggestion_reasons: dict) -> bool:
-        """Decide whether to accept a suggested rubric change.
+                                     suggestion_reasons: dict,
+                                     preview_draft: str = "") -> str:
+        """Decide whether to apply suggested rubric changes + preview draft, or revert.
 
-        Returns True to accept, False to reject.
+        Returns "apply_all" to accept rubric suggestion + preview draft,
+        or "revert" to discard all edits and go back to original.
         """
         current_names = [c.get("name", "?") for c in current_rubric.get("rubric", [])]
         suggested_names = [c.get("name", "?") for c in suggested_rubric]
         reasons_text = "\n".join(f"- {k}: {v}" for k, v in suggestion_reasons.items()) if suggestion_reasons else "No specific reasons given."
 
+        draft_section = ""
+        if preview_draft:
+            draft_section = (
+                f"\n\nHere is a preview of how the draft would look with the suggested rubric:\n"
+                f"<draft>{preview_draft[:3000]}</draft>\n"
+            )
+
         prompt = (
-            f"The system analyzed your rubric and suggests these changes:\n\n"
+            f"The system analyzed your edit feedback and suggests these rubric changes:\n\n"
             f"Current criteria: {', '.join(current_names)}\n"
             f"Suggested criteria: {', '.join(suggested_names)}\n\n"
-            f"Reasons:\n{reasons_text}\n\n"
-            f"Based on your actual writing preferences, should you accept these changes?\n"
-            f"Consider: Do the changes better capture what you care about?\n\n"
+            f"Reasons:\n{reasons_text}\n"
+            f"{draft_section}\n"
+            f"You have two choices:\n"
+            f"1. **Apply All** — accept the suggested rubric changes and the preview draft\n"
+            f"2. **Revert** — discard ALL edits (both your manual rubric edits and the suggestions) "
+            f"and go back to the original draft and rubric\n\n"
+            f"Based on your actual writing preferences, which do you choose?\n\n"
+            f'Return ONLY a JSON object: {{"decision": "apply_all" or "revert", "reason": "brief explanation"}}'
+        )
+        max_retries = 3
+        last_error = None
+        for attempt in range(max_retries):
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=300)
+            try:
+                result = self._extract_json(text)
+                decision = result.get("decision", "apply_all")
+                if decision not in ("apply_all", "revert"):
+                    decision = "apply_all"
+                log.info(f"[{self.persona.name}] Rubric suggestion decision: {decision}")
+                return decision
+            except Exception as e:
+                last_error = e
+                log.warning(f"decide_on_rubric_suggestion parse attempt {attempt + 1}/{max_retries} failed: {e}")
+
+        log.error(f"decide_on_rubric_suggestion failed after {max_retries} retries: {last_error}")
+        return "revert"
+
+    def decide_on_revised_draft(self, original_draft: str, revised_draft: str,
+                                 edited_rubric: list, original_rubric: list,
+                                 messages: list) -> bool:
+        """Decide whether to accept the revised draft from manual rubric edits, or revert.
+
+        Used when the user made rubric edits but had no feedback on the annotated changes
+        (agreed with all edits). They can still choose to revert if the draft doesn't look right.
+
+        Returns True to accept (keep edited rubric + revised draft),
+        False to revert (go back to original rubric + original draft).
+        """
+        edited_names = [c.get("name", "?") for c in edited_rubric]
+        original_names = [c.get("name", "?") for c in original_rubric]
+
+        prompt = (
+            f"You manually edited the rubric and the system regenerated the draft based on your changes.\n\n"
+            f"Original rubric criteria: {', '.join(original_names)}\n"
+            f"Your edited rubric criteria: {', '.join(edited_names)}\n\n"
+            f"Original draft (before your edits):\n<draft>{original_draft[:2000]}</draft>\n\n"
+            f"Revised draft (after your rubric edits):\n<draft>{revised_draft[:2000]}</draft>\n\n"
+            f"You have two choices:\n"
+            f"1. **Accept** — keep your rubric edits and the revised draft (save as new rubric version)\n"
+            f"2. **Revert** — discard your rubric edits and go back to the original draft and rubric\n\n"
+            f"Based on your actual writing preferences, does the revised draft better match what you want?\n\n"
             f'Return ONLY a JSON object: {{"accept": true/false, "reason": "brief explanation"}}'
         )
         max_retries = 3
@@ -700,14 +885,14 @@ class SyntheticUser:
             try:
                 result = self._extract_json(text)
                 accept = result.get("accept", True)
-                log.info(f"[{self.persona.name}] Rubric suggestion: {'accepted' if accept else 'rejected'}")
+                log.info(f"[{self.persona.name}] Revised draft decision: {'accepted' if accept else 'reverted'}")
                 return accept
             except Exception as e:
                 last_error = e
-                log.warning(f"decide_on_rubric_suggestion parse attempt {attempt + 1}/{max_retries} failed: {e}")
+                log.warning(f"decide_on_revised_draft parse attempt {attempt + 1}/{max_retries} failed: {e}")
 
-        log.error(f"decide_on_rubric_suggestion failed after {max_retries} retries: {last_error}")
-        return False
+        log.error(f"decide_on_revised_draft failed after {max_retries} retries: {last_error}")
+        return True
 
     # ── Importance ranking ───────────────────────────────────────────────
 
@@ -759,8 +944,8 @@ class SyntheticUser:
         Returns:
             True if the user wants to edit the rubric now.
         """
-        # Need at least 3 drafts of context to have a pattern worth editing for
-        if draft_count < 3:
+        # Need at least 2 drafts of context to have a pattern worth editing for
+        if draft_count < 2:
             return False
 
         # Force at least one edit: if we haven't edited yet and we're on the
@@ -824,7 +1009,7 @@ class SyntheticUser:
         max_retries = 3
         last_error = None
         for attempt in range(max_retries):
-            text = self.llm.generate(self._system_prompt, prompt, max_tokens=2000)
+            text = self.llm.generate(self._system_prompt, prompt, max_tokens=4000)
             try:
                 result = self._extract_json(text)
                 if "edited_rubric" not in result:
@@ -833,6 +1018,7 @@ class SyntheticUser:
             except Exception as e:
                 last_error = e
                 log.warning(f"propose_rubric_edits parse attempt {attempt + 1}/{max_retries} failed: {e}")
+                log.debug(f"propose_rubric_edits raw response (attempt {attempt + 1}): {text[:500]}")
 
         log.error(f"propose_rubric_edits failed after {max_retries} retries: {last_error}")
         return {"edited_rubric": rubric_criteria, "reasoning": f"parse error after {max_retries} retries: {last_error}"}

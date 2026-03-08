@@ -204,7 +204,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
 
         # User provides a writing task
         phase = "initial_request" if iteration == 0 else "new_task"
-        user_msg = syn_user.generate_chat_message(messages, rubric_data, phase=phase)
+        user_msg = syn_user.generate_chat_message(messages, rubric_data, phase=phase, iteration=iteration)
         messages.append({"role": "user", "content": user_msg})
         store.save_conversation(persona.name, messages, rubric_data)
 
@@ -311,6 +311,9 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
         turn = 0
         consecutive_no_draft = 0  # guard against infinite no-draft loops
         log_changes_count = 0  # how many times rubric edit has fired this iteration
+        dealbreaker_violated = False  # track if any draft violated a dealbreaker
+        last_full_draft = None  # track last full draft for partial detection
+        syn_user.reset_score_history()  # reset stagnation tracking for new iteration
 
         # If alignment check injected a starting draft, evaluate it first
         if alignment_starting_draft:
@@ -324,6 +327,8 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                 current_draft, messages, rubric_data,
                 iteration=iteration, draft_count=draft_count,
             )
+            if user_response.get("dealbreaker_score", 1.0) == 0.0:
+                dealbreaker_violated = True
 
             turn_metric = {
                 "turn": turn, "has_draft": True, "draft_number": draft_count,
@@ -370,6 +375,24 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             turn_metric = {"turn": turn, "has_draft": current_draft is not None}
 
             if current_draft:
+                # Detect partial drafts (snippets) — skip scoring if draft is
+                # much shorter than the last full draft (< 30% length)
+                is_partial = (
+                    last_full_draft is not None
+                    and len(current_draft) < len(last_full_draft) * 0.3
+                )
+                if is_partial:
+                    log.info(
+                        f"[{persona.name}]   Partial draft detected "
+                        f"({len(current_draft)} chars vs {len(last_full_draft)} full) — skipping scoring"
+                    )
+                    # Don't count as a scored draft, don't call respond_to_draft
+                    turn_metric["has_draft"] = True
+                    turn_metric["partial_draft"] = True
+                    turn_metrics.append(turn_metric)
+                    continue
+
+                last_full_draft = current_draft
                 draft_count += 1
                 consecutive_no_draft = 0
                 turn_metric["draft_number"] = draft_count
@@ -379,6 +402,8 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                     current_draft, messages, rubric_data,
                     iteration=iteration, draft_count=draft_count,
                 )
+                if user_response.get("dealbreaker_score", 1.0) == 0.0:
+                    dealbreaker_violated = True
                 turn_metric["satisfaction"] = {
                     "score": user_response["score"],
                     "reasoning": user_response["reasoning"],
@@ -393,8 +418,279 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                     f"(score: {user_response['score']:.2f})"
                 )
 
+                # ── Mid-conversation Log Changes (before accept/reject) ──
+                # Check if user wants to edit rubric BEFORE breaking on acceptance.
+                # Uses should_edit_rubric() which considers draft count, patterns, etc.
+                log_changes_fired_this_turn = False
+                if (config.enable_log_changes and rubric_data and current_draft
+                        and draft_count < max_turns):
+                    should_edit = syn_user.should_edit_rubric(
+                        messages, draft_count, max_turns, log_changes_count
+                    )
+                    if should_edit:
+                        log.info(f"[{persona.name}]   Log Changes: user editing rubric mid-conversation...")
+                        log_changes_fired_this_turn = True
+                        rubric_list = rubric_data.get("rubric", [])
+                        edit_result = syn_user.propose_rubric_edits(rubric_list)
+                        edited_rubric = edit_result.get("edited_rubric", [])
+
+                        if edited_rubric and edited_rubric != rubric_list:
+                            edit_classification = classify_rubric_edits(rubric_list, edited_rubric)
+                            has_changes = any(edit_classification[k] for k in edit_classification)
+
+                            if has_changes:
+                                log_msg = format_edit_log_message(
+                                    edit_classification,
+                                    rubric_data.get("version", 0),
+                                    f"{rubric_data.get('version', 0)}*",
+                                    "simulation_log_changes",
+                                )
+                                messages.append({"role": "system", "content": log_msg})
+
+                                # Step 2: Regenerate draft based on rubric changes
+                                regen_result = {}
+                                annotated_changes = []
+                                if current_draft:
+                                    regen_result = headless_regenerate_draft_from_rubric_changes(
+                                        rubric_list, edited_rubric, current_draft,
+                                        model=config.model_light,
+                                    )
+                                    if "revised_draft" in regen_result:
+                                        annotated_changes = regen_result.get("annotated_changes", [])
+                                        draft_msg = (
+                                            f"<draft>{regen_result['revised_draft']}</draft>"
+                                            f"\n\n*Draft updated based on rubric changes.*"
+                                        )
+                                        messages.append({
+                                            "role": "assistant",
+                                            "content": draft_msg,
+                                            "rubric_revision": {
+                                                "change_summary": regen_result.get("change_summary", ""),
+                                                "annotated_changes": annotated_changes,
+                                                "original_draft": current_draft,
+                                                "old_rubric": rubric_list,
+                                                "new_rubric": edited_rubric,
+                                            },
+                                        })
+                                        draft_count += 1
+                                        log.info(f"[{persona.name}]   Draft regenerated from rubric edit (draft {draft_count})")
+                                    else:
+                                        log.warning(f"[{persona.name}]   Draft regeneration failed: {regen_result.get('error', 'unknown')}")
+
+                                # Step 3: User reviews annotated changes
+                                reviewed_changes = []
+                                if annotated_changes:
+                                    reviewed_changes = syn_user.review_annotated_changes(
+                                        annotated_changes,
+                                        current_draft,
+                                        regen_result.get("revised_draft", ""),
+                                    )
+
+                                # Step 4: User decides — accept or revert
+                                feedback_edits = [
+                                    rc for rc in reviewed_changes
+                                    if rc.get("user_feedback", "").strip()
+                                ]
+                                suggestion_applied = False
+                                user_reverted = False
+                                original_draft_before_edit = current_draft  # preserve for revert
+
+                                if feedback_edits:
+                                    # Path A: user disagreed with edits → suggest rubric changes + preview draft
+                                    log.info(
+                                        f"[{persona.name}]   User disagreed with {len(feedback_edits)} edit(s), "
+                                        f"suggesting rubric changes..."
+                                    )
+                                    # Log user feedback as a user message (mirrors interface feedback text inputs)
+                                    fb_summary_parts = []
+                                    for fb_edit in feedback_edits:
+                                        fb_text = fb_edit.get("user_feedback", "").strip()
+                                        orig = fb_edit.get("original_text", "")[:100]
+                                        new = fb_edit.get("new_text", "")[:100]
+                                        if fb_text:
+                                            fb_summary_parts.append(f"- Edit \"{orig}\" → \"{new}\": {fb_text}")
+                                    if fb_summary_parts:
+                                        messages.append({
+                                            "role": "user",
+                                            "content": "Here's my feedback on the draft edits:\n" + "\n".join(fb_summary_parts),
+                                        })
+                                    suggestion_text = headless_suggest_rubric_from_feedback(
+                                        rubric_list, edited_rubric, reviewed_changes,
+                                        model=config.model_light,
+                                    )
+                                    if suggestion_text:
+                                        suggested_rubric = headless_apply_rubric_suggestion(
+                                            rubric_list, edited_rubric, suggestion_text,
+                                            model=config.model_light,
+                                        )
+                                        if suggested_rubric:
+                                            # Generate preview draft with suggested rubric (using original draft)
+                                            preview_draft_text = ""
+                                            preview_regen = headless_regenerate_draft_from_rubric_changes(
+                                                rubric_list, suggested_rubric, current_draft,
+                                                model=config.model_light,
+                                            )
+                                            if "revised_draft" in preview_regen:
+                                                preview_draft_text = preview_regen["revised_draft"]
+
+                                            # User decides: Apply All or Revert
+                                            decision = syn_user.decide_on_rubric_suggestion(
+                                                {"rubric": edited_rubric},
+                                                suggested_rubric,
+                                                {"feedback_suggestion": suggestion_text},
+                                                preview_draft=preview_draft_text,
+                                            )
+                                            if decision == "apply_all":
+                                                edited_rubric = suggested_rubric
+                                                suggestion_applied = True
+                                                if preview_draft_text:
+                                                    current_draft = preview_draft_text
+                                                    draft_msg = (
+                                                        f"<draft>{current_draft}</draft>"
+                                                        f"\n\n*Draft updated based on accepted rubric suggestion.*"
+                                                    )
+                                                    messages.append({
+                                                        "role": "assistant",
+                                                        "content": draft_msg,
+                                                        "is_post_apply_draft": True,
+                                                    })
+                                                    draft_count += 1
+                                                log.info(f"[{persona.name}]   User applied rubric suggestion + preview draft")
+                                            else:
+                                                user_reverted = True
+                                                log.info(f"[{persona.name}]   User reverted Log Changes (suggestion path)")
+                                        else:
+                                            # Suggestion generation failed — treat as no-feedback path
+                                            accept_edits = syn_user.decide_on_revised_draft(
+                                                current_draft,
+                                                regen_result.get("revised_draft", ""),
+                                                edited_rubric, rubric_list, messages,
+                                            )
+                                            if accept_edits:
+                                                if "revised_draft" in regen_result:
+                                                    current_draft = regen_result["revised_draft"]
+                                                    messages.append({
+                                                        "role": "assistant",
+                                                        "content": f"<draft>{current_draft}</draft>",
+                                                        "is_system_generated": True,
+                                                    })
+                                                    draft_count += 1
+                                                log.info(f"[{persona.name}]   User accepted revised draft (suggestion failed)")
+                                            else:
+                                                user_reverted = True
+                                                log.info(f"[{persona.name}]   User reverted Log Changes (suggestion failed)")
+                                    else:
+                                        # No suggestion text generated — fall back to accept/revert on direct edits
+                                        accept_edits = syn_user.decide_on_revised_draft(
+                                            current_draft,
+                                            regen_result.get("revised_draft", ""),
+                                            edited_rubric, rubric_list, messages,
+                                        )
+                                        if accept_edits:
+                                            if "revised_draft" in regen_result:
+                                                current_draft = regen_result["revised_draft"]
+                                                messages.append({
+                                                    "role": "assistant",
+                                                    "content": f"<draft>{current_draft}</draft>",
+                                                    "is_system_generated": True,
+                                                })
+                                                draft_count += 1
+                                            log.info(f"[{persona.name}]   User accepted revised draft (no suggestion)")
+                                        else:
+                                            user_reverted = True
+                                            log.info(f"[{persona.name}]   User reverted Log Changes (no suggestion)")
+                                else:
+                                    # Path B: user agreed with all edits → accept or revert
+                                    accept_edits = syn_user.decide_on_revised_draft(
+                                        current_draft,
+                                        regen_result.get("revised_draft", ""),
+                                        edited_rubric, rubric_list, messages,
+                                    )
+                                    if accept_edits:
+                                        # Accept: update current_draft to the regenerated one
+                                        if "revised_draft" in regen_result:
+                                            current_draft = regen_result["revised_draft"]
+                                            # Append accepted draft as assistant message (mirrors interface)
+                                            messages.append({
+                                                "role": "assistant",
+                                                "content": f"<draft>{current_draft}</draft>",
+                                                "is_system_generated": True,
+                                            })
+                                            draft_count += 1
+                                        log.info(f"[{persona.name}]   User accepted revised draft from rubric edits")
+                                    else:
+                                        user_reverted = True
+                                        log.info(f"[{persona.name}]   User reverted Log Changes (no feedback)")
+
+                                # Handle revert: log it in conversation but don't save rubric
+                                if user_reverted:
+                                    # Revert draft and rubric to pre-edit state (mirrors interface Revert button)
+                                    current_draft = original_draft_before_edit
+                                    edited_rubric = rubric_list  # revert rubric to original
+                                    messages.append({
+                                        "role": "user",
+                                        "content": "I'd like to revert these changes — let's go back to the original draft and rubric.",
+                                    })
+                                    messages.append({
+                                        "role": "assistant",
+                                        "content": (
+                                            f"<draft>{original_draft_before_edit}</draft>"
+                                            f"\n\n*Reverted to original draft and rubric.*"
+                                        ),
+                                        "is_system_generated": True,
+                                    })
+                                    store.save_project_data(persona.name, "log_changes", {
+                                        "iteration": iteration + 1,
+                                        "draft_number": draft_count,
+                                        "edit_classification": edit_classification,
+                                        "reasoning": edit_result.get("reasoning", ""),
+                                        "rubric_version": rubric_data.get("version", 0),
+                                        "draft_regenerated": "revised_draft" in regen_result,
+                                        "reviewed_changes": reviewed_changes,
+                                        "feedback_edits_count": len(feedback_edits),
+                                        "suggestion_applied": False,
+                                        "user_reverted": True,
+                                        "timestamp": datetime.now().isoformat(),
+                                    })
+                                    log_changes_count += 1
+                                    store.save_conversation(persona.name, messages, rubric_data)
+                                else:
+                                    # Accept path: update rubric data and save
+                                    version_counter += 1
+                                    old_rubric_data = rubric_data
+                                    rubric_data = {
+                                        "rubric": edited_rubric,
+                                        "version": version_counter,
+                                        "source": "user_log_changes",
+                                    }
+                                    for key in ("writing_type", "user_goals_summary", "coaching_notes"):
+                                        if key in old_rubric_data:
+                                            rubric_data[key] = old_rubric_data[key]
+
+                                    rubric_history.append(rubric_data)
+                                    store.save_rubric(persona.name, rubric_data)
+
+                                    store.save_project_data(persona.name, "log_changes", {
+                                        "iteration": iteration + 1,
+                                        "draft_number": draft_count,
+                                        "edit_classification": edit_classification,
+                                        "reasoning": edit_result.get("reasoning", ""),
+                                        "rubric_version": version_counter,
+                                        "draft_regenerated": "revised_draft" in regen_result,
+                                        "reviewed_changes": reviewed_changes,
+                                        "feedback_edits_count": len(feedback_edits),
+                                        "suggestion_applied": suggestion_applied,
+                                        "user_reverted": False,
+                                        "timestamp": datetime.now().isoformat(),
+                                    })
+
+                                    log_changes_count += 1
+                                    log.info(f"[{persona.name}]   Log Changes complete (rubric v{version_counter})")
+
+                                store.save_conversation(persona.name, messages, rubric_data)
+
+                # ── Accept / Reject (after Log Changes check) ──────────
                 if user_response["accepted"]:
-                    # Add the acceptance message to the conversation
                     accept_text = user_response["feedback"] or "This looks good — I'm happy with this draft."
                     messages.append({"role": "user", "content": accept_text})
                     store.save_conversation(persona.name, messages, rubric_data)
@@ -403,175 +699,26 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                     log.info(f"[{persona.name}]   User accepted draft at draft {draft_count}!")
                     break
                 else:
-                    feedback_text = user_response["feedback"] or "This isn't quite there yet — can you revise it?"
-                    messages.append({"role": "user", "content": feedback_text})
-                    store.save_conversation(persona.name, messages, rubric_data)
+                    if not log_changes_fired_this_turn:
+                        # Only add feedback if Log Changes didn't already handle the response
+                        feedback_text = user_response["feedback"] or "This isn't quite there yet — can you revise it?"
+                        messages.append({"role": "user", "content": feedback_text})
+                        store.save_conversation(persona.name, messages, rubric_data)
+
+                turn_metrics.append(turn_metric)
             else:
                 consecutive_no_draft += 1
-                log.warning(f"[{persona.name}]   No draft in response ({consecutive_no_draft} consecutive), nudging assistant...")
-                # Add a user nudge so the conversation doesn't end on assistant message
-                messages.append({"role": "user", "content": "Could you write up a full draft for me based on what we've discussed?"})
+                log.warning(f"[{persona.name}]   No draft in response ({consecutive_no_draft} consecutive)")
+                # Generate a contextual response to the assistant's question first;
+                # only fall back to a canned nudge after 2+ consecutive no-draft turns.
+                if consecutive_no_draft <= 2:
+                    nudge_text = syn_user.respond_to_assistant_question(messages)
+                    log.info(f"[{persona.name}]   Answering assistant question contextually")
+                else:
+                    nudge_text = "Could you write up a full draft for me based on what we've discussed?"
+                    log.info(f"[{persona.name}]   Canned nudge after {consecutive_no_draft} consecutive no-draft turns")
+                messages.append({"role": "user", "content": nudge_text})
                 store.save_conversation(persona.name, messages, rubric_data)
-
-            turn_metrics.append(turn_metric)
-
-            # ── Mid-conversation Log Changes ──────────────────────────
-            # The synthetic user decides when to directly edit the rubric.
-            # Full flow mirrors the real app:
-            #   1. User edits rubric → Log Changes
-            #   2. Draft regenerated with annotated [N] markers
-            #   3. User reviews each edit, can leave feedback
-            #   4. If feedback exists → suggest rubric changes → user accepts/rejects
-            if (config.enable_log_changes and rubric_data and current_draft
-                    and draft_count < max_turns):
-                should_edit = syn_user.should_edit_rubric(
-                    messages, draft_count, max_turns, log_changes_count,
-                )
-                if should_edit:
-                    log.info(f"[{persona.name}]   Log Changes: user editing rubric mid-conversation...")
-                    rubric_list = rubric_data.get("rubric", [])
-                    edit_result = syn_user.propose_rubric_edits(rubric_list)
-                    edited_rubric = edit_result.get("edited_rubric", [])
-
-                    if edited_rubric and edited_rubric != rubric_list:
-                        edit_classification = classify_rubric_edits(rubric_list, edited_rubric)
-                        has_changes = any(edit_classification[k] for k in edit_classification)
-
-                        if has_changes:
-                            log_msg = format_edit_log_message(
-                                edit_classification,
-                                rubric_data.get("version", 0),
-                                f"{rubric_data.get('version', 0)}*",
-                                "simulation_log_changes",
-                            )
-                            messages.append({"role": "system", "content": log_msg})
-
-                            # Step 2: Regenerate draft based on rubric changes
-                            regen_result = {}
-                            annotated_changes = []
-                            if current_draft:
-                                regen_result = headless_regenerate_draft_from_rubric_changes(
-                                    rubric_list, edited_rubric, current_draft,
-                                    model=config.model_light,
-                                )
-                                if "revised_draft" in regen_result:
-                                    annotated_changes = regen_result.get("annotated_changes", [])
-                                    draft_msg = (
-                                        f"<draft>{regen_result['revised_draft']}</draft>"
-                                        f"\n\n*Draft updated based on rubric changes.*"
-                                    )
-                                    messages.append({
-                                        "role": "assistant",
-                                        "content": draft_msg,
-                                        "rubric_revision": {
-                                            "change_summary": regen_result.get("change_summary", ""),
-                                            "annotated_changes": annotated_changes,
-                                            "original_draft": current_draft,
-                                            "old_rubric": rubric_list,
-                                            "new_rubric": edited_rubric,
-                                        },
-                                    })
-                                    draft_count += 1
-                                    log.info(f"[{persona.name}]   Draft regenerated from rubric edit (draft {draft_count})")
-                                else:
-                                    log.warning(f"[{persona.name}]   Draft regeneration failed: {regen_result.get('error', 'unknown')}")
-
-                            # Step 3: User reviews annotated changes
-                            reviewed_changes = []
-                            if annotated_changes:
-                                reviewed_changes = syn_user.review_annotated_changes(
-                                    annotated_changes,
-                                    current_draft,
-                                    regen_result.get("revised_draft", ""),
-                                )
-
-                            # Step 4: If user disagreed with any edit, suggest rubric changes
-                            feedback_edits = [
-                                rc for rc in reviewed_changes
-                                if rc.get("user_feedback", "").strip()
-                            ]
-                            suggestion_applied = False
-                            if feedback_edits:
-                                log.info(
-                                    f"[{persona.name}]   User disagreed with {len(feedback_edits)} edit(s), "
-                                    f"suggesting rubric changes..."
-                                )
-                                suggestion_text = headless_suggest_rubric_from_feedback(
-                                    rubric_list, edited_rubric, reviewed_changes,
-                                    model=config.model_light,
-                                )
-                                if suggestion_text:
-                                    suggested_rubric = headless_apply_rubric_suggestion(
-                                        rubric_list, edited_rubric, suggestion_text,
-                                        model=config.model_light,
-                                    )
-                                    if suggested_rubric:
-                                        # User decides whether to accept the suggestion
-                                        accept = syn_user.decide_on_rubric_suggestion(
-                                            {"rubric": edited_rubric},
-                                            suggested_rubric,
-                                            {"feedback_suggestion": suggestion_text},
-                                        )
-                                        if accept:
-                                            edited_rubric = suggested_rubric
-                                            suggestion_applied = True
-                                            log.info(f"[{persona.name}]   User accepted rubric suggestion from feedback")
-                                        else:
-                                            log.info(f"[{persona.name}]   User rejected rubric suggestion from feedback")
-
-                            # If suggestion was applied, regenerate draft with the updated rubric
-                            if suggestion_applied and current_draft:
-                                post_regen = headless_regenerate_draft_from_rubric_changes(
-                                    rubric_list, edited_rubric, current_draft,
-                                    model=config.model_light,
-                                )
-                                if "revised_draft" in post_regen:
-                                    current_draft = post_regen["revised_draft"]
-                                    draft_msg = (
-                                        f"<draft>{current_draft}</draft>"
-                                        f"\n\n*Draft updated based on accepted rubric suggestion.*"
-                                    )
-                                    messages.append({
-                                        "role": "assistant",
-                                        "content": draft_msg,
-                                        "is_post_apply_draft": True,
-                                    })
-                                    draft_count += 1
-                                    log.info(f"[{persona.name}]   Post-suggestion draft regenerated (draft {draft_count})")
-
-                            # Update rubric data (with either direct edits or suggestion-modified edits)
-                            version_counter += 1
-                            old_rubric_data = rubric_data
-                            rubric_data = {
-                                "rubric": edited_rubric,
-                                "version": version_counter,
-                                "source": "user_log_changes",
-                            }
-                            for key in ("writing_type", "user_goals_summary", "coaching_notes"):
-                                if key in old_rubric_data:
-                                    rubric_data[key] = old_rubric_data[key]
-
-                            rubric_history.append(rubric_data)
-                            store.save_rubric(persona.name, rubric_data)
-
-                            store.save_project_data(persona.name, "log_changes", {
-                                "iteration": iteration + 1,
-                                "draft_number": draft_count,
-                                "edit_classification": edit_classification,
-                                "reasoning": edit_result.get("reasoning", ""),
-                                "rubric_version": version_counter,
-                                "draft_regenerated": "revised_draft" in regen_result,
-                                "reviewed_changes": reviewed_changes,
-                                "feedback_edits_count": len(feedback_edits),
-                                "suggestion_applied": suggestion_applied,
-                                "timestamp": datetime.now().isoformat(),
-                            })
-
-                            log_changes_count += 1
-                            log.info(f"[{persona.name}]   Log Changes complete (rubric v{version_counter})")
-
-                            # Save conversation after rubric edit
-                            store.save_conversation(persona.name, messages, rubric_data)
 
         # Record termination data for this iteration
         termination_log.append({
@@ -603,14 +750,15 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
         log.info(f"[{persona.name}] Phase 3: Rubric inference...")
         version_counter += 1
 
-        # Step 1: Infer rubric
-        rubric_data = headless_infer_rubric(
+        # Step 1: Infer rubric (preserve previous on failure)
+        new_rubric = headless_infer_rubric(
             messages, previous_rubric=rubric_data,
             model=config.model_primary, version=version_counter,
         )
-        if not rubric_data:
-            log.error(f"[{persona.name}] Rubric inference failed, skipping iteration")
+        if not new_rubric:
+            log.error(f"[{persona.name}] Rubric inference failed, keeping previous rubric and skipping iteration")
             continue
+        rubric_data = new_rubric
 
         rubric_history.append(rubric_data)
         store.save_rubric(persona.name, rubric_data)
@@ -767,6 +915,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             coverage_result = evaluate_preference_coverage(
                 persona, rubric_data["rubric"], model=config.model_primary,
                 preference_items=atomic_preferences or None,
+                dealbreaker_violated=dealbreaker_violated,
             )
             coverage_result["iteration"] = iteration + 1
             coverage_result["rubric_version"] = rubric_data.get("version", 0)
@@ -780,9 +929,12 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             covered = coverage_result.get("covered_count", 0)
             partial = coverage_result.get("partially_covered_count", 0)
             not_cov = coverage_result.get("not_covered_count", 0)
+            db_pass = coverage_result.get("dealbreaker_pass", True)
+            db_count = coverage_result.get("dealbreaker_count", 0)
             log.info(
                 f"[{persona.name}] Coverage (iter {iteration + 1}): "
-                f"{score:.0%} ({covered}C + {partial}P + {not_cov}N = {total} preferences)"
+                f"{score:.0%} ({covered}C + {partial}P + {not_cov}N = {total} preferences) | "
+                f"Dealbreakers: {'PASS' if db_pass else 'FAIL'} ({db_count} items)"
             )
 
     # ── Save termination log ─────────────────────────────────────────────
@@ -837,6 +989,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                 "covered": c.get("covered_count"),
                 "partial": c.get("partially_covered_count"),
                 "not_covered": c.get("not_covered_count"),
+                "dealbreaker_pass": c.get("dealbreaker_pass"),
             }
             for c in coverage_trajectory
         ],

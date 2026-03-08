@@ -1,0 +1,545 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 9,
+        "max_drafts": 20,
+        "total_turns": 10,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.477,
+              "reasoning": "The draft is readable and technically accurate, but the code example is way too long and broken into multiple helper functions when the prose should have done that work \u2014 and there's no sense of what tradeoffs shaped these design decisions, which is where the real learning happens.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.5831,
+              "reasoning": "The code example and tone are solid, but the draft never explains why any of the architectural choices were made over the alternatives \u2014 it just states what the system does. The warnings about token invalidation also show up after the code rather than before, which means someone following along linearly hits the danger zone before they're told to watch out.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.7233,
+              "reasoning": "The code example is tight and the tone is solid, but the 'why' explanations still only tell half the story \u2014 they explain the benefit of what was chosen but never name what was considered and rejected. The gRPC explanation is the clearest example: it explains why routing through auth is good, but never says 'we looked at having services call the user service directly and here's why that didn't work.'",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.8266,
+              "reasoning": "H1, H2, and H5 are fully met \u2014 the rejected alternatives are explicit and the code is tight. H3 is the weak spot: the replay attack warning appears at the end of the rotation explanation, after the reader has already absorbed how rotation works, rather than surfacing before they'd write code that gets it wrong. H4 is partial \u2014 the section reads as three independent paragraphs rather than a sequence that builds toward the code.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9,
+              "reasoning": "H1, H2, H3, H5 are all fully satisfied \u2014 the rejected alternatives are named, the code is tight and commented, the warning lands in the right place, and the tone respects the reader. H4 is the remaining gap: the section reads as one flat block under a single header, and the headers themselves don't do any narrative work.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.9,
+              "reasoning": "H1, H2, H3, H5 are all solid. H4 is the holdout \u2014 the subheaders are cleaner now, but they still read more like labeled buckets than steps in a sequence. 'How tokens work' and 'Why the auth service is your only entry point' don't feel like they're building toward anything; they feel like encyclopedia entries.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1 through H4 are all fully met \u2014 the rejected alternatives are named, the code is tight, the warning lands in the right place, and the headers carry real momentum. H5 is the one thing still nagging at me: the prose treats a genuinely tricky operational detail \u2014 the session loss scenario \u2014 almost matter-of-factly, as if the consequences are obvious, when they're actually not.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the reasoning, code, warning placement, and headers are all solid. H5 is the one thing still slightly off: 'non-obvious failure mode the first time you hit it' is better than nothing, but it still has a faint ring of 'you should have seen this coming' rather than genuinely acknowledging that this is a genuinely tricky edge case.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden and core preferences are fully met. The rejected-alternative reasoning is explicit throughout, the code is minimal with per-line comments, the warning lands before the code, the headers read as a narrative arc, and the tone around the hard failure mode validates the difficulty without minimizing it.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 15,
+        "max_drafts": 20,
+        "total_turns": 17,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.4,
+              "reasoning": "The draft communicates the right intuition but never explains what was considered and rejected \u2014 it just states the answer, which doesn't actually help an engineer who's already making the wrong call understand *why* the alternative is wrong. The no-headers structure also works against it for a decision guide."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.604,
+              "reasoning": "H1 is well-handled \u2014 the request-reply rejection is clear and substantive. But H3 is a miss: the warning about request-reply's failure modes lands after the section where an engineer might have already committed to that approach mentally, and H4 is only partial \u2014 the piece reads more like three labeled paragraphs than something with narrative momentum.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.6916,
+              "reasoning": "H1, H3, and H5 are well-handled \u2014 the warning lands first, the rejected alternative is explained, and the tone respects the reader. But H4 is missing: the three paragraphs read like three labeled bins, not a story with momentum. The headers issue (C1) also contributes to this \u2014 there are no headers at all, which the user requested as a core preference.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.8459,
+              "reasoning": "H4 and H1 and H3 are all solid \u2014 the structure and the rejected-alternative logic are working well. H5 is the lingering issue: the draft mostly treats this as a clean binary decision, but the 'if the answer is yes, wire it directly' phrasing is a bit breezy about what's actually a judgment call engineers have repeatedly gotten wrong.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.7933,
+              "reasoning": "H4, H3, H5, and H1 are all well-handled \u2014 the narrative flow is working, the warning is front-loaded, the tone respects the reader's intelligence, and rejected alternatives are present. H2 is the remaining gap: this is a decision guide for engineers and there's no code example anywhere, even though a minimal illustrative snippet showing a direct call vs. an event publish would make the distinction concrete in a way prose can't quite do.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the narrative arc, the placement of the warning, the code examples are minimal and annotated correctly. The one thing still nagging me is H5: the section on 'harder than it sounds' acknowledges difficulty but then the examples it gives \u2014 logging outcomes, notification confirmations \u2014 are framed as if they're obvious non-dependencies that anyone should recognize on sight. The engineers who wired those three incidents didn't think they were making a preference into a dependency; they thought they had a real dependency. The doc needs to sit with that ambiguity for a beat rather than resolving it so cleanly.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1 is the only remaining gap \u2014 the fraud example is good but the draft doesn't name what was rejected as an architectural pattern and why; it frames the choice as a product decision without saying 'here's the pattern engineers reach for instead, and why it fails here.' Everything else is working well.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the structure, the warnings, the code, the narrative arc. The one thing that still nags me is H5: 'harder than it sounds' technically acknowledges difficulty but does so in a way that still slightly minimizes it \u2014 it's the kind of phrase that gestures at complexity without actually sitting with it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1-H4 are fully satisfied and the draft is in genuinely good shape. H5 is the remaining gap: 'but that question can only be answered by knowing your failure model, which is often not visible from the call site' acknowledges difficulty but still frames it as a trick of perspective ('not visible from the call site') rather than sitting with the real ambiguity engineers face.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 0.9,
+              "reasoning": "Nearly everything is working \u2014 the structure, the fraud example, the warnings-first placement, the code. H5 is the last hold-out: the draft has gotten better at not trivializing the difficulty, but 'answering that requires a product decision that may not have been made yet' still locates the hardness in a missing artifact rather than in the genuine judgment call that experienced engineers struggle with even when they have all the information.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 11,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the fraud case is doing real work, the flow is solid, the code is exactly right, and the warning lands before the problem. The one thing still not landing is H5: the difficulty acknowledgment has gotten more honest, but 'two senior engineers with full context can reasonably land differently' still locates the hardness in a judgment gap rather than in the real condition \u2014 that you can have all the information and still be genuinely uncertain because the system's behavior requirements aren't settled yet.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 12,
+            "has_draft": true,
+            "draft_number": 12,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the structure, the code, the fraud example, the rejected-alternative callouts. The one thing still not landing is H5: the framing of difficulty still locates it in missing information or invisible signals rather than acknowledging that the ambiguity is constitutive, not circumstantial.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 13,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H5 is still not fully landing \u2014 the draft locates the difficulty in the code not giving you a signal, which still implies the problem is informational rather than genuinely irreducible. H1-H4, the code, and the structure are all solid.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 14,
+            "has_draft": false
+          },
+          {
+            "turn": 15,
+            "has_draft": true,
+            "draft_number": 14,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the fraud example, the flow, the code, the rejected-alternative structure. The one remaining gap is H5: 'both answers can be defensible' names the tradeoff correctly but the surrounding sentence still subtly frames the difficulty as a classification problem ('the difficulty is that both answers can be defensible'), which implies that once you recognize defensibility, you've understood the hard part. The difficulty isn't in recognizing the tradeoff \u2014 it's in making the call anyway.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 16,
+            "has_draft": false
+          },
+          {
+            "turn": 17,
+            "has_draft": true,
+            "draft_number": 15,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "Every preference is fully met: the rejected alternative (request-reply) is named and explained before any positive guidance lands, both code examples are minimal with exactly one explanatory comment, the pitfall section precedes the decision sections, the headers tell a story rather than label content, and the difficulty framing names the actual experience of making the call without trivializing it.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 16,
+        "max_drafts": 20,
+        "total_turns": 18,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.62,
+              "reasoning": "The draft handles the rejected-alternatives explanation well and avoids condescension, but it has no code example at all, and the warning about silent 401 failures lands at the end of the section it's warning about \u2014 by the time someone reads it, they've already mentally committed to the pattern you're cautioning against."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.69,
+              "reasoning": "The warning placement is now correct and the rejected alternatives are well-explained, but the draft still has no code example at all \u2014 and for a section that's specifically trying to catch engineers before they write broken caching logic, that feels like a missed opportunity.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.827,
+              "reasoning": "H1, H3, and H5 are well met \u2014 the rejected alternatives are named and the warning lands early. H2 is close but the code example is missing the one-line comment explaining what it does, which was a specific requirement. H4 is partial because there's only one header and the document doesn't build a sense of story progression through its structure.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.897,
+              "reasoning": "Almost everything lands \u2014 the rejected alternatives are clear, the warning is front-loaded, the code snippet is minimal and commented. The one thing that's still soft is H4: the header is a good question but it's the only one, and the rest of the piece just flows as paragraphs with no substructure, so it reads more like a memo than something that guides you through a progression.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1 through H4 are all solid \u2014 the rejected alternatives are named, the snippet is minimal with a comment, the warning lands before the caching section, and the headers tell a progression. H5 is the one that's still slightly off: the closing paragraph calls caching the refresh token 'a genuine judgment call' without acknowledging that this might not be obvious, and the phrase 'you don't manage token lifetime, you just don't hold onto the token between operations' is doing some work to sound reassuring but ends up being slightly hand-wavy about something that genuinely trips people up.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 structure, warning placement, rejected alternatives, and the code snippet are all solid. The one remaining issue is H5: 'that inversion takes some adjustment' is doing real work but the surrounding sentence still leans slightly toward framing the reader's struggle as a minor quirk to be corrected rather than a genuine conceptual shift worth acknowledging on its own terms.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1 through H4 are all fully satisfied \u2014 the structure, warning placement, snippet, and rejected-alternatives framing are all doing real work. H5 is the one that's still not quite there: 'that inversion takes some adjustment' got restructured, but 'genuine inversion' is still being carried by a subordinate clause that softens it rather than letting it breathe.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the structure, the warning placement, the code snippet, the rejected alternatives. The one thing still not landing is H5: the mental model shift is named, but 'it will feel wrong before it feels right' is still a bit of a throwaway \u2014 it acknowledges the difficulty without actually sitting with it for a beat.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H5 is still the sticking point \u2014 the draft names the inversion and lists the wrong instincts, but it never actually sits with the discomfort before moving on. The paragraph pivots to correction too fast.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1-H4 are all fully met; the code snippet is minimal, commented, and correctly placed; the warning lands before the caching section; the headers tell a story. H5 is the remaining gap \u2014 the acknowledgment that the instincts are reasonable is there, but the draft moves off it too quickly and the last paragraph still ends on a redirect to another doc rather than landing with the reader.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 12,
+            "has_draft": true,
+            "draft_number": 11,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Nearly everything is working \u2014 the structure, the warning placement, the code snippet, the rejected-alternatives reasoning are all solid. The one thing still not landing is H5: the paragraph validates the instinct and corrects it, but the closing still deflects to another document rather than landing somewhere that actually settles the reader.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 12,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Nearly everything is working \u2014 the validation of the reader's instincts is genuine and the structure is solid throughout. H5 is the one holdout: the paragraph does the emotional work well but then ends on 'For now, the pattern above is enough,' which is a hand-off to earlier content rather than a closing thought that actually lands. The reader deserves a sentence that closes the loop on their experience, not a redirect.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 14,
+            "has_draft": true,
+            "draft_number": 13,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1 through H4 are all solid, and the doc has genuinely earned the validation paragraph. H5 is close \u2014 the discomfort sentence is good \u2014 but the final sentence still closes on a pointer to another document rather than landing the reader somewhere settled in this one.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 15,
+            "has_draft": true,
+            "draft_number": 14,
+            "satisfaction": {
+              "score": 0.9,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 16,
+            "has_draft": false
+          },
+          {
+            "turn": 17,
+            "has_draft": true,
+            "draft_number": 15,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1-H4 are all fully met and the validation paragraph is genuinely doing good work. H5 is still 0.5 \u2014 the closing sentence 'When the adjustment has happened, you'll know \u2014 token lifetime stops being a thing you think about at all' is better than what we had, but the paragraph still ends on a note that feels like it's trailing off rather than landing. The discomfort is acknowledged well in the middle of the paragraph, but the closing doesn't quite carry the same weight.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 18,
+            "has_draft": true,
+            "draft_number": 16,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "Every preference is fully met in this draft \u2014 the rejected alternatives are named and explained, the warning lands before the caching section, the code is minimal with a comment, the headers tell a story, and the validation paragraph genuinely sits with the reader rather than dismissing the difficulty. No dealbreakers.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 3,
+        "max_drafts": 20,
+        "total_turns": 4,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.517,
+              "reasoning": "The draft does real work on H1 and H5, and the prose is genuinely good \u2014 but there are no headers at all, which is a core requirement, and the pitfall about the 'false floor' scenario arrives after the reader would already be in that situation rather than before it."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.846,
+              "reasoning": "H3, H1, H5 all land well, and the structure is genuinely improved. The headers are functional but they don't quite pull you through \u2014 'The two-check decision' is a label, not a beat in a story, and that flattens the flow right when the tension should peak.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.9334,
+              "reasoning": "All applicable hidden preferences are fully met \u2014 the rejected-alternative reasoning is present, the false floor warning precedes the decision logic, the headers tell a story arc, and the tone never talks down to the reader. No code examples are applicable to this genre. The only gap is C2 (no code examples), which is structurally N/A for a runbook decision section but still dragged the core score slightly.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T01:00:49.074258"
+  }
+]

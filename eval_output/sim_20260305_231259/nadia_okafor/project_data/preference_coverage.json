@@ -1,0 +1,618 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Copy should be short and concise, avoiding unnecessary words",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "The 'Economy and precision' criterion directly addresses this with 'Every word does specific, identifiable work. No throat-clearing, no filler' and the dimension 'Removing any word would change or lose the meaning.'"
+      },
+      {
+        "preference": "Copy should be scannable, using structure and brevity so users can quickly extract meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "The criterion states 'Copy is short and scannable' and includes the dimension 'Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections.'"
+      },
+      {
+        "preference": "Copy should be action-oriented, prompting the user toward doing something",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The 'User-centered direction' criterion addresses this with 'Copy puts the user in motion' and the dimension 'Copy orients toward the next action rather than dwelling on or explaining the current state.'"
+      },
+      {
+        "preference": "Every UI string should make the user's next step obvious",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The 'Functional completeness' criterion includes 'point to the next action' and the dimension 'Includes a clear next step or direction within the same element.' Also supported by 'User-centered direction.'"
+      },
+      {
+        "preference": "No marketing fluff or promotional language within the product UI itself",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The 'Tonal calibration' criterion addresses avoiding 'cheerleading,' 'forced optimism,' and 'performative warmth,' and 'Economy and precision' eliminates filler. However, the specific prohibition against marketing/promotional language is not explicitly called out."
+      },
+      {
+        "preference": "Error messages should state what happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The criterion states 'Messages name the problem' and the dimension 'Clearly states what happened or went wrong' directly addresses this."
+      },
+      {
+        "preference": "Error messages should explain why it happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The criterion mentions 'provide relevant context' and the dimension 'Gives enough why for the user to understand the situation without guessing' directly covers this."
+      },
+      {
+        "preference": "Error messages should tell the user what to do next to resolve the issue",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The criterion states 'point to the next action' and the dimension 'Includes a clear next step or direction within the same element' directly addresses this."
+      },
+      {
+        "preference": "Error messages should follow the order: what happened, why, what to do next",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The 'Functional completeness' criterion covers all three components but does not explicitly prescribe the specific ordering of what happened \u2192 why \u2192 what to do next."
+      },
+      {
+        "preference": "Error messages should never be vague or generic (e.g., 'Something went wrong' is unacceptable)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Trust through specificity",
+        "explanation": "The 'Trust through specificity' criterion requires 'naming concrete realities' and avoiding vague language. Combined with 'Functional completeness' requiring naming the problem, vague error messages would fail both criteria."
+      },
+      {
+        "preference": "Button labels should describe the outcome of clicking, not just the generic action (e.g., 'Save changes' not 'Submit')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The dimension 'Buttons and links describe the outcome of clicking, not vague verbs like try again or submit' directly addresses this preference."
+      },
+      {
+        "preference": "The user should be able to predict what will happen before they click a button based on its label",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The criterion states 'CTAs tell the user exactly what will happen when they click' which directly captures this predictability requirement."
+      },
+      {
+        "preference": "Confirmation dialogs should name the specific consequence of the action (e.g., 'Delete 3 invoices permanently?' not 'Are you sure?')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Trust through specificity",
+        "explanation": "The 'Trust through specificity' criterion emphasizes 'naming concrete realities' and avoiding vague language. Combined with 'Functional completeness' requiring the copy to do its full job, generic 'Are you sure?' would fail. The 'Contextual presence' dimension about addressing the user's silent question also supports this."
+      },
+      {
+        "preference": "Confirmation dialogs should include specific details like quantities or object names relevant to the action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Trust through specificity",
+        "explanation": "The 'Trust through specificity' criterion requires 'naming concrete realities the user cares about' and 'Reassuring statements reference specific, verifiable facts,' which would include quantities and object names."
+      },
+      {
+        "preference": "Empty states should guide the user toward their first meaningful action",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The 'User-centered direction' criterion's focus on orienting toward next actions and 'Functional completeness' requiring a clear next step partially covers this, but empty states as a specific UI pattern are not explicitly addressed."
+      },
+      {
+        "preference": "Empty states should feel like a helpful nudge, not a dead end or blank placeholder",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Contextual presence",
+        "explanation": "The 'Contextual presence' criterion about copy feeling written for the specific moment and 'Tonal calibration' about warmth partially address this, but the specific guidance about empty states not feeling like dead ends is not explicitly covered."
+      },
+      {
+        "preference": "Tone should be warm and celebratory for positive milestone moments (e.g., first successful payment)",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "The 'Tonal calibration' criterion explicitly avoids 'forced optimism' and 'pep-talk language' and aims for 'calm and grounded.' It does not allow for celebratory warmth at positive milestones \u2014 in fact it seems to work against this preference."
+      },
+      {
+        "preference": "Tone should be calm and precise in error states",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The 'Tonal calibration' criterion describes 'calm and grounded without being clinical' and the metaphor of 'a competent colleague would talk to you after a snag' directly captures calm precision in error states."
+      },
+      {
+        "preference": "Tone for routine actions should be minimal and invisible, not drawing attention to itself",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "The 'Economy and precision' criterion's focus on eliminating unnecessary words and 'Tonal calibration's' avoidance of performative elements partially covers this, but the specific idea that routine copy should be 'invisible' is not explicitly stated."
+      },
+      {
+        "preference": "Tone should shift appropriately based on the emotional context of the moment, not remain uniform",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Contextual presence",
+        "explanation": "The 'Contextual presence' criterion addresses writing for the 'specific screen, moment, and emotional state,' which implies tonal variation. However, the 'Tonal calibration' criterion describes a relatively narrow tonal range ('calm nod') and doesn't explicitly call for shifting tone for celebrations or different emotional contexts."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 13,
+    "partially_covered_count": 6,
+    "not_covered_count": 1,
+    "coverage_score": 0.8,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-06T01:35:28.523181"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Copy should be short and concise, avoiding unnecessary words",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "Directly addressed by 'Every word does specific, identifiable work. No throat-clearing, no filler' and the dimension 'Removing any word would change or lose the meaning.'"
+      },
+      {
+        "preference": "Copy should be scannable, using structure and brevity so users can quickly extract meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "Covered by the dimension 'Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed.'"
+      },
+      {
+        "preference": "Copy should be action-oriented, prompting the user toward doing something",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "Covered by 'Copy puts the user in motion toward a concrete outcome' and 'Copy orients toward what happens next rather than dwelling on or explaining the current state.'"
+      },
+      {
+        "preference": "Every UI string should make the user's next step obvious",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Covered by 'Includes a clear next step or direction within the same element' and the User-centered direction criterion's focus on orienting toward what happens next."
+      },
+      {
+        "preference": "No marketing fluff or promotional language within the product UI itself",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Covered by 'Avoids pep-talk language, forced optimism, or performative warmth' and Economy and precision's 'No throat-clearing, no filler.' Together these address the absence of marketing fluff."
+      },
+      {
+        "preference": "Error messages should state what happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Directly addressed by 'Messages name the problem' and the dimension 'Clearly states what happened or what the current state is.'"
+      },
+      {
+        "preference": "Error messages should explain why it happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Covered by 'provide relevant context' and the dimension 'Gives enough why for the user to understand the situation without guessing.'"
+      },
+      {
+        "preference": "Error messages should tell the user what to do next to resolve the issue",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Covered by 'point to the next action' and 'Includes a clear next step or direction within the same element.'"
+      },
+      {
+        "preference": "Error messages should follow the order: what happened, why, what to do next",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The rubric requires all three components but does not explicitly mandate the specific ordering (what \u2192 why \u2192 next step). The components are listed in that order in the dimensions, which implicitly suggests it, but the ordering requirement is not explicitly stated."
+      },
+      {
+        "preference": "Error messages should never be vague or generic (e.g., 'Something went wrong' is unacceptable)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Trust through specificity",
+        "explanation": "Covered by 'Reassurance is earned by naming concrete realities' and 'Reassuring statements reference specific, verifiable facts rather than emotional soothing.' Also supported by Functional completeness requiring the problem to be named."
+      },
+      {
+        "preference": "Button labels should describe the outcome of clicking, not just the generic action (e.g., 'Save changes' not 'Submit')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "Directly addressed by 'CTAs name the literal thing the user gets after clicking \u2014 not the action, not a metaphor' and 'Buttons name the concrete, literal result of clicking \u2014 not a vague verb, metaphor, or clever phrase.'"
+      },
+      {
+        "preference": "The user should be able to predict what will happen before they click a button based on its label",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "Covered by 'Buttons name the concrete, literal result of clicking' which inherently means the user can predict the outcome."
+      },
+      {
+        "preference": "Confirmation dialogs should name the specific consequence of the action (e.g., 'Delete 3 invoices permanently?' not 'Are you sure?')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Trust through specificity",
+        "explanation": "Covered by the emphasis on naming concrete realities and specificity. Also supported by Functional completeness's requirement to clearly state what the current state/situation is, and User-centered direction's focus on naming literal outcomes."
+      },
+      {
+        "preference": "Confirmation dialogs should include specific details like quantities or object names relevant to the action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Trust through specificity",
+        "explanation": "Covered by 'naming concrete realities the user cares about' and 'Reassuring statements reference specific, verifiable facts.' The emphasis on specificity over generic language captures this."
+      },
+      {
+        "preference": "Empty states should guide the user toward their first meaningful action",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The general principle is covered by Functional completeness ('Includes a clear next step or direction within the same element') and Contextual presence ('addresses the question the user is silently asking'), but empty states as a specific UI pattern are never explicitly mentioned."
+      },
+      {
+        "preference": "Empty states should feel like a helpful nudge, not a dead end or blank placeholder",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Contextual presence",
+        "explanation": "Partially covered by Contextual presence's requirement that copy feels written for the specific moment and emotional state, and Tonal calibration's warm-but-not-breezy tone. However, the specific concept of avoiding dead-end/blank-feeling empty states is not explicitly addressed."
+      },
+      {
+        "preference": "Tone should be warm and celebratory for positive milestone moments (e.g., first successful payment)",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The rubric mentions 'Register varies intentionally \u2014 not one flat temperature throughout; payoff moments land like an exhale' which gestures at tonal variation for positive moments, but explicitly warns against 'forced optimism' and 'performative warmth.' The celebratory aspect of milestones is not clearly endorsed."
+      },
+      {
+        "preference": "Tone should be calm and precise in error states",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Covered by 'calm and grounded without being clinical' and the analogy 'the way a competent colleague would talk to you after a snag \u2014 plain, direct, present.' Also 'Reads as steady and present.'"
+      },
+      {
+        "preference": "Tone for routine actions should be minimal and invisible, not drawing attention to itself",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "Economy and precision's emphasis on no filler and every word doing work implicitly supports minimal tone for routine actions. Tonal calibration mentions varying register. But the explicit idea that routine actions should have 'invisible' tone that doesn't draw attention is not directly stated."
+      },
+      {
+        "preference": "Tone should shift appropriately based on the emotional context of the moment, not remain uniform",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Covered by 'Register varies intentionally \u2014 not one flat temperature throughout' and Contextual presence's requirement that copy feels written for 'the specific screen, moment, and emotional state the user is in.'"
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 15,
+    "partially_covered_count": 5,
+    "not_covered_count": 0,
+    "coverage_score": 0.875,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 2,
+    "rubric_version": 5,
+    "timestamp": "2026-03-06T01:45:08.009800"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Copy should be short and concise, avoiding unnecessary words",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "The 'Economy and precision' criterion directly addresses this with 'Every word does specific, identifiable work. No throat-clearing, no filler' and the dimension 'Removing any word would change or lose the meaning.'"
+      },
+      {
+        "preference": "Copy should be scannable, using structure and brevity so users can quickly extract meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "Covered by the dimension 'Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed.'"
+      },
+      {
+        "preference": "Copy should be action-oriented, prompting the user toward doing something",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The 'User-centered direction' criterion states 'Copy puts the user in motion toward a concrete outcome' and includes dimensions about active voice and user as agent acting."
+      },
+      {
+        "preference": "Every UI string should make the user's next step obvious",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Covered by 'A user who sees only one element should have enough to act' in the Functional completeness criterion, and also by User-centered direction's emphasis on CTAs making it clear what clicking achieves."
+      },
+      {
+        "preference": "No marketing fluff or promotional language within the product UI itself",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Directly addressed by the dimension 'Product UI copy does not use promotional or marketing register \u2014 no superlatives, no value-prop language inside the flow' and the criterion description 'No marketing register inside the product.'"
+      },
+      {
+        "preference": "Error messages should state what happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Explicitly covered in the dimension 'Error messages follow the what-why-what structure: what happened, why it happened, what to do next.'"
+      },
+      {
+        "preference": "Error messages should explain why it happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Explicitly covered in the dimension 'Error messages follow the what-why-what structure: what happened, why it happened, what to do next.'"
+      },
+      {
+        "preference": "Error messages should tell the user what to do next to resolve the issue",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Explicitly covered in the dimension 'Error messages follow the what-why-what structure: what happened, why it happened, what to do next.'"
+      },
+      {
+        "preference": "Error messages should follow the order: what happened, why, what to do next",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Explicitly stated in both the criterion description ('Error messages follow the sequence: what happened, why, what to do \u2014 in that order') and the dimension."
+      },
+      {
+        "preference": "Error messages should never be vague or generic (e.g., 'Something went wrong' is unacceptable)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Covered by the dimension text 'no generic fallback copy' within the error message dimension, and by the Contextual presence criterion's emphasis on copy not feeling lifted from a generic template."
+      },
+      {
+        "preference": "Button labels should describe the outcome of clicking, not just the generic action (e.g., 'Save changes' not 'Submit')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "Directly addressed by the dimension 'Button labels make it clear what clicking achieves \u2014 'Add Payee' is fine when a payee being added IS the outcome; 'Resubmit order' over 'Try again'.'"
+      },
+      {
+        "preference": "The user should be able to predict what will happen before they click a button based on its label",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "Covered by 'Button labels make it clear what clicking achieves' and the broader criterion emphasis on CTAs making outcomes clear."
+      },
+      {
+        "preference": "Confirmation dialogs should name the specific consequence of the action (e.g., 'Delete 3 invoices permanently?' not 'Are you sure?')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Directly addressed by the dimension 'Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?''"
+      },
+      {
+        "preference": "Confirmation dialogs should include specific details like quantities or object names relevant to the action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Covered by the dimension referencing 'specific consequence and scope' with the example 'Delete 3 invoices permanently?' which demonstrates quantities and object names."
+      },
+      {
+        "preference": "Empty states should guide the user toward their first meaningful action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Directly addressed by the dimension 'Empty states direct the user toward their first action' and the criterion description 'Empty states guide the user toward their first action.'"
+      },
+      {
+        "preference": "Empty states should feel like a helpful nudge, not a dead end or blank placeholder",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "Directly addressed by the dimension 'they read as a helpful nudge, not a dead end or a system status label.'"
+      },
+      {
+        "preference": "Tone should be warm and celebratory for positive milestone moments (e.g., first successful payment)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Directly addressed by the dimension 'First-time moments and celebratory moments are allowed to be warm \u2014 tone matches the emotional weight of the moment.'"
+      },
+      {
+        "preference": "Tone should be calm and precise in error states",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Directly addressed by the dimension 'Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic, not breezy.'"
+      },
+      {
+        "preference": "Tone for routine actions should be minimal and invisible, not drawing attention to itself",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Covered by the criterion description 'Routine actions should be nearly invisible.'"
+      },
+      {
+        "preference": "Tone should shift appropriately based on the emotional context of the moment, not remain uniform",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "Directly addressed by the criterion description 'Tone shifts deliberately based on context' and the multiple dimensions covering different emotional contexts (celebratory, error, routine)."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 20,
+    "partially_covered_count": 0,
+    "not_covered_count": 0,
+    "coverage_score": 1.0,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 3,
+    "rubric_version": 8,
+    "timestamp": "2026-03-06T01:58:41.694696"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Copy should be short and concise, avoiding unnecessary words",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "The 'Economy and precision' criterion directly addresses this with 'Every word does specific, identifiable work' and 'Removing any word would change or lose the meaning.'"
+      },
+      {
+        "preference": "Copy should be scannable, using structure and brevity so users can quickly extract meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Economy and precision",
+        "explanation": "The dimension 'Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections where needed' directly covers scannability."
+      },
+      {
+        "preference": "Copy should be action-oriented, prompting the user toward doing something",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The 'User-centered direction' criterion states 'Copy puts the user in motion toward a concrete outcome' and discusses CTAs telling the user what happens when they click."
+      },
+      {
+        "preference": "Every UI string should make the user's next step obvious",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The 'Functional completeness' criterion states 'A user who sees only one element should have enough to act' and 'Each element makes sense and feels complete if the user never sees the next screen.'"
+      },
+      {
+        "preference": "No marketing fluff or promotional language within the product UI itself",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The 'Tonal calibration' dimension explicitly states 'Product UI copy does not use promotional register, superlatives, or value-prop language inside the flow' and the criterion description says 'No marketing register inside the product.'"
+      },
+      {
+        "preference": "Error messages should state what happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The dimension explicitly includes 'what happened' as the first element of the error message structure."
+      },
+      {
+        "preference": "Error messages should explain why it happened",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The dimension explicitly includes 'why it happened' as the second element of the error message structure."
+      },
+      {
+        "preference": "Error messages should tell the user what to do next to resolve the issue",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The dimension explicitly includes 'what to do next' as the third element of the error message structure."
+      },
+      {
+        "preference": "Error messages should follow the order: what happened, why, what to do next",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The criterion description explicitly states 'Error messages follow the sequence: what happened, why, what to do \u2014 in that order' and the dimension reinforces this."
+      },
+      {
+        "preference": "Error messages should never be vague or generic (e.g., 'Something went wrong' is unacceptable)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The dimension explicitly states 'no generic fallback copy like \"Something went wrong\"'."
+      },
+      {
+        "preference": "Button labels should describe the outcome of clicking, not just the generic action (e.g., 'Save changes' not 'Submit')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The dimension states 'Button labels tell the user what clicking achieves' and explicitly calls out 'never vague (\"Try again\")' with examples of outcome-oriented labels."
+      },
+      {
+        "preference": "The user should be able to predict what will happen before they click a button based on its label",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "User-centered direction",
+        "explanation": "The 'User-centered direction' criterion addresses this with 'CTAs tell the user what happens when they click' and button labels that describe the outcome."
+      },
+      {
+        "preference": "Confirmation dialogs should name the specific consequence of the action (e.g., 'Delete 3 invoices permanently?' not 'Are you sure?')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The dimension explicitly states 'Confirmation dialogs name the specific consequence and scope \u2014 \"Delete 3 invoices permanently?\" not \"Are you sure?\"'"
+      },
+      {
+        "preference": "Confirmation dialogs should include specific details like quantities or object names relevant to the action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The dimension mentions 'specific consequence and scope' with the example 'Delete 3 invoices permanently?' which includes quantity, directly covering this preference."
+      },
+      {
+        "preference": "Empty states should guide the user toward their first meaningful action",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The criterion description says 'Empty states guide the user toward their first action' and the dimension says 'Empty states direct the user toward their first action.'"
+      },
+      {
+        "preference": "Empty states should feel like a helpful nudge, not a dead end or blank placeholder",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Functional completeness",
+        "explanation": "The dimension explicitly states 'they read as a helpful nudge, not a dead end or a system status label.'"
+      },
+      {
+        "preference": "Tone should be warm and celebratory for positive milestone moments (e.g., first successful payment)",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The criterion description states 'First-time moments can carry warmth' and the dimension discusses elements doing 'distinct emotional jobs' with 'headline holds the warmth.'"
+      },
+      {
+        "preference": "Tone should be calm and precise in error states",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The criterion description states 'error states should be calm and precise' and the dimension says 'Error and warning states read as steady and precise.'"
+      },
+      {
+        "preference": "Tone for routine actions should be minimal and invisible, not drawing attention to itself",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The criterion states 'routine actions should be nearly invisible' and the dimension says 'Routine, repetitive actions use copy that is as invisible as possible \u2014 no warmth or personality injected into mundane confirmations.'"
+      },
+      {
+        "preference": "Tone should shift appropriately based on the emotional context of the moment, not remain uniform",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tonal calibration",
+        "explanation": "The criterion description states 'Tone shifts deliberately based on context' and the dimension says 'Elements within a single screen do distinct emotional jobs \u2014 same voice, different gears.'"
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 20,
+    "partially_covered_count": 0,
+    "not_covered_count": 0,
+    "coverage_score": 1.0,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 4,
+    "rubric_version": 11,
+    "timestamp": "2026-03-06T02:14:27.987106"
+  }
+]

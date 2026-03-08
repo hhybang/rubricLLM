@@ -1,0 +1,1642 @@
+[
+  {
+    "version": 1,
+    "writing_type": "formal academic research papers",
+    "user_goals_summary": "This user writes dense, formally rigorous academic prose and cares most about argumentative architecture: every section must earn its place by naming the problem it responds to and cashing out what its machinery gains. Formalism is valued highly but treated as a means to argumentative ends, not an end in itself. The user expects formal register throughout, with rare, disciplined moments of plain-language directness that strengthen rather than undermine the reader's trust in the technical apparatus.",
+    "rubric": [
+      {
+        "name": "Inter-section Dependency Logic",
+        "category": "Structure",
+        "description": "Each section or subsection opens by naming the specific problem, constraint, or unresolved question that the preceding section established. Design choices are presented as forced consequences of prior constraints, not arbitrary selections, so the reader can reconstruct the argument's order from the dependency chain alone.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each subsection opens by identifying the specific problem or limitation the previous section created"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "dependency_chain_recoverable",
+            "label": "A reader could reconstruct why sections appear in their order solely from the dependency logic"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components within a section that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a property of the prior"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes with a sentence or two that cashes out what the section's design gains for the larger argument. The reader always knows *why* before encountering *what*.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Subsection opens with the motivating problem or design challenge before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Subsection closes with a sentence that states what the section's approach gains or enables for the broader project"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No subsection ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery. These moments are brief (one sentence), arrive only after the formal specification they restate, and return immediately to formal register. The contrast is what makes them effective.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "strategic_placement",
+            "label": "Plain-language moments are placed at points of maximum density or conceptual payoff, not distributed uniformly"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler (e.g., 'clear and effective')"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "This user diagnoses structural issues with exceptional precision \u2014 they identify the exact sentence where an argument falters and articulate the principle it violates. They value logical dependency above all: every piece of writing must feel like a chain of forced consequences, not a sequence of independent choices. When giving feedback, they consistently frame issues as 'the implicit thing that needs to be made explicit,' so surfacing latent logical connections is the single highest-leverage move. They accept formalism readily and never ask for simplification, but they will push back hard if formalism is not in service of an argumentative claim.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes with a sentence or two that cashes out what the section's design gains for the larger argument. The reader always knows *why* before encountering *what*.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Subsection opens with the motivating problem or design challenge before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Subsection closes with a sentence that states what the section's approach gains or enables for the broader project"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No subsection ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Inter-section Dependency Logic",
+        "category": "Structure",
+        "description": "Each section or subsection opens by naming the specific problem, constraint, or unresolved question that the preceding section established. Design choices are presented as forced consequences of prior constraints, not arbitrary selections, so the reader can reconstruct the argument's order from the dependency chain alone.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each subsection opens by identifying the specific problem or limitation the previous section created"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "dependency_chain_recoverable",
+            "label": "A reader could reconstruct why sections appear in their order solely from the dependency logic"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components within a section that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a property of the prior"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery. These moments are brief (one sentence), arrive only after the formal specification they restate, and return immediately to formal register. The contrast is what makes them effective.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "strategic_placement",
+            "label": "Plain-language moments are placed at points of maximum density or conceptual payoff, not distributed uniformly"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler (e.g., 'clear and effective')"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "formal academic research papers",
+    "user_goals_summary": "This user writes dense, formally rigorous academic prose and cares most about argumentative architecture: every section must earn its place by naming the problem it responds to and cashing out what its machinery gains. Formalism is valued highly but treated as a means to argumentative ends, not an end in itself. The user expects formal register throughout, with rare, disciplined moments of plain-language directness that strengthen rather than undermine the reader's trust in the technical apparatus.",
+    "coaching_notes": "This user diagnoses structural issues with exceptional precision \u2014 they identify the exact sentence where an argument falters and articulate the principle it violates. They value logical dependency above all: every piece of writing must feel like a chain of forced consequences, not a sequence of independent choices. When giving feedback, they consistently frame issues as 'the implicit thing that needs to be made explicit,' so surfacing latent logical connections is the single highest-leverage move. They accept formalism readily and never ask for simplification, but they will push back hard if formalism is not in service of an argumentative claim."
+  },
+  {
+    "version": 3,
+    "writing_type": "academic methodology sections",
+    "user_goals_summary": "The user writes formally structured methodology sections for technically sophisticated venues. They value writing that reads as a sustained argument rather than a technical manual \u2014 every subsection and paragraph must earn its position through explicit dependency logic connecting it to what precedes and follows. Formalism is expected to be rigorous but always in service of an argumentative purpose, with rare, strategically placed plain-language moments that strengthen rather than undermine the formal register.",
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the section's design gains for the larger argument \u2014 ideally naming what becomes possible downstream. The reader always knows *why* before encountering *what*.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Subsection opens with the motivating problem or design challenge before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Subsection closes with a sentence that states what the section's approach gains, enables, or makes possible for downstream sections"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No subsection ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, and a reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_clause_at_seam",
+            "label": "Transitions include an explicit causal clause naming what prior content established that forces the current question (e.g., 'Because X defined above...')"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a section to feel like moments of clarity rather than a habit.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a section (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every transition must be load-bearing \u2014 the user will repeatedly flag any paragraph or subsection that could be reordered without breaking the argument. The user treats 'reads like a list' as the cardinal structural failure. Plain-language moments are valued but strictly rationed: one per section maximum, varied in marker phrasing, and only after formal machinery is established. The user's revision instinct is to push the same structural principle (dependency logic, argumentative arc) deeper into finer-grained units \u2014 from section level to subsection level to paragraph level \u2014 so drafts should anticipate this pressure at every level of granularity from the start.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, and a reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_clause_at_seam",
+            "label": "Transitions include an explicit causal clause naming what prior content established that forces the current question (e.g., 'Because X defined above...')"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the section's design gains for the larger argument \u2014 ideally naming what becomes possible downstream. The reader always knows *why* before encountering *what*.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Subsection opens with the motivating problem or design challenge before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Subsection closes with a sentence that states what the section's approach gains, enables, or makes possible for downstream sections"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No subsection ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a section to feel like moments of clarity rather than a habit.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a section (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 4,
+    "source": "criteria_classification",
+    "writing_type": "academic methodology sections",
+    "user_goals_summary": "The user writes formally structured methodology sections for technically sophisticated venues. They value writing that reads as a sustained argument rather than a technical manual \u2014 every subsection and paragraph must earn its position through explicit dependency logic connecting it to what precedes and follows. Formalism is expected to be rigorous but always in service of an argumentative purpose, with rare, strategically placed plain-language moments that strengthen rather than undermine the formal register.",
+    "coaching_notes": "Non-negotiable: every transition must be load-bearing \u2014 the user will repeatedly flag any paragraph or subsection that could be reordered without breaking the argument. The user treats 'reads like a list' as the cardinal structural failure. Plain-language moments are valued but strictly rationed: one per section maximum, varied in marker phrasing, and only after formal machinery is established. The user's revision instinct is to push the same structural principle (dependency logic, argumentative arc) deeper into finer-grained units \u2014 from section level to subsection level to paragraph level \u2014 so drafts should anticipate this pressure at every level of granularity from the start."
+  },
+  {
+    "version": 5,
+    "writing_type": "academic methodology sections (formal/technical papers)",
+    "user_goals_summary": "The user writes methodology sections that read as sustained arguments rather than technical manuals. Every structural unit must justify its existence through causal dependency on what precedes it, and every piece of formal machinery must be motivated before introduction and cashed out after specification. Dense formalism is punctuated by rare, disciplined moments of plain language that demonstrate command rather than concession.",
+    "rubric": [
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, and a reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit (subsection or paragraph) opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_clause_at_seam",
+            "label": "Transitions include an explicit causal clause naming what prior content established that forces the current question (e.g., 'Because X defined above...')"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and each paragraph within it follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the design gains for the larger argument. Closings create forward pressure \u2014 opening the next argumentative door \u2014 rather than summarizing what was just established.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream \u2014 creating forward pressure rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every structural unit must orient the reader to its purpose before any technical content begins \u2014 this applies at both the subsection and paragraph level. The user treats dependency logic as the primary quality signal; a passage that is technically correct but could be reordered without consequence reads as broken. Plain-language moments are valued precisely because they are rare and disciplined \u2014 the user will reject them if they overstay or arrive before the formalism they restate. Closings that summarize are treated as failures; the user expects closings that open the next argumentative door.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and each paragraph within it follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the design gains for the larger argument. Closings create forward pressure \u2014 opening the next argumentative door \u2014 rather than summarizing what was just established.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream \u2014 creating forward pressure rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, and a reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit (subsection or paragraph) opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_clause_at_seam",
+            "label": "Transitions include an explicit causal clause naming what prior content established that forces the current question (e.g., 'Because X defined above...')"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 6,
+    "source": "criteria_classification",
+    "writing_type": "academic methodology sections (formal/technical papers)",
+    "user_goals_summary": "The user writes methodology sections that read as sustained arguments rather than technical manuals. Every structural unit must justify its existence through causal dependency on what precedes it, and every piece of formal machinery must be motivated before introduction and cashed out after specification. Dense formalism is punctuated by rare, disciplined moments of plain language that demonstrate command rather than concession.",
+    "coaching_notes": "Non-negotiable: every structural unit must orient the reader to its purpose before any technical content begins \u2014 this applies at both the subsection and paragraph level. The user treats dependency logic as the primary quality signal; a passage that is technically correct but could be reordered without consequence reads as broken. Plain-language moments are valued precisely because they are rare and disciplined \u2014 the user will reject them if they overstay or arrive before the formalism they restate. Closings that summarize are treated as failures; the user expects closings that open the next argumentative door."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and each paragraph within it follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the design gains for the larger argument. Closings create forward pressure \u2014 opening the next argumentative door \u2014 rather than summarizing what was just established.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream \u2014 creating forward pressure rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, and a reader should feel that the text could not be reordered without breaking the causal chain. Within a multi-paragraph subsection, each paragraph must individually introduce, resolve, and hand off a constraint \u2014 it is not sufficient for the subsection as a whole to follow this arc if individual paragraphs collapse motivation, machinery, and detail into undifferentiated prose.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit (subsection or paragraph) opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_clause_at_seam",
+            "label": "Transitions include an explicit causal clause naming what prior content established that forces the current question (e.g., 'Because X defined above...')"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          },
+          {
+            "id": "paragraph_level_arc",
+            "label": "Each paragraph in a multi-paragraph subsection individually introduces a constraint, resolves it, and hands off a new open variable \u2014 motivation and machinery are not collapsed into undifferentiated prose even when the subsection arc is otherwise intact"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 7,
+    "source": "alignment_suggestion",
+    "writing_type": "academic methodology sections (formal/technical papers)",
+    "user_goals_summary": "The user writes methodology sections that read as sustained arguments rather than technical manuals. Every structural unit must justify its existence through causal dependency on what precedes it, and every piece of formal machinery must be motivated before introduction and cashed out after specification. Dense formalism is punctuated by rare, disciplined moments of plain language that demonstrate command rather than concession.",
+    "coaching_notes": "Non-negotiable: every structural unit must orient the reader to its purpose before any technical content begins \u2014 this applies at both the subsection and paragraph level. The user treats dependency logic as the primary quality signal; a passage that is technically correct but could be reordered without consequence reads as broken. Plain-language moments are valued precisely because they are rare and disciplined \u2014 the user will reject them if they overstay or arrive before the formalism they restate. Closings that summarize are treated as failures; the user expects closings that open the next argumentative door."
+  },
+  {
+    "version": 8,
+    "writing_type": "academic research papers \u2014 methodology sections",
+    "user_goals_summary": "The user writes methodology sections for technically sophisticated venues (e.g., ACL) and values writing that reads as a sustained argument rather than a procedural manual. Every design choice must feel logically forced by constraints the prior section established, formalism must be framed by the problem it resolves and the capability it enables, and the formal register should be interrupted only by rare, precisely placed plain-language moments that demonstrate intuitive command of the machinery.",
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and each paragraph within it follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the design gains for the larger argument. Closings create forward pressure \u2014 opening the next argumentative door \u2014 rather than summarizing what was just established.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream \u2014 creating forward pressure rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, not preferences among alternatives. Transitions name enabling conditions rather than completed actions \u2014 'X was necessary precisely so that Y becomes possible' rather than 'having done X, we do Y.' A reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit (subsection or paragraph) opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_not_sequential",
+            "label": "Transitions name the enabling condition that makes the current step possible or necessary, not merely the completed action that preceded it (causal framing, not temporal sequencing)"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery deeply enough to step back from it. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every unit of text must motivate before it specifies \u2014 the user flags every instance of 'dropped into the middle of a procedure' and will not accept formalism that precedes its framing question. Preferred trade-off: the user will tolerate slightly longer subsection openings to establish dependency logic, but demands absolute brevity in plain-language asides \u2014 one sentence, then back to register. Feedback style: the user diagnoses structural problems with high precision ('the seam between paragraphs isn't load-bearing'), often locating the exact sentence that fails, and expects revisions targeted to that specific joint rather than global rewrites.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and each paragraph within it follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the design gains for the larger argument. Closings create forward pressure \u2014 opening the next argumentative door \u2014 rather than summarizing what was just established.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream \u2014 creating forward pressure rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, not preferences among alternatives. Transitions name enabling conditions rather than completed actions \u2014 'X was necessary precisely so that Y becomes possible' rather than 'having done X, we do Y.' A reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit (subsection or paragraph) opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_not_sequential",
+            "label": "Transitions name the enabling condition that makes the current step possible or necessary, not merely the completed action that preceded it (causal framing, not temporal sequencing)"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery deeply enough to step back from it. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 9,
+    "source": "criteria_classification",
+    "writing_type": "academic research papers \u2014 methodology sections",
+    "user_goals_summary": "The user writes methodology sections for technically sophisticated venues (e.g., ACL) and values writing that reads as a sustained argument rather than a procedural manual. Every design choice must feel logically forced by constraints the prior section established, formalism must be framed by the problem it resolves and the capability it enables, and the formal register should be interrupted only by rare, precisely placed plain-language moments that demonstrate intuitive command of the machinery.",
+    "coaching_notes": "Non-negotiable: every unit of text must motivate before it specifies \u2014 the user flags every instance of 'dropped into the middle of a procedure' and will not accept formalism that precedes its framing question. Preferred trade-off: the user will tolerate slightly longer subsection openings to establish dependency logic, but demands absolute brevity in plain-language asides \u2014 one sentence, then back to register. Feedback style: the user diagnoses structural problems with high precision ('the seam between paragraphs isn't load-bearing'), often locating the exact sentence that fails, and expects revisions targeted to that specific joint rather than global rewrites."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and each paragraph within it follows a motivation\u2013machinery\u2013payoff arc: it opens by framing the problem the reader should care about before introducing any formal apparatus, and closes by cashing out what the design gains for the larger argument. Closings create forward pressure \u2014 opening the next argumentative door \u2014 rather than summarizing what was just established. The motivation must appear in the opening sentence or two \u2014 not tucked into a subordinate clause, parenthetical, or delayed until after notation has been introduced.",
+        "dimensions": [
+          {
+            "id": "motivating_opening",
+            "label": "Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery \u2014 and this motivation appears in the first sentence or two, not deferred past any notation or framing clause"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream \u2014 creating forward pressure rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, not preferences among alternatives. Transitions name enabling conditions rather than completed actions \u2014 'X was necessary precisely so that Y becomes possible' rather than 'having done X, we do Y.' A reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit (subsection or paragraph) opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_not_sequential",
+            "label": "Transitions name the enabling condition that makes the current step possible or necessary, not merely the completed action that preceded it (causal framing, not temporal sequencing)"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery deeply enough to step back from it. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 10,
+    "source": "alignment_suggestion",
+    "writing_type": "academic research papers \u2014 methodology sections",
+    "user_goals_summary": "The user writes methodology sections for technically sophisticated venues (e.g., ACL) and values writing that reads as a sustained argument rather than a procedural manual. Every design choice must feel logically forced by constraints the prior section established, formalism must be framed by the problem it resolves and the capability it enables, and the formal register should be interrupted only by rare, precisely placed plain-language moments that demonstrate intuitive command of the machinery.",
+    "coaching_notes": "Non-negotiable: every unit of text must motivate before it specifies \u2014 the user flags every instance of 'dropped into the middle of a procedure' and will not accept formalism that precedes its framing question. Preferred trade-off: the user will tolerate slightly longer subsection openings to establish dependency logic, but demands absolute brevity in plain-language asides \u2014 one sentence, then back to register. Feedback style: the user diagnoses structural problems with high precision ('the seam between paragraphs isn't load-bearing'), often locating the exact sentence that fails, and expects revisions targeted to that specific joint rather than global rewrites."
+  },
+  {
+    "version": 11,
+    "writing_type": "academic methodology sections (computational linguistics / NLP)",
+    "user_goals_summary": "The user writes rigorous, formally structured methodology sections for technical NLP venues where reviewers expect precision. Their core value is that methods sections should read as sustained arguments \u2014 each subsection motivated by stakes, each design choice framed as a forced consequence of prior constraints, and each piece of formalism earning its place by resolving a named problem \u2014 rather than as procedural manuals or specification lists.",
+    "rubric": [
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and paragraph follows a stakes\u2013machinery\u2013payoff arc. Openings establish the argumentative role and stakes \u2014 why this piece exists in the paper's argument and what failure or constraint it addresses \u2014 before any formal apparatus appears. A reviewer reading only the header and first sentence should understand the argumentative function of what follows, not just the technical problem being described. Closings name what the design enables downstream, creating forward pressure rather than summarizing.",
+        "dimensions": [
+          {
+            "id": "stakes_before_mechanics",
+            "label": "Each unit opens by establishing its argumentative stakes or role in the paper's argument \u2014 what it addresses and why \u2014 before any definitions, notation, or formal machinery, and this framing appears in the first sentence or two"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream, creating forward pressure toward the next section rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, not preferences among alternatives. Transitions name enabling conditions rather than completed actions \u2014 'X was necessary precisely so that Y becomes possible' rather than 'having done X, we do Y.' A reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_not_sequential",
+            "label": "Transitions name the enabling condition that makes the current step possible or necessary, not merely the completed action that preceded it \u2014 causal framing, not temporal sequencing"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery deeply enough to step back from it. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby in the section"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "Non-negotiable: every unit must open with argumentative stakes before any formalism \u2014 this user will iterate many rounds on a single opening sentence until the stakes-first framing is right. Preferred trade-off: the user will sacrifice compression for causal explicitness \u2014 they want every seam to be load-bearing even if it costs a clause. Feedback style: the user gives surgically precise diagnoses ('the seam between paragraphs isn't load-bearing') and expects equally precise responses \u2014 they do not want global rewrites when a single clause is the fix.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Dependency Logic Across All Levels",
+        "category": "Structure",
+        "description": "Every transition \u2014 between subsections and between paragraphs within a subsection \u2014 names the specific problem, constraint, or unresolved question that the preceding unit established. Seams are load-bearing: design choices are framed as forced consequences of prior constraints, not preferences among alternatives. Transitions name enabling conditions rather than completed actions \u2014 'X was necessary precisely so that Y becomes possible' rather than 'having done X, we do Y.' A reader should feel that the text could not be reordered without breaking the causal chain.",
+        "dimensions": [
+          {
+            "id": "opens_with_prior_constraint",
+            "label": "Each unit opens by identifying the specific problem, limitation, or open variable the previous unit created"
+          },
+          {
+            "id": "causal_not_sequential",
+            "label": "Transitions name the enabling condition that makes the current step possible or necessary, not merely the completed action that preceded it \u2014 causal framing, not temporal sequencing"
+          },
+          {
+            "id": "forced_consequence",
+            "label": "Design choices are framed as necessary responses to established constraints, not as preferences among alternatives"
+          },
+          {
+            "id": "non_reorderable",
+            "label": "A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain"
+          },
+          {
+            "id": "sequential_not_parallel",
+            "label": "Components that could read as a parallel list are instead presented as a logical sequence where each is necessitated by a specific property of the prior"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Subsection Argumentative Arc",
+        "category": "Structure",
+        "description": "Each subsection and paragraph follows a stakes\u2013machinery\u2013payoff arc. Openings establish the argumentative role and stakes \u2014 why this piece exists in the paper's argument and what failure or constraint it addresses \u2014 before any formal apparatus appears. A reviewer reading only the header and first sentence should understand the argumentative function of what follows, not just the technical problem being described. Closings name what the design enables downstream, creating forward pressure rather than summarizing.",
+        "dimensions": [
+          {
+            "id": "stakes_before_mechanics",
+            "label": "Each unit opens by establishing its argumentative stakes or role in the paper's argument \u2014 what it addresses and why \u2014 before any definitions, notation, or formal machinery, and this framing appears in the first sentence or two"
+          },
+          {
+            "id": "payoff_closing",
+            "label": "Each unit closes by naming what the approach enables or makes possible downstream, creating forward pressure toward the next section rather than summarizing what was just decided"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The reader understands why they are reading each piece before encountering what it formally specifies"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "No unit ends at the formalism \u2014 every section steps back to connect machinery to its argumentative purpose"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Formal Register and Precision",
+        "category": "Style",
+        "description": "Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging. Terminology is consistent across sections. Register shifts are controlled, deliberate, and visibly marked (e.g., 'put simply'), never accidental or gradual.",
+        "dimensions": [
+          {
+            "id": "no_casual_phrasing",
+            "label": "No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments"
+          },
+          {
+            "id": "terminological_consistency",
+            "label": "Technical terms and names for concepts are used consistently across all sections"
+          },
+          {
+            "id": "register_shifts_marked",
+            "label": "Any departure from formal register is explicitly signaled (e.g., 'put plainly,' 'put simply') and visibly intentional"
+          },
+          {
+            "id": "precise_vocabulary",
+            "label": "Word choices are specific and exact, avoiding vague or generic academic filler"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Formalism in Service of Argument",
+        "category": "Content",
+        "description": "Formal definitions, notation, and technical machinery are introduced in direct response to a stated problem and are explicitly connected to their argumentative purpose. The formalism resolves or sharpens a question the surrounding prose has raised; it is never self-standing or presented as its own justification.",
+        "dimensions": [
+          {
+            "id": "formalism_motivated",
+            "label": "Each piece of formal notation or machinery is introduced in response to a named problem, not presented self-standingly"
+          },
+          {
+            "id": "formalism_cashed_out",
+            "label": "Formal results or definitions are connected back to what they mean for the argument or design"
+          },
+          {
+            "id": "claims_grounded",
+            "label": "Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)"
+          },
+          {
+            "id": "notation_earns_place",
+            "label": "Notation and formal apparatus sharpen or resolve a question rather than restating in symbols what prose already said"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Strategic Plain-Language Moments",
+        "category": "Style",
+        "description": "In dense formal passages, one or two sentences of plain, direct language restate what the formalism *means* \u2014 not what it specifies \u2014 strengthening the reader's trust that the author commands the machinery deeply enough to step back from it. These moments are brief, arrive only after the formal specification they restate, return immediately to formal register, and are rare enough within a subsection to feel like moments of clarity rather than a habit or a mode shift.",
+        "dimensions": [
+          {
+            "id": "plain_after_formal",
+            "label": "Plain-language restatements appear only after the formal specification they summarize, never before"
+          },
+          {
+            "id": "one_sentence_discipline",
+            "label": "Each plain-language aside is at most one or two sentences \u2014 brief enough to feel like a moment of clarity, not a mode shift"
+          },
+          {
+            "id": "means_not_specifies",
+            "label": "The plain restatement articulates what the formalism means or implies, not what it technically specifies"
+          },
+          {
+            "id": "immediate_return",
+            "label": "Formal register resumes immediately after the plain-language moment without lingering or expanding the aside"
+          },
+          {
+            "id": "scarcity_and_placement",
+            "label": "Plain-language moments are rare within a subsection (one or two at most), placed at points of maximum density, and not repeated if already used nearby in the section"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 12,
+    "source": "criteria_classification",
+    "writing_type": "academic methodology sections (computational linguistics / NLP)",
+    "user_goals_summary": "The user writes rigorous, formally structured methodology sections for technical NLP venues where reviewers expect precision. Their core value is that methods sections should read as sustained arguments \u2014 each subsection motivated by stakes, each design choice framed as a forced consequence of prior constraints, and each piece of formalism earning its place by resolving a named problem \u2014 rather than as procedural manuals or specification lists.",
+    "coaching_notes": "Non-negotiable: every unit must open with argumentative stakes before any formalism \u2014 this user will iterate many rounds on a single opening sentence until the stakes-first framing is right. Preferred trade-off: the user will sacrifice compression for causal explicitness \u2014 they want every seam to be load-bearing even if it costs a clause. Feedback style: the user gives surgically precise diagnoses ('the seam between paragraphs isn't load-bearing') and expects equally precise responses \u2014 they do not want global rewrites when a single clause is the fix."
+  }
+]

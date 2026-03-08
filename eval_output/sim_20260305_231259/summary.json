@@ -1,0 +1,1043 @@
+{
+  "config": {
+    "num_users": 10,
+    "num_iterations": 4,
+    "chat_turns_per_iteration": 3,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8,
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "user_temperature": 0.8,
+    "enable_probes": false,
+    "enable_log_changes": true,
+    "persona_file": "personas.json",
+    "supabase_url": "",
+    "supabase_key": "",
+    "synthetic_user_id_prefix": "sim_"
+  },
+  "results": [
+    {
+      "persona": "Alex Chen",
+      "project_id": "ae8b0515-a167-43b8-a9b6-133d05601f51",
+      "final_rubric_version": 7,
+      "num_rubric_versions": 7,
+      "num_messages": 70,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 8,
+          "total_turns": 13,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 7,
+          "total_turns": 7,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 5,
+          "total_turns": 8,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 4,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.975
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 3,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.762,
+          "total_preferences": 21,
+          "covered": 13,
+          "partial": 6,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.833,
+          "total_preferences": 21,
+          "covered": 16,
+          "partial": 3,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.857,
+          "total_preferences": 21,
+          "covered": 17,
+          "partial": 2,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.833,
+          "total_preferences": 21,
+          "covered": 16,
+          "partial": 3,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Priya Sharma",
+      "project_id": "dfebfd3e-b87e-4a1c-9382-764df9e62ab2",
+      "final_rubric_version": 8,
+      "num_rubric_versions": 8,
+      "num_messages": 81,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 2,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 10,
+          "total_turns": 13,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 4,
+          "total_turns": 10,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 5,
+          "total_turns": 11,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.833,
+          "total_preferences": 15,
+          "covered": 10,
+          "partial": 5,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.833,
+          "total_preferences": 15,
+          "covered": 11,
+          "partial": 3,
+          "not_covered": 1,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.8,
+          "total_preferences": 15,
+          "covered": 11,
+          "partial": 2,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.767,
+          "total_preferences": 15,
+          "covered": 10,
+          "partial": 3,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Jordan Rivera",
+      "project_id": "913a2d56-7574-4596-83da-c1e0a35889b3",
+      "final_rubric_version": 6,
+      "num_rubric_versions": 6,
+      "num_messages": 58,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 4,
+          "total_turns": 6,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 4,
+          "total_turns": 9,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 3,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 4,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.706,
+          "total_preferences": 17,
+          "covered": 9,
+          "partial": 6,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.647,
+          "total_preferences": 17,
+          "covered": 7,
+          "partial": 8,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.676,
+          "total_preferences": 17,
+          "covered": 8,
+          "partial": 7,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.676,
+          "total_preferences": 17,
+          "covered": 8,
+          "partial": 7,
+          "not_covered": 2,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Marcus Thompson",
+      "project_id": "38b8ebe6-5117-4dd2-906a-7b213e53fe3b",
+      "final_rubric_version": 9,
+      "num_rubric_versions": 9,
+      "num_messages": 106,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 9,
+          "total_turns": 10,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 15,
+          "total_turns": 17,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 16,
+          "total_turns": 18,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 3,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9334
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "About the same"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.857,
+          "total_preferences": 14,
+          "covered": 10,
+          "partial": 4,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.857,
+          "total_preferences": 14,
+          "covered": 10,
+          "partial": 4,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.929,
+          "total_preferences": 14,
+          "covered": 12,
+          "partial": 2,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.929,
+          "total_preferences": 14,
+          "covered": 12,
+          "partial": 2,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Elena Kowalski",
+      "project_id": "f3d482f9-b4a7-4d84-b998-be9d0461d5d0",
+      "final_rubric_version": 7,
+      "num_rubric_versions": 7,
+      "num_messages": 69,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 9,
+          "total_turns": 11,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 4,
+          "total_turns": 8,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 6,
+          "total_turns": 7,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.889,
+          "total_preferences": 18,
+          "covered": 14,
+          "partial": 4,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.889,
+          "total_preferences": 18,
+          "covered": 14,
+          "partial": 4,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.0,
+          "total_preferences": 0,
+          "covered": 0,
+          "partial": 0,
+          "not_covered": 0,
+          "dealbreaker_pass": null
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.944,
+          "total_preferences": 18,
+          "covered": 16,
+          "partial": 2,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Nadia Okafor",
+      "project_id": "159be266-5cc6-40e7-8e1a-5a62e3faee41",
+      "final_rubric_version": 11,
+      "num_rubric_versions": 11,
+      "num_messages": 251,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 20,
+          "total_turns": 22,
+          "termination_reason": "max_drafts",
+          "final_satisfaction": 0.825
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 11,
+          "total_turns": 21,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 21,
+          "total_turns": 37,
+          "termination_reason": "max_drafts",
+          "final_satisfaction": 0.72
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 21,
+          "total_turns": 37,
+          "termination_reason": "max_drafts",
+          "final_satisfaction": 0.655
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 4,
+          "effort": 4
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat worse"
+          },
+          {
+            "iteration": 4,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat worse"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.8,
+          "total_preferences": 20,
+          "covered": 13,
+          "partial": 6,
+          "not_covered": 1,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.875,
+          "total_preferences": 20,
+          "covered": 15,
+          "partial": 5,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 1.0,
+          "total_preferences": 20,
+          "covered": 20,
+          "partial": 0,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 1.0,
+          "total_preferences": 20,
+          "covered": 20,
+          "partial": 0,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "David Park",
+      "project_id": "6faa4bb8-3a9e-483e-843b-5aa875122b91",
+      "final_rubric_version": 8,
+      "num_rubric_versions": 8,
+      "num_messages": 84,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 9,
+          "total_turns": 10,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 7,
+          "total_turns": 18,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 5,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 6,
+          "total_turns": 7,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 4,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.925,
+          "total_preferences": 20,
+          "covered": 17,
+          "partial": 3,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.975,
+          "total_preferences": 20,
+          "covered": 19,
+          "partial": 1,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.975,
+          "total_preferences": 20,
+          "covered": 19,
+          "partial": 1,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.975,
+          "total_preferences": 20,
+          "covered": 19,
+          "partial": 1,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Sonia Delgado",
+      "project_id": "94bb4d62-2721-4d6f-9e6f-d7ef08a4786a",
+      "final_rubric_version": 7,
+      "num_rubric_versions": 7,
+      "num_messages": 74,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 7,
+          "total_turns": 24,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 3,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.995
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 3,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 4,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.765,
+          "total_preferences": 17,
+          "covered": 13,
+          "partial": 0,
+          "not_covered": 4,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.971,
+          "total_preferences": 17,
+          "covered": 16,
+          "partial": 1,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.912,
+          "total_preferences": 17,
+          "covered": 15,
+          "partial": 1,
+          "not_covered": 1,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.941,
+          "total_preferences": 17,
+          "covered": 15,
+          "partial": 2,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Tomoko Hayashi",
+      "project_id": "85bf0bde-fdef-4639-b9f3-7f9e077b3218",
+      "final_rubric_version": 11,
+      "num_rubric_versions": 11,
+      "num_messages": 58,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 9,
+          "total_turns": 14,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.967
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 2,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.967
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.967
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 3,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "About the same"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.618,
+          "total_preferences": 17,
+          "covered": 9,
+          "partial": 3,
+          "not_covered": 5,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.618,
+          "total_preferences": 17,
+          "covered": 9,
+          "partial": 3,
+          "not_covered": 5,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.618,
+          "total_preferences": 17,
+          "covered": 9,
+          "partial": 3,
+          "not_covered": 5,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.676,
+          "total_preferences": 17,
+          "covered": 11,
+          "partial": 1,
+          "not_covered": 5,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Ryan Fitzgerald",
+      "project_id": "ceb96af7-16ff-4449-a4c6-183af66641df",
+      "final_rubric_version": 8,
+      "num_rubric_versions": 8,
+      "num_messages": 96,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 5,
+          "total_turns": 8,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 6,
+          "total_turns": 12,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.945
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 19,
+          "total_turns": 20,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 4,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.733,
+          "total_preferences": 15,
+          "covered": 8,
+          "partial": 6,
+          "not_covered": 1,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.8,
+          "total_preferences": 15,
+          "covered": 10,
+          "partial": 4,
+          "not_covered": 1,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.767,
+          "total_preferences": 15,
+          "covered": 9,
+          "partial": 5,
+          "not_covered": 1,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.9,
+          "total_preferences": 15,
+          "covered": 13,
+          "partial": 1,
+          "not_covered": 1,
+          "dealbreaker_pass": false
+        }
+      ]
+    }
+  ],
+  "completed_at": "2026-03-06T04:08:36.190144"
+}

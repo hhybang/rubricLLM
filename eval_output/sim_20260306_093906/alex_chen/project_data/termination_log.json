@@ -1,0 +1,224 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 6,
+        "max_drafts": 20,
+        "total_turns": 9,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.4975,
+              "reasoning": "The draft has good bones \u2014 direct, professional, right length \u2014 but the closing undercuts it and the 'why' framing still feels like it's about us, not them. Multiple hidden preferences are partially met but none fully land.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "The closing and structure are solid, but two things are still off: the 'why it matters' framing centers the sender's reasoning rather than the reader's impact, and the action items section drifts into a group ask with org-structure assumptions baked in.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "Most of this is working well \u2014 the structure, the close, Marcus as the clear owner. The one thing that's still nagging me is the 'why' in the middle. 'Shipping broken software would cost us more \u2014 in time, trust, and resources' \u2014 that's framed around what it costs us, the sender. The team reading this is the one who's been planning around a date. That framing is what's missing.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "Almost everything lands \u2014 the arc is right, the 'why' is reader-facing, and the close is clean. The one thing still nagging me is H4: Marcus is named as the owner for technical questions, but there's no deadline or concrete anchor attached to him. He's named but not really activated.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H4 is the remaining gap \u2014 Marcus is named with a deadline, which is good, but 'I'll be looping in [stakeholders / other teams] separately' introduces a vague secondary action that dilutes the single-owner clarity and leans on org structure the email shouldn't assume.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 6,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.7375,
+              "reasoning": "The draft hits the right tone and is clean, but the 'why it matters' piece is missing \u2014 there's no moment that tells Priya why this is consequential for her. The emotional arc stalls after the news delivery and jumps straight to the action item."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The arc and structure are solid, and the closing is clean. But the 'why it matters' beat still reads like a generic feature description \u2014 it's framed around what the feature does, not what it unblocks for Priya's team specifically.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The arc, reader-centric framing, and closing are all solid. The one thing nagging me is the action item \u2014 'your IT admin' feels like it's assuming something about how Priya's org is structured that I don't actually know.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All four hidden preferences are fully met: the emotional arc is correct, the 'why' is framed entirely around Priya's dispatch workflow (not our release goals), the closing is action-oriented with no trailing sentiment, and the action item lands on Priya to route internally without naming a role we'd just be guessing at. No dealbreakers, clean structure throughout.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 4,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.8725,
+              "reasoning": "The arc and 'why' framing are both partially there but both miss the mark \u2014 the opening centers the sender's intent ('I want to get this to you') and the stakes paragraph explains what will happen without really landing on what this means for the CS team specifically. The closing is clean and action-oriented, which works."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H2, H3, H4 all land well \u2014 the reader-centered framing and clean CTA are solid. H1 is the weak spot: the opening acknowledgment bleeds into the sender's reasoning ('so I want to get this to you') rather than staying purely reader-focused, and the arc between news and stakes feels slightly blurred in the middle paragraph.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences are fully met: the arc is correct (acknowledge \u2192 news \u2192 stakes from reader's POV \u2192 single CTA), the 'why' centers the CS team's exposure, the closing is action-oriented with no trailing sentiment, and the ask has one implicit owner and a deadline without over-specifying org structure. Core preferences are clean across the board with no dealbreakers.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The arc, CTA, and ownership are all solid. The weak spot is the 'why it matters' framing \u2014 it centers my reasoning ('I want to make sure you have this') rather than Dana's stakes."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.8275,
+              "reasoning": "The arc and reader-centered framing are working well now. The CTA is where it loses me \u2014 'share it with me so we can align on next steps' trails off into vague coordination language right after the action item, which softens what was otherwise a clean close.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All four hidden preferences are fully met \u2014 the arc is correct, the stakes are framed from Dana's perspective, the CTA closes clean with no trailing sentiment, and there's one clear owner with a deadline. No dealbreakers.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T10:05:03.916452"
+  }
+]

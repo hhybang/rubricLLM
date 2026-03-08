@@ -1,0 +1,762 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Uses precise language with carefully chosen words that convey exact meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Dimension 'Word choices are specific and exact, avoiding vague or generic academic filler' directly addresses precise language."
+      },
+      {
+        "preference": "Maintains a formal academic tone throughout",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "The criterion explicitly requires formal register throughout with no casual phrasing or colloquialisms."
+      },
+      {
+        "preference": "Paragraphs flow logically from one to the next with clear connections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Inter-section Dependency Logic",
+        "explanation": "The criterion requires each section to open by naming the problem the preceding section established, creating logical flow and connections."
+      },
+      {
+        "preference": "Writing is cite-aware, leaving appropriate placeholders or natural positions for references",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Dimension mentions 'Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)' but this is limited to claims underpinning formalism, not a general cite-awareness throughout all writing."
+      },
+      {
+        "preference": "Each paragraph opens with a sentence that establishes the paragraph's role in the overall argument before presenting technical content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The criterion requires opening by framing the problem before introducing formal apparatus, and 'the reader always knows *why* before encountering *what*' captures this intent."
+      },
+      {
+        "preference": "Paragraphs do not open with technical details before establishing their purpose",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Dimension 'Subsection opens with the motivating problem or design challenge before any definitions or formal machinery' directly addresses this."
+      },
+      {
+        "preference": "Methods sections follow a specific rhythm: motivating question first, then approach overview, then formal details, then a brief 'what this buys us' payoff sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The motivation\u2013machinery\u2013payoff arc described in criterion 1 maps directly to this rhythm: motivating question, formal details, and closing payoff sentence."
+      },
+      {
+        "preference": "Methods sections include the motivating question and do not skip it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The criterion explicitly requires opening with the motivating problem before any formal apparatus."
+      },
+      {
+        "preference": "Methods sections include a brief payoff sentence explaining what the approach achieves",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Dimension 'Subsection closes with a sentence that states what the section's approach gains or enables' directly covers this."
+      },
+      {
+        "preference": "Methods sections read as a narrative rather than a technical manual",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Inter-section Dependency Logic",
+        "explanation": "The combination of the argumentative arc (criterion 1), dependency logic framing choices as consequences rather than arbitrary selections (criterion 2), and formalism in service of argument (criterion 4) collectively ensures a narrative rather than manual-like presentation."
+      },
+      {
+        "preference": "Uses strategic moments of informality (e.g., 'intuitively, this means...' or 'the key insight is...') to demonstrate deep understanding",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 3 explicitly describes plain-language moments that restate what formalism means, demonstrating command of the machinery."
+      },
+      {
+        "preference": "Strategic informality is rare, limited to 1-2 instances per section maximum",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "The criterion says these moments are 'brief' and 'not distributed uniformly,' and describes them as 'one or two sentences,' but doesn't explicitly state a per-section frequency limit of 1-2 instances."
+      },
+      {
+        "preference": "Transition sentences between paragraphs express logical dependency (e.g., 'Because [previous point], we need X') rather than mere sequence (e.g., 'Next, we describe X')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Inter-section Dependency Logic",
+        "explanation": "The criterion requires design choices framed as forced consequences of prior constraints, not arbitrary selections, and that the reader can reconstruct order from dependency logic alone."
+      },
+      {
+        "preference": "Paragraphs are ordered such that they could not be rearranged without breaking the logical chain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Inter-section Dependency Logic",
+        "explanation": "Dimension 'A reader could reconstruct why sections appear in their order solely from the dependency logic' directly captures this."
+      },
+      {
+        "preference": "Does not use the phrase 'we note that'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion specifically prohibits this phrase. The rubric avoids 'vague or generic academic filler' but doesn't specifically call out 'we note that.'"
+      },
+      {
+        "preference": "Does not use the phrase 'it is worth noting that' or similar filler hedges",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "The criterion mentions avoiding 'unnecessary hedging' and 'vague or generic academic filler,' which partially covers filler hedges, but doesn't specifically prohibit these phrases."
+      },
+      {
+        "preference": "Does not use overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Explicitly requires 'no casual phrasing, colloquialisms' outside of marked plain-language moments."
+      },
+      {
+        "preference": "Does not make unsubstantiated claims without evidence, citations, or qualifications",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "The dimension about flagging empirical claims for evidential grounding partially covers this, but the rubric doesn't broadly address all unsubstantiated claims \u2014 only those underpinning formalism."
+      },
+      {
+        "preference": "Uses consistent terminology throughout \u2014 the same concept is always referred to by the same term",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Dimension 'Technical terms and names for concepts are used consistently across all sections' directly covers this."
+      },
+      {
+        "preference": "Does not contain paragraph-long sentences; sentences are appropriately bounded in length",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses sentence length or prohibits overly long sentences."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 14,
+    "partially_covered_count": 4,
+    "not_covered_count": 2,
+    "coverage_score": 0.8,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-05T01:15:04.974337"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses precise language with carefully chosen words that convey exact meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 3 explicitly requires 'Word choices are specific and exact, avoiding vague or generic academic filler.'"
+      },
+      {
+        "preference": "Maintains a formal academic tone throughout",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 3 requires 'Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging.'"
+      },
+      {
+        "preference": "Paragraphs flow logically from one to the next with clear connections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 1 extensively addresses logical flow and transitions between paragraphs, requiring causal dependency chains."
+      },
+      {
+        "preference": "Writing is cite-aware, leaving appropriate placeholders or natural positions for references",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 4 mentions 'Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)' but this is limited to formalism-related claims, not cite-awareness throughout the writing generally."
+      },
+      {
+        "preference": "Each paragraph opens with a sentence that establishes the paragraph's role in the overall argument before presenting technical content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 2 requires 'The reader always knows *why* before encountering *what*' and that subsections open with motivating problems before formal apparatus. Criterion 1 also requires each unit to open by identifying the problem from the previous unit. Together these capture the preference at paragraph level."
+      },
+      {
+        "preference": "Paragraphs do not open with technical details before establishing their purpose",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 2's dimension 'The reader understands why they are reading each piece before encountering what it formally specifies' and 'Subsection opens with the motivating problem or design challenge before any definitions or formal machinery' directly address this."
+      },
+      {
+        "preference": "Methods sections follow a specific rhythm: motivating question first, then approach overview, then formal details, then a brief 'what this buys us' payoff sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 2 describes essentially this exact arc: motivation\u2013machinery\u2013payoff, with opening framing and closing payoff sentences."
+      },
+      {
+        "preference": "Methods sections include the motivating question and do not skip it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 2 explicitly requires 'Subsection opens with the motivating problem or design challenge before any definitions or formal machinery.'"
+      },
+      {
+        "preference": "Methods sections include a brief payoff sentence explaining what the approach achieves",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 2 explicitly requires 'Subsection closes with a sentence that states what the section's approach gains, enables, or makes possible for downstream sections.'"
+      },
+      {
+        "preference": "Methods sections read as a narrative rather than a technical manual",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criteria 1 and 2 together enforce narrative structure through dependency logic, causal chains, and motivation-payoff arcs, which produce a narrative rather than a manual-like presentation. Criterion 4 also requires formalism to serve argument rather than stand alone."
+      },
+      {
+        "preference": "Uses strategic moments of informality (e.g., 'intuitively, this means...' or 'the key insight is...') to demonstrate deep understanding",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 5 describes exactly this: plain-language moments that restate what formalism *means* to demonstrate command of the machinery."
+      },
+      {
+        "preference": "Strategic informality is rare, limited to 1-2 instances per section maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 5 explicitly states 'Plain-language moments are rare within a section (one or two at most).'"
+      },
+      {
+        "preference": "Transition sentences between paragraphs express logical dependency (e.g., 'Because [previous point], we need X') rather than mere sequence (e.g., 'Next, we describe X')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 1 explicitly requires 'Transitions include an explicit causal clause naming what prior content established that forces the current question (e.g., \"Because X defined above...\").'"
+      },
+      {
+        "preference": "Paragraphs are ordered such that they could not be rearranged without breaking the logical chain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 1 explicitly requires 'A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph could be moved without breaking the chain.'"
+      },
+      {
+        "preference": "Does not use the phrase 'we note that'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion specifically bans the phrase 'we note that.' While criterion 3 addresses vague filler, it does not call out this specific phrase."
+      },
+      {
+        "preference": "Does not use the phrase 'it is worth noting that' or similar filler hedges",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 3 addresses 'unnecessary hedging' and 'vague or generic academic filler,' which partially captures this, but does not specifically ban this phrase or similar filler hedges by name."
+      },
+      {
+        "preference": "Does not use overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 3 explicitly prohibits 'casual phrasing, colloquialisms, or informal vocabulary' outside marked moments."
+      },
+      {
+        "preference": "Does not make unsubstantiated claims without evidence, citations, or qualifications",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 4 mentions 'Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)' but this is limited to claims underpinning formalism. The rubric does not broadly address unsubstantiated claims throughout all parts of the writing."
+      },
+      {
+        "preference": "Uses consistent terminology throughout \u2014 the same concept is always referred to by the same term",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 3 explicitly requires 'Technical terms and names for concepts are used consistently across all sections.'"
+      },
+      {
+        "preference": "Does not contain paragraph-long sentences; sentences are appropriately bounded in length",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses sentence length or prohibits excessively long sentences."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 15,
+    "partially_covered_count": 3,
+    "not_covered_count": 2,
+    "coverage_score": 0.825,
+    "iteration": 2,
+    "rubric_version": 4,
+    "timestamp": "2026-03-05T01:29:16.212221"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses precise language with carefully chosen words that convey exact meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Dimension 4 explicitly requires 'Word choices are specific and exact, avoiding vague or generic academic filler.'"
+      },
+      {
+        "preference": "Maintains a formal academic tone throughout",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 4 requires 'Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging.'"
+      },
+      {
+        "preference": "Paragraphs flow logically from one to the next with clear connections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 2 requires every transition between paragraphs to name the specific problem or question from the preceding unit, ensuring logical flow and clear connections."
+      },
+      {
+        "preference": "Writing is cite-aware, leaving appropriate placeholders or natural positions for references",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 3 mentions 'Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)' but this is limited to formalism-supporting claims, not a general cite-awareness requirement throughout the writing."
+      },
+      {
+        "preference": "Each paragraph opens with a sentence that establishes the paragraph's role in the overall argument before presenting technical content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 requires 'Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery' and 'The reader understands why they are reading each piece before encountering what it formally specifies.'"
+      },
+      {
+        "preference": "Paragraphs do not open with technical details before establishing their purpose",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 explicitly states units open with motivation 'before any definitions or formal machinery,' directly prohibiting opening with technical details."
+      },
+      {
+        "preference": "Methods sections follow a specific rhythm: motivating question first, then approach overview, then formal details, then a brief 'what this buys us' payoff sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1's motivation\u2013machinery\u2013payoff arc maps directly to this rhythm: motivating question, then formal details, then payoff. The approach overview is implicitly part of the arc structure."
+      },
+      {
+        "preference": "Methods sections include the motivating question and do not skip it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 requires each unit to open with 'the motivating problem, design challenge, or orienting question.'"
+      },
+      {
+        "preference": "Methods sections include a brief payoff sentence explaining what the approach achieves",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 requires each unit to close 'by naming what the approach enables or makes possible downstream' and 'No unit ends at the formalism.'"
+      },
+      {
+        "preference": "Methods sections read as a narrative rather than a technical manual",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The combination of Criteria 1 (argumentative arc) and 2 (dependency logic with causal framing) ensures a narrative structure rather than a manual-like listing of technical steps."
+      },
+      {
+        "preference": "Uses strategic moments of informality (e.g., 'intuitively, this means...' or 'the key insight is...') to demonstrate deep understanding",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 5 explicitly calls for plain-language restatements that articulate 'what the formalism means or implies' to strengthen 'the reader's trust that the author commands the machinery.'"
+      },
+      {
+        "preference": "Strategic informality is rare, limited to 1-2 instances per section maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 5 specifies 'Plain-language moments are rare within a subsection (one or two at most)' and should 'feel like moments of clarity rather than a habit.'"
+      },
+      {
+        "preference": "Transition sentences between paragraphs express logical dependency (e.g., 'Because [previous point], we need X') rather than mere sequence (e.g., 'Next, we describe X')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 2 explicitly requires 'Transitions include an explicit causal clause naming what prior content established that forces the current question (e.g., \"Because X defined above...\")' rather than sequential transitions."
+      },
+      {
+        "preference": "Paragraphs are ordered such that they could not be rearranged without breaking the logical chain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 2 explicitly states 'A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain.'"
+      },
+      {
+        "preference": "Does not use the phrase 'we note that'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion specifically prohibits this phrase. Criterion 4 mentions avoiding 'vague or generic academic filler' which could partially capture this, but the specific prohibition is not addressed."
+      },
+      {
+        "preference": "Does not use the phrase 'it is worth noting that' or similar filler hedges",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 4 prohibits 'unnecessary hedging' and 'vague or generic academic filler,' which partially captures filler hedges, but the specific phrases are not called out."
+      },
+      {
+        "preference": "Does not use overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 4 explicitly prohibits 'casual phrasing, colloquialisms, or informal vocabulary' outside of marked plain-language moments."
+      },
+      {
+        "preference": "Does not make unsubstantiated claims without evidence, citations, or qualifications",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 3 mentions flagging empirical claims for evidential grounding with citation placeholders, but this is limited to claims underpinning formalism, not all claims throughout the text."
+      },
+      {
+        "preference": "Uses consistent terminology throughout \u2014 the same concept is always referred to by the same term",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 4 explicitly requires 'Technical terms and names for concepts are used consistently across all sections.'"
+      },
+      {
+        "preference": "Does not contain paragraph-long sentences; sentences are appropriately bounded in length",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses sentence length or prohibits excessively long sentences."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 15,
+    "partially_covered_count": 3,
+    "not_covered_count": 2,
+    "coverage_score": 0.825,
+    "iteration": 3,
+    "rubric_version": 6,
+    "timestamp": "2026-03-05T01:34:56.654952"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses precise language with carefully chosen words that convey exact meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 5 explicitly requires 'Word choices are specific and exact, avoiding vague or generic academic filler.'"
+      },
+      {
+        "preference": "Maintains a formal academic tone throughout",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 5 requires 'Language is precise and academic throughout, with no casual phrasing, colloquialisms, or unnecessary hedging.'"
+      },
+      {
+        "preference": "Paragraphs flow logically from one to the next with clear connections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 2 extensively addresses logical flow between paragraphs, requiring named dependency logic and causal transitions."
+      },
+      {
+        "preference": "Writing is cite-aware, leaving appropriate placeholders or natural positions for references",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 3 mentions 'Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders),' but this is limited to formalism-related claims, not general cite-awareness throughout all writing."
+      },
+      {
+        "preference": "Each paragraph opens with a sentence that establishes the paragraph's role in the overall argument before presenting technical content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 requires 'Each unit (subsection or paragraph) opens with the motivating problem, design challenge, or orienting question before any definitions or formal machinery' and 'The reader understands why they are reading each piece before encountering what it formally specifies.'"
+      },
+      {
+        "preference": "Paragraphs do not open with technical details before establishing their purpose",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 explicitly requires that each unit opens with motivation before any formal apparatus, which is the inverse statement of this preference."
+      },
+      {
+        "preference": "Methods sections follow a specific rhythm: motivating question first, then approach overview, then formal details, then a brief 'what this buys us' payoff sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1's motivation\u2013machinery\u2013payoff arc directly captures this rhythm: motivating problem, then formal apparatus, then closing that 'names what the approach enables or makes possible downstream.'"
+      },
+      {
+        "preference": "Methods sections include the motivating question and do not skip it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 requires each unit opens with the motivating problem or orienting question before any formal machinery."
+      },
+      {
+        "preference": "Methods sections include a brief payoff sentence explaining what the approach achieves",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "Criterion 1 requires each unit 'closes by naming what the approach enables or makes possible downstream' and 'No unit ends at the formalism.'"
+      },
+      {
+        "preference": "Methods sections read as a narrative rather than a technical manual",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The combination of Criteria 1 (argumentative arc), 2 (dependency logic), and 3 (formalism in service of argument) collectively ensure methods read as narrative, with motivation, logical flow, and purpose rather than a list of technical steps."
+      },
+      {
+        "preference": "Uses strategic moments of informality (e.g., 'intuitively, this means...' or 'the key insight is...') to demonstrate deep understanding",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 4 explicitly requires 'plain, direct language restate what the formalism means' to demonstrate 'the author commands the machinery deeply enough to step back from it.'"
+      },
+      {
+        "preference": "Strategic informality is rare, limited to 1-2 instances per section maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 4 explicitly requires 'Plain-language moments are rare within a subsection (one or two at most).'"
+      },
+      {
+        "preference": "Transition sentences between paragraphs express logical dependency (e.g., 'Because [previous point], we need X') rather than mere sequence (e.g., 'Next, we describe X')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 2 explicitly requires 'Transitions name the enabling condition that makes the current step possible or necessary, not merely the completed action that preceded it (causal framing, not temporal sequencing).'"
+      },
+      {
+        "preference": "Paragraphs are ordered such that they could not be rearranged without breaking the logical chain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Criterion 2 explicitly requires 'A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain.'"
+      },
+      {
+        "preference": "Does not use the phrase 'we note that'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion specifically bans the phrase 'we note that.' While Criterion 5 mentions avoiding 'vague or generic academic filler,' this is too general to capture a specific banned phrase."
+      },
+      {
+        "preference": "Does not use the phrase 'it is worth noting that' or similar filler hedges",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 5 mentions 'no unnecessary hedging' and avoiding 'vague or generic academic filler,' which partially captures the intent of avoiding filler hedges, but does not specifically target this phrase or similar constructions."
+      },
+      {
+        "preference": "Does not use overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 5 explicitly requires 'No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments.'"
+      },
+      {
+        "preference": "Does not make unsubstantiated claims without evidence, citations, or qualifications",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 3 addresses evidential grounding for 'Empirical or behavioral claims that underpin the formalism,' but this is narrowly scoped to formalism-related claims, not all claims throughout the text."
+      },
+      {
+        "preference": "Uses consistent terminology throughout \u2014 the same concept is always referred to by the same term",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Criterion 5 explicitly requires 'Technical terms and names for concepts are used consistently across all sections.'"
+      },
+      {
+        "preference": "Does not contain paragraph-long sentences; sentences are appropriately bounded in length",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses sentence length or prohibits excessively long sentences."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 15,
+    "partially_covered_count": 3,
+    "not_covered_count": 2,
+    "coverage_score": 0.825,
+    "iteration": 4,
+    "rubric_version": 9,
+    "timestamp": "2026-03-05T01:40:43.255433"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Uses precise language with carefully chosen words that convey exact meaning",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Dimension 'Word choices are specific and exact, avoiding vague or generic academic filler' directly addresses this preference."
+      },
+      {
+        "preference": "Maintains a formal academic tone throughout",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "The criterion explicitly requires formal academic register throughout, with no casual phrasing or colloquialisms."
+      },
+      {
+        "preference": "Paragraphs flow logically from one to the next with clear connections",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "This criterion is entirely focused on logical flow between paragraphs and subsections with explicit dependency-based transitions."
+      },
+      {
+        "preference": "Writing is cite-aware, leaving appropriate placeholders or natural positions for references",
+        "source": "core",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 4 mentions 'Empirical or behavioral claims that underpin the formalism are flagged for evidential grounding (e.g., citation placeholders)' but this is limited to claims underpinning formalism, not cite-awareness throughout the writing broadly."
+      },
+      {
+        "preference": "Each paragraph opens with a sentence that establishes the paragraph's role in the overall argument before presenting technical content",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The dimension 'Each unit opens by establishing its argumentative stakes or role in the paper's argument... before any definitions, notation, or formal machinery, and this framing appears in the first sentence or two' directly covers this."
+      },
+      {
+        "preference": "Paragraphs do not open with technical details before establishing their purpose",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The dimension explicitly states openings establish argumentative role 'before any formal apparatus appears' and 'before any definitions, notation, or formal machinery.'"
+      },
+      {
+        "preference": "Methods sections follow a specific rhythm: motivating question first, then approach overview, then formal details, then a brief 'what this buys us' payoff sentence",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The stakes\u2013machinery\u2013payoff arc described in criterion 2 captures this rhythm: stakes (motivating question), machinery (formal details), and payoff (what it enables downstream). The approach overview is somewhat implicit but the overall structure matches well."
+      },
+      {
+        "preference": "Methods sections include the motivating question and do not skip it",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The requirement that openings 'establish the argumentative role and stakes \u2014 why this piece exists... and what failure or constraint it addresses' before formal apparatus captures the motivating question requirement."
+      },
+      {
+        "preference": "Methods sections include a brief payoff sentence explaining what the approach achieves",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Subsection Argumentative Arc",
+        "explanation": "The dimension 'Each unit closes by naming what the approach enables or makes possible downstream, creating forward pressure' directly captures the payoff sentence."
+      },
+      {
+        "preference": "Methods sections read as a narrative rather than a technical manual",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "The combination of criterion 1 (causal dependency framing, not temporal sequencing) and criterion 2 (argumentative arcs) together ensure a narrative feel rather than a technical manual listing."
+      },
+      {
+        "preference": "Uses strategic moments of informality (e.g., 'intuitively, this means...' or 'the key insight is...') to demonstrate deep understanding",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "Criterion 5 describes plain-language moments that 'restate what the formalism means' to strengthen trust that 'the author commands the machinery deeply enough to step back from it,' directly capturing strategic informality to demonstrate understanding."
+      },
+      {
+        "preference": "Strategic informality is rare, limited to 1-2 instances per section maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Strategic Plain-Language Moments",
+        "explanation": "The dimension explicitly states 'Plain-language moments are rare within a subsection (one or two at most).'"
+      },
+      {
+        "preference": "Transition sentences between paragraphs express logical dependency (e.g., 'Because [previous point], we need X') rather than mere sequence (e.g., 'Next, we describe X')",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "The criterion explicitly requires 'causal framing, not temporal sequencing' and 'Transitions name the enabling condition that makes the current step possible or necessary, not merely the completed action that preceded it.'"
+      },
+      {
+        "preference": "Paragraphs are ordered such that they could not be rearranged without breaking the logical chain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Dependency Logic Across All Levels",
+        "explanation": "Directly stated in the dimension: 'A reader could reconstruct why units appear in their order solely from the dependency logic \u2014 no paragraph or subsection could be moved without breaking the chain.'"
+      },
+      {
+        "preference": "Does not use the phrase 'we note that'",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion specifically prohibits this phrase. While 'Formal Register and Precision' avoids 'vague or generic academic filler,' this specific prohibition is not captured."
+      },
+      {
+        "preference": "Does not use the phrase 'it is worth noting that' or similar filler hedges",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "The dimension 'avoiding vague or generic academic filler' and 'unnecessary hedging' partially captures this, but does not specifically call out these particular filler hedge phrases."
+      },
+      {
+        "preference": "Does not use overly casual language",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Directly covered by 'No colloquialisms, casual transitions, or informal vocabulary appear outside of marked plain-language moments.'"
+      },
+      {
+        "preference": "Does not make unsubstantiated claims without evidence, citations, or qualifications",
+        "source": "dealbreaker",
+        "coverage": "partially_covered",
+        "matched_criterion": "Formalism in Service of Argument",
+        "explanation": "Criterion 4 mentions flagging empirical claims for evidential grounding with citation placeholders, but this is limited to claims underpinning formalism. The broader requirement that all claims be substantiated is not fully addressed across all sections."
+      },
+      {
+        "preference": "Uses consistent terminology throughout \u2014 the same concept is always referred to by the same term",
+        "source": "dealbreaker",
+        "coverage": "covered",
+        "matched_criterion": "Formal Register and Precision",
+        "explanation": "Directly stated: 'Technical terms and names for concepts are used consistently across all sections.'"
+      },
+      {
+        "preference": "Does not contain paragraph-long sentences; sentences are appropriately bounded in length",
+        "source": "dealbreaker",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses sentence length or prohibits excessively long sentences."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 15,
+    "partially_covered_count": 3,
+    "not_covered_count": 2,
+    "coverage_score": 0.825,
+    "iteration": 5,
+    "rubric_version": 12,
+    "timestamp": "2026-03-05T01:46:58.115606"
+  }
+]

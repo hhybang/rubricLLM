@@ -1,0 +1,401 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 7,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Specific Consequence Confirmations",
+          "description": "Confirmation dialogs name the exact consequence of the action \u2014 including what will be affected, how many items, and whether it's reversible. Vague prompts like 'Are you sure?' train users to click through without reading and must never appear.",
+          "weight": 3
+        },
+        {
+          "name": "Empty States as Entry Points",
+          "description": "Empty and zero-data states guide the user toward their first meaningful action. They should feel like a helpful nudge, not a dead end. Copy communicates what the user will gain by acting, not just that nothing exists yet.",
+          "weight": 4
+        },
+        {
+          "name": "Context-Sensitive Tone",
+          "description": "Tone shifts to match the emotional weight of the moment. Celebratory milestones (first successful payment, account connected) can be warm. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single tone across all states feels robotic and erodes trust.",
+          "weight": 5
+        }
+      ],
+      "removed": [
+        {
+          "name": "Value-Forward Framing",
+          "description": "Copy orients the user toward what becomes possible after they act, not just what is currently absent or broken. In empty states and onboarding moments especially, copy should make the product's value concrete and the next action feel worthwhile \u2014 not just describe the void."
+        },
+        {
+          "name": "Transactional Directness",
+          "description": "Tone is clean, calm, and efficient \u2014 no emotional padding, no coddling, no drama. Copy respects the user as a competent professional who wants to resolve the issue and move on."
+        }
+      ],
+      "reweighted": [
+        {
+          "name": "Diagnosis Before Direction",
+          "old_weight": 3,
+          "new_weight": 2
+        },
+        {
+          "name": "Preemptive Clarity",
+          "old_weight": 4,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Outcome-Signaling CTAs",
+          "field": "description",
+          "old": "Buttons and action prompts describe the outcome of clicking, not just the task the user is about to perform. The user should know what the system will do as a result of their action.",
+          "new": "Buttons and action prompts describe the outcome of clicking, not just the task the user is about to perform. The user should know what the system will do as a result of their action before they click."
+        },
+        {
+          "name": "Diagnosis Before Direction",
+          "field": "description",
+          "old": "Copy explains what happened and why before telling the user what to do. The user should never have to ask 'but what actually happened?' before being presented with a fix.",
+          "new": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy should never open with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure."
+        },
+        {
+          "name": "Preemptive Clarity",
+          "field": "description",
+          "old": "Each copy block anticipates and answers the user's most likely next question at that moment \u2014 including both 'what is happening?' and 'what will this product do for me?' Copy should eliminate the gap between 'what does this say?' and 'what do I need to know and do next?' so the user never stalls.",
+          "new": "Each copy block anticipates and answers the user's most likely next question at that moment. Copy should eliminate the gap between 'what does this say?' and 'what do I need to know and do next?' so the user never stalls."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Outcome-Signaling CTAs",
+          "added_dims": [
+            "No generic labels like 'Submit' or 'Sign up' \u2014 label reflects the specific outcome (e.g., 'Save changes', 'Start free trial')"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Diagnosis Before Direction",
+          "added_dims": [
+            "Tone in error states is calm and precise \u2014 not apologetic, not alarming",
+            "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          ],
+          "removed_dims": [
+            "Copy names the responsible actor or system (e.g., 'your bank' not just 'something went wrong')"
+          ]
+        },
+        {
+          "name": "Preemptive Clarity",
+          "added_dims": [
+            "Includes time-sensitive or state-sensitive context when it affects the user's decision"
+          ],
+          "removed_dims": [
+            "Includes time-sensitive or state-sensitive context when it affects the user's decision (e.g., order hold duration)"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I added two entirely new criteria that were missing: 'Specific Consequence Confirmations' (my strong feeling about confirmation dialogs being precise about what gets destroyed) and 'Context-Sensitive Tone' (the robotic single-tone problem is a real pet peeve of mine). I also split 'Value-Forward Framing' into a more focused 'Empty States as Entry Points' criterion since that's the specific context where that principle matters most to me \u2014 the broader framing felt too abstract. I moved 'Diagnosis Before Direction' up to priority 2 because bad error messages are one of the most damaging copy failures in fintech, and I added a dimension there about tone being calm and precise specifically in error states. 'Preemptive Clarity' dropped to last because it's somewhat covered by the other criteria now.",
+    "rubric_version": 4,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "now see",
+        "new_text": "here's",
+        "reason": "Context-Sensitive Tone (new criterion, celebratory warmth dimension): 'Now see' reads as a directive instruction, which undercuts the warmth of a milestone moment. 'Here's' is more immediate and conversational \u2014 it presents the payoff directly rather than commanding the user to go find it, matching the new criterion's guidance that celebratory moments use warm, human language.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "You've done the setup \u2014 your",
+        "new_text": "Your",
+        "reason": "Transactional Directness \u2192 Context-Sensitive Tone (routine confirmations should be efficient and unobtrusive): 'You've done the setup' is mild filler that nods to completed effort without adding new information. The system has already confirmed connection in the headline; this sentence just delays the concrete benefit. Removing it tightens the body and lets the value statement lead.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "your",
+        "new_text": "Your",
+        "reason": "Context-Sensitive Tone (no wasted words dimension): Mechanical capitalization fix after removing the preceding clause.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "See",
+        "new_text": "View",
+        "reason": "Outcome-Signaling CTAs (new dimension: no generic labels \u2014 label reflects specific outcome): 'See' is a softer, more passive verb that could read as generic. 'View' is more precise and action-oriented \u2014 it names what the user will do upon clicking (view the breakdown that now exists), which better reflects the specific outcome the system has prepared. Both are outcome-signaling, but 'View' is slightly more concrete given that the breakdown is ready and waiting.",
+        "user_feedback": "Honestly, I'd keep 'See' here. 'View' feels slightly more formal and clinical \u2014 and if this is a celebratory moment, I want the language to stay warm and light, not tip into dashboard-jargon territory. 'See your breakdown' has a natural, conversational quality that fits the tone. 'View' is fine for a routine nav label, but in this context it works against the warmth we're going for."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T12:20:44.759627"
+  },
+  {
+    "iteration": 2,
+    "draft_number": 11,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Consistency and Terminology",
+          "description": "The same term is used for the same thing across the entire flow. Terminology drift \u2014 where 'invoice' becomes 'bill' mid-flow, or 'account' becomes 'profile' \u2014 erodes trust and forces users to re-orient. Inconsistency is a dealbreaker, not a style preference.",
+          "weight": 4
+        }
+      ],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Empty States as Entry Points",
+          "old_weight": 4,
+          "new_weight": 5
+        },
+        {
+          "name": "Context-Sensitive Tone",
+          "old_weight": 5,
+          "new_weight": 6
+        },
+        {
+          "name": "Preemptive Clarity",
+          "old_weight": 6,
+          "new_weight": 7
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Diagnosis Before Direction",
+          "field": "description",
+          "old": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy should never open with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure.",
+          "new": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy should never open with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure, not just a copy failure."
+        },
+        {
+          "name": "Context-Sensitive Tone",
+          "field": "description",
+          "old": "Tone shifts to match the emotional weight of the moment. Celebratory milestones (first successful payment, account connected) can be warm. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single tone across all states feels robotic and erodes trust. In celebratory states, do not sacrifice conversational warmth for marginal gains in specificity \u2014 a label that feels slightly more 'exact' but sounds clinical is the wrong trade-off.",
+          "new": "Tone shifts to match the emotional weight of the moment. Celebratory milestones (first successful payment, account connected) can be warm. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single tone across all states feels robotic and erodes trust."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Context-Sensitive Tone",
+          "added_dims": [],
+          "removed_dims": [
+            "In milestone and success states, verb choices in CTAs and body copy should match the warmth of the moment \u2014 avoid swapping natural phrasing for formal alternatives solely in the name of precision"
+          ]
+        },
+        {
+          "name": "Preemptive Clarity",
+          "added_dims": [
+            "Instructions use active voice \u2014 'Enter your account number' not 'Your account number should be entered'"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I added a new 'Consistency and Terminology' criterion at priority 4 because inconsistent terminology across a flow is a dealbreaker for me and wasn't captured anywhere \u2014 it was only implied. I also added an active voice dimension to Preemptive Clarity since passive voice in instructions is a hard no for me. I removed the redundant new_12 dimension from Context-Sensitive Tone since it overlapped heavily with new_9, and I nudged the description to drop the overly prescriptive note about celebratory CTAs \u2014 the dimensions cover it without the description needing to coach the evaluator that hard.",
+    "rubric_version": 4,
+    "draft_regenerated": true,
+    "reviewed_changes": [],
+    "feedback_edits_count": 0,
+    "suggestion_applied": false,
+    "user_reverted": true,
+    "timestamp": "2026-03-06T12:22:28.950018"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Specific Consequences in Confirmations",
+          "description": "Confirmation dialogs must name the exact consequence of the action \u2014 what will be affected, how many items, and whether it's reversible. Vague prompts like 'Are you sure?' train users to click through without reading. The user should be able to make an informed decision from the dialog copy alone.",
+          "weight": 3
+        },
+        {
+          "name": "Empty States as Entry Points",
+          "description": "Empty states guide the user toward their first meaningful action \u2014 they are not dead ends. Copy should feel like a helpful nudge from a knowledgeable peer, not a system reporting an absence. Every empty state should leave the user knowing exactly what to do next.",
+          "weight": 4
+        }
+      ],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Moment-Matched Tone",
+          "old_weight": 3,
+          "new_weight": 5
+        },
+        {
+          "name": "User-as-Agent Voice",
+          "old_weight": 4,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "User-as-Agent Voice",
+          "field": "description",
+          "old": "Copy is written from the user's perspective, not the system's. Verbs should feel like the user's actions, not the software's internal operations. The product should sound like a knowledgeable peer, not a system issuing commands or a marketing department making promises to already-converted users.",
+          "new": "Copy is written from the user's perspective, not the system's. Verbs should feel like the user's actions, not the software's internal operations. The product should sound like a knowledgeable peer, not a system issuing commands or a marketing department pitching to users who've already converted."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Diagnosis Before Direction",
+          "added_dims": [],
+          "removed_dims": [
+            "Error message and recovery screen read as one continuous explanation \u2014 user never feels they're reading two separate, disconnected notices"
+          ]
+        },
+        {
+          "name": "Outcome-Signaling CTAs",
+          "added_dims": [],
+          "removed_dims": [
+            "CTA sits in the same emotional register as the surrounding copy \u2014 doesn't drop into menu-item or system-command tone when the context is warmer"
+          ]
+        },
+        {
+          "name": "Moment-Matched Tone",
+          "added_dims": [
+            "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward"
+          ],
+          "removed_dims": [
+            "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward (e.g., 'The hard part's done')",
+            "Copy within a single set shifts register between setup and payoff \u2014 the emotional temperature is not flat throughout"
+          ]
+        },
+        {
+          "name": "User-as-Agent Voice",
+          "added_dims": [
+            "No passive voice in instructions \u2014 'Enter your card number' not 'Your card number should be entered'"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I added two missing criteria \u2014 one for confirmation dialogs (specific consequences, not vague prompts) and one for empty states (entry points, not dead ends) \u2014 since both were in my head but absent from the rubric. I also added a passive voice dimension to User-as-Agent Voice since that's a hard dealbreaker for me and wasn't called out anywhere. I removed the 'continuous_flow' and 'register_shift' dimensions because they felt too abstract to be actionable as checklist items, and I dropped 'register_match' from CTAs since it was already covered better under Moment-Matched Tone.",
+    "rubric_version": 8,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Full access to payments and transfers opens automatically. You won't need to come back here and do anything.",
+        "new_text": "Once verification clears, you'll have full access to payments and transfers. We'll activate it automatically \u2014 you don't need to do anything.",
+        "reason": "User-as-Agent Voice (new dimension added: 'no passive voice in instructions'): 'opens automatically' is a system-centered, passively framed construction \u2014 the subject is the feature, not the user or a named actor. Rewritten to name the trigger ('once verification clears'), give the user the outcome they experience ('you'll have full access'), and name the system as the explicit actor ('We'll activate it') rather than letting the action happen in an agentless void.",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 0,
+    "suggestion_applied": false,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T12:43:10.647703"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 11,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Scannable, Action-Oriented Structure",
+          "description": "Every string should make the user's next step obvious at a glance. Copy earns its place by reducing cognitive load \u2014 not by filling space. If a user has to re-read a string to understand what to do next, it hasn't done its job.",
+          "weight": 4
+        },
+        {
+          "name": "Consistent Terminology and Voice",
+          "description": "The same concept is always called the same thing across a flow. Terminology matches what users call things in their own work, not internal product or engineering vocabulary. Instructions are always active voice \u2014 the user is the agent, not the recipient of a system's behavior. No placeholder text should ever reach production.",
+          "weight": 7
+        }
+      ],
+      "removed": [
+        {
+          "name": "User-as-Agent Voice",
+          "description": "Copy is written from the user's perspective, not the system's. Verbs should feel like the user's actions, not the software's internal operations. The product should sound like a knowledgeable peer, not a system issuing commands or a marketing department pitching to users who've already converted."
+        }
+      ],
+      "reweighted": [
+        {
+          "name": "Empty States as Entry Points",
+          "old_weight": 4,
+          "new_weight": 5
+        },
+        {
+          "name": "Moment-Matched Tone",
+          "old_weight": 5,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [],
+      "dimensions_changed": [
+        {
+          "name": "Outcome-Signaling CTAs",
+          "added_dims": [
+            "Verb describes what the user experiences, not what the system does internally (e.g., 'Send invoice' not 'Create record')"
+          ],
+          "removed_dims": [
+            "Verb describes what the user experiences, not what the system does internally (e.g., 'send' not 'create' when the user experiences sending)"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made four main changes: I added a new 'Scannable, Action-Oriented Structure' criterion at priority 4 because that's actually my most fundamental preference and it wasn't explicitly represented as its own criterion \u2014 it was just implied. I also added a 'Consistent Terminology and Voice' criterion to consolidate my dealbreakers (passive voice, inconsistent terminology, placeholder text, wordplay sacrificing clarity) into one enforceable criterion, since those were scattered or missing entirely. I removed the standalone 'User-as-Agent Voice' criterion because its useful dimensions got absorbed into the new terminology/voice criterion and the scannable structure one \u2014 it was a bit redundant and 'peer not system' felt too vague to evaluate against. Finally I reordered priorities slightly so scannable/action-oriented sits higher, since that's the baseline everything else builds on.",
+    "rubric_version": 9,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Your documents are in \u2014 now we do the work.",
+        "new_text": "Your documents are under review.",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimensions new_10 and new_12): the original line is a marketing-register flourish with no informational value \u2014 it neither signals state nor directs next action. Replaced with a direct status statement. 'Now we do the work' also violates the no-marketing-language-inside-product dimension.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "We've got everything we need and handed it off to our verification team. This is a standard compliance check we run on every new business account; it",
+        "new_text": "We've passed everything to our verification team \u2014 a standard compliance check on every new business account. It",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimension new_10): 'We've got everything we need' is throat-clearing that restates what the user already knows. Consolidated into a single, shorter sentence to reduce cognitive load.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "Nothing about your submission is holding this up.",
+        "new_text": "",
+        "reason": "Consistent Terminology and Voice (new criterion, dimension new_13): 'submission' is a synonym for 'documents' used in the same paragraph, introducing inconsistency. Also removed as filler reassurance \u2014 Scannable, Action-Oriented Structure (dimension new_10): it adds length without adding actionable information.",
+        "user_feedback": "I actually liked that line \u2014 it's doing real work. Users going through compliance reviews often worry they did something wrong or that their documents are the problem. 'Nothing about your submission is holding this up' directly addresses that anxiety. Cutting it saves three words but loses the reassurance. I'd keep it, just maybe swap 'submission' for 'documents' to stay consistent."
+      },
+      {
+        "original_text": "In the meantime, your",
+        "new_text": "Your",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimension new_11): moving 'in the meantime' to after the key subject ('Your dashboard is live') makes the primary message shorter and more immediately scannable.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "dashboard is live. You can connect",
+        "new_text": "dashboard is live in the meantime. Connect",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimensions new_9 and new_10): repositioning 'in the meantime' here keeps context without burying the status. Replacing 'You can connect' with 'Connect' removes a weak modal construction and puts the user directly in the active role \u2014 also aligns with Consistent Terminology and Voice (dimension new_14: no passive or weak constructions in instructions).",
+        "user_feedback": "Okay the 'in the meantime' move is awkward. 'Your dashboard is live in the meantime' reads weird \u2014 'in the meantime' is doing temporal work and it feels tacked on at the end of that clause. I'd rather keep 'in the meantime' as a sentence opener for the whole block, or just cut it entirely if the context is clear. The 'Connect' change I'm fine with though."
+      },
+      {
+        "original_text": "You can connect",
+        "new_text": "Connect",
+        "reason": "Consistent Terminology and Voice (new criterion, dimension new_14): active, direct instruction preferred over 'You can [verb]' constructions \u2014 user is the agent.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "set up your notification preferences",
+        "new_text": "set up notification preferences",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimension new_10): 'your' is a minor filler word here; removing it tightens without losing meaning.",
+        "user_feedback": "This one's a stretch. 'Set up notification preferences' vs 'set up your notification preferences' \u2014 the 'your' isn't filler here, it's grounding. Notification preferences are personal settings, the possessive matters. Without it the instruction reads a little clinical, like a manual rather than a product."
+      },
+      {
+        "original_text": "so when verification clears, you're not starting from scratch.",
+        "new_text": "so you're ready when verification clears.",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimension new_10): 'not starting from scratch' is a negatively-framed filler phrase. 'You're ready when verification clears' conveys the same idea more directly and positively, and is shorter.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "the moment",
+        "new_text": "when",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimension new_10): 'the moment' is a stylistic flourish that adds no precision \u2014 'when' is sufficient and tighter.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "Your documents are being reviewed by a real person \u2014 someone who reads what you submitted, not just whether it passed a format check.",
+        "new_text": "A real person reviews your documents \u2014 not just whether they passed a format check.",
+        "reason": "Scannable, Action-Oriented Structure (new criterion, dimensions new_10 and new_11): the original sentence is passive ('are being reviewed') and contains redundancy ('someone who reads what you submitted' restates 'a real person reviews your documents'). Consistent Terminology and Voice (dimension new_14): converted passive construction to active. Consistent Terminology and Voice (dimension new_13): 'submitted' replaced implicitly by 'documents' to maintain consistent terminology.",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 3,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T12:47:31.539269"
+  }
+]

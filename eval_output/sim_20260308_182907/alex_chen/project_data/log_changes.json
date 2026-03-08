@@ -1,0 +1,295 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Action Ownership",
+          "description": "When something needs to happen, there is one clear owner with a deadline \u2014 not a group ask. 'Everyone please review' is a non-action. At the same time, action items should not be over-specified in ways that assume org structure details the email shouldn't contain. The goal is clarity of ownership, not a task breakdown.",
+          "weight": 3
+        },
+        {
+          "name": "Conciseness and Directness",
+          "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. The email should feel like it respects the reader's time.",
+          "weight": 5
+        }
+      ],
+      "removed": [
+        {
+          "name": "Concrete Specificity",
+          "description": "Impact, reasoning, and disruptions are named in tangible, specific terms \u2014 the actual texture of the situation \u2014 rather than in abstract quality or outcome language. 'Dependencies lined up, people informed' over 'undo the work that got us here.'"
+        },
+        {
+          "name": "Concise Consolidation",
+          "description": "Multiple related items resolve into one clear, unified statement rather than fanning out into separate line items. Information is covered efficiently \u2014 every section serves a purpose and nothing is over-specified when a consolidated summary does the job."
+        }
+      ],
+      "reweighted": [
+        {
+          "name": "Forward-Momentum Closings",
+          "old_weight": 3,
+          "new_weight": 4
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Emotional Sequencing",
+          "field": "description",
+          "old": "The order in which information arrives shapes how the reader receives it. Acknowledgment and context come before the news or ask \u2014 they set the frame rather than chasing after it. Each section builds on the emotional state the previous section creates.",
+          "new": "Information arrives in a specific order: acknowledge the effort or situation first (one sentence max), then deliver the news, then explain why it matters, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow. This isn't just about being considerate; it's about making the message actually land."
+        },
+        {
+          "name": "Reader-Centered Framing",
+          "field": "description",
+          "old": "The message is framed around what it means for the reader \u2014 their situation, their disruptions, their plans \u2014 not around the sender's values, commitments, or organizational rationale. When the 'why' names something concrete about the reader's experience, it lands as acknowledgment; when it centers the sender, it reads as self-explanation.",
+          "new": "The 'why it matters' is always framed around what it costs or disrupts for the reader \u2014 their plans, their team, their timeline \u2014 not around the sender's values, commitments, or organizational rationale. 'This matters because your team planned around this date' not 'This matters because we want quality.' Drafts that center the sender's reasoning feel tone-deaf even when technically correct."
+        },
+        {
+          "name": "Forward-Momentum Closings",
+          "field": "description",
+          "old": "Endings land on something that moves people forward \u2014 a next step, an invitation, a clear action \u2014 rather than trailing into sentiment, gratitude, or motivational language. The closing puts the ball in the reader's court.",
+          "new": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment. Any gratitude or warmth that comes after the CTA weakens the email. The last thing the reader sees should be something that moves things forward."
+        },
+        {
+          "name": "Human Voice",
+          "field": "description",
+          "old": "The message reads like it's from a person finishing a thought, not from a project tracker, corporate template, or status report. Prose is preferred over bureaucratic structure when it can carry the same information with more warmth and directness.",
+          "new": "The message reads like a person finishing a thought, not a corporate template or status report. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \u2014 the kind of email a sharp colleague would send."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Emotional Sequencing",
+          "added_dims": [
+            "There is exactly one concrete next step at the end, not a list of follow-ups",
+            "Opening acknowledgment is one sentence max \u2014 not a preamble or extended softening",
+            "The 'why it matters' section appears before the next step, not after or mixed in",
+            "Acknowledgment or situation framing appears before the key news or ask, not after"
+          ],
+          "removed_dims": [
+            "The opening sets a frame that shapes how the reader receives what follows",
+            "Each section flows naturally from the emotional state established by the prior one",
+            "Context or acknowledgment appears before the key news or ask, not after"
+          ]
+        },
+        {
+          "name": "Reader-Centered Framing",
+          "added_dims": [
+            "Rationale does not center the sender's values, commitments, or organizational priorities",
+            "Stakes are described in terms of what the reader is actually dealing with \u2014 schedules, dependencies, downstream conversations"
+          ],
+          "removed_dims": [
+            "Rationale is not framed around the sender's or organization's values or commitments",
+            "Impact descriptions reference what the reader is actually experiencing or dealing with, not abstract outcomes"
+          ]
+        },
+        {
+          "name": "Forward-Momentum Closings",
+          "added_dims": [
+            "The closing is clean \u2014 no padding, no lingering",
+            "No additional sentences appear after the call to action",
+            "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases",
+            "The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase"
+          ],
+          "removed_dims": [
+            "The closing is clean and doesn't linger or add unnecessary padding",
+            "The ending puts agency in the reader's hands (e.g., invites questions, opens a door)",
+            "No motivational-poster language, generic affirmations, or canned encouragement",
+            "The closing moves the reader toward a next step or invitation rather than signing off with sentiment"
+          ]
+        },
+        {
+          "name": "Human Voice",
+          "added_dims": [
+            "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence",
+            "Tone is direct and neutral \u2014 no passive-aggressive undertones",
+            "Reads like a person talking to their team, not an institutional communication",
+            "Free of corporate jargon and canned phrases",
+            "Exclamation marks are used sparingly or not at all"
+          ],
+          "removed_dims": [
+            "The overall message reads like a person talking to their team, not an institutional communication",
+            "Uses flowing prose where bullet lists would make the message feel like a status report",
+            "Sentences have natural, conversational rhythm rather than formal or bureaucratic cadence",
+            "Avoids corporate communication clich\u00e9s and canned phrases"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made three main changes: (1) I added a new 'Action Ownership' criterion at priority 3 to capture my strong preference for single-owner asks with deadlines over group asks, and my equal dislike of over-specified action items \u2014 this was missing entirely from the rubric. (2) I tightened 'Emotional Sequencing' to be more explicit about the strict four-part order and the one-sentence max on acknowledgment, since the sequence itself is the point, not just 'context before news.' (3) I folded 'Concrete Specificity' into the Reader-Centered Framing and Conciseness criteria where it naturally belongs, and replaced it with the Action Ownership criterion which is more distinctly its own thing. I also added a 'nothing_after_cta' dimension to Forward-Momentum Closings since that's a specific failure mode I care about.",
+    "rubric_version": 3,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "You flagged the advanced reporting feature back in the spring, and I know it's been a long wait since then. I wanted to make sure you heard it from me directly: it's shipping next week.",
+        "new_text": "You flagged the advanced reporting feature back in the spring \u2014 I wanted to make sure you heard it from me directly: it's shipping next week.",
+        "reason": "Emotional Sequencing (new dimension 'acknowledgment_is_brief': opening acknowledgment must be one sentence max): Two-sentence opener collapsed into one by removing 'and I know it's been a long wait since then' and joining the clauses with an em dash.",
+        "user_feedback": "I get what it's trying to do, but the em dash version feels abrupt and a little cold. The original two-sentence opener was warm without being bloated \u2014 I'd rather trim 'and I know it's been a long wait since then' and just keep it as two short sentences than jam it into one with an em dash that reads awkwardly."
+      },
+      {
+        "original_text": "won't require an extra round of formatting before it goes out.",
+        "new_text": "won't require an extra round of formatting.",
+        "reason": "Conciseness and Directness (new dimension 'no_over_explanation': reasoning stated once, cleanly): 'before it goes out' is redundant \u2014 the sentence already implies the formatting step is eliminated before sharing.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "To turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically. Given that it touches your data pipeline, they'll probably want a day or two to review the settings before it goes live.",
+        "new_text": "To turn it on, your IT team will need to enable it through the admin console \u2014 it won't activate automatically.",
+        "reason": "Action Ownership (new criterion, dimension 'no_over_specification': action items should not assume internal org details the email shouldn't contain): Removed speculation about how long IT will need and what they'll review \u2014 this over-specifies internal process details the sender wouldn't know and the reader doesn't need.",
+        "user_feedback": "I can't tell what actually changed here \u2014 the original and new text look identical based on what's shown. If nothing changed, this edit shouldn't exist. If something did change that I'm not seeing, I'd need to see the full text to weigh in."
+      },
+      {
+        "original_text": "Worth getting a quick call on the calendar so I can walk them through what to expect? Happy to work around their schedule.",
+        "new_text": "Worth getting a quick call on the calendar before next week so I can walk them through what to expect?",
+        "reason": "Forward-Momentum Closings (new dimension 'nothing_after_cta': no additional sentences after the call to action): 'Happy to work around their schedule' is post-CTA sentiment that trails after the closing action. Removed it. Also added 'before next week' to anchor the ask with a concrete timeframe per Action Ownership's 'has_deadline' dimension.",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 2,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-08T18:36:24.884658"
+  },
+  {
+    "iteration": 3,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Forward-Momentum Closings",
+          "old_weight": 5,
+          "new_weight": 3
+        },
+        {
+          "name": "Action Ownership",
+          "old_weight": 6,
+          "new_weight": 4
+        },
+        {
+          "name": "Human Voice",
+          "old_weight": 3,
+          "new_weight": 5
+        },
+        {
+          "name": "Conciseness and Directness",
+          "old_weight": 4,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Emotional Sequencing",
+          "field": "description",
+          "old": "Information arrives in a specific order: acknowledge the effort or situation first (one or two short sentences), then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow. Brevity should come from word choice and trimming, not from merging sentences with punctuation that changes the tone.",
+          "new": "Information arrives in a specific order: acknowledge the effort or situation first (one sentence max), then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow."
+        },
+        {
+          "name": "Reader-Centered Framing",
+          "field": "description",
+          "old": "The 'why it matters' is always framed around the reader's concrete reality \u2014 what it costs them (bad news) or what it unlocks for them (good news). Their time, their workflows, their team, their downstream conversations \u2014 not the sender's values, commitments, or organizational rationale. When this section names something specific and tangible about the reader's situation, it earns whatever ask or action follows.",
+          "new": "The 'why it matters' is always framed around the reader's concrete reality \u2014 what it costs them or what it unlocks for them. Their time, their workflows, their team, their downstream conversations \u2014 not the sender's values, commitments, or organizational rationale. If the 'why' could have been written by someone explaining their own priorities rather than the reader's situation, it's wrong."
+        },
+        {
+          "name": "Forward-Momentum Closings",
+          "field": "description",
+          "old": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no explanatory reasoning the reader can infer themselves. Once you've made the ask with a deadline, stop. Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it.",
+          "new": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment. Once the ask is made, stop. Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it."
+        },
+        {
+          "name": "Action Ownership",
+          "field": "description",
+          "old": "When something needs to happen, there is one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline. 'Have someone on your IT team' is how things don't get done. Specify WHO and WHEN clearly; don't break the action into sub-tasks or assume process details the email shouldn't contain.",
+          "new": "When something needs to happen, there is one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline. Group asks produce no accountability. Specify WHO and WHEN; don't break the action into sub-tasks or assume process details the email shouldn't contain."
+        },
+        {
+          "name": "Human Voice",
+          "field": "description",
+          "old": "The message reads like a person finishing a thought, not a corporate template or status report. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \u2014 the kind of email a sharp colleague would send.",
+          "new": "The message reads like a person finishing a thought, not a corporate template. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff."
+        },
+        {
+          "name": "Conciseness and Directness",
+          "field": "description",
+          "old": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. Trusts the reader to connect obvious dots \u2014 does not explain reasoning they can infer from context.",
+          "new": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Trusts the reader to connect obvious dots."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Emotional Sequencing",
+          "added_dims": [
+            "Opening acknowledgment is a single sentence \u2014 not two, not merged with an em dash, just one clean sentence"
+          ],
+          "removed_dims": [
+            "Opening acknowledgment is brief \u2014 one or two short sentences \u2014 not an extended preamble. Do not merge sentences mechanically (e.g. with an em dash) to hit a sentence count; two short, natural sentences are preferable to one forced one"
+          ]
+        },
+        {
+          "name": "Reader-Centered Framing",
+          "added_dims": [
+            "Value or disruption is named with concrete specifics \u2014 not abstract benefits or quality statements"
+          ],
+          "removed_dims": [
+            "Value or disruption is named with concrete specifics \u2014 hours saved, people affected, workflows changed \u2014 not abstract benefits or quality statements"
+          ]
+        },
+        {
+          "name": "Forward-Momentum Closings",
+          "added_dims": [
+            "Does not add explanatory reasoning after the ask that the reader can infer from context"
+          ],
+          "removed_dims": [
+            "Does not add explanatory reasoning after the ask that the reader can infer from context (e.g., explaining why a deadline matters when the reason is obvious)"
+          ]
+        },
+        {
+          "name": "Action Ownership",
+          "added_dims": [
+            "Action items are not broken into sub-tasks or process steps \u2014 specify who and when, not how; do not assume org structure details the email shouldn't contain"
+          ],
+          "removed_dims": [
+            "Action items are not broken into sub-tasks or process steps \u2014 specify who and when, not how"
+          ]
+        },
+        {
+          "name": "Human Voice",
+          "added_dims": [
+            "Reads like a person talking to a peer, not an institutional communication"
+          ],
+          "removed_dims": [
+            "Reads like a person talking to their team or peer, not an institutional communication"
+          ]
+        },
+        {
+          "name": "Conciseness and Directness",
+          "added_dims": [
+            "Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult",
+            "Related details are consolidated rather than broken into unnecessary bullet points or line items"
+          ],
+          "removed_dims": [
+            "Related details are consolidated rather than broken into separate bullet points or line items",
+            "Does not explain reasoning or justification the reader can infer from context \u2014 treats the reader as an intelligent adult"
+          ]
+        }
+      ]
+    },
+    "reasoning": "Three main changes: (1) Tightened the acknowledgment rule to explicitly say 'one sentence max' \u2014 the original allowed two sentences which felt like too much preamble to me. (2) Promoted Forward-Momentum Closings to priority 3 and Action Ownership to priority 4 \u2014 trailing sentiment and diffuse asks are pet peeves that were underweighted relative to style concerns. (3) Swapped Human Voice and Conciseness down to 5 and 6 since those are more baseline hygiene for me \u2014 the structural and ownership issues are what actually make or break an email.",
+    "rubric_version": 6,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Your team has been pitching [feature name] to prospects, and I know it's been part of the demo flow. We're pulling it \u2014 we found a security issue that makes it unshippable.",
+        "new_text": "Your team has been pitching [feature name] in demos, and we're pulling it \u2014 we found a security issue that makes it unshippable.",
+        "reason": "Emotional Sequencing (dimension 'acknowledgment_is_brief' tightened from 'one or two short sentences' to 'a single sentence'): The original was two sentences. Merged into one by folding the context ('pitching in demos') and the news ('we're pulling it') into a single sentence with a natural em dash \u2014 keeping the acknowledgment/situation framing while meeting the one-sentence requirement. Also removed 'to prospects, and I know it's been part of the demo flow' as redundant phrasing, replacing with the tighter 'in demos'.",
+        "user_feedback": "The merge feels off to me \u2014 cramming the acknowledgment and the news into the same sentence loses the beat I need between them. The acknowledgment should land first so the reader feels seen before they get the bad news. When you fold both into one sentence with an em dash, it reads like you're rushing past the acknowledgment to get to the point. I'd keep them as two separate sentences even if that technically violates the 'one sentence' rule \u2014 the emotional pacing matters more here."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-08T18:43:50.673827"
+  }
+]

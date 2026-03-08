@@ -1,0 +1,534 @@
+[
+  {
+    "preference_items": [
+      {
+        "preference": "Tone should be conversational, as if speaking naturally to someone rather than writing formally",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion describes copy that 'sounds like a smart, direct friend' and is 'never performatively casual,' capturing a natural conversational tone. The dimension about maintaining tonal register and avoiding shifts between casual and corporate also addresses this."
+      },
+      {
+        "preference": "Tone should convey confidence and authority without being arrogant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion explicitly says 'confident without being salesy' and 'makes claims with quiet confidence rather than hype.' This captures confidence and authority without arrogance."
+      },
+      {
+        "preference": "Copy should emphasize benefits (why the reader cares) over features (what the product does)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "The criterion explicitly prioritizes felt experiences/benefits over technical specs/features, with dimensions requiring benefits to open each section and technical details to serve as supporting proof."
+      },
+      {
+        "preference": "Headlines and opening lines should be strong hooks that arrest attention and stop the scroll",
+        "source": "core",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion or dimension specifically addresses headlines or opening lines as attention-grabbing hooks. The rubric focuses on tone, benefits, CTAs, and social proof but doesn't address headline craft."
+      },
+      {
+        "preference": "Voice should feel like a smart, knowledgeable friend giving advice",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion directly states the copy should sound 'like a smart, direct friend' and earns 'credibility through specificity and tone.'"
+      },
+      {
+        "preference": "Voice should not sound like a salesperson or someone pushing a transaction",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion explicitly says 'confident without being salesy' and 'not through shouting.' The CTA criterion also reinforces this by requiring the CTA to feel like the reader's own conclusion, 'not imposed.'"
+      },
+      {
+        "preference": "Headlines should create tension or curiosity that compels the reader to continue to the next line",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion or dimension addresses headline-specific techniques like creating tension or curiosity. Headlines are not mentioned in any criterion."
+      },
+      {
+        "preference": "Headlines should not simply summarize the product or state what it is",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "No rubric criterion addresses what headlines should avoid. Headlines are entirely absent from the rubric's scope."
+      },
+      {
+        "preference": "Social proof (e.g., customer quotes, stats, testimonials) should be woven naturally into the narrative flow of the copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "The criterion explicitly requires customer voices to be 'woven into the narrative' and to feel 'like a natural beat in the section's rhythm, not stapled on afterward.'"
+      },
+      {
+        "preference": "Social proof should not be isolated in a separate, bolted-on section like a testimonials block at the end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "The criterion explicitly states quotes should appear 'not in a standalone testimonials block' and a dimension says 'Customer quotes or voices appear inside a relevant section, not in a standalone testimonials block.'"
+      },
+      {
+        "preference": "Every feature mentioned should be followed by an explicit answer to 'so what?' \u2014 translating the feature into a meaningful benefit",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "The dimension 'Avoids listing technical features without connecting each to a felt outcome' directly captures the 'so what?' translation requirement."
+      },
+      {
+        "preference": "Copy should spend more time on the benefit than on the feature itself",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "The criterion requires benefits to open each section with technical details appearing after as supporting proof, structurally ensuring more emphasis on benefits than features."
+      },
+      {
+        "preference": "Feature descriptions should not read like a spec sheet or bullet-point list of capabilities without benefit translation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "The dimension 'Avoids listing technical features without connecting each to a felt outcome' directly addresses this anti-pattern."
+      },
+      {
+        "preference": "The call-to-action should feel like a natural, logical next step that flows seamlessly from the preceding copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion says the CTA should feel 'inevitable, not imposed' and a dimension requires 'A bridging sentence immediately before the CTA connects the copy's argument to the action, making the button feel like a conclusion.'"
+      },
+      {
+        "preference": "The call-to-action should not feel like a hard sell or abrupt ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion says the CTA should be 'inevitable, not imposed' and 'the obvious next move rather than a leap of faith or a pitch,' capturing the non-hard-sell requirement."
+      },
+      {
+        "preference": "The CTA should create a sense that not acting would mean missing out or leaving something unfinished",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "While the rubric addresses the CTA feeling like a natural conclusion, no criterion or dimension addresses creating a sense of missing out or incompleteness from inaction. The rubric focuses on the CTA as a logical step, not on FOMO or urgency."
+      },
+      {
+        "preference": "Each landing page should have exactly one primary call-to-action, with no competing secondary CTAs",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion is named 'Single-action CTA architecture' and the dimension explicitly states 'Only one call-to-action button per section \u2014 no competing actions that split attention.'"
+      }
+    ],
+    "total_preferences": 17,
+    "covered_count": 13,
+    "partially_covered_count": 0,
+    "not_covered_count": 4,
+    "coverage_score": 0.765,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 1,
+    "rubric_version": 2,
+    "timestamp": "2026-03-06T02:54:38.506561"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Tone should be conversational, as if speaking naturally to someone rather than writing formally",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The 'Conversational authority' criterion explicitly describes the copy as sounding like a 'smart, direct friend' and addresses conversational tone throughout."
+      },
+      {
+        "preference": "Tone should convey confidence and authority without being arrogant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion specifies 'confident without being salesy' and 'quiet confidence rather than hype,' capturing the balance of authority without arrogance."
+      },
+      {
+        "preference": "Copy should emphasize benefits (why the reader cares) over features (what the product does)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "This criterion is entirely about leading with benefits as felt experiences, with technical specs serving only as supporting proof."
+      },
+      {
+        "preference": "Headlines and opening lines should be strong hooks that arrest attention and stop the scroll",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "The 'Tension-driven openings' criterion addresses headlines creating tension and compelling the reader to continue, which captures the hook/attention-arresting intent."
+      },
+      {
+        "preference": "Voice should feel like a smart, knowledgeable friend giving advice",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "Directly described as sounding like 'a smart, direct friend' in the criterion description."
+      },
+      {
+        "preference": "Voice should not sound like a salesperson or someone pushing a transaction",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion explicitly states 'confident without being salesy' and 'never performatively casual,' and the CTA criterion also addresses avoiding a hard sell."
+      },
+      {
+        "preference": "Headlines should create tension or curiosity that compels the reader to continue to the next line",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "Dimension explicitly states 'The reader feels compelled to read the next line to resolve the tension the headline created.'"
+      },
+      {
+        "preference": "Headlines should not simply summarize the product or state what it is",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "The criterion states 'Headlines never state conclusions before the copy has earned them' and 'The headline does not state the conclusion or answer,' which captures the intent of not simply summarizing."
+      },
+      {
+        "preference": "Social proof (e.g., customer quotes, stats, testimonials) should be woven naturally into the narrative flow of the copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "The criterion explicitly addresses weaving customer voices into the narrative at relevant moments with natural rhythm."
+      },
+      {
+        "preference": "Social proof should not be isolated in a separate, bolted-on section like a testimonials block at the end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "Dimension explicitly states 'not in a standalone testimonials block' and 'not stapled on afterward.'"
+      },
+      {
+        "preference": "Every feature mentioned should be followed by an explicit answer to 'so what?' \u2014 translating the feature into a meaningful benefit",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "The dimension 'Avoids listing technical features without connecting each to a felt outcome' directly captures the 'so what?' translation requirement."
+      },
+      {
+        "preference": "Copy should spend more time on the benefit than on the feature itself",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "The criterion structure prioritizes experience/benefit first with technical specs appearing after as supporting proof, implying more emphasis on benefits."
+      },
+      {
+        "preference": "Feature descriptions should not read like a spec sheet or bullet-point list of capabilities without benefit translation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Experience-first benefit copy",
+        "explanation": "The dimension 'Avoids listing technical features without connecting each to a felt outcome' directly addresses this anti-pattern."
+      },
+      {
+        "preference": "The call-to-action should feel like a natural, logical next step that flows seamlessly from the preceding copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion describes a 'bridging sentence' that makes the button feel like a natural conclusion, and 'the reader's own conclusion \u2014 inevitable, not imposed.'"
+      },
+      {
+        "preference": "The call-to-action should not feel like a hard sell or abrupt ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The dimension 'The CTA reads as the obvious next move rather than a leap of faith or a pitch' and the description's 'inevitable, not imposed' capture this."
+      },
+      {
+        "preference": "The CTA should create a sense that not acting would mean missing out or leaving something unfinished",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion focuses on the CTA feeling like a natural conclusion and inevitable next step, which partially captures the 'unfinished' feeling, but it does not explicitly address creating a sense of missing out or urgency from inaction."
+      },
+      {
+        "preference": "Each landing page should have exactly one primary call-to-action, with no competing secondary CTAs",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The dimension 'Only one call-to-action button per section \u2014 no competing actions that split attention' and the criterion name 'Single-action CTA architecture' directly address this."
+      }
+    ],
+    "total_preferences": 17,
+    "covered_count": 16,
+    "partially_covered_count": 1,
+    "not_covered_count": 0,
+    "coverage_score": 0.971,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 2,
+    "rubric_version": 4,
+    "timestamp": "2026-03-06T02:59:16.663803"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Tone should be conversational, as if speaking naturally to someone rather than writing formally",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion explicitly describes the copy as sounding like 'a smart, direct friend' and addresses tonal register, which captures the conversational tone preference."
+      },
+      {
+        "preference": "Tone should convey confidence and authority without being arrogant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion states 'confident without being salesy' and 'makes claims with quiet confidence rather than hype,' directly addressing confidence without arrogance."
+      },
+      {
+        "preference": "Copy should emphasize benefits (why the reader cares) over features (what the product does)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "The criterion requires leading with what the reader would experience or feel, with technical details serving only as supporting proof. This captures the benefits-over-features intent."
+      },
+      {
+        "preference": "Headlines and opening lines should be strong hooks that arrest attention and stop the scroll",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "The criterion focuses on headlines creating tension, unsettled feelings, and compelling the reader to continue \u2014 which is the mechanism for arresting attention."
+      },
+      {
+        "preference": "Voice should feel like a smart, knowledgeable friend giving advice",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion explicitly uses the phrase 'a smart, direct friend' and describes earning credibility through specificity and tone."
+      },
+      {
+        "preference": "Voice should not sound like a salesperson or someone pushing a transaction",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion explicitly states 'confident without being salesy' and 'never performatively casual,' and the CTA criterion reinforces this with 'inevitable, not imposed.'"
+      },
+      {
+        "preference": "Headlines should create tension or curiosity that compels the reader to continue to the next line",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "Directly addressed by the dimension 'The reader feels compelled to read the next line to resolve the tension the headline created.'"
+      },
+      {
+        "preference": "Headlines should not simply summarize the product or state what it is",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "The criterion states 'Headlines never state conclusions before the copy has earned them' and the dimension says 'The headline does not state the conclusion or answer,' which covers this."
+      },
+      {
+        "preference": "Social proof (e.g., customer quotes, stats, testimonials) should be woven naturally into the narrative flow of the copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "The criterion explicitly requires customer voices to be 'woven into the narrative' and to feel like 'a natural beat in the section's rhythm.'"
+      },
+      {
+        "preference": "Social proof should not be isolated in a separate, bolted-on section like a testimonials block at the end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "The criterion explicitly states 'not in a separate testimonials block' and the dimension says 'not in a standalone testimonials block.'"
+      },
+      {
+        "preference": "Every feature mentioned should be followed by an explicit answer to 'so what?' \u2014 translating the feature into a meaningful benefit",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "The criterion addresses leading with experience over technical specs, but doesn't explicitly require that every feature be followed by a 'so what?' translation. It focuses on leading with experience rather than the feature-then-benefit pairing."
+      },
+      {
+        "preference": "Copy should spend more time on the benefit than on the feature itself",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "The criterion requires leading with felt experience and relegating technical details to 'supporting proof,' which inherently means more space is devoted to the benefit."
+      },
+      {
+        "preference": "Feature descriptions should not read like a spec sheet or bullet-point list of capabilities without benefit translation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "The criterion requires that technical details appear only as evidence for felt claims, and uses concrete experiences over abstract descriptions, which prevents spec-sheet style writing."
+      },
+      {
+        "preference": "The call-to-action should feel like a natural, logical next step that flows seamlessly from the preceding copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion states the CTA should feel 'inevitable, not imposed' and requires 'a bridging sentence immediately before the CTA connects the copy's argument to the action.'"
+      },
+      {
+        "preference": "The call-to-action should not feel like a hard sell or abrupt ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion explicitly states the CTA should feel like 'the reader's own conclusion \u2014 inevitable, not imposed' and 'the obvious next move rather than a leap of faith or a pitch.'"
+      },
+      {
+        "preference": "The CTA should create a sense that not acting would mean missing out or leaving something unfinished",
+        "source": "hidden",
+        "coverage": "not_covered",
+        "matched_criterion": null,
+        "explanation": "While the rubric covers the CTA feeling natural and inevitable, it does not address the sense of loss or incompleteness from not acting \u2014 the FOMO or unfinished-business element."
+      },
+      {
+        "preference": "Each landing page should have exactly one primary call-to-action, with no competing secondary CTAs",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion states 'The page drives toward exactly one action' and the dimension says 'Only one call-to-action button per section \u2014 no competing actions that split attention.'"
+      }
+    ],
+    "total_preferences": 17,
+    "covered_count": 15,
+    "partially_covered_count": 1,
+    "not_covered_count": 1,
+    "coverage_score": 0.912,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 3,
+    "rubric_version": 6,
+    "timestamp": "2026-03-06T03:03:27.951374"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Tone should be conversational, as if speaking naturally to someone rather than writing formally",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion explicitly describes the copy as sounding like 'a smart, direct friend' and being 'confident without being salesy, occasionally deadpan, never performatively casual,' which captures conversational tone."
+      },
+      {
+        "preference": "Tone should convey confidence and authority without being arrogant",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion states 'confident without being salesy' and 'makes claims with quiet confidence rather than hype,' directly addressing confidence without arrogance."
+      },
+      {
+        "preference": "Copy should emphasize benefits (why the reader cares) over features (what the product does)",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "This criterion leads with 'what the reader would actually experience' over 'technical details or abstract claims,' and dimensions specify that technical specs appear after experiential descriptions. This captures benefits-over-features."
+      },
+      {
+        "preference": "Headlines and opening lines should be strong hooks that arrest attention and stop the scroll",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "The criterion focuses on headlines creating 'a crack in the reader's certainty \u2014 a little itch, an unsettled feeling' that compels reading, which is the mechanism for arresting attention."
+      },
+      {
+        "preference": "Voice should feel like a smart, knowledgeable friend giving advice",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "Explicitly described as 'sounds like a smart, direct friend' who 'earns credibility through specificity and tone.'"
+      },
+      {
+        "preference": "Voice should not sound like a salesperson or someone pushing a transaction",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conversational authority",
+        "explanation": "The criterion says 'confident without being salesy' and 'not a brand trying to sound like they do,' and the CTA criterion reinforces this with 'not a leap of faith or a pitch.'"
+      },
+      {
+        "preference": "Headlines should create tension or curiosity that compels the reader to continue to the next line",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "Dimension explicitly states 'The reader feels compelled to read the next line to resolve the tension the headline created.'"
+      },
+      {
+        "preference": "Headlines should not simply summarize the product or state what it is",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Tension-driven openings",
+        "explanation": "The criterion states 'Headlines never state conclusions before the copy has earned them' and the dimension says 'The headline does not state the conclusion or answer \u2014 it opens a gap.'"
+      },
+      {
+        "preference": "Social proof (e.g., customer quotes, stats, testimonials) should be woven naturally into the narrative flow of the copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "Directly addressed: 'Customer voices appear woven into the narrative' and 'feels like a natural beat in the section's rhythm.'"
+      },
+      {
+        "preference": "Social proof should not be isolated in a separate, bolted-on section like a testimonials block at the end",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Integrated social proof",
+        "explanation": "Explicitly stated: 'not in a separate testimonials block' and dimension says 'not in a standalone testimonials block.'"
+      },
+      {
+        "preference": "Every feature mentioned should be followed by an explicit answer to 'so what?' \u2014 translating the feature into a meaningful benefit",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "The criterion emphasizes leading with felt experience and grounding abstract claims in specifics, which partially captures the 'so what?' translation. However, it doesn't explicitly require that every feature be followed by a benefit translation \u2014 it focuses more on leading with experience rather than the feature-then-benefit pattern."
+      },
+      {
+        "preference": "Copy should spend more time on the benefit than on the feature itself",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "The criterion leads with experience/benefits and relegates technical details to 'supporting proof,' inherently giving more weight to the benefit side."
+      },
+      {
+        "preference": "Feature descriptions should not read like a spec sheet or bullet-point list of capabilities without benefit translation",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Felt experience over abstraction",
+        "explanation": "The criterion explicitly opposes 'abstract descriptions or technical specs' leading the copy and requires grounding in 'specific feelings, behaviors, or moments,' which precludes spec-sheet style writing."
+      },
+      {
+        "preference": "The call-to-action should feel like a natural, logical next step that flows seamlessly from the preceding copy",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "Directly addressed: 'The CTA feels like the reader's own conclusion \u2014 inevitable, not imposed' and 'a bridging sentence immediately before the CTA connects the copy's argument to the action.'"
+      },
+      {
+        "preference": "The call-to-action should not feel like a hard sell or abrupt ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion says 'inevitable, not imposed' and 'not a leap of faith or a pitch,' directly addressing the anti-hard-sell preference."
+      },
+      {
+        "preference": "The CTA should create a sense that not acting would mean missing out or leaving something unfinished",
+        "source": "hidden",
+        "coverage": "partially_covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "The criterion addresses the CTA feeling like 'a continuation of something the reader is already doing' and 'closing lines commit rather than hedge,' which partially captures the sense of incompleteness. However, it doesn't explicitly address creating a feeling of missing out or leaving something unfinished \u2014 the urgency/loss framing is not directly mentioned."
+      },
+      {
+        "preference": "Each landing page should have exactly one primary call-to-action, with no competing secondary CTAs",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Single-action CTA architecture",
+        "explanation": "Directly addressed: 'The page drives toward exactly one action' and dimension states 'Only one call-to-action button per section \u2014 no competing actions that split attention.'"
+      }
+    ],
+    "total_preferences": 17,
+    "covered_count": 15,
+    "partially_covered_count": 2,
+    "not_covered_count": 0,
+    "coverage_score": 0.941,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 4,
+    "rubric_version": 7,
+    "timestamp": "2026-03-06T03:08:03.813794"
+  }
+]

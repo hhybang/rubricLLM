@@ -1,0 +1,310 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Emotional Arc and Sequencing",
+          "description": "The email must follow a specific order: acknowledge the situation or effort first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \u2014 sequence is the structure.",
+          "weight": 1
+        },
+        {
+          "name": "Single Owner, Scoped Accountability",
+          "description": "When action is needed from multiple people, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \u2014 ownership should be clear without being presumptuous about how teams operate.",
+          "weight": 4
+        }
+      ],
+      "removed": [
+        {
+          "name": "Concrete Accountability",
+          "description": "When someone is named as responsible, they must carry a deliverable and a time peg. A name without a deadline is a redirect, not an ownership statement. The reader should be able to hold the named person to something specific."
+        }
+      ],
+      "reweighted": [
+        {
+          "name": "Audience-Facing Reasoning",
+          "old_weight": 1,
+          "new_weight": 2
+        },
+        {
+          "name": "Operational Endings",
+          "old_weight": 2,
+          "new_weight": 3
+        },
+        {
+          "name": "Direct, Non-Alarmist Tone",
+          "old_weight": 4,
+          "new_weight": 5
+        },
+        {
+          "name": "Signal-to-Noise Discipline",
+          "old_weight": 5,
+          "new_weight": 6
+        },
+        {
+          "name": "Lean Structure",
+          "old_weight": 6,
+          "new_weight": 7
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Operational Endings",
+          "field": "description",
+          "old": "Closings should hand off momentum with a concrete next step, a follow-up commitment, or a clear point of contact. The reader finishes the email knowing what happens next \u2014 not sighing through a motivational sign-off.",
+          "new": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Operational Endings",
+          "added_dims": [
+            "Nothing follows the CTA \u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I added a new top-priority criterion \u2014 Emotional Arc and Sequencing \u2014 because the existing rubric had all the right ingredients but no rule enforcing the order they appear in, which is actually the thing I care most about. I also split out 'Concrete Accountability' into 'Single Owner, Scoped Accountability' to capture both sides of what I want: one clear owner instead of group asks, but without over-specifying org details the email shouldn't touch. I added a 'no_trailing_sentiment' dimension to Operational Endings since the original didn't explicitly prohibit sentiment after the CTA, just vague motivational language.",
+    "rubric_version": 3,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "action needed from your IT team",
+        "new_text": "action needed",
+        "reason": "Single Owner, Scoped Accountability (new dimension 'no_org_overreach'): the subject line named 'your IT team' specifically, which presumes org structure the sender shouldn't dictate; removed to keep routing neutral",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "The feature you requested back in March is shipping next week, and I wanted to make sure you had enough lead time to get ahead of it. You've been waiting on this for a while, and I know you've had to work around its absence \u2014 that changes on [specific date].",
+        "new_text": "You've been waiting on this since March, and it's almost here.",
+        "reason": "Emotional Arc and Sequencing (new criterion, dimension 'acknowledgment_is_brief'): the original opening acknowledgment was two sentences and blended acknowledgment with news delivery; compressed to one sentence of pure acknowledgment so the news can land separately in the next paragraph",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "[Feature Name] will let your team",
+        "new_text": "[Feature Name] is shipping on [specific date]. It will let your team",
+        "reason": "Emotional Arc and Sequencing (new dimension 'news_before_why'): the actual news \u2014 the specific ship date \u2014 was buried in the first paragraph rather than stated as its own beat before the rationale; moved to open the second paragraph so news precedes the 'why it matters' explanation",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "[Feature Name] will let",
+        "new_text": "It will let",
+        "reason": "Emotional Arc and Sequencing (new dimension 'news_before_why'): the feature name now opens its own sentence stating the date; 'It' continues the paragraph naturally without repeating the name",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "[do the specific thing she's been unable to do],",
+        "new_text": "[do the specific thing she's been unable to do] \u2014",
+        "reason": "Signal-to-Noise Discipline (dimension 'nothing_vestigial'): minor punctuation adjustment to match em-dash cadence already established in the sentence; improves rhythm with no content change",
+        "user_feedback": "The em-dash here feels like it's adding drama where there isn't any. A comma was fine \u2014 it's a list item, not a pivot point. Swapping punctuation for 'cadence' reasons when there's no actual rhythm problem is just tinkering for its own sake."
+      },
+      {
+        "original_text": "your IT team will need to",
+        "new_text": "someone on your side will need to",
+        "reason": "Single Owner, Scoped Accountability (new dimension 'no_org_overreach'): 'your IT team' presumes which function handles account settings; 'someone on your side' keeps ownership clear without dictating org structure",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.",
+        "new_text": "I can send the setup documentation directly to whoever handles that \u2014 just let me know.",
+        "reason": "Single Owner, Scoped Accountability (new dimension 'no_org_overreach'): 'send them' still implied 'IT team' as the referent; 'whoever handles that' keeps the offer open without presupposing the recipient's org structure. Also removes 'I'm happy to' hedging filler per Direct, Non-Alarmist Tone.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "I'll follow up on [date] to confirm everything is live. Reach me at [email/phone] if anything comes up before then.",
+        "new_text": "I'll follow up on [date] to confirm everything is live \u2014 or reach me at [email/phone] if anything comes up before then.",
+        "reason": "Operational Endings (updated description + new dimension 'no_trailing_sentiment'): the two-sentence close created two separate next steps; consolidating into one sentence with an em-dash satisfies the 'one_next_step_closes' dimension from Emotional Arc and Sequencing and ensures the email ends on a single, clean CTA with nothing trailing after it",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T09:47:56.832469"
+  },
+  {
+    "iteration": 3,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Operational Endings",
+          "old_weight": 4,
+          "new_weight": 3
+        },
+        {
+          "name": "Single Owner, Scoped Accountability",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Signal-to-Noise Discipline",
+          "old_weight": 6,
+          "new_weight": 5
+        },
+        {
+          "name": "Direct, Non-Alarmist Tone",
+          "old_weight": 5,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Audience-Facing Reasoning",
+          "field": "description",
+          "old": "When explaining a decision or delivering news, the 'so what' should land for the reader \u2014 framed around their experience, their investment, and the impact on their work. This applies to both bad news (why a delay is the right tradeoff for them) and good news (why an announcement matters to their specific situation). Not a defense of the sender's process.",
+          "new": "When explaining a decision or delivering news, the 'so what' should land for the reader \u2014 framed around their experience, their investment, and the impact on their work. Not a defense of the sender's process. 'This matters because your team planned around this date' not 'This matters because we want quality.'"
+        },
+        {
+          "name": "Operational Endings",
+          "field": "description",
+          "old": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment.",
+          "new": "Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \u2014 no thanks, no encouragement, no trailing sentiment. 'Thanks for your patience' is not a closing."
+        },
+        {
+          "name": "Direct, Non-Alarmist Tone",
+          "field": "description",
+          "old": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases ('minor setback,' 'abundance of caution') that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \u2014 don't add dramatic emphasis to routine elements.",
+          "new": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content."
+        },
+        {
+          "name": "Lean Structure",
+          "field": "description",
+          "old": "Prefer prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist.",
+          "new": "Prefer short paragraphs and prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \u2014 bullet lists, tables, numbered steps \u2014 that implies more moving parts than actually exist."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Operational Endings",
+          "added_dims": [
+            "The CTA is forward-looking \u2014 it points to what happens next, not back to what just happened"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Direct, Non-Alarmist Tone",
+          "added_dims": [
+            "No excessive exclamation marks \u2014 punctuation matches the actual energy level of the content"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Lean Structure",
+          "added_dims": [
+            "Paragraphs are short \u2014 no walls of text; each paragraph carries one idea"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I made three targeted changes: moved 'Operational Endings' up to priority 3 (ahead of 'Single Owner') because a weak closing undermines the whole email even when the action item is clear; added a forward-looking CTA dimension to 'Operational Endings' to be explicit that the closing points forward, not back; added an exclamation mark dimension to 'Direct, Non-Alarmist Tone' since that's a real dealbreaker for me that wasn't captured; and added a short-paragraphs dimension to 'Lean Structure' since that's something I care about that was only implied. I also dropped the 'Signal-to-Noise' criterion down one slot \u2014 it matters but it's more of a hygiene check than a structural priority.",
+    "rubric_version": 6,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Before that hits, you need to be ahead of it \u2014 clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared. The change is on the vendor's end with no rollback timeline, which means this is the new baseline for the foreseeable future.",
+        "new_text": "The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline.",
+        "reason": "Lean Structure (new dimension 'new_3': paragraphs are short, each carries one idea): the original paragraph was combining the vendor fact, the client-impact reasoning, and the baseline conclusion into one wall of text. The client-impact sentence was separated into its own paragraph; redundant framing ('Before that hits, you need to be ahead of it') and filler ('for the foreseeable future') were cut to keep this paragraph to a single idea.",
+        "user_feedback": "I actually liked the original framing better here. 'The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline' is fine as a fact, but it's pretty cold and doesn't set up why the reader should care. The original was trying to bridge into the stakes, which is the right instinct. The new version just drops a fact and moves on. It reads more like a changelog than an email."
+      },
+      {
+        "original_text": "",
+        "new_text": "Clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared.",
+        "reason": "Lean Structure (new dimension 'new_3': paragraphs are short, each carries one idea): the audience-impact reasoning was split into its own paragraph so each paragraph carries exactly one idea \u2014 the vendor news, then the reader-facing consequence, then the action.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "Can you flag the accounts most likely to feel this and reach out to them by end of next week?",
+        "new_text": "Flag the accounts most likely to feel this and reach out to them by end of next week.",
+        "reason": "Operational Endings (new dimension 'new_1': CTA is forward-looking, pointing to what happens next): phrasing it as a question softens the close and introduces uncertainty. A direct imperative is unambiguously forward-looking and hands off momentum cleanly, per the updated Operational Endings criterion.",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T09:56:02.615860"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 5,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "No Corporate Jargon",
+          "description": "Plain language only. Avoid business-speak, buzzwords, and filler phrases that add length without meaning. 'Synergize,' 'leverage,' 'circle back,' 'move the needle,' 'reach out' used reflexively \u2014 these erode trust and slow reading. If a simpler word exists, use it.",
+          "weight": 5
+        }
+      ],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Operational Endings",
+          "old_weight": 4,
+          "new_weight": 3
+        },
+        {
+          "name": "Single Owner, Scoped Accountability",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Signal-to-Noise Discipline",
+          "old_weight": 5,
+          "new_weight": 6
+        },
+        {
+          "name": "Lean Structure",
+          "old_weight": 6,
+          "new_weight": 7
+        },
+        {
+          "name": "Direct, Non-Alarmist Tone",
+          "old_weight": 7,
+          "new_weight": 8
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Direct, Non-Alarmist Tone",
+          "field": "description",
+          "old": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \u2014 don't tinker with punctuation for cadence or drama when there's no rhythm problem to solve.",
+          "new": "Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Direct, Non-Alarmist Tone",
+          "added_dims": [
+            "Punctuation serves function, not style \u2014 no exclamation marks that exceed the actual energy level of the content",
+            "States the situation, its cause, and its implications in plain, factual terms"
+          ],
+          "removed_dims": [
+            "States the situation, its cause, and its implications in plain, factual terms \u2014 no dramatic emphasis on routine content",
+            "Punctuation serves function, not style \u2014 no swapping commas for em-dashes to add drama, no exclamation marks that exceed the actual energy level of the content"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I moved 'Operational Endings' up to priority 3 because a weak closing actively undermines an otherwise solid email \u2014 it's not just a style issue, it changes how the reader leaves the conversation. I added a dedicated 'No Corporate Jargon' criterion at priority 5 because jargon is a dealbreaker for me and the old rubric only touched on it indirectly under tone; it deserved its own named slot with specific callouts. I also swapped 'Single Owner' and 'Operational Endings' in the priority order since a bad ending affects every email, while single-owner issues only surface when there are multiple stakeholders.",
+    "rubric_version": 9,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "no logged touchpoints",
+        "new_text": "no contact on record",
+        "reason": "No Corporate Jargon (new criterion added at priority 5, dimension 'no_buzzwords'): 'touchpoints' is a corporate buzzword explicitly targeted by the new criterion; 'logged' adds nominalization bloat. 'No contact on record' says the same thing in plain language.",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 0,
+    "suggestion_applied": false,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T10:01:52.537885"
+  }
+]

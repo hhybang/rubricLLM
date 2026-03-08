@@ -1,0 +1,185 @@
+[
+  {
+    "iteration": 3,
+    "draft_number": 21,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Tonal calibration",
+          "old_weight": 5,
+          "new_weight": 4
+        },
+        {
+          "name": "Trust through specificity",
+          "old_weight": 4,
+          "new_weight": 5
+        }
+      ],
+      "reworded": [
+        {
+          "name": "User-centered direction",
+          "field": "description",
+          "old": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs name the literal thing the user gets after clicking \u2014 not the action, not a metaphor, not wordplay. Benefits are framed as what the user gains, not what they stop worrying about.",
+          "new": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs name the literal result the user gets after clicking \u2014 not the action they're performing, not a metaphor, not clever wordplay. The user should know what happens before they click. Benefits are framed as what the user gains, not what they stop worrying about."
+        },
+        {
+          "name": "Functional completeness",
+          "field": "description",
+          "old": "Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.",
+          "new": "Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: WHAT HAPPENED, WHY, WHAT TO DO \u2014 in that order. A vague error like 'Something went wrong' is a product failure, not just a copy failure. Confirmation dialogs name the specific consequence, not a generic prompt. Empty states guide the user toward their first action rather than announcing absence."
+        },
+        {
+          "name": "Tonal calibration",
+          "field": "description",
+          "old": "Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is the way a competent colleague would talk to you after a snag \u2014 plain, direct, present. The copy should contain at least one beat that sounds like a person actually said it, and the rhythm should vary so payoffs land like an exhale rather than another list item.",
+          "new": "Tone shifts deliberately based on context. Celebratory moments (first successful payment, onboarding complete) can be warm. Error states should be calm and precise \u2014 never panicked, never dismissive. Routine actions should be nearly invisible. Applying a single flat tone across all contexts feels robotic and erodes trust. No marketing register inside the product itself."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "User-centered direction",
+          "added_dims": [
+            "Instructions use active voice \u2014 'Enter your account number' not 'Your account number should be entered'",
+            "Button labels describe the outcome, not the action \u2014 'Save changes' over 'Submit', 'Start free trial' over 'Sign up'"
+          ],
+          "removed_dims": [
+            "Buttons name the concrete, literal result of clicking \u2014 not a vague verb, metaphor, or clever phrase"
+          ]
+        },
+        {
+          "name": "Functional completeness",
+          "added_dims": [
+            "Empty states direct the user toward their first action \u2014 they read as a helpful nudge, not a dead end",
+            "Confirmation dialogs name the specific consequence and scope \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'",
+            "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Tonal calibration",
+          "added_dims": [
+            "Product UI copy does not use promotional or marketing register \u2014 no superlatives, no value-prop language inside the flow",
+            "Celebratory moments (first payment, milestone reached) are allowed to be warm \u2014 tone matches the emotional weight of the moment",
+            "Error and warning states read as steady and precise \u2014 not panicked, not clinical, not sarcastic",
+            "Avoids pep-talk language, forced optimism, or performative warmth in neutral or error contexts",
+            "Register varies intentionally across screens \u2014 not one flat temperature throughout"
+          ],
+          "removed_dims": [
+            "Register varies intentionally \u2014 not one flat temperature throughout; payoff moments land like an exhale, not a list item",
+            "Contains at least one moment that sounds like something a real person would say out loud \u2014 offhand and plain, not performing conversational",
+            "Reads as steady and present \u2014 not clinical, not breezy, not sardonic, not like a support article",
+            "Avoids pep-talk language, forced optimism, or performative warmth"
+          ]
+        },
+        {
+          "name": "Trust through specificity",
+          "added_dims": [
+            "Terminology is consistent across the entire flow \u2014 the same action, object, or state is never referred to by two different names"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I made three main sets of changes. First, I expanded 'Functional completeness' to explicitly capture my error message structure (what-why-what), specific confirmation dialogs, and actionable empty states \u2014 these were completely missing and they're non-negotiable for me. Second, I rewrote 'Tonal calibration' to reflect that tone should shift by context rather than stay flat \u2014 the old version described one target register, but I actually want warmth in celebratory moments and precision in errors, not the same 'competent colleague' tone everywhere. Third, I added a consistency dimension to 'Trust through specificity' and a no-passive-voice dimension to 'User-centered direction' since inconsistent terminology and passive instructions are dealbreakers I kept running into that the rubric wasn't catching.",
+    "rubric_version": 6,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Add a Payee",
+        "new_text": "Save Your First Payee",
+        "reason": "User-centered direction \u2014 cta_names_outcome (dimension updated: 'Button labels describe the outcome, not the action'): 'Add a Payee' names the action the user performs; 'Save Your First Payee' names what they have afterward \u2014 a saved payee \u2014 and the word 'First' also reinforces this is an empty-state nudge toward a first action, satisfying the new Functional completeness empty-state dimension",
+        "user_feedback": "I see what it's going for, but 'Save Your First Payee' feels a little hand-holdy to me. The 'Your First' part is doing too much \u2014 it's trying to be encouraging but it ends up sounding like it's narrating the user's experience back at them. Also, this label would be wrong the second they've already saved a payee and come back to add another. 'Add Payee' is actually fine here \u2014 it's an outcome ('a payee gets added') and it's clean. I'd maybe push it to 'Add New Payee' if we need to distinguish it, but I wouldn't ship 'Save Your First Payee'."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T01:54:57.224263"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 21,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Terminology consistency",
+          "description": "The same thing is always called the same thing, everywhere in the flow. If the UI calls it a 'payment', no screen in the same flow calls it a 'transaction' or a 'transfer'. Inconsistent terminology creates silent doubt \u2014 the user wonders if these are different things. No placeholder text ships to production.",
+          "weight": 4
+        }
+      ],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Contextual presence",
+          "old_weight": 4,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "User-centered direction",
+          "field": "description",
+          "old": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs make it clear what clicking achieves \u2014 simple, literal labels are preferred when the action IS the outcome. Benefits are framed as what the user gains, not what they stop worrying about.",
+          "new": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs describe what clicking achieves, not the mechanical action being performed \u2014 the user should know what happens before they click. Benefits are framed as what the user gains, not what they stop worrying about."
+        },
+        {
+          "name": "Tonal calibration",
+          "field": "description",
+          "old": "Tone shifts deliberately based on context. Celebratory or first-time moments can carry warmth. Error states should be calm and precise \u2014 never panicked, never dismissive. Routine actions should be nearly invisible. No marketing register inside the product. The target is how a competent, slightly knowing colleague would talk to you \u2014 plain, direct, present. Never a pep talk, never a shrug.",
+          "new": "Tone shifts deliberately based on context. Celebratory or first-time moments can carry warmth. Error states should be calm and precise \u2014 never panicked, never dismissive. Routine actions should be nearly invisible. No marketing register inside the product. Applying the same tone everywhere feels robotic \u2014 the copy should match the emotional weight of the moment."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Functional completeness",
+          "added_dims": [
+            "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy like 'Something went wrong'"
+          ],
+          "removed_dims": [
+            "Error messages follow the what-why-what structure: what happened, why it happened, what to do next \u2014 no generic fallback copy"
+          ]
+        },
+        {
+          "name": "User-centered direction",
+          "added_dims": [
+            "Button labels describe the outcome, not the action \u2014 'Save changes' over 'Submit', 'Start free trial' over 'Sign up'; no metaphors or clever wordplay"
+          ],
+          "removed_dims": [
+            "Button labels make it clear what clicking achieves \u2014 'Add Payee' is fine when a payee being added IS the outcome; 'Resubmit order' over 'Try again'; no metaphors or clever wordplay"
+          ]
+        },
+        {
+          "name": "Tonal calibration",
+          "added_dims": [
+            "Routine, repetitive actions use copy that is as invisible as possible \u2014 no warmth or personality injected into mundane confirmations"
+          ],
+          "removed_dims": []
+        },
+        {
+          "name": "Contextual presence",
+          "added_dims": [],
+          "removed_dims": [
+            "Contains at least one moment that sounds like something a real person would say out loud \u2014 offhand and plain, not performing conversational"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made three main changes. First, I added a dedicated 'Terminology consistency' criterion at priority 4 \u2014 inconsistent terminology and placeholder text shipping to production are dealbreakers for me, and they were only loosely implied before, not explicitly called out. Second, I bumped 'Contextual presence' down to priority 6 and removed the 'one_human_beat' dimension, which felt too prescriptive and a bit at odds with my preference for invisible routine copy. Third, I added a dimension under 'Tonal calibration' to explicitly call out that routine actions should be tonally invisible, since the description mentioned it but no dimension enforced it.",
+    "rubric_version": 9,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Start Sending Payments",
+        "new_text": "Set Up Payments",
+        "reason": "User-centered direction (cta_names_outcome dimension updated to 'describe the outcome, not the action'): 'Start Sending Payments' labels the mechanical action the user is initiating; 'Set Up Payments' names what the user will have when the interaction is complete \u2014 a payment schedule configured and ready. This aligns with the updated standard ('Save changes' over 'Submit') without overpromising or using marketing register.",
+        "user_feedback": "I actually prefer 'Start Sending Payments' here. 'Set Up Payments' sounds like you're configuring a settings page, not initiating a real transfer. The user's goal in this moment is to send money \u2014 that's the outcome they care about. 'Set Up' undersells it and feels like there's more work ahead before anything actually happens. I know the rubric says name what the user will have when it's done, but the outcome here IS sending payments, not having a payment schedule configured. The original was closer to the truth."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T02:09:57.958546"
+  }
+]

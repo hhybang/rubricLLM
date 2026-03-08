@@ -1,0 +1,757 @@
+[
+  {
+    "timestamp": "2026-03-06T01:37:05.899544",
+    "writing_task": "Hey, I need help with some copy for an empty state screen. We have a dashboard section called \"Scheduled Payments\" \u2014 it shows upcoming automatic payments a user has set up. When someone lands here for the first time and hasn't scheduled anything yet, we just have a blank section with no copy at all right now. I need a headline and 2\u20133 lines of supporting copy (plus a button label) that nudges them toward setting up their first scheduled payment without feeling like a sales pitch.",
+    "drafts": {
+      "rubric": "No scheduled payments yet\n\nSet one up and your recurring payments \u2014 bills, subscriptions, transfers \u2014 run on the dates you choose, without having to come back and trigger them manually. You stay in control of the schedule; the payments just happen.\n\nSchedule a payment",
+      "generic": "Nothing scheduled yet\n\nSet up a payment once and let it run on its own schedule \u2014 no reminders needed, no due dates to chase. Whether it's a recurring bill or a regular transfer, scheduled payments handle the timing for you.\n\nYou stay in control and can adjust or cancel anytime.\n\nSchedule a Payment",
+      "preference": "No scheduled payments yet\n\nSet up a scheduled payment and it'll show up here \u2014 so you always know what's coming and when.\n\nSchedule a Payment"
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "preference"
+      ],
+      [
+        "B",
+        "rubric"
+      ],
+      [
+        "C",
+        "generic"
+      ]
+    ],
+    "user_preference": "preference",
+    "user_ranking": [
+      "preference",
+      "rubric",
+      "generic"
+    ],
+    "user_reason": "Draft A wins because it does exactly what an empty state should do \u2014 tells the user what's missing, explains the value in one clean sentence, and points them toward the action. The button label 'Schedule a Payment' describes the outcome. It's not trying to be clever. Draft B has the right instincts but runs long \u2014 'You stay in control of the schedule; the payments just happen' feels like it wandered in from a marketing one-pager. The semicolon construction especially reads like copy that's trying too hard. Draft C loses me at 'no reminders needed, no due dates to chase' \u2014 that's feature marketing dressed up as UI copy, and the second paragraph feels tacked on to justify the word count. 'Nothing scheduled yet' is also slightly weaker than 'No scheduled payments yet' because it's less specific about what the section actually does. A is the only one I'd actually ship without edits.",
+    "rubric_version": 2,
+    "criteria_analysis": [
+      {
+        "name": "Functional completeness",
+        "rubric_score": 5,
+        "generic_score": 4,
+        "gap": 1,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft names the empty state, explains what scheduled payments do (bills, subscriptions, transfers), specifies user control over dates, and points to a clear CTA \u2014 fully standalone. The generic draft also covers what scheduled payments do and includes a CTA but adds an 'adjust or cancel anytime' line that drifts slightly from the core job. The original preference draft is functional but thin \u2014 it tells users things will 'show up here' without giving enough context about what scheduled payments actually do or why they'd want one.",
+        "preference_score": 3,
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft puts the user in motion throughout \u2014 'you choose,' 'you stay in control' \u2014 and the CTA describes the action precisely. The generic draft leans product-centered: 'scheduled payments handle the timing for you' makes the product the agent, and 'let it run on its own schedule' frames the product doing work rather than the user acting. The original preference draft keeps the user as subject ('Set up\u2026 and it'll show up') with good forward momentum, though it's lighter on specificity.",
+        "preference_score": 4,
+        "priority": 2
+      },
+      {
+        "name": "Trust through specificity",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft earns trust by naming concrete categories (bills, subscriptions, transfers) and specifying what the user controls (the dates, the schedule) without overclaiming. The generic draft uses vague reassurance ('no reminders needed, no due dates to chase') that leans toward cheerleading rather than specificity. The original preference draft offers almost no concrete detail \u2014 'what's coming and when' is abstract rather than specific.",
+        "preference_score": 2,
+        "priority": 3
+      },
+      {
+        "name": "Economy and precision",
+        "rubric_score": 4,
+        "generic_score": 2,
+        "gap": 2,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "The original preference draft is the leanest \u2014 every word does work, nothing redundant, instantly scannable. The rubric-guided draft is tight but 'without having to come back and trigger them manually' is slightly wordy and could be trimmed. The generic draft has clear throat-clearing ('no reminders needed, no due dates to chase') and the 'adjust or cancel anytime' line feels like filler that doesn't serve the empty-state moment.",
+        "preference_score": 5,
+        "priority": 4
+      },
+      {
+        "name": "Tonal calibration",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft hits the calm, grounded register perfectly \u2014 matter-of-fact without being clinical, warm without selling. The generic draft tips into breezy sales-pitch territory: 'no reminders needed, no due dates to chase' reads like marketing copy, and 'handle the timing for you' has a customer-service voice. The original preference draft is calm and grounded but almost too quiet \u2014 it works tonally but doesn't quite achieve the 'competent colleague' presence.",
+        "preference_score": 4,
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "rubric_score": 4,
+        "generic_score": 2,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft feels written for this specific screen \u2014 someone seeing an empty scheduled payments section for the first time. The original preference draft also feels moment-specific with 'it'll show up here' anchoring to the screen. The generic draft reads like it could be on a marketing page or feature tour \u2014 'Whether it's a recurring bill or a regular transfer' is feature-selling copy, not empty-state copy written for where the user actually is.",
+        "preference_score": 4,
+        "priority": 6
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Functional completeness",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft names the empty state, explains what scheduled payments do (bills, subscriptions, transfers), specifies user control over dates, and points to a clear CTA \u2014 fully standalone. The generic draft also covers what scheduled payments do and includes a CTA but adds an 'adjust or cancel anytime' line that drifts slightly from the core job. The original preference draft is functional but thin \u2014 it tells users things will 'show up here' without giving enough context about what scheduled payments actually do or why they'd want one."
+        },
+        {
+          "criterion_name": "User-centered direction",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft puts the user in motion throughout \u2014 'you choose,' 'you stay in control' \u2014 and the CTA describes the action precisely. The generic draft leans product-centered: 'scheduled payments handle the timing for you' makes the product the agent, and 'let it run on its own schedule' frames the product doing work rather than the user acting. The original preference draft keeps the user as subject ('Set up\u2026 and it'll show up') with good forward momentum, though it's lighter on specificity."
+        },
+        {
+          "criterion_name": "Trust through specificity",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 2,
+          "reasoning": "The rubric-guided draft earns trust by naming concrete categories (bills, subscriptions, transfers) and specifying what the user controls (the dates, the schedule) without overclaiming. The generic draft uses vague reassurance ('no reminders needed, no due dates to chase') that leans toward cheerleading rather than specificity. The original preference draft offers almost no concrete detail \u2014 'what's coming and when' is abstract rather than specific."
+        },
+        {
+          "criterion_name": "Economy and precision",
+          "draft_a_score": 4,
+          "draft_b_score": 2,
+          "draft_c_score": 5,
+          "reasoning": "The original preference draft is the leanest \u2014 every word does work, nothing redundant, instantly scannable. The rubric-guided draft is tight but 'without having to come back and trigger them manually' is slightly wordy and could be trimmed. The generic draft has clear throat-clearing ('no reminders needed, no due dates to chase') and the 'adjust or cancel anytime' line feels like filler that doesn't serve the empty-state moment."
+        },
+        {
+          "criterion_name": "Tonal calibration",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft hits the calm, grounded register perfectly \u2014 matter-of-fact without being clinical, warm without selling. The generic draft tips into breezy sales-pitch territory: 'no reminders needed, no due dates to chase' reads like marketing copy, and 'handle the timing for you' has a customer-service voice. The original preference draft is calm and grounded but almost too quiet \u2014 it works tonally but doesn't quite achieve the 'competent colleague' presence."
+        },
+        {
+          "criterion_name": "Contextual presence",
+          "draft_a_score": 4,
+          "draft_b_score": 2,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft feels written for this specific screen \u2014 someone seeing an empty scheduled payments section for the first time. The original preference draft also feels moment-specific with 'it'll show up here' anchoring to the screen. The generic draft reads like it could be on a marketing page or feature tour \u2014 'Whether it's a recurring bill or a regular transfer' is feature-selling copy, not empty-state copy written for where the user actually is."
+        }
+      ],
+      "overall_ranking": [
+        "Draft A",
+        "Draft C",
+        "Draft B"
+      ],
+      "overall_reasoning": "The rubric-guided draft best balances this user's priorities: functionally complete, user-centered, specific, tonally grounded, and written for the moment. The original preference draft is admirably economical and tonally right but too thin on context and specificity to stand fully on its own. The generic draft consistently drifts into marketing-speak and product-as-agent framing that this user would reject."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Both are clear, but Draft B more explicitly explains the benefit (no reminders needed, no due dates to chase) and separates the control message into its own line, making it easier to parse quickly."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft B flows more naturally from problem to solution to reassurance. Draft A's middle sentence uses an em dash list that slightly disrupts the logical flow."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are grammatically correct with proper punctuation and no errors."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft B separates the reassurance ('You stay in control and can adjust or cancel anytime') into its own paragraph, creating a cleaner three-part structure. Draft A compresses everything into one body paragraph."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 4,
+          "draft_b_score": 4,
+          "reasoning": "Both are reasonably engaging for UI copy. Draft B's benefit-focused language (no reminders, no due dates to chase) is slightly more compelling, but Draft A's directness is also effective."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft B strikes a more conversational and reassuring tone that feels polished and user-friendly. Draft A is solid but slightly more utilitarian in its phrasing."
+        }
+      ],
+      "overall_preference": "B",
+      "overall_reasoning": "Draft B is better organized with a clearer structure, more user-centric benefit language, and a reassuring closing line that addresses a common concern (ability to adjust or cancel). Both are well-written, but B feels more polished and thoughtfully composed."
+    },
+    "suggestion_text": "- **Economy and precision**: The original preference draft scored highest here (5 vs. 4 for rubric-guided), and the user ranked it first overall \u2014 specifically calling out the rubric-guided draft's semicolon construction as 'copy that's trying too hard.' The criterion itself is sound, but the description needs to explicitly flag that compound constructions and over-explanation of mechanics are failure modes, so future rubric-guided drafts don't trade brevity for thoroughness.",
+    "suggestion_reasons": {
+      "Economy and precision": "The original preference draft scored highest here (5 vs. 4 for rubric-guided), and the user ranked it first overall \u2014 specifically calling out the rubric-guided draft's semicolon construction as 'copy that's trying too hard.' The criterion itself is sound, but the description needs to explicitly flag that compound constructions and over-explanation of mechanics are failure modes, so future rubric-guided drafts don't trade brevity for thoroughness."
+    },
+    "suggested_rubric": [
+      {
+        "name": "Functional completeness",
+        "category": "Content",
+        "description": "Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.",
+        "dimensions": [
+          {
+            "id": "names_the_problem",
+            "label": "Clearly states what happened or went wrong"
+          },
+          {
+            "id": "provides_context",
+            "label": "Gives enough 'why' for the user to understand the situation without guessing"
+          },
+          {
+            "id": "points_to_action",
+            "label": "Includes a clear next step or direction within the same element"
+          },
+          {
+            "id": "standalone_sufficient",
+            "label": "Element makes sense and feels complete if the user never sees the next screen"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "category": "Audience",
+        "description": "The user is the subject of the copy, not the product or the situation. Copy puts the user in motion \u2014 they are the one acting, finding, fixing \u2014 rather than watching the product assess or narrate. CTAs tell the user exactly what will happen when they click. Second person, present tense by default.",
+        "dimensions": [
+          {
+            "id": "user_as_subject",
+            "label": "The user is positioned as the agent doing the action, not the product"
+          },
+          {
+            "id": "cta_specificity",
+            "label": "Buttons and links describe the outcome of clicking, not vague verbs like 'try again' or 'submit'"
+          },
+          {
+            "id": "no_blame",
+            "label": "Nothing in the copy implies the user made a mistake or did something wrong"
+          },
+          {
+            "id": "forward_momentum",
+            "label": "Copy orients toward the next action rather than dwelling on or explaining the current state"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Trust through specificity",
+        "category": "Content",
+        "description": "Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language ('don't worry,' 'no problem'). Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.",
+        "dimensions": [
+          {
+            "id": "concrete_reassurance",
+            "label": "Reassuring statements reference specific, verifiable facts rather than emotional soothing"
+          },
+          {
+            "id": "no_hedging",
+            "label": "Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence"
+          },
+          {
+            "id": "no_overclaiming",
+            "label": "Does not promise outcomes the product cannot guarantee"
+          },
+          {
+            "id": "addresses_silent_anxieties",
+            "label": "Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my cart?')"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Economy and precision",
+        "category": "Structure",
+        "description": "Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. Copy is short and scannable. If a list has clear labels and descriptions, the line above it doesn't need to explain what the list is. Completeness never justifies length \u2014 a draft that explains its own mechanics or uses compound constructions to add thoroughness has failed this criterion even if every sentence is technically accurate.",
+        "dimensions": [
+          {
+            "id": "no_throat_clearing",
+            "label": "No setup lines, preambles, or transition phrases that delay the useful content"
+          },
+          {
+            "id": "every_word_earns_place",
+            "label": "Removing any word would change or lose the meaning"
+          },
+          {
+            "id": "scannable",
+            "label": "Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections"
+          },
+          {
+            "id": "no_redundant_framing",
+            "label": "Does not introduce or describe elements that are already self-explanatory from their content"
+          },
+          {
+            "id": "no_over_explanation",
+            "label": "Does not explain how a feature works when naming what it does is sufficient \u2014 compound constructions and mechanism descriptions are treated as word count failures"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Tonal calibration",
+        "category": "Style",
+        "description": "Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is 'the copy equivalent of a calm nod' \u2014 the way a competent colleague would talk to you after a snag. No pep talks, no customer-service voice, no sardonic edge, no shrugging.",
+        "dimensions": [
+          {
+            "id": "no_cheerleading",
+            "label": "Avoids pep-talk language, forced optimism, or performative warmth"
+          },
+          {
+            "id": "not_clinical",
+            "label": "Does not read like a system log, support article, or procedure document"
+          },
+          {
+            "id": "calm_not_breezy",
+            "label": "Reads as grounded and steady rather than casual or dismissive"
+          },
+          {
+            "id": "no_sardonic_edge",
+            "label": "Never anticipates negative user behavior or introduces anxiety that wasn't already there"
+          },
+          {
+            "id": "human_register",
+            "label": "Sounds like something a real person would actually say \u2014 plain, direct, conversational without performing conversational"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "category": "Audience",
+        "description": "Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a generic pattern library. It should be clear from the copy alone what just happened, without the copy explicitly narrating or commenting on the situation. The line should feel like it knows where the user is.",
+        "dimensions": [
+          {
+            "id": "moment_specific",
+            "label": "Copy would feel out of place on a different screen or in a different context"
+          },
+          {
+            "id": "answers_real_question",
+            "label": "Addresses the question the user is silently asking, not an adjacent or assumed question"
+          },
+          {
+            "id": "not_narrating",
+            "label": "Acknowledges the situation without describing or commenting on it from the outside"
+          },
+          {
+            "id": "no_editorializing",
+            "label": "Does not comment on the difficulty, commonality, or expected duration of the situation"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nThe three drafts are:\n- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)\n- Draft B = the **generic** draft (written with no rubric \u2014 just competent writing)\n- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)\n\nDRAFT A (rubric-guided):\nNo scheduled payments yet\n\nSet one up and your recurring payments \u2014 bills, subscriptions, transfers \u2014 run on the dates you choose, without having to come back and trigger them manually. You stay in control of the schedule; the payments just happen.\n\nSchedule a payment\n\nDRAFT B (generic):\nNothing scheduled yet\n\nSet up a payment once and let it run on its own schedule \u2014 no reminders needed, no due dates to chase. Whether it's a recurring bill or a regular transfer, scheduled payments handle the timing for you.\n\nYou stay in control and can adjust or cancel anytime.\n\nSchedule a Payment\n\nDRAFT C (original preference):\nNo scheduled payments yet\n\nSet up a scheduled payment and it'll show up here \u2014 so you always know what's coming and when.\n\nSchedule a Payment\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Functional completeness\",\n      \"category\": \"Content\",\n      \"description\": \"Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \\u2014 all within the same unit. A user who sees only that one element should have enough to act.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_the_problem\",\n          \"label\": \"Clearly states what happened or went wrong\"\n        },\n        {\n          \"id\": \"provides_context\",\n          \"label\": \"Gives enough 'why' for the user to understand the situation without guessing\"\n        },\n        {\n          \"id\": \"points_to_action\",\n          \"label\": \"Includes a clear next step or direction within the same element\"\n        },\n        {\n          \"id\": \"standalone_sufficient\",\n          \"label\": \"Element makes sense and feels complete if the user never sees the next screen\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"User-centered direction\",\n      \"category\": \"Audience\",\n      \"description\": \"The user is the subject of the copy, not the product or the situation. Copy puts the user in motion \\u2014 they are the one acting, finding, fixing \\u2014 rather than watching the product assess or narrate. CTAs tell the user exactly what will happen when they click. Second person, present tense by default.\",\n      \"dimensions\": [\n        {\n          \"id\": \"user_as_subject\",\n          \"label\": \"The user is positioned as the agent doing the action, not the product\"\n        },\n        {\n          \"id\": \"cta_specificity\",\n          \"label\": \"Buttons and links describe the outcome of clicking, not vague verbs like 'try again' or 'submit'\"\n        },\n        {\n          \"id\": \"no_blame\",\n          \"label\": \"Nothing in the copy implies the user made a mistake or did something wrong\"\n        },\n        {\n          \"id\": \"forward_momentum\",\n          \"label\": \"Copy orients toward the next action rather than dwelling on or explaining the current state\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Trust through specificity\",\n      \"category\": \"Content\",\n      \"description\": \"Reassurance is earned by naming concrete realities the user cares about \\u2014 saved progress, nothing charged, specific causes \\u2014 not by using reassurance language ('don't worry,' 'no problem'). Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.\",\n      \"dimensions\": [\n        {\n          \"id\": \"concrete_reassurance\",\n          \"label\": \"Reassuring statements reference specific, verifiable facts rather than emotional soothing\"\n        },\n        {\n          \"id\": \"no_hedging\",\n          \"label\": \"Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence\"\n        },\n        {\n          \"id\": \"no_overclaiming\",\n          \"label\": \"Does not promise outcomes the product cannot guarantee\"\n        },\n        {\n          \"id\": \"addresses_silent_anxieties\",\n          \"label\": \"Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my cart?')\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Economy and precision\",\n      \"category\": \"Structure\",\n      \"description\": \"Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. Copy is short and scannable. If a list has clear labels and descriptions, the line above it doesn't need to explain what the list is.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_throat_clearing\",\n          \"label\": \"No setup lines, preambles, or transition phrases that delay the useful content\"\n        },\n        {\n          \"id\": \"every_word_earns_place\",\n          \"label\": \"Removing any word would change or lose the meaning\"\n        },\n        {\n          \"id\": \"scannable\",\n          \"label\": \"Structure supports quick visual parsing \\u2014 short sentences, clear hierarchy, labeled sections\"\n        },\n        {\n          \"id\": \"no_redundant_framing\",\n          \"label\": \"Does not introduce or describe elements that are already self-explanatory from their content\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Tonal calibration\",\n      \"category\": \"Style\",\n      \"description\": \"Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is 'the copy equivalent of a calm nod' \\u2014 the way a competent colleague would talk to you after a snag. No pep talks, no customer-service voice, no sardonic edge, no shrugging.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_cheerleading\",\n          \"label\": \"Avoids pep-talk language, forced optimism, or performative warmth\"\n        },\n        {\n          \"id\": \"not_clinical\",\n          \"label\": \"Does not read like a system log, support article, or procedure document\"\n        },\n        {\n          \"id\": \"calm_not_breezy\",\n          \"label\": \"Reads as grounded and steady rather than casual or dismissive\"\n        },\n        {\n          \"id\": \"no_sardonic_edge\",\n          \"label\": \"Never anticipates negative user behavior or introduces anxiety that wasn't already there\"\n        },\n        {\n          \"id\": \"human_register\",\n          \"label\": \"Sounds like something a real person would actually say \\u2014 plain, direct, conversational without performing conversational\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Contextual presence\",\n      \"category\": \"Audience\",\n      \"description\": \"Copy feels written for the specific screen, moment, and emotional state the user is in \\u2014 not lifted from a generic pattern library. It should be clear from the copy alone what just happened, without the copy explicitly narrating or commenting on the situation. The line should feel like it knows where the user is.\",\n      \"dimensions\": [\n        {\n          \"id\": \"moment_specific\",\n          \"label\": \"Copy would feel out of place on a different screen or in a different context\"\n        },\n        {\n          \"id\": \"answers_real_question\",\n          \"label\": \"Addresses the question the user is silently asking, not an adjacent or assumed question\"\n        },\n        {\n          \"id\": \"not_narrating\",\n          \"label\": \"Acknowledges the situation without describing or commenting on it from the outside\"\n        },\n        {\n          \"id\": \"no_editorializing\",\n          \"label\": \"Does not comment on the difficulty, commonality, or expected duration of the situation\"\n        }\n      ],\n      \"priority\": 6\n    }\n  ],\n  \"version\": 2,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"UX/product copy (error states, recovery flows, and transactional screens)\",\n  \"user_goals_summary\": \"Writes interface copy that feels like a calm, competent presence alongside the user \\u2014 not narrating their situation from above, not performing empathy, just plainly and precisely meeting them where they are. Every word must do specific work for the specific moment it appears in, and the user should always feel like the subject of the copy, never the object of it.\",\n  \"coaching_notes\": \"This user has an extraordinarily fine-grained sense of tonal register \\u2014 they can distinguish between 'calm' and 'breezy,' between 'confident' and 'cheerleading,' between 'present' and 'narrating.' Expect many rounds of iteration on tone, especially on transitional or introductory lines. They will consistently reject copy that feels generic or interchangeable across contexts, even if it's technically correct. Their north star is copy that feels like a competent person standing next to the user \\u2014 not above the moment looking down at it. When they say 'present,' they mean the copy should feel like it was written by someone who knows what screen the user is on and what just happened, without explicitly saying so.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\nage #44 \u2014 assistant]\n<draft>\n**Error Message (inline / toast)**\nYour card was declined \u2014 this is often due to an expired date, outdated details, or a temporary bank hold. Check your card or try a different payment method to complete your order.\n\n---\n\n**Recovery Screen**\n\n**Let's get your payment sorted**\n\nYour next step is probably one of these.\n\n**Check your card details**\nMake sure the number, expiration date, and billing address on file are up to date.\n\n**Try a different card**\nYou can add a new payment method in just a few seconds.\n\n**Contact your bank**\nSometimes banks flag unfamiliar charges. A quick call or message to them usually clears things up.\n\n[Update payment method] [Resubmit order]\n\n---\n\n*Your order is saved. Nothing has been charged.*\n</draft>\n\n\"Your next step is probably one of these\" puts the user in motion, keeps the focus forward, and carries just enough specificity \u2014 \"your next step,\" not \"some options\" \u2014 to feel written for someone who's ready to act. \"Probably\" is doing small but honest work: it's not hedging, it's just not overclaiming. The whole line assumes the user is going to get through this without making a thing of it.\n\n[Message #45 \u2014 user]\nOkay, error message is locked, buttons are locked, that line at the bottom is staying \u2014 I've said it twenty times and I mean it every single time.\n\nI want to try landing on 'Your next step is probably one of these' from a completely different angle, because I think I've been describing it wrong. The issue isn't the hedging \u2014 or not only that. It's that the line is still talking about the list below it rather than just getting out of the way and letting the user move. Every version we've tried has been a setup for the bullet points. And I think that's the wrong instinct entirely. The list is self-explanatory. The items have labels, they have descriptions. They don't need an introduction. What that opening line should do \u2014 if it does anything at all \u2014 is acknowledge the person standing in front of it for one beat before pointing them forward. Not explain the situation. Not describe what's coming. Just\u2026 land. One sentence that doesn't feel like a transition and doesn't feel like a header. Something that, if you read just that line in isolation, would still feel like it was written for someone who just had a payment fail \u2014 not for someone opening a help doc. I keep thinking the right version is shorter than anything we've tried, and quieter.\n\n[Message #46 \u2014 system]\n--- Iteration 2/4 ---\n\n[Message #47 \u2014 user]\nHey, I need help with some copy for an empty state screen. We have a dashboard section called \"Scheduled Payments\" \u2014 it shows upcoming automatic payments a user has set up. When someone lands here for the first time and hasn't scheduled anything yet, we just have a blank section with no copy at all right now. I need a headline and 2\u20133 lines of supporting copy (plus a button label) that nudges them toward setting up their first scheduled payment without feeling like a sales pitch.\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Functional completeness\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 4,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft names the empty state, explains what scheduled payments do (bills, subscriptions, transfers), specifies user control over dates, and points to a clear CTA \u2014 fully standalone. The generic draft also covers what scheduled payments do and includes a CTA but adds an 'adjust or cancel anytime' line that drifts slightly from the core job. The original preference draft is functional but thin \u2014 it tells users things will 'show up here' without giving enough context about what scheduled payments actually do or why they'd want one.\"\n        },\n        {\n            \"criterion_name\": \"User-centered direction\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft puts the user in motion throughout \u2014 'you choose,' 'you stay in control' \u2014 and the CTA describes the action precisely. The generic draft leans product-centered: 'scheduled payments handle the timing for you' makes the product the agent, and 'let it run on its own schedule' frames the product doing work rather than the user acting. The original preference draft keeps the user as subject ('Set up\u2026 and it'll show up') with good forward momentum, though it's lighter on specificity.\"\n        },\n        {\n            \"criterion_name\": \"Trust through specificity\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 2,\n            \"reasoning\": \"The rubric-guided draft earns trust by naming concrete categories (bills, subscriptions, transfers) and specifying what the user controls (the dates, the schedule) without overclaiming. The generic draft uses vague reassurance ('no reminders needed, no due dates to chase') that leans toward cheerleading rather than specificity. The original preference draft offers almost no concrete detail \u2014 'what's coming and when' is abstract rather than specific.\"\n        },\n        {\n            \"criterion_name\": \"Economy and precision\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"The original preference draft is the leanest \u2014 every word does work, nothing redundant, instantly scannable. The rubric-guided draft is tight but 'without having to come back and trigger them manually' is slightly wordy and could be trimmed. The generic draft has clear throat-clearing ('no reminders needed, no due dates to chase') and the 'adjust or cancel anytime' line feels like filler that doesn't serve the empty-state moment.\"\n        },\n        {\n            \"criterion_name\": \"Tonal calibration\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft hits the calm, grounded register perfectly \u2014 matter-of-fact without being clinical, warm without selling. The generic draft tips into breezy sales-pitch territory: 'no reminders needed, no due dates to chase' reads like marketing copy, and 'handle the timing for you' has a customer-service voice. The original preference draft is calm and grounded but almost too quiet \u2014 it works tonally but doesn't quite achieve the 'competent colleague' presence.\"\n        },\n        {\n            \"criterion_name\": \"Contextual presence\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft feels written for this specific screen \u2014 someone seeing an empty scheduled payments section for the first time. The original preference draft also feels moment-specific with 'it'll show up here' anchoring to the screen. The generic draft reads like it could be on a marketing page or feature tour \u2014 'Whether it's a recurring bill or a regular transfer' is feature-selling copy, not empty-state copy written for where the user actually is.\"\n        }\n    ],\n    \"overall_ranking\": [\"Draft A\", \"Draft C\", \"Draft B\"],\n    \"overall_reasoning\": \"The rubric-guided draft best balances this user's priorities: functionally complete, user-centered, specific, tonally grounded, and written for the moment. The original preference draft is admirably economical and tonally right but too thin on context and specificity to stand fully on its own. The generic draft consistently drifts into marketing-speak and product-as-agent framing that this user would reject.\"\n}\n```"
+      },
+      {
+        "role": "user",
+        "content": "You are a rubric improvement advisor. A user just completed an alignment diagnostic\ncomparing three drafts of the same writing task:\n1. A **rubric-guided** draft (written following the user's rubric criteria)\n2. A **generic** draft (written with no rubric or preferences \u2014 just competent writing)\n3. A **preference-based** draft (written following the user's original stated preferences from before the rubric was created)\n\nCURRENT RUBRIC:\n{\n  \"rubric\": [\n    {\n      \"name\": \"Functional completeness\",\n      \"category\": \"Content\",\n      \"description\": \"Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \\u2014 all within the same unit. A user who sees only that one element should have enough to act.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_the_problem\",\n          \"label\": \"Clearly states what happened or went wrong\"\n        },\n        {\n          \"id\": \"provides_context\",\n          \"label\": \"Gives enough 'why' for the user to understand the situation without guessing\"\n        },\n        {\n          \"id\": \"points_to_action\",\n          \"label\": \"Includes a clear next step or direction within the same element\"\n        },\n        {\n          \"id\": \"standalone_sufficient\",\n          \"label\": \"Element makes sense and feels complete if the user never sees the next screen\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"User-centered direction\",\n      \"category\": \"Audience\",\n      \"description\": \"The user is the subject of the copy, not the product or the situation. Copy puts the user in motion \\u2014 they are the one acting, finding, fixing \\u2014 rather than watching the product assess or narrate. CTAs tell the user exactly what will happen when they click. Second person, present tense by default.\",\n      \"dimensions\": [\n        {\n          \"id\": \"user_as_subject\",\n          \"label\": \"The user is positioned as the agent doing the action, not the product\"\n        },\n        {\n          \"id\": \"cta_specificity\",\n          \"label\": \"Buttons and links describe the outcome of clicking, not vague verbs like 'try again' or 'submit'\"\n        },\n        {\n          \"id\": \"no_blame\",\n          \"label\": \"Nothing in the copy implies the user made a mistake or did something wrong\"\n        },\n        {\n          \"id\": \"forward_momentum\",\n          \"label\": \"Copy orients toward the next action rather than dwelling on or explaining the current state\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Trust through specificity\",\n      \"category\": \"Content\",\n      \"description\": \"Reassurance is earned by naming concrete realities the user cares about \\u2014 saved progress, nothing charged, specific causes \\u2014 not by using reassurance language ('don't worry,' 'no problem'). Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.\",\n      \"dimensions\": [\n        {\n          \"id\": \"concrete_reassurance\",\n          \"label\": \"Reassuring statements reference specific, verifiable facts rather than emotional soothing\"\n        },\n        {\n          \"id\": \"no_hedging\",\n          \"label\": \"Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence\"\n        },\n        {\n          \"id\": \"no_overclaiming\",\n          \"label\": \"Does not promise outcomes the product cannot guarantee\"\n        },\n        {\n          \"id\": \"addresses_silent_anxieties\",\n          \"label\": \"Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my cart?')\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Economy and precision\",\n      \"category\": \"Structure\",\n      \"description\": \"Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. Copy is short and scannable. If a list has clear labels and descriptions, the line above it doesn't need to explain what the list is.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_throat_clearing\",\n          \"label\": \"No setup lines, preambles, or transition phrases that delay the useful content\"\n        },\n        {\n          \"id\": \"every_word_earns_place\",\n          \"label\": \"Removing any word would change or lose the meaning\"\n        },\n        {\n          \"id\": \"scannable\",\n          \"label\": \"Structure supports quick visual parsing \\u2014 short sentences, clear hierarchy, labeled sections\"\n        },\n        {\n          \"id\": \"no_redundant_framing\",\n          \"label\": \"Does not introduce or describe elements that are already self-explanatory from their content\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Tonal calibration\",\n      \"category\": \"Style\",\n      \"description\": \"Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is 'the copy equivalent of a calm nod' \\u2014 the way a competent colleague would talk to you after a snag. No pep talks, no customer-service voice, no sardonic edge, no shrugging.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_cheerleading\",\n          \"label\": \"Avoids pep-talk language, forced optimism, or performative warmth\"\n        },\n        {\n          \"id\": \"not_clinical\",\n          \"label\": \"Does not read like a system log, support article, or procedure document\"\n        },\n        {\n          \"id\": \"calm_not_breezy\",\n          \"label\": \"Reads as grounded and steady rather than casual or dismissive\"\n        },\n        {\n          \"id\": \"no_sardonic_edge\",\n          \"label\": \"Never anticipates negative user behavior or introduces anxiety that wasn't already there\"\n        },\n        {\n          \"id\": \"human_register\",\n          \"label\": \"Sounds like something a real person would actually say \\u2014 plain, direct, conversational without performing conversational\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Contextual presence\",\n      \"category\": \"Audience\",\n      \"description\": \"Copy feels written for the specific screen, moment, and emotional state the user is in \\u2014 not lifted from a generic pattern library. It should be clear from the copy alone what just happened, without the copy explicitly narrating or commenting on the situation. The line should feel like it knows where the user is.\",\n      \"dimensions\": [\n        {\n          \"id\": \"moment_specific\",\n          \"label\": \"Copy would feel out of place on a different screen or in a different context\"\n        },\n        {\n          \"id\": \"answers_real_question\",\n          \"label\": \"Addresses the question the user is silently asking, not an adjacent or assumed question\"\n        },\n        {\n          \"id\": \"not_narrating\",\n          \"label\": \"Acknowledges the situation without describing or commenting on it from the outside\"\n        },\n        {\n          \"id\": \"no_editorializing\",\n          \"label\": \"Does not comment on the difficulty, commonality, or expected duration of the situation\"\n        }\n      ],\n      \"priority\": 6\n    }\n  ],\n  \"version\": 2,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"UX/product copy (error states, recovery flows, and transactional screens)\",\n  \"user_goals_summary\": \"Writes interface copy that feels like a calm, competent presence alongside the user \\u2014 not narrating their situation from above, not performing empathy, just plainly and precisely meeting them where they are. Every word must do specific work for the specific moment it appears in, and the user should always feel like the subject of the copy, never the object of it.\",\n  \"coaching_notes\": \"This user has an extraordinarily fine-grained sense of tonal register \\u2014 they can distinguish between 'calm' and 'breezy,' between 'confident' and 'cheerleading,' between 'present' and 'narrating.' Expect many rounds of iteration on tone, especially on transitional or introductory lines. They will consistently reject copy that feels generic or interchangeable across contexts, even if it's technically correct. Their north star is copy that feels like a competent person standing next to the user \\u2014 not above the moment looking down at it. When they say 'present,' they mean the copy should feel like it was written by someone who knows what screen the user is on and what just happened, without explicitly saying so.\"\n}\n\nRUBRIC JUDGE RESULTS (per-criterion scores for all three drafts, using the rubric):\nNote: In the scores below, draft_a = rubric-guided, draft_b = generic, draft_c = original preference.\n{\n  \"per_criterion\": [\n    {\n      \"criterion_name\": \"Functional completeness\",\n      \"draft_a_score\": 5,\n      \"draft_b_score\": 4,\n      \"draft_c_score\": 3,\n      \"reasoning\": \"The rubric-guided draft names the empty state, explains what scheduled payments do (bills, subscriptions, transfers), specifies user control over dates, and points to a clear CTA \\u2014 fully standalone. The generic draft also covers what scheduled payments do and includes a CTA but adds an 'adjust or cancel anytime' line that drifts slightly from the core job. The original preference draft is functional but thin \\u2014 it tells users things will 'show up here' without giving enough context about what scheduled payments actually do or why they'd want one.\"\n    },\n    {\n      \"criterion_name\": \"User-centered direction\",\n      \"draft_a_score\": 5,\n      \"draft_b_score\": 3,\n      \"draft_c_score\": 4,\n      \"reasoning\": \"The rubric-guided draft puts the user in motion throughout \\u2014 'you choose,' 'you stay in control' \\u2014 and the CTA describes the action precisely. The generic draft leans product-centered: 'scheduled payments handle the timing for you' makes the product the agent, and 'let it run on its own schedule' frames the product doing work rather than the user acting. The original preference draft keeps the user as subject ('Set up\\u2026 and it'll show up') with good forward momentum, though it's lighter on specificity.\"\n    },\n    {\n      \"criterion_name\": \"Trust through specificity\",\n      \"draft_a_score\": 5,\n      \"draft_b_score\": 3,\n      \"draft_c_score\": 2,\n      \"reasoning\": \"The rubric-guided draft earns trust by naming concrete categories (bills, subscriptions, transfers) and specifying what the user controls (the dates, the schedule) without overclaiming. The generic draft uses vague reassurance ('no reminders needed, no due dates to chase') that leans toward cheerleading rather than specificity. The original preference draft offers almost no concrete detail \\u2014 'what's coming and when' is abstract rather than specific.\"\n    },\n    {\n      \"criterion_name\": \"Economy and precision\",\n      \"draft_a_score\": 4,\n      \"draft_b_score\": 2,\n      \"draft_c_score\": 5,\n      \"reasoning\": \"The original preference draft is the leanest \\u2014 every word does work, nothing redundant, instantly scannable. The rubric-guided draft is tight but 'without having to come back and trigger them manually' is slightly wordy and could be trimmed. The generic draft has clear throat-clearing ('no reminders needed, no due dates to chase') and the 'adjust or cancel anytime' line feels like filler that doesn't serve the empty-state moment.\"\n    },\n    {\n      \"criterion_name\": \"Tonal calibration\",\n      \"draft_a_score\": 5,\n      \"draft_b_score\": 2,\n      \"draft_c_score\": 4,\n      \"reasoning\": \"The rubric-guided draft hits the calm, grounded register perfectly \\u2014 matter-of-fact without being clinical, warm without selling. The generic draft tips into breezy sales-pitch territory: 'no reminders needed, no due dates to chase' reads like marketing copy, and 'handle the timing for you' has a customer-service voice. The original preference draft is calm and grounded but almost too quiet \\u2014 it works tonally but doesn't quite achieve the 'competent colleague' presence.\"\n    },\n    {\n      \"criterion_name\": \"Contextual presence\",\n      \"draft_a_score\": 4,\n      \"draft_b_score\": 2,\n      \"draft_c_score\": 4,\n      \"reasoning\": \"The rubric-guided draft feels written for this specific screen \\u2014 someone seeing an empty scheduled payments section for the first time. The original preference draft also feels moment-specific with 'it'll show up here' anchoring to the screen. The generic draft reads like it could be on a marketing page or feature tour \\u2014 'Whether it's a recurring bill or a regular transfer' is feature-selling copy, not empty-state copy written for where the user actually is.\"\n    }\n  ],\n  \"overall_ranking\": [\n    \"Draft A\",\n    \"Draft C\",\n    \"Draft B\"\n  ],\n  \"overall_reasoning\": \"The rubric-guided draft best balances this user's priorities: functionally complete, user-centered, specific, tonally grounded, and written for the moment. The original preference draft is admirably economical and tonally right but too thin on context and specificity to stand fully on its own. The generic draft consistently drifts into marketing-speak and product-as-agent framing that this user would reject.\"\n}\n\nUSER'S RANKING: The user ranked the drafts: 1. preference-based (from original stated preferences) > 2. rubric-guided > 3. generic (no rubric)\nThe user also said: \"Draft A wins because it does exactly what an empty state should do \u2014 tells the user what's missing, explains the value in one clean sentence, and points them toward the action. The button label 'Schedule a Payment' describes the outcome. It's not trying to be clever. Draft B has the right instincts but runs long \u2014 'You stay in control of the schedule; the payments just happen' feels like it wandered in from a marketing one-pager. The semicolon construction especially reads like copy that's trying too hard. Draft C loses me at 'no reminders needed, no due dates to chase' \u2014 that's feature marketing dressed up as UI copy, and the second paragraph feels tacked on to justify the word count. 'Nothing scheduled yet' is also slightly weaker than 'No scheduled payments yet' because it's less specific about what the section actually does. A is the only one I'd actually ship without edits.\"\n\n\nWHY THREE DRAFTS:\nThe rubric was built from the user's original stated preferences. The preference-based draft acts as a **comparison signal**: by scoring both the rubric-guided draft and the preference-based draft against the same rubric criteria, we can see where the rubric successfully captures the user's intent (rubric draft scores equal or higher) and where it falls short (preference draft scores higher). The generic draft is a baseline \u2014 if it scores highest, the criterion isn't adding value at all.\n\nTWO TYPES OF EVIDENCE:\nYou have two signals to work with \u2014 use BOTH together:\n1. **Per-criterion scores** (from the rubric judge): automated scores showing how each draft performs on each criterion.\n2. **User's ranking** (from the user): the user's own holistic preference for which draft they liked best overall. This is the user's ground truth \u2014 it tells you whether the rubric is producing writing the user actually wants.\n\nThese signals complement each other. The per-criterion scores show WHERE specific criteria may be weak. The user's ranking tells you the OVERALL direction \u2014 how aggressively to change the rubric.\n\nANALYSIS FRAMEWORK:\nFor each rubric criterion, compare the three per-criterion scores:\n- **Rubric draft scores highest**: the rubric is successfully capturing the user's intent on this criterion (DIFFERENTIATING). No change needed.\n- **Preference draft scores higher than rubric draft**: the rubric criterion isn't fully capturing what the user wants \u2014 consider rewording or re-prioritizing it so the rubric-guided draft can perform better.\n- **Generic draft scores highest or all tied**: the criterion may be too vague or not adding value (UNDERPERFORMING/REDUNDANT).\n\nIMPORTANT: The rubric already incorporates the user's stated preferences in distilled form. If the preference draft outperforms the rubric draft, that means existing criteria need strengthening \u2014 not that new criteria should be added to mirror stated preferences. You may add a new criterion only if the scores reveal a genuine gap that no existing criterion can cover even with rewording.\n\nCALIBRATE CHANGES TO THE USER'S RANKING:\nThe user's ranking determines how much to change overall:\n- If the user ranked the RUBRIC-GUIDED draft FIRST: the rubric is working well overall. Be VERY conservative. Only modify criteria that are clearly underperforming or redundant based on the per-criterion scores. Most criteria should be kept UNCHANGED. Do NOT rephrase, reword, or \"improve\" criteria that are already working \u2014 leave them exactly as they are, character for character.\n- If the user ranked the PREFERENCE-BASED draft first: the rubric needs changes to better capture what the user wants. Focus on rewording or re-prioritizing existing criteria first. Only add a new criterion if no existing criterion can reasonably cover the gap.\n- If the user ranked the GENERIC draft first: the rubric may need significant revision.\n\nYOUR TASK:\nBased on this evidence, produce an updated version of the rubric that would generate drafts more like what the user ranked highest and less like what the user ranked lower. Only change what the evidence actually supports changing. You must return BOTH the rubric criteria AND a reason for each criterion explaining what you did and why.\n\nReturn ONLY a JSON object (no markdown, no preamble, no code fences) with this EXACT structure:\n{\n  \"reasons\": {\n    \"<criterion name>\": \"<1-2 sentence reason for what you did to this criterion and why>\"\n  },\n  \"rubric\": [\n    {\n      \"name\": \"<criterion name>\",\n      \"category\": \"<category>\",\n      \"description\": \"<description>\",\n      \"dimensions\": [{\"id\": \"<unique_id>\", \"label\": \"<dimension label>\"}],\n      \"priority\": <integer, 1 = most important>\n    }\n  ]\n}\n\nSTRICT RULES:\n1. \"reasons\" MUST include ONE entry for EVERY criterion \u2014 all existing criteria (whether modified, kept, or removed), plus any new criteria added. No criterion may be omitted.\n2. \"rubric\" is the complete modified rubric array. It must contain ALL criteria that should be in the final rubric (existing unchanged + modified + new). Do NOT include removed criteria in the rubric array.\n3. THE REASON MUST MATCH THE ACTION \u2014 THIS IS CRITICAL:\n   - If you MODIFIED a criterion (changed its description, priority, or dimensions in the \"rubric\" array): the reason MUST explain WHY you changed it and WHAT you changed. NEVER say \"working well\", \"kept as-is\", \"no change needed\", or similar for a criterion you actually modified. Example of a WRONG reason for a modified criterion: \"Working well and scoring consistently \u2014 kept as-is.\" Example of a CORRECT reason: \"Broadened description to cover email and chat formats, not just slides.\"\n   - If you KEPT a criterion TRULY unchanged (identical description, priority, and dimensions): the reason should explain why it's working well.\n   - If you REMOVED a criterion (not in the rubric array): the reason should explain why you removed it.\n   - If you ADDED a new criterion: the reason should explain the gap it fills.\n4. When keeping a criterion unchanged, copy it EXACTLY from the input \u2014 same description, same dimensions (same labels, same IDs), same priority. Do NOT rephrase, reword, or \"clean up\" criteria you intend to keep. Priorities must be unique integers starting from 1.\n5. Each reason must be 1-2 sentences MAX. No paragraphs. Every value must be a non-empty string.\n6. Use the EXACT criterion names as they appear in the current rubric JSON for existing criteria.\n7. Do NOT add new criteria by copying stated preferences into the rubric. The rubric was already built from those preferences. If you need to add a criterion, it should be because the per-criterion scores reveal a gap that no existing criterion can cover even with rewording \u2014 not because a stated preference isn't explicitly listed.\n8. Do NOT explain diagnostic results or repeat scores. The user already sees those.\n9. Write reasons directly to the user (e.g. \"Reworded to focus on...\" not \"This criterion was reworded to...\").\n10. When referring to drafts in reasons, use their descriptive names: \"rubric-guided draft\", \"generic draft\", \"original preference draft\". Do NOT say \"Draft A\", \"Draft B\", or \"Draft C\"."
+      },
+      {
+        "role": "assistant",
+        "content": "{\n  \"reasons\": {\n    \"Functional completeness\": \"Working well \u2014 the rubric-guided draft scored highest and the user confirmed it 'does exactly what an empty state should do,' so this criterion is correctly capturing their intent. Kept exactly as-is.\",\n    \"User-centered direction\": \"Working well \u2014 the rubric-guided draft scored highest and the user specifically praised the button label for describing the outcome, validating this criterion's CTA specificity dimension. Kept exactly as-is.\",\n    \"Trust through specificity\": \"Working well \u2014 the rubric-guided draft scored highest, and the user's rejection of the generic draft's 'no reminders needed, no due dates to chase' as 'feature marketing dressed up as UI copy' confirms this criterion is correctly penalizing vague reassurance. Kept exactly as-is.\",\n    \"Economy and precision\": \"The original preference draft scored highest here (5 vs. 4 for rubric-guided), and the user ranked it first overall \u2014 specifically calling out the rubric-guided draft's semicolon construction as 'copy that's trying too hard.' The criterion itself is sound, but the description needs to explicitly flag that compound constructions and over-explanation of mechanics are failure modes, so future rubric-guided drafts don't trade brevity for thoroughness.\",\n    \"Tonal calibration\": \"Working well \u2014 the rubric-guided draft scored highest and the user's feedback confirms tone was not the reason they preferred the original preference draft. Kept exactly as-is.\",\n    \"Contextual presence\": \"Working well \u2014 both the rubric-guided and original preference drafts scored equally (4), and the user's preference for the original preference draft wasn't driven by contextual presence failures in the rubric-guided draft. Kept exactly as-is.\"\n  },\n  \"rubric\": [\n    {\n      \"name\": \"Functional completeness\",\n      \"category\": \"Content\",\n      \"description\": \"Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \u2014 all within the same unit. A user who sees only that one element should have enough to act.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_the_problem\",\n          \"label\": \"Clearly states what happened or went wrong\"\n        },\n        {\n          \"id\": \"provides_context\",\n          \"label\": \"Gives enough 'why' for the user to understand the situation without guessing\"\n        },\n        {\n          \"id\": \"points_to_action\",\n          \"label\": \"Includes a clear next step or direction within the same element\"\n        },\n        {\n          \"id\": \"standalone_sufficient\",\n          \"label\": \"Element makes sense and feels complete if the user never sees the next screen\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"User-centered direction\",\n      \"category\": \"Audience\",\n      \"description\": \"The user is the subject of the copy, not the product or the situation. Copy puts the user in motion \u2014 they are the one acting, finding, fixing \u2014 rather than watching the product assess or narrate. CTAs tell the user exactly what will happen when they click. Second person, present tense by default.\",\n      \"dimensions\": [\n        {\n          \"id\": \"user_as_subject\",\n          \"label\": \"The user is positioned as the agent doing the action, not the product\"\n        },\n        {\n          \"id\": \"cta_specificity\",\n          \"label\": \"Buttons and links describe the outcome of clicking, not vague verbs like 'try again' or 'submit'\"\n        },\n        {\n          \"id\": \"no_blame\",\n          \"label\": \"Nothing in the copy implies the user made a mistake or did something wrong\"\n        },\n        {\n          \"id\": \"forward_momentum\",\n          \"label\": \"Copy orients toward the next action rather than dwelling on or explaining the current state\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Trust through specificity\",\n      \"category\": \"Content\",\n      \"description\": \"Reassurance is earned by naming concrete realities the user cares about \u2014 saved progress, nothing charged, specific causes \u2014 not by using reassurance language ('don't worry,' 'no problem'). Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.\",\n      \"dimensions\": [\n        {\n          \"id\": \"concrete_reassurance\",\n          \"label\": \"Reassuring statements reference specific, verifiable facts rather than emotional soothing\"\n        },\n        {\n          \"id\": \"no_hedging\",\n          \"label\": \"Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence\"\n        },\n        {\n          \"id\": \"no_overclaiming\",\n          \"label\": \"Does not promise outcomes the product cannot guarantee\"\n        },\n        {\n          \"id\": \"addresses_silent_anxieties\",\n          \"label\": \"Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my cart?')\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Economy and precision\",\n      \"category\": \"Structure\",\n      \"description\": \"Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. Copy is short and scannable. If a list has clear labels and descriptions, the line above it doesn't need to explain what the list is. Completeness never justifies length \u2014 a draft that explains its own mechanics or uses compound constructions to add thoroughness has failed this criterion even if every sentence is technically accurate.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_throat_clearing\",\n          \"label\": \"No setup lines, preambles, or transition phrases that delay the useful content\"\n        },\n        {\n          \"id\": \"every_word_earns_place\",\n          \"label\": \"Removing any word would change or lose the meaning\"\n        },\n        {\n          \"id\": \"scannable\",\n          \"label\": \"Structure supports quick visual parsing \u2014 short sentences, clear hierarchy, labeled sections\"\n        },\n        {\n          \"id\": \"no_redundant_framing\",\n          \"label\": \"Does not introduce or describe elements that are already self-explanatory from their content\"\n        },\n        {\n          \"id\": \"no_over_explanation\",\n          \"label\": \"Does not explain how a feature works when naming what it does is sufficient \u2014 compound constructions and mechanism descriptions are treated as word count failures\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Tonal calibration\",\n      \"category\": \"Style\",\n      \"description\": \"Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is 'the copy equivalent of a calm nod' \u2014 the way a competent colleague would talk to you after a snag. No pep talks, no customer-service voice, no sardonic edge, no shrugging.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_cheerleading\",\n          \"label\": \"Avoids pep-talk language, forced optimism, or performative warmth\"\n        },\n        {\n          \"id\": \"not_clinical\",\n          \"label\": \"Does not read like a system log, support article, or procedure document\"\n        },\n        {\n          \"id\": \"calm_not_breezy\",\n          \"label\": \"Reads as grounded and steady rather than casual or dismissive\"\n        },\n        {\n          \"id\": \"no_sardonic_edge\",\n          \"label\": \"Never anticipates negative user behavior or introduces anxiety that wasn't already there\"\n        },\n        {\n          \"id\": \"human_register\",\n          \"label\": \"Sounds like something a real person would actually say \u2014 plain, direct, conversational without performing conversational\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Contextual presence\",\n      \"category\": \"Audience\",\n      \"description\": \"Copy feels written for the specific screen, moment, and emotional state the user is in \u2014 not lifted from a generic pattern library. It should be clear from the copy alone what just happened, without the copy explicitly narrating or commenting on the situation. The line should feel like it knows where the user is.\",\n      \"dimensions\": [\n        {\n          \"id\": \"moment_specific\",\n          \"label\": \"Copy would feel out of place on a different screen or in a different context\"\n        },\n        {\n          \"id\": \"answers_real_question\",\n          \"label\": \"Addresses the question the user is silently asking, not an adjacent or assumed question\"\n        },\n        {\n          \"id\": \"not_narrating\",\n          \"label\": \"Acknowledges the situation without describing or commenting on it from the outside\"\n        },\n        {\n          \"id\": \"no_editorializing\",\n          \"label\": \"Does not comment on the difficulty, commonality, or expected duration of the situation\"\n        }\n      ],\n      \"priority\": 6\n    }\n  ]\n}"
+      }
+    ],
+    "iteration": 2,
+    "phase": "pre_conversation"
+  },
+  {
+    "timestamp": "2026-03-06T01:46:00.239841",
+    "writing_task": "Hey, I need help with copy for an empty state screen. It's for the **Payees** section of our small business banking app \u2014 this is what users see the first time they log in, before they've added anyone to pay. The audience is small business owners, so they're busy and task-focused, not here to browse. I need the screen headline, a one-line supporting description, and a primary CTA button label.",
+    "drafts": {
+      "rubric": "No payees yet\n\nAdd the people and businesses you pay regularly \u2014 vendors, contractors, anyone you send money to. They'll be here when you need them.\n\nAdd a Payee",
+      "generic": "Headline: Pay the right people, fast.\n\nSupporting description: Add vendors, contractors, or anyone you pay regularly so you can send money in seconds \u2014 no re-entering details every time.\n\nButton: Add Your First Payee",
+      "preference": "Headline: No payees yet\n\nDescription: Add the people and businesses you pay to send money fast.\n\nButton: Add a payee"
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "rubric"
+      ],
+      [
+        "B",
+        "preference"
+      ],
+      [
+        "C",
+        "generic"
+      ]
+    ],
+    "user_preference": "rubric",
+    "user_ranking": [
+      "rubric",
+      "preference",
+      "generic"
+    ],
+    "user_reason": "Draft A is the strongest. The headline is honest and descriptive, the supporting copy explains what a payee is and why it matters (vendors, contractors, people you send money to) without being fluffy, and 'Add a Payee' is clean outcome-oriented copy. It also treats the empty state as a helpful nudge \u2014 it tells the user exactly what they're building and why it's useful. Draft B is acceptable but the description feels truncated and slightly awkward ('Add the people and businesses you pay to send money fast' reads like a run-on). It's functional but not polished. Draft C is the weakest for my purposes \u2014 'Pay the right people, fast.' is a marketing headline, not a UI headline. It's clever in a way that sacrifices directness, and 'Add Your First Payee' with the capital Y feels like it's performing enthusiasm. The empty state copy should guide, not sell. C would be fine on a landing page; it doesn't belong inside the product.",
+    "rubric_version": 5,
+    "criteria_analysis": [
+      {
+        "name": "Economy and precision",
+        "rubric_score": 4,
+        "generic_score": 2,
+        "gap": 2,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "The original preference draft is the leanest \u2014 every word earns its place and nothing is redundant. The rubric-guided draft adds useful context ('They'll be here when you need them') but the enumeration 'vendors, contractors, anyone you send money to' feels like a catalogue that restates what 'people and businesses you pay regularly' already covers. The generic draft is the wordiest \u2014 'so you can send money in seconds \u2014 no re-entering details every time' is a benefit catalogue and the headline 'Pay the right people, fast' is a tagline, not an economical statement.",
+        "preference_score": 5,
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "rubric_score": 4,
+        "generic_score": 3,
+        "gap": 1,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "Both the rubric-guided and original preference drafts use 'Add a Payee' as the CTA, which names the concrete outcome of clicking. The generic draft's 'Add Your First Payee' is close but 'Your First' adds a slight performative warmth. The generic draft's headline ('Pay the right people, fast') puts the product pitch as subject rather than the user's situation. The rubric-guided draft puts the user in motion with forward-looking language. The original preference draft is compact but still user-directed.",
+        "preference_score": 4,
+        "priority": 2
+      },
+      {
+        "name": "Functional completeness",
+        "rubric_score": 5,
+        "generic_score": 4,
+        "gap": 1,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft does the fullest job: names the state (no payees yet), explains what payees are and why you'd add them, and provides a clear CTA. The generic draft covers similar ground but the headline doesn't name the current state \u2014 it pitches a benefit. The original preference draft names the state and points to action but the description ('Add the people and businesses you pay to send money fast') is thin on context \u2014 a user unfamiliar with the payees concept gets minimal help understanding why this matters.",
+        "preference_score": 3,
+        "priority": 3
+      },
+      {
+        "name": "Trust through specificity",
+        "rubric_score": 4,
+        "generic_score": 3,
+        "gap": 1,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft earns trust by being specific about who payees are ('vendors, contractors, anyone you send money to') and what happens ('They'll be here when you need them' \u2014 concrete, verifiable). The generic draft's 'send money in seconds' overclaims slightly. The original preference draft is neutral \u2014 it doesn't overclaim but also doesn't offer specificity that builds confidence.",
+        "preference_score": 3,
+        "priority": 4
+      },
+      {
+        "name": "Tonal calibration",
+        "rubric_score": 4,
+        "generic_score": 2,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft has a human beat \u2014 'They'll be here when you need them' sounds like something a person would say, calm and grounded. The original preference draft is plain and steady, tonally consistent if a bit flat. The generic draft cheerleads \u2014 'Pay the right people, fast' is a tagline, and 'in seconds' is pep-talk energy that this user explicitly rejects.",
+        "preference_score": 4,
+        "priority": 5
+      },
+      {
+        "name": "Contextual presence",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft feels written for this exact screen \u2014 the headline names the empty state, the body orients a first-time user, and all elements share the same voice. The original preference draft is also moment-specific but the thinness of the body means it doesn't fully answer the silent question ('what is this for?'). The generic draft reads like it was pulled from a pattern library \u2014 the headline could sit on a marketing page, and there's a tonal gap between the tagline headline and the instructional body.",
+        "preference_score": 4,
+        "priority": 6
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Economy and precision",
+          "draft_a_score": 4,
+          "draft_b_score": 2,
+          "draft_c_score": 5,
+          "reasoning": "The original preference draft is the leanest \u2014 every word earns its place and nothing is redundant. The rubric-guided draft adds useful context ('They'll be here when you need them') but the enumeration 'vendors, contractors, anyone you send money to' feels like a catalogue that restates what 'people and businesses you pay regularly' already covers. The generic draft is the wordiest \u2014 'so you can send money in seconds \u2014 no re-entering details every time' is a benefit catalogue and the headline 'Pay the right people, fast' is a tagline, not an economical statement."
+        },
+        {
+          "criterion_name": "User-centered direction",
+          "draft_a_score": 4,
+          "draft_b_score": 3,
+          "draft_c_score": 4,
+          "reasoning": "Both the rubric-guided and original preference drafts use 'Add a Payee' as the CTA, which names the concrete outcome of clicking. The generic draft's 'Add Your First Payee' is close but 'Your First' adds a slight performative warmth. The generic draft's headline ('Pay the right people, fast') puts the product pitch as subject rather than the user's situation. The rubric-guided draft puts the user in motion with forward-looking language. The original preference draft is compact but still user-directed."
+        },
+        {
+          "criterion_name": "Functional completeness",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft does the fullest job: names the state (no payees yet), explains what payees are and why you'd add them, and provides a clear CTA. The generic draft covers similar ground but the headline doesn't name the current state \u2014 it pitches a benefit. The original preference draft names the state and points to action but the description ('Add the people and businesses you pay to send money fast') is thin on context \u2014 a user unfamiliar with the payees concept gets minimal help understanding why this matters."
+        },
+        {
+          "criterion_name": "Trust through specificity",
+          "draft_a_score": 4,
+          "draft_b_score": 3,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft earns trust by being specific about who payees are ('vendors, contractors, anyone you send money to') and what happens ('They'll be here when you need them' \u2014 concrete, verifiable). The generic draft's 'send money in seconds' overclaims slightly. The original preference draft is neutral \u2014 it doesn't overclaim but also doesn't offer specificity that builds confidence."
+        },
+        {
+          "criterion_name": "Tonal calibration",
+          "draft_a_score": 4,
+          "draft_b_score": 2,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft has a human beat \u2014 'They'll be here when you need them' sounds like something a person would say, calm and grounded. The original preference draft is plain and steady, tonally consistent if a bit flat. The generic draft cheerleads \u2014 'Pay the right people, fast' is a tagline, and 'in seconds' is pep-talk energy that this user explicitly rejects."
+        },
+        {
+          "criterion_name": "Contextual presence",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft feels written for this exact screen \u2014 the headline names the empty state, the body orients a first-time user, and all elements share the same voice. The original preference draft is also moment-specific but the thinness of the body means it doesn't fully answer the silent question ('what is this for?'). The generic draft reads like it was pulled from a pattern library \u2014 the headline could sit on a marketing page, and there's a tonal gap between the tagline headline and the instructional body."
+        }
+      ],
+      "overall_ranking": [
+        "A",
+        "C",
+        "B"
+      ],
+      "overall_reasoning": "The rubric-guided draft best balances economy, functional completeness, and tonal humanity \u2014 it reads like one cohesive piece of writing for this specific moment. The original preference draft is admirably lean and tonally clean but sacrifices enough context that a first-time user might not fully understand the value of adding payees. The generic draft introduces cheerleading, overclaiming, and a tagline headline that conflict with nearly every principle this user has demonstrated across the conversation."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A is immediately clear about the current state ('No payees yet') and what to do next. Draft B is also clear but its headline ('Pay the right people, fast') is slightly more abstract and less directly informative about the empty state."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft B flows more tightly from benefit-oriented headline to supporting detail to action, creating a cohesive persuasive arc. Draft A flows logically but the supporting text slightly over-explains with the list of examples."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are grammatically correct with no errors or typos."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Both follow a clear headline-description-CTA structure. Draft B is slightly more polished in its organization, with a concise description that integrates examples and benefits into a single sentence rather than two."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 3,
+          "draft_b_score": 5,
+          "reasoning": "Draft B is noticeably more engaging \u2014 the headline is action-oriented and benefit-driven, and the description emphasizes speed and convenience. Draft A is functional but reads more like a status message than a motivating prompt."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft B strikes a more confident, energetic tone that motivates action while remaining professional. Draft A is pleasant and conversational but slightly passive in tone ('They'll be here when you need them')."
+        }
+      ],
+      "overall_preference": "B",
+      "overall_reasoning": "Draft B is more engaging, action-oriented, and persuasive while remaining clear and well-structured. It better motivates the user to take action by leading with benefits, whereas Draft A, while perfectly clear, reads more like a neutral status description."
+    },
+    "suggestion_text": "",
+    "suggestion_reasons": {},
+    "suggested_rubric": null,
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nThe three drafts are:\n- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)\n- Draft B = the **generic** draft (written with no rubric \u2014 just competent writing)\n- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)\n\nDRAFT A (rubric-guided):\nNo payees yet\n\nAdd the people and businesses you pay regularly \u2014 vendors, contractors, anyone you send money to. They'll be here when you need them.\n\nAdd a Payee\n\nDRAFT B (generic):\nHeadline: Pay the right people, fast.\n\nSupporting description: Add vendors, contractors, or anyone you pay regularly so you can send money in seconds \u2014 no re-entering details every time.\n\nButton: Add Your First Payee\n\nDRAFT C (original preference):\nHeadline: No payees yet\n\nDescription: Add the people and businesses you pay to send money fast.\n\nButton: Add a payee\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Economy and precision\",\n      \"category\": \"Structure\",\n      \"description\": \"Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_throat_clearing\",\n          \"label\": \"No setup lines, preambles, or transition phrases that delay the useful content\"\n        },\n        {\n          \"id\": \"every_word_earns_place\",\n          \"label\": \"Removing any word would change or lose the meaning\"\n        },\n        {\n          \"id\": \"scannable\",\n          \"label\": \"Structure supports quick visual parsing \\u2014 short sentences, clear hierarchy, labeled sections where needed\"\n        },\n        {\n          \"id\": \"no_redundant_framing\",\n          \"label\": \"Does not introduce or describe elements that are already self-explanatory from their content\"\n        },\n        {\n          \"id\": \"payoff_over_catalog\",\n          \"label\": \"When one strong closing statement can do the job, avoids expanding into a list of benefits or features\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"User-centered direction\",\n      \"category\": \"Audience\",\n      \"description\": \"The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs name the literal thing the user gets after clicking \\u2014 not the action, not a metaphor, not wordplay. Benefits are framed as what the user gains, not what they stop worrying about.\",\n      \"dimensions\": [\n        {\n          \"id\": \"user_as_subject\",\n          \"label\": \"The user is positioned as the agent acting, not the product assessing or narrating\"\n        },\n        {\n          \"id\": \"cta_names_outcome\",\n          \"label\": \"Buttons name the concrete, literal result of clicking \\u2014 not a vague verb, metaphor, or clever phrase\"\n        },\n        {\n          \"id\": \"toward_framing\",\n          \"label\": \"Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling\"\n        },\n        {\n          \"id\": \"no_blame\",\n          \"label\": \"Nothing in the copy implies the user made a mistake or did something wrong\"\n        },\n        {\n          \"id\": \"forward_momentum\",\n          \"label\": \"Copy orients toward what happens next rather than dwelling on or explaining the current state\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Functional completeness\",\n      \"category\": \"Content\",\n      \"description\": \"Every standalone piece of copy does its full job without depending on another element to close the loop. Messages name the problem, provide relevant context, and point to the next action \\u2014 all within the same unit. A user who sees only that one element should have enough to act.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_the_situation\",\n          \"label\": \"Clearly states what happened or what the current state is\"\n        },\n        {\n          \"id\": \"provides_context\",\n          \"label\": \"Gives enough 'why' for the user to understand the situation without guessing\"\n        },\n        {\n          \"id\": \"points_to_action\",\n          \"label\": \"Includes a clear next step or direction within the same element\"\n        },\n        {\n          \"id\": \"standalone_sufficient\",\n          \"label\": \"Element makes sense and feels complete if the user never sees the next screen\"\n        },\n        {\n          \"id\": \"elements_cohere\",\n          \"label\": \"Headline, body, and CTA work as a single coherent unit \\u2014 each does distinct work and together they form one piece of writing\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Trust through specificity\",\n      \"category\": \"Content\",\n      \"description\": \"Reassurance is earned by naming concrete realities the user cares about \\u2014 saved progress, nothing charged, specific causes \\u2014 not by using reassurance language. Confidence comes from being specific, not from telling the user to feel confident. No hedging and no overclaiming.\",\n      \"dimensions\": [\n        {\n          \"id\": \"concrete_reassurance\",\n          \"label\": \"Reassuring statements reference specific, verifiable facts rather than emotional soothing\"\n        },\n        {\n          \"id\": \"no_hedging\",\n          \"label\": \"Avoids 'probably,' 'likely,' 'might,' or other language that undercuts the copy's own confidence\"\n        },\n        {\n          \"id\": \"no_overclaiming\",\n          \"label\": \"Does not promise outcomes the product cannot guarantee or use metaphors that overstate capability\"\n        },\n        {\n          \"id\": \"addresses_silent_anxieties\",\n          \"label\": \"Proactively resolves concerns the user would have but might not articulate (e.g., 'was I charged?' 'did I lose my progress?')\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Tonal calibration\",\n      \"category\": \"Style\",\n      \"description\": \"Copy hits a precise register: calm and grounded without being clinical, warm without being breezy, confident without cheerleading. The target is the way a competent colleague would talk to you after a snag \\u2014 plain, direct, present. The copy should contain at least one beat that sounds like a person actually said it, and the rhythm should vary so payoffs land like an exhale rather than another list item.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_cheerleading\",\n          \"label\": \"Avoids pep-talk language, forced optimism, or performative warmth\"\n        },\n        {\n          \"id\": \"calm_grounded\",\n          \"label\": \"Reads as steady and present \\u2014 not clinical, not breezy, not sardonic, not like a support article\"\n        },\n        {\n          \"id\": \"human_beat\",\n          \"label\": \"Contains at least one moment that sounds like something a real person would say out loud \\u2014 offhand and plain, not performing conversational\"\n        },\n        {\n          \"id\": \"no_anxiety_injection\",\n          \"label\": \"Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning\"\n        },\n        {\n          \"id\": \"tonal_rhythm\",\n          \"label\": \"Register varies intentionally \\u2014 not one flat temperature throughout; payoff moments land like an exhale, not a list item\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Contextual presence\",\n      \"category\": \"Audience\",\n      \"description\": \"Copy feels written for the specific screen, moment, and emotional state the user is in \\u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking. All elements on the screen share the same voice and register, with no tonal gaps between headline, body, and CTA.\",\n      \"dimensions\": [\n        {\n          \"id\": \"moment_specific\",\n          \"label\": \"Copy would feel out of place on a different screen or in a different context\"\n        },\n        {\n          \"id\": \"answers_real_question\",\n          \"label\": \"Addresses the question the user is silently asking, not an adjacent or assumed question\"\n        },\n        {\n          \"id\": \"not_narrating\",\n          \"label\": \"Acknowledges the situation without describing, commenting on, or editorializing about it from the outside\"\n        },\n        {\n          \"id\": \"voice_consistency\",\n          \"label\": \"All elements on the screen share the same voice and register \\u2014 no tonal gap between a system-label headline and a human-sounding body\"\n        }\n      ],\n      \"priority\": 6\n    }\n  ],\n  \"version\": 5,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"product/UX copy\",\n  \"user_goals_summary\": \"Copy should be functionally complete, tonally precise, and written for the specific moment the user is in. Every element must do its full job independently, CTAs must name concrete outcomes, and the voice should sound like a calm, competent person \\u2014 not a product, not a support doc, not a pattern library. The user values economy, but not at the cost of humanity.\",\n  \"coaching_notes\": \"This user iterates relentlessly on tonal calibration \\u2014 they distinguish between 'calm and present' and 'calm and procedural,' and will not settle for the latter. Non-negotiables: every standalone element must do its full job; CTAs must name concrete outcomes (not metaphors, not clever wordplay); copy must never introduce anxiety or blame. When presenting options, lead with the one that does the least while saying the most \\u2014 this user consistently picks the shortest, plainest option that still sounds human.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\nheadline. 'No scheduled payments yet' is doing the minimum \u2014 it's accurate, it's neutral, it reads like a system status. But the body copy right below it has a voice. There's a small tonal gap between a headline that sounds like a database label and body copy that sounds like a person. For a first-time moment, that gap matters.\n\nI'm not looking for something warm or clever \u2014 I don't want 'Your payment journey starts here' or anything like that. I just want the headline to feel like it belongs to the same piece of writing as the body. Right now it reads like it was written by a different person on a different day. Can you give me a few headline options that match the tone of the body without turning into a tagline?\n\n[Message #86 \u2014 assistant]\nThe body has a specific register \u2014 offhand, confident, a little self-aware. The headline just needs to belong to the same voice. A few options:\n\n**Neutral but human, not a system label:**\nOption 1: `Nothing scheduled yet`\nOption 2: `No payments scheduled`\n\n**Acknowledges the blank slate without narrating it:**\nOption 3: `Start with one bill`\nOption 4: `One bill to start`\n\n**Matches the \"this is easy, here's why\" tone of the body:**\nOption 5: `Set it up once`\nOption 6: `It starts with one bill`\n\nA few notes:\n- Options 1 and 2 are small moves \u2014 they drop the clunkiness of \"scheduled payments yet\" without changing the meaning. Warmer by a degree, not a tonal swing.\n- Options 3 and 4 do double duty \u2014 they acknowledge the empty state and point forward, which means the headline is already nudging before the body copy kicks in.\n- Options 5 and 6 risk overlapping with the body copy's job. The headline should set up the body, not summarize it.\n\nWhich direction feels closest?\n\n[Message #87 \u2014 user]\nOption 3 \u2014 \"Start with one bill.\" It's imperative without being pushy, it matches the voice of the body copy, and it frames the blank slate as an invitation rather than a status. Update the full empty state with that headline.\n\n[Message #88 \u2014 assistant]\n<draft>Start with one bill\n\nSet up your first bill in a few steps \u2014 honestly, that's the hardest part. After that, it just runs.\n\nGet My First Bill Scheduled</draft>\n\n[Message #89 \u2014 user]\nOkay, this is it. 'Start with one bill' is doing exactly what I needed \u2014 it matches the voice of the body copy without sounding like a system label, and the whole thing reads like one consistent piece of writing now. The headline invites, the body reassures, the button commits. I'm not touching any of it. This one's done \u2014 let's move on.\n\n[Message #90 \u2014 system]\n--- Iteration 3/4 ---\n\n[Message #91 \u2014 user]\nHey, I need help with copy for an empty state screen. It's for the **Payees** section of our small business banking app \u2014 this is what users see the first time they log in, before they've added anyone to pay. The audience is small business owners, so they're busy and task-focused, not here to browse. I need the screen headline, a one-line supporting description, and a primary CTA button label.\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Economy and precision\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"The original preference draft is the leanest \u2014 every word earns its place and nothing is redundant. The rubric-guided draft adds useful context ('They'll be here when you need them') but the enumeration 'vendors, contractors, anyone you send money to' feels like a catalogue that restates what 'people and businesses you pay regularly' already covers. The generic draft is the wordiest \u2014 'so you can send money in seconds \u2014 no re-entering details every time' is a benefit catalogue and the headline 'Pay the right people, fast' is a tagline, not an economical statement.\"\n        },\n        {\n            \"criterion_name\": \"User-centered direction\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"Both the rubric-guided and original preference drafts use 'Add a Payee' as the CTA, which names the concrete outcome of clicking. The generic draft's 'Add Your First Payee' is close but 'Your First' adds a slight performative warmth. The generic draft's headline ('Pay the right people, fast') puts the product pitch as subject rather than the user's situation. The rubric-guided draft puts the user in motion with forward-looking language. The original preference draft is compact but still user-directed.\"\n        },\n        {\n            \"criterion_name\": \"Functional completeness\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 4,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft does the fullest job: names the state (no payees yet), explains what payees are and why you'd add them, and provides a clear CTA. The generic draft covers similar ground but the headline doesn't name the current state \u2014 it pitches a benefit. The original preference draft names the state and points to action but the description ('Add the people and businesses you pay to send money fast') is thin on context \u2014 a user unfamiliar with the payees concept gets minimal help understanding why this matters.\"\n        },\n        {\n            \"criterion_name\": \"Trust through specificity\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft earns trust by being specific about who payees are ('vendors, contractors, anyone you send money to') and what happens ('They'll be here when you need them' \u2014 concrete, verifiable). The generic draft's 'send money in seconds' overclaims slightly. The original preference draft is neutral \u2014 it doesn't overclaim but also doesn't offer specificity that builds confidence.\"\n        },\n        {\n            \"criterion_name\": \"Tonal calibration\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft has a human beat \u2014 'They'll be here when you need them' sounds like something a person would say, calm and grounded. The original preference draft is plain and steady, tonally consistent if a bit flat. The generic draft cheerleads \u2014 'Pay the right people, fast' is a tagline, and 'in seconds' is pep-talk energy that this user explicitly rejects.\"\n        },\n        {\n            \"criterion_name\": \"Contextual presence\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft feels written for this exact screen \u2014 the headline names the empty state, the body orients a first-time user, and all elements share the same voice. The original preference draft is also moment-specific but the thinness of the body means it doesn't fully answer the silent question ('what is this for?'). The generic draft reads like it was pulled from a pattern library \u2014 the headline could sit on a marketing page, and there's a tonal gap between the tagline headline and the instructional body.\"\n        }\n    ],\n    \"overall_ranking\": [\"A\", \"C\", \"B\"],\n    \"overall_reasoning\": \"The rubric-guided draft best balances economy, functional completeness, and tonal humanity \u2014 it reads like one cohesive piece of writing for this specific moment. The original preference draft is admirably lean and tonally clean but sacrifices enough context that a first-time user might not fully understand the value of adding payees. The generic draft introduces cheerleading, overclaiming, and a tagline headline that conflict with nearly every principle this user has demonstrated across the conversation.\"\n}\n```"
+      }
+    ],
+    "iteration": 3,
+    "phase": "pre_conversation"
+  },
+  {
+    "timestamp": "2026-03-06T01:59:37.232500",
+    "writing_task": "Hey, I need help writing the empty state copy for a \"Scheduled Payments\" screen. This is for small business owners who've just set up their account but haven't scheduled anything yet. The screen will have an illustration, a headline, a short subtext line, and a CTA button \u2014 so four distinct copy elements. Want to keep it practical and nudge them toward scheduling their first payment without making it feel like a chore.",
+    "drafts": {
+      "rubric": "Illustration: A clean calendar with a few dotted payment lines\n\nHeadline: No payments scheduled yet\n\nSubtext: Set up a payment and it'll show up here \u2014 along with the status of anything you've sent.\n\nCTA button: Schedule a Payment",
+      "generic": "Headline: Your payment schedule starts here.\n\nSubtext: Stay on top of vendor payments, subscriptions, and recurring bills \u2014 all in one place. Set it once and let it run.\n\nCTA Button: Schedule a Payment\n\n---\n\nIllustration note: A clean, simple graphic of a calendar with a checkmark or clock icon works well here \u2014 something that reads as organized and in control, not overwhelming.",
+      "preference": "Headline: No payments scheduled yet\n\nSubtext: Set up recurring or one-time payments and we'll handle the reminders.\n\nCTA button: Schedule a Payment"
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "preference"
+      ],
+      [
+        "B",
+        "rubric"
+      ],
+      [
+        "C",
+        "generic"
+      ]
+    ],
+    "user_preference": "rubric",
+    "user_ranking": [
+      "rubric",
+      "preference",
+      "generic"
+    ],
+    "user_reason": "B wins because it does something the others don't \u2014 it tells the user what they'll see once they act. 'It'll show up here \u2014 along with the status of anything you've sent' makes the empty state feel like a preview of something useful, not just a dead end. That's the nudge I want. It earns its place. A is clean and honest, but the subtext is a bit feature-listy ('recurring or one-time') and 'we'll handle the reminders' drifts toward marketing copy \u2014 I don't want promises in a UI string, I want orientation. C is the weakest. 'Your payment schedule starts here' is trying too hard to be a moment, and the subtext is doing way too much \u2014 vendor payments, subscriptions, recurring bills, 'set it and forget it' energy. It reads like onboarding marketing that got lost and ended up in the product. The CTA is identical across all three, which is fine but also a missed opportunity \u2014 'Schedule a Payment' describes the action, not the outcome. I'd push back on that in review regardless of which draft we go with.",
+    "rubric_version": 8,
+    "criteria_analysis": [
+      {
+        "name": "Functional completeness",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft excels: its headline acknowledges the empty state, the body nudges toward action AND tells the user what they'll gain (status visibility), and the CTA names the outcome \u2014 each element does distinct work that escalates into a coherent unit. The generic draft reads more like a marketing pitch than a functional empty state nudge \u2014 'Stay on top of vendor payments, subscriptions, and recurring bills' is a feature catalog, not a guide toward a first action. The original preference draft is solid but its body ('we'll handle the reminders') is a benefit claim that doesn't orient the user to what they'll see on this screen once they act.",
+        "preference_score": 4,
+        "priority": 1
+      },
+      {
+        "name": "User-centered direction",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft puts the user in motion ('Set up a payment and it'll show up here') with the user as agent, the CTA names the literal outcome, and benefits are framed as what you gain (status visibility). The generic draft's 'Set it once and let it run' makes the product the subject doing work; 'Stay on top of' is slightly toward-framed but abstract. The original preference draft is user-centered but 'we'll handle the reminders' shifts agency to the product.",
+        "preference_score": 4,
+        "priority": 2
+      },
+      {
+        "name": "Tonal calibration",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft reads like a competent colleague \u2014 calm, plain, present, with no cheerleading or marketing register. The generic draft uses clear marketing register inside the product ('Stay on top of vendor payments, subscriptions, and recurring bills \u2014 all in one place. Set it once and let it run') which is promotional value-prop language, exactly what this user flags as a non-negotiable violation. The original preference draft is well-calibrated tonally but slightly functional/flat \u2014 it lacks the one human beat the rubric-guided draft gets with 'and it'll show up here.'",
+        "preference_score": 4,
+        "priority": 3
+      },
+      {
+        "name": "Contextual presence",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft clearly knows what screen it's on \u2014 'it'll show up here' and 'the status of anything you've sent' are specific to this exact screen and answer the silent question ('what will this page do for me once I use it?'). The generic draft could be lifted from a landing page or onboarding flow \u2014 it doesn't feel written for this specific empty state moment. The original preference draft is contextually appropriate but more generic in what it promises ('we'll handle the reminders' could appear on multiple screens). The rubric-guided draft also has the strongest human beat \u2014 'and it'll show up here' is offhand and plain.",
+        "preference_score": 3,
+        "priority": 4
+      },
+      {
+        "name": "Economy and precision",
+        "rubric_score": 4,
+        "generic_score": 2,
+        "gap": 2,
+        "classification": "PREFERENCE_GAP",
+        "reasoning": "The original preference draft is the tightest \u2014 every word earns its place, no filler, highly scannable. The rubric-guided draft is nearly as lean but the clause 'along with the status of anything you've sent' adds useful information at the cost of slightly more length \u2014 justified by the functional completeness it provides. The generic draft has clear throat-clearing ('Your payment schedule starts here') and a catalog of use cases ('vendor payments, subscriptions, and recurring bills') that violates the payoff-over-catalog principle.",
+        "preference_score": 5,
+        "priority": 5
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Functional completeness",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft excels: its headline acknowledges the empty state, the body nudges toward action AND tells the user what they'll gain (status visibility), and the CTA names the outcome \u2014 each element does distinct work that escalates into a coherent unit. The generic draft reads more like a marketing pitch than a functional empty state nudge \u2014 'Stay on top of vendor payments, subscriptions, and recurring bills' is a feature catalog, not a guide toward a first action. The original preference draft is solid but its body ('we'll handle the reminders') is a benefit claim that doesn't orient the user to what they'll see on this screen once they act."
+        },
+        {
+          "criterion_name": "User-centered direction",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft puts the user in motion ('Set up a payment and it'll show up here') with the user as agent, the CTA names the literal outcome, and benefits are framed as what you gain (status visibility). The generic draft's 'Set it once and let it run' makes the product the subject doing work; 'Stay on top of' is slightly toward-framed but abstract. The original preference draft is user-centered but 'we'll handle the reminders' shifts agency to the product."
+        },
+        {
+          "criterion_name": "Tonal calibration",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft reads like a competent colleague \u2014 calm, plain, present, with no cheerleading or marketing register. The generic draft uses clear marketing register inside the product ('Stay on top of vendor payments, subscriptions, and recurring bills \u2014 all in one place. Set it once and let it run') which is promotional value-prop language, exactly what this user flags as a non-negotiable violation. The original preference draft is well-calibrated tonally but slightly functional/flat \u2014 it lacks the one human beat the rubric-guided draft gets with 'and it'll show up here.'"
+        },
+        {
+          "criterion_name": "Contextual presence",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft clearly knows what screen it's on \u2014 'it'll show up here' and 'the status of anything you've sent' are specific to this exact screen and answer the silent question ('what will this page do for me once I use it?'). The generic draft could be lifted from a landing page or onboarding flow \u2014 it doesn't feel written for this specific empty state moment. The original preference draft is contextually appropriate but more generic in what it promises ('we'll handle the reminders' could appear on multiple screens). The rubric-guided draft also has the strongest human beat \u2014 'and it'll show up here' is offhand and plain."
+        },
+        {
+          "criterion_name": "Economy and precision",
+          "draft_a_score": 4,
+          "draft_b_score": 2,
+          "draft_c_score": 5,
+          "reasoning": "The original preference draft is the tightest \u2014 every word earns its place, no filler, highly scannable. The rubric-guided draft is nearly as lean but the clause 'along with the status of anything you've sent' adds useful information at the cost of slightly more length \u2014 justified by the functional completeness it provides. The generic draft has clear throat-clearing ('Your payment schedule starts here') and a catalog of use cases ('vendor payments, subscriptions, and recurring bills') that violates the payoff-over-catalog principle."
+        }
+      ],
+      "overall_ranking": [
+        "Draft A",
+        "Draft C",
+        "Draft B"
+      ],
+      "overall_reasoning": "The rubric-guided draft is the strongest across every high-priority criterion \u2014 it's functionally self-contained, user-centered, tonally calibrated, contextually specific, and includes a genuine human beat. The original preference draft is clean and well-calibrated but trades functional completeness and contextual specificity for brevity. The generic draft reads like marketing copy inside a product UI, which is a fundamental violation of this user's stated priorities."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A immediately communicates the empty state \u2014 'No payments scheduled yet' is instantly understood. Draft B's 'Your payment schedule starts here' is clear but slightly more abstract, requiring the reader to infer that nothing has been set up yet."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A flows logically: empty state headline \u2192 explanation of what will appear \u2192 action to take. Draft B also flows well but pivots from an aspirational headline to listing use cases (vendors, subscriptions, bills) that slightly broadens the scope beyond the immediate context."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are grammatically correct with no errors or typos. Punctuation and sentence construction are clean in each."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Both follow a standard empty-state pattern (headline, subtext, CTA). Draft A includes a concise illustration note inline, while Draft B's illustration note is appended separately and is more verbose, slightly disrupting the tight structure."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 4,
+          "draft_b_score": 5,
+          "reasoning": "Draft B is more motivating and forward-looking \u2014 'Set it once and let it run' creates a compelling value proposition. Draft A is effective but more utilitarian and less inspiring."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A strikes a perfect conversational, helpful tone for an empty state \u2014 friendly without overselling. Draft B leans slightly more toward marketing copy ('all in one place'), which can feel mildly out of place in a product UI empty state."
+        }
+      ],
+      "overall_preference": "A",
+      "overall_reasoning": "Draft A is the stronger empty-state UI copy: it clearly communicates the current state, sets expectations for what will appear, and uses a warm, conversational tone perfectly suited to the context. Draft B is more engaging and aspirational but reads slightly more like marketing copy than in-product guidance."
+    },
+    "suggestion_text": "",
+    "suggestion_reasons": {},
+    "suggested_rubric": null,
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nThe three drafts are:\n- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)\n- Draft B = the **generic** draft (written with no rubric \u2014 just competent writing)\n- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)\n\nDRAFT A (rubric-guided):\nIllustration: A clean calendar with a few dotted payment lines\n\nHeadline: No payments scheduled yet\n\nSubtext: Set up a payment and it'll show up here \u2014 along with the status of anything you've sent.\n\nCTA button: Schedule a Payment\n\nDRAFT B (generic):\nHeadline: Your payment schedule starts here.\n\nSubtext: Stay on top of vendor payments, subscriptions, and recurring bills \u2014 all in one place. Set it once and let it run.\n\nCTA Button: Schedule a Payment\n\n---\n\nIllustration note: A clean, simple graphic of a calendar with a checkmark or clock icon works well here \u2014 something that reads as organized and in control, not overwhelming.\n\nDRAFT C (original preference):\nHeadline: No payments scheduled yet\n\nSubtext: Set up recurring or one-time payments and we'll handle the reminders.\n\nCTA button: Schedule a Payment\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Functional completeness\",\n      \"category\": \"Content\",\n      \"description\": \"Every standalone piece of copy does its full job without depending on another element to close the loop. Error messages follow the sequence: what happened, why, what to do \\u2014 in that order. Confirmation dialogs name the specific consequence. Empty states guide the user toward their first action rather than announcing absence. A user who sees only one element should have enough to act.\",\n      \"dimensions\": [\n        {\n          \"id\": \"error_what_why_what\",\n          \"label\": \"Error messages follow the what-why-what structure: what happened, why it happened, what to do next \\u2014 no generic fallback copy\"\n        },\n        {\n          \"id\": \"standalone_sufficient\",\n          \"label\": \"Each element makes sense and feels complete if the user never sees the next screen\"\n        },\n        {\n          \"id\": \"empty_state_nudge\",\n          \"label\": \"Empty states direct the user toward their first action \\u2014 they read as a helpful nudge, not a dead end or a system status label\"\n        },\n        {\n          \"id\": \"confirmation_specificity\",\n          \"label\": \"Confirmation dialogs name the specific consequence and scope \\u2014 'Delete 3 invoices permanently?' not 'Are you sure?'\"\n        },\n        {\n          \"id\": \"elements_cohere\",\n          \"label\": \"Headline, body, and CTA work as a single coherent unit \\u2014 each does distinct work and together they form one escalating thought\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"User-centered direction\",\n      \"category\": \"Audience\",\n      \"description\": \"The user is the subject of the copy, not the product or the situation. Copy puts the user in motion toward a concrete outcome. CTAs make it clear what clicking achieves \\u2014 simple, literal labels are preferred when the action IS the outcome. Benefits are framed as what the user gains, not what they stop worrying about.\",\n      \"dimensions\": [\n        {\n          \"id\": \"user_as_subject\",\n          \"label\": \"The user is positioned as the agent acting, not the product assessing, investigating, or narrating\"\n        },\n        {\n          \"id\": \"cta_names_outcome\",\n          \"label\": \"Button labels make it clear what clicking achieves \\u2014 'Add Payee' is fine when a payee being added IS the outcome; 'Resubmit order' over 'Try again'; no metaphors or clever wordplay\"\n        },\n        {\n          \"id\": \"cta_reusable_across_visits\",\n          \"label\": \"CTA labels remain accurate across repeat visits \\u2014 no session-specific framing like 'Your First' that breaks on the second use\"\n        },\n        {\n          \"id\": \"toward_framing\",\n          \"label\": \"Benefits are framed as what the user gains or has afterward, not what they avoid or stop feeling\"\n        },\n        {\n          \"id\": \"no_blame\",\n          \"label\": \"Nothing in the copy implies the user made a mistake or did something wrong\"\n        },\n        {\n          \"id\": \"active_voice\",\n          \"label\": \"Instructions use active voice \\u2014 'Enter your account number' not 'Your account number should be entered'\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Tonal calibration\",\n      \"category\": \"Style\",\n      \"description\": \"Tone shifts deliberately based on context. Celebratory or first-time moments can carry warmth. Error states should be calm and precise \\u2014 never panicked, never dismissive. Routine actions should be nearly invisible. No marketing register inside the product. The target is how a competent, slightly knowing colleague would talk to you \\u2014 plain, direct, present. Never a pep talk, never a shrug.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_cheerleading\",\n          \"label\": \"Avoids pep-talk language, forced optimism, or performative warmth \\u2014 in body copy, headlines, and button labels alike\"\n        },\n        {\n          \"id\": \"calm_grounded\",\n          \"label\": \"Error and warning states read as steady and precise \\u2014 not panicked, not clinical, not sarcastic, not breezy\"\n        },\n        {\n          \"id\": \"context_appropriate_warmth\",\n          \"label\": \"First-time moments and celebratory moments are allowed to be warm \\u2014 tone matches the emotional weight of the moment\"\n        },\n        {\n          \"id\": \"no_anxiety_injection\",\n          \"label\": \"Never introduces concerns the user wasn't already having, or anticipates negative behavior like abandoning\"\n        },\n        {\n          \"id\": \"no_marketing_in_product\",\n          \"label\": \"Product UI copy does not use promotional or marketing register \\u2014 no superlatives, no value-prop language inside the flow\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Contextual presence\",\n      \"category\": \"Audience\",\n      \"description\": \"Copy feels written for the specific screen, moment, and emotional state the user is in \\u2014 not lifted from a pattern library or generic troubleshooting template. It addresses the question the user is silently asking, not an adjacent one. All elements on the screen share the same voice, register, and assumed audience \\u2014 no tonal gap between headline, body, and CTA.\",\n      \"dimensions\": [\n        {\n          \"id\": \"moment_specific\",\n          \"label\": \"Copy would feel out of place on a different screen or in a different context \\u2014 it clearly knows what just happened\"\n        },\n        {\n          \"id\": \"answers_real_question\",\n          \"label\": \"Addresses the question the user is silently asking \\u2014 not an adjacent question like how long it will take or how common it is\"\n        },\n        {\n          \"id\": \"not_narrating\",\n          \"label\": \"Acknowledges the situation without describing, commenting on, or editorializing about it from the outside \\u2014 copy is in the moment, not above it\"\n        },\n        {\n          \"id\": \"voice_consistency\",\n          \"label\": \"All elements on the screen share the same voice, register, and assumed audience \\u2014 no tonal gap between a system-label headline and a human-sounding body\"\n        },\n        {\n          \"id\": \"one_human_beat\",\n          \"label\": \"Contains at least one moment that sounds like something a real person would say out loud \\u2014 offhand and plain, not performing conversational\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Economy and precision\",\n      \"category\": \"Structure\",\n      \"description\": \"Every word does specific, identifiable work. No throat-clearing, no filler, no over-introducing self-explanatory elements. When one strong statement can close a thought, it is not expanded into a catalogue of benefits. Completeness never justifies length.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_throat_clearing\",\n          \"label\": \"No setup lines, preambles, or transition phrases that delay the useful content\"\n        },\n        {\n          \"id\": \"every_word_earns_place\",\n          \"label\": \"Removing any word would change or lose the meaning\"\n        },\n        {\n          \"id\": \"scannable\",\n          \"label\": \"Structure supports quick visual parsing \\u2014 short sentences, clear hierarchy, labeled sections where needed\"\n        },\n        {\n          \"id\": \"no_redundant_framing\",\n          \"label\": \"Does not introduce or describe elements that are already self-explanatory from their content\"\n        },\n        {\n          \"id\": \"payoff_over_catalog\",\n          \"label\": \"When one strong closing statement can do the job, avoids expanding into a list of benefits or features\"\n        }\n      ],\n      \"priority\": 5\n    }\n  ],\n  \"version\": 8,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"product UI copy (fintech / payments)\",\n  \"user_goals_summary\": \"Writes product copy that feels calm, present, and written for the specific moment the user is in \\u2014 not lifted from a pattern library. Values economy and precision but insists on at least one human beat per copy unit. Treats the user as a competent adult who needs clear direction, not coaching or cheerleading.\",\n  \"coaching_notes\": \"Non-negotiable: every piece of copy must be functionally self-contained, and CTAs must be clear about what clicking does \\u2014 no cleverness, no metaphors, no session-specific framing that breaks on repeat visits. Trade-off pattern: will sacrifice brevity for a 'human beat' (one offhand, knowing line per unit) but will not sacrifice clarity for personality. Responds best to options presented with short rationales; iterates by describing what's wrong with increasing precision until the exact register clicks \\u2014 expect many rounds on tonal nuance, especially for opening lines in error and empty states.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\ne moment that sounds like something a real person would say out loud \\u2014 offhand and plain, not performing conversational\", \"Reads as steady and present \\u2014 not clinical, not breezy, not sardonic, not like a support article\", \"Avoids pep-talk language, forced optimism, or performative warmth\"]}, {\"name\": \"Trust through specificity\", \"added_dims\": [\"Terminology is consistent across the entire flow \\u2014 the same action, object, or state is never referred to by two different names\"], \"removed_dims\": []}]}, \"source\": \"simulation_log_changes\"}-->\n\n[Message #167 \u2014 assistant]\n<draft>Your vendors aren't going to pay themselves.\n\nYou already know who they are. This is just where you put them.\n\nSave Your First Payee</draft>\n\n*Draft updated based on rubric changes.*\n\n[Message #168 \u2014 user]\nHere's my feedback on the draft edits:\n- Edit \"Add a Payee\" \u2192 \"Save Your First Payee\": I see what it's going for, but 'Save Your First Payee' feels a little hand-holdy to me. The 'Your First' part is doing too much \u2014 it's trying to be encouraging but it ends up sounding like it's narrating the user's experience back at them. Also, this label would be wrong the second they've already saved a payee and come back to add another. 'Add Payee' is actually fine here \u2014 it's an outcome ('a payee gets added') and it's clean. I'd maybe push it to 'Add New Payee' if we need to distinguish it, but I wouldn't ship 'Save Your First Payee'.\n\n[Message #169 \u2014 assistant]\n<draft>Pay a vendor by adding them here first.\n\nAdd Payee</draft>\n\n*Draft updated based on accepted rubric suggestion.*\n\n[Message #170 \u2014 user]\nOkay, I don't know what happened here but this is a full step backward. We had a locked headline and body that were genuinely working \u2014 'Your vendors aren't going to pay themselves' and 'You already know who they are. This is just where you put them.' Those are gone, and what replaced them is 'Pay a vendor by adding them here first,' which is... a process description. It's telling me the sequence of operations, not setting up any kind of context or personality. And 'Add Payee' as the button \u2014 we've been through this. That's where we started 38 rounds ago. I need you to restore the headline and body we locked in, and then let's just focus on the button. The headline and body do the personality work. The button needs to name what I'm walking into when I click \u2014 not the form I'm about to fill out, but the actual outcome. What changes in my world after I click? That's what should be on the button.\n\n[Message #171 \u2014 system]\n--- Iteration 4/4 ---\n\n[Message #172 \u2014 user]\nHey, I need help writing the empty state copy for a \"Scheduled Payments\" screen. This is for small business owners who've just set up their account but haven't scheduled anything yet. The screen will have an illustration, a headline, a short subtext line, and a CTA button \u2014 so four distinct copy elements. Want to keep it practical and nudge them toward scheduling their first payment without making it feel like a chore.\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Functional completeness\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft excels: its headline acknowledges the empty state, the body nudges toward action AND tells the user what they'll gain (status visibility), and the CTA names the outcome \u2014 each element does distinct work that escalates into a coherent unit. The generic draft reads more like a marketing pitch than a functional empty state nudge \u2014 'Stay on top of vendor payments, subscriptions, and recurring bills' is a feature catalog, not a guide toward a first action. The original preference draft is solid but its body ('we'll handle the reminders') is a benefit claim that doesn't orient the user to what they'll see on this screen once they act.\"\n        },\n        {\n            \"criterion_name\": \"User-centered direction\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft puts the user in motion ('Set up a payment and it'll show up here') with the user as agent, the CTA names the literal outcome, and benefits are framed as what you gain (status visibility). The generic draft's 'Set it once and let it run' makes the product the subject doing work; 'Stay on top of' is slightly toward-framed but abstract. The original preference draft is user-centered but 'we'll handle the reminders' shifts agency to the product.\"\n        },\n        {\n            \"criterion_name\": \"Tonal calibration\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft reads like a competent colleague \u2014 calm, plain, present, with no cheerleading or marketing register. The generic draft uses clear marketing register inside the product ('Stay on top of vendor payments, subscriptions, and recurring bills \u2014 all in one place. Set it once and let it run') which is promotional value-prop language, exactly what this user flags as a non-negotiable violation. The original preference draft is well-calibrated tonally but slightly functional/flat \u2014 it lacks the one human beat the rubric-guided draft gets with 'and it'll show up here.'\"\n        },\n        {\n            \"criterion_name\": \"Contextual presence\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft clearly knows what screen it's on \u2014 'it'll show up here' and 'the status of anything you've sent' are specific to this exact screen and answer the silent question ('what will this page do for me once I use it?'). The generic draft could be lifted from a landing page or onboarding flow \u2014 it doesn't feel written for this specific empty state moment. The original preference draft is contextually appropriate but more generic in what it promises ('we'll handle the reminders' could appear on multiple screens). The rubric-guided draft also has the strongest human beat \u2014 'and it'll show up here' is offhand and plain.\"\n        },\n        {\n            \"criterion_name\": \"Economy and precision\",\n            \"draft_a_score\": 4,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"The original preference draft is the tightest \u2014 every word earns its place, no filler, highly scannable. The rubric-guided draft is nearly as lean but the clause 'along with the status of anything you've sent' adds useful information at the cost of slightly more length \u2014 justified by the functional completeness it provides. The generic draft has clear throat-clearing ('Your payment schedule starts here') and a catalog of use cases ('vendor payments, subscriptions, and recurring bills') that violates the payoff-over-catalog principle.\"\n        }\n    ],\n    \"overall_ranking\": [\"Draft A\", \"Draft C\", \"Draft B\"],\n    \"overall_reasoning\": \"The rubric-guided draft is the strongest across every high-priority criterion \u2014 it's functionally self-contained, user-centered, tonally calibrated, contextually specific, and includes a genuine human beat. The original preference draft is clean and well-calibrated but trades functional completeness and contextual specificity for brevity. The generic draft reads like marketing copy inside a product UI, which is a fundamental violation of this user's stated priorities.\"\n}\n```"
+      }
+    ],
+    "iteration": 4,
+    "phase": "pre_conversation"
+  }
+]

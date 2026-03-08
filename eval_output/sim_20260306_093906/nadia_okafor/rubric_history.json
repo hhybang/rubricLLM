@@ -1,0 +1,1496 @@
+[
+  {
+    "version": 1,
+    "writing_type": "UX product copy (in-app flows, errors, and recovery states)",
+    "user_goals_summary": "Write product copy that reads as one coherent explanation across sequential screens, eliminates ambiguity at every step, and respects the user as a competent professional who wants to resolve the issue fast. Every piece of copy\u2014error messages, recovery screens, CTAs\u2014must earn its place by answering a specific question the user will have at that moment.",
+    "rubric": [
+      {
+        "name": "Information Continuity Across States",
+        "category": "Structure",
+        "description": "Sequential copy blocks (error \u2192 recovery \u2192 CTA) read as one continuous explanation, not disconnected notices. A user moving through the flow should feel like they're following a single narrative thread, not re-orienting at each screen.",
+        "dimensions": [
+          {
+            "id": "logical_chain",
+            "label": "Copy follows a clear logic chain: what happened \u2192 impact on user \u2192 what to do \u2192 what the action achieves"
+          },
+          {
+            "id": "no_redundant_reorienting",
+            "label": "Later screens build on information from earlier screens rather than restating or contradicting it"
+          },
+          {
+            "id": "progressive_detail",
+            "label": "Detail increases as the user moves deeper into the flow (summary first, specifics later)"
+          },
+          {
+            "id": "same_sentence_test",
+            "label": "The full flow reads as though it could be one continuous paragraph if the screen breaks were removed"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Content",
+        "description": "Copy explains what happened and why before telling the user what to do. The user should never have to ask 'but what actually happened?' before being presented with a fix.",
+        "dimensions": [
+          {
+            "id": "cause_leads",
+            "label": "The cause of the issue appears before the call to action or recovery instruction"
+          },
+          {
+            "id": "specific_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank' not just 'something went wrong')"
+          },
+          {
+            "id": "no_orphaned_directives",
+            "label": "Every 'do this' instruction is preceded by a 'because this' explanation"
+          },
+          {
+            "id": "user_impact_stated",
+            "label": "Copy explicitly states the impact on the user (e.g., 'your card hasn't been charged') rather than leaving them to infer it"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe the outcome of clicking, not just the task the user is about to perform. The user should know what the system will do as a result of their action.",
+        "dimensions": [
+          {
+            "id": "outcome_not_task",
+            "label": "CTA text communicates what happens after the click, not just what the user is about to do"
+          },
+          {
+            "id": "matches_system_behavior",
+            "label": "CTA accurately reflects the actual system behavior (e.g., auto-retry vs. manual confirm)"
+          },
+          {
+            "id": "resolves_not_navigates",
+            "label": "CTA implies resolution or progress, not just navigation to another screen"
+          },
+          {
+            "id": "single_clear_path",
+            "label": "Primary CTA presents one unambiguous next step (secondary options are clearly subordinate)"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Preemptive Clarity",
+        "category": "Audience",
+        "description": "Each copy block anticipates and answers the user's most likely next question at that moment. Copy should eliminate the gap between 'what does this say?' and 'what do I need to know?' so the user never stalls.",
+        "dimensions": [
+          {
+            "id": "first_question_answered",
+            "label": "The copy addresses the user's most immediate concern at this point in the flow (e.g., 'was I charged?')"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "Every state provides a clear next step \u2014 the user is never left without a path forward"
+          },
+          {
+            "id": "ambiguity_eliminated",
+            "label": "No sentence leaves the user needing to guess at meaning or implications"
+          },
+          {
+            "id": "relevant_context_included",
+            "label": "Includes time-sensitive or state-sensitive context when it affects the user's decision (e.g., order hold duration)"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Transactional Directness",
+        "category": "Style",
+        "description": "Tone is clean, calm, and efficient \u2014 no emotional padding, no coddling, no drama. Copy respects the user as a competent professional who wants to resolve the issue and move on.",
+        "dimensions": [
+          {
+            "id": "no_emotional_padding",
+            "label": "No unnecessary reassurance phrases ('don't worry,' 'no need to panic,' 'let's fix this together')"
+          },
+          {
+            "id": "no_wasted_words",
+            "label": "Every word earns its place \u2014 no filler, hedging, or softening that doesn't add information"
+          },
+          {
+            "id": "calm_not_alarming",
+            "label": "Tone is matter-of-fact and neutral, never urgent or anxiety-inducing"
+          },
+          {
+            "id": "expert_user_respect",
+            "label": "Copy assumes the user understands the domain and doesn't over-explain basic concepts"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "coaching_notes": "This user treats copy as a system, not a collection of isolated strings \u2014 they evaluate whether the full flow works as a coherent explanation, not whether individual screens are 'good.' Their sharpest feedback targets ambiguity gaps: any moment where the user has to infer, guess, or mentally bridge between two pieces of information is treated as a failure. When drafting, lead with the strongest option matching their stated voice rather than offering stylistic variety \u2014 they know their product voice and don't need to explore.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Content",
+        "description": "Copy explains what happened and why before telling the user what to do. The user should never have to ask 'but what actually happened?' before being presented with a fix.",
+        "dimensions": [
+          {
+            "id": "cause_leads",
+            "label": "The cause of the issue appears before the call to action or recovery instruction"
+          },
+          {
+            "id": "specific_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank' not just 'something went wrong')"
+          },
+          {
+            "id": "no_orphaned_directives",
+            "label": "Every 'do this' instruction is preceded by a 'because this' explanation"
+          },
+          {
+            "id": "user_impact_stated",
+            "label": "Copy explicitly states the impact on the user (e.g., 'your card hasn't been charged') rather than leaving them to infer it"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe the outcome of clicking, not just the task the user is about to perform. The user should know what the system will do as a result of their action.",
+        "dimensions": [
+          {
+            "id": "outcome_not_task",
+            "label": "CTA text communicates what happens after the click, not just what the user is about to do"
+          },
+          {
+            "id": "matches_system_behavior",
+            "label": "CTA accurately reflects the actual system behavior (e.g., auto-retry vs. manual confirm)"
+          },
+          {
+            "id": "resolves_not_navigates",
+            "label": "CTA implies resolution or progress, not just navigation to another screen"
+          },
+          {
+            "id": "single_clear_path",
+            "label": "Primary CTA presents one unambiguous next step (secondary options are clearly subordinate)"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Transactional Directness",
+        "category": "Style",
+        "description": "Tone is clean, calm, and efficient \u2014 no emotional padding, no coddling, no drama. Copy respects the user as a competent professional who wants to resolve the issue and move on.",
+        "dimensions": [
+          {
+            "id": "no_emotional_padding",
+            "label": "No unnecessary reassurance phrases ('don't worry,' 'no need to panic,' 'let's fix this together')"
+          },
+          {
+            "id": "no_wasted_words",
+            "label": "Every word earns its place \u2014 no filler, hedging, or softening that doesn't add information"
+          },
+          {
+            "id": "calm_not_alarming",
+            "label": "Tone is matter-of-fact and neutral, never urgent or anxiety-inducing"
+          },
+          {
+            "id": "expert_user_respect",
+            "label": "Copy assumes the user understands the domain and doesn't over-explain basic concepts"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Preemptive Clarity",
+        "category": "Audience",
+        "description": "Each copy block anticipates and answers the user's most likely next question at that moment. Copy should eliminate the gap between 'what does this say?' and 'what do I need to know?' so the user never stalls.",
+        "dimensions": [
+          {
+            "id": "first_question_answered",
+            "label": "The copy addresses the user's most immediate concern at this point in the flow (e.g., 'was I charged?')"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "Every state provides a clear next step \u2014 the user is never left without a path forward"
+          },
+          {
+            "id": "ambiguity_eliminated",
+            "label": "No sentence leaves the user needing to guess at meaning or implications"
+          },
+          {
+            "id": "relevant_context_included",
+            "label": "Includes time-sensitive or state-sensitive context when it affects the user's decision (e.g., order hold duration)"
+          }
+        ],
+        "priority": 4
+      }
+    ],
+    "version": 2,
+    "source": "criteria_classification",
+    "writing_type": "UX product copy (in-app flows, errors, and recovery states)",
+    "user_goals_summary": "Write product copy that reads as one coherent explanation across sequential screens, eliminates ambiguity at every step, and respects the user as a competent professional who wants to resolve the issue fast. Every piece of copy\u2014error messages, recovery screens, CTAs\u2014must earn its place by answering a specific question the user will have at that moment.",
+    "coaching_notes": "This user treats copy as a system, not a collection of isolated strings \u2014 they evaluate whether the full flow works as a coherent explanation, not whether individual screens are 'good.' Their sharpest feedback targets ambiguity gaps: any moment where the user has to infer, guess, or mentally bridge between two pieces of information is treated as a failure. When drafting, lead with the strongest option matching their stated voice rather than offering stylistic variety \u2014 they know their product voice and don't need to explore."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe the outcome of clicking, not just the task the user is about to perform. The user should know what the system will do as a result of their action.",
+        "dimensions": [
+          {
+            "id": "outcome_not_task",
+            "label": "CTA text communicates what happens after the click, not just what the user is about to do"
+          },
+          {
+            "id": "matches_system_behavior",
+            "label": "CTA accurately reflects the actual system behavior (e.g., auto-retry vs. manual confirm)"
+          },
+          {
+            "id": "resolves_not_navigates",
+            "label": "CTA implies resolution or progress, not just navigation to another screen"
+          },
+          {
+            "id": "single_clear_path",
+            "label": "Primary CTA presents one unambiguous next step (secondary options are clearly subordinate)"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Value-Forward Framing",
+        "category": "Content",
+        "description": "Copy orients the user toward what becomes possible after they act, not just what is currently absent or broken. In empty states and onboarding moments especially, copy should make the product's value concrete and the next action feel worthwhile \u2014 not just describe the void.",
+        "dimensions": [
+          {
+            "id": "product_value_stated",
+            "label": "Copy communicates what the product will do for the user once they complete the action, not just what is currently missing"
+          },
+          {
+            "id": "empty_state_as_opportunity",
+            "label": "Empty or zero-data states are framed as a starting point, not a dead end or failure condition"
+          },
+          {
+            "id": "action_feels_worthwhile",
+            "label": "The user can infer a concrete benefit from acting \u2014 not just that acting will fix an absence"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Content",
+        "description": "Copy explains what happened and why before telling the user what to do. The user should never have to ask 'but what actually happened?' before being presented with a fix.",
+        "dimensions": [
+          {
+            "id": "cause_leads",
+            "label": "The cause of the issue appears before the call to action or recovery instruction"
+          },
+          {
+            "id": "specific_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank' not just 'something went wrong')"
+          },
+          {
+            "id": "no_orphaned_directives",
+            "label": "Every 'do this' instruction is preceded by a 'because this' explanation"
+          },
+          {
+            "id": "user_impact_stated",
+            "label": "Copy explicitly states the impact on the user (e.g., 'your card hasn't been charged') rather than leaving them to infer it"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Preemptive Clarity",
+        "category": "Audience",
+        "description": "Each copy block anticipates and answers the user's most likely next question at that moment \u2014 including both 'what is happening?' and 'what will this product do for me?' Copy should eliminate the gap between 'what does this say?' and 'what do I need to know and do next?' so the user never stalls.",
+        "dimensions": [
+          {
+            "id": "first_question_answered",
+            "label": "The copy addresses the user's most immediate concern at this point in the flow (e.g., 'was I charged?' or 'did my connection work?')"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "Every state provides a clear next step \u2014 the user is never left without a path forward"
+          },
+          {
+            "id": "ambiguity_eliminated",
+            "label": "No sentence leaves the user needing to guess at meaning or implications"
+          },
+          {
+            "id": "relevant_context_included",
+            "label": "Includes time-sensitive or state-sensitive context when it affects the user's decision (e.g., order hold duration)"
+          },
+          {
+            "id": "system_state_confirmed",
+            "label": "Copy confirms what the system has already done (e.g., 'your bank is connected') so the user isn't left wondering whether a prior step succeeded"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Transactional Directness",
+        "category": "Style",
+        "description": "Tone is clean, calm, and efficient \u2014 no emotional padding, no coddling, no drama. Copy respects the user as a competent professional who wants to resolve the issue and move on.",
+        "dimensions": [
+          {
+            "id": "no_emotional_padding",
+            "label": "No unnecessary reassurance phrases ('don't worry,' 'no need to panic,' 'let's fix this together')"
+          },
+          {
+            "id": "no_wasted_words",
+            "label": "Every word earns its place \u2014 no filler, hedging, or softening that doesn't add information"
+          },
+          {
+            "id": "calm_not_alarming",
+            "label": "Tone is matter-of-fact and neutral, never urgent or anxiety-inducing"
+          },
+          {
+            "id": "expert_user_respect",
+            "label": "Copy assumes the user understands the domain and doesn't over-explain basic concepts"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 3,
+    "source": "alignment_suggestion",
+    "writing_type": "UX product copy (in-app flows, errors, and recovery states)",
+    "user_goals_summary": "Write product copy that reads as one coherent explanation across sequential screens, eliminates ambiguity at every step, and respects the user as a competent professional who wants to resolve the issue fast. Every piece of copy\u2014error messages, recovery screens, CTAs\u2014must earn its place by answering a specific question the user will have at that moment.",
+    "coaching_notes": "This user treats copy as a system, not a collection of isolated strings \u2014 they evaluate whether the full flow works as a coherent explanation, not whether individual screens are 'good.' Their sharpest feedback targets ambiguity gaps: any moment where the user has to infer, guess, or mentally bridge between two pieces of information is treated as a failure. When drafting, lead with the strongest option matching their stated voice rather than offering stylistic variety \u2014 they know their product voice and don't need to explore."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe the outcome of clicking, not just the task the user is about to perform. The user should know what the system will do as a result of their action before they click.",
+        "dimensions": [
+          {
+            "id": "outcome_not_task",
+            "label": "CTA text communicates what happens after the click, not just what the user is about to do"
+          },
+          {
+            "id": "matches_system_behavior",
+            "label": "CTA accurately reflects the actual system behavior (e.g., auto-retry vs. manual confirm)"
+          },
+          {
+            "id": "resolves_not_navigates",
+            "label": "CTA implies resolution or progress, not just navigation to another screen"
+          },
+          {
+            "id": "single_clear_path",
+            "label": "Primary CTA presents one unambiguous next step (secondary options are clearly subordinate)"
+          },
+          {
+            "id": "new_1",
+            "label": "No generic labels like 'Submit' or 'Sign up' \u2014 label reflects the specific outcome (e.g., 'Save changes', 'Start free trial'). In celebratory or milestone moments, prefer natural action verbs over precise-but-clinical ones \u2014 the label should feel appropriate to the emotional register of the state, not just technically accurate."
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Content",
+        "description": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy should never open with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure.",
+        "dimensions": [
+          {
+            "id": "cause_leads",
+            "label": "The cause of the issue appears before the call to action or recovery instruction"
+          },
+          {
+            "id": "specific_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          },
+          {
+            "id": "no_orphaned_directives",
+            "label": "Every 'do this' instruction is preceded by a 'because this' explanation"
+          },
+          {
+            "id": "user_impact_stated",
+            "label": "Copy explicitly states the impact on the user (e.g., 'your card hasn't been charged') rather than leaving them to infer it"
+          },
+          {
+            "id": "new_2",
+            "label": "Tone in error states is calm and precise \u2014 not apologetic, not alarming"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Specific Consequence Confirmations",
+        "category": "Content",
+        "description": "Confirmation dialogs name the exact consequence of the action \u2014 including what will be affected, how many items, and whether it's reversible. Vague prompts like 'Are you sure?' train users to click through without reading and must never appear.",
+        "dimensions": [
+          {
+            "id": "new_3",
+            "label": "Dialog names the specific object(s) affected (e.g., 'Delete 3 invoices' not 'Delete items')"
+          },
+          {
+            "id": "new_4",
+            "label": "Irreversibility is stated explicitly when the action cannot be undone"
+          },
+          {
+            "id": "new_5",
+            "label": "No vague prompts like 'Are you sure?' or 'Confirm action' \u2014 the consequence IS the question"
+          },
+          {
+            "id": "new_6",
+            "label": "Confirm button label matches the consequence (e.g., 'Delete invoices' not 'Yes' or 'OK')"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Empty States as Entry Points",
+        "category": "Content",
+        "description": "Empty and zero-data states guide the user toward their first meaningful action. They should feel like a helpful nudge, not a dead end. Copy communicates what the user will gain by acting, not just that nothing exists yet.",
+        "dimensions": [
+          {
+            "id": "empty_state_as_opportunity",
+            "label": "Empty states are framed as a starting point, not a failure condition or absence"
+          },
+          {
+            "id": "action_feels_worthwhile",
+            "label": "The user can infer a concrete benefit from acting \u2014 not just that acting will fix an absence"
+          },
+          {
+            "id": "new_7",
+            "label": "Empty state includes a clear, specific CTA that leads directly to the first action"
+          },
+          {
+            "id": "new_8",
+            "label": "Copy never uses dead-end phrases like 'Nothing here yet' or 'No data available' without a path forward"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Context-Sensitive Tone",
+        "category": "Style",
+        "description": "Tone shifts to match the emotional weight of the moment. Celebratory milestones (first successful payment, account connected) can be warm. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single tone across all states feels robotic and erodes trust. In celebratory states, do not sacrifice conversational warmth for marginal gains in specificity \u2014 a label that feels slightly more 'exact' but sounds clinical is the wrong trade-off.",
+        "dimensions": [
+          {
+            "id": "new_9",
+            "label": "Celebratory moments use warm, conversational language \u2014 prefer natural phrasing ('See your breakdown') over formal or dashboard-adjacent verbs ('View', 'Access') that undercut the tone"
+          },
+          {
+            "id": "new_10",
+            "label": "Error states are calm and factual \u2014 no unnecessary apology, no alarm"
+          },
+          {
+            "id": "new_11",
+            "label": "Routine confirmations and status messages are efficient and unobtrusive"
+          },
+          {
+            "id": "no_emotional_padding",
+            "label": "No unnecessary reassurance phrases ('don't worry,' 'no need to panic,' 'let's fix this together') in non-celebratory states"
+          },
+          {
+            "id": "no_wasted_words",
+            "label": "Every word earns its place \u2014 no filler, hedging, or softening that doesn't add information"
+          },
+          {
+            "id": "new_12",
+            "label": "In milestone and success states, verb choices in CTAs and body copy should match the warmth of the moment \u2014 avoid swapping natural phrasing for formal alternatives solely in the name of precision"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Preemptive Clarity",
+        "category": "Audience",
+        "description": "Each copy block anticipates and answers the user's most likely next question at that moment. Copy should eliminate the gap between 'what does this say?' and 'what do I need to know and do next?' so the user never stalls.",
+        "dimensions": [
+          {
+            "id": "first_question_answered",
+            "label": "The copy addresses the user's most immediate concern at this point in the flow (e.g., 'was I charged?' or 'did my connection work?')"
+          },
+          {
+            "id": "no_dead_ends",
+            "label": "Every state provides a clear next step \u2014 the user is never left without a path forward"
+          },
+          {
+            "id": "ambiguity_eliminated",
+            "label": "No sentence leaves the user needing to guess at meaning or implications"
+          },
+          {
+            "id": "system_state_confirmed",
+            "label": "Copy confirms what the system has already done (e.g., 'your bank is connected') so the user isn't left wondering whether a prior step succeeded"
+          },
+          {
+            "id": "relevant_context_included",
+            "label": "Includes time-sensitive or state-sensitive context when it affects the user's decision"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 4,
+    "source": "user_log_changes",
+    "writing_type": "UX product copy (in-app flows, errors, and recovery states)",
+    "user_goals_summary": "Write product copy that reads as one coherent explanation across sequential screens, eliminates ambiguity at every step, and respects the user as a competent professional who wants to resolve the issue fast. Every piece of copy\u2014error messages, recovery screens, CTAs\u2014must earn its place by answering a specific question the user will have at that moment.",
+    "coaching_notes": "This user treats copy as a system, not a collection of isolated strings \u2014 they evaluate whether the full flow works as a coherent explanation, not whether individual screens are 'good.' Their sharpest feedback targets ambiguity gaps: any moment where the user has to infer, guess, or mentally bridge between two pieces of information is treated as a failure. When drafting, lead with the strongest option matching their stated voice rather than offering stylistic variety \u2014 they know their product voice and don't need to explore."
+  },
+  {
+    "version": 6,
+    "writing_type": "UX product copy (in-product microcopy: empty states, error flows, CTAs, onboarding moments)",
+    "user_goals_summary": "This user writes UX copy for B2B/prosumer fintech products where users are competent professionals who want clarity and efficiency. They prioritize copy that makes the user the agent (not the system), signals outcomes rather than labeling tasks, and calibrates emotional register to the weight of the moment. Each copy element in a set must have a distinct, non-overlapping job, and flows should read as connected narratives rather than isolated blocks.",
+    "rubric": [
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe what changes when the user clicks, not just the task being performed. The user should be able to predict what happens after clicking from the label alone. A CTA that names a gesture without naming the consequence leaves the user guessing.",
+        "dimensions": [
+          {
+            "id": "names_consequence",
+            "label": "CTA names the outcome or consequence of clicking, not just the action the user performs"
+          },
+          {
+            "id": "predictable_result",
+            "label": "User can predict what happens after clicking from the label alone, without relying on surrounding context"
+          },
+          {
+            "id": "no_generic_labels",
+            "label": "No generic labels like 'Submit,' 'Continue,' or 'Get Started' \u2014 label reflects the specific outcome"
+          },
+          {
+            "id": "user_experience_verb",
+            "label": "Verb describes what the user experiences, not what the system does internally (e.g., 'send' not 'create' when the user experiences sending)"
+          },
+          {
+            "id": "register_match",
+            "label": "CTA sits in the same emotional register as the surrounding copy \u2014 doesn't drop into menu-item or system-command tone when the context is warmer"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "User-as-Agent Voice",
+        "category": "Style",
+        "description": "Copy is written from the user's perspective, not the system's. Verbs should feel like the user's actions, not the software's internal operations. The product should sound like a knowledgeable peer, not a system issuing commands or a marketing department making promises to already-converted users.",
+        "dimensions": [
+          {
+            "id": "user_perspective_verbs",
+            "label": "Verbs describe what the user does or experiences, not what the system does on the back end"
+          },
+          {
+            "id": "no_in_product_marketing",
+            "label": "Copy avoids marketing language inside the product \u2014 no benefit pitches or value props aimed at users who have already committed"
+          },
+          {
+            "id": "peer_not_system",
+            "label": "Language reads as a peer nudging or guiding, not a system issuing commands"
+          },
+          {
+            "id": "user_vocabulary",
+            "label": "Terminology matches what users call things in their own work, not internal product or engineering vocabulary"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Structure",
+        "description": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy never opens with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure, not just a copy failure.",
+        "dimensions": [
+          {
+            "id": "cause_before_fix",
+            "label": "Error copy names what happened and why before suggesting a fix or next step"
+          },
+          {
+            "id": "responsible_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          },
+          {
+            "id": "calm_precise_tone",
+            "label": "Tone in error states is calm and precise \u2014 not apologetic, not alarming, not dramatic"
+          },
+          {
+            "id": "continuous_flow",
+            "label": "Error message and recovery screen read as one continuous explanation \u2014 user never feels they're reading two separate, disconnected notices"
+          },
+          {
+            "id": "preempts_first_question",
+            "label": "Copy anticipates and answers the user's most likely immediate question (e.g., 'was I charged?') before they have to ask it"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Value Before Mechanics",
+        "category": "Content",
+        "description": "Copy lands the payoff \u2014 what the user is about to gain or experience \u2014 before explaining how the feature works. Description copy should make the result feel real and close, not narrate the product's operations or list feature specifications.",
+        "dimensions": [
+          {
+            "id": "payoff_leads",
+            "label": "Copy leads with what the user gets or experiences, not what the feature does"
+          },
+          {
+            "id": "user_terms_not_specs",
+            "label": "Payoff is framed in terms the user cares about, not feature specifications or system capabilities"
+          },
+          {
+            "id": "mechanics_follow",
+            "label": "Technical details and mechanics follow the value statement, not the other way around"
+          },
+          {
+            "id": "no_narrating_void",
+            "label": "Copy does not describe absence or narrate the void (e.g., 'Nothing here yet') \u2014 it points toward what's coming"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Moment-Matched Tone",
+        "category": "Style",
+        "description": "Tone shifts to match the emotional weight of the moment. Milestone and first-time moments can carry warmth and acknowledgment. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single register across all states feels robotic and erodes trust.",
+        "dimensions": [
+          {
+            "id": "milestone_acknowledgment",
+            "label": "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward (e.g., 'The hard part's done')"
+          },
+          {
+            "id": "error_composure",
+            "label": "Error states are composed and diagnostic \u2014 no drama, no coddling, no false cheerfulness"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine interactions are efficient and don't carry unnecessary emotional weight or enthusiasm"
+          },
+          {
+            "id": "warmth_through_phrasing",
+            "label": "Warmth is conveyed through natural, conversational phrasing \u2014 not exclamation points, emoji, or effusive language"
+          },
+          {
+            "id": "register_shift",
+            "label": "Copy within a single set shifts register between setup and payoff \u2014 the emotional temperature is not flat throughout"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Distinct Roles Per Copy Element",
+        "category": "Structure",
+        "description": "Each piece of copy in a set (headline, description, CTA) has a clear, non-overlapping job. No element duplicates another's work. Headlines orient, descriptions bridge context and mood, CTAs carry the action. Together they read as a connected arc, not separate notices.",
+        "dimensions": [
+          {
+            "id": "headline_orients",
+            "label": "Headlines orient the user to where they are or what just happened \u2014 they don't sell, tease, or preview the action"
+          },
+          {
+            "id": "description_bridges",
+            "label": "Subtext or description sets context and mood without restating the headline or previewing the CTA"
+          },
+          {
+            "id": "cta_acts",
+            "label": "CTA carries the action forward without restating the headline or description"
+          },
+          {
+            "id": "no_redundancy",
+            "label": "No element is doing work that belongs to another element \u2014 information appears once, in the right place"
+          },
+          {
+            "id": "connected_arc",
+            "label": "Copy blocks in a flow read as a connected narrative, not isolated pieces of information"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "This user iterates extensively on CTA labels \u2014 they care deeply about whether buttons describe outcomes vs. actions and will reopen 'locked' decisions repeatedly. This is their core craft concern; patience and precision matter here. They draw a sharp line between marketing copy and product copy \u2014 benefit pitches and value props feel dishonest once a user is inside the product. Warmth should be calibrated to the moment: absent in routine interactions, quietly present at milestones ('The hard part's done. Now comes the good part.'), and never performative.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Structure",
+        "description": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy never opens with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure, not just a copy failure.",
+        "dimensions": [
+          {
+            "id": "cause_before_fix",
+            "label": "Error copy names what happened and why before suggesting a fix or next step"
+          },
+          {
+            "id": "responsible_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          },
+          {
+            "id": "calm_precise_tone",
+            "label": "Tone in error states is calm and precise \u2014 not apologetic, not alarming, not dramatic"
+          },
+          {
+            "id": "continuous_flow",
+            "label": "Error message and recovery screen read as one continuous explanation \u2014 user never feels they're reading two separate, disconnected notices"
+          },
+          {
+            "id": "preempts_first_question",
+            "label": "Copy anticipates and answers the user's most likely immediate question (e.g., 'was I charged?') before they have to ask it"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe what changes when the user clicks, not just the task being performed. The user should be able to predict what happens after clicking from the label alone. A CTA that names a gesture without naming the consequence leaves the user guessing.",
+        "dimensions": [
+          {
+            "id": "names_consequence",
+            "label": "CTA names the outcome or consequence of clicking, not just the action the user performs"
+          },
+          {
+            "id": "predictable_result",
+            "label": "User can predict what happens after clicking from the label alone, without relying on surrounding context"
+          },
+          {
+            "id": "no_generic_labels",
+            "label": "No generic labels like 'Submit,' 'Continue,' or 'Get Started' \u2014 label reflects the specific outcome"
+          },
+          {
+            "id": "user_experience_verb",
+            "label": "Verb describes what the user experiences, not what the system does internally (e.g., 'send' not 'create' when the user experiences sending)"
+          },
+          {
+            "id": "register_match",
+            "label": "CTA sits in the same emotional register as the surrounding copy \u2014 doesn't drop into menu-item or system-command tone when the context is warmer"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Moment-Matched Tone",
+        "category": "Style",
+        "description": "Tone shifts to match the emotional weight of the moment. Milestone and first-time moments can carry warmth and acknowledgment. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single register across all states feels robotic and erodes trust.",
+        "dimensions": [
+          {
+            "id": "milestone_acknowledgment",
+            "label": "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward (e.g., 'The hard part's done')"
+          },
+          {
+            "id": "error_composure",
+            "label": "Error states are composed and diagnostic \u2014 no drama, no coddling, no false cheerfulness"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine interactions are efficient and don't carry unnecessary emotional weight or enthusiasm"
+          },
+          {
+            "id": "warmth_through_phrasing",
+            "label": "Warmth is conveyed through natural, conversational phrasing \u2014 not exclamation points, emoji, or effusive language"
+          },
+          {
+            "id": "register_shift",
+            "label": "Copy within a single set shifts register between setup and payoff \u2014 the emotional temperature is not flat throughout"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "User-as-Agent Voice",
+        "category": "Style",
+        "description": "Copy is written from the user's perspective, not the system's. Verbs should feel like the user's actions, not the software's internal operations. The product should sound like a knowledgeable peer, not a system issuing commands or a marketing department making promises to already-converted users.",
+        "dimensions": [
+          {
+            "id": "user_perspective_verbs",
+            "label": "Verbs describe what the user does or experiences, not what the system does on the back end"
+          },
+          {
+            "id": "no_in_product_marketing",
+            "label": "Copy avoids marketing language inside the product \u2014 no benefit pitches or value props aimed at users who have already committed"
+          },
+          {
+            "id": "peer_not_system",
+            "label": "Language reads as a peer nudging or guiding, not a system issuing commands"
+          },
+          {
+            "id": "user_vocabulary",
+            "label": "Terminology matches what users call things in their own work, not internal product or engineering vocabulary"
+          }
+        ],
+        "priority": 4
+      }
+    ],
+    "version": 7,
+    "source": "criteria_classification",
+    "writing_type": "UX product copy (in-product microcopy: empty states, error flows, CTAs, onboarding moments)",
+    "user_goals_summary": "This user writes UX copy for B2B/prosumer fintech products where users are competent professionals who want clarity and efficiency. They prioritize copy that makes the user the agent (not the system), signals outcomes rather than labeling tasks, and calibrates emotional register to the weight of the moment. Each copy element in a set must have a distinct, non-overlapping job, and flows should read as connected narratives rather than isolated blocks.",
+    "coaching_notes": "This user iterates extensively on CTA labels \u2014 they care deeply about whether buttons describe outcomes vs. actions and will reopen 'locked' decisions repeatedly. This is their core craft concern; patience and precision matter here. They draw a sharp line between marketing copy and product copy \u2014 benefit pitches and value props feel dishonest once a user is inside the product. Warmth should be calibrated to the moment: absent in routine interactions, quietly present at milestones ('The hard part's done. Now comes the good part.'), and never performative."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Structure",
+        "description": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy never opens with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure, not just a copy failure.",
+        "dimensions": [
+          {
+            "id": "cause_before_fix",
+            "label": "Error copy names what happened and why before suggesting a fix or next step"
+          },
+          {
+            "id": "responsible_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          },
+          {
+            "id": "calm_precise_tone",
+            "label": "Tone in error states is calm and precise \u2014 not apologetic, not alarming, not dramatic"
+          },
+          {
+            "id": "preempts_first_question",
+            "label": "Copy anticipates and answers the user's most likely immediate question (e.g., 'was I charged?') before they have to ask it"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe what changes when the user clicks, not just the task being performed. The user should be able to predict what happens after clicking from the label alone. A CTA that names a gesture without naming the consequence leaves the user guessing.",
+        "dimensions": [
+          {
+            "id": "names_consequence",
+            "label": "CTA names the outcome or consequence of clicking, not just the action the user performs"
+          },
+          {
+            "id": "predictable_result",
+            "label": "User can predict what happens after clicking from the label alone, without relying on surrounding context"
+          },
+          {
+            "id": "no_generic_labels",
+            "label": "No generic labels like 'Submit,' 'Continue,' or 'Get Started' \u2014 label reflects the specific outcome"
+          },
+          {
+            "id": "user_experience_verb",
+            "label": "Verb describes what the user experiences, not what the system does internally (e.g., 'send' not 'create' when the user experiences sending)"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Specific Consequences in Confirmations",
+        "category": "Structure",
+        "description": "Confirmation dialogs must name the exact consequence of the action \u2014 what will be affected, how many items, and whether it's reversible. Vague prompts like 'Are you sure?' train users to click through without reading. The user should be able to make an informed decision from the dialog copy alone.",
+        "dimensions": [
+          {
+            "id": "new_1",
+            "label": "Dialog names the specific object(s) affected (e.g., '3 invoices' not 'these items')"
+          },
+          {
+            "id": "new_2",
+            "label": "Copy states whether the action is permanent or reversible"
+          },
+          {
+            "id": "new_3",
+            "label": "No vague prompts like 'Are you sure?' or 'Confirm action' \u2014 the consequence is the prompt"
+          },
+          {
+            "id": "new_4",
+            "label": "Destructive actions use direct, unambiguous language without being alarming"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Empty States as Entry Points",
+        "category": "Content",
+        "description": "Empty states guide the user toward their first meaningful action \u2014 they are not dead ends. Copy should feel like a helpful nudge from a knowledgeable peer, not a system reporting an absence. Every empty state should leave the user knowing exactly what to do next.",
+        "dimensions": [
+          {
+            "id": "new_5",
+            "label": "Empty state includes a clear, specific call to action \u2014 not just a description of what's missing"
+          },
+          {
+            "id": "new_6",
+            "label": "Copy explains what the user will be able to do once they take the first action, not just that nothing exists yet"
+          },
+          {
+            "id": "new_7",
+            "label": "Tone feels like a nudge, not a dead end \u2014 no 'Nothing here yet' or 'No results found' without guidance"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Moment-Matched Tone",
+        "category": "Style",
+        "description": "Tone shifts to match the emotional weight of the moment. Milestone and first-time moments can carry warmth and acknowledgment. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single register across all states feels robotic and erodes trust.",
+        "dimensions": [
+          {
+            "id": "milestone_acknowledgment",
+            "label": "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward"
+          },
+          {
+            "id": "error_composure",
+            "label": "Error states are composed and diagnostic \u2014 no drama, no coddling, no false cheerfulness"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine interactions are efficient and don't carry unnecessary emotional weight or enthusiasm"
+          },
+          {
+            "id": "warmth_through_phrasing",
+            "label": "Warmth is conveyed through natural, conversational phrasing \u2014 not exclamation points, emoji, or effusive language"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "User-as-Agent Voice",
+        "category": "Style",
+        "description": "Copy is written from the user's perspective, not the system's. Verbs should feel like the user's actions, not the software's internal operations. The product should sound like a knowledgeable peer, not a system issuing commands or a marketing department pitching to users who've already converted.",
+        "dimensions": [
+          {
+            "id": "user_perspective_verbs",
+            "label": "Verbs describe what the user does or experiences, not what the system does on the back end"
+          },
+          {
+            "id": "no_in_product_marketing",
+            "label": "Copy avoids marketing language inside the product \u2014 no benefit pitches or value props aimed at users who have already committed"
+          },
+          {
+            "id": "peer_not_system",
+            "label": "Language reads as a peer nudging or guiding, not a system issuing commands"
+          },
+          {
+            "id": "user_vocabulary",
+            "label": "Terminology matches what users call things in their own work, not internal product or engineering vocabulary"
+          },
+          {
+            "id": "new_8",
+            "label": "No passive voice in instructions \u2014 'Enter your card number' not 'Your card number should be entered'"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 8,
+    "source": "user_log_changes",
+    "writing_type": "UX product copy (in-product microcopy: empty states, error flows, CTAs, onboarding moments)",
+    "user_goals_summary": "This user writes UX copy for B2B/prosumer fintech products where users are competent professionals who want clarity and efficiency. They prioritize copy that makes the user the agent (not the system), signals outcomes rather than labeling tasks, and calibrates emotional register to the weight of the moment. Each copy element in a set must have a distinct, non-overlapping job, and flows should read as connected narratives rather than isolated blocks.",
+    "coaching_notes": "This user iterates extensively on CTA labels \u2014 they care deeply about whether buttons describe outcomes vs. actions and will reopen 'locked' decisions repeatedly. This is their core craft concern; patience and precision matter here. They draw a sharp line between marketing copy and product copy \u2014 benefit pitches and value props feel dishonest once a user is inside the product. Warmth should be calibrated to the moment: absent in routine interactions, quietly present at milestones ('The hard part's done. Now comes the good part.'), and never performative."
+  },
+  {
+    "rubric": [
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Structure",
+        "description": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy never opens with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure, not just a copy failure.",
+        "dimensions": [
+          {
+            "id": "cause_before_fix",
+            "label": "Error copy names what happened and why before suggesting a fix or next step"
+          },
+          {
+            "id": "responsible_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          },
+          {
+            "id": "calm_precise_tone",
+            "label": "Tone in error states is calm and precise \u2014 not apologetic, not alarming, not dramatic"
+          },
+          {
+            "id": "preempts_first_question",
+            "label": "Copy anticipates and answers the user's most likely immediate question (e.g., 'was I charged?') before they have to ask it"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe what changes when the user clicks, not just the task being performed. The user should be able to predict what happens after clicking from the label alone. A CTA that names a gesture without naming the consequence leaves the user guessing.",
+        "dimensions": [
+          {
+            "id": "names_consequence",
+            "label": "CTA names the outcome or consequence of clicking, not just the action the user performs"
+          },
+          {
+            "id": "predictable_result",
+            "label": "User can predict what happens after clicking from the label alone, without relying on surrounding context"
+          },
+          {
+            "id": "no_generic_labels",
+            "label": "No generic labels like 'Submit,' 'Continue,' or 'Get Started' \u2014 label reflects the specific outcome"
+          },
+          {
+            "id": "user_experience_verb",
+            "label": "Verb describes what the user experiences, not what the system does internally (e.g., 'Send invoice' not 'Create record')"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Specific Consequences in Confirmations",
+        "category": "Structure",
+        "description": "Confirmation dialogs must name the exact consequence of the action \u2014 what will be affected, how many items, and whether it's reversible. Vague prompts like 'Are you sure?' train users to click through without reading. The user should be able to make an informed decision from the dialog copy alone.",
+        "dimensions": [
+          {
+            "id": "new_1",
+            "label": "Dialog names the specific object(s) affected (e.g., '3 invoices' not 'these items')"
+          },
+          {
+            "id": "new_2",
+            "label": "Copy states whether the action is permanent or reversible"
+          },
+          {
+            "id": "new_3",
+            "label": "No vague prompts like 'Are you sure?' or 'Confirm action' \u2014 the consequence is the prompt"
+          },
+          {
+            "id": "new_4",
+            "label": "Destructive actions use direct, unambiguous language without being alarming"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Scannable, Action-Oriented Structure",
+        "category": "Structure",
+        "description": "Every string should make the user's next step obvious at a glance. Copy earns its place by reducing cognitive load \u2014 not by filling space. If a user has to re-read a string to understand what to do next, it hasn't done its job.",
+        "dimensions": [
+          {
+            "id": "new_9",
+            "label": "The user's next action is identifiable from the copy alone without reading surrounding UI"
+          },
+          {
+            "id": "new_10",
+            "label": "Copy is as short as it can be without losing meaning \u2014 words that address likely user anxiety or reduce cognitive friction count as meaningful and should be retained. Possessives that ground instructions in the user's own context (e.g., 'your preferences,' 'your account') are not filler and should not be cut for brevity alone."
+          },
+          {
+            "id": "new_11",
+            "label": "Hierarchy is reflected in copy length \u2014 primary messages are shorter and more direct than secondary ones. Structural reordering to shorten the primary clause is only appropriate when the result reads naturally \u2014 restructuring that produces grammatically awkward or tonally off phrasing is not preferred over the original word order."
+          },
+          {
+            "id": "new_12",
+            "label": "No marketing language inside the product \u2014 copy assumes the user has already committed"
+          },
+          {
+            "id": "new_17",
+            "label": "Copy that directly addresses a likely user concern or misread \u2014 even in non-error states \u2014 should be retained even if it adds length"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Empty States as Entry Points",
+        "category": "Content",
+        "description": "Empty states guide the user toward their first meaningful action \u2014 they are not dead ends. Copy should feel like a helpful nudge from a knowledgeable peer, not a system reporting an absence. Every empty state should leave the user knowing exactly what to do next.",
+        "dimensions": [
+          {
+            "id": "new_5",
+            "label": "Empty state includes a clear, specific call to action \u2014 not just a description of what's missing"
+          },
+          {
+            "id": "new_6",
+            "label": "Copy explains what the user will be able to do once they take the first action, not just that nothing exists yet"
+          },
+          {
+            "id": "new_7",
+            "label": "Tone feels like a nudge, not a dead end \u2014 no 'Nothing here yet' or 'No results found' without guidance"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Moment-Matched Tone",
+        "category": "Style",
+        "description": "Tone shifts to match the emotional weight of the moment. Milestone and first-time moments can carry warmth and acknowledgment. Error states must be calm and precise. Routine actions should feel invisible \u2014 efficient, not cheerful or dramatic. Applying a single register across all states feels robotic and erodes trust.",
+        "dimensions": [
+          {
+            "id": "milestone_acknowledgment",
+            "label": "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward"
+          },
+          {
+            "id": "error_composure",
+            "label": "Error states are composed and diagnostic \u2014 no drama, no coddling, no false cheerfulness"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine interactions are efficient and don't carry unnecessary emotional weight or enthusiasm"
+          },
+          {
+            "id": "warmth_through_phrasing",
+            "label": "Warmth is conveyed through natural, conversational phrasing \u2014 not exclamation points, emoji, or effusive language"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Consistent Terminology and Voice",
+        "category": "Style",
+        "description": "The same concept is always called the same thing across a flow. Terminology matches what users call things in their own work, not internal product or engineering vocabulary. Instructions are always active voice \u2014 the user is the agent, not the recipient of a system's behavior. No placeholder text should ever reach production.",
+        "dimensions": [
+          {
+            "id": "new_13",
+            "label": "The same object, action, or concept uses the same label everywhere in the same flow \u2014 no synonyms that introduce ambiguity"
+          },
+          {
+            "id": "new_14",
+            "label": "No passive voice in instructions \u2014 'Enter your card number' not 'Your card number should be entered'"
+          },
+          {
+            "id": "new_15",
+            "label": "Terminology reflects how users refer to things in their own work, not internal or engineering vocabulary"
+          },
+          {
+            "id": "new_16",
+            "label": "No placeholder text (e.g., 'Lorem ipsum,' '[INSERT COPY],' 'TBD') present in any production-facing string"
+          },
+          {
+            "id": "no_wordplay",
+            "label": "No clever wordplay or puns that could slow comprehension or read differently across user contexts"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "version": 9,
+    "source": "user_log_changes",
+    "writing_type": "UX product copy (in-product microcopy: empty states, error flows, CTAs, onboarding moments)",
+    "user_goals_summary": "This user writes UX copy for B2B/prosumer fintech products where users are competent professionals who want clarity and efficiency. They prioritize copy that makes the user the agent (not the system), signals outcomes rather than labeling tasks, and calibrates emotional register to the weight of the moment. Each copy element in a set must have a distinct, non-overlapping job, and flows should read as connected narratives rather than isolated blocks.",
+    "coaching_notes": "This user iterates extensively on CTA labels \u2014 they care deeply about whether buttons describe outcomes vs. actions and will reopen 'locked' decisions repeatedly. This is their core craft concern; patience and precision matter here. They draw a sharp line between marketing copy and product copy \u2014 benefit pitches and value props feel dishonest once a user is inside the product. Warmth should be calibrated to the moment: absent in routine interactions, quietly present at milestones ('The hard part's done. Now comes the good part.'), and never performative."
+  },
+  {
+    "version": 10,
+    "writing_type": "Product/UX copy for B2B fintech tools",
+    "user_goals_summary": "Writes UI copy for a fintech product used by small business owners and finance ops professionals. Values copy that sounds like a knowledgeable peer \u2014 calm, direct, and specific \u2014 where every element has one clear job, tone matches the emotional weight of the moment, and the user always knows what happens next without filling in gaps themselves.",
+    "rubric": [
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe what changes when the user clicks, not just the task being performed. The user should be able to predict what happens after clicking from the label alone. A CTA that names a gesture without naming the consequence leaves the user guessing.",
+        "dimensions": [
+          {
+            "id": "names_consequence",
+            "label": "CTA names the outcome or consequence of clicking, not just the action the user performs"
+          },
+          {
+            "id": "predictable_result",
+            "label": "User can predict what happens after clicking from the label alone, without relying on surrounding context"
+          },
+          {
+            "id": "no_generic_labels",
+            "label": "No generic labels like 'Submit,' 'Continue,' or 'Get Started' \u2014 label reflects the specific outcome"
+          },
+          {
+            "id": "user_experience_verb",
+            "label": "Verb describes what the user experiences, not what the system does internally (e.g., 'Send invoice' not 'Create record')"
+          },
+          {
+            "id": "cta_register_match",
+            "label": "CTA sits in the same emotional register as the surrounding copy \u2014 doesn't drop into menu-item or system-command tone when the context is warmer"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Structure",
+        "description": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy never opens with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure, not just a copy failure.",
+        "dimensions": [
+          {
+            "id": "cause_before_fix",
+            "label": "Error copy names what happened and why before suggesting a fix or next step"
+          },
+          {
+            "id": "responsible_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          },
+          {
+            "id": "calm_precise_tone",
+            "label": "Tone in error states is calm and precise \u2014 not apologetic, not alarming, not dramatic"
+          },
+          {
+            "id": "preempts_first_question",
+            "label": "Copy anticipates and answers the user's most likely immediate question (e.g., 'was I charged?') before they have to ask it"
+          },
+          {
+            "id": "continuous_explanation",
+            "label": "Error message and recovery screen read as one continuous explanation \u2014 user never feels they are reading two separate, disconnected notices"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Moment-Matched Tone",
+        "category": "Style",
+        "description": "Tone shifts to match the emotional weight of the moment. Milestone and first-time moments can carry warmth and acknowledgment. Error states must be calm and precise. Routine actions should feel invisible. The product should always sound like a knowledgeable peer who paused before writing \u2014 never like a system confirming inputs or a corporation managing expectations.",
+        "dimensions": [
+          {
+            "id": "milestone_acknowledgment",
+            "label": "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward"
+          },
+          {
+            "id": "error_composure",
+            "label": "Error states are composed and diagnostic \u2014 no drama, no coddling, no false cheerfulness"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine interactions are efficient and don't carry unnecessary emotional weight or enthusiasm"
+          },
+          {
+            "id": "warmth_through_plainness",
+            "label": "Warmth is conveyed through natural, plain phrasing \u2014 not exclamation points, emoji, or effusive language"
+          },
+          {
+            "id": "register_variation",
+            "label": "Copy within a single set shifts register between setup and payoff \u2014 the emotional temperature is not flat throughout"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Earned Specificity",
+        "category": "Content",
+        "description": "Reassurance and value are earned through concrete, specific language \u2014 never through comfort phrases, abstract claims, or corporate filler. If the copy asserts a quality ('we take that seriously,' 'in good hands') instead of demonstrating it with a specific detail, it hasn't done its job. Say the true, plain thing.",
+        "dimensions": [
+          {
+            "id": "no_comfort_cliches",
+            "label": "No worn-out comfort phrases \u2014 'in good hands,' 'the attention it deserves,' 'we take that seriously' are replaced with concrete details"
+          },
+          {
+            "id": "demonstrate_not_claim",
+            "label": "Copy demonstrates qualities through specific, verifiable details rather than asserting them abstractly"
+          },
+          {
+            "id": "no_placeholder_words",
+            "label": "No abstract filler words like 'accordingly,' 'appropriately,' or 'as needed' \u2014 each word carries specific meaning"
+          },
+          {
+            "id": "positive_framing",
+            "label": "Descriptions favor what IS happening over what ISN'T \u2014 negative definition is used only when the contrast itself earns specificity"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Coherent Copy Flow",
+        "category": "Structure",
+        "description": "Sequential copy elements (headline \u2192 body \u2192 CTA, error \u2192 recovery) read as one continuous explanation, not separate notices. Each element has a distinct job \u2014 headline orients, body bridges, CTA acts \u2014 and no element restates or previews another. The user never has to mentally stitch pieces together.",
+        "dimensions": [
+          {
+            "id": "one_continuous_thread",
+            "label": "Sequential copy blocks read as one continuous narrative \u2014 user never feels they're reading disconnected pieces"
+          },
+          {
+            "id": "distinct_jobs",
+            "label": "Each element has a distinct role \u2014 no element duplicates or previews the work of another"
+          },
+          {
+            "id": "setup_earns_payoff",
+            "label": "Earlier elements set up later ones \u2014 subtext earns the CTA rather than restating it"
+          },
+          {
+            "id": "anxiety_addressing_retained",
+            "label": "Copy that directly addresses a likely user concern or anxiety is retained even if it adds length \u2014 reassurance that does real work is not filler"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "No marketing or benefit language inside the product \u2014 copy assumes the user has already committed"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Empty States as Entry Points",
+        "category": "Content",
+        "description": "Empty and zero-data states guide the user toward their first meaningful action \u2014 they are not dead ends. Headlines orient the user to the space they're in rather than narrating absence. Copy feels like a nudge from someone who's done it before, not a system reporting that nothing exists yet.",
+        "dimensions": [
+          {
+            "id": "clear_first_action",
+            "label": "Empty state includes a clear, specific call to action \u2014 not just a description of what's missing"
+          },
+          {
+            "id": "value_of_acting",
+            "label": "Copy communicates what the user will gain from acting, not just that nothing exists yet"
+          },
+          {
+            "id": "nudge_not_dead_end",
+            "label": "Tone feels like a nudge, not a dead end \u2014 no 'Nothing here yet' or 'No results found' without guidance"
+          },
+          {
+            "id": "headline_orients",
+            "label": "Headline orients the user to the space rather than narrating absence or building marketing-style anticipation"
+          }
+        ],
+        "priority": 6
+      },
+      {
+        "name": "Consistent Terminology and Voice",
+        "category": "Style",
+        "description": "The same concept uses the same word everywhere in a flow \u2014 terminology drift erodes trust. Words match how users refer to things in their own work, not internal or engineering vocabulary. Instructions use active voice with the user as agent. Possessives that ground instructions in the user's context are meaningful and should not be cut for brevity.",
+        "dimensions": [
+          {
+            "id": "no_synonym_drift",
+            "label": "The same object, action, or concept uses the same label everywhere in the same flow \u2014 no synonyms that introduce ambiguity"
+          },
+          {
+            "id": "active_voice_instructions",
+            "label": "No passive voice in instructions \u2014 'Enter your card number' not 'Your card number should be entered'"
+          },
+          {
+            "id": "user_vocabulary",
+            "label": "Terminology reflects how users refer to things in their own work, not internal or engineering vocabulary"
+          },
+          {
+            "id": "grounding_possessives",
+            "label": "Possessives that ground instructions in the user's own context (e.g., 'your preferences,' 'your documents') are retained \u2014 they are not filler"
+          }
+        ],
+        "priority": 7
+      }
+    ],
+    "coaching_notes": "Non-negotiables: error states must diagnose before directing, CTAs must never be generic labels, and no marketing language belongs inside the product. This user iterates at the word level and can identify sub-word tonal differences \u2014 they'll notice when a verb describes the system's operation vs. the user's experience. They prefer warmth earned through plainness ('The hard part's done') over warmth asserted through comfort phrases ('You're in good hands'). When iteration loops, they respond well to honest pushback about the limits of what copy can do \u2014 they respect being told 'this feeling belongs in the confirmation state, not the button' and will lock decisions when the constraint is named clearly.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Diagnosis Before Direction",
+        "category": "Structure",
+        "description": "Error and failure states follow a strict order: what happened, why it happened, what the user should do next. Copy never opens with an instruction before establishing the cause. An error that only says 'Something went wrong' is a product failure, not just a copy failure.",
+        "dimensions": [
+          {
+            "id": "cause_before_fix",
+            "label": "Error copy names what happened and why before suggesting a fix or next step"
+          },
+          {
+            "id": "responsible_actor",
+            "label": "Copy names the responsible actor or system (e.g., 'your bank declined the charge' not 'something went wrong')"
+          },
+          {
+            "id": "calm_precise_tone",
+            "label": "Tone in error states is calm and precise \u2014 not apologetic, not alarming, not dramatic"
+          },
+          {
+            "id": "preempts_first_question",
+            "label": "Copy anticipates and answers the user's most likely immediate question (e.g., 'was I charged?') before they have to ask it"
+          },
+          {
+            "id": "continuous_explanation",
+            "label": "Error message and recovery screen read as one continuous explanation \u2014 user never feels they are reading two separate, disconnected notices"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Outcome-Signaling CTAs",
+        "category": "Content",
+        "description": "Buttons and action prompts describe what changes when the user clicks, not just the task being performed. The user should be able to predict what happens after clicking from the label alone. A CTA that names a gesture without naming the consequence leaves the user guessing.",
+        "dimensions": [
+          {
+            "id": "names_consequence",
+            "label": "CTA names the outcome or consequence of clicking, not just the action the user performs"
+          },
+          {
+            "id": "predictable_result",
+            "label": "User can predict what happens after clicking from the label alone, without relying on surrounding context"
+          },
+          {
+            "id": "no_generic_labels",
+            "label": "No generic labels like 'Submit,' 'Continue,' or 'Get Started' \u2014 label reflects the specific outcome"
+          },
+          {
+            "id": "user_experience_verb",
+            "label": "Verb describes what the user experiences, not what the system does internally (e.g., 'Send invoice' not 'Create record')"
+          },
+          {
+            "id": "cta_register_match",
+            "label": "CTA sits in the same emotional register as the surrounding copy \u2014 doesn't drop into menu-item or system-command tone when the context is warmer"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Moment-Matched Tone",
+        "category": "Style",
+        "description": "Tone shifts to match the emotional weight of the moment. Milestone and first-time moments can carry warmth and acknowledgment. Error states must be calm and precise. Routine actions should feel invisible. The product should always sound like a knowledgeable peer who paused before writing \u2014 never like a system confirming inputs or a corporation managing expectations.",
+        "dimensions": [
+          {
+            "id": "milestone_acknowledgment",
+            "label": "Milestone and first-time moments acknowledge the user's effort or progress before pointing forward"
+          },
+          {
+            "id": "error_composure",
+            "label": "Error states are composed and diagnostic \u2014 no drama, no coddling, no false cheerfulness"
+          },
+          {
+            "id": "routine_invisible",
+            "label": "Routine interactions are efficient and don't carry unnecessary emotional weight or enthusiasm"
+          },
+          {
+            "id": "warmth_through_plainness",
+            "label": "Warmth is conveyed through natural, plain phrasing \u2014 not exclamation points, emoji, or effusive language"
+          },
+          {
+            "id": "register_variation",
+            "label": "Copy within a single set shifts register between setup and payoff \u2014 the emotional temperature is not flat throughout"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Empty States as Entry Points",
+        "category": "Content",
+        "description": "Empty and zero-data states guide the user toward their first meaningful action \u2014 they are not dead ends. Headlines orient the user to the space they're in rather than narrating absence. Copy feels like a nudge from someone who's done it before, not a system reporting that nothing exists yet.",
+        "dimensions": [
+          {
+            "id": "clear_first_action",
+            "label": "Empty state includes a clear, specific call to action \u2014 not just a description of what's missing"
+          },
+          {
+            "id": "value_of_acting",
+            "label": "Copy communicates what the user will gain from acting, not just that nothing exists yet"
+          },
+          {
+            "id": "nudge_not_dead_end",
+            "label": "Tone feels like a nudge, not a dead end \u2014 no 'Nothing here yet' or 'No results found' without guidance"
+          },
+          {
+            "id": "headline_orients",
+            "label": "Headline orients the user to the space rather than narrating absence or building marketing-style anticipation"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Coherent Copy Flow",
+        "category": "Structure",
+        "description": "Sequential copy elements (headline \u2192 body \u2192 CTA, error \u2192 recovery) read as one continuous explanation, not separate notices. Each element has a distinct job \u2014 headline orients, body bridges, CTA acts \u2014 and no element restates or previews another. The user never has to mentally stitch pieces together.",
+        "dimensions": [
+          {
+            "id": "one_continuous_thread",
+            "label": "Sequential copy blocks read as one continuous narrative \u2014 user never feels they're reading disconnected pieces"
+          },
+          {
+            "id": "distinct_jobs",
+            "label": "Each element has a distinct role \u2014 no element duplicates or previews the work of another"
+          },
+          {
+            "id": "setup_earns_payoff",
+            "label": "Earlier elements set up later ones \u2014 subtext earns the CTA rather than restating it"
+          },
+          {
+            "id": "anxiety_addressing_retained",
+            "label": "Copy that directly addresses a likely user concern or anxiety is retained even if it adds length \u2014 reassurance that does real work is not filler"
+          },
+          {
+            "id": "no_marketing_in_product",
+            "label": "No marketing or benefit language inside the product \u2014 copy assumes the user has already committed"
+          }
+        ],
+        "priority": 5
+      }
+    ],
+    "version": 11,
+    "source": "criteria_classification",
+    "writing_type": "Product/UX copy for B2B fintech tools",
+    "user_goals_summary": "Writes UI copy for a fintech product used by small business owners and finance ops professionals. Values copy that sounds like a knowledgeable peer \u2014 calm, direct, and specific \u2014 where every element has one clear job, tone matches the emotional weight of the moment, and the user always knows what happens next without filling in gaps themselves.",
+    "coaching_notes": "Non-negotiables: error states must diagnose before directing, CTAs must never be generic labels, and no marketing language belongs inside the product. This user iterates at the word level and can identify sub-word tonal differences \u2014 they'll notice when a verb describes the system's operation vs. the user's experience. They prefer warmth earned through plainness ('The hard part's done') over warmth asserted through comfort phrases ('You're in good hands'). When iteration loops, they respond well to honest pushback about the limits of what copy can do \u2014 they respect being told 'this feeling belongs in the confirmation state, not the button' and will lock decisions when the constraint is named clearly."
+  }
+]

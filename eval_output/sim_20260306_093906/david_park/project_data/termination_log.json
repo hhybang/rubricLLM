@@ -1,0 +1,449 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 17,
+        "max_drafts": 20,
+        "total_turns": 21,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.56,
+              "reasoning": "The draft is solid in tone and evidence, but the recommendations are all-or-nothing with no fallback position, and the opening jumps straight into regulatory framing rather than grounding the reader in what's actually happening to real people first. Those are the two things that would most undermine this comment's effectiveness with policymakers.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.62,
+              "reasoning": "The opening and tone are genuinely strong \u2014 H1 and H5 are working well. But the recommendations section is a real problem: we're asking for everything at once with no sense of what's negotiable, which is exactly the kind of all-or-nothing framing that gets public comments politely set aside.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.7,
+              "reasoning": "The graduated recommendation structure (H4) and urgency-without-alarmism tone (H5) are working well, and the plain-language restatements (H3) are consistently good. But this is an ending section and H1 doesn't apply here \u2014 except the bigger problem is H2: we're stating principles and making recommendations, but the concrete examples that make the argument feel real rather than academic are largely missing from this section. The audit paragraph especially reads like a structural argument with no human moment anchoring it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.555,
+              "reasoning": "The concrete example in H2 is doing real work and the tone stays appropriately measured, but this section is being evaluated in isolation \u2014 it's the audit argument alone, so H1 and H4 aren't present, which drags the score down structurally. The more pressing issue is that H4 is the one I explicitly asked for in this ending, and this excerpt only shows the maximalist position without the graduated fallback framing that was supposed to anchor the whole section.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.725,
+              "reasoning": "H3 is a clean miss \u2014 this section uses 'compliance costs,' 'enforcement gap,' and 'parity of effort' without ever pausing to unpack them for a non-expert reader. H1 is N/A here since this is an argument section, not the opening. The two-tier structure (H4) is working well, and the concrete scenario in the audit argument (H2) is doing real work.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.7933,
+              "reasoning": "H1 is the persistent gap \u2014 this is the ending section, not the opening, so no human-impact lead exists here, which drags the hidden average. C3 also scores 0 since there are no headers in this section. But the core issue I want to surface is H1's absence as it's the one preference that hasn't been addressed across the whole piece.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.55,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.7583,
+              "reasoning": "H2, H3, and H5 are all landing well \u2014 the streaming service scenario is the best concrete moment in the whole piece, and the tone stays authoritative without overstating. The problem is H1: this paragraph still opens on the rule rather than on the person, which is the exact issue we fixed in the opening but hasn't carried over here.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 11,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.62,
+              "reasoning": "The human scenario lands and the tone is well-calibrated, but the graduated recommendations (H4) are entirely absent from this section, and both H1 and H2 are only partially met \u2014 the paragraph opens with 'The confirmation email is one tactic' which is still a reference to the prior argument structure rather than a clean human entry point, and the principle-example-recommendation arc in H2 never reaches a recommendation in this paragraph.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 12,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 0.69,
+              "reasoning": "H1 scores only 0.5 because the paragraph still opens on a human scene that's the second scenario rather than the lead \u2014 the reader hits the streaming example before any human cost has been established at the very top of this paragraph, and H4 is entirely absent from this section since recommendations are not yet present here. C3 is structurally absent.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 11,
+            "satisfaction": {
+              "score": 0.7233,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 14,
+            "has_draft": true,
+            "draft_number": 12,
+            "satisfaction": {
+              "score": 0.76,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 15,
+            "has_draft": true,
+            "draft_number": 13,
+            "satisfaction": {
+              "score": 0.69,
+              "reasoning": "H2 and H5 are landing well, and the human opening is doing its job. But the graduated recommendation structure \u2014 the whole point of showing policymakers a floor and a ceiling \u2014 is completely absent from this paragraph, and H4 scores zero. The middle paragraph closes on a single requirement with no signal that there's a hierarchy of asks.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 17,
+            "has_draft": true,
+            "draft_number": 14,
+            "satisfaction": {
+              "score": 0.76,
+              "reasoning": "",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 18,
+            "has_draft": true,
+            "draft_number": 15,
+            "satisfaction": {
+              "score": 0.863,
+              "reasoning": "Almost everything is working \u2014 the human-first opening, the streaming scenario, the urgency-without-alarmism tone. The one thing still nagging me is H4: we're previewing two floor requirements but the full ask \u2014 the third-party audit piece \u2014 doesn't appear anywhere in these two paragraphs, so a reader coming cold has no sense that there's a maximalist position at all. The fallback is clear but the ceiling is invisible.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 20,
+            "has_draft": true,
+            "draft_number": 16,
+            "satisfaction": {
+              "score": 0.9334,
+              "reasoning": "All five hidden preferences are fully met \u2014 the tiered structure is clear, examples are doing real work, technical terms are restated in plain language, and the tone is urgent without overclaiming. The one remaining gap is structural: there are no headers, which is a stated preference and something I'd need before this goes out as a formal public comment.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 21,
+            "has_draft": true,
+            "draft_number": 17,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All five hidden preferences and all three core preferences are fully met, with no dealbreaker violations. Every technical term is immediately restated in plain language, the tiered recommendation structure is clearly legible, the tone maintains urgency without alarmism, and the opening leads with human experience before any regulatory framing.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 9,
+        "max_drafts": 20,
+        "total_turns": 10,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.513,
+              "reasoning": "The opening human-impact framing and tone calibration both land well, but this is only two paragraphs and H2, H3, and H4 simply haven't had a chance to appear yet \u2014 which is fine structurally \u2014 except H4 is the one that actually does apply here: the summary-of-position paragraph makes a single ask without any sense of what we'd accept if the Bureau doesn't go all the way."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7233,
+              "reasoning": "H1, H4, and H5 are well-executed \u2014 the opening lands on human stakes, the recommendations are properly graduated, and the tone is urgent without overstating. The main gap is H2: these two paragraphs are introductory framing, not argument sections, so H2 doesn't fully apply yet \u2014 but even the second paragraph, which begins to make an argument, states a principle and gives a recommendation without anchoring it to a concrete example. H3 is only partial: 'time-barred' gets used but never explicitly restated in plain language for a non-lawyer reader.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.8125,
+              "reasoning": "H2 and H4 are working well \u2014 the example is vivid and the graduated ask is clear. But the closing phrase 'leaving consumers exposed at the moment of greatest vulnerability' tips into the kind of language that makes me nervous in a docket filing \u2014 it's reaching for an emotional note where the facts themselves should be doing the work.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.62,
+              "reasoning": "The opening human-impact framing, the graduated recommendation structure, and the tone calibration are all landing well. But this is still an opening section \u2014 H2 and H3 haven't been engaged yet because we haven't moved into the first substantive argument section, which is where those patterns need to show up. C3 (headers for skimming) is also absent from what's been drafted.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The structure, legal precision, graduated recommendation, and plain-language glossing all land well. The one place I'm still not fully satisfied is tone calibration \u2014 'That gap is not incidental to the harm; it is the harm' is a strong rhetorical move, but paired with 'replayed across millions of calls each year,' it starts to accumulate weight in a way that edges toward alarm rather than sober documentation.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.5665,
+              "reasoning": "The section has good bones \u2014 the asymmetry framing is clean and the tone is appropriately measured \u2014 but the argument section never lands on a recommendation, graduated or otherwise, and the concrete example stops short of being genuinely concrete: we have categories of debt but no moment, no person, no decision point that makes the principle feel real rather than illustrated.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 10,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All non-N/A hidden preferences are fully met: the argument follows the principle-example-recommendation structure, legal terms are glossed in plain language, the graduated ask is explicit and specific, and the tone stays measured throughout without alarmism. Core preferences are also fully satisfied. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 6,
+        "max_drafts": 20,
+        "total_turns": 13,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.69,
+              "reasoning": "The draft opens well with human impact and handles plain-language explanation of technical terms cleanly, but it never lands on a concrete recommendation \u2014 the closing paragraph gestures toward one without actually making an ask, which leaves the whole argument feeling unresolved. The section structure also lacks headers, and H4 (graduated recommendations) is entirely absent."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9334,
+              "reasoning": "Hidden preferences are all fully met \u2014 the graduated recommendation, the principle-example-recommendation structure, and the urgency-without-alarmism tone all land cleanly. The one gap pulling the score down is the absence of any headers, which matters for a public comment that a commissioner or staff attorney will skim.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9,
+              "reasoning": "Almost everything is working \u2014 the structure is tight, the graduated ask is clear, the examples are concrete, and the plain-language restatements land well. The one thing that's giving me pause is tone in Section II specifically: the framing around which patients are affected edges toward 'these are the vulnerable ones' in a way that feels slightly more like advocacy than analysis \u2014 it's not alarmist exactly, but it's leaning on the gravity of the examples to do work that a cleaner analytical statement would do better.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "partial_draft": true
+          },
+          {
+            "turn": 13,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "Every structural and stylistic preference is fully met: human impact leads, each section follows principle-example-recommendation, legal terms are plain-language restated, recommendations are graduated, and tone stays urgent without tipping into alarmism. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 10,
+        "max_drafts": 20,
+        "total_turns": 9,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.84,
+              "reasoning": "The draft handles human impact, principle-example-recommendation structure, plain-language restatements, and graduated recommendations well. But the tone in spots edges toward characterizing dealer conduct in ways that feel slightly prosecutorial ('deliberately exploited,' 'deliberate act'), which risks reading as advocacy to a sophisticated FTC audience \u2014 and there are no headers, which is a real structural gap for a document meant to be skimmed by commissioners."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.863,
+              "reasoning": "The draft is doing most things well \u2014 the graduated ask is clean, the plain-language glossing of 'information asymmetry' is exactly right, and the principle-example-recommendation structure in the middle paragraph is tight. The one thing that's bothering me is the opening: it starts with the buyer and the premium, which is good, but it moves almost immediately into the structural argument before I've really felt why this matters to an actual person. The $1,000-$3,000 figure is useful, but it's framed as a transaction fact rather than a human situation \u2014 there's a real story there about someone who budgeted carefully, trusted a label, and drove away with a problem the dealer already knew about. That story is implied but never lands before the analysis takes over.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.864,
+              "reasoning": "The draft is largely solid \u2014 the opening leads with human impact, the tone stays calibrated, the graduated recommendation is well-constructed, and the plain-language restatements are working. The one gap is in the middle paragraph: it states a principle and gives concrete detail about inspection records, but the paragraph doesn't complete the arc by connecting back to a specific policy recommendation \u2014 it just sets up the third paragraph to do that work. Also no headers, which matters for a document FTC commissioners are skimming.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the graduated recommendation, the plain-language restatements, the tone. The one place it still falls short is the second paragraph: it states the principle and gives the concrete evidence, but it still doesn't close with a point of its own before handing off to the recommendation section.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is working \u2014 the opening, the graduated recommendation, the plain-language restatements, and the tone are all right. The one remaining gap is in the middle paragraph: it has the principle and the concrete evidence, but the policy connection still doesn't fully land as a standalone conclusion \u2014 it gestures toward the implication rather than stating it directly.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is landing \u2014 the opening, the graduated recommendation, the plain-language glosses, and the tone are all right. The one remaining gap is in the middle paragraph: the principle and the evidence are both there, but the paragraph's closing argument still reads as a framing question rather than a conclusion \u2014 H2 requires connecting back to a policy recommendation, and 'whether the current proposal's boundary reflects a considered policy choice or an oversight worth correcting' leaves that work to the reader.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "The draft is very strong across nearly every dimension \u2014 the opening, the graduated recommendation, and the tone are all exactly right. The one thing still not landing is H2: the middle paragraph states its principle and gives the concrete detail, but never explicitly connects that evidence to a policy conclusion of its own \u2014 it still hands off to the third paragraph rather than closing its own loop.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 10,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences fully met: human impact leads, each section follows principle-example-recommendation, technical terms are defined inline, recommendations are graduated, and tone is urgent without alarmism. No dealbreakers violated.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-06T13:44:17.051573"
+  }
+]

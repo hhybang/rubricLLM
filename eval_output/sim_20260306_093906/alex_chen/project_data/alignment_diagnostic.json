@@ -1,0 +1,645 @@
+[
+  {
+    "timestamp": "2026-03-06T09:44:32.860568",
+    "writing_task": "Hey, I need to send an email to a key customer \u2014 Priya at Northfield Logistics \u2014 letting her know that a feature she requested six months ago is finally shipping next week. The tricky part is she's been waiting a long time and I want to acknowledge that without being overly apologetic or making it weird. She'll need to coordinate with her IT team to enable it, so there's a clear action item on her end. Can you draft something short \u2014 two or three paragraphs?",
+    "drafts": {
+      "rubric": "Subject: [Feature Name] shipping next week \u2014 action needed from your IT team\n\nHi Priya,\n\nThe feature you requested back in March is shipping next week, and I wanted to make sure you had enough lead time to get ahead of it. You've been waiting on this for a while, and I know you've had to work around its absence \u2014 that changes on [specific date].\n\nTo turn it on, your IT team will need to enable it in your account settings before [deadline date]. I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.\n\nI'll follow up on [date] to confirm everything is live. Reach me at [email/phone] if anything comes up before then.",
+      "generic": "Subject: Your Requested Feature Is Almost Here\n\nHi Priya,\n\nGood news \u2014 the feature you requested back in the spring is officially shipping next week. We know it's been a longer road than any of us anticipated, and we genuinely appreciate your patience while we got it right.\n\nTo get things up and running on your end, you'll want to loop in your IT team ahead of the release. They'll need to enable the feature through your admin settings \u2014 I can send over step-by-step instructions whenever you're ready.\n\nLet me know if you have questions. We're glad this one is finally landing.",
+      "preference": "Subject: Your Requested Feature Ships Next Week\n\nHi Priya,\n\nGood news \u2014 the feature you requested is finally rolling out next week. It's been a longer wait than either of us would have liked, and I appreciate your patience while we got it across the finish line.\n\nTo activate it, your IT team will need to enable it on your end. I'd recommend looping them in now so you're ready to go on launch day.\n\nLet me know if you have questions or want to walk through the setup together. Happy to jump on a quick call."
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "preference"
+      ],
+      [
+        "B",
+        "generic"
+      ],
+      [
+        "C",
+        "rubric"
+      ]
+    ],
+    "user_preference": "rubric",
+    "user_ranking": [
+      "rubric",
+      "preference",
+      "generic"
+    ],
+    "user_reason": "C is the closest to what I'd actually send. It acknowledges the wait without dwelling on it, frames the impact from Priya's perspective ('you've had to work around its absence'), and gives her a clear owner and deadline rather than a vague 'loop in your IT team.' The closing is forward-looking and specific \u2014 it doesn't trail off. A is decent and clean, but 'I appreciate your patience' centers me, not her, and 'Happy to jump on a quick call' as a closer is weak \u2014 it's sentiment after the CTA. B is the worst. 'We genuinely appreciate your patience while we got it right' is tone-deaf \u2014 that's entirely about us. 'We're glad this one is finally landing' as a closing is exactly the kind of trailing sentiment that kills the momentum. Also 'we' throughout feels like it's diffusing accountability.",
+    "rubric_version": 2,
+    "criteria_analysis": [
+      {
+        "name": "Audience-Facing Reasoning",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft explicitly names what Priya has been doing ('had to work around its absence') and ties the reasoning to her experience with specificity. The generic draft gestures vaguely at patience and a 'longer road' without anchoring in Priya's situation. The original preference draft is slightly better than generic ('longer wait than either of us would have liked') but still lacks specificity about Priya's experience.",
+        "preference_score": 3,
+        "priority": 1
+      },
+      {
+        "name": "Operational Endings",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft closes with a specific follow-up date and a clear contact channel \u2014 the reader knows exactly what happens next. The generic draft ends with 'We're glad this one is finally landing,' which is motivational filler that deflates momentum. The original preference draft offers a call but lacks a committed follow-up date, making it softer but still operational.",
+        "preference_score": 3,
+        "priority": 2
+      },
+      {
+        "name": "Concrete Accountability",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft names the IT team with a deliverable (enable in account settings) and a deadline, offers to send documentation directly, and commits to a follow-up date with contact info. Both the generic and original preference drafts mention the IT team but attach no deadline and provide no clear contact routing or follow-up commitment.",
+        "preference_score": 2,
+        "priority": 3
+      },
+      {
+        "name": "Direct, Non-Alarmist Tone",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft states facts plainly without hedging or over-apologizing \u2014 'that changes on [specific date]' is confident and clean. The generic draft hedges with 'a longer road than any of us anticipated' and 'we genuinely appreciate your patience,' which reads slightly defensive. The original preference draft uses 'finally rolling out' and 'across the finish line,' which are mildly hedging/apologetic but not egregious.",
+        "preference_score": 3,
+        "priority": 4
+      },
+      {
+        "name": "Signal-to-Noise Discipline",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft is tightly scoped \u2014 every sentence is either information Priya needs or an action she can take. The generic draft includes 'we genuinely appreciate your patience' and 'We're glad this one is finally landing,' which serve the sender's comfort more than the reader's needs. The original preference draft is lean but 'across the finish line' is vestigial phrasing that doesn't add value.",
+        "preference_score": 4,
+        "priority": 5
+      },
+      {
+        "name": "Lean Structure",
+        "rubric_score": 5,
+        "generic_score": 4,
+        "gap": 1,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "All three drafts use prose appropriately for the content complexity. The rubric-guided and original preference drafts are clean prose with no manufactured structure. The generic draft is also prose but slightly more padded, which keeps it from a 5.",
+        "preference_score": 5,
+        "priority": 6
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Audience-Facing Reasoning",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft explicitly names what Priya has been doing ('had to work around its absence') and ties the reasoning to her experience with specificity. The generic draft gestures vaguely at patience and a 'longer road' without anchoring in Priya's situation. The original preference draft is slightly better than generic ('longer wait than either of us would have liked') but still lacks specificity about Priya's experience."
+        },
+        {
+          "criterion_name": "Operational Endings",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft closes with a specific follow-up date and a clear contact channel \u2014 the reader knows exactly what happens next. The generic draft ends with 'We're glad this one is finally landing,' which is motivational filler that deflates momentum. The original preference draft offers a call but lacks a committed follow-up date, making it softer but still operational."
+        },
+        {
+          "criterion_name": "Concrete Accountability",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 2,
+          "reasoning": "The rubric-guided draft names the IT team with a deliverable (enable in account settings) and a deadline, offers to send documentation directly, and commits to a follow-up date with contact info. Both the generic and original preference drafts mention the IT team but attach no deadline and provide no clear contact routing or follow-up commitment."
+        },
+        {
+          "criterion_name": "Direct, Non-Alarmist Tone",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft states facts plainly without hedging or over-apologizing \u2014 'that changes on [specific date]' is confident and clean. The generic draft hedges with 'a longer road than any of us anticipated' and 'we genuinely appreciate your patience,' which reads slightly defensive. The original preference draft uses 'finally rolling out' and 'across the finish line,' which are mildly hedging/apologetic but not egregious."
+        },
+        {
+          "criterion_name": "Signal-to-Noise Discipline",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft is tightly scoped \u2014 every sentence is either information Priya needs or an action she can take. The generic draft includes 'we genuinely appreciate your patience' and 'We're glad this one is finally landing,' which serve the sender's comfort more than the reader's needs. The original preference draft is lean but 'across the finish line' is vestigial phrasing that doesn't add value."
+        },
+        {
+          "criterion_name": "Lean Structure",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "draft_c_score": 5,
+          "reasoning": "All three drafts use prose appropriately for the content complexity. The rubric-guided and original preference drafts are clean prose with no manufactured structure. The generic draft is also prose but slightly more padded, which keeps it from a 5."
+        }
+      ],
+      "overall_ranking": [
+        "A",
+        "C",
+        "B"
+      ],
+      "overall_reasoning": "The rubric-guided draft excels across every criterion \u2014 it names Priya's specific experience, provides concrete accountability with deadlines and follow-up commitments, and ends operationally without motivational filler. The original preference draft is competent and lean but lacks the specificity and accountability structures this user consistently demands. The generic draft falls short on nearly every priority criterion, relying on sender-facing gratitude and motivational closings that this user has explicitly rejected in past conversations."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A is exceptionally clear with specific placeholders for dates, a concrete action item, and a defined follow-up plan. Draft B is clear but slightly vaguer \u2014 'whenever you're ready' and 'admin settings' are less precise than Draft A's specifics."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts flow logically from announcement to action needed to next steps. Each paragraph builds naturally on the previous one in both versions."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are free of grammatical errors and typos, with clean, professional prose throughout."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A has a tighter structure: announcement, specific action with deadline, offer to help, follow-up commitment with contact info. Draft B is well-organized but lacks a concrete deadline and follow-up plan, making it slightly less actionable."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A engages by acknowledging the recipient's specific pain point ('had to work around its absence') and offering proactive next steps. Draft B is warm but slightly more generic in its engagement."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both strike an excellent professional-yet-warm tone. Draft A is slightly more direct and action-oriented; Draft B is slightly warmer and more apologetic. Both are appropriate for the context."
+        }
+      ],
+      "overall_preference": "A",
+      "overall_reasoning": "Draft A edges ahead by being more actionable and specific \u2014 it includes a deadline, a concrete follow-up date, contact information, and directly acknowledges the recipient's workaround pain. Draft B is polished and warm but is vaguer on next steps and timelines, making it less effective as a business communication that requires action."
+    },
+    "suggestion_text": "",
+    "suggestion_reasons": {},
+    "suggested_rubric": null,
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nThe three drafts are:\n- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)\n- Draft B = the **generic** draft (written with no rubric \u2014 just competent writing)\n- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)\n\nDRAFT A (rubric-guided):\nSubject: [Feature Name] shipping next week \u2014 action needed from your IT team\n\nHi Priya,\n\nThe feature you requested back in March is shipping next week, and I wanted to make sure you had enough lead time to get ahead of it. You've been waiting on this for a while, and I know you've had to work around its absence \u2014 that changes on [specific date].\n\nTo turn it on, your IT team will need to enable it in your account settings before [deadline date]. I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.\n\nI'll follow up on [date] to confirm everything is live. Reach me at [email/phone] if anything comes up before then.\n\nDRAFT B (generic):\nSubject: Your Requested Feature Is Almost Here\n\nHi Priya,\n\nGood news \u2014 the feature you requested back in the spring is officially shipping next week. We know it's been a longer road than any of us anticipated, and we genuinely appreciate your patience while we got it right.\n\nTo get things up and running on your end, you'll want to loop in your IT team ahead of the release. They'll need to enable the feature through your admin settings \u2014 I can send over step-by-step instructions whenever you're ready.\n\nLet me know if you have questions. We're glad this one is finally landing.\n\nDRAFT C (original preference):\nSubject: Your Requested Feature Ships Next Week\n\nHi Priya,\n\nGood news \u2014 the feature you requested is finally rolling out next week. It's been a longer wait than either of us would have liked, and I appreciate your patience while we got it across the finish line.\n\nTo activate it, your IT team will need to enable it on your end. I'd recommend looping them in now so you're ready to go on launch day.\n\nLet me know if you have questions or want to walk through the setup together. Happy to jump on a quick call.\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Audience-Facing Reasoning\",\n      \"category\": \"Audience\",\n      \"description\": \"When explaining a decision, the reasoning should land for the reader \\u2014 framed around their experience, their investment, and the impact on their work \\u2014 not as a defense of the sender's decision-making process.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_reader_experience\",\n          \"label\": \"Explicitly acknowledges what the audience has been doing, expecting, or working toward\"\n        },\n        {\n          \"id\": \"rationale_faces_outward\",\n          \"label\": \"The 'why' is framed in terms of outcomes for the reader, not justification for the sender\"\n        },\n        {\n          \"id\": \"no_defensive_posture\",\n          \"label\": \"Avoids language that reads as defending or justifying the decision to the sender's own benefit\"\n        },\n        {\n          \"id\": \"specific_not_gestural\",\n          \"label\": \"References the reader's situation with specificity rather than vague gestures at disruption or inconvenience\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"Operational Endings\",\n      \"category\": \"Structure\",\n      \"description\": \"Closings should hand off momentum with a concrete next step, a follow-up commitment, or a clear point of contact. The reader finishes the email knowing what happens next \\u2014 not sighing through a motivational sign-off.\",\n      \"dimensions\": [\n        {\n          \"id\": \"ends_with_next_action\",\n          \"label\": \"The final lines contain a concrete next step, follow-up commitment, or clear contact channel\"\n        },\n        {\n          \"id\": \"no_motivational_filler\",\n          \"label\": \"No town-hall-style encouragement, rallying language, or inspirational closings\"\n        },\n        {\n          \"id\": \"momentum_preserved\",\n          \"label\": \"The ending maintains or accelerates the pace of the email rather than deflating it\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Concrete Accountability\",\n      \"category\": \"Content\",\n      \"description\": \"When someone is named as responsible, they must carry a deliverable and a time peg. A name without a deadline is a redirect, not an ownership statement. The reader should be able to hold the named person to something specific.\",\n      \"dimensions\": [\n        {\n          \"id\": \"owner_has_deadline\",\n          \"label\": \"Every named owner has a specific target date or timeframe attached\"\n        },\n        {\n          \"id\": \"owner_has_deliverable\",\n          \"label\": \"Every named owner has a clear deliverable or scope of responsibility stated\"\n        },\n        {\n          \"id\": \"contact_routing_clear\",\n          \"label\": \"It's clear who to go to for what \\u2014 routing is explicit, not implied\"\n        },\n        {\n          \"id\": \"accountability_not_redirect\",\n          \"label\": \"Named individuals read as actively owning work, not just serving as a contact redirect\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Direct, Non-Alarmist Tone\",\n      \"category\": \"Style\",\n      \"description\": \"Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases ('minor setback,' 'abundance of caution') that feel patronizing, and no alarm language that induces panic. State the situation plainly.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_hedging_minimizers\",\n          \"label\": \"Avoids softening phrases that downplay the situation or feel evasive\"\n        },\n        {\n          \"id\": \"no_alarm_language\",\n          \"label\": \"Avoids catastrophizing or panic-inducing framing\"\n        },\n        {\n          \"id\": \"plain_factual_framing\",\n          \"label\": \"States the situation, its cause, and its implications in plain, factual terms\"\n        },\n        {\n          \"id\": \"respects_reader_intelligence\",\n          \"label\": \"Trusts the reader to understand stakes without being told how to feel about them\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Signal-to-Noise Discipline\",\n      \"category\": \"Content\",\n      \"description\": \"Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists.\",\n      \"dimensions\": [\n        {\n          \"id\": \"actionable_for_audience\",\n          \"label\": \"Every piece of information included is something the recipient needs or can act on\"\n        },\n        {\n          \"id\": \"no_phantom_actions\",\n          \"label\": \"No action items or assignments directed at people who don't actually have a concrete task\"\n        },\n        {\n          \"id\": \"no_internal_narration\",\n          \"label\": \"Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience\"\n        },\n        {\n          \"id\": \"nothing_vestigial\",\n          \"label\": \"No sentences or sections that remain simply because they seem expected \\u2014 every element earns its place\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Lean Structure\",\n      \"category\": \"Structure\",\n      \"description\": \"Prefer prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \\u2014 bullet lists, tables, numbered steps \\u2014 that implies more moving parts than actually exist.\",\n      \"dimensions\": [\n        {\n          \"id\": \"format_matches_complexity\",\n          \"label\": \"Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items\"\n        },\n        {\n          \"id\": \"no_catch_all_buckets\",\n          \"label\": \"No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure\"\n        },\n        {\n          \"id\": \"prose_when_sufficient\",\n          \"label\": \"Uses inline prose rather than lists when there are fewer than three genuinely distinct action items\"\n        }\n      ],\n      \"priority\": 6\n    }\n  ],\n  \"version\": 2,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"operational team emails\",\n  \"user_goals_summary\": \"This user writes internal team communications that are direct, reader-facing, and tightly scoped to what the audience can act on. They prioritize eliminating noise over adding polish, frame reasoning from the team's perspective rather than defending their own decisions, and insist that any named accountability includes concrete timelines \\u2014 not just contact routing.\",\n  \"coaching_notes\": \"This user evaluates every sentence from the reader's chair, not the sender's \\u2014 if a line serves the writer's comfort more than the reader's needs, they'll cut it. They have zero tolerance for structural or tonal elements that 'feel right' but don't do anything (motivational closings, catch-all bullet points, references to side conversations). When offering options, lead with the one that is most specific and reader-facing; they consistently choose concreteness over brevity when forced to pick.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\nld go to him directly. I'll be looping in [stakeholders / other teams] separately, and I'll send a follow-up once we have a confirmed timeline. Questions before then, come to me directly.\n\n[Your name]\n</draft>\n\nMarcus now has a date attached to his name, so he reads as actively accountable rather than just a contact to route questions to. The validation window is implicit in the gap between the 7th and the 14th \u2014 you don't need to spell it out, but anyone doing the math will see it. Ready to send whenever you are.\n\n[Message #18 \u2014 user]\nThe Marcus section is almost exactly right \u2014 naming him with a deadline is exactly what I wanted. But that line right after, 'I'll be looping in [stakeholders / other teams] separately' \u2014 I'd cut it entirely. It's not an action anyone on this team needs to know about, and it kind of implies there's a whole separate conversation happening that they're not part of. If I need to communicate with other groups, I'll do that separately. This email doesn't need to announce that. Just let the Marcus line and the follow-up close carry the weight \u2014 they're doing the job already.\n\n[Message #19 \u2014 assistant]\n<draft>\nSubject: Product Launch Timeline Update \u2014 2-Week Delay\n\nHi team,\n\nI want to give you a heads-up on a change to our launch timeline.\n\nDuring testing, we identified a critical bug that we're not comfortable shipping. Rather than push forward and deal with the fallout post-launch, we're moving the release date back by two weeks to give us the time needed to fix it properly and validate the fix.\n\nNew target launch date: **November 14th**\n\nYou've all been building toward this date, and I know a delay has real downstream effects on your work. Shipping a critical bug would create more of that disruption, not less \u2014 so two weeks now is the cleaner path.\n\nMarcus is leading the fix and is targeting end of day November 7th. Technical questions should go to him directly. I'll send a follow-up once we have a confirmed timeline. Questions before then, come to me directly.\n\n[Your name]\n</draft>\n\nClean cut. The closing now moves straight from Marcus's deadline to your follow-up commitment \u2014 no detours. I think this one's done.\n\n[Message #20 \u2014 user]\nThis is it. The middle paragraph finally does what I needed \u2014 it's about what the team was working toward, not about our decision-making process. Marcus having a hard date on him makes the ownership real, not just a redirect. And the close doesn't trail off. Send it.\n\n[Message #21 \u2014 system]\n--- Iteration 2/4 ---\n\n[Message #22 \u2014 user]\nHey, I need to send an email to a key customer \u2014 Priya at Northfield Logistics \u2014 letting her know that a feature she requested six months ago is finally shipping next week. The tricky part is she's been waiting a long time and I want to acknowledge that without being overly apologetic or making it weird. She'll need to coordinate with her IT team to enable it, so there's a clear action item on her end. Can you draft something short \u2014 two or three paragraphs?\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Audience-Facing Reasoning\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft explicitly names what Priya has been doing ('had to work around its absence') and ties the reasoning to her experience with specificity. The generic draft gestures vaguely at patience and a 'longer road' without anchoring in Priya's situation. The original preference draft is slightly better than generic ('longer wait than either of us would have liked') but still lacks specificity about Priya's experience.\"\n        },\n        {\n            \"criterion_name\": \"Operational Endings\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft closes with a specific follow-up date and a clear contact channel \u2014 the reader knows exactly what happens next. The generic draft ends with 'We're glad this one is finally landing,' which is motivational filler that deflates momentum. The original preference draft offers a call but lacks a committed follow-up date, making it softer but still operational.\"\n        },\n        {\n            \"criterion_name\": \"Concrete Accountability\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 2,\n            \"reasoning\": \"The rubric-guided draft names the IT team with a deliverable (enable in account settings) and a deadline, offers to send documentation directly, and commits to a follow-up date with contact info. Both the generic and original preference drafts mention the IT team but attach no deadline and provide no clear contact routing or follow-up commitment.\"\n        },\n        {\n            \"criterion_name\": \"Direct, Non-Alarmist Tone\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft states facts plainly without hedging or over-apologizing \u2014 'that changes on [specific date]' is confident and clean. The generic draft hedges with 'a longer road than any of us anticipated' and 'we genuinely appreciate your patience,' which reads slightly defensive. The original preference draft uses 'finally rolling out' and 'across the finish line,' which are mildly hedging/apologetic but not egregious.\"\n        },\n        {\n            \"criterion_name\": \"Signal-to-Noise Discipline\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft is tightly scoped \u2014 every sentence is either information Priya needs or an action she can take. The generic draft includes 'we genuinely appreciate your patience' and 'We're glad this one is finally landing,' which serve the sender's comfort more than the reader's needs. The original preference draft is lean but 'across the finish line' is vestigial phrasing that doesn't add value.\"\n        },\n        {\n            \"criterion_name\": \"Lean Structure\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 4,\n            \"draft_c_score\": 5,\n            \"reasoning\": \"All three drafts use prose appropriately for the content complexity. The rubric-guided and original preference drafts are clean prose with no manufactured structure. The generic draft is also prose but slightly more padded, which keeps it from a 5.\"\n        }\n    ],\n    \"overall_ranking\": [\"A\", \"C\", \"B\"],\n    \"overall_reasoning\": \"The rubric-guided draft excels across every criterion \u2014 it names Priya's specific experience, provides concrete accountability with deadlines and follow-up commitments, and ends operationally without motivational filler. The original preference draft is competent and lean but lacks the specificity and accountability structures this user consistently demands. The generic draft falls short on nearly every priority criterion, relying on sender-facing gratitude and motivational closings that this user has explicitly rejected in past conversations.\"\n}\n```"
+      }
+    ],
+    "iteration": 2,
+    "phase": "pre_conversation"
+  },
+  {
+    "timestamp": "2026-03-06T09:52:42.136481",
+    "writing_task": "Hey, I need to draft a quick email to a vendor \u2014 we use their API for document parsing and their support team just told me response times are going to degrade by roughly 40% starting next month due to infrastructure changes on their end. I need to let our internal customer success team know so they can set expectations with clients before anyone gets blindsided. Keep it short \u2014 two or three paragraphs max.",
+    "drafts": {
+      "rubric": "Subject: Heads up \u2014 API response time degradation starting next month\n\nYou've been managing client expectations around document parsing turnaround, so I want to get this to you before it becomes a surprise.\n\nOur document parsing vendor notified us that their infrastructure changes will slow API response times by roughly 40% beginning next month. That means any client workflow that depends on near-real-time parsing \u2014 automated ingestion, time-sensitive review queues \u2014 will see a noticeable slowdown. The degradation comes from their end, and they haven't given us a rollback timeline.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?",
+      "generic": "Subject: Heads Up \u2013 API Response Time Slowdown Next Month\n\nHi team,\n\nWanted to flag something before it catches anyone off guard. Our document parsing vendor just informed us that their upcoming infrastructure changes will cause API response times to degrade by approximately 40% starting next month. This is on their end and outside our control.\n\nI'd recommend proactively reaching out to any clients who rely on document parsing features to set expectations ahead of time. Framing it as a temporary performance change while the vendor stabilizes their infrastructure should help avoid frustration. I'll share more details as we get them.\n\nThanks,\n[Your Name]",
+      "preference": "Subject: Heads Up \u2014 API Response Time Degradation Starting Next Month\n\nTeam,\n\nOur document parsing vendor just notified us that their infrastructure changes will cause API response times to degrade by roughly 40% beginning next month. This will likely affect how quickly we process documents for clients, so we need to get ahead of it.\n\nPlease reach out to any clients who rely on document parsing and set expectations before this hits. If you're not sure which clients this affects or need talking points, let me know and I'll help you get what you need."
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "generic"
+      ],
+      [
+        "B",
+        "rubric"
+      ],
+      [
+        "C",
+        "preference"
+      ]
+    ],
+    "user_preference": "rubric",
+    "user_ranking": [
+      "rubric",
+      "generic",
+      "preference"
+    ],
+    "user_reason": "Draft B is the clear winner. It opens by acknowledging what the CS team is already doing, delivers the news with specific downstream impact framed around the reader's world (client workflows, not our operational headache), and closes with one owner and a real deadline. That's exactly the structure I want. Draft A is decent \u2014 short, professional, no jargon \u2014 but 'I'd recommend' is a soft non-action, and the closing 'I'll share more details as we get them' trails off instead of driving anything. It also frames the 'why' a bit too much from our side. Draft C is the weakest. 'Please reach out to any clients' is a group ask with no owner and no deadline \u2014 classic non-action. The last sentence is also backward; I shouldn't be offering to help with talking points in the same email where I'm assigning the task. It reads like I'm not sure who's actually responsible.",
+    "rubric_version": 5,
+    "criteria_analysis": [
+      {
+        "name": "Emotional Arc and Sequencing",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft nails the full sequence: opens with a one-sentence acknowledgment of the reader's work ('You've been managing client expectations around document parsing turnaround'), then delivers the news, then explains why it matters from the reader's perspective (client workflows affected), then closes with a single concrete next step with a deadline. The generic draft and original preference draft both open with the news itself \u2014 no acknowledgment of the reader's situation \u2014 and the generic draft buries the 'so what' in vague framing advice rather than reader-facing impact.",
+        "preference_score": 2,
+        "priority": 1
+      },
+      {
+        "name": "Audience-Facing Reasoning",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft explicitly names the reader's experience ('managing client expectations'), specifies what client workflows will be affected ('automated ingestion, time-sensitive review queues'), and frames impact outward. The generic draft frames the 'why' as a suggestion to the team about how to spin it ('framing it as a temporary performance change') which is sender-side process narration, not reader-facing reasoning. The original preference draft gestures at client impact ('how quickly we process documents') but stays vague and doesn't name the reader's specific situation.",
+        "preference_score": 3,
+        "priority": 2
+      },
+      {
+        "name": "Single Owner, Scoped Accountability",
+        "rubric_score": 5,
+        "generic_score": 1,
+        "gap": 4,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft addresses a single implied owner ('you'), gives a clear deliverable ('flag the accounts most likely to feel this and reach out'), and attaches a deadline ('by end of next week'). The generic draft uses 'I'd recommend proactively reaching out' directed at 'team' \u2014 a classic group ask with no owner and no deadline. The original preference draft says 'Please reach out to any clients' addressed to 'Team' \u2014 same diffused responsibility problem with no deadline.",
+        "preference_score": 1,
+        "priority": 3
+      },
+      {
+        "name": "Operational Endings",
+        "rubric_score": 5,
+        "generic_score": 1,
+        "gap": 4,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft ends cleanly on the action item with no trailing sentiment. The generic draft ends with 'Thanks, [Your Name]' \u2014 a sign-off platitude after the CTA, plus 'I'll share more details as we get them' which is internal narration rather than a concrete next step. The original preference draft ends with an offer to help ('let me know and I'll help you get what you need') which is a reasonable operational offer but slightly soft and introduces a secondary action rather than closing on the primary one.",
+        "preference_score": 3,
+        "priority": 4
+      },
+      {
+        "name": "Direct, Non-Alarmist Tone",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft is plain and factual \u2014 states the degradation, its source, and its implications without hedging or catastrophizing. The generic draft includes 'This is on their end and outside our control' which reads slightly defensive, and 'should help avoid frustration' which slightly patronizes. The original preference draft is mostly direct and clean, though 'so we need to get ahead of it' slightly overstates urgency without being specific about why.",
+        "preference_score": 4,
+        "priority": 5
+      },
+      {
+        "name": "Signal-to-Noise Discipline",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft includes only what the reader needs: what's happening, what it affects from their perspective, and what they should do. The generic draft includes 'This is on their end and outside our control' (internal defensiveness), coaching on how to frame it to clients (sender-side process), and 'I'll share more details as we get them' (announces a future action that's not actionable now). The original preference draft is leaner but 'If you're not sure which clients this affects or need talking points, let me know' adds a conditional offer that may not be needed.",
+        "preference_score": 3,
+        "priority": 6
+      },
+      {
+        "name": "Lean Structure",
+        "rubric_score": 5,
+        "generic_score": 4,
+        "gap": 1,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "All three drafts use prose appropriately for the content complexity. The rubric-guided draft is the most disciplined \u2014 three tight paragraphs, no manufactured structure. The generic and original preference drafts are also prose-based and appropriately lean, though neither is quite as tight.",
+        "preference_score": 4,
+        "priority": 7
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Emotional Arc and Sequencing",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 2,
+          "reasoning": "The rubric-guided draft nails the full sequence: opens with a one-sentence acknowledgment of the reader's work ('You've been managing client expectations around document parsing turnaround'), then delivers the news, then explains why it matters from the reader's perspective (client workflows affected), then closes with a single concrete next step with a deadline. The generic draft and original preference draft both open with the news itself \u2014 no acknowledgment of the reader's situation \u2014 and the generic draft buries the 'so what' in vague framing advice rather than reader-facing impact."
+        },
+        {
+          "criterion_name": "Audience-Facing Reasoning",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft explicitly names the reader's experience ('managing client expectations'), specifies what client workflows will be affected ('automated ingestion, time-sensitive review queues'), and frames impact outward. The generic draft frames the 'why' as a suggestion to the team about how to spin it ('framing it as a temporary performance change') which is sender-side process narration, not reader-facing reasoning. The original preference draft gestures at client impact ('how quickly we process documents') but stays vague and doesn't name the reader's specific situation."
+        },
+        {
+          "criterion_name": "Single Owner, Scoped Accountability",
+          "draft_a_score": 5,
+          "draft_b_score": 1,
+          "draft_c_score": 1,
+          "reasoning": "The rubric-guided draft addresses a single implied owner ('you'), gives a clear deliverable ('flag the accounts most likely to feel this and reach out'), and attaches a deadline ('by end of next week'). The generic draft uses 'I'd recommend proactively reaching out' directed at 'team' \u2014 a classic group ask with no owner and no deadline. The original preference draft says 'Please reach out to any clients' addressed to 'Team' \u2014 same diffused responsibility problem with no deadline."
+        },
+        {
+          "criterion_name": "Operational Endings",
+          "draft_a_score": 5,
+          "draft_b_score": 1,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft ends cleanly on the action item with no trailing sentiment. The generic draft ends with 'Thanks, [Your Name]' \u2014 a sign-off platitude after the CTA, plus 'I'll share more details as we get them' which is internal narration rather than a concrete next step. The original preference draft ends with an offer to help ('let me know and I'll help you get what you need') which is a reasonable operational offer but slightly soft and introduces a secondary action rather than closing on the primary one."
+        },
+        {
+          "criterion_name": "Direct, Non-Alarmist Tone",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 4,
+          "reasoning": "The rubric-guided draft is plain and factual \u2014 states the degradation, its source, and its implications without hedging or catastrophizing. The generic draft includes 'This is on their end and outside our control' which reads slightly defensive, and 'should help avoid frustration' which slightly patronizes. The original preference draft is mostly direct and clean, though 'so we need to get ahead of it' slightly overstates urgency without being specific about why."
+        },
+        {
+          "criterion_name": "Signal-to-Noise Discipline",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft includes only what the reader needs: what's happening, what it affects from their perspective, and what they should do. The generic draft includes 'This is on their end and outside our control' (internal defensiveness), coaching on how to frame it to clients (sender-side process), and 'I'll share more details as we get them' (announces a future action that's not actionable now). The original preference draft is leaner but 'If you're not sure which clients this affects or need talking points, let me know' adds a conditional offer that may not be needed."
+        },
+        {
+          "criterion_name": "Lean Structure",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "draft_c_score": 4,
+          "reasoning": "All three drafts use prose appropriately for the content complexity. The rubric-guided draft is the most disciplined \u2014 three tight paragraphs, no manufactured structure. The generic and original preference drafts are also prose-based and appropriately lean, though neither is quite as tight."
+        }
+      ],
+      "overall_ranking": [
+        "Draft A",
+        "Draft C",
+        "Draft B"
+      ],
+      "overall_reasoning": "The rubric-guided draft is clearly the best \u2014 it's the only one that follows the user's non-negotiable sequence (acknowledge \u2192 news \u2192 why \u2192 action), addresses a single owner with a deadline, and ends operationally with no trailing sentiment. The original preference draft is a solid second \u2014 cleaner tone and leaner than the generic draft \u2014 but fails on sequencing and accountability. The generic draft has the most problems: group ask, defensive framing, sender-side coaching, and a platitude closing."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A is exceptionally clear, specifying the exact impact (near-real-time parsing, automated ingestion, time-sensitive review queues) and making a concrete ask. Draft B is clear but more general, leaving the reader to figure out which clients and workflows are affected."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A follows a tight logical progression: context \u2192 problem \u2192 impact \u2192 specific action request. Draft B flows well but the transition from problem description to recommendation is slightly less tightly linked."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are free of grammatical errors, typos, and mechanical issues."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A has a crisp three-paragraph structure (why you're getting this email, what the problem is, what I need from you). Draft B is well-organized but slightly less purposeful in its paragraph breaks."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "reasoning": "Draft A hooks the reader immediately with a personalized opening that explains why they specifically should care, and ends with a concrete deadline-driven ask. Draft B reads more like a generic broadcast update and is less compelling."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A strikes an excellent balance \u2014 direct, professional, and respectful of the recipient's expertise. Draft B is appropriately professional but feels somewhat impersonal with the 'Hi team' opening and generic sign-off, and the suggestion about 'framing it as a temporary performance change' could come across as slightly patronizing."
+        }
+      ],
+      "overall_preference": "A",
+      "overall_reasoning": "Draft A is the stronger email overall: it is more targeted, makes a specific and time-bound request, and respects the reader's time by being concise and purposeful. Draft B is competent but reads more like a generic team announcement and lacks the precision and directness that make Draft A especially effective."
+    },
+    "suggestion_text": "",
+    "suggestion_reasons": {},
+    "suggested_rubric": null,
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nThe three drafts are:\n- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)\n- Draft B = the **generic** draft (written with no rubric \u2014 just competent writing)\n- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)\n\nDRAFT A (rubric-guided):\nSubject: Heads up \u2014 API response time degradation starting next month\n\nYou've been managing client expectations around document parsing turnaround, so I want to get this to you before it becomes a surprise.\n\nOur document parsing vendor notified us that their infrastructure changes will slow API response times by roughly 40% beginning next month. That means any client workflow that depends on near-real-time parsing \u2014 automated ingestion, time-sensitive review queues \u2014 will see a noticeable slowdown. The degradation comes from their end, and they haven't given us a rollback timeline.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?\n\nDRAFT B (generic):\nSubject: Heads Up \u2013 API Response Time Slowdown Next Month\n\nHi team,\n\nWanted to flag something before it catches anyone off guard. Our document parsing vendor just informed us that their upcoming infrastructure changes will cause API response times to degrade by approximately 40% starting next month. This is on their end and outside our control.\n\nI'd recommend proactively reaching out to any clients who rely on document parsing features to set expectations ahead of time. Framing it as a temporary performance change while the vendor stabilizes their infrastructure should help avoid frustration. I'll share more details as we get them.\n\nThanks,\n[Your Name]\n\nDRAFT C (original preference):\nSubject: Heads Up \u2014 API Response Time Degradation Starting Next Month\n\nTeam,\n\nOur document parsing vendor just notified us that their infrastructure changes will cause API response times to degrade by roughly 40% beginning next month. This will likely affect how quickly we process documents for clients, so we need to get ahead of it.\n\nPlease reach out to any clients who rely on document parsing and set expectations before this hits. If you're not sure which clients this affects or need talking points, let me know and I'll help you get what you need.\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Emotional Arc and Sequencing\",\n      \"category\": \"Structure\",\n      \"description\": \"The email must follow a specific order: acknowledge the reader's situation or effort first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \\u2014 sequence is the structure.\",\n      \"dimensions\": [\n        {\n          \"id\": \"acknowledgment_comes_first\",\n          \"label\": \"Opens with a brief acknowledgment of the reader's situation, effort, or context \\u2014 not the news itself\"\n        },\n        {\n          \"id\": \"acknowledgment_is_brief\",\n          \"label\": \"The opening acknowledgment is one sentence max \\u2014 does not linger or over-explain\"\n        },\n        {\n          \"id\": \"news_before_why\",\n          \"label\": \"The actual news or decision is stated before the rationale, not buried after it\"\n        },\n        {\n          \"id\": \"why_before_next_step\",\n          \"label\": \"The 'so what' \\u2014 stakes, value, or context \\u2014 is explained before the call to action, not after\"\n        },\n        {\n          \"id\": \"one_next_step_closes\",\n          \"label\": \"A single concrete next step closes the email \\u2014 not a summary, not a sentiment\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"Audience-Facing Reasoning\",\n      \"category\": \"Audience\",\n      \"description\": \"When explaining a decision or delivering news, the 'so what' should land for the reader \\u2014 framed around their experience, their investment, and the impact on their work. This applies to both bad news (why a delay is the right tradeoff for them) and good news (why an announcement matters to their specific situation). Not a defense of the sender's process.\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_reader_experience\",\n          \"label\": \"Explicitly acknowledges what the audience has been doing, expecting, or working toward\"\n        },\n        {\n          \"id\": \"so_what_faces_outward\",\n          \"label\": \"The 'why' or 'so what' is framed in terms of outcomes, value, or impact for the reader \\u2014 not justification for the sender\"\n        },\n        {\n          \"id\": \"no_defensive_posture\",\n          \"label\": \"Avoids language that reads as defending, apologizing for, or justifying the sender's own process\"\n        },\n        {\n          \"id\": \"specific_not_gestural\",\n          \"label\": \"References the reader's situation with specificity (what was blocked, what changes, what they gain) rather than vague gestures at disruption or value\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Single Owner, Scoped Accountability\",\n      \"category\": \"Content\",\n      \"description\": \"When action is needed, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \\u2014 ownership should be clear without being presumptuous about how the reader's team operates.\",\n      \"dimensions\": [\n        {\n          \"id\": \"one_owner_per_ask\",\n          \"label\": \"Each action item has a single named or clearly implied owner, not a group\"\n        },\n        {\n          \"id\": \"owner_has_deadline\",\n          \"label\": \"Every named owner has a specific target date or timeframe attached\"\n        },\n        {\n          \"id\": \"owner_has_deliverable\",\n          \"label\": \"Every named owner has a clear deliverable or scope of responsibility stated\"\n        },\n        {\n          \"id\": \"no_group_asks\",\n          \"label\": \"No 'everyone please...' or collective action items that diffuse responsibility\"\n        },\n        {\n          \"id\": \"no_org_overreach\",\n          \"label\": \"Does not assume or prescribe roles, titles, or org structure details the sender has no standing to specify\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Operational Endings\",\n      \"category\": \"Structure\",\n      \"description\": \"Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \\u2014 no thanks, no encouragement, no trailing sentiment.\",\n      \"dimensions\": [\n        {\n          \"id\": \"ends_with_next_action\",\n          \"label\": \"The final lines contain a concrete next step, follow-up commitment, or clear contact channel\"\n        },\n        {\n          \"id\": \"no_motivational_filler\",\n          \"label\": \"No town-hall-style encouragement, rallying language, or inspirational closings\"\n        },\n        {\n          \"id\": \"no_trailing_sentiment\",\n          \"label\": \"Nothing follows the CTA \\u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail\"\n        },\n        {\n          \"id\": \"momentum_preserved\",\n          \"label\": \"The ending doesn't introduce new topics, sentiments, or trailing qualifiers that slow the reader down\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Direct, Non-Alarmist Tone\",\n      \"category\": \"Style\",\n      \"description\": \"Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases ('minor setback,' 'abundance of caution') that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \\u2014 don't add dramatic emphasis to routine elements.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_hedging_minimizers\",\n          \"label\": \"Avoids softening phrases that downplay the situation or feel evasive\"\n        },\n        {\n          \"id\": \"no_alarm_language\",\n          \"label\": \"Avoids catastrophizing or panic-inducing framing\"\n        },\n        {\n          \"id\": \"plain_factual_framing\",\n          \"label\": \"States the situation, its cause, and its implications in plain, factual terms \\u2014 no dramatic emphasis on routine content\"\n        },\n        {\n          \"id\": \"respects_reader_intelligence\",\n          \"label\": \"Trusts the reader to understand stakes without being told how to feel about them\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Signal-to-Noise Discipline\",\n      \"category\": \"Content\",\n      \"description\": \"Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists.\",\n      \"dimensions\": [\n        {\n          \"id\": \"actionable_for_audience\",\n          \"label\": \"Every piece of information included is something the recipient needs or can act on\"\n        },\n        {\n          \"id\": \"no_phantom_actions\",\n          \"label\": \"No action items or assignments directed at people who don't actually have a concrete task\"\n        },\n        {\n          \"id\": \"no_internal_narration\",\n          \"label\": \"Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience\"\n        },\n        {\n          \"id\": \"nothing_vestigial\",\n          \"label\": \"No sentences or sections that remain simply because they seem expected \\u2014 every element earns its place\"\n        }\n      ],\n      \"priority\": 6\n    },\n    {\n      \"name\": \"Lean Structure\",\n      \"category\": \"Structure\",\n      \"description\": \"Prefer prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \\u2014 bullet lists, tables, numbered steps \\u2014 that implies more moving parts than actually exist.\",\n      \"dimensions\": [\n        {\n          \"id\": \"format_matches_complexity\",\n          \"label\": \"Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items\"\n        },\n        {\n          \"id\": \"no_catch_all_buckets\",\n          \"label\": \"No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure\"\n        },\n        {\n          \"id\": \"prose_when_sufficient\",\n          \"label\": \"Uses inline prose rather than lists when there are fewer than three genuinely distinct action items\"\n        }\n      ],\n      \"priority\": 7\n    }\n  ],\n  \"version\": 5,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"professional emails (internal and external)\",\n  \"user_goals_summary\": \"Writes professional emails that respect the reader's intelligence and time. Values a specific emotional arc (acknowledge \\u2192 news \\u2192 why it matters to them \\u2192 next step), audience-facing reasoning over sender-side justification, and clean operational closings. Every element must earn its place \\u2014 no manufactured complexity, no org-chart assumptions, no trailing sentiment.\",\n  \"coaching_notes\": \"Non-negotiable: sequence (acknowledge \\u2192 news \\u2192 why \\u2192 action) and audience-facing reasoning are the foundation \\u2014 the user checks for these first and won't sign off until both are right. Editorial restraint matters: don't make cosmetic or punctuation changes that aren't solving a stated problem \\u2014 the user reads unnecessary edits as 'tinkering for its own sake' and it erodes trust in the drafting process. When offering options, present 2\\u20133 with clear distinctions in register or function \\u2014 the user picks quickly and decisively when the tradeoff is named.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\nbottlenecks in their dispatch workflow. Go ahead and plug those in.\n\n[Message #32 \u2014 assistant]\n<draft>Subject: Route Optimization Rules shipping Tuesday \u2014 action needed from your IT team by Thursday\n\nHi Priya,\n\nYou've been waiting on this since March, and it's finally here: Route Optimization Rules ships Tuesday the 15th.\n\nThis means your team can set custom routing logic without manual overrides \u2014 which should clear the bottlenecks that have been slowing down your dispatch workflow.\n\nTo turn it on, your IT admin will need to enable it in your account settings by end of day Thursday the 17th \u2014 otherwise you'll lose the first week of availability. I'm happy to send them the setup documentation directly if that's easier \u2014 just say the word.\n\nI'll follow up on Friday the 18th to confirm everything is live. Reach me at [email/phone] if anything comes up before then.</draft>\n\n[Message #33 \u2014 user]\nThis is really close. The one thing that still bothers me is the action item paragraph \u2014 'your IT admin' feels like I'm telling her who owns this inside her company, and I genuinely don't know that. Priya might be the one who routes this, or it might go to someone with a totally different title. I'd rather the ask land on her to get the right person moving, without me naming a role I'm just guessing at.\n\n[Message #34 \u2014 assistant]\nGood catch \u2014 that's exactly what the \"no org overreach\" criterion is for. Here's the fix:\n\n<draft>Subject: Route Optimization Rules shipping Tuesday \u2014 action needed from your IT team by Thursday\n\nHi Priya,\n\nYou've been waiting on this since March, and it's finally here: Route Optimization Rules ships Tuesday the 15th.\n\nThis means your team can set custom routing logic without manual overrides \u2014 which should clear the bottlenecks that have been slowing down your dispatch workflow.\n\nTo turn it on, whoever handles your account settings on the IT side will need to enable it by end of day Thursday the 17th \u2014 otherwise you'll lose the first week of availability. I'm happy to send the setup documentation directly to them if that's easier \u2014 just say the word.\n\nI'll follow up on Friday the 18th to confirm everything is live. Reach me at [email/phone] if anything comes up before then.</draft>\n\n[Message #35 \u2014 user]\nYeah, this one's good. The action item fix landed exactly right \u2014 it puts the ball in Priya's court without me pretending I know her org chart. The whole thing flows the way I wanted: acknowledgment, news, why it matters to her, what she needs to do. I'd send this.\n\n[Message #36 \u2014 system]\n--- Iteration 3/4 ---\n\n[Message #37 \u2014 user]\nHey, I need to draft a quick email to a vendor \u2014 we use their API for document parsing and their support team just told me response times are going to degrade by roughly 40% starting next month due to infrastructure changes on their end. I need to let our internal customer success team know so they can set expectations with clients before anyone gets blindsided. Keep it short \u2014 two or three paragraphs max.\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Emotional Arc and Sequencing\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 2,\n            \"reasoning\": \"The rubric-guided draft nails the full sequence: opens with a one-sentence acknowledgment of the reader's work ('You've been managing client expectations around document parsing turnaround'), then delivers the news, then explains why it matters from the reader's perspective (client workflows affected), then closes with a single concrete next step with a deadline. The generic draft and original preference draft both open with the news itself \u2014 no acknowledgment of the reader's situation \u2014 and the generic draft buries the 'so what' in vague framing advice rather than reader-facing impact.\"\n        },\n        {\n            \"criterion_name\": \"Audience-Facing Reasoning\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft explicitly names the reader's experience ('managing client expectations'), specifies what client workflows will be affected ('automated ingestion, time-sensitive review queues'), and frames impact outward. The generic draft frames the 'why' as a suggestion to the team about how to spin it ('framing it as a temporary performance change') which is sender-side process narration, not reader-facing reasoning. The original preference draft gestures at client impact ('how quickly we process documents') but stays vague and doesn't name the reader's specific situation.\"\n        },\n        {\n            \"criterion_name\": \"Single Owner, Scoped Accountability\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 1,\n            \"draft_c_score\": 1,\n            \"reasoning\": \"The rubric-guided draft addresses a single implied owner ('you'), gives a clear deliverable ('flag the accounts most likely to feel this and reach out'), and attaches a deadline ('by end of next week'). The generic draft uses 'I'd recommend proactively reaching out' directed at 'team' \u2014 a classic group ask with no owner and no deadline. The original preference draft says 'Please reach out to any clients' addressed to 'Team' \u2014 same diffused responsibility problem with no deadline.\"\n        },\n        {\n            \"criterion_name\": \"Operational Endings\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 1,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft ends cleanly on the action item with no trailing sentiment. The generic draft ends with 'Thanks, [Your Name]' \u2014 a sign-off platitude after the CTA, plus 'I'll share more details as we get them' which is internal narration rather than a concrete next step. The original preference draft ends with an offer to help ('let me know and I'll help you get what you need') which is a reasonable operational offer but slightly soft and introduces a secondary action rather than closing on the primary one.\"\n        },\n        {\n            \"criterion_name\": \"Direct, Non-Alarmist Tone\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"The rubric-guided draft is plain and factual \u2014 states the degradation, its source, and its implications without hedging or catastrophizing. The generic draft includes 'This is on their end and outside our control' which reads slightly defensive, and 'should help avoid frustration' which slightly patronizes. The original preference draft is mostly direct and clean, though 'so we need to get ahead of it' slightly overstates urgency without being specific about why.\"\n        },\n        {\n            \"criterion_name\": \"Signal-to-Noise Discipline\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft includes only what the reader needs: what's happening, what it affects from their perspective, and what they should do. The generic draft includes 'This is on their end and outside our control' (internal defensiveness), coaching on how to frame it to clients (sender-side process), and 'I'll share more details as we get them' (announces a future action that's not actionable now). The original preference draft is leaner but 'If you're not sure which clients this affects or need talking points, let me know' adds a conditional offer that may not be needed.\"\n        },\n        {\n            \"criterion_name\": \"Lean Structure\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 4,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"All three drafts use prose appropriately for the content complexity. The rubric-guided draft is the most disciplined \u2014 three tight paragraphs, no manufactured structure. The generic and original preference drafts are also prose-based and appropriately lean, though neither is quite as tight.\"\n        }\n    ],\n    \"overall_ranking\": [\"Draft A\", \"Draft C\", \"Draft B\"],\n    \"overall_reasoning\": \"The rubric-guided draft is clearly the best \u2014 it's the only one that follows the user's non-negotiable sequence (acknowledge \u2192 news \u2192 why \u2192 action), addresses a single owner with a deadline, and ends operationally with no trailing sentiment. The original preference draft is a solid second \u2014 cleaner tone and leaner than the generic draft \u2014 but fails on sequencing and accountability. The generic draft has the most problems: group ask, defensive framing, sender-side coaching, and a platitude closing.\"\n}\n```"
+      }
+    ],
+    "iteration": 3,
+    "phase": "pre_conversation"
+  },
+  {
+    "timestamp": "2026-03-06T10:00:09.372686",
+    "writing_task": "Hey, I need to draft a short email to a customer success manager on our team \u2014 her name is Dana \u2014 letting her know that a high-value account she owns is being flagged for churn risk by our data team. She doesn't know yet, and I want to give her a heads-up with enough context to act fast, not just drop a bomb on her.",
+    "drafts": {
+      "rubric": "Subject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying this account through a tough renewal cycle, so I want to make sure you have this before it surfaces somewhere else. The data team flagged Northfield as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no logged touchpoints in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield by end of week and share it with me so we can align on next steps?",
+      "generic": "Subject: Heads-Up \u2014 Churn Risk Flag on [Account Name]\n\nHi Dana,\n\nWanted to give you a quick heads-up before this hits a broader channel. Our data team has flagged [Account Name] as elevated churn risk based on recent activity trends \u2014 things like [declining usage / low login frequency / support ticket volume, etc.]. They flagged it today, so this is fresh.\n\nI know you have context on this relationship that the data doesn't capture, so I wanted you to hear it first and have a chance to assess the situation. Happy to loop in whoever would be helpful. Let me know how I can support.\n\nThanks, [Your Name]",
+      "preference": "Subject: Heads-Up \u2014 Churn Risk Flag on Your Account\n\nHi Dana,\n\nQuick heads-up: the data team flagged one of your high-value accounts as at risk for churn. I wanted to get this to you directly before it moves further up the chain.\n\nI don't have the full picture yet, but they've identified signals worth acting on soon. Can you take a look at the account and let me know what you're seeing on your end? If there's something we should escalate or address together, I want to move on it quickly.\n\nLet me know what you need from me.\n\nThanks,\n[Your Name]"
+    },
+    "shuffle_order": [
+      [
+        "A",
+        "preference"
+      ],
+      [
+        "B",
+        "generic"
+      ],
+      [
+        "C",
+        "rubric"
+      ]
+    ],
+    "user_preference": "rubric",
+    "user_ranking": [
+      "rubric",
+      "preference",
+      "generic"
+    ],
+    "user_reason": "C is the only one that gets the emotional arc right \u2014 it acknowledges Dana's situation first, delivers the news, then frames the stakes from her perspective (her renewal, her expansion conversation), and ends with one clear owner and a real deadline. That's the email I'd actually send. A is direct and doesn't waste words, but it's vague and the 'let me know what you need from me' closing is trailing sentiment with no teeth. B has the most detail but it centers my reasoning ('I wanted you to hear it first') instead of Dana's stakes, the action ask is soft and ownerless, and 'Happy to loop in whoever would be helpful' is filler.",
+    "rubric_version": 8,
+    "criteria_analysis": [
+      {
+        "name": "Emotional Arc and Sequencing",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft nails the sequence: opens by acknowledging Dana's effort on the renewal cycle (one sentence), delivers the news (churn flag), explains why it matters from her perspective (lose the renewal and expansion), then closes with one concrete ask. The generic draft opens with sender intention ('Wanted to give you a quick heads-up') \u2014 not an acknowledgment of the reader. The original preference draft also opens with sender intent ('Quick heads-up') and never provides reader-facing stakes before the ask.",
+        "preference_score": 2,
+        "priority": 1
+      },
+      {
+        "name": "Audience-Facing Reasoning",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft explicitly names what Dana has been working toward (the renewal, the expansion conversation) and frames the stakes around her losing those outcomes \u2014 specific and outward-facing. The generic draft vaguely gestures at 'context on this relationship' but never names concrete reader stakes. The original preference draft has no 'so what' at all \u2014 it says 'signals worth acting on' without ever bridging to what Dana stands to lose, reading like a changelog the user explicitly dislikes.",
+        "preference_score": 1,
+        "priority": 2
+      },
+      {
+        "name": "Single Owner, Scoped Accountability",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft names Dana as the owner, gives a clear deliverable (outreach plan for Northfield), and a deadline (end of week). The generic draft asks 'Let me know how I can support' \u2014 no owner, no deliverable, no deadline. The original preference draft asks Dana to 'take a look' and report back, which has an implied owner but a vague deliverable and no deadline.",
+        "preference_score": 3,
+        "priority": 3
+      },
+      {
+        "name": "Operational Endings",
+        "rubric_score": 5,
+        "generic_score": 1,
+        "gap": 4,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft ends with a concrete, forward-looking CTA (outreach plan by end of week) with nothing trailing after it. The generic draft ends with 'Thanks, [Your Name]' after a vague 'Let me know how I can support' \u2014 trailing sentiment and no real action. The original preference draft ends with 'Let me know what you need from me' followed by 'Thanks, [Your Name]' \u2014 the CTA is somewhat forward-looking but vague, and trailing sentiment follows it.",
+        "preference_score": 3,
+        "priority": 4
+      },
+      {
+        "name": "Signal-to-Noise Discipline",
+        "rubric_score": 5,
+        "generic_score": 2,
+        "gap": 3,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft includes only information Dana needs: the flag, the data behind it, what she stands to lose, and what to do. The generic draft includes placeholder brackets and internal narration ('I know you have context the data doesn't capture') that serves the sender's positioning more than the reader's action. The original preference draft is lean but too lean \u2014 'signals worth acting on soon' is vague filler that doesn't give Dana anything concrete to work with.",
+        "preference_score": 3,
+        "priority": 5
+      },
+      {
+        "name": "Lean Structure",
+        "rubric_score": 5,
+        "generic_score": 4,
+        "gap": 1,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "All three use prose appropriately without manufactured structure. The rubric-guided draft has short, focused paragraphs that carry cause and stakes together naturally. The generic and original preference drafts are similarly lean in structure, though the generic draft's placeholder brackets suggest unfinished formatting.",
+        "preference_score": 4,
+        "priority": 6
+      },
+      {
+        "name": "Direct, Non-Alarmist Tone",
+        "rubric_score": 5,
+        "generic_score": 3,
+        "gap": 2,
+        "classification": "DIFFERENTIATING",
+        "reasoning": "The rubric-guided draft is factual and direct without catastrophizing \u2014 'significant drop' and 'churn risk' are plain descriptions. The generic draft hedges with 'things like [declining usage / low login frequency...]' which feels evasive and vague. The original preference draft hedges with 'I don't have the full picture yet' and 'signals worth acting on' \u2014 both feel like softening rather than directness, which this user consistently flags.",
+        "preference_score": 3,
+        "priority": 7
+      }
+    ],
+    "rubric_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Emotional Arc and Sequencing",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 2,
+          "reasoning": "The rubric-guided draft nails the sequence: opens by acknowledging Dana's effort on the renewal cycle (one sentence), delivers the news (churn flag), explains why it matters from her perspective (lose the renewal and expansion), then closes with one concrete ask. The generic draft opens with sender intention ('Wanted to give you a quick heads-up') \u2014 not an acknowledgment of the reader. The original preference draft also opens with sender intent ('Quick heads-up') and never provides reader-facing stakes before the ask."
+        },
+        {
+          "criterion_name": "Audience-Facing Reasoning",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 1,
+          "reasoning": "The rubric-guided draft explicitly names what Dana has been working toward (the renewal, the expansion conversation) and frames the stakes around her losing those outcomes \u2014 specific and outward-facing. The generic draft vaguely gestures at 'context on this relationship' but never names concrete reader stakes. The original preference draft has no 'so what' at all \u2014 it says 'signals worth acting on' without ever bridging to what Dana stands to lose, reading like a changelog the user explicitly dislikes."
+        },
+        {
+          "criterion_name": "Single Owner, Scoped Accountability",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft names Dana as the owner, gives a clear deliverable (outreach plan for Northfield), and a deadline (end of week). The generic draft asks 'Let me know how I can support' \u2014 no owner, no deliverable, no deadline. The original preference draft asks Dana to 'take a look' and report back, which has an implied owner but a vague deliverable and no deadline."
+        },
+        {
+          "criterion_name": "Operational Endings",
+          "draft_a_score": 5,
+          "draft_b_score": 1,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft ends with a concrete, forward-looking CTA (outreach plan by end of week) with nothing trailing after it. The generic draft ends with 'Thanks, [Your Name]' after a vague 'Let me know how I can support' \u2014 trailing sentiment and no real action. The original preference draft ends with 'Let me know what you need from me' followed by 'Thanks, [Your Name]' \u2014 the CTA is somewhat forward-looking but vague, and trailing sentiment follows it."
+        },
+        {
+          "criterion_name": "Signal-to-Noise Discipline",
+          "draft_a_score": 5,
+          "draft_b_score": 2,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft includes only information Dana needs: the flag, the data behind it, what she stands to lose, and what to do. The generic draft includes placeholder brackets and internal narration ('I know you have context the data doesn't capture') that serves the sender's positioning more than the reader's action. The original preference draft is lean but too lean \u2014 'signals worth acting on soon' is vague filler that doesn't give Dana anything concrete to work with."
+        },
+        {
+          "criterion_name": "Lean Structure",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "draft_c_score": 4,
+          "reasoning": "All three use prose appropriately without manufactured structure. The rubric-guided draft has short, focused paragraphs that carry cause and stakes together naturally. The generic and original preference drafts are similarly lean in structure, though the generic draft's placeholder brackets suggest unfinished formatting."
+        },
+        {
+          "criterion_name": "Direct, Non-Alarmist Tone",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "draft_c_score": 3,
+          "reasoning": "The rubric-guided draft is factual and direct without catastrophizing \u2014 'significant drop' and 'churn risk' are plain descriptions. The generic draft hedges with 'things like [declining usage / low login frequency...]' which feels evasive and vague. The original preference draft hedges with 'I don't have the full picture yet' and 'signals worth acting on' \u2014 both feel like softening rather than directness, which this user consistently flags."
+        }
+      ],
+      "overall_ranking": [
+        "A",
+        "C",
+        "B"
+      ],
+      "overall_reasoning": "The rubric-guided draft is clearly superior \u2014 it executes the emotional arc perfectly, frames stakes from Dana's perspective with specificity, and closes with a scoped, deadline-attached ask. The original preference draft at least has operational intent and lean structure but lacks reader-facing reasoning and specificity. The generic draft centers the sender throughout, has no concrete ask, and trails off with sentiment \u2014 failing the user's most important criteria."
+    },
+    "generic_judge_result": {
+      "per_criterion": [
+        {
+          "criterion_name": "Clarity",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "reasoning": "Draft A specifies the actual account name (Northfield), concrete data points (60-day usage drop, no touchpoints in a month), and a clear ask (outreach plan by end of week). Draft B uses placeholders like [Account Name] and [declining usage / low login frequency / support ticket volume, etc.], making it vague and incomplete."
+        },
+        {
+          "criterion_name": "Coherence",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A flows logically from alert \u2192 stakes \u2192 action request, each sentence building on the last. Draft B flows reasonably well but the transition from flagging the risk to deferring entirely to Dana's judgment slightly undermines the urgency established at the start."
+        },
+        {
+          "criterion_name": "Grammar & Mechanics",
+          "draft_a_score": 5,
+          "draft_b_score": 5,
+          "reasoning": "Both drafts are grammatically sound with no errors or typos. Both use proper punctuation and sentence construction."
+        },
+        {
+          "criterion_name": "Structure & Organization",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A has a tight three-part structure: context, stakes, call to action. Draft B is reasonably organized but lacks a concrete call to action, ending with a soft offer of support rather than a defined next step."
+        },
+        {
+          "criterion_name": "Engagement",
+          "draft_a_score": 5,
+          "draft_b_score": 3,
+          "reasoning": "Draft A creates urgency with specific details and stakes ('you lose the renewal and likely the expansion conversation'), making the reader feel compelled to act. Draft B reads more like a template and the placeholders reduce its impact significantly."
+        },
+        {
+          "criterion_name": "Tone & Voice",
+          "draft_a_score": 5,
+          "draft_b_score": 4,
+          "reasoning": "Draft A strikes a strong balance \u2014 direct and respectful, acknowledging Dana's work while being clear about urgency. Draft B is warm and collaborative, which is appropriate, but leans slightly too deferential given the urgency of a churn risk, potentially undermining the intent."
+        }
+      ],
+      "overall_preference": "A",
+      "overall_reasoning": "Draft A is a polished, ready-to-send email with specific details, clear stakes, and a concrete call to action. Draft B reads more like an unfinished template with placeholders and lacks the specificity and directness needed to drive action on a time-sensitive issue."
+    },
+    "suggestion_text": "",
+    "suggestion_reasons": {},
+    "suggested_rubric": null,
+    "is_3draft": true,
+    "pipeline_messages": [
+      {
+        "role": "user",
+        "content": "You are an expert writing quality judge. You will evaluate three drafts\nagainst a set of personalized rubric criteria. You also have access to the user's\nrecent conversation history for additional context about their preferences.\n\nThe three drafts are:\n- Draft A = the **rubric-guided** draft (written following the user's rubric criteria)\n- Draft B = the **generic** draft (written with no rubric \u2014 just competent writing)\n- Draft C = the **original preference** draft (written from the user's stated preferences, before the rubric was created)\n\nDRAFT A (rubric-guided):\nSubject: Heads-up on Northfield account \u2014 churn risk flag\n\nDana,\n\nYou've been carrying this account through a tough renewal cycle, so I want to make sure you have this before it surfaces somewhere else. The data team flagged Northfield as a churn risk this week based on a significant drop in product usage over the last 60 days combined with no logged touchpoints in the past month.\n\nIf they disengage now, you lose the renewal and likely the expansion conversation you've been building toward.\n\nCan you put together an outreach plan for Northfield by end of week and share it with me so we can align on next steps?\n\nDRAFT B (generic):\nSubject: Heads-Up \u2014 Churn Risk Flag on [Account Name]\n\nHi Dana,\n\nWanted to give you a quick heads-up before this hits a broader channel. Our data team has flagged [Account Name] as elevated churn risk based on recent activity trends \u2014 things like [declining usage / low login frequency / support ticket volume, etc.]. They flagged it today, so this is fresh.\n\nI know you have context on this relationship that the data doesn't capture, so I wanted you to hear it first and have a chance to assess the situation. Happy to loop in whoever would be helpful. Let me know how I can support.\n\nThanks, [Your Name]\n\nDRAFT C (original preference):\nSubject: Heads-Up \u2014 Churn Risk Flag on Your Account\n\nHi Dana,\n\nQuick heads-up: the data team flagged one of your high-value accounts as at risk for churn. I wanted to get this to you directly before it moves further up the chain.\n\nI don't have the full picture yet, but they've identified signals worth acting on soon. Can you take a look at the account and let me know what you're seeing on your end? If there's something we should escalate or address together, I want to move on it quickly.\n\nLet me know what you need from me.\n\nThanks,\n[Your Name]\n\nRUBRIC CRITERIA (the user's personalized writing quality criteria):\n{\n  \"rubric\": [\n    {\n      \"name\": \"Emotional Arc and Sequencing\",\n      \"category\": \"Structure\",\n      \"description\": \"The email must follow a specific order: acknowledge the reader's situation, effort, or role first (one sentence max), then deliver the news, then explain why it matters from the reader's perspective, then one concrete next step. Getting all the elements right but in the wrong order still fails \\u2014 sequence is the structure.\",\n      \"dimensions\": [\n        {\n          \"id\": \"acknowledgment_comes_first\",\n          \"label\": \"Opens with a brief acknowledgment of the reader's situation, effort, role, or context \\u2014 not the news itself and not the sender's intentions\"\n        },\n        {\n          \"id\": \"acknowledgment_is_brief\",\n          \"label\": \"The opening acknowledgment is one sentence max \\u2014 does not linger or over-explain\"\n        },\n        {\n          \"id\": \"news_before_why\",\n          \"label\": \"The actual news or decision is stated before the rationale, not buried after it\"\n        },\n        {\n          \"id\": \"why_before_next_step\",\n          \"label\": \"The 'so what' \\u2014 stakes, value, or context \\u2014 is explained before the call to action, not after\"\n        },\n        {\n          \"id\": \"one_next_step_closes\",\n          \"label\": \"A single concrete next step closes the email \\u2014 not a summary, not a sentiment\"\n        }\n      ],\n      \"priority\": 1\n    },\n    {\n      \"name\": \"Audience-Facing Reasoning\",\n      \"category\": \"Audience\",\n      \"description\": \"When explaining a decision or delivering news, the 'so what' should land for the reader \\u2014 framed around their experience, their investment, and the impact on their work. Not a defense of the sender's process. 'This matters because your team planned around this date' not 'This matters because we want quality.'\",\n      \"dimensions\": [\n        {\n          \"id\": \"names_reader_experience\",\n          \"label\": \"Explicitly acknowledges what the audience has been doing, expecting, or working toward\"\n        },\n        {\n          \"id\": \"so_what_faces_outward\",\n          \"label\": \"The 'why' or 'so what' is framed in terms of outcomes, value, or impact for the reader \\u2014 not justification for the sender\"\n        },\n        {\n          \"id\": \"no_sender_centering\",\n          \"label\": \"Avoids language that centers the sender \\u2014 no self-congratulatory framing ('I wanted to get this to you early'), no defending the sender's process, no positioning the sender as the protagonist\"\n        },\n        {\n          \"id\": \"specific_not_gestural\",\n          \"label\": \"References the reader's situation with specificity (what was blocked, what changes, what they gain) rather than vague gestures at disruption or value \\u2014 a sentence bridging facts to reader stakes is not filler and should not be cut\"\n        }\n      ],\n      \"priority\": 2\n    },\n    {\n      \"name\": \"Single Owner, Scoped Accountability\",\n      \"category\": \"Content\",\n      \"description\": \"When action is needed, name one clear owner with a deadline rather than issuing a group ask. 'Everyone please review' is not an action item. At the same time, don't over-specify org structure details the email shouldn't contain \\u2014 ownership should be clear without being presumptuous about how the reader's team operates.\",\n      \"dimensions\": [\n        {\n          \"id\": \"one_owner_per_ask\",\n          \"label\": \"Each action item has a single named or clearly implied owner, not a group\"\n        },\n        {\n          \"id\": \"owner_has_deadline\",\n          \"label\": \"Every named owner has a specific target date or timeframe attached\"\n        },\n        {\n          \"id\": \"owner_has_deliverable\",\n          \"label\": \"Every named owner has a clear deliverable or scope of responsibility stated\"\n        },\n        {\n          \"id\": \"no_org_overreach\",\n          \"label\": \"Does not assume or prescribe roles, titles, or org structure details the sender has no standing to specify\"\n        },\n        {\n          \"id\": \"specific_not_prescriptive\",\n          \"label\": \"Asks are clear enough to act on but do not dictate how the reader should organize their response internally\"\n        }\n      ],\n      \"priority\": 3\n    },\n    {\n      \"name\": \"Operational Endings\",\n      \"category\": \"Structure\",\n      \"description\": \"Closings should hand off momentum with a concrete next step or follow-up commitment. The reader finishes the email knowing what happens next. Nothing after the CTA \\u2014 no thanks, no encouragement, no trailing sentiment. 'Thanks for your patience' is not a closing.\",\n      \"dimensions\": [\n        {\n          \"id\": \"ends_with_next_action\",\n          \"label\": \"The final lines contain a concrete next step, follow-up commitment, or clear contact channel\"\n        },\n        {\n          \"id\": \"no_motivational_filler\",\n          \"label\": \"No town-hall-style encouragement, rallying language, or inspirational closings\"\n        },\n        {\n          \"id\": \"no_trailing_sentiment\",\n          \"label\": \"Nothing follows the CTA \\u2014 no 'thanks for your patience,' no sign-off platitudes, no softening tail\"\n        },\n        {\n          \"id\": \"cta_forward_looking\",\n          \"label\": \"The CTA points forward to a concrete action or next step \\u2014 it does not loop back to recap what just happened; interrogative phrasing ('Can you\\u2026') is acceptable if ownership and deadline are clear\"\n        },\n        {\n          \"id\": \"momentum_preserved\",\n          \"label\": \"The ending doesn't introduce new topics, sentiments, or trailing qualifiers that slow the reader down\"\n        }\n      ],\n      \"priority\": 4\n    },\n    {\n      \"name\": \"Signal-to-Noise Discipline\",\n      \"category\": \"Content\",\n      \"description\": \"Every element in the email must serve a purpose the reader can act on or needs to know. Cut information that's internal-facing, implies separate conversations the reader isn't part of, or manufactures action where none exists. But do not cut connective sentences that bridge facts to reader stakes \\u2014 those are signal, not noise.\",\n      \"dimensions\": [\n        {\n          \"id\": \"actionable_for_audience\",\n          \"label\": \"Every piece of information included is something the recipient needs or can act on\"\n        },\n        {\n          \"id\": \"no_phantom_actions\",\n          \"label\": \"No action items or assignments directed at people who don't actually have a concrete task\"\n        },\n        {\n          \"id\": \"no_internal_narration\",\n          \"label\": \"Does not announce sender-side logistics (side conversations, internal processes) that are irrelevant to the audience\"\n        },\n        {\n          \"id\": \"nothing_vestigial\",\n          \"label\": \"No sentences or sections that remain simply because they seem expected \\u2014 every element earns its place\"\n        }\n      ],\n      \"priority\": 5\n    },\n    {\n      \"name\": \"Lean Structure\",\n      \"category\": \"Structure\",\n      \"description\": \"Prefer short paragraphs and prose over formatted lists when the content doesn't warrant multiple distinct action items. Don't manufacture structural complexity \\u2014 bullet lists, tables, numbered steps \\u2014 that implies more moving parts than actually exist.\",\n      \"dimensions\": [\n        {\n          \"id\": \"format_matches_complexity\",\n          \"label\": \"Structural formatting (bullets, lists, headers) is only used when the content has genuinely distinct parallel items\"\n        },\n        {\n          \"id\": \"no_catch_all_buckets\",\n          \"label\": \"No vague catch-all categories (e.g., 'everyone else') that exist only to fill out a structure\"\n        },\n        {\n          \"id\": \"prose_when_sufficient\",\n          \"label\": \"Uses inline prose rather than lists when there are fewer than three genuinely distinct action items\"\n        },\n        {\n          \"id\": \"short_focused_paragraphs\",\n          \"label\": \"Paragraphs are short and focused, but may carry a fact and its direct implication together when the two are inseparable \\u2014 don't split a cause from its stakes just to hit a one-idea-per-paragraph target\"\n        }\n      ],\n      \"priority\": 6\n    },\n    {\n      \"name\": \"Direct, Non-Alarmist Tone\",\n      \"category\": \"Style\",\n      \"description\": \"Straightforward and professional without sugarcoating or catastrophizing. No hedging phrases that feel patronizing, and no alarm language that induces panic. Punctuation and phrasing should match the actual weight of the content \\u2014 don't tinker with punctuation for cadence or drama when there's no rhythm problem to solve.\",\n      \"dimensions\": [\n        {\n          \"id\": \"no_hedging_minimizers\",\n          \"label\": \"Avoids softening phrases that downplay the situation or feel evasive\"\n        },\n        {\n          \"id\": \"no_alarm_language\",\n          \"label\": \"Avoids catastrophizing or panic-inducing framing\"\n        },\n        {\n          \"id\": \"plain_factual_framing\",\n          \"label\": \"States the situation, its cause, and its implications in plain, factual terms \\u2014 no dramatic emphasis on routine content\"\n        },\n        {\n          \"id\": \"respects_reader_intelligence\",\n          \"label\": \"Trusts the reader to understand stakes without being told how to feel about them\"\n        },\n        {\n          \"id\": \"punctuation_matches_content\",\n          \"label\": \"Punctuation serves function, not style \\u2014 no swapping commas for em-dashes to add drama, no exclamation marks that exceed the actual energy level of the content\"\n        }\n      ],\n      \"priority\": 7\n    }\n  ],\n  \"version\": 8,\n  \"source\": \"criteria_classification\",\n  \"writing_type\": \"operational team and stakeholder emails\",\n  \"user_goals_summary\": \"This user writes internal and external operational emails that are direct, audience-centered, and structurally clean. They prioritize a specific emotional arc (acknowledge reader \\u2192 news \\u2192 reader-facing reasoning \\u2192 one next step), insist that reasoning face outward toward the reader's experience rather than defending the sender's process, and cut anything that doesn't serve the reader \\u2014 but never at the expense of the connective tissue between facts and stakes.\",\n  \"coaching_notes\": \"Non-negotiables: (1) The 'so what' must face the reader, never the sender \\u2014 this user catches inward-facing reasoning instantly and across every email type. (2) Never cut the sentence that connects a fact to the reader's stakes \\u2014 conciseness does not mean stripping connective tissue; a lean email that reads like a changelog has failed. Preferred trade-off: when brevity conflicts with audience-facing reasoning, reasoning wins. This user refines iteratively and gives precise, surgical feedback \\u2014 they know exactly which sentence or phrase is wrong and why, so responses should offer targeted fixes rather than full rewrites.\"\n}\n\nRECENT CONVERSATION CONTEXT (shows the user's writing preferences and interactions):\nappens next, not back to what just happened\"], \"removed_dims\": []}, {\"name\": \"Direct, Non-Alarmist Tone\", \"added_dims\": [\"No excessive exclamation marks \\u2014 punctuation matches the actual energy level of the content\"], \"removed_dims\": []}, {\"name\": \"Lean Structure\", \"added_dims\": [\"Paragraphs are short \\u2014 no walls of text; each paragraph carries one idea\"], \"removed_dims\": []}]}, \"source\": \"simulation_log_changes\"}-->\n\n[Message #46 \u2014 assistant]\n<draft>Subject: Heads up \u2014 API response time degradation starting next month\n\nYou're the first point of contact when client workflows break, so this is yours to get ahead of.\n\nOur document parsing vendor notified us that API response times will slow by roughly 40% starting next month. The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline.\n\nClients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared.\n\nFlag the accounts most likely to feel this and reach out to them by end of next week.</draft>\n\n*Draft updated based on rubric changes.*\n\n[Message #47 \u2014 user]\nHere's my feedback on the draft edits:\n- Edit \"Before that hits, you need to be ahead of it \u2014 clients running time-sensitive workflows will notice,\" \u2192 \"The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline.\": I actually liked the original framing better here. 'The change is on the vendor's end with no rollback timeline \u2014 this is the new baseline' is fine as a fact, but it's pretty cold and doesn't set up why the reader should care. The original was trying to bridge into the stakes, which is the right instinct. The new version just drops a fact and moves on. It reads more like a changelog than an email.\n\n[Message #48 \u2014 assistant]\n<draft>Subject: Heads up \u2014 API response time degradation starting next month\n\nYou're the first point of contact when client workflows break, so this is yours to get ahead of.\n\nOur document parsing vendor notified us that API response times will slow by roughly 40% starting next month. Clients running time-sensitive workflows will notice, and the calls will come to you if they're not prepared \u2014 there's no rollback timeline, so this is the new baseline your accounts are working against.\n\nCan you flag the accounts most likely to feel this and reach out to them by end of next week?</draft>\n\n*Draft updated based on accepted rubric suggestion.*\n\n[Message #49 \u2014 user]\nYeah, this is it. The opening lands on their role, the middle paragraph makes the stakes real from where they sit, and the ask is specific without being prescriptive. Send it.\n\n[Message #50 \u2014 system]\n--- Iteration 4/4 ---\n\n[Message #51 \u2014 user]\nHey, I need to draft a short email to a customer success manager on our team \u2014 her name is Dana \u2014 letting her know that a high-value account she owns is being flagged for churn risk by our data team. She doesn't know yet, and I want to give her a heads-up with enough context to act fast, not just drop a bomb on her.\n\nTASK:\nFor each rubric criterion, score ALL THREE drafts on a 1-5 scale:\n  1 = Very poor \u2014 clearly fails this criterion\n  2 = Below average \u2014 noticeable weaknesses\n  3 = Adequate \u2014 meets basic expectations\n  4 = Good \u2014 clearly satisfies this criterion\n  5 = Excellent \u2014 outstanding performance on this criterion\n\nUse the conversation context to understand the user's nuanced preferences when scoring.\nThen determine your overall ranking (which draft is best, second, third given all criteria).\n\nIMPORTANT: In your reasoning, refer to drafts by their descriptive names (rubric-guided, generic, original preference) rather than Draft A/B/C.\n\nReturn ONLY valid JSON (no markdown code blocks):\n{{\n    \"per_criterion\": [\n        {{\n            \"criterion_name\": \"<exact name from rubric>\",\n            \"draft_a_score\": <1-5>,\n            \"draft_b_score\": <1-5>,\n            \"draft_c_score\": <1-5>,\n            \"reasoning\": \"<1-2 sentences explaining the scores, using descriptive draft names>\"\n        }}\n    ],\n    \"overall_ranking\": [\"<best>\", \"<second>\", \"<third>\"],\n    \"overall_reasoning\": \"<1-2 sentences explaining overall ranking>\"\n}}"
+      },
+      {
+        "role": "assistant",
+        "content": "```json\n{\n    \"per_criterion\": [\n        {\n            \"criterion_name\": \"Emotional Arc and Sequencing\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 2,\n            \"reasoning\": \"The rubric-guided draft nails the sequence: opens by acknowledging Dana's effort on the renewal cycle (one sentence), delivers the news (churn flag), explains why it matters from her perspective (lose the renewal and expansion), then closes with one concrete ask. The generic draft opens with sender intention ('Wanted to give you a quick heads-up') \u2014 not an acknowledgment of the reader. The original preference draft also opens with sender intent ('Quick heads-up') and never provides reader-facing stakes before the ask.\"\n        },\n        {\n            \"criterion_name\": \"Audience-Facing Reasoning\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 1,\n            \"reasoning\": \"The rubric-guided draft explicitly names what Dana has been working toward (the renewal, the expansion conversation) and frames the stakes around her losing those outcomes \u2014 specific and outward-facing. The generic draft vaguely gestures at 'context on this relationship' but never names concrete reader stakes. The original preference draft has no 'so what' at all \u2014 it says 'signals worth acting on' without ever bridging to what Dana stands to lose, reading like a changelog the user explicitly dislikes.\"\n        },\n        {\n            \"criterion_name\": \"Single Owner, Scoped Accountability\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft names Dana as the owner, gives a clear deliverable (outreach plan for Northfield), and a deadline (end of week). The generic draft asks 'Let me know how I can support' \u2014 no owner, no deliverable, no deadline. The original preference draft asks Dana to 'take a look' and report back, which has an implied owner but a vague deliverable and no deadline.\"\n        },\n        {\n            \"criterion_name\": \"Operational Endings\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 1,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft ends with a concrete, forward-looking CTA (outreach plan by end of week) with nothing trailing after it. The generic draft ends with 'Thanks, [Your Name]' after a vague 'Let me know how I can support' \u2014 trailing sentiment and no real action. The original preference draft ends with 'Let me know what you need from me' followed by 'Thanks, [Your Name]' \u2014 the CTA is somewhat forward-looking but vague, and trailing sentiment follows it.\"\n        },\n        {\n            \"criterion_name\": \"Signal-to-Noise Discipline\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 2,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft includes only information Dana needs: the flag, the data behind it, what she stands to lose, and what to do. The generic draft includes placeholder brackets and internal narration ('I know you have context the data doesn't capture') that serves the sender's positioning more than the reader's action. The original preference draft is lean but too lean \u2014 'signals worth acting on soon' is vague filler that doesn't give Dana anything concrete to work with.\"\n        },\n        {\n            \"criterion_name\": \"Lean Structure\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 4,\n            \"draft_c_score\": 4,\n            \"reasoning\": \"All three use prose appropriately without manufactured structure. The rubric-guided draft has short, focused paragraphs that carry cause and stakes together naturally. The generic and original preference drafts are similarly lean in structure, though the generic draft's placeholder brackets suggest unfinished formatting.\"\n        },\n        {\n            \"criterion_name\": \"Direct, Non-Alarmist Tone\",\n            \"draft_a_score\": 5,\n            \"draft_b_score\": 3,\n            \"draft_c_score\": 3,\n            \"reasoning\": \"The rubric-guided draft is factual and direct without catastrophizing \u2014 'significant drop' and 'churn risk' are plain descriptions. The generic draft hedges with 'things like [declining usage / low login frequency...]' which feels evasive and vague. The original preference draft hedges with 'I don't have the full picture yet' and 'signals worth acting on' \u2014 both feel like softening rather than directness, which this user consistently flags.\"\n        }\n    ],\n    \"overall_ranking\": [\"A\", \"C\", \"B\"],\n    \"overall_reasoning\": \"The rubric-guided draft is clearly superior \u2014 it executes the emotional arc perfectly, frames stakes from Dana's perspective with specificity, and closes with a scoped, deadline-attached ask. The original preference draft at least has operational intent and lean structure but lacks reader-facing reasoning and specificity. The generic draft centers the sender throughout, has no concrete ask, and trails off with sentiment \u2014 failing the user's most important criteria.\"\n}\n```"
+      }
+    ],
+    "iteration": 4,
+    "phase": "pre_conversation"
+  }
+]

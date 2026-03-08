@@ -1,0 +1,102 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Anecdotes That Pull Their Weight",
+          "description": "Personal anecdotes should do two things at once: make the reader feel present in the moment AND set up or connect to the next point about food, place, or culture. An anecdote that's only about the narrator \u2014 without connecting outward \u2014 feels self-indulgent. Every story earns its place by doing narrative work beyond just being charming.",
+          "weight": 3
+        },
+        {
+          "name": "Immersion-Then-Context Pacing",
+          "description": "The writing should move rhythmically between being IN the experience and understanding it. Drop the reader into a scene first \u2014 sensory, immediate, present \u2014 then pull back briefly to ground the moment (how you got there, why it matters). This in-out rhythm is what separates travel writing from either a diary entry or a guidebook.",
+          "weight": 4
+        },
+        {
+          "name": "Conversational Voice & Honest Humor",
+          "description": "The writing should feel like telling a friend a story \u2014 warm, unguarded, and occasionally self-deprecating. Humor should emerge from honest observation or self-awareness, never from exaggeration or trying to be clever. The narrator is aware of their own ridiculousness without performing it.",
+          "weight": 5
+        }
+      ],
+      "removed": [
+        {
+          "name": "Conversational Voice & Self-Awareness",
+          "description": "The writing should feel like telling a friend a story \u2014 warm, unguarded, and lightly self-deprecating. The narrator is aware of their own ridiculousness and willing to undercut romantic moments with honesty, without losing sincerity."
+        },
+        {
+          "name": "Pacing & Transitional Craft",
+          "description": "Key moments are given space to breathe \u2014 white space, paragraph breaks, and unhurried sentences signal what matters. Transitions between spaces, moods, or time feel seamless and earned, pulling the reader forward without announcing the shift."
+        }
+      ],
+      "reweighted": [
+        {
+          "name": "Emotionally Resonant Micro-Moments",
+          "old_weight": 4,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Specificity Over Convention",
+          "field": "description",
+          "old": "Descriptions must feel particular to this exact experience, resisting category-level language that could apply to any version of the thing. If a descriptor could be swapped into a generic example of the same subject, it isn't doing enough work.",
+          "new": "Descriptions must feel particular to this exact experience, resisting category-level language that could apply to any version of the thing. If a descriptor could be swapped into a generic example of the same subject, it isn't doing enough work. The best details make the reader pause \u2014 comparisons to non-food things, unexpected physical sensations, anything that breaks the expected pattern."
+        },
+        {
+          "name": "Embodied Sensory Immersion",
+          "field": "description",
+          "old": "Sensory descriptions should feel physical and pre-rational \u2014 acting on the reader's body rather than registering as observations. Writing engages multiple senses (not just sight), and the reader should feel they are inside the moment, not looking at a picture of it.",
+          "new": "Every scene must include at least one non-visual sensory detail \u2014 sound, smell, temperature, texture. Visual-only descriptions read like looking at photos rather than being there. Sensory writing should feel physical and pre-rational, acting on the reader's body rather than registering as observations."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Specificity Over Convention",
+          "added_dims": [
+            "Avoids adjectives or phrases that merely describe the general category (e.g., 'rich broth' for any tonkotsu, 'bustling streets' for any city market)",
+            "No generic travel cliches or stock phrases that could describe any destination (e.g., 'hidden gem,' 'locals and tourists alike,' 'a feast for the senses')",
+            "Metaphors and comparisons illuminate something unexpected \u2014 ideally crossing into non-food or non-travel territory \u2014 rather than confirming what the reader already assumes"
+          ],
+          "removed_dims": [
+            "Avoids adjectives or phrases that merely describe the general category (e.g., 'rich broth' for any tonkotsu)",
+            "Metaphors and comparisons illuminate something unexpected rather than confirming what the reader already assumes"
+          ]
+        },
+        {
+          "name": "Embodied Sensory Immersion",
+          "added_dims": [
+            "Every scene includes at least one non-visual sensory detail (sound, smell, temperature, or texture) \u2014 visual-only is a failure condition",
+            "Across the piece, at least three senses are engaged"
+          ],
+          "removed_dims": [
+            "Physical or instinctive responses are described before intellectual processing or narrative reflection",
+            "Engages at least three senses (not relying on visual description alone)"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made four main changes: I folded the no-cliches rule into Specificity (where it belongs) and made non-visual sensory detail an explicit failure condition in Embodied Sensory Immersion, since that's a real dealbreaker for me. I added a new criterion for anecdotes that pull their weight, since that double-duty rule is something I feel strongly about but wasn't captured at all. I also restructured the pacing criterion to explicitly describe the immersion-then-context rhythm, which is the actual pattern I'm going for \u2014 the old version was more about transitions than about that in-out movement. Finally I bumped Emotionally Resonant Micro-Moments down to priority 6 since it's real but less foundational than the others.",
+    "rubric_version": 3,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "the kind of thing that registers less as a scent and more as a memory you didn't know you had",
+        "new_text": "the kind of thing that registers less as a scent and more as the feeling of a place you've been before but can't locate",
+        "reason": "Specificity Over Convention (description updated + earned_comparisons dimension updated to emphasize crossing into non-food/non-travel territory): 'a memory you didn't know you had' is a familiar, slightly abstract formulation that stays within emotional-register clich\u00e9. 'The feeling of a place you've been before but can't locate' crosses into spatial/experiential territory \u2014 non-food, non-travel \u2014 making the comparison more unexpected and harder to borrow for a generic context.",
+        "user_feedback": "I see what it's going for but 'the feeling of a place you've been before but can't locate' feels a little too constructed to me \u2014 like it's trying hard to be unexpected. The original 'a memory you didn't know you had' is maybe a touch familiar but it lands cleanly. The new version makes me stop in a way that pulls me out of the moment rather than deepening it. I'd rather find something that crosses into unexpected territory without feeling like a riddle."
+      },
+      {
+        "original_text": "like the broth had an opinion. I put the spoon down. I picked it back up. I still don't entirely know what happened next, but I stayed an hour and a half and tipped badly because I didn't understand the tipping customs yet, which is its own small humiliation.",
+        "new_text": "like tasting a geological process rather than a recipe \u2014 as though the broth had been arrived at rather than made. I put the spoon down. I picked it back up. I stayed an hour and a half. When I finally left, I tried to tip and the cook glanced at the coins with an expression that was neither rude nor welcoming \u2014 just genuinely confused, the way you'd look at someone who'd thanked you in the wrong language. Which, I suppose, is exactly what I'd done. In Japan, leaving money on the counter after a meal like that isn't a gesture of appreciation; it reads as an afterthought, or worse, a correction. The food had been perfect and I'd ended it like a tourist. I walked back into the cold feeling appropriately small.",
+        "reason": "Anecdotes That Pull Their Weight (new criterion, priority 3): the original tipping anecdote ended on pure self-deprecation ('its own small humiliation') without connecting outward to Japanese culture or the meaning of the meal. The revision expands the anecdote so it earns its place by illuminating something about Japanese dining customs and the gap between tourist behavior and the meal's integrity \u2014 the self-awareness is now grounded in cultural observation rather than a punchline. Additionally, 'like tasting a geological process rather than a recipe' sharpens the broth comparison per the updated Specificity Over Convention criterion (crossing into non-food comparisons); and the humor of the tipping moment is now rooted in honest observation rather than exaggeration, per the updated Conversational Voice & Honest Humor criterion.",
+        "user_feedback": ""
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-06T10:48:30.153130"
+  }
+]

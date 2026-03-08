@@ -1,0 +1,618 @@
+{
+  "config": {
+    "num_users": 5,
+    "num_iterations": 5,
+    "chat_turns_per_iteration": 3,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8,
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "user_temperature": 0.8,
+    "enable_probes": false,
+    "enable_log_changes": true,
+    "persona_file": "personas.json",
+    "supabase_url": "",
+    "supabase_key": "",
+    "synthetic_user_id_prefix": "sim_"
+  },
+  "results": [
+    {
+      "persona": "Alex Chen",
+      "project_id": "9f124a3c-6df2-48d1-9c3a-642e1ccb3a11",
+      "final_rubric_version": 13,
+      "num_rubric_versions": 13,
+      "num_messages": 63,
+      "num_iterations": 5,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 5,
+          "total_turns": 7,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 5,
+          "total_turns": 6,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 4,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 5,
+          "drafts_produced": 2,
+          "total_turns": 2,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 5,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "About the same"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.773,
+          "total_preferences": 22,
+          "covered": 15,
+          "partial": 4,
+          "not_covered": 3
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.932,
+          "total_preferences": 22,
+          "covered": 20,
+          "partial": 1,
+          "not_covered": 1
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.932,
+          "total_preferences": 22,
+          "covered": 20,
+          "partial": 1,
+          "not_covered": 1
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.932,
+          "total_preferences": 22,
+          "covered": 20,
+          "partial": 1,
+          "not_covered": 1
+        },
+        {
+          "iteration": 5,
+          "coverage_score": 0.932,
+          "total_preferences": 22,
+          "covered": 20,
+          "partial": 1,
+          "not_covered": 1
+        }
+      ]
+    },
+    {
+      "persona": "Priya Sharma",
+      "project_id": "84192f1a-c971-4a5b-9a95-247ce3a93e0c",
+      "final_rubric_version": 12,
+      "num_rubric_versions": 12,
+      "num_messages": 60,
+      "num_iterations": 5,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 8,
+          "total_turns": 8,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.975
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 8,
+          "total_turns": 8,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 2,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 2,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 5,
+          "drafts_produced": 2,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 5,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.8,
+          "total_preferences": 20,
+          "covered": 14,
+          "partial": 4,
+          "not_covered": 2
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.825,
+          "total_preferences": 20,
+          "covered": 15,
+          "partial": 3,
+          "not_covered": 2
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.825,
+          "total_preferences": 20,
+          "covered": 15,
+          "partial": 3,
+          "not_covered": 2
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.825,
+          "total_preferences": 20,
+          "covered": 15,
+          "partial": 3,
+          "not_covered": 2
+        },
+        {
+          "iteration": 5,
+          "coverage_score": 0.825,
+          "total_preferences": 20,
+          "covered": 15,
+          "partial": 3,
+          "not_covered": 2
+        }
+      ]
+    },
+    {
+      "persona": "Jordan Rivera",
+      "project_id": "61bbb80c-8f51-4c9b-9b8d-757379c4ba8e",
+      "final_rubric_version": 11,
+      "num_rubric_versions": 11,
+      "num_messages": 56,
+      "num_iterations": 5,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 2,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 3,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 4,
+          "total_turns": 6,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 5,
+          "drafts_produced": 4,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 4,
+          "effort": 2
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 5,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.474,
+          "total_preferences": 19,
+          "covered": 7,
+          "partial": 4,
+          "not_covered": 8
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.658,
+          "total_preferences": 19,
+          "covered": 10,
+          "partial": 5,
+          "not_covered": 4
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.763,
+          "total_preferences": 19,
+          "covered": 12,
+          "partial": 5,
+          "not_covered": 2
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.763,
+          "total_preferences": 19,
+          "covered": 12,
+          "partial": 5,
+          "not_covered": 2
+        },
+        {
+          "iteration": 5,
+          "coverage_score": 0.737,
+          "total_preferences": 19,
+          "covered": 11,
+          "partial": 6,
+          "not_covered": 2
+        }
+      ]
+    },
+    {
+      "persona": "Marcus Thompson",
+      "project_id": "0246dd73-56ba-45c6-8b27-7d7e43689972",
+      "final_rubric_version": 13,
+      "num_rubric_versions": 13,
+      "num_messages": 86,
+      "num_iterations": 5,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 5,
+          "total_turns": 6,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 5,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 3,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 12,
+          "total_turns": 8,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 5,
+          "drafts_produced": 7,
+          "total_turns": 9,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 5,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.595,
+          "total_preferences": 21,
+          "covered": 10,
+          "partial": 5,
+          "not_covered": 6
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.929,
+          "total_preferences": 21,
+          "covered": 19,
+          "partial": 1,
+          "not_covered": 1
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.929,
+          "total_preferences": 21,
+          "covered": 19,
+          "partial": 1,
+          "not_covered": 1
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.952,
+          "total_preferences": 21,
+          "covered": 20,
+          "partial": 0,
+          "not_covered": 1
+        },
+        {
+          "iteration": 5,
+          "coverage_score": 0.952,
+          "total_preferences": 21,
+          "covered": 20,
+          "partial": 0,
+          "not_covered": 1
+        }
+      ]
+    },
+    {
+      "persona": "Elena Kowalski",
+      "project_id": "59431064-6965-4bbf-88a1-a65ce2e2ddf2",
+      "final_rubric_version": 12,
+      "num_rubric_versions": 12,
+      "num_messages": 62,
+      "num_iterations": 5,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 9,
+          "total_turns": 11,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.975
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 5,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 2,
+          "total_turns": 2,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 3,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        },
+        {
+          "iteration": 5,
+          "drafts_produced": 2,
+          "total_turns": 3,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 0.9999999999999999
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 4
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 4,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 5,
+            "understanding": 4,
+            "effort": 2,
+            "comparison": "Somewhat better"
+          }
+        ]
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.841,
+          "total_preferences": 22,
+          "covered": 16,
+          "partial": 5,
+          "not_covered": 1
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.841,
+          "total_preferences": 22,
+          "covered": 16,
+          "partial": 5,
+          "not_covered": 1
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.909,
+          "total_preferences": 22,
+          "covered": 19,
+          "partial": 2,
+          "not_covered": 1
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.886,
+          "total_preferences": 22,
+          "covered": 18,
+          "partial": 3,
+          "not_covered": 1
+        },
+        {
+          "iteration": 5,
+          "coverage_score": 0.932,
+          "total_preferences": 22,
+          "covered": 19,
+          "partial": 3,
+          "not_covered": 0
+        }
+      ]
+    }
+  ],
+  "completed_at": "2026-03-05T03:50:45.452441"
+}

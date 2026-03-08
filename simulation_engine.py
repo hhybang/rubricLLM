@@ -478,8 +478,11 @@ def headless_alignment_diagnostic(
     rubric_judge_result = None
     try:
         if is_3draft:
+            # Pass drafts in shuffled order so judge is blind
+            source_to_draft = {"rubric": rubric_draft, "generic": generic_draft, "preference": preference_draft}
+            shuffled_drafts = [source_to_draft[src] for _, src in shuffle_order]
             prompt = GRADING_rubric_judge_3draft_prompt(
-                rubric_draft, generic_draft, preference_draft, rubric_json, conv_context
+                shuffled_drafts[0], shuffled_drafts[1], shuffled_drafts[2], rubric_json, conv_context
             )
         else:
             prompt = GRADING_rubric_judge_prompt(rubric_draft, generic_draft, rubric_json, conv_context)
@@ -550,70 +553,75 @@ def headless_alignment_diagnostic(
     criteria_analysis.sort(key=lambda x: x["priority"])
 
     # ── Suggest rubric improvements ──────────────────────────────────────
-    log.info("Generating rubric suggestions...")
     suggestion_text = ""
     suggested_rubric = None
     suggestion_reasons = {}
-    source_names = {
-        "rubric": "rubric-guided",
-        "generic": "generic (no rubric)",
-        "preference": "preference-based (from original stated preferences)",
-    }
-    ranking_desc = "The user ranked the drafts: " + " > ".join(
-        f"{i+1}. {source_names.get(s, s)}" for i, s in enumerate(user_ranking)
-    )
 
-    try:
-        rubric_judge_json = json.dumps(rubric_judge_result, indent=2) if rubric_judge_result else "{}"
-        suggest_prompt = ALIGNMENT_diagnostic_suggest_and_apply_prompt(
-            rubric_json, rubric_judge_json, ranking_desc, user_reason,
-        )
-        pipeline_messages.append({"role": "user", "content": suggest_prompt})
-        resp = api_call_with_retry(model=model_light, max_tokens=4000, messages=pipeline_messages)
-        sa_raw = _extract_text(resp).strip()
-        pipeline_messages.append({"role": "assistant", "content": sa_raw})
-
-        sa_parsed = _parse_json(sa_raw)
-        all_reasons = sa_parsed.get("reasons", {}) or sa_parsed.get("criteria", {})
-        suggestion_reasons = {k: v for k, v in all_reasons.items() if v}
-        rubric_arr = sa_parsed.get("rubric", [])
-        if isinstance(rubric_arr, list) and rubric_arr:
-            suggested_rubric = rubric_arr
-
-        # Filter out "keep unchanged" reasons
-        keep_phrases = ["keep unchanged", "no change", "working well", "kept as-is",
-                        "keep as-is", "no changes needed", "performing well"]
-        suggestion_reasons = {
-            k: v for k, v in suggestion_reasons.items()
-            if not any(p in v.lower() for p in keep_phrases)
+    # Skip suggestions if rubric draft was already ranked first — it's working
+    if user_ranking and user_ranking[0] == "rubric":
+        log.info("Rubric draft ranked first — skipping rubric suggestions")
+    else:
+        log.info("Generating rubric suggestions...")
+        source_names = {
+            "rubric": "rubric-guided",
+            "generic": "generic (no rubric)",
+            "preference": "preference-based (from original stated preferences)",
         }
+        ranking_desc = "The user ranked the drafts: " + " > ".join(
+            f"{i+1}. {source_names.get(s, s)}" for i, s in enumerate(user_ranking)
+        )
 
-        # Check if suggested_rubric actually differs
-        if suggested_rubric and rubric_list:
-            orig_map = {c.get("name", "").lower().strip(): c for c in rubric_list}
-            new_map = {c.get("name", "").lower().strip(): c for c in suggested_rubric}
-            has_change = False
-            for nk in new_map:
-                if nk not in orig_map:
-                    has_change = True
-                    break
-            if not has_change:
-                for ok in orig_map:
-                    if ok not in new_map:
+        try:
+            rubric_judge_json = json.dumps(rubric_judge_result, indent=2) if rubric_judge_result else "{}"
+            suggest_prompt = ALIGNMENT_diagnostic_suggest_and_apply_prompt(
+                rubric_json, rubric_judge_json, ranking_desc, user_reason,
+            )
+            pipeline_messages.append({"role": "user", "content": suggest_prompt})
+            resp = api_call_with_retry(model=model_light, max_tokens=4000, messages=pipeline_messages)
+            sa_raw = _extract_text(resp).strip()
+            pipeline_messages.append({"role": "assistant", "content": sa_raw})
+
+            sa_parsed = _parse_json(sa_raw)
+            all_reasons = sa_parsed.get("reasons", {}) or sa_parsed.get("criteria", {})
+            suggestion_reasons = {k: v for k, v in all_reasons.items() if v}
+            rubric_arr = sa_parsed.get("rubric", [])
+            if isinstance(rubric_arr, list) and rubric_arr:
+                suggested_rubric = rubric_arr
+
+            # Filter out "keep unchanged" reasons
+            keep_phrases = ["keep unchanged", "no change", "working well", "kept as-is",
+                            "keep as-is", "no changes needed", "performing well"]
+            suggestion_reasons = {
+                k: v for k, v in suggestion_reasons.items()
+                if not any(p in v.lower() for p in keep_phrases)
+            }
+
+            # Check if suggested_rubric actually differs
+            if suggested_rubric and rubric_list:
+                orig_map = {c.get("name", "").lower().strip(): c for c in rubric_list}
+                new_map = {c.get("name", "").lower().strip(): c for c in suggested_rubric}
+                has_change = False
+                for nk in new_map:
+                    if nk not in orig_map:
                         has_change = True
                         break
-            if not has_change:
-                for ck in orig_map:
-                    if ck in new_map and _criterion_changed(orig_map[ck], new_map[ck]):
-                        has_change = True
-                        break
-            if not has_change:
-                suggested_rubric = None
+                if not has_change:
+                    for ok in orig_map:
+                        if ok not in new_map:
+                            has_change = True
+                            break
+                if not has_change:
+                    for ck in orig_map:
+                        if ck in new_map and _criterion_changed(orig_map[ck], new_map[ck]):
+                            has_change = True
+                            break
+                if not has_change:
+                    suggested_rubric = None
 
-        if suggestion_reasons:
-            suggestion_text = "\n".join(f"- **{k}**: {v}" for k, v in suggestion_reasons.items())
-    except Exception as e:
-        log.error(f"Suggestion generation failed: {e}")
+            if suggestion_reasons:
+                suggestion_text = "\n".join(f"- **{k}**: {v}" for k, v in suggestion_reasons.items())
+        except Exception as e:
+            log.error(f"Suggestion generation failed: {e}")
 
     # ── Build result ─────────────────────────────────────────────────────
     result = {
@@ -917,9 +925,11 @@ def headless_regenerate_draft_from_rubric_changes(
             messages=[{"role": "user", "content": user_prompt}],
         )
         response_text = _extract_text(resp)
-        json_match = re.search(r'\{[\s\S]*\}', response_text)
+        json_match = re.search(r'\{', response_text)
         if json_match:
-            return json.loads(json_match.group())
+            decoder = json.JSONDecoder()
+            result, _ = decoder.raw_decode(response_text, json_match.start())
+            return result
         return {"error": "Could not parse regenerated draft from model response."}
     except json.JSONDecodeError as e:
         return {"error": f"Error parsing response: {e}"}
@@ -948,11 +958,12 @@ def decompose_preferences(persona, model: str = "claude-sonnet-4-6") -> list:
             messages=[{"role": "user", "content": prompt}],
         )
         text = _extract_text(resp)
-        json_match = re.search(r'\{[\s\S]*\}', text)
+        json_match = re.search(r'\{', text)
         if not json_match:
             log.error("Could not parse preference decomposition")
             return []
-        result = json.loads(json_match.group())
+        decoder = json.JSONDecoder()
+        result, _ = decoder.raw_decode(text, json_match.start())
         items = result.get("preference_items", [])
         log.info(f"Decomposed {persona.name}'s preferences into {len(items)} atomic items")
         return items
@@ -963,12 +974,18 @@ def decompose_preferences(persona, model: str = "claude-sonnet-4-6") -> list:
 
 def evaluate_preference_coverage(persona, rubric_criteria: list,
                                   model: str = "claude-sonnet-4-6",
-                                  preference_items: list = None) -> dict:
+                                  preference_items: list = None,
+                                  dealbreaker_violated: bool = False) -> dict:
     """Evaluate what fraction of a persona's ground-truth preferences are
     covered by the current rubric.
 
     If preference_items is provided, uses that fixed list instead of
     re-decomposing (recommended for consistent cross-iteration comparison).
+
+    Dealbreaker handling: dealbreaker items are excluded from the LLM coverage
+    check. If no dealbreaker was violated during conversation, they get free
+    points (counted as "covered"). If a dealbreaker WAS violated, they count
+    as "not_covered" — the violation proves the rubric didn't guard against it.
 
     Returns dict with preference_items list and coverage metrics,
     or {"error": "..."} on failure.
@@ -980,12 +997,22 @@ def evaluate_preference_coverage(persona, rubric_criteria: list,
     if not rubric_criteria:
         return {**empty, "error": "No rubric criteria to evaluate"}
 
-    # Use the two-step prompt if we have pre-decomposed items,
-    # otherwise fall back to the original single-prompt approach
+    # Separate dealbreaker items from core/hidden items
+    non_dealbreaker_items = None
+    dealbreaker_items = []
     if preference_items:
-        prompt = COVERAGE_CHECK_PROMPT(preference_items, rubric_criteria)
-    else:
+        non_dealbreaker_items = [p for p in preference_items if p.get("source") != "dealbreaker"]
+        dealbreaker_items = [p for p in preference_items if p.get("source") == "dealbreaker"]
+
+    # Only send non-dealbreaker items to LLM for coverage check
+    if non_dealbreaker_items is not None:
+        prompt = COVERAGE_CHECK_PROMPT(non_dealbreaker_items, rubric_criteria)
+    elif preference_items is None:
+        # No pre-decomposed items — use original prompt (includes all sources)
+        # TODO: separate dealbreakers in the single-prompt path too
         prompt = PREFERENCE_COVERAGE_PROMPT(persona, rubric_criteria)
+    else:
+        prompt = COVERAGE_CHECK_PROMPT(non_dealbreaker_items, rubric_criteria)
 
     try:
         resp = api_call_with_retry(
@@ -995,27 +1022,33 @@ def evaluate_preference_coverage(persona, rubric_criteria: list,
             messages=[{"role": "user", "content": prompt}],
         )
         text = _extract_text(resp)
-        json_match = re.search(r'\{[\s\S]*\}', text)
+        json_match = re.search(r'\{', text)
         if not json_match:
             return {**empty, "error": "Could not parse coverage evaluation"}
 
-        result = json.loads(json_match.group())
+        decoder = json.JSONDecoder()
+        result, _ = decoder.raw_decode(text, json_match.start())
 
-        # Validate and fill defaults
+        # Coverage score is computed over core + hidden items only
         items = result.get("preference_items", [])
+
         total = len(items)
         covered = sum(1 for i in items if i.get("coverage") == "covered")
         partial = sum(1 for i in items if i.get("coverage") == "partially_covered")
         not_covered = sum(1 for i in items if i.get("coverage") == "not_covered")
 
-        # Recompute coverage score: covered=1.0, partial=0.5, not_covered=0.0
         score = (covered + 0.5 * partial) / total if total > 0 else 0.0
 
+        result["preference_items"] = items
         result["total_preferences"] = total
         result["covered_count"] = covered
         result["partially_covered_count"] = partial
         result["not_covered_count"] = not_covered
         result["coverage_score"] = round(score, 3)
+
+        # Dealbreakers are a separate binary metric — pass if none violated
+        result["dealbreaker_pass"] = not dealbreaker_violated
+        result["dealbreaker_count"] = len(dealbreaker_items)
 
         return result
 

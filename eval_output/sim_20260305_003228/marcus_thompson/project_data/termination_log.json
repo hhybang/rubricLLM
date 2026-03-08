@@ -1,0 +1,366 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 6,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.55,
+              "reasoning": "The draft is structurally solid and avoids condescension, but it misses several hidden expectations: no architectural decisions include rejected alternatives (H1 scores 0), the 'Things That Will Bite You' section appears after the code sections where someone would already have hit those problems (H3 scores 0), code examples are missing the required one-line 'what this does' comment and some exceed 15 lines without the prose earning it (H2 scores 0.5), and the headers read more like labeled sections than a narrative tutorial (H4 scores 0.5).",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7,
+              "reasoning": "H1 and H5 are solid, and the architectural reasoning is genuinely useful now. The main issue is that pitfalls and warnings are still collected at the end under 'Things That Will Bite You' \u2014 which means someone reading linearly will hit the refresh token reuse problem before they see the warning about it. H2 also has a gap: the code examples are minimal but none of them have the required one-line 'what this does' comment above them.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H3, and H5 are all fully met \u2014 the rejected-alternatives reasoning is solid throughout, warnings are correctly positioned before the code they protect, and the banned words are absent. H2 is partial: the login example is 13 lines with a one-liner comment, which is fine, but the channel setup line adds boilerplate that the prose didn't make unnecessary. H4 is partial: the headers label stages ('Getting Tokens', 'Using Access Tokens') but don't quite read as a narrative arc \u2014 they're still closer to section labels than a story with momentum.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H4 and H3 are now fully addressed, and the architectural reasoning throughout is exactly right. The one thing still holding this back is the Login code example \u2014 it's 10 lines but includes the channel setup, which is already covered in the 'Connecting to the Service' section. That means the example is doing double duty and carrying setup boilerplate that the prose should have already handled.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully satisfied: every architectural decision names what was rejected and why, all code examples are minimal with one-line 'what this does' comments, warnings are placed before the relevant sections, headers tell a narrative story rather than labeling sections, and no condescending filler language appears anywhere. Core preferences and dealbreakers are also clean.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "The draft is genuinely strong \u2014 the rejected-alternatives pattern is consistent, the tutorial flow is well-executed, warnings land before the relevant code, and the tone respects the reader throughout. The one issue is H2: the producer example runs over 15 lines and carries imports that the surrounding prose didn't fully absorb, which is the exact thing that preference is trying to prevent."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7899999999999999,
+              "reasoning": "H1 and H2 and H4 land well \u2014 the rejected-alternative framing and minimal code blocks are doing real work. H5 fails outright ('the publish call itself is straightforward'), and H3 is only partial because the flush() warning appears after the produce call block rather than before the section where someone would run the code and exit the process.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.7899999999999999,
+              "reasoning": "H3, H2, and H4 are solid \u2014 the flush warning is placed correctly, code blocks are minimal and commented, and the section reads like a tutorial step. Two issues remain: H1 only partially delivers on rejected alternatives (acks=1 vs acks=all has the real-world failure, but `enable.idempotence` has no rejected alternative explained), and H5 has a direct violation with 'just needs to know.'",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully met: rejected alternatives are present with real consequences, code blocks are minimal and commented, warnings precede the relevant code, the header tells a story, and banned words are absent throughout."
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 3,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.7566666666666666,
+              "reasoning": "H1 and H5 are strong \u2014 the rejected-alternatives pattern is consistently applied and the language is precise throughout. The main gaps are in H2 (the code example has no 'what this does' comment above it, and redisStore appears without context \u2014 where does that come from?), H3 (the in-memory store warning appears after the code block rather than before it), and H4 (there's only one header for the whole document, so the tutorial-arc structure isn't there)."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H3 is the only unmet preference \u2014 the MemoryStore warning appears inside the configuration section, after the code that introduces `redisStore`, meaning someone following along could already have the wrong store wired up before they hit the warning. Everything else is solid.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully satisfied with specific, quotable evidence: rejected alternatives are named with concrete data points, code snippets are minimal with accurate one-line comments, the MemoryStore warning lands before any store construction code, headers tell a workflow story, and precise language replaces hedging words throughout. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 12,
+        "max_drafts": 20,
+        "total_turns": 8,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.86,
+              "reasoning": "H1, H4, and H5 are fully satisfied \u2014 the architecture section is genuinely good and the header flow tells a story. H2 and H3 have issues: the YAML example has a one-line comment but the bash example does too, so H2 is partial because the bash example's comment reads more like a label than a 'what this does' explanation of the output; more critically for H3, the burst_size warning appears mid-section after the parameter descriptions, meaning an engineer reading top-to-bottom hits the config options before they see the danger."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1 is only partially met \u2014 the draft excerpt visible in the thread cuts off before completing the rejection rationale for fixed window and sliding window log, so the 'what we rejected and why' for all three alternatives isn't fully present in the evaluated section. Everything else is strong.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.5833333333333333,
+              "reasoning": "The architecture section is genuinely excellent \u2014 the rejected alternatives are concrete, failure-driven, and carry real weight. But this excerpt is entirely prose: there are no code examples anywhere, and since the previous draft had configuration content with warnings, this revision appears to have dropped both in favor of just the algorithm section, leaving H2 and H3 completely unaddressed.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.7899999999999999,
+              "reasoning": "H1 is completely missing from this section \u2014 the configuration section makes no mention of what scope options were rejected and why, and the `scope` parameter explanation in particular needed to explain why we didn't default to `service` or `ip`. H4 is partial because this section exists in isolation without narrative headers connecting it to what comes before or after.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.48,
+              "reasoning": "H1 is fully resolved \u2014 the ip-to-api_key evolution with the NAT incident is exactly right. But this excerpt is prose-only: no YAML block, no code example, and the warning placement can't be evaluated because the 'Before you set...' warning and the YAML block that anchored earlier rounds are missing from this excerpt entirely.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 8,
+            "satisfaction": {
+              "score": 0.8266666666666665,
+              "reasoning": "H1, H2, and H5 are fully locked in \u2014 the rejected-alternatives pattern is working, the YAML block is clean and minimal, and the language is precise throughout. H3 is the remaining issue: the warning about ip scope being the wrong choice for NAT environments lands after all three options are described, which means an engineer could already be reaching for ip before they hit the caution.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 9,
+            "satisfaction": {
+              "score": 0.8966666666666666,
+              "reasoning": "H1, H2, H3, and H5 are all fully met \u2014 the incident narrative, warning placement, YAML example, and precise language are all locked in. H4 can't be fully scored because this excerpt contains no headers, so the tutorial-style story flow that makes the full document navigable isn't visible here.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 12,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully met: rejected alternatives with concrete failure details throughout, minimal runnable code examples with one-line comments, warnings placed before the relevant sections in every case, headers that tell a narrative story, and no hedging language anywhere. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 5,
+        "drafts_produced": 7,
+        "max_drafts": 20,
+        "total_turns": 9,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H1, H3, H4, H5 are all well executed \u2014 the rejected-alternatives section is genuinely useful and the tutorial flow is strong. H2 is the weak spot: the YAML profile example is 14 lines with inline comments and vault references that add noise; it's not the minimal happy-path example the preference requires, and the SQL migration example also has extra complexity that the prose should have handled."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.65,
+              "reasoning": "The YAML examples are cleaner and the warning about disabling prompts is present, but H1 is entirely absent \u2014 there's no explanation of what was considered and rejected when deciding on the profile format or the require_approval mechanism. H3 is also only partially met: the CI warning appears after the config field is introduced, not before the reader would encounter the decision point.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.5133333333333333,
+              "reasoning": "H1 and H5 are genuinely excellent \u2014 the rejected alternatives are specific and the prose is precise throughout. But this draft is entirely explanatory prose with no code examples at all (H2 scores 0), there are no warnings placed ahead of the relevant sections (H3 scores 0), and the two section headers are label-style rather than tutorial-style (H4 scores 0). The anti-inflation cap applies: hidden_avg of 0.40 caps the final at 0.55.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.7,
+              "reasoning": "H1 and H5 are fully satisfied, and the decision history with named rejected alternatives is exactly right. Two things are holding this back: H3 (warnings placed after rather than before the relevant section) and H2 (the production YAML snippet is missing the required one-line 'what this does' comment, and the first example has it but the second doesn't).",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "Almost everything is locked in \u2014 the decision history, the rejected alternatives, the tutorial flow, and the placement of warnings all land correctly. The one remaining issue is the require_approval YAML snippet: it shows only a single indented field with no surrounding context, so it's not runnable or self-contained as a standalone example.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.93,
+              "reasoning": "H3 is the only remaining gap \u2014 there's no warning placed ahead of the section where someone would encounter the pitfall. The production profile section explains what require_approval does after the fact, but there's nothing upfront telling a reader what happens if they configure a production profile without the field before they try to run a migration.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 0.9999999999999999,
+              "reasoning": "All five hidden preferences are fully met: rejected alternatives are named with real failure modes, both code examples are minimal with one-line comments and under 15 lines, the warning about missing require_approval lands before the YAML snippet, headers tell a progressive story, and no hedging language appears. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-05T03:15:34.089231"
+  }
+]
