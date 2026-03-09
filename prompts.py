@@ -77,7 +77,7 @@ After completing the evaluation for all criteria, provide a JSON summary:
   "criteria_scores": [
     {
       "name": "<exact criterion name from rubric>",
-      "priority": <integer rank, 1 = most important>,
+      "priority": <unique integer 1..N, 1 = most important, no duplicates>,
       "dimensions_met": <count of dimensions checked>,
       "dimensions_total": <total dimensions>,
       "dimensions_detail": [
@@ -470,7 +470,7 @@ After your `<analysis>` block, output **only** this JSON:
           "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>"
         }
       ],
-      "priority": <integer rank, 1 = most important>
+      "priority": <unique integer 1..N, 1 = most important, no duplicates>
     }
   ],
   "coaching_notes": "<2–3 concise insights>",
@@ -788,7 +788,7 @@ After your `<analysis>` block, output **only** this JSON:
           "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>"
         }
       ],
-      "priority": <integer rank, 1 = most important>
+      "priority": <unique integer 1..N where N = number of criteria, 1 = most important, no duplicates>
     }
   ],
   "coaching_notes": "<2–3 concise insights>"
@@ -970,7 +970,7 @@ Return ONLY valid JSON (no markdown code blocks, no preamble):
       "dimensions": [
         {"id": "<id>", "label": "<checkable item>"}
       ],
-      "priority": <integer rank>
+      "priority": <unique integer 1..N, no duplicates>
     }
   ],
   "coaching_notes": "<2–3 concise insights>",
@@ -981,16 +981,7 @@ Return ONLY valid JSON (no markdown code blocks, no preamble):
 **NOTE**: Do NOT include `excellent`, `good`, `fair`, or `weak` fields. Achievement levels are derived from dimension counts.
 """
 
-def RUBRIC_final_infer_user_prompt(conversation_text, previous_rubric_json, classification_feedback_json, corrected_dps_json, coldstart_text=""):
-    coldstart_block = ""
-    if coldstart_text:
-        coldstart_block = f"""
-Here is the user's cold-start preference description (written before the conversation):
-
-<coldstart_preferences>
-{coldstart_text}
-</coldstart_preferences>
-"""
+def RUBRIC_final_infer_user_prompt(conversation_text, previous_rubric_json, classification_feedback_json, corrected_dps_json, coldstart_text=""):  # noqa: ARG001 — coldstart_text kept for backward compat but intentionally excluded from prompt
     return f"""Here is the conversation. Messages are numbered [Message #N].
 
 <conversation>
@@ -1002,7 +993,7 @@ Here is the current rubric (the one being refined):
 <current_rubric>
 {previous_rubric_json}
 </current_rubric>
-{coldstart_block}
+
 Here are the user's classification judgments for each criterion:
 
 <classification_feedback>
@@ -1361,7 +1352,7 @@ Return ONLY valid JSON matching this structure (no markdown fences, no preamble)
       "dimensions": [
         {{"id": "<id>", "label": "<checkable item>"}}
       ],
-      "priority": <integer rank>
+      "priority": <unique integer 1..N, no duplicates>
     }}
   ],
   "coaching_notes": "<updated if needed>",
@@ -2049,7 +2040,7 @@ Then output the refined rubric as JSON:
           "label": "<checkable item: what to verify as yes/no>"
         }}}}
       ],
-      "priority": <integer rank, 1 = most important>
+      "priority": <unique integer 1..N, 1 = most important, no duplicates>
     }}}}
   ],
   "coaching_notes": "<2-3 concise insights about what changed and why>",

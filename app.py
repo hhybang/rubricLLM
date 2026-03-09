@@ -3741,6 +3741,14 @@ def infer_rubric_only(messages):
             rubric_data["source"] = "inferred"
             rubric_data["conversation_id"] = st.session_state.get("selected_conversation")
 
+            # Normalize priorities to unique sequential 1..N
+            _infer_criteria = rubric_data.get("rubric", [])
+            if _infer_criteria:
+                _indexed = [(i, c) for i, c in enumerate(_infer_criteria)]
+                _indexed.sort(key=lambda x: (x[1].get("priority", 999), x[0]))
+                for _rank, (_, _c) in enumerate(_indexed, 1):
+                    _c["priority"] = _rank
+
             # Save to rubric history and activate
             rubric_history = load_rubric_history()
             rubric_history.append(rubric_data)
@@ -3917,6 +3925,14 @@ def infer_final_rubric(messages, rubric_json, classification_feedback_json, corr
             rubric_data["version"] = next_version_number()
             rubric_data["source"] = "inferred_final"
             rubric_data["conversation_id"] = st.session_state.get("selected_conversation")
+
+            # Normalize priorities to unique sequential 1..N
+            _final_criteria = rubric_data.get("rubric", [])
+            if _final_criteria:
+                _final_indexed = [(i, c) for i, c in enumerate(_final_criteria)]
+                _final_indexed.sort(key=lambda x: (x[1].get("priority", 999), x[0]))
+                for _final_rank, (_, _fc) in enumerate(_final_indexed, 1):
+                    _fc["priority"] = _final_rank
 
             # Attach explanation so caller can display it
             rubric_data["_change_explanation"] = change_explanation
@@ -6341,8 +6357,8 @@ with tab1:
             if _cs_ref_text:
                 st.info(f"**Your writing preferences** (what you described at the start):\n\n{_cs_ref_text}")
 
-            _cc_stated = [n for n, s in _cc_user.items() if s == "stated"]
-            _cc_unstated = [n for n, s in _cc_user.items() if s != "stated"]
+            # Build a single list of all criteria, sorted by rubric priority
+            _cc_all_names = list(_cc_user.keys())
 
             st.markdown(
                 "We compared each rubric criterion against the writing preferences you described above — please review these below."
@@ -6357,105 +6373,78 @@ with tab1:
             if 'chat_criteria_hallucination_reasons' not in st.session_state:
                 st.session_state.chat_criteria_hallucination_reasons = {}
 
-            # Count total non-hallucinated criteria for importance ranking max value
-            _cc_all_names = _cc_stated + _cc_unstated
             _cc_total_criteria = len(_cc_all_names)
 
-            # Initialize importance ranks in session state if needed
-            if "chat_criteria_importance_ranks" not in st.session_state:
-                st.session_state.chat_criteria_importance_ranks = {}
-            # Auto-assign default ranks for criteria that don't have one yet
-            _cc_existing_ranks = st.session_state.chat_criteria_importance_ranks
-            _cc_next_rank = max(_cc_existing_ranks.values(), default=0) + 1
+            # Build rubric priority lookup from current rubric
+            _cc_rubric_priorities = {}
+            for _rc in (st.session_state.get("rubric") or []):
+                _rc_name = _rc.get("name", "")
+                _rc_pri = _rc.get("priority")
+                if _rc_name and _rc_pri is not None:
+                    _cc_rubric_priorities[_rc_name] = int(_rc_pri)
+
+            # Always reset importance ranks from rubric priorities (normalized)
+            # User edits are preserved via widget keys, but the initial values
+            # must always reflect the current rubric's normalized priorities.
+            _cc_existing_ranks = {}
+            _cc_used_ranks = set()
+            for _cn in _cc_all_names:
+                if _cn in _cc_rubric_priorities:
+                    _candidate_rank = _cc_rubric_priorities[_cn]
+                    if _candidate_rank not in _cc_used_ranks:
+                        _cc_existing_ranks[_cn] = _candidate_rank
+                        _cc_used_ranks.add(_candidate_rank)
+            # Fill any remaining unranked criteria with next available ranks
+            _cc_next_rank = 1
             for _cn in _cc_all_names:
                 if _cn not in _cc_existing_ranks:
+                    while _cc_next_rank in _cc_used_ranks:
+                        _cc_next_rank += 1
                     _cc_existing_ranks[_cn] = _cc_next_rank
+                    _cc_used_ranks.add(_cc_next_rank)
                     _cc_next_rank += 1
+            st.session_state.chat_criteria_importance_ranks = _cc_existing_ranks
 
-            if _cc_stated:
-                st.markdown(f"**Stated** ({len(_cc_stated)})",
-                            help="These criteria matched something in your writing preferences.")
-                for _cs_name in _cc_stated:
-                    _cs_col_class, _cs_col_rank = st.columns([3, 1])
-                    with _cs_col_class:
-                        _cs_choice = st.selectbox(
-                            _cs_name,
-                            ["Stated", "Real", "Hallucinated"],
-                            index=0,
-                            key=f"cc_chip_{_cs_name}",
-                            help="Stated = you mentioned this | Real = you care but didn't mention | Hallucinated = doesn't reflect your preferences"
-                        )
-                    with _cs_col_rank:
-                        if _cs_choice != "Hallucinated":
-                            _cs_cur_rank = _cc_existing_ranks.get(_cs_name, 1)
-                            _cs_new_rank = st.number_input(
-                                "Importance",
-                                min_value=1,
-                                max_value=_cc_total_criteria,
-                                value=min(_cs_cur_rank, _cc_total_criteria),
-                                step=1,
-                                key=f"cc_rank_{_cs_name}",
-                            )
-                            st.session_state.chat_criteria_importance_ranks[_cs_name] = _cs_new_rank
-                    _cc_user[_cs_name] = _cs_choice.lower()
-                    if _cs_choice == "Hallucinated":
-                        _cs_reason_text = _cc_reasoning.get(_cs_name, "")
-                        if _cs_reason_text:
-                            st.caption(f"*Why we inferred this:* {_cs_reason_text}")
-                        _cs_existing_reason = st.session_state.get("chat_criteria_hallucination_reasons", {}).get(_cs_name, "")
-                        _cs_halluc_reason = st.text_input(
-                            f"Why doesn't \"{_cs_name}\" reflect your preferences?",
-                            value=_cs_existing_reason,
-                            key=f"cc_halluc_reason_{_cs_name}",
-                            placeholder="e.g., I never cared about this, the model assumed it from context"
-                        )
-                        st.session_state.chat_criteria_hallucination_reasons[_cs_name] = _cs_halluc_reason
+            # Sort all criteria by their importance rank (priority order)
+            _cc_sorted_names = sorted(_cc_all_names, key=lambda n: _cc_existing_ranks.get(n, 999))
 
-            if _cc_unstated:
-                st.markdown(
-                    f"**Unstated** ({len(_cc_unstated)})",
-                    help="These criteria were NOT in your original writing preferences but were inferred from the conversation. "
-                         "For each one, decide: **Real** = you do care about this even though you didn't mention it. "
-                         "**Hallucinated** = this doesn't reflect your actual preferences, the model made it up. "
-                         "**Stated** = actually, you did mention this (misclassified)."
-                )
-                for _cu_name in _cc_unstated:
-                    _cu_current = _cc_user.get(_cu_name, "unstated")
-                    _cu_default_idx = {"stated": 0, "real": 1, "hallucinated": 2}.get(_cu_current, 1)
-                    _cu_col_class, _cu_col_rank = st.columns([3, 1])
-                    with _cu_col_class:
-                        _cu_choice = st.selectbox(
-                            _cu_name,
-                            ["Stated", "Real", "Hallucinated"],
-                            index=_cu_default_idx,
-                            key=f"cc_chip_{_cu_name}",
-                            help="Real = you care about this | Hallucinated = model made it up | Stated = you did mention this"
+            for _cr_name in _cc_sorted_names:
+                _cr_current = _cc_user.get(_cr_name, "real")
+                _cr_default_idx = {"stated": 0, "real": 1, "hallucinated": 2}.get(_cr_current, 1)
+                _cr_col_class, _cr_col_rank = st.columns([3, 1])
+                with _cr_col_class:
+                    _cr_choice = st.selectbox(
+                        _cr_name,
+                        ["Stated", "Real", "Hallucinated"],
+                        index=_cr_default_idx,
+                        key=f"cc_chip_{_cr_name}",
+                        help="Stated = you mentioned this | Real = you care but didn't mention | Hallucinated = doesn't reflect your preferences"
+                    )
+                with _cr_col_rank:
+                    if _cr_choice != "Hallucinated":
+                        _cr_cur_rank = _cc_existing_ranks.get(_cr_name, 1)
+                        _cr_new_rank = st.number_input(
+                            "Importance",
+                            min_value=1,
+                            max_value=_cc_total_criteria,
+                            value=min(_cr_cur_rank, _cc_total_criteria),
+                            step=1,
+                            key=f"cc_rank_{_cr_name}",
                         )
-                    with _cu_col_rank:
-                        if _cu_choice != "Hallucinated":
-                            _cu_cur_rank = _cc_existing_ranks.get(_cu_name, 1)
-                            _cu_new_rank = st.number_input(
-                                "Importance",
-                                min_value=1,
-                                max_value=_cc_total_criteria,
-                                value=min(_cu_cur_rank, _cc_total_criteria),
-                                step=1,
-                                key=f"cc_rank_{_cu_name}",
-                            )
-                            st.session_state.chat_criteria_importance_ranks[_cu_name] = _cu_new_rank
-                    _cc_user[_cu_name] = _cu_choice.lower()
-                    if _cu_choice == "Hallucinated":
-                        _cu_reason_text = _cc_reasoning.get(_cu_name, "")
-                        if _cu_reason_text:
-                            st.caption(f"*Why we inferred this:* {_cu_reason_text}")
-                        _cu_existing_reason = st.session_state.get("chat_criteria_hallucination_reasons", {}).get(_cu_name, "")
-                        _cu_halluc_reason = st.text_input(
-                            f"Why doesn't \"{_cu_name}\" reflect your preferences?",
-                            value=_cu_existing_reason,
-                            key=f"cc_halluc_reason_{_cu_name}",
-                            placeholder="e.g., I never cared about this, the model assumed it from context"
-                        )
-                        st.session_state.chat_criteria_hallucination_reasons[_cu_name] = _cu_halluc_reason
+                        st.session_state.chat_criteria_importance_ranks[_cr_name] = _cr_new_rank
+                _cc_user[_cr_name] = _cr_choice.lower()
+                if _cr_choice == "Hallucinated":
+                    _cr_reason_text = _cc_reasoning.get(_cr_name, "")
+                    if _cr_reason_text:
+                        st.caption(f"*Why we inferred this:* {_cr_reason_text}")
+                    _cr_existing_reason = st.session_state.get("chat_criteria_hallucination_reasons", {}).get(_cr_name, "")
+                    _cr_halluc_reason = st.text_input(
+                        f"Why doesn't \"{_cr_name}\" reflect your preferences?",
+                        value=_cr_existing_reason,
+                        key=f"cc_halluc_reason_{_cr_name}",
+                        placeholder="e.g., I never cared about this, the model assumed it from context"
+                    )
+                    st.session_state.chat_criteria_hallucination_reasons[_cr_name] = _cr_halluc_reason
 
             st.session_state.chat_criteria_user_classifications = _cc_user
 
@@ -6508,13 +6497,35 @@ with tab1:
                 _cc_rank_map = {name: _cc_inline_ranks.get(name, 999) for name, cat in _cc_final.items() if cat != "hallucinated"}
                 _cc_importance = sorted(_cc_rank_map.keys(), key=lambda n: _cc_rank_map[n])
 
+                # Build LLM original classification map for before/after comparison
+                _cc_llm_orig = {}
+                for _cc_comp in _cc_llm_data.get("criteria_comparison", []):
+                    _cc_orig_name = _cc_comp.get("criterion_name", "")
+                    _cc_orig_status = _cc_comp.get("status", "unstated")
+                    # Normalize: LLM uses "stated"/"unstated", map unstated → "real" for comparison
+                    _cc_llm_orig[_cc_orig_name] = "stated" if _cc_orig_status == "stated" else "real"
+
+                # Detect which classifications the user changed
+                _cc_user_changes = {}
+                for _cc_cname, _cc_user_cat in _cc_final.items():
+                    _cc_llm_cat = _cc_llm_orig.get(_cc_cname, "real")
+                    if _cc_user_cat != _cc_llm_cat:
+                        _cc_user_changes[_cc_cname] = {"from": _cc_llm_cat, "to": _cc_user_cat}
+
                 # Build log message
+                _cc_halluc_reasons = st.session_state.get("chat_criteria_hallucination_reasons", {})
                 _cc_log_lines = [
                     f"**Criteria classifications confirmed**: {_cc_stated_count} stated, {_cc_real_count} real, {_cc_hallucinated_count} hallucinated.",
                     f"Rubric precision: {_cc_precision:.0%}",
                     ""
                 ]
-                _cc_halluc_reasons = st.session_state.get("chat_criteria_hallucination_reasons", {})
+                if _cc_user_changes:
+                    _cc_log_lines.append(f"**You changed {len(_cc_user_changes)} classification(s):**")
+                    for _cc_ch_name, _cc_ch in _cc_user_changes.items():
+                        _from_label = {"stated": "Stated", "real": "Real", "hallucinated": "Hallucinated"}.get(_cc_ch["from"], _cc_ch["from"])
+                        _to_label = {"stated": "Stated", "real": "Real", "hallucinated": "Hallucinated"}.get(_cc_ch["to"], _cc_ch["to"])
+                        _cc_log_lines.append(f"- **{_cc_ch_name}**: {_from_label} → {_to_label}")
+                    _cc_log_lines.append("")
                 # Show criteria ordered by importance rank
                 _cc_ordered = sorted(_cc_final.items(), key=lambda x: _cc_rank_map.get(x[0], 999))
                 for _cc_cname, _cc_cat in _cc_ordered:
@@ -6536,6 +6547,8 @@ with tab1:
                     "is_criteria_classification_log": True,
                     "classification_data": {
                         "classifications": copy.deepcopy(_cc_final),
+                        "llm_original_classifications": copy.deepcopy(_cc_llm_orig),
+                        "user_changes": copy.deepcopy(_cc_user_changes),
                         "hallucination_reasons": copy.deepcopy(_cc_halluc_reasons),
                         "importance_ranking": list(_cc_importance),
                         "llm_classification": copy.deepcopy(_cc_llm_data),
@@ -6595,23 +6608,29 @@ with tab1:
                 }
                 st.session_state.chat_classification_feedback = _cc_feedback_for_dps
 
-                # Remove hallucinated criteria and re-order by user importance ranking
-                if _cc_hallucinated_count > 0 or _cc_importance:
-                    _cleanup_rb_dict, _, _ = get_active_rubric()
-                    _cleanup_criteria = list(st.session_state.editing_criteria or [])
-                    _cleanup_halluc_names = {name.lower().strip() for name, cat in _cc_final.items() if cat == "hallucinated"}
+                # Check if rubric actually needs updating:
+                # 1. Hallucinated criteria removed, OR
+                # 2. User changed the priority/importance ordering
+                _cleanup_rb_dict, _, _ = get_active_rubric()
+                _cleanup_criteria = list(st.session_state.editing_criteria or [])
+                _cleanup_halluc_names = {name.lower().strip() for name, cat in _cc_final.items() if cat == "hallucinated"}
 
-                    # Filter out hallucinated criteria
-                    _cleaned_criteria = [c for c in _cleanup_criteria if c.get("name", "").lower().strip() not in _cleanup_halluc_names]
+                # Filter out hallucinated criteria
+                _cleaned_criteria = [c for c in _cleanup_criteria if c.get("name", "").lower().strip() not in _cleanup_halluc_names]
 
-                    # Re-order by user importance ranking
-                    if _cc_importance:
-                        _importance_order = {name.lower().strip(): idx for idx, name in enumerate(_cc_importance)}
-                        _cleaned_criteria.sort(key=lambda c: _importance_order.get(c.get("name", "").lower().strip(), 999))
-                        # Update priority numbers to match new order
-                        for _pi, _pc in enumerate(_cleaned_criteria, 1):
-                            _pc["priority"] = _pi
+                # Check if priority order changed
+                _old_priority_order = [c.get("name", "").lower().strip() for c in _cleaned_criteria]
+                if _cc_importance:
+                    _importance_order = {name.lower().strip(): idx for idx, name in enumerate(_cc_importance)}
+                    _cleaned_criteria.sort(key=lambda c: _importance_order.get(c.get("name", "").lower().strip(), 999))
+                    for _pi, _pc in enumerate(_cleaned_criteria, 1):
+                        _pc["priority"] = _pi
+                _new_priority_order = [c.get("name", "").lower().strip() for c in _cleaned_criteria]
+                _priority_changed = _old_priority_order != _new_priority_order
 
+                _has_rubric_changes = _cc_hallucinated_count > 0 or _priority_changed
+
+                if _has_rubric_changes:
                     # Save as new rubric version
                     _cleanup_hist = load_rubric_history()
                     _cleanup_new_ver = next_version_number()
@@ -6639,6 +6658,8 @@ with tab1:
                     _cleanup_summary_parts = []
                     if _cleanup_removed_names:
                         _cleanup_summary_parts.append(f"Removed {len(_cleanup_removed_names)} hallucinated criteria: {', '.join(_cleanup_removed_names)}")
+                    if _priority_changed:
+                        _cleanup_summary_parts.append("Re-ordered criteria by your importance ranking")
                     _cleanup_summary_parts.append(f"Rubric saved as v{_cleanup_new_ver} with {len(_cleaned_criteria)} criteria")
                     st.session_state.messages.append({
                         "role": "system",
@@ -6655,6 +6676,7 @@ with tab1:
                                 "timestamp": datetime.now().isoformat(),
                                 "removed_criteria": _cleanup_removed_names,
                                 "importance_ranking": list(_cc_importance),
+                                "priority_changed": _priority_changed,
                                 "old_version": _cleanup_rb_dict.get("version", "?") if _cleanup_rb_dict else "?",
                                 "new_version": _cleanup_new_ver,
                                 "n_remaining": len(_cleaned_criteria),

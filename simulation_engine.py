@@ -265,6 +265,23 @@ def generate_gold_draft(persona, task: str, model: str = "claude-sonnet-4-6") ->
 # Rubric Inference Pipeline (headless)
 # ═════════════════════════════════════════════════════════════════════════════
 
+def _normalize_rubric_priorities(rubric_data: dict) -> dict:
+    """Ensure rubric criteria have unique sequential priorities (1..N).
+
+    LLMs sometimes output duplicate or non-sequential priorities.
+    This preserves the relative ordering but assigns clean 1..N ranks.
+    """
+    criteria = rubric_data.get("rubric", [])
+    if not criteria:
+        return rubric_data
+    # Sort by existing priority (ties broken by original order)
+    indexed = [(i, c) for i, c in enumerate(criteria)]
+    indexed.sort(key=lambda x: (x[1].get("priority", 999), x[0]))
+    for rank, (_, c) in enumerate(indexed, 1):
+        c["priority"] = rank
+    return rubric_data
+
+
 def headless_infer_rubric(messages: list, previous_rubric: Optional[dict] = None,
                           model: str = "claude-opus-4-6", version: int = 1) -> Optional[dict]:
     """Infer a rubric from conversation (Step 1 of 5-step flow).
@@ -288,6 +305,7 @@ def headless_infer_rubric(messages: list, previous_rubric: Optional[dict] = None
                 thinking={"type": "enabled", "budget_tokens": 10000},
             )
             rubric_data = _parse_json(text, key="rubric")
+            _normalize_rubric_priorities(rubric_data)
             rubric_data["version"] = version
             rubric_data["source"] = "inferred"
             log.info(f"Inferred rubric v{version} with {len(rubric_data.get('rubric', []))} criteria")
