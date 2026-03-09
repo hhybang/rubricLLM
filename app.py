@@ -4587,9 +4587,9 @@ def classify_rubric_edits(old_rubric_list, new_rubric_list):
                     "old_weight": old_w,
                     "new_weight": new_w
                 })
-            # Check description change
-            old_desc = old_c.get('description', '')
-            new_desc = new_c.get('description', '')
+            # Check description change (normalize whitespace to avoid false positives)
+            old_desc = ' '.join(old_c.get('description', '').split())
+            new_desc = ' '.join(new_c.get('description', '').split())
             if old_desc != new_desc:
                 edits["reworded"].append({
                     "name": new_c.get("name", ""),
@@ -5232,12 +5232,9 @@ with tab1:
                             _num_ann = len(ann)
                             if rr.get('change_summary'):
                                 st.markdown(
-                                    f"Based on the **{_num_ann} change{'s' if _num_ann != 1 else ''}** in the rubric you're trying out, "
-                                    f"I generated a revised draft from the previous draft to show what you'd get if these rubric changes become permanent. \n\n"
-                                    f"Locate each edit with the numbered **[N]** markers in the draft, and to see my reasoning, expand "
-                                    f"**Edits by rubric change** below for the full details. \n\n"
-                                    f"If you disagree with any edit, leave feedback in the text box under it and click **💡 Suggest how to change the rubric** "
-                                    f"to get AI-generated suggestions for improving the rubric based on your feedback."
+                                    f"Based on your rubric changes, I made **{_num_ann} edit{'s' if _num_ann != 1 else ''}** to the draft. "
+                                    f"Locate each edit with the numbered **[N]** markers below, and expand "
+                                    f"**Edits by rubric change** for the full reasoning."
                                 )
                                 with st.expander("View change details", expanded=False):
                                     st.markdown(rr['change_summary'])
@@ -5797,12 +5794,9 @@ with tab1:
                         _num_ann2 = len(ann)
                         if rr.get('change_summary'):
                             st.markdown(
-                                f"Based on the **{_num_ann2} change{'s' if _num_ann2 != 1 else ''}** in the rubric you're trying out, "
-                                f"I generated a revised draft from the previous draft to show what you'd get if these rubric changes become permanent. \n\n"
-                                f"Locate each edit with the numbered **[N]** markers in the draft, and to see my reasoning, expand "
-                                f"**Edits by rubric change** below for the full details. \n\n"
-                                f"If you disagree with any edit, leave feedback in the text box under it and click **Suggest how to change the rubric** "
-                                f"to get AI-generated suggestions for improving the rubric based on your feedback."
+                                f"Based on your rubric changes, I made **{_num_ann2} edit{'s' if _num_ann2 != 1 else ''}** to the draft. "
+                                f"Locate each edit with the numbered **[N]** markers below, and expand "
+                                f"**Edits by rubric change** for the full reasoning."
                             )
                             with st.expander("View change details", expanded=False):
                                 st.markdown(rr['change_summary'])
@@ -8784,6 +8778,8 @@ with st.sidebar:
 
         for rank, (original_idx, criterion) in enumerate(sorted_criteria, start=1):
             criterion_name = criterion.get('name', 'Unnamed Criterion')
+            # Use criterion name as stable widget ID (not list index which shifts on removal)
+            _stable_id = criterion_name.replace(" ", "_").lower()[:40]
 
             # Row with up arrow, down arrow, and expander
             up_col, down_col, expander_col = st.columns([0.04, 0.04, 0.92])
@@ -8817,11 +8813,13 @@ with st.sidebar:
             with expander_col:
                 expander_label = f"#{rank} - {criterion_name}"
                 with st.expander(expander_label, expanded=False):
-                    # Description (editable); ui_ver in key so widgets refresh when criteria updated from Apply suggestion
-                    desc_key = f"criterion_desc_{original_idx}_{version_key}_{ui_ver}"
+                    # Description (editable); use stable criterion name in key (not list index)
+                    desc_key = f"criterion_desc_{_stable_id}_{version_key}_{ui_ver}"
+                    # Seed widget cache only on first render for this key
+                    if desc_key not in st.session_state:
+                        st.session_state[desc_key] = criterion.get("description", "")
                     description = st.text_area(
                         "Description",
-                        value=criterion.get("description", ""),
                         key=desc_key,
                         placeholder="Description of this criterion...",
                         height=100
@@ -8845,23 +8843,24 @@ with st.sidebar:
 
                         col1, col2 = st.columns([0.88, 0.12])
                         with col1:
-                            dim_key = f"criterion_dim_{original_idx}_{dim_id}_{version_key}_{ui_ver}"
+                            dim_key = f"criterion_dim_{_stable_id}_{dim_id}_{version_key}_{ui_ver}"
+                            # Seed widget cache only on first render for this key
+                            if dim_key not in st.session_state:
+                                st.session_state[dim_key] = dim.get("label", "")
                             dim_label = st.text_input(
                                 f"Dimension {dim_idx + 1}",
-                                value=dim.get("label", ""),
                                 key=dim_key,
                                 label_visibility="collapsed",
                                 placeholder=f"Dimension {dim_idx + 1} label..."
                             )
                             dim_labels_updated[dim_idx] = dim_label
                         with col2:
-                            # Store the dim_id (not index) in the button key
-                            remove_key = f"remove_dim_{original_idx}_{dim_id}_{version_key}_{ui_ver}"
+                            remove_key = f"remove_dim_{_stable_id}_{dim_id}_{version_key}_{ui_ver}"
                             if st.button("➖", key=remove_key, help="Remove dimension"):
                                 # Mark this dimension ID for deletion
                                 dim_to_delete = dim_id
 
-                    # Update all labels first
+                    # Write dimension labels back — safe because we pre-set widget cache above
                     for dim_idx, label in dim_labels_updated.items():
                         if dim_idx < len(st.session_state.editing_criteria[original_idx]["dimensions"]):
                             st.session_state.editing_criteria[original_idx]["dimensions"][dim_idx]["label"] = label
@@ -8877,18 +8876,19 @@ with st.sidebar:
                         st.rerun()
 
                     # Add dimension button
-                    add_dim_key = f"add_dim_{original_idx}_{version_key}_{ui_ver}"
+                    add_dim_key = f"add_dim_{_stable_id}_{version_key}_{ui_ver}"
                     if st.button("➕ Add Dimension", key=add_dim_key):
                         # Generate a unique ID using timestamp
                         new_dim_id = f"dim_{int(time.time() * 1000)}"
                         st.session_state.editing_criteria[original_idx]["dimensions"].append({"id": new_dim_id, "label": ""})
                         st.rerun()
 
-                    # Update the criterion description in the session state
+                    # Write description back — safe because we pre-set the widget cache
+                    # from editing_criteria above, so any diff is a real user edit
                     st.session_state.editing_criteria[original_idx]["description"] = description
 
                     # Remove criterion button
-                    if st.button("🗑️ Remove Criterion", key=f"remove_{original_idx}"):
+                    if st.button("🗑️ Remove Criterion", key=f"remove_{_stable_id}"):
                         st.session_state.editing_criteria.pop(original_idx)
                         st.rerun()
 
@@ -8904,13 +8904,17 @@ with st.sidebar:
             if len(original_rubric) != len(editing):
                 return True
 
-            # Compare each criterion
-            for orig, edit in zip(original_rubric, editing):
-                # Check name
-                if orig.get("name", "") != edit.get("name", ""):
-                    return True
-                # Check description
-                if orig.get("description", "") != edit.get("description", ""):
+            # Compare by name (not list position) to handle reordering
+            orig_map = {c.get("name", "").lower().strip(): c for c in original_rubric}
+            edit_map = {c.get("name", "").lower().strip(): c for c in editing}
+
+            if set(orig_map.keys()) != set(edit_map.keys()):
+                return True
+
+            for key, orig in orig_map.items():
+                edit = edit_map[key]
+                # Check description (normalize whitespace to avoid false positives from text_area)
+                if ' '.join(orig.get("description", "").split()) != ' '.join(edit.get("description", "").split()):
                     return True
                 # Check priority
                 if orig.get("priority", 0) != edit.get("priority", 0):
@@ -8921,7 +8925,7 @@ with st.sidebar:
                 if len(orig_dims) != len(edit_dims):
                     return True
                 for od, ed in zip(orig_dims, edit_dims):
-                    if od.get("label", "") != ed.get("label", ""):
+                    if ' '.join(od.get("label", "").split()) != ' '.join(ed.get("label", "").split()):
                         return True
             return False
 

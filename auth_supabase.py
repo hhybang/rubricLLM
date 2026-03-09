@@ -333,10 +333,16 @@ def load_conversations(supabase: Client, project_id: str) -> List[Dict]:
             # Clean Supabase timestamp: parse and re-format for display
             raw_ts = conv["created_at"] or ""
             try:
-                from datetime import datetime as _dt
-                clean_ts = _dt.fromisoformat(raw_ts).strftime("%Y-%m-%d %H:%M:%S")
+                from dateutil.parser import parse as _parse_dt
+                clean_ts = _parse_dt(raw_ts).strftime("%Y-%m-%d %H:%M:%S")
             except Exception:
-                clean_ts = raw_ts
+                # Fallback: strip fractional seconds and timezone manually
+                try:
+                    _ts_clean = raw_ts.split(".")[0] if "." in raw_ts else raw_ts.split("+")[0]
+                    from datetime import datetime as _dt
+                    clean_ts = _dt.fromisoformat(_ts_clean).strftime("%Y-%m-%d %H:%M:%S")
+                except Exception:
+                    clean_ts = raw_ts
             conversations.append({
                 "id": conv["id"],
                 "timestamp": clean_ts,
