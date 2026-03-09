@@ -1,0 +1,213 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.5375,
+              "reasoning": "The draft hits the right structural elements but misses on emotional arc order and reader-centric framing \u2014 the 'why it matters' section centers the sender's reasoning ('we're committed to getting this right') rather than what this means for the team. The closing especially falls flat.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1 is the weak spot \u2014 the email leads with the news before acknowledging the team's situation, which inverts the emotional arc. Everything else is working well.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.7375,
+              "reasoning": "H1 partially fails because the arc breaks down at the end \u2014 instead of one concrete next step, the email delivers a multi-item bullet list, which diffuses the momentum the structure was building. H2 is close but 'undo the work that got us here' still centers the sender's framing (our investment, our effort) rather than squarely landing on what this disrupts for the reader. H4 is partially met \u2014 there's a named owner with a deadline, but '[Owner/Team]' is structurally ambiguous and the bullet list creates multiple implied owners rather than one clear one.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "Almost everything is working \u2014 the arc, the ownership, the closing. The one thing that's still slightly off is the 'why' framing: 'would undo the work that got us here' is closer, but it's still a bit abstract and centers the company's output rather than what this disruption actually means for the team.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All four hidden preferences are fully met: the arc is correct, the 'why' is framed entirely from the team's perspective around their actual disruption (plans, dependencies, commitments), the closing is action-oriented with no trailing sentiment, and ownership resolves to one clear owner with a deadline. No dealbreakers present.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 7,
+        "max_drafts": 20,
+        "total_turns": 8,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.699,
+              "reasoning": "The arc is mostly there but the 'why it matters' piece is missing \u2014 the draft jumps to logistics without ever landing on what this actually means for Priya. The stakes for her are absent."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7,
+              "reasoning": "The emotional arc and reader-centric framing are both working well now. The two issues pulling it down are: the closing CTA trails off into 'Happy to work around their schedule' which softens the ask, and the IT action item is a group ask without a clear single owner or deadline.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "Almost everything lands well \u2014 the arc, the reader-centric framing, the clean CTA. The one thing that still nags me is the action item: 'have someone on your IT team' is a little vague in a way that could let this fall through the cracks.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "Almost everything is landing \u2014 the arc is right, the 'why' is squarely Priya's, and Marcus with a Monday EOD deadline is exactly the kind of specific ownership I wanted. The one thing still bugging me is the closing. 'That'll make sure his side is ready at launch' is functional but it's explaining the deadline back to Priya like she can't do the math. It's a trailing justification after the CTA, and it softens the ask.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 8,
+            "has_draft": true,
+            "draft_number": 7,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences fully met: the emotional arc lands in the right order, the 'why' is entirely Priya-facing, the closing ends clean on the action item with no trailing sentiment, and Marcus is named as the single owner with a hard deadline. No dealbreakers, no jargon, tight paragraphs.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 4,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.8875,
+              "reasoning": "The arc and reader-framing are both solid, and the ending doesn't trail off. But the CTA asks the head of sales to personally update pitch decks, which is a bit off \u2014 it's not clear he's the one who owns that task, and as a question it's soft enough that it could easily be ignored."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The structure, stakes framing, and closing action all land well. The one issue is H4 \u2014 naming Priya in the CTA over-specifies the org structure in a way that assumes details the email probably shouldn't contain.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences are fully met \u2014 the arc is correct, the stakes are framed from Marcus's perspective, the CTA is clean and forward-looking, and ownership sits with Marcus without reaching into his team's structure. No dealbreakers.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 2,
+        "max_drafts": 20,
+        "total_turns": 3,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The arc, reader-framing, and closing are all solid. The one thing that nags at me is the call to action \u2014 asking both of them to 'connect and come back' is still a group ask with no clear owner, which means it might just sit there."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 3,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences are fully met: the emotional arc is correct, the stakes are framed from the readers' perspective, the closing is purely action-oriented, and Marcus is the single clear owner with a deadline. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-08T18:51:08.442839"
+  }
+]

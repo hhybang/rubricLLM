@@ -1197,6 +1197,60 @@ class SyntheticUser:
                 "completed": True, "iteration": iteration,
                 "timestamp": datetime.now().isoformat()}
 
+    # ── Survey: Final Review ────────────────────────────────────────────
+
+    def complete_survey_final(self, rubric_data: dict) -> dict:
+        """Complete Final Review survey from persona's perspective.
+
+        Returns: {"criteria_ratings": {name: {"accuracy": str, "explanation": str}},
+                  "q2": str, "q3": str, "q4": int, "q5": int, "q6": int,
+                  "completed": True, "timestamp": str}
+        """
+        from prompts import SURVEY_FINAL_REVIEW_PROMPT
+        from datetime import datetime
+
+        rubric_criteria = rubric_data.get("rubric", []) if rubric_data else []
+        if not rubric_criteria:
+            return {"criteria_ratings": {}, "q2": "No rubric available",
+                    "q3": "", "q4": 3, "q5": 3, "q6": 3,
+                    "completed": True, "timestamp": datetime.now().isoformat()}
+
+        prompt = SURVEY_FINAL_REVIEW_PROMPT(self.persona, rubric_criteria)
+        text = self.llm.generate(self._system_prompt, prompt, max_tokens=2000)
+
+        valid_accuracy = {"Accurate", "Partially right", "Inaccurate"}
+        try:
+            result = self._extract_json(text)
+            result.setdefault("criteria_ratings", {})
+            result.setdefault("q2", "")
+            result.setdefault("q3", "")
+            for qk in ("q4", "q5", "q6"):
+                val = result.get(qk)
+                if isinstance(val, (int, float)) and 1 <= val <= 5:
+                    result[qk] = int(val)
+                else:
+                    result[qk] = 3  # default to neutral
+            for crit_name, rating in result.get("criteria_ratings", {}).items():
+                if isinstance(rating, dict):
+                    if rating.get("accuracy") not in valid_accuracy:
+                        rating["accuracy"] = "Partially right"
+                    rating.setdefault("explanation", "")
+            result["completed"] = True
+            result["timestamp"] = datetime.now().isoformat()
+            return result
+        except Exception as e:
+            log.error(f"Failed to parse Final Review survey: {e}")
+            return {
+                "criteria_ratings": {
+                    c.get("name", "?"): {"accuracy": "Partially right", "explanation": "parse error"}
+                    for c in rubric_criteria
+                },
+                "q2": "parse error", "q3": "parse error",
+                "q4": 3, "q5": 3, "q6": 3,
+                "completed": True,
+                "timestamp": datetime.now().isoformat(),
+            }
+
     # ── Helpers ──────────────────────────────────────────────────────────
 
     @staticmethod

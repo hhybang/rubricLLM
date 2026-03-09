@@ -1,0 +1,239 @@
+[
+  {
+    "iteration": 2,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [
+        {
+          "name": "Emotional Arc and Sequencing",
+          "description": "Information must follow a specific order: acknowledge the situation or effort first (one sentence max), then deliver the news, then explain why it matters, then one concrete next step. Violating this sequence feels wrong even if all the pieces are present. This isn't just about completeness \u2014 it's about the reader feeling oriented before they're asked to act.",
+          "weight": 1
+        },
+        {
+          "name": "Clear, Single-Owner Action Items",
+          "description": "When action is needed, name one owner with a deadline. Group asks like 'everyone please review' are non-actions. At the same time, don't over-specify \u2014 action items shouldn't assume org structure details the email has no business containing. The ask should be clear without being presumptuous about how the recipient's team works.",
+          "weight": 4
+        }
+      ],
+      "removed": [
+        {
+          "name": "Purposeful Openings",
+          "description": "Openings should name the situation immediately without filler \u2014 no 'announcing that an announcement is coming.' The opening should add framing the subject line doesn't already carry, not restate it. Before delivering hard news, one orienting sentence gives the reader a beat of footing so the message feels like a person talking, not a subject line repeated."
+        }
+      ],
+      "reweighted": [
+        {
+          "name": "Reader-Centered Justification",
+          "old_weight": 1,
+          "new_weight": 2
+        },
+        {
+          "name": "Direct, Human Tone",
+          "old_weight": 4,
+          "new_weight": 5
+        },
+        {
+          "name": "Lean Information Density",
+          "old_weight": 5,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [
+        {
+          "name": "Reader-Centered Justification",
+          "field": "description",
+          "old": "When explaining a decision or making an ask, frame it from where the audience is sitting \u2014 including what they've already built, committed to, or been waiting on. Name the specific costs or dependencies they carry before making the case. The 'why' should land from their perspective, not from the sender's. Ordering matters: impact first, rationale second.",
+          "new": "When explaining a decision or making an ask, frame the 'why' entirely from the reader's perspective \u2014 what they've committed to, planned around, or will now have to absorb. The sender's reasoning, standards, or values should not be the frame. If the email centers the sender's logic over the reader's situation, it reads as tone-deaf."
+        },
+        {
+          "name": "Operational Closings",
+          "field": "description",
+          "old": "The email should land on concrete next steps, deadlines, and accountability \u2014 not dissolve into gratitude or motivation. The reader should walk away knowing exactly what happens next. Once a concrete CTA is stated, the message ends \u2014 open-ended offers or soft follow-up invitations after the CTA dilute it.",
+          "new": "The email ends on a concrete next step with a deadline and a clear owner. Once the CTA is stated, the email is over \u2014 no trailing sentiment, no 'thanks for your patience,' no open-ended offers to answer questions. The last thing the reader sees should be the action, not a feeling."
+        },
+        {
+          "name": "Direct, Human Tone",
+          "field": "description",
+          "old": "The message should read like a person talking, not a corporate memo. Avoid stock phrases and sentiment padding. Use plain, specific language and crisp comparative framing over hedged or abstract corporate vocabulary. The strongest signals of human tone are situation-specific word choices \u2014 language that could only have been written about this reader's situation, not recycled from any other email.",
+          "new": "The message should read like a person talking, not a corporate memo. Avoid stock phrases, jargon, and sentiment padding. Use plain, specific language. The strongest signal of human tone is language that could only have been written about this reader's situation \u2014 not recycled from any other email."
+        },
+        {
+          "name": "Lean Information Density",
+          "field": "description",
+          "old": "Timelines and action items should read as a sequence of checkpoints \u2014 dates and milestones only. Strip role descriptions, process explanations, and details the audience already knows. Anything that doesn't sharpen clarity is noise that dilutes the signal.",
+          "new": "Strip anything that doesn't sharpen clarity. Timelines list dates and outcomes, not process explanations. Don't re-explain things the audience already knows. Short paragraphs. Every sentence earns its place."
+        }
+      ],
+      "dimensions_changed": [
+        {
+          "name": "Reader-Centered Justification",
+          "added_dims": [],
+          "removed_dims": [
+            "Acknowledgment of impact comes before the justification, not after"
+          ]
+        },
+        {
+          "name": "Operational Closings",
+          "added_dims": [
+            "Does not append open-ended offers ('happy to answer questions,' 'feel free to reach out') after a concrete CTA",
+            "Closing line is action-oriented and forward-looking \u2014 not backward-looking gratitude or encouragement"
+          ],
+          "removed_dims": [
+            "Escalation path or point of contact is stated explicitly, not left implied",
+            "Key milestones or deadlines are compressed into a tight closing sequence the reader retains",
+            "Does not append open-ended offers ('happy to answer questions,' 'feel free to reach out') after a concrete CTA \u2014 the action item is the last thing the reader sees"
+          ]
+        },
+        {
+          "name": "Direct, Human Tone",
+          "added_dims": [
+            "Free of corporate jargon \u2014 no 'synergy,' 'leverage,' 'circle back,' 'alignment,' or similar filler"
+          ],
+          "removed_dims": [
+            "Key trade-offs or decisions are framed in clean, comparative terms rather than hedged explanations"
+          ]
+        },
+        {
+          "name": "Lean Information Density",
+          "added_dims": [
+            "Paragraphs are short \u2014 no walls of text, no multi-sentence blocks that could be split or cut"
+          ],
+          "removed_dims": [
+            "Ownership is consolidated to a single person or channel rather than scattered across roles"
+          ]
+        }
+      ]
+    },
+    "reasoning": "I made three main changes: First, I pulled the emotional arc and sequencing out into its own top-priority criterion because the order of information is the thing I care about most and it wasn't clearly captured before \u2014 it was scattered across other criteria. Second, I added a dedicated criterion for single-owner action items because the 'one clear owner' preference and the 'don't over-specify org structure' tension both matter and weren't represented at all. Third, I cleaned up the 'Operational Closings' criterion to be sharper about the forward-looking close requirement and dropped the 'closing_restates_sequence' dimension, which felt like over-engineering \u2014 I just want the email to end on the action.",
+    "rubric_version": 4,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Quick update \u2014 the feature you requested six months ago is finally ready and shipping next week. We know you've been waiting on this one, so we wanted to make sure you heard it from us first.",
+        "new_text": "Six months is a long time to wait \u2014 the feature is finally ready.",
+        "reason": "Emotional Arc and Sequencing (new criterion at priority #1, 'acknowledgment_first' dimension): The original blended acknowledgment and news into the same sentence and added a self-centered 'we wanted to make sure you heard it from us first.' The new opener isolates the acknowledgment in one clean sentence per the required sequence, and removes the sender-centered framing.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "There's one thing you'll need to do on your end: your IT team will need to enable the feature once it's live. It won't activate automatically, so",
+        "new_text": "It ships next week, but it won't activate automatically.",
+        "reason": "Emotional Arc and Sequencing (new criterion, 'news_before_why' and 'why_before_next_step' dimensions): The news (ships next week) and the consequence (won't activate automatically) needed to be separated from the action item and placed before the CTA. Restructured so news lands first, consequence follows, then the ask.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "looping them in before next week will keep you from losing time on launch day.",
+        "new_text": "Your IT team will need to enable it on their end, and if that doesn't happen before launch, you'll lose time on day one.",
+        "reason": "Direct, Human Tone (new 'no_jargon' dimension): 'Looping them in' is corporate jargon. Replaced with plain language. Also sharpens the consequence framing per Reader-Centered Justification (priority #2, 'names_audience_costs'): the burden to the reader is stated directly.",
+        "user_feedback": ""
+      },
+      {
+        "original_text": "your IT team",
+        "new_text": "your IT contact",
+        "reason": "Clear, Single-Owner Action Items (new criterion at priority #4, 'single_owner' dimension): 'Your IT team' is a group ask that diffuses accountability. 'Your IT contact' points toward a single owner without over-specifying org structure.",
+        "user_feedback": "I actually prefer 'IT team' here. 'IT contact' feels like I'm assuming they have a single point person, which might not be true \u2014 and it sounds weirdly specific in a way that could come off as presumptuous. 'IT team' is vague enough to let them figure out who owns it internally without me guessing at their org structure. The goal is one clear action, not one named person I don't know."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-08T20:17:19.881012"
+  },
+  {
+    "iteration": 3,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Operational Closings",
+          "old_weight": 5,
+          "new_weight": 3
+        },
+        {
+          "name": "Clear, Single-Owner Action Items",
+          "old_weight": 3,
+          "new_weight": 4
+        },
+        {
+          "name": "Direct, Human Tone",
+          "old_weight": 6,
+          "new_weight": 5
+        },
+        {
+          "name": "Lean Information Density",
+          "old_weight": 4,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [],
+      "dimensions_changed": [
+        {
+          "name": "Direct, Human Tone",
+          "added_dims": [
+            "No excessive exclamation marks \u2014 enthusiasm is conveyed through word choice, not punctuation"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I moved Operational Closings up to priority 3 \u2014 it's a dealbreaker for me when emails trail off with sentiment after the CTA, and the old priority 5 felt like it was being treated as a nice-to-have. I also swapped Clear Action Items down to 4 since it's important but downstream of getting the close right. The main addition was a dimension under Direct, Human Tone explicitly flagging excessive exclamation marks, which was missing entirely from the rubric even though it's a hard no for me.",
+    "rubric_version": 8,
+    "draft_regenerated": true,
+    "reviewed_changes": [],
+    "feedback_edits_count": 0,
+    "suggestion_applied": false,
+    "user_reverted": false,
+    "timestamp": "2026-03-08T20:23:18.806335"
+  },
+  {
+    "iteration": 4,
+    "draft_number": 4,
+    "edit_classification": {
+      "added": [],
+      "removed": [],
+      "reweighted": [
+        {
+          "name": "Clear, Single-Owner Action Items",
+          "old_weight": 6,
+          "new_weight": 4
+        },
+        {
+          "name": "Lean Information Density",
+          "old_weight": 4,
+          "new_weight": 5
+        },
+        {
+          "name": "Direct, Human Tone",
+          "old_weight": 5,
+          "new_weight": 6
+        }
+      ],
+      "reworded": [],
+      "dimensions_changed": [
+        {
+          "name": "Operational Closings",
+          "added_dims": [
+            "No motivational platitudes closing the email \u2014 phrases like 'I know we can get through this together' or 'looking forward to great things ahead' are filler, not closes"
+          ],
+          "removed_dims": []
+        }
+      ]
+    },
+    "reasoning": "I made two targeted changes. First, I swapped the priority of 'Clear, Single-Owner Action Items' and 'Lean Information Density' \u2014 diffuse or unowned action items are a bigger failure mode for me than information bloat, so action item clarity should rank higher. Second, I added a dimension to 'Operational Closings' to explicitly call out motivational platitudes as a closing failure \u2014 the existing dimensions covered trailing sentiment and soft offers, but the platitude pattern ('I know we can get through this') is its own distinct problem that wasn't named.",
+    "rubric_version": 11,
+    "draft_regenerated": true,
+    "reviewed_changes": [
+      {
+        "original_text": "Let's meet Thursday by noon to confirm the revised timeline and settle who owns alerts.",
+        "new_text": "Confirm the revised timeline and which team owns alerts by Thursday at noon.",
+        "reason": "Clear, Single-Owner Action Items (priority raised from #6 to #4, direct_verb_on_owner dimension): 'Let's meet' is a collective, soft framing that diffuses accountability. Replacing it with 'Confirm' lands the action verb directly on the recipients, making ownership unambiguous.",
+        "user_feedback": "The new version is grammatically awkward \u2014 'Confirm the revised timeline and which team owns alerts' reads like a fragment. I also want a single owner on this, not a group ask. Something like 'Can you confirm the revised timeline and alert ownership by Thursday noon?' with a named recipient works better. The original 'Let's meet' was soft, sure, but the fix went too far in the other direction and lost the human voice."
+      }
+    ],
+    "feedback_edits_count": 1,
+    "suggestion_applied": true,
+    "user_reverted": false,
+    "timestamp": "2026-03-08T20:29:49.326971"
+  }
+]

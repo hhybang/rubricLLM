@@ -1,0 +1,31 @@
+{
+  "id": "61d8b492-932e-4100-b433-5f84cec33aff",
+  "persona": {
+    "name": "Nadia Okafor",
+    "role": "UX writer at a fintech company",
+    "writing_type": "product UI copy and microcopy",
+    "project_name": "Product Copy",
+    "core_preferences": "Short, scannable, and action-oriented. Every string should make the user's next step obvious. No marketing fluff in the product itself.",
+    "hidden_preferences": "Error messages should tell the user WHAT HAPPENED, WHY, and WHAT TO DO \u2014 in that order; an error that says 'Something went wrong' is a failure of the product, not just the copy. Button labels should describe the outcome, not the action \u2014 'Save changes' is better than 'Submit', 'Start free trial' is better than 'Sign up'; the user should know what happens when they click before they click. Confirmation dialogs should name the SPECIFIC consequence \u2014 'Delete 3 invoices permanently?' not 'Are you sure?'; vague confirmations train users to click through without reading. Empty states are a design opportunity \u2014 they should guide the user toward their first action, not just say 'Nothing here yet'; the copy should feel like a helpful nudge, not a dead end. Tone should shift based on context \u2014 celebratory moments (first successful payment) can be warm, error states should be calm and precise, routine actions should be invisible; applying the same tone everywhere feels robotic.",
+    "dealbreakers": "Clever wordplay that sacrifices clarity, inconsistent terminology across the same flow, placeholder text that shipped to production, passive voice in instructions",
+    "initial_task": "Help me write the copy for our payment update flow \u2014 there's an error message when a user's card gets declined, a confirmation dialog before they switch to a new card (they need to know their subscription stays active), and an empty state for the payment methods page when they haven't added any cards yet. Three short blocks.",
+    "tasks": [
+      "Help me write the copy for our payment update flow \u2014 there's an error message when a user's card gets declined, a confirmation dialog before they switch to a new card (they need to know their subscription stays active), and an empty state for the payment methods page when they haven't added any cards yet. Three short blocks.",
+      "I need copy for the full payment flow when a user pays an invoice for the first time: the confirmation dialog before they authorize the payment, the success screen after it goes through (this is a celebratory moment \u2014 first payment!), and the error state if the bank connection fails mid-transfer. Three short blocks.",
+      "Help me write the copy for our account verification flow \u2014 there's an error state when the user's uploaded ID doesn't match their profile name, a confirmation dialog asking them to verify their legal name is correct before we submit to the bank, and an empty state for the verification status page while they wait for approval. Three short blocks.",
+      "I need to write the copy for our recurring payments setup: an empty state for the recurring payments page when they haven't set any up yet, a confirmation dialog when they're about to enable auto-pay (they need to understand exactly what will happen and when), and a success state after their first recurring payment goes through. Three short blocks.",
+      "Help me write copy for the transaction dispute flow \u2014 an error message when a dispute submission fails because the deadline has passed, a confirmation dialog before they submit the dispute (naming exactly what they're contesting and what happens next), and the empty state for the disputes page when they have no open cases. Three short blocks."
+    ],
+    "gold_draft": null
+  },
+  "config": {
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "num_iterations": 4,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8
+  },
+  "created_at": "2026-03-08T21:14:41.968431"
+}

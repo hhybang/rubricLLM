@@ -1,0 +1,170 @@
+{
+  "config": {
+    "num_users": 10,
+    "num_iterations": 4,
+    "chat_turns_per_iteration": 3,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8,
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "user_temperature": 0.8,
+    "enable_probes": false,
+    "enable_log_changes": true,
+    "persona_file": "personas.json",
+    "supabase_url": "",
+    "supabase_key": "",
+    "synthetic_user_id_prefix": "sim_"
+  },
+  "results": [
+    {
+      "persona": "Alex Chen",
+      "project_id": "d53a3236-bd3f-406e-91ec-2d7273f09944",
+      "final_rubric_version": 13,
+      "num_rubric_versions": 13,
+      "num_messages": 61,
+      "num_iterations": 4,
+      "termination_summary": [
+        {
+          "iteration": 1,
+          "drafts_produced": 6,
+          "total_turns": 9,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 2,
+          "drafts_produced": 6,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 3,
+          "drafts_produced": 6,
+          "total_turns": 5,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        },
+        {
+          "iteration": 4,
+          "drafts_produced": 5,
+          "total_turns": 4,
+          "termination_reason": "user_accepted",
+          "final_satisfaction": 1.0
+        }
+      ],
+      "survey_summary": {
+        "task_a": {
+          "understanding": 3,
+          "effort": 3
+        },
+        "task_b_iterations": [
+          {
+            "iteration": 2,
+            "understanding": 3,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 3,
+            "understanding": 3,
+            "effort": 3,
+            "comparison": "Somewhat better"
+          },
+          {
+            "iteration": 4,
+            "understanding": 3,
+            "effort": 4,
+            "comparison": "Somewhat better"
+          }
+        ],
+        "final_review": {
+          "n_accurate": 5,
+          "n_partial": 1,
+          "n_inaccurate": 0,
+          "missing_preferences": "One thing that's not quite covered: I have a mild preference against opening with 'I' as the first word \u2014 it's not a hard rule but it tends to signal sender-centered framing before the content even starts. The rubric gestures at this through the 'reader-situation-oriented acknowledgment' dimension but doesn't name it explicitly.",
+          "drafts_improved": 4,
+          "rubric_editing_helped": 4,
+          "would_use_again": 4
+        }
+      },
+      "coverage_trajectory": [
+        {
+          "iteration": 1,
+          "coverage_score": 0.841,
+          "total_preferences": 22,
+          "covered": 16,
+          "partial": 5,
+          "not_covered": 1,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 2,
+          "coverage_score": 0.977,
+          "total_preferences": 22,
+          "covered": 21,
+          "partial": 1,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 3,
+          "coverage_score": 0.977,
+          "total_preferences": 22,
+          "covered": 21,
+          "partial": 1,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        },
+        {
+          "iteration": 4,
+          "coverage_score": 0.977,
+          "total_preferences": 22,
+          "covered": 21,
+          "partial": 1,
+          "not_covered": 0,
+          "dealbreaker_pass": true
+        }
+      ]
+    },
+    {
+      "persona": "Priya Sharma",
+      "error": "Connection error."
+    },
+    {
+      "persona": "Jordan Rivera",
+      "error": "Connection error."
+    },
+    {
+      "persona": "Marcus Thompson",
+      "error": "Connection error."
+    },
+    {
+      "persona": "Elena Kowalski",
+      "error": "Connection error."
+    },
+    {
+      "persona": "Nadia Okafor",
+      "error": "Connection error."
+    },
+    {
+      "persona": "David Park",
+      "error": "Connection error."
+    },
+    {
+      "persona": "Sonia Delgado",
+      "error": "Connection error."
+    },
+    {
+      "persona": "Tomoko Hayashi",
+      "error": "Connection error."
+    },
+    {
+      "persona": "Ryan Fitzgerald",
+      "error": "Connection error."
+    }
+  ],
+  "completed_at": "2026-03-08T21:17:03.697551"
+}

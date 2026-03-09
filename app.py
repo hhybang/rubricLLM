@@ -11559,12 +11559,13 @@ with tab_survey:
         st.session_state.survey_responses = {
             "task_a": {},
             "task_b": {},
+            "final_review": {},
         }
 
     # Task selection
     survey_task = st.radio(
         "Select which survey to complete:",
-        ["Task A (without rubric)", "Task B (with rubric, visible)"],
+        ["Task A (without rubric)", "Task B (with rubric, visible)", "Final Review"],
         horizontal=True,
         key="survey_task_select"
     )
@@ -11747,20 +11748,157 @@ with tab_survey:
                 st.toast("Task B survey saved locally!")
             st.rerun()
 
+    # ============ FINAL REVIEW SURVEY ============
+    elif survey_task == "Final Review":
+        st.subheader("Final Review: Rubric Accuracy")
+        st.markdown("*Complete this after all tasks are done. Rate how accurately the rubric captures your preferences.*")
+
+        # Get active rubric
+        _fr_rubric_dict, _, _ = get_active_rubric()
+        _fr_criteria = (_fr_rubric_dict.get("rubric", []) or []) if _fr_rubric_dict else []
+
+        if not _fr_criteria:
+            st.warning("No rubric found. Complete at least one task with rubric assistance first.")
+        else:
+            final_review = st.session_state.survey_responses.setdefault("final_review", {})
+            criteria_ratings = final_review.setdefault("criteria_ratings", {})
+
+            st.markdown("**Q1: For each rubric criterion, rate how accurately it captures your preferences.**")
+
+            for i, criterion in enumerate(_fr_criteria):
+                crit_name = criterion.get("name", f"Criterion {i+1}")
+                crit_desc = criterion.get("description", "No description")
+                dims = criterion.get("dimensions", [])
+                dim_text = ", ".join(d.get("label", "") for d in dims) if dims else "none"
+
+                with st.expander(f"**{crit_name}** — {crit_desc[:80]}{'...' if len(crit_desc) > 80 else ''}", expanded=True):
+                    st.caption(f"Dimensions: {dim_text}")
+
+                    rating = criteria_ratings.setdefault(crit_name, {})
+                    accuracy_options = ["Accurate", "Partially right", "Inaccurate"]
+                    rating["accuracy"] = st.radio(
+                        "Accuracy",
+                        accuracy_options,
+                        index=accuracy_options.index(rating.get("accuracy", "Partially right")) if rating.get("accuracy") in accuracy_options else 1,
+                        key=f"fr_accuracy_{i}",
+                        horizontal=True,
+                        label_visibility="collapsed",
+                    )
+                    rating["explanation"] = st.text_input(
+                        "Brief explanation",
+                        value=rating.get("explanation", ""),
+                        placeholder="What's right or wrong about this criterion?",
+                        key=f"fr_explanation_{i}",
+                        label_visibility="collapsed",
+                    )
+
+            st.markdown("---")
+            st.markdown("**Q2: Is there anything here you wouldn't have thought to mention yourself?**")
+            st.caption("Did the rubric capture preferences you have but might not have articulated if asked directly?")
+            final_review["q2"] = st.text_area(
+                "Unexpected insights",
+                value=final_review.get("q2", ""),
+                placeholder="Any preferences the system correctly inferred that surprised you...",
+                key="fr_q2",
+                label_visibility="collapsed",
+                height=100,
+            )
+
+            st.markdown("---")
+            st.markdown("**Q3: Are any of your preferences missing from the rubric?**")
+            st.caption("Things you care about in your writing that the rubric does NOT cover at all.")
+            final_review["q3"] = st.text_area(
+                "Missing preferences",
+                value=final_review.get("q3", ""),
+                placeholder="List any preferences the rubric missed, or 'None' if fully covered...",
+                key="fr_q3",
+                label_visibility="collapsed",
+                height=100,
+            )
+
+            st.markdown("---")
+            st.markdown("**Q4: Did the drafts improve over the course of your conversations?**")
+            _q4_options = ["1 - No improvement", "2", "3 - Some improvement", "4", "5 - Dramatically better"]
+            _q4_current = final_review.get("q4", "3 - Some improvement")
+            final_review["q4"] = st.radio(
+                "Draft improvement",
+                _q4_options,
+                index=_q4_options.index(_q4_current) if _q4_current in _q4_options else 2,
+                key="fr_q4",
+                horizontal=True,
+                label_visibility="collapsed",
+            )
+
+            st.markdown("**Q5: Did editing the rubric help you get better drafts?**")
+            _q5_options = ["1 - Not at all", "2", "3 - Somewhat", "4", "5 - Very much"]
+            _q5_current = final_review.get("q5", "3 - Somewhat")
+            final_review["q5"] = st.radio(
+                "Rubric editing helped",
+                _q5_options,
+                index=_q5_options.index(_q5_current) if _q5_current in _q5_options else 2,
+                key="fr_q5",
+                horizontal=True,
+                label_visibility="collapsed",
+            )
+
+            st.markdown("**Q6: Would you use a system like this again for future writing?**")
+            _q6_options = ["1 - Definitely not", "2", "3 - Maybe", "4", "5 - Definitely yes"]
+            _q6_current = final_review.get("q6", "3 - Maybe")
+            final_review["q6"] = st.radio(
+                "Would use again",
+                _q6_options,
+                index=_q6_options.index(_q6_current) if _q6_current in _q6_options else 2,
+                key="fr_q6",
+                horizontal=True,
+                label_visibility="collapsed",
+            )
+
+            if st.button("Save Final Review", type="primary", key="save_final_review"):
+                final_review["completed"] = True
+                final_review["timestamp"] = datetime.now().isoformat()
+                final_review["rubric_version"] = _fr_rubric_dict.get("version", 0) if _fr_rubric_dict else 0
+                project_id = st.session_state.get('current_project_id')
+                if project_id:
+                    supabase = st.session_state.get('supabase')
+                    if supabase:
+                        try:
+                            save_project_data(supabase, project_id, "survey_responses", st.session_state.survey_responses)
+                            save_project_data(supabase, project_id, "survey_final_review", {
+                                "criteria_ratings": criteria_ratings,
+                                "q2": final_review.get("q2", ""),
+                                "q3": final_review.get("q3", ""),
+                                "q4": final_review.get("q4", ""),
+                                "q5": final_review.get("q5", ""),
+                                "q6": final_review.get("q6", ""),
+                                "rubric_version": final_review["rubric_version"],
+                                "timestamp": final_review["timestamp"],
+                            })
+                            st.toast("Final Review saved!")
+                        except Exception as e:
+                            st.error(f"Failed to save: {e}")
+                    else:
+                        st.toast("Final Review saved locally!")
+                else:
+                    st.toast("Final Review saved locally!")
+                st.rerun()
+
     # ============ SURVEY SUMMARY & EXPORT ============
     st.markdown("---")
     st.subheader("Survey Progress")
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1:
         a_done = st.session_state.survey_responses["task_a"].get("completed", False)
         st.markdown(f"**Task A:** {'✅ Complete' if a_done else '⬜ Incomplete'}")
     with col2:
         b_done = st.session_state.survey_responses["task_b"].get("completed", False)
         st.markdown(f"**Task B:** {'✅ Complete' if b_done else '⬜ Incomplete'}")
+    with col3:
+        fr_done = st.session_state.survey_responses.get("final_review", {}).get("completed", False)
+        st.markdown(f"**Final Review:** {'✅ Complete' if fr_done else '⬜ Incomplete'}")
 
     # Save to database option
-    if any([a_done, b_done]):
+    if any([a_done, b_done, fr_done]):
         project_id = st.session_state.get('current_project_id')
         if project_id:
             supabase = st.session_state.get('supabase')
@@ -11784,6 +11922,18 @@ with tab_survey:
                                 "q1": _tb.get("q1"), "q2": _tb.get("q2"), "q3": _tb.get("q3", ""),
                                 "q4": _tb.get("q4", ""), "q5": _tb.get("q5", ""), "q6": _tb.get("q6", ""),
                                 "iteration": _rb_ver_all, "timestamp": _tb.get("timestamp", datetime.now().isoformat()),
+                            })
+                        if _all_sr.get("final_review", {}).get("completed"):
+                            _fr = _all_sr["final_review"]
+                            save_project_data(supabase, project_id, "survey_final_review", {
+                                "criteria_ratings": _fr.get("criteria_ratings", {}),
+                                "q2": _fr.get("q2", ""),
+                                "q3": _fr.get("q3", ""),
+                                "q4": _fr.get("q4", ""),
+                                "q5": _fr.get("q5", ""),
+                                "q6": _fr.get("q6", ""),
+                                "rubric_version": _fr.get("rubric_version", _rb_ver_all),
+                                "timestamp": _fr.get("timestamp", datetime.now().isoformat()),
                             })
                         st.success("All survey responses saved to database!")
                     except Exception as e:

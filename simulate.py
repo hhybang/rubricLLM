@@ -6,6 +6,8 @@ Usage:
     python simulate.py                          # run all personas, default config
     python simulate.py --num-users 3            # first 3 personas
     python simulate.py --iterations 2           # 2 refinement iterations each
+    python simulate.py --skip "Nadia Okafor,David Park"   # skip specific personas
+    python simulate.py --only "Alex Chen,Priya Sharma"    # run only these personas
     python simulate.py --user-provider openai --user-model gpt-5.2
     python simulate.py --user-provider google --user-model gemini-3.1-pro-preview
     python simulate.py --dry-run                # print config and exit
@@ -171,7 +173,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
     messages = []
     version_counter = 0
     termination_log = []
-    survey_responses = {"task_a": None, "task_b": []}
+    survey_responses = {"task_a": None, "task_b": [], "final": None}
     coverage_trajectory = []  # per-iteration preference coverage scores
 
     # ── Decompose preferences once (fixed list for all coverage evals) ───
@@ -945,6 +947,28 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
         "timestamp": datetime.now().isoformat(),
     })
 
+    # ── Survey: Final Review ────────────────────────────────────────────
+    if rubric_data and rubric_data.get("rubric"):
+        log.info(f"[{persona.name}] Survey: Completing Final Review...")
+        final_result = syn_user.complete_survey_final(rubric_data)
+        survey_responses["final"] = final_result
+        store.save_project_data(persona.name, "survey_final_review", {
+            **final_result,
+            "rubric_version": rubric_data.get("version", 0),
+        })
+        ratings = final_result.get("criteria_ratings", {})
+        n_accurate = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Accurate")
+        n_partial = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Partially right")
+        n_inaccurate = sum(1 for r in ratings.values() if isinstance(r, dict) and r.get("accuracy") == "Inaccurate")
+        log.info(
+            f"[{persona.name}] Final Review: {n_accurate} accurate, "
+            f"{n_partial} partially right, {n_inaccurate} inaccurate "
+            f"(out of {len(ratings)} criteria) | "
+            f"drafts_improved={final_result.get('q4')}/5, "
+            f"rubric_editing_helped={final_result.get('q5')}/5, "
+            f"would_use_again={final_result.get('q6')}/5"
+        )
+
     # ── Final summary ────────────────────────────────────────────────────
     summary = {
         "persona": persona.name,
@@ -980,6 +1004,18 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                 }
                 for b in survey_responses["task_b"]
             ],
+            "final_review": {
+                "n_accurate": sum(1 for r in survey_responses["final"].get("criteria_ratings", {}).values()
+                                  if isinstance(r, dict) and r.get("accuracy") == "Accurate"),
+                "n_partial": sum(1 for r in survey_responses["final"].get("criteria_ratings", {}).values()
+                                 if isinstance(r, dict) and r.get("accuracy") == "Partially right"),
+                "n_inaccurate": sum(1 for r in survey_responses["final"].get("criteria_ratings", {}).values()
+                                    if isinstance(r, dict) and r.get("accuracy") == "Inaccurate"),
+                "missing_preferences": survey_responses["final"].get("q3", ""),
+                "drafts_improved": survey_responses["final"].get("q4"),
+                "rubric_editing_helped": survey_responses["final"].get("q5"),
+                "would_use_again": survey_responses["final"].get("q6"),
+            } if survey_responses["final"] else None,
         },
         "coverage_trajectory": [
             {
@@ -1025,6 +1061,10 @@ def main():
                         help="Output directory (default: eval_output/sim_<timestamp>)")
     parser.add_argument("--no-log-changes", action="store_true",
                         help="Disable synthetic user rubric editing (Log Changes)")
+    parser.add_argument("--skip", type=str, default=None,
+                        help="Comma-separated persona names to skip (e.g. 'Nadia Okafor,David Park')")
+    parser.add_argument("--only", type=str, default=None,
+                        help="Comma-separated persona names to run (skip all others)")
     parser.add_argument("--dry-run", action="store_true", help="Print config and exit")
     args = parser.parse_args()
 
@@ -1060,6 +1100,12 @@ def main():
 
     # Load personas
     personas = config.load_personas()
+    if args.only:
+        only_names = {n.strip().lower() for n in args.only.split(",")}
+        personas = [p for p in personas if p.name.lower() in only_names]
+    elif args.skip:
+        skip_names = {n.strip().lower() for n in args.skip.split(",")}
+        personas = [p for p in personas if p.name.lower() not in skip_names]
     if args.num_users is not None:
         personas = personas[:args.num_users]
     config.num_users = len(personas)

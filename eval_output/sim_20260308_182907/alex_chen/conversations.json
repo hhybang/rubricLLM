@@ -848,6 +848,31 @@
     {
       "role": "user",
       "content": "I need to email our engineering and design leads about a scope change on the dashboard redesign \u2014 the CEO wants us to add real-time alerts, which means the timeline shifts and one of the teams needs to own the new component. Help me draft something that gets both leads aligned without micromanaging who does what."
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Dashboard Redesign \u2014 Scope Change + Timeline Impact\n\nHi both,\n\nYou've put real work into the current dashboard plan, and I want to loop you in before anything shifts under your feet.\n\nThe CEO has asked us to add real-time alerts to the redesign. That means the timeline moves, and one of your teams will need to own the alerts component going forward.\n\nThis affects your current sprint commitments and how you're resourcing the next phase \u2014 so the sooner we get aligned, the less rework lands on either of you.\n\nCan the two of you connect by end of Thursday and come back to me with a proposed owner and a revised timeline?</draft>",
+      "is_alignment_start_draft": true
+    },
+    {
+      "role": "user",
+      "content": "Overall this reads well and feels like something I'd actually send. But the ask at the end is where it loses me a little. 'Can the two of you connect' puts it on both of them equally, and in my experience that's how things fall through the cracks \u2014 each person assumes the other is driving. I'd rather there be one person clearly on the hook here, even if I don't know yet which team ends up owning the component. Right now it feels like a group assignment more than a next step."
+    },
+    {
+      "role": "assistant",
+      "content": "Good catch \u2014 that's exactly the accountability gap the rubric flags. The question is who you want to own the coordination itself, separate from who ends up owning the component.\n\nA few options for the closing line:\n\nOption 1 (engineering lead drives):\n\"[Engineering lead], can you set up 30 minutes with [design lead] before end of Thursday and send me what you land on?\"\n\nOption 2 (design lead drives):\n\"[Design lead], can you set up 30 minutes with [engineering lead] before end of Thursday and send me what you land on?\"\n\nOption 3 (you don't care who drives, but you name one person as the accountable sender):\n\"One of you \u2014 [engineering lead], defaulting to you \u2014 send me a proposed owner and revised timeline by end of Thursday.\"\n\nOption 1 and 2 are cleaner if you have a natural reason to default to one lead. Option 3 works if you want to be explicit that you're arbitrarily picking a driver just to avoid the diffusion problem.\n\nWhich lead makes more sense to put on the hook here?"
+    },
+    {
+      "role": "user",
+      "content": "Engineering lead is Marcus, design lead is Priya. Marcus's team is more likely to own the alerts component since it's backend-heavy, so let's put him on the hook for setting up the sync. Can you update the draft with that?"
+    },
+    {
+      "role": "assistant",
+      "content": "<draft>Subject: Dashboard Redesign \u2014 Scope Change + Timeline Impact\n\nHi both,\n\nYou've put real work into the current dashboard plan, and I want to loop you in before anything shifts under your feet.\n\nThe CEO has asked us to add real-time alerts to the redesign. That means the timeline moves, and one of your teams will need to own the alerts component going forward.\n\nThis affects your current sprint commitments and how you're resourcing the next phase \u2014 so the sooner we get aligned, the less rework lands on either of you.\n\nMarcus, can you set up 30 minutes with Priya before end of Thursday and send me what you land on?</draft>"
+    },
+    {
+      "role": "user",
+      "content": "Yeah, this is the one. The opening lands right, the stakes paragraph reads like it's about them and not us, and putting Marcus on the hook with a specific deadline is exactly what I needed. I'd send this as-is."
     }
   ],
   "rubric": {
@@ -863,11 +888,11 @@
           },
           {
             "id": "acknowledgment_is_natural",
-            "label": "Opening acknowledgment is one or two short, natural sentences \u2014 never merged with the news into one sentence using an em dash or other mechanical compression. Two clean sentences are always preferred over one forced merge."
+            "label": "Opening acknowledgment is one or two short, natural sentences \u2014 never mechanically merged with the news using an em dash or similar compression. Two clean sentences are always preferred over one forced merge."
           },
           {
             "id": "no_retroactive_softening",
-            "label": "Acknowledgment is not positioned as damage control after the headline has already landed \u2014 keeping acknowledgment and news as separate sentences is intentional pacing, not retroactive softening"
+            "label": "Acknowledgment is not positioned as damage control after the headline has already landed \u2014 it sets the frame before the reader receives the news"
           },
           {
             "id": "why_before_next_step",
@@ -919,7 +944,7 @@
           },
           {
             "id": "no_group_asks",
-            "label": "Avoids 'everyone please...' or other diffuse asks that produce no clear accountability"
+            "label": "Avoids diffuse asks \u2014 no 'everyone please,' no 'can the two of you,' no phrasing that lets each person assume the other is driving"
           },
           {
             "id": "respects_recipient_org",
@@ -931,34 +956,6 @@
           }
         ],
         "priority": 3
-      },
-      {
-        "name": "Conciseness and Directness",
-        "category": "Style",
-        "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Trusts the reader to connect obvious dots \u2014 does not spell out reasoning an intelligent adult can infer from context.",
-        "dimensions": [
-          {
-            "id": "short_paragraphs",
-            "label": "Paragraphs are short \u2014 typically 1-3 sentences"
-          },
-          {
-            "id": "unified_statements",
-            "label": "Related details are consolidated rather than broken into unnecessary bullet points or line items"
-          },
-          {
-            "id": "lean_structure",
-            "label": "Every section serves a clear purpose \u2014 no padding or filler"
-          },
-          {
-            "id": "no_over_explanation",
-            "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
-          },
-          {
-            "id": "trust_the_reader",
-            "label": "Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult"
-          }
-        ],
-        "priority": 4
       },
       {
         "name": "Forward-Momentum Closings",
@@ -982,7 +979,7 @@
             "label": "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases"
           }
         ],
-        "priority": 5
+        "priority": 4
       },
       {
         "name": "Human Voice",
@@ -1010,14 +1007,42 @@
             "label": "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence"
           }
         ],
+        "priority": 5
+      },
+      {
+        "name": "Conciseness and Directness",
+        "category": "Style",
+        "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. Trusts the reader to connect obvious dots.",
+        "dimensions": [
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 typically 1-3 sentences"
+          },
+          {
+            "id": "unified_statements",
+            "label": "Related details are consolidated rather than broken into unnecessary bullet points or line items"
+          },
+          {
+            "id": "lean_structure",
+            "label": "Every section serves a clear purpose \u2014 no padding or filler"
+          },
+          {
+            "id": "no_over_explanation",
+            "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
+          },
+          {
+            "id": "trust_the_reader",
+            "label": "Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult"
+          }
+        ],
         "priority": 6
       }
     ],
-    "version": 8,
+    "version": 10,
     "source": "criteria_classification",
-    "writing_type": "professional emails (internal and external stakeholder communications)",
-    "user_goals_summary": "Emails should follow a precise emotional sequence \u2014 acknowledge, deliver, explain why it matters to the reader, then make a clean ask. The 'why it matters' section must be framed around the reader's concrete situation, not the sender's priorities, and it should earn whatever ask follows. Closings end on the action and stop \u2014 no trailing sentiment, reasoning, or filler.",
-    "coaching_notes": "Non-negotiable: structural beats (acknowledge \u2192 news \u2192 why it matters \u2192 ask) must stay as separate sentences \u2014 never collapse for brevity. This user's primary trade-off is always pacing over conciseness. They treat the 'why it matters' paragraph as the section that earns the right to make the ask \u2014 if it doesn't land, the whole email fails. When they push back, it's almost always about something feeling like it's talking AT the reader rather than TO them \u2014 whether that's corporate framing, vague delegation, or trailing justification that implies the reader can't figure things out."
+    "writing_type": "professional workplace emails",
+    "user_goals_summary": "Writes emails that acknowledge the reader's situation before delivering news, frame impact around the reader's concrete reality (not the sender's priorities), and close on a single clear action with a named owner and hard deadline. Values natural emotional pacing over mechanical brevity, and treats every sentence after the CTA as dilution.",
+    "coaching_notes": "Non-negotiables: separate structural beats (acknowledgment \u2192 news \u2192 impact \u2192 ask), single named owner with hard deadline on every CTA, and absolutely nothing after the final ask. This user treats trailing sentiment or reasoning after the CTA as the single fastest way to weaken an email. When in doubt about acknowledgment length, favor warmth and natural pacing over forced compression \u2014 two short sentences always beat one awkward merged sentence. When the action involves someone on the recipient's team, keep the CTA pointed at the recipient and let them handle internal delegation."
   },
-  "updated_at": "2026-03-08T18:46:41.031507"
+  "updated_at": "2026-03-08T18:50:37.785450"
 }

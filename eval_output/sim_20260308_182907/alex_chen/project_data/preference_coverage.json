@@ -460,5 +460,159 @@
     "iteration": 3,
     "rubric_version": 8,
     "timestamp": "2026-03-08T18:46:41.025836"
+  },
+  {
+    "preference_items": [
+      {
+        "preference": "Writing should be concise, avoiding unnecessary words or filler",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conciseness and Directness",
+        "explanation": "The 'Conciseness and Directness' criterion explicitly addresses no padding or filler, every sentence earning its place, and not over-explaining."
+      },
+      {
+        "preference": "Writing should be direct, stating the point clearly without hedging or burying the message",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conciseness and Directness",
+        "explanation": "Covered by 'Conciseness and Directness' (directness, no over-explanation) and also by 'Human Voice' which specifies tone is direct and neutral."
+      },
+      {
+        "preference": "Tone should be professional",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Human Voice",
+        "explanation": "The 'Human Voice' criterion describes 'Professional but not stiff' and reads like a sharp colleague would send."
+      },
+      {
+        "preference": "Tone should not be stiff or overly formal",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Human Voice",
+        "explanation": "Explicitly addressed: 'Professional but not stiff,' 'not formal or bureaucratic cadence,' 'reads like a person talking to a peer, not an institutional communication.'"
+      },
+      {
+        "preference": "Each email should contain a clear call to action",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "The 'Emotional Sequencing' criterion requires 'exactly one concrete next step at the end,' and 'Action Ownership' and 'Forward-Momentum Closings' further reinforce the CTA requirement."
+      },
+      {
+        "preference": "Paragraphs should be short",
+        "source": "core",
+        "coverage": "covered",
+        "matched_criterion": "Conciseness and Directness",
+        "explanation": "Explicitly addressed: 'Paragraphs are short \u2014 typically 1-3 sentences' and 'no walls of text.'"
+      },
+      {
+        "preference": "The email should begin by acknowledging the recipient's effort or the current situation, in one sentence maximum",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "The criterion requires acknowledgment first and specifies 'one or two short, natural sentences.' The 'one sentence maximum' nuance is partially relaxed (allows two), but the intent is captured. The dimension says two clean sentences are preferred over one forced merge, which slightly differs but the core intent of brief acknowledgment first is covered."
+      },
+      {
+        "preference": "After the acknowledgment, the main news or update should be delivered next",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "The sequence 'acknowledge the effort or situation first, then deliver the news' is explicitly stated."
+      },
+      {
+        "preference": "After the news, the email should explain why it matters, framed in terms of stakes and impact rather than just restating facts",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "The sequence places 'why it matters' after the news, and 'Reader-Centered Framing' specifies it should be about concrete reality, costs, and what it unlocks \u2014 stakes and impact."
+      },
+      {
+        "preference": "The email should end with one concrete next step",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "Explicitly: 'There is exactly one concrete next step at the end, not a list of follow-ups.'"
+      },
+      {
+        "preference": "The emotional arc order (acknowledge \u2192 news \u2192 why it matters \u2192 next step) must be followed strictly; all elements present but in wrong order is still unacceptable",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Emotional Sequencing",
+        "explanation": "The criterion explicitly states the required order and says 'Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow.'"
+      },
+      {
+        "preference": "The 'why it matters' framing should be from the reader's perspective, not the sender's perspective",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Explicitly: 'always framed around the reader's concrete reality' and 'not the sender's values, commitments, or organizational rationale.'"
+      },
+      {
+        "preference": "The 'why it matters' reasoning should not center the sender's own goals or reasoning",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Reader-Centered Framing",
+        "explanation": "Explicitly addressed: 'Rationale does not center the sender's values, commitments, or organizational priorities' and 'If the why could have been written by someone explaining their own priorities rather than the reader's situation, it's wrong.'"
+      },
+      {
+        "preference": "Closing lines must be forward-looking and action-oriented",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Forward-Momentum Closings",
+        "explanation": "The criterion specifies 'The closing lands on the next step or an open door' which is forward-looking and action-oriented."
+      },
+      {
+        "preference": "No 'thanks for your patience' or similar gratitude platitudes as closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Forward-Momentum Closings",
+        "explanation": "Explicitly: 'No thanks for your patience type phrases.'"
+      },
+      {
+        "preference": "No motivational platitudes as closing lines",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Forward-Momentum Closings",
+        "explanation": "Explicitly: 'No motivational-poster language, generic affirmations.'"
+      },
+      {
+        "preference": "No trailing sentiment or filler after the call to action; the CTA should not be weakened by additional soft closing remarks",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Forward-Momentum Closings",
+        "explanation": "Explicitly: 'No additional sentences appear after the call to action \u2014 not sentiment, not reasoning, not justification' and 'Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it.'"
+      },
+      {
+        "preference": "When multiple people need to act, assign ONE clear owner with a deadline rather than making a group ask",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action Ownership",
+        "explanation": "Explicitly: 'one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline' and 'Group asks produce no accountability.'"
+      },
+      {
+        "preference": "Avoid vague group asks like 'Everyone please review'",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action Ownership",
+        "explanation": "Explicitly: 'Avoids diffuse asks \u2014 no everyone please, no can the two of you, no phrasing that lets each person assume the other is driving.'"
+      },
+      {
+        "preference": "Action items should not be over-specified to the point of assuming organizational structure details the email shouldn't contain",
+        "source": "hidden",
+        "coverage": "covered",
+        "matched_criterion": "Action Ownership",
+        "explanation": "Addressed by the dimension: 'Does not name the recipient's direct reports or team members in the CTA \u2014 accountability stays with the recipient, who decides how to delegate internally.' This captures the intent of not over-specifying organizational structure."
+      }
+    ],
+    "total_preferences": 20,
+    "covered_count": 20,
+    "partially_covered_count": 0,
+    "not_covered_count": 0,
+    "coverage_score": 1.0,
+    "dealbreaker_pass": true,
+    "dealbreaker_count": 4,
+    "iteration": 4,
+    "rubric_version": 10,
+    "timestamp": "2026-03-08T18:51:08.436063"
   }
 ]

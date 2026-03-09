@@ -1,0 +1,240 @@
+[
+  {
+    "satisfaction_threshold": 0.8,
+    "max_drafts": 20,
+    "iterations": [
+      {
+        "iteration": 1,
+        "drafts_produced": 6,
+        "max_drafts": 20,
+        "total_turns": 9,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.3975,
+              "reasoning": "The draft fails on multiple hidden preferences \u2014 the 'why' is framed entirely from the sender's perspective ('quality standard we hold ourselves to'), and the closing is pure trailing sentiment with no forward action. H1 structure is also off \u2014 the acknowledgment bleeds into justification before the news lands cleanly.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "partial_draft": true
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.5,
+              "reasoning": "The closing and single-owner structure are mostly working, but the 'why this matters' section is framed entirely from our perspective \u2014 quality standards, our decision-making \u2014 rather than from the team's. The people reading this had plans built around October 14th, and that's nowhere in the email.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 3,
+            "satisfaction": {
+              "score": 0.5725,
+              "reasoning": "The reader-framing in the middle section is genuinely strong now \u2014 that's the piece that was broken before and it's fixed. But this is just a fragment; the closing and the concrete next step with Marcus are completely missing, which tanks the score on H3 and H4.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 6,
+            "has_draft": true,
+            "draft_number": 4,
+            "satisfaction": {
+              "score": 0.825,
+              "reasoning": "H2 and H3 are landing well \u2014 the team-perspective framing and the forward-looking close are both working. The issues are in H1 (the emotional arc has a structural problem) and H4 (Marcus is named but the bullet format over-specifies QA and other roles in ways that feel like they're defining org structure the email shouldn't own).",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 7,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H1 is the remaining gap \u2014 the email opens with the news before giving any acknowledgment, so the emotional arc is inverted at the top. Everything else is working well: the reader-framed 'why,' the clean closing, and Marcus as single owner.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 9,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences fully satisfied: the emotional arc is correct and in order, the 'why' is framed entirely from the reader's cost perspective, the closing is action-oriented with no trailing sentiment, and Marcus is the single named owner. No dealbreakers triggered.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 2,
+        "drafts_produced": 6,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.5625,
+              "reasoning": "The draft hits the core preferences well \u2014 concise, clear CTA, good tone \u2014 but the emotional arc is off and the ending just kind of fizzles out after the ask."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.7375,
+              "reasoning": "H3 is solid \u2014 the close lands on the action, which is exactly what I asked for. But the 'why it matters' framing still feels like it's about us ('we wanted to make sure you heard it from us first') rather than about what this means for Priya and her team. The stakes sentence is there, but it's a bit generic.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "H2, H3, and H4 are fully met, and the core preferences are clean. H1 is the sticking point \u2014 the arc starts with the news rather than a brief acknowledgment of the situation first, so the email jumps straight into the announcement without that one beat of recognition.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All four hidden preferences are fully met \u2014 the emotional arc is correct and in order, the stakes are framed from Priya's perspective, the close ends on the action with no trailing sentiment, and the ask is clear with one owner and a hard deadline. No dealbreakers.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 3,
+        "drafts_produced": 6,
+        "max_drafts": 20,
+        "total_turns": 5,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.7375,
+              "reasoning": "The draft hits the right tone and has a clear CTA, but the emotional arc is off \u2014 the acknowledgment and news are flipped, and the 'why it matters' framing centers the sender's perspective rather than the reader's. The closing also trails off instead of staying action-oriented."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.825,
+              "reasoning": "The emotional arc and reader-centric stakes framing are genuinely improved \u2014 that middle paragraph lands. But the closing wobbles: after a clear action item, the offer to jump on a call trails off as a soft add-on rather than a forward-looking close, and the action itself points at 'your team' rather than landing on one person who owns it.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "The arc, reader-centric framing, and closing are all working well. The one thing that's still slightly soft is the action item \u2014 'have your team update their pitch decks' puts the action on an unnamed group rather than on Marcus specifically, which diffuses ownership a bit.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 5,
+            "has_draft": true,
+            "draft_number": 6,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All hidden preferences are fully met \u2014 the arc is correct, the stakes are framed from Marcus's perspective, the closing is forward-looking and action-oriented, and the ask lands squarely on Marcus as the single owner with a clear deadline. No dealbreakers.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      },
+      {
+        "iteration": 4,
+        "drafts_produced": 5,
+        "max_drafts": 20,
+        "total_turns": 4,
+        "termination_reason": "user_accepted",
+        "turn_metrics": [
+          {
+            "turn": 1,
+            "has_draft": true,
+            "draft_number": 1,
+            "satisfaction": {
+              "score": 0.625,
+              "reasoning": "The emotional arc is partially there but the 'why it matters' section centers on generic impact rather than landing from the readers' perspective with real stakes \u2014 it doesn't make them feel the concrete consequence to their work. The ownership ask also hedges a bit too much without giving anyone a clear next action."
+            },
+            "is_alignment_start": true,
+            "user_accepted": false,
+            "user_satisfied": false
+          },
+          {
+            "turn": 2,
+            "has_draft": true,
+            "draft_number": 2,
+            "satisfaction": {
+              "score": 0.9125,
+              "reasoning": "Most of the draft lands well \u2014 the arc is right, the stakes feel real from the reader's perspective, and the closing is clean. The one thing that nags at me is the action item: the email goes to two people but doesn't name who's actually responsible for coming to Thursday's meeting with a decision or proposal ready.",
+              "accepted": false
+            },
+            "user_accepted": false
+          },
+          {
+            "turn": 4,
+            "has_draft": true,
+            "draft_number": 5,
+            "satisfaction": {
+              "score": 1.0,
+              "reasoning": "All four hidden preferences are fully met: the arc flows correctly, the stakes are framed from the readers' perspective, the closing is action-oriented with no trailing sentiment, and Marcus is named as the single owner with a clear deadline. No dealbreakers.",
+              "accepted": true
+            },
+            "user_accepted": true
+          }
+        ]
+      }
+    ],
+    "timestamp": "2026-03-08T20:36:18.291858"
+  }
+]

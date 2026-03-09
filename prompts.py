@@ -2670,6 +2670,71 @@ Return ONLY a valid JSON object (no markdown fences):
 
 
 
+# ── Survey: Final Review ─────────────────────────────────────────────────
+
+def SURVEY_FINAL_REVIEW_PROMPT(persona, rubric_criteria: list) -> str:
+    """Prompt for Final Review survey: rubric accuracy evaluation.
+
+    The synthetic user evaluates each rubric criterion against their actual
+    preferences, rating accuracy and explaining what's right/wrong.
+    """
+    criteria_text = ""
+    for i, c in enumerate(rubric_criteria):
+        dims = c.get("dimensions", [])
+        dim_text = "\n".join(f"    - {d.get('label', '')}" for d in dims) if dims else "    (no dimensions listed)"
+        criteria_text += f"""
+  Criterion {i + 1}: "{c.get('name', 'Unnamed')}"
+    Description: {c.get('description', 'No description')}
+    Priority: #{c.get('priority', '?')}
+    Dimensions:
+{dim_text}
+"""
+
+    return f"""You are {persona.name}, a {persona.role} who writes {persona.writing_type}.
+
+The system has been learning about your writing preferences through multiple conversations. Here is the final rubric it built for you:
+{criteria_text}
+
+Your ACTUAL preferences (use these to judge accuracy):
+- Core preferences (things you stated): {persona.core_preferences}
+- Hidden preferences (things you care about but didn't explicitly say): {persona.hidden_preferences}
+- Dealbreakers (things you absolutely don't want): {persona.dealbreakers}
+
+Complete this final review FROM YOUR PERSPECTIVE as {persona.name}.
+
+Q1: For EACH criterion listed above, provide:
+- accuracy: "Accurate" (matches a real preference of yours), "Partially right" (captures something real but misses nuances or gets details wrong), or "Inaccurate" (does not match any of your actual preferences)
+- explanation: A brief 1-sentence explanation of what's right or wrong about this criterion
+
+Q2: "Is there anything here you wouldn't have thought to mention yourself?"
+Reflect on whether the rubric captured preferences you have but might not have articulated if asked directly. This could include hidden preferences that the system correctly inferred. (1-3 sentences)
+
+Q3: "Are any of your preferences missing from the rubric?"
+Think about things you care about in your writing that the rubric does NOT cover at all. List any missing preferences. (1-3 sentences, or "None" if fully covered)
+
+Q4: "Did the drafts improve over the course of your conversations?"
+Rate on a scale of 1-5: 1 = "No improvement at all", 3 = "Some improvement", 5 = "Dramatically better by the end"
+
+Q5: "Did editing the rubric help you get better drafts?"
+Rate on a scale of 1-5: 1 = "Not at all", 3 = "Somewhat", 5 = "Very much — editing the rubric was the main way I got better drafts"
+
+Q6: "Would you use a system like this again for future writing?"
+Rate on a scale of 1-5: 1 = "Definitely not", 3 = "Maybe", 5 = "Definitely yes"
+
+Return ONLY a valid JSON object (no markdown fences):
+{{
+  "criteria_ratings": {{
+    "<criterion name>": {{"accuracy": "Accurate|Partially right|Inaccurate", "explanation": "<brief explanation>"}},
+    ... one entry per criterion above ...
+  }},
+  "q2": "<free text response about unexpected insights>",
+  "q3": "<free text about missing preferences>",
+  "q4": <integer 1-5>,
+  "q5": <integer 1-5>,
+  "q6": <integer 1-5>
+}}"""
+
+
 # ── Preference coverage evaluation (ground-truth recall) ─────────────────
 
 def PREFERENCE_COVERAGE_PROMPT(persona, rubric_criteria: list) -> str:

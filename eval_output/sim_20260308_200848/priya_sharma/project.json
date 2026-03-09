@@ -1,0 +1,31 @@
+{
+  "id": "2617d64c-ed91-4c6c-8fa0-34b45c190c86",
+  "persona": {
+    "name": "Priya Sharma",
+    "role": "Academic researcher in computational linguistics",
+    "writing_type": "research paper sections",
+    "project_name": "Paper Drafts",
+    "core_preferences": "Precise language, formal academic tone, logical flow between paragraphs, cite-aware writing that leaves room for references.",
+    "hidden_preferences": "Each paragraph should begin with a sentence that tells you WHY you're reading it \u2014 its role in the argument \u2014 before diving into content; a paragraph that opens with technical detail before establishing its purpose feels disorienting. Prefers a specific rhythm in methods sections: motivating question, then approach overview, then formal details, then a brief 'what this buys us' sentence \u2014 skipping the motivation or the payoff makes it feel like a manual rather than a narrative. Values strategic informality in key moments \u2014 a well-placed plain-language aside actually increases perceived rigor by showing the author understands deeply enough to explain simply, but this must be rare (1-2 per section max) or it undermines the formal register. Transition sentences between paragraphs should create logical DEPENDENCY, not just sequence \u2014 every paragraph should feel like it couldn't be reordered without breaking the argument. Hates filler hedges that signal the author couldn't figure out where to put the information.",
+    "dealbreakers": "Overly casual language, unsubstantiated claims, inconsistent terminology, run-on sentences that try to pack too much into a single clause",
+    "initial_task": "Help me write the 'Study Design' subsection (about 2-3 paragraphs) for a paper on using LLMs to elicit implicit user preferences in collaborative writing systems.",
+    "tasks": [
+      "Help me write the 'Study Design' subsection (about 2-3 paragraphs) for a paper on using LLMs to elicit implicit user preferences in collaborative writing systems.",
+      "I need to write the 'Evaluation Methodology' subsection (2-3 paragraphs) for a paper comparing rubric-grounded text generation against preference-only baselines \u2014 we use both automatic metrics and human judgment, and I need to explain why that combination is necessary.",
+      "Help me draft the 'Model Architecture' subsection (2-3 paragraphs) for a paper on adapting multilingual language models for low-resource languages using adapter modules \u2014 the key innovation is that we freeze the base model and only train lightweight adapters, which changes the compute-accuracy tradeoff.",
+      "I need to write the 'Data Collection and Annotation' subsection (2-3 paragraphs) for a paper on detecting implicit bias in machine translation outputs \u2014 we built a parallel corpus with human annotations of bias severity, and the annotation protocol is the methodological contribution.",
+      "Help me draft the 'Analysis Framework' subsection (2-3 paragraphs) for a paper on measuring alignment between LLM outputs and user intent in open-ended writing tasks \u2014 we propose a multi-level scoring scheme that separates surface-level compliance from deeper preference satisfaction."
+    ],
+    "gold_draft": null
+  },
+  "config": {
+    "user_provider": "anthropic",
+    "user_model": "claude-sonnet-4-6",
+    "model_primary": "claude-opus-4-6",
+    "model_light": "claude-sonnet-4-6",
+    "num_iterations": 4,
+    "max_chat_turns": 20,
+    "satisfaction_threshold": 0.8
+  },
+  "created_at": "2026-03-08T20:36:33.146731"
+}

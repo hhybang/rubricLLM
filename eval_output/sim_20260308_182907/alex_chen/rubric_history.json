@@ -1282,5 +1282,343 @@
     "writing_type": "professional emails (internal and external stakeholder communications)",
     "user_goals_summary": "Emails should follow a precise emotional sequence \u2014 acknowledge, deliver, explain why it matters to the reader, then make a clean ask. The 'why it matters' section must be framed around the reader's concrete situation, not the sender's priorities, and it should earn whatever ask follows. Closings end on the action and stop \u2014 no trailing sentiment, reasoning, or filler.",
     "coaching_notes": "Non-negotiable: structural beats (acknowledge \u2192 news \u2192 why it matters \u2192 ask) must stay as separate sentences \u2014 never collapse for brevity. This user's primary trade-off is always pacing over conciseness. They treat the 'why it matters' paragraph as the section that earns the right to make the ask \u2014 if it doesn't land, the whole email fails. When they push back, it's almost always about something feeling like it's talking AT the reader rather than TO them \u2014 whether that's corporate framing, vague delegation, or trailing justification that implies the reader can't figure things out."
+  },
+  {
+    "version": 9,
+    "writing_type": "professional workplace emails",
+    "user_goals_summary": "Writes emails that acknowledge the reader's situation before delivering news, frame impact around the reader's concrete reality (not the sender's priorities), and close on a single clear action with a named owner and hard deadline. Values natural emotional pacing over mechanical brevity, and treats every sentence after the CTA as dilution.",
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information arrives in a specific order: acknowledge the effort or situation first, then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow. Structurally distinct beats (acknowledgment, news, impact, ask) must remain separate \u2014 never collapse them into a single sentence. Emotional pacing takes priority over brevity.",
+        "dimensions": [
+          {
+            "id": "context_before_news",
+            "label": "Acknowledgment or situation framing appears before the key news or ask, not after"
+          },
+          {
+            "id": "acknowledgment_is_natural",
+            "label": "Opening acknowledgment is one or two short, natural sentences \u2014 never mechanically merged with the news using an em dash or similar compression. Two clean sentences are always preferred over one forced merge."
+          },
+          {
+            "id": "no_retroactive_softening",
+            "label": "Acknowledgment is not positioned as damage control after the headline has already landed \u2014 it sets the frame before the reader receives the news"
+          },
+          {
+            "id": "why_before_next_step",
+            "label": "The 'why it matters' section appears before the next step, not after or mixed in"
+          },
+          {
+            "id": "one_next_step",
+            "label": "There is exactly one concrete next step at the end, not a list of follow-ups"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centered Framing",
+        "category": "Audience",
+        "description": "The 'why it matters' is always framed around the reader's concrete reality \u2014 what it costs them or what it unlocks for them. Their time, their workflows, their team, their downstream conversations \u2014 not the sender's values, commitments, or organizational rationale. This section earns whatever ask follows. If the 'why' could have been written by someone explaining their own priorities rather than the reader's situation, it's wrong.",
+        "dimensions": [
+          {
+            "id": "names_reader_reality",
+            "label": "Impact is described in terms of the reader's concrete situation \u2014 their time, plans, workflows, dependencies, or downstream conversations"
+          },
+          {
+            "id": "concrete_specifics",
+            "label": "Value or disruption is named with concrete specifics \u2014 not abstract benefits or quality statements"
+          },
+          {
+            "id": "avoids_org_centering",
+            "label": "Rationale does not center the sender's values, commitments, or organizational priorities"
+          },
+          {
+            "id": "earns_the_ask",
+            "label": "The 'why it matters' section creates enough context that the subsequent ask or action feels justified and natural, not abrupt"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action Ownership",
+        "category": "Content",
+        "description": "When something needs to happen, there is one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline. Group asks produce no accountability, and vague delegation ('have someone on your team') is how things don't get done. Keep accountability with the direct recipient; don't reach past them into their team's structure.",
+        "dimensions": [
+          {
+            "id": "specific_owner",
+            "label": "There is one named or clearly identified person responsible for the next step \u2014 not a vague team, role, or 'someone on your team'"
+          },
+          {
+            "id": "has_deadline",
+            "label": "The next step includes a concrete deadline or timeframe \u2014 not a preference or suggestion"
+          },
+          {
+            "id": "no_group_asks",
+            "label": "Avoids diffuse asks \u2014 no 'everyone please,' no 'can the two of you,' no phrasing that lets each person assume the other is driving"
+          },
+          {
+            "id": "respects_recipient_org",
+            "label": "Does not name the recipient's direct reports or team members in the CTA \u2014 accountability stays with the recipient, who decides how to delegate internally"
+          },
+          {
+            "id": "cta_tone_matches_dynamic",
+            "label": "CTA tone matches the authority dynamic \u2014 imperative when the sender has authority, direct request when they don't \u2014 but never phrased as optional when it isn't"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Forward-Momentum Closings",
+        "category": "Structure",
+        "description": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment, no explanatory reasoning the reader can figure out themselves. Once the ask is made, stop. Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase"
+          },
+          {
+            "id": "nothing_after_cta",
+            "label": "No additional sentences appear after the call to action \u2014 not sentiment, not reasoning, not justification"
+          },
+          {
+            "id": "no_trailing_justification",
+            "label": "Does not add explanatory reasoning after the ask that the reader can infer from context"
+          },
+          {
+            "id": "no_motivational_filler",
+            "label": "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Conciseness and Directness",
+        "category": "Style",
+        "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. Trusts the reader to connect obvious dots.",
+        "dimensions": [
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 typically 1-3 sentences"
+          },
+          {
+            "id": "unified_statements",
+            "label": "Related details are consolidated rather than broken into unnecessary bullet points or line items"
+          },
+          {
+            "id": "lean_structure",
+            "label": "Every section serves a clear purpose \u2014 no padding or filler"
+          },
+          {
+            "id": "no_over_explanation",
+            "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
+          },
+          {
+            "id": "trust_the_reader",
+            "label": "Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Human Voice",
+        "category": "Style",
+        "description": "The message reads like a person finishing a thought, not a corporate template. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \u2014 the kind of email a sharp colleague would send.",
+        "dimensions": [
+          {
+            "id": "no_jargon",
+            "label": "Free of corporate jargon and canned phrases"
+          },
+          {
+            "id": "reads_as_person",
+            "label": "Reads like a person talking to a peer, not an institutional communication"
+          },
+          {
+            "id": "no_passive_aggression",
+            "label": "Tone is direct and neutral \u2014 no passive-aggressive undertones"
+          },
+          {
+            "id": "no_exclamation_overuse",
+            "label": "Exclamation marks are used sparingly or not at all"
+          },
+          {
+            "id": "natural_rhythm",
+            "label": "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "coaching_notes": "Non-negotiables: separate structural beats (acknowledgment \u2192 news \u2192 impact \u2192 ask), single named owner with hard deadline on every CTA, and absolutely nothing after the final ask. This user treats trailing sentiment or reasoning after the CTA as the single fastest way to weaken an email. When in doubt about acknowledgment length, favor warmth and natural pacing over forced compression \u2014 two short sentences always beat one awkward merged sentence. When the action involves someone on the recipient's team, keep the CTA pointed at the recipient and let them handle internal delegation.",
+    "source": "inferred"
+  },
+  {
+    "rubric": [
+      {
+        "name": "Emotional Sequencing",
+        "category": "Structure",
+        "description": "Information arrives in a specific order: acknowledge the effort or situation first, then deliver the news, then explain why it matters to the reader, then give one concrete next step. Violating this order \u2014 even if all the pieces are present \u2014 breaks the flow. Structurally distinct beats (acknowledgment, news, impact, ask) must remain separate \u2014 never collapse them into a single sentence. Emotional pacing takes priority over brevity.",
+        "dimensions": [
+          {
+            "id": "context_before_news",
+            "label": "Acknowledgment or situation framing appears before the key news or ask, not after"
+          },
+          {
+            "id": "acknowledgment_is_natural",
+            "label": "Opening acknowledgment is one or two short, natural sentences \u2014 never mechanically merged with the news using an em dash or similar compression. Two clean sentences are always preferred over one forced merge."
+          },
+          {
+            "id": "no_retroactive_softening",
+            "label": "Acknowledgment is not positioned as damage control after the headline has already landed \u2014 it sets the frame before the reader receives the news"
+          },
+          {
+            "id": "why_before_next_step",
+            "label": "The 'why it matters' section appears before the next step, not after or mixed in"
+          },
+          {
+            "id": "one_next_step",
+            "label": "There is exactly one concrete next step at the end, not a list of follow-ups"
+          }
+        ],
+        "priority": 1
+      },
+      {
+        "name": "Reader-Centered Framing",
+        "category": "Audience",
+        "description": "The 'why it matters' is always framed around the reader's concrete reality \u2014 what it costs them or what it unlocks for them. Their time, their workflows, their team, their downstream conversations \u2014 not the sender's values, commitments, or organizational rationale. This section earns whatever ask follows. If the 'why' could have been written by someone explaining their own priorities rather than the reader's situation, it's wrong.",
+        "dimensions": [
+          {
+            "id": "names_reader_reality",
+            "label": "Impact is described in terms of the reader's concrete situation \u2014 their time, plans, workflows, dependencies, or downstream conversations"
+          },
+          {
+            "id": "concrete_specifics",
+            "label": "Value or disruption is named with concrete specifics \u2014 not abstract benefits or quality statements"
+          },
+          {
+            "id": "avoids_org_centering",
+            "label": "Rationale does not center the sender's values, commitments, or organizational priorities"
+          },
+          {
+            "id": "earns_the_ask",
+            "label": "The 'why it matters' section creates enough context that the subsequent ask or action feels justified and natural, not abrupt"
+          }
+        ],
+        "priority": 2
+      },
+      {
+        "name": "Action Ownership",
+        "category": "Content",
+        "description": "When something needs to happen, there is one clear owner \u2014 a specific named person or the reader themselves \u2014 with a concrete deadline. Group asks produce no accountability, and vague delegation ('have someone on your team') is how things don't get done. Keep accountability with the direct recipient; don't reach past them into their team's structure.",
+        "dimensions": [
+          {
+            "id": "specific_owner",
+            "label": "There is one named or clearly identified person responsible for the next step \u2014 not a vague team, role, or 'someone on your team'"
+          },
+          {
+            "id": "has_deadline",
+            "label": "The next step includes a concrete deadline or timeframe \u2014 not a preference or suggestion"
+          },
+          {
+            "id": "no_group_asks",
+            "label": "Avoids diffuse asks \u2014 no 'everyone please,' no 'can the two of you,' no phrasing that lets each person assume the other is driving"
+          },
+          {
+            "id": "respects_recipient_org",
+            "label": "Does not name the recipient's direct reports or team members in the CTA \u2014 accountability stays with the recipient, who decides how to delegate internally"
+          },
+          {
+            "id": "cta_tone_matches_dynamic",
+            "label": "CTA tone matches the authority dynamic \u2014 imperative when the sender has authority, direct request when they don't \u2014 but never phrased as optional when it isn't"
+          }
+        ],
+        "priority": 3
+      },
+      {
+        "name": "Forward-Momentum Closings",
+        "category": "Structure",
+        "description": "The closing lands on the next step or an open door \u2014 nothing after it. No 'thanks for your patience,' no motivational filler, no trailing sentiment, no explanatory reasoning the reader can figure out themselves. Once the ask is made, stop. Any sentence after the CTA \u2014 whether sentiment or justification \u2014 dilutes it.",
+        "dimensions": [
+          {
+            "id": "ends_on_action",
+            "label": "The closing is the next step or an invitation \u2014 not a sentiment or sign-off phrase"
+          },
+          {
+            "id": "nothing_after_cta",
+            "label": "No additional sentences appear after the call to action \u2014 not sentiment, not reasoning, not justification"
+          },
+          {
+            "id": "no_trailing_justification",
+            "label": "Does not add explanatory reasoning after the ask that the reader can infer from context"
+          },
+          {
+            "id": "no_motivational_filler",
+            "label": "No motivational-poster language, generic affirmations, or 'thanks for your patience' type phrases"
+          }
+        ],
+        "priority": 4
+      },
+      {
+        "name": "Human Voice",
+        "category": "Style",
+        "description": "The message reads like a person finishing a thought, not a corporate template. No jargon, no passive-aggressive tone, no excessive exclamation marks. Professional but not stiff \u2014 the kind of email a sharp colleague would send.",
+        "dimensions": [
+          {
+            "id": "no_jargon",
+            "label": "Free of corporate jargon and canned phrases"
+          },
+          {
+            "id": "reads_as_person",
+            "label": "Reads like a person talking to a peer, not an institutional communication"
+          },
+          {
+            "id": "no_passive_aggression",
+            "label": "Tone is direct and neutral \u2014 no passive-aggressive undertones"
+          },
+          {
+            "id": "no_exclamation_overuse",
+            "label": "Exclamation marks are used sparingly or not at all"
+          },
+          {
+            "id": "natural_rhythm",
+            "label": "Sentences have natural, conversational rhythm \u2014 not formal or bureaucratic cadence"
+          }
+        ],
+        "priority": 5
+      },
+      {
+        "name": "Conciseness and Directness",
+        "category": "Style",
+        "description": "Short paragraphs, no walls of text, no over-explanation. Every sentence earns its place. Related points are consolidated rather than fanned out into separate line items. Trusts the reader to connect obvious dots.",
+        "dimensions": [
+          {
+            "id": "short_paragraphs",
+            "label": "Paragraphs are short \u2014 typically 1-3 sentences"
+          },
+          {
+            "id": "unified_statements",
+            "label": "Related details are consolidated rather than broken into unnecessary bullet points or line items"
+          },
+          {
+            "id": "lean_structure",
+            "label": "Every section serves a clear purpose \u2014 no padding or filler"
+          },
+          {
+            "id": "no_over_explanation",
+            "label": "Reasoning is stated once, cleanly \u2014 not repeated or belabored"
+          },
+          {
+            "id": "trust_the_reader",
+            "label": "Does not explain reasoning the reader can infer from context \u2014 treats the reader as an intelligent adult"
+          }
+        ],
+        "priority": 6
+      }
+    ],
+    "version": 10,
+    "source": "criteria_classification",
+    "writing_type": "professional workplace emails",
+    "user_goals_summary": "Writes emails that acknowledge the reader's situation before delivering news, frame impact around the reader's concrete reality (not the sender's priorities), and close on a single clear action with a named owner and hard deadline. Values natural emotional pacing over mechanical brevity, and treats every sentence after the CTA as dilution.",
+    "coaching_notes": "Non-negotiables: separate structural beats (acknowledgment \u2192 news \u2192 impact \u2192 ask), single named owner with hard deadline on every CTA, and absolutely nothing after the final ask. This user treats trailing sentiment or reasoning after the CTA as the single fastest way to weaken an email. When in doubt about acknowledgment length, favor warmth and natural pacing over forced compression \u2014 two short sentences always beat one awkward merged sentence. When the action involves someone on the recipient's team, keep the CTA pointed at the recipient and let them handle internal delegation."
   }
 ]
