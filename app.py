@@ -5693,7 +5693,7 @@ with tab1:
                                                 )
                                                 st.caption("Strikethrough = removed from original rubric draft. Green = added by suggested rubric.")
                                 # If conversation-start draft is pending user decision, show Skip button
-                                if _ac_pending and not _sg_applied:
+                                if _ac_pending and not (suggestion_data and suggestion_data.get("applied", False)):
                                     _fb_source_key = message.get("_ac_fallback_draft_source", "")
                                     _fb_source_labels = {"rubric": "rubric-guided", "generic": "generic (no rubric)", "preference": "preference-based (from your original preferences)"}
                                     _fb_source_label = _fb_source_labels.get(_fb_source_key, _fb_source_key)
@@ -6377,27 +6377,28 @@ with tab1:
                 if _rc_name and _rc_pri is not None:
                     _cc_rubric_priorities[_rc_name] = int(_rc_pri)
 
-            # Always reset importance ranks from rubric priorities (normalized)
-            # User edits are preserved via widget keys, but the initial values
-            # must always reflect the current rubric's normalized priorities.
-            _cc_existing_ranks = {}
-            _cc_used_ranks = set()
-            for _cn in _cc_all_names:
-                if _cn in _cc_rubric_priorities:
-                    _candidate_rank = _cc_rubric_priorities[_cn]
-                    if _candidate_rank not in _cc_used_ranks:
-                        _cc_existing_ranks[_cn] = _candidate_rank
-                        _cc_used_ranks.add(_candidate_rank)
-            # Fill any remaining unranked criteria with next available ranks
-            _cc_next_rank = 1
-            for _cn in _cc_all_names:
-                if _cn not in _cc_existing_ranks:
-                    while _cc_next_rank in _cc_used_ranks:
+            # Initialize importance ranks from rubric priorities only once;
+            # after that, user edits via number_input widgets are preserved.
+            if "chat_criteria_importance_ranks" not in st.session_state:
+                _cc_existing_ranks = {}
+                _cc_used_ranks = set()
+                for _cn in _cc_all_names:
+                    if _cn in _cc_rubric_priorities:
+                        _candidate_rank = _cc_rubric_priorities[_cn]
+                        if _candidate_rank not in _cc_used_ranks:
+                            _cc_existing_ranks[_cn] = _candidate_rank
+                            _cc_used_ranks.add(_candidate_rank)
+                # Fill any remaining unranked criteria with next available ranks
+                _cc_next_rank = 1
+                for _cn in _cc_all_names:
+                    if _cn not in _cc_existing_ranks:
+                        while _cc_next_rank in _cc_used_ranks:
+                            _cc_next_rank += 1
+                        _cc_existing_ranks[_cn] = _cc_next_rank
+                        _cc_used_ranks.add(_cc_next_rank)
                         _cc_next_rank += 1
-                    _cc_existing_ranks[_cn] = _cc_next_rank
-                    _cc_used_ranks.add(_cc_next_rank)
-                    _cc_next_rank += 1
-            st.session_state.chat_criteria_importance_ranks = _cc_existing_ranks
+                st.session_state.chat_criteria_importance_ranks = _cc_existing_ranks
+            _cc_existing_ranks = st.session_state.chat_criteria_importance_ranks
 
             # Sort all criteria by their importance rank (priority order)
             _cc_sorted_names = sorted(_cc_all_names, key=lambda n: _cc_existing_ranks.get(n, 999))
@@ -8300,7 +8301,8 @@ with tab1:
                                             for _cc in _class_parsed.get("criteria_comparison", []):
                                                 _cc_name = _cc.get("criterion_name", "")
                                                 _cc_status = _cc.get("status", "unstated")
-                                                _class_user[_cc_name] = _cc_status
+                                                # Normalize: LLM uses "unstated", UI uses "real"
+                                                _class_user[_cc_name] = "real" if _cc_status == "unstated" else _cc_status
                                             st.session_state.chat_criteria_user_classifications = _class_user
                                             st.session_state.chat_criteria_review_active = True
                                             st.session_state.chat_criteria_review_confirmed = False
@@ -8779,7 +8781,8 @@ with st.sidebar:
         for rank, (original_idx, criterion) in enumerate(sorted_criteria, start=1):
             criterion_name = criterion.get('name', 'Unnamed Criterion')
             # Use criterion name as stable widget ID (not list index which shifts on removal)
-            _stable_id = criterion_name.replace(" ", "_").lower()[:40]
+            # Include hash suffix to avoid collisions when names truncate identically
+            _stable_id = criterion_name.replace(" ", "_").lower()[:40] + f"_{hash(criterion_name) % 10000}"
 
             # Row with up arrow, down arrow, and expander
             up_col, down_col, expander_col = st.columns([0.04, 0.04, 0.92])
@@ -8888,7 +8891,7 @@ with st.sidebar:
                     st.session_state.editing_criteria[original_idx]["description"] = description
 
                     # Remove criterion button
-                    if st.button("🗑️ Remove Criterion", key=f"remove_{_stable_id}"):
+                    if st.button("🗑️ Remove Criterion", key=f"remove_{_stable_id}_{version_key}_{ui_ver}"):
                         st.session_state.editing_criteria.pop(original_idx)
                         st.rerun()
 
@@ -9104,7 +9107,7 @@ with st.sidebar:
                     st.rerun()
 
         # Delete Version button
-        if st.button("🗑️ Delete Version", width="stretch", type="secondary"):
+        if st.button("🗑️ Delete Version", width="stretch", type="secondary", disabled=(active_idx is None)):
             # Get the rubric to delete
             rubric_to_delete = rubric_history[active_idx]
             deleted_version = rubric_to_delete.get("version", "?")
