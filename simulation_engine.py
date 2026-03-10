@@ -591,8 +591,12 @@ def headless_alignment_diagnostic(
 
         try:
             rubric_judge_json = json.dumps(rubric_judge_result, indent=2) if rubric_judge_result else "{}"
+            _preferred_draft_sim = drafts.get(user_ranking[0], "") if user_ranking else ""
             suggest_prompt = ALIGNMENT_diagnostic_suggest_and_apply_prompt(
                 rubric_json, rubric_judge_json, ranking_desc, user_reason,
+                preferred_draft=_preferred_draft_sim,
+                rubric_guided_draft=rubric_draft,
+                writing_task=writing_task,
             )
             pipeline_messages.append({"role": "user", "content": suggest_prompt})
             resp = api_call_with_retry(model=model_light, max_tokens=4000, messages=pipeline_messages)

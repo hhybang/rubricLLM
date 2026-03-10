@@ -2169,6 +2169,9 @@ def ALIGNMENT_diagnostic_suggest_and_apply_prompt(
     rubric_judge_results_json: str,
     user_ranking_description: str,
     user_reason: str = "",
+    preferred_draft: str = "",
+    rubric_guided_draft: str = "",
+    writing_task: str = "",
 ) -> str:
     """Generate modified rubric JSON + per-criterion reasons in a single call.
 
@@ -2179,15 +2182,36 @@ def ALIGNMENT_diagnostic_suggest_and_apply_prompt(
     if user_reason.strip():
         user_reason_block = f"\nThe user also said: \"{user_reason.strip()}\"\n"
 
+    task_block = ""
+    if writing_task:
+        task_block = f"\nWRITING TASK:\n{writing_task}\n"
+
+    draft_block = ""
+    if preferred_draft and rubric_guided_draft and preferred_draft != rubric_guided_draft:
+        draft_block = f"""
+THE USER'S PREFERRED DRAFT (the draft the user ranked highest — this is the target style/quality):
+{preferred_draft}
+
+THE RUBRIC-GUIDED DRAFT (generated from the current rubric — this is what the rubric currently produces):
+{rubric_guided_draft}
+
+Compare these two drafts carefully. The preferred draft shows what the user actually wants. The rubric-guided draft shows what the current rubric produces. Your rubric changes should close this gap — modify criteria so that a rubric-guided draft would come out more like the preferred draft.
+"""
+    elif rubric_guided_draft:
+        draft_block = f"""
+THE RUBRIC-GUIDED DRAFT (generated from the current rubric):
+{rubric_guided_draft}
+"""
+
     return f"""You are a rubric improvement advisor. A user just completed an alignment diagnostic
 comparing three drafts of the same writing task:
 1. A **rubric-guided** draft (written following the user's rubric criteria)
 2. A **generic** draft (written with no rubric or preferences — just competent writing)
 3. A **preference-based** draft (written following the user's original stated preferences from before the rubric was created)
-
+{task_block}
 CURRENT RUBRIC:
 {current_rubric_json}
-
+{draft_block}
 RUBRIC JUDGE RESULTS (per-criterion scores for all three drafts, using the rubric):
 Note: In the scores below, draft_a = rubric-guided, draft_b = generic, draft_c = original preference.
 {rubric_judge_results_json}
