@@ -4913,6 +4913,8 @@ with tab1:
             st.session_state.chat_criteria_review_confirmed = False
             st.session_state.chat_classification_feedback = {}
             st.session_state.chat_criteria_hallucination_reasons = {}
+            if "chat_criteria_importance_ranks" in st.session_state:
+                del st.session_state.chat_criteria_importance_ranks
             st.session_state.alignment_check_done = False
             st.session_state.alignment_check_skipped = False
             st.rerun()
@@ -6487,7 +6489,7 @@ with tab1:
 
             # Check for duplicate importance ranks
             _cc_all_ranks = st.session_state.get("chat_criteria_importance_ranks", {})
-            _cc_non_halluc_ranks = {name: rank for name, rank in _cc_all_ranks.items() if _cc_user.get(name) != "hallucinated"}
+            _cc_non_halluc_ranks = {name: rank for name, rank in _cc_all_ranks.items() if name in _cc_user and _cc_user.get(name) != "hallucinated"}
             _cc_rank_values = list(_cc_non_halluc_ranks.values())
             _cc_has_duplicate_ranks = len(_cc_rank_values) != len(set(_cc_rank_values))
 
@@ -8152,6 +8154,8 @@ with tab1:
                             st.session_state.infer_dp_user_mappings = {}
                             st.session_state.chat_classification_feedback = {}
                             st.session_state.chat_criteria_hallucination_reasons = {}
+                            if "chat_criteria_importance_ranks" in st.session_state:
+                                del st.session_state.chat_criteria_importance_ranks
 
                             # Remove existing DP review messages
                             st.session_state.messages = [m for m in st.session_state.messages if not m.get('is_dp_review')]
@@ -8569,6 +8573,8 @@ with st.sidebar:
                     st.session_state.chat_criteria_review_confirmed = False
                     st.session_state.chat_classification_feedback = {}
                     st.session_state.chat_criteria_hallucination_reasons = {}
+                    if "chat_criteria_importance_ranks" in st.session_state:
+                        del st.session_state.chat_criteria_importance_ranks
                     # Clear the text input and collapse expander
                     if 'new_project_name' in st.session_state:
                         del st.session_state.new_project_name
@@ -9603,6 +9609,8 @@ with tab_infer:
                 st.session_state.chat_criteria_review_confirmed = False
                 st.session_state.chat_classification_feedback = {}
                 st.session_state.chat_criteria_hallucination_reasons = {}
+                if "chat_criteria_importance_ranks" in st.session_state:
+                    del st.session_state.chat_criteria_importance_ranks
                 st.rerun()
 
         # ==================== INFERENCE SESSION SELECTOR ====================
