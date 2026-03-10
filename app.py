@@ -2334,8 +2334,10 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list, apply_
                 hist = load_rubric_history()
                 new_version = next_version_number()
                 hist.append({"version": new_version, "rubric": copy.deepcopy(new_criteria), "source": "edit_feedback", "conversation_id": st.session_state.get("selected_conversation")})
-                save_rubric_history(hist)
-                st.session_state.active_rubric_idx = len(hist) - 1
+                db_version = save_rubric_history(hist)
+                # Use DB-assigned version (may differ from local next_version_number)
+                if db_version is not None:
+                    new_version = db_version
                 st.session_state.rubric = new_criteria
                 st.session_state.editing_criteria = new_criteria
                 st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
@@ -3459,25 +3461,38 @@ def invalidate_rubric_cache():
             del st.session_state[cache_key]
 
 def save_rubric_history(history):
-    """Save rubric history to Supabase database (saves only the latest version)"""
+    """Save rubric history to Supabase database (saves only the latest version).
+    Returns the DB-assigned version number, or None on failure.
+    """
     project_id = st.session_state.get('current_project_id')
     if not project_id:
         st.error("No project selected. Please select a project first.")
-        return
+        return None
 
     supabase = st.session_state.get('supabase')
     if not supabase:
         st.error("Database connection not available.")
-        return
+        return None
 
     # Save the latest rubric version
     if history:
         latest = history[-1]
-        db_save_rubric_history(supabase, project_id, latest)
+        result = db_save_rubric_history(supabase, project_id, latest)
+        db_version = None
+        # Update the version in the local data to match what the DB assigned
+        if result and isinstance(result, dict):
+            db_version = result["version"]
+            latest["version"] = db_version
+            latest["id"] = result["id"]
         # Invalidate cache after saving - force reload to get the database-generated ID
         invalidate_rubric_cache()
         # Reload from database to get the proper IDs
-        load_rubric_history(force_reload=True)
+        reloaded = load_rubric_history(force_reload=True)
+        # Update active_rubric_idx to point to the newly saved version
+        if reloaded:
+            st.session_state.active_rubric_idx = len(reloaded) - 1
+        return db_version
+    return None
 
 def next_version_number():
     """Get the next version number for a new rubric"""
@@ -6418,13 +6433,16 @@ with tab1:
                 with _cr_col_rank:
                     if _cr_choice != "Hallucinated":
                         _cr_cur_rank = _cc_existing_ranks.get(_cr_name, 1)
+                        _cr_rank_key = f"cc_rank_{_cr_name}"
+                        # Seed widget cache on first render to ensure it matches initialized ranks
+                        if _cr_rank_key not in st.session_state:
+                            st.session_state[_cr_rank_key] = min(_cr_cur_rank, _cc_total_criteria)
                         _cr_new_rank = st.number_input(
                             "Importance",
                             min_value=1,
                             max_value=_cc_total_criteria,
-                            value=min(_cr_cur_rank, _cc_total_criteria),
                             step=1,
-                            key=f"cc_rank_{_cr_name}",
+                            key=_cr_rank_key,
                         )
                         st.session_state.chat_criteria_importance_ranks[_cr_name] = _cr_new_rank
                 _cc_user[_cr_name] = _cr_choice.lower()
@@ -7123,16 +7141,16 @@ with tab1:
             else:
                 st.info("Writing two versions: one following your rubric, one without it...")
 
+            # Generate each draft INDEPENDENTLY (no shared conversation context)
+            # so the LLM doesn't anchor on previous drafts
             with st.spinner("Generating rubric-guided draft..."):
                 try:
                     _rcp_pr = GRADING_generate_draft_from_rubric_prompt(_rcp_task, _rcp_rubric_json)
-                    _rcp_pipeline_msgs.append({"role": "user", "content": _rcp_pr})
                     _rcp_resp_r = _api_call_with_retry(
                         model=MODEL_LIGHT, max_tokens=1000,
-                        messages=_rcp_pipeline_msgs
+                        messages=[{"role": "user", "content": _rcp_pr}]
                     )
                     _rcp_rubric_draft_text = "".join(b.text for b in _rcp_resp_r.content if b.type == "text").strip()
-                    _rcp_pipeline_msgs.append({"role": "assistant", "content": _rcp_rubric_draft_text})
                     _rcp_drafts["rubric"] = _rcp_rubric_draft_text
                 except Exception as _rcp_e2:
                     st.error(f"Failed to generate rubric draft: {_rcp_e2}")
@@ -7142,13 +7160,11 @@ with tab1:
                 with st.spinner("Generating generic draft..."):
                     try:
                         _rcp_pg = GRADING_generate_draft_generic_prompt(_rcp_task)
-                        _rcp_pipeline_msgs.append({"role": "user", "content": _rcp_pg})
                         _rcp_resp_g = _api_call_with_retry(
                             model=MODEL_LIGHT, max_tokens=1000,
-                            messages=_rcp_pipeline_msgs
+                            messages=[{"role": "user", "content": _rcp_pg}]
                         )
                         _rcp_generic_draft_text = "".join(b.text for b in _rcp_resp_g.content if b.type == "text").strip()
-                        _rcp_pipeline_msgs.append({"role": "assistant", "content": _rcp_generic_draft_text})
                         _rcp_drafts["generic"] = _rcp_generic_draft_text
                     except Exception as _rcp_e3:
                         st.error(f"Failed to generate generic draft: {_rcp_e3}")
@@ -7158,18 +7174,27 @@ with tab1:
                 with st.spinner("Generating preference-based draft..."):
                     try:
                         _rcp_pp = GRADING_generate_draft_from_coldstart_prompt(_rcp_task, _rcp_coldstart_text)
-                        _rcp_pipeline_msgs.append({"role": "user", "content": _rcp_pp})
                         _rcp_resp_p = _api_call_with_retry(
                             model=MODEL_LIGHT, max_tokens=1000,
-                            messages=_rcp_pipeline_msgs
+                            messages=[{"role": "user", "content": _rcp_pp}]
                         )
                         _rcp_pref_draft_text = "".join(b.text for b in _rcp_resp_p.content if b.type == "text").strip()
-                        _rcp_pipeline_msgs.append({"role": "assistant", "content": _rcp_pref_draft_text})
                         _rcp_drafts["preference"] = _rcp_pref_draft_text
                     except Exception as _rcp_e4:
                         st.error(f"Failed to generate preference draft: {_rcp_e4}")
                         # Fall back to 2-draft mode
                         _rcp_has_3_drafts = False
+
+            # Assemble pipeline context for downstream diagnostic (after all drafts generated)
+            if _rcp_drafts.get("rubric"):
+                _rcp_pipeline_msgs.append({"role": "user", "content": _rcp_pr})
+                _rcp_pipeline_msgs.append({"role": "assistant", "content": _rcp_drafts["rubric"]})
+            if _rcp_drafts.get("generic"):
+                _rcp_pipeline_msgs.append({"role": "user", "content": _rcp_pg})
+                _rcp_pipeline_msgs.append({"role": "assistant", "content": _rcp_drafts["generic"]})
+            if _rcp_drafts.get("preference"):
+                _rcp_pipeline_msgs.append({"role": "user", "content": _rcp_pp})
+                _rcp_pipeline_msgs.append({"role": "assistant", "content": _rcp_drafts["preference"]})
 
             _rcp_min_drafts_ok = _rcp_ok and _rcp_drafts.get("rubric") and _rcp_drafts.get("generic")
             if _rcp_min_drafts_ok:
@@ -8960,10 +8985,20 @@ with st.sidebar:
                     draft_appended = False
                     last_draft, _ = get_last_draft_from_messages()
                     if last_draft:
+                        # Build conversation history for context
+                        _lc_conv_parts = []
+                        for _lc_m in st.session_state.messages:
+                            _lc_role = _lc_m.get("role", "")
+                            _lc_content = _lc_m.get("display_content") or _lc_m.get("content", "")
+                            if _lc_role in ("user", "assistant") and _lc_content:
+                                _lc_conv_parts.append(f"[{_lc_role.upper()}]: {_lc_content[:2000]}")
+                        _lc_conv_history = "\n\n".join(_lc_conv_parts[-20:]) if _lc_conv_parts else None
+
                         regenerate_result = regenerate_draft_from_rubric_changes(
                             old_rubric_for_diff,
                             st.session_state.editing_criteria,
-                            last_draft
+                            last_draft,
+                            conversation_history=_lc_conv_history,
                         )
                         if regenerate_result and regenerate_result.get("revised_draft") and not regenerate_result.get("error"):
                             revised_draft = regenerate_result["revised_draft"]
@@ -9049,7 +9084,9 @@ with st.sidebar:
 
                     hist = load_rubric_history()
                     hist.append(new_rubric_entry)
-                    save_rubric_history(hist)
+                    db_version = save_rubric_history(hist)
+                    if db_version is not None:
+                        new_version = db_version
 
                     # Log edit to conversation
                     old_version_num = rubric_history[active_idx].get("version", active_idx + 1) if rubric_history and active_idx is not None else 0
@@ -9079,8 +9116,7 @@ with st.sidebar:
                         except Exception:
                             pass
 
-                    # Update session state to point to new version
-                    st.session_state.active_rubric_idx = len(hist) - 1
+                    # Update session state (active_rubric_idx already set by save_rubric_history)
                     st.session_state.rubric = saved_criteria
                     st.session_state.editing_criteria = copy.deepcopy(saved_criteria)
 

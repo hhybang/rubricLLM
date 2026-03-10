@@ -414,7 +414,7 @@ def save_rubric_history(supabase: Client, project_id: str, rubric_data: Dict) ->
         }).execute()
 
         if response.data:
-            return response.data[0]["id"]
+            return {"id": response.data[0]["id"], "version": next_version}
         return None
     except Exception as e:
         st.error(f"Error saving rubric: {e}")
