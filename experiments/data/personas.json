@@ -1,0 +1,738 @@
+[
+    {
+      "name": "Alex Chen",
+      "role": "Product Manager at a B2B SaaS startup",
+      "writing_type": "professional emails",
+      "project_name": "Work Emails",
+      "core_preferences": "Concise and direct. Professional but not stiff. Clear call to action. Short paragraphs.",
+      "hidden_preferences": "Information should follow a strict emotional arc: acknowledge effort/situation FIRST (1 sentence max), then deliver the news, then explain WHY it matters (stakes, not just facts), then one concrete next step — violating this order even if all elements are present feels wrong. The 'why' framing should always be from the READER's perspective, not the sender's — 'This matters because your team planned around this date' not 'This matters because we want quality'; drafts that center the sender's reasoning feel tone-deaf. Closing lines must be forward-looking and action-oriented — no 'thanks for your patience' or motivational platitudes; trailing sentiment after the CTA weakens the email. When multiple people need to do different things, prefers ONE clear owner with a deadline over group asks — 'Everyone please review' is a non-action — but also hates over-specified action items that assume org structure details the email shouldn't contain.",
+      "dealbreakers": "Corporate jargon, passive aggressive tone, walls of text, excessive exclamation marks",
+      "initial_task": "Help me draft an email to our engineering team about pushing the product launch date by two weeks due to a critical bug we found in testing.",
+      "tasks": [
+        "Help me draft an email to our engineering team about pushing the product launch date by two weeks due to a critical bug we found in testing.",
+        "I need to email a key customer — Priya at Northfield Logistics — letting her know that a feature she requested six months ago is finally shipping next week.",
+        "Help me write an email to our head of sales letting him know we're killing a feature that his team has been demoing to prospects.",
+        "I need to email our engineering and design leads about a scope change on the dashboard redesign.",
+        "Help me draft an email to our board advisor letting her know we're pivoting our pricing model from per-seat to usage-based."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+        "rubric": [
+          {
+            "name": "Emotional Arc Sequencing",
+            "category": "Structure",
+            "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+            "dimensions": [
+              {"id": "ack_before_news", "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"},
+              {"id": "stakes_after_news", "label": "Explains why the news matters AFTER stating it, not before"},
+              {"id": "reader_perspective_stakes", "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"},
+              {"id": "cta_is_final", "label": "The call to action is the last substantive element — nothing trails after it"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Single-Owner Action Items",
+            "category": "Content",
+            "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+            "dimensions": [
+              {"id": "named_owner", "label": "Each action item has a single named person responsible, not a group"},
+              {"id": "has_deadline", "label": "Action items include a specific deadline or timeframe"},
+              {"id": "no_group_asks", "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"},
+              {"id": "no_org_overreach", "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Trailing Sentiment",
+            "category": "Style",
+            "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+            "dimensions": [
+              {"id": "forward_looking_close", "label": "The closing line references a future action or outcome, not past effort or gratitude"},
+              {"id": "no_platitudes", "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"},
+              {"id": "no_post_cta_filler", "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Compression Without Ambiguity",
+            "category": "Style",
+            "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+            "dimensions": [
+              {"id": "no_redundant_sentences", "label": "No sentence restates information already conveyed in another sentence"},
+              {"id": "cut_over_compress", "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"},
+              {"id": "one_idea_per_sentence", "label": "Each sentence carries one main idea — no run-ons or stacked clauses"}
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+      }
+    },
+    {
+      "name": "Miriam Osei",
+      "role": "VP of People Operations at a 200-person tech company",
+      "writing_type": "professional emails",
+      "project_name": "HR Communications",
+      "core_preferences": "Warm but precise. Policy-aware without sounding legalistic. Inclusive language.",
+      "hidden_preferences": "When communicating policy changes, always leads with the PROBLEM the policy solves from the employee's perspective — not with the policy itself; employees need to understand why before they'll accept what. Uses 'you' and 'your' heavily but never 'I' in the subject position when delivering decisions — decisions come from 'the team' or 'we' because singling out the decision-maker invites personal pushback rather than constructive feedback. Always provides a specific channel for questions (not just 'feel free to reach out') and names the PERSON, not the role — 'Ask Jamal in Benefits' not 'Contact HR'; anonymizing the point of contact feels bureaucratic. When announcing something that affects compensation or workload, always includes the EXACT timeline with dates, never relative timeframes like 'in the coming weeks' — people planning their lives need precision.",
+      "dealbreakers": "Legalistic hedging that obscures the message, corporate euphemisms for negative changes, addressing employees as 'resources' or 'headcount'",
+      "initial_task": "Help me draft an email to all employees about switching our health insurance provider next quarter — the new plan has better mental health coverage but slightly higher deductibles.",
+      "tasks": [
+        "Help me draft an email to all employees about switching our health insurance provider next quarter — the new plan has better mental health coverage but slightly higher deductibles.",
+        "I need to email managers about a new policy requiring them to document performance concerns before initiating any PIP — we've had inconsistency and some legal exposure.",
+        "Help me write an email to the company about eliminating our unlimited PTO policy and replacing it with a structured 25-day policy — the data showed people were actually taking less time off under unlimited.",
+        "I need to draft an email to a team of 15 whose manager just left unexpectedly — I need to communicate interim leadership, reassure the team, and give them a clear point of contact.",
+        "Help me write an email to all employees about a new parental leave policy that extends paid leave from 8 to 16 weeks — but it only applies to employees hired after a certain date due to budget constraints."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes HR communications that treat employees as intelligent adults who deserve to understand why things change. Prioritizes trust-building through transparency and precision over polished corporate messaging.",
+        "rubric": [
+          {
+            "name": "Problem-First Policy Framing",
+            "category": "Structure",
+            "description": "Policy changes lead with the employee-facing problem the policy solves, not with the policy itself. The reader should understand and care about the 'why' before encountering the 'what.'",
+            "dimensions": [
+              {"id": "problem_before_policy", "label": "The email describes the problem or need before introducing the policy change"},
+              {"id": "employee_perspective_problem", "label": "The problem is framed from the employee's experience, not the company's operational needs"},
+              {"id": "why_before_what", "label": "The rationale appears before the specific details of the change"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Decision Attribution",
+            "category": "Style",
+            "description": "Decisions are attributed to 'we' or 'the team,' never 'I decided.' The sender avoids making themselves the target by using collective framing, which channels responses toward constructive feedback rather than personal pushback.",
+            "dimensions": [
+              {"id": "collective_subject", "label": "Decisions use 'we' or 'the leadership team' as subject, not 'I'"},
+              {"id": "no_personal_authority", "label": "Does not frame the change as the sender's personal choice or preference"},
+              {"id": "invites_input_not_appeal", "label": "Questions are directed toward understanding, not appealing the decision — 'questions about how this works' not 'if you disagree'"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Named Human Contact Point",
+            "category": "Content",
+            "description": "Questions are directed to a specific named person, not a role or generic channel. 'Ask Jamal in Benefits' not 'Contact HR.' Naming the person signals accessibility and accountability.",
+            "dimensions": [
+              {"id": "named_person", "label": "The point of contact is a specific person's name, not a department or role title"},
+              {"id": "specific_channel", "label": "Includes how to reach them (Slack, email, office hours) — not just 'reach out'"},
+              {"id": "no_generic_contact", "label": "Does not use 'contact HR' or 'reach out to your manager' without a name"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Absolute Date Precision",
+            "category": "Content",
+            "description": "Any change affecting compensation, benefits, or workload includes exact dates — never relative timeframes like 'in the coming weeks' or 'soon.' People planning their lives need precision.",
+            "dimensions": [
+              {"id": "exact_dates", "label": "All timelines use specific dates (e.g., 'March 15') not relative terms ('next month', 'soon')"},
+              {"id": "effective_date_explicit", "label": "The effective date of the change is stated explicitly, not implied"},
+              {"id": "transition_timeline", "label": "If there's a transition period, both start and end dates are provided"}
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Miriam's non-negotiable is that employees are treated as adults who deserve the full picture. Will reject any draft that buries the 'why' or uses vague timelines. Prefers warmth but will sacrifice it for precision — never the reverse."
+      }
+    },
+    {
+      "name": "Derek Liang",
+      "role": "Founding engineer at a seed-stage startup",
+      "writing_type": "professional emails",
+      "project_name": "Startup Emails",
+      "core_preferences": "Extremely terse. No greeting or sign-off in internal emails. Gets to the point in the first sentence.",
+      "hidden_preferences": "Subject lines ARE the message — if the entire email can fit in the subject line, it should ('Subject: Deploy blocked — Redis cert expires Friday, need DevOps eyes'). The body only exists for context the subject can't hold. Never uses bullet points for fewer than 3 items — two items in a list should be a sentence. Treats reply-all as a code smell — every email should have exactly one intended responder, and if multiple people need to act, sends separate emails with different asks. Code snippets, log lines, or error messages should be pasted directly, never described in prose — 'the auth service is returning 403s' is worse than pasting the actual error. Time references are always in UTC with explicit timezone for anything involving deployment or incidents.",
+      "dealbreakers": "Emails longer than 5 sentences for internal communication, greetings like 'Hope this finds you well', cc'ing people 'for visibility' without stating why",
+      "initial_task": "Help me email our backend engineer about a memory leak I found in the payment processing service — it's not critical yet but will be if we hit Black Friday traffic.",
+      "tasks": [
+        "Help me email our backend engineer about a memory leak I found in the payment processing service — it's not critical yet but will be if we hit Black Friday traffic.",
+        "I need to email our CEO about pushing back on a feature request from our biggest customer — the ask would require rewriting our permissions model.",
+        "Help me write an email to our contractor letting them know their PR has a critical SQL injection vulnerability and needs to be fixed before we can merge.",
+        "I need to email our designer about the onboarding flow — the current design requires 6 clicks to reach the dashboard and I think we can cut it to 2.",
+        "Help me draft an email to our investor letting them know we're burning faster than projected and need to discuss runway — but the product metrics are strong."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Treats email as a synchronous interrupt — every email should cost the reader the minimum possible time. Information density is maximized, social niceties are stripped, and the subject line does the heavy lifting.",
+        "rubric": [
+          {
+            "name": "Subject Line as Message",
+            "category": "Structure",
+            "description": "The subject line contains the core message, not just a topic label. If the entire email fits in the subject, it goes there. The body only exists for context the subject can't carry.",
+            "dimensions": [
+              {"id": "subject_contains_message", "label": "Subject line conveys the key point or ask, not just a topic ('Deploy blocked — Redis cert' not 'Redis issue')"},
+              {"id": "body_is_context_only", "label": "The email body adds context, evidence, or detail — never repeats what the subject already said"},
+              {"id": "subject_is_scannable", "label": "Subject is parseable in an inbox preview without opening the email"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Raw Evidence Over Prose Description",
+            "category": "Content",
+            "description": "Error messages, log lines, code snippets, and data are pasted directly rather than described in prose. 'The auth service is returning 403s' is worse than pasting the actual error output.",
+            "dimensions": [
+              {"id": "paste_not_describe", "label": "Technical evidence (errors, logs, metrics) is pasted verbatim, not paraphrased"},
+              {"id": "minimal_framing", "label": "Raw evidence has at most one sentence of framing, not a paragraph of explanation"},
+              {"id": "no_prose_for_data", "label": "Quantitative data appears as numbers or output, not written out in sentences"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Single Responder Principle",
+            "category": "Audience",
+            "description": "Every email has exactly one intended responder. If multiple people need to act, they get separate emails with different asks. Reply-all and 'everyone please' are treated as failures.",
+            "dimensions": [
+              {"id": "one_responder", "label": "The email is addressed to one person who needs to act, not a group"},
+              {"id": "no_reply_all_bait", "label": "Does not create situations where multiple people might respond with overlapping answers"},
+              {"id": "cc_justified", "label": "Anyone CC'd has an explicit reason stated, or is not CC'd at all"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Radical Brevity",
+            "category": "Style",
+            "description": "Internal emails are 5 sentences or fewer. No greetings, no sign-offs, no social padding. Two items are a sentence, not a list — bullet points only for 3+ items.",
+            "dimensions": [
+              {"id": "five_sentences_max", "label": "Email body is 5 sentences or fewer for internal communication"},
+              {"id": "no_social_padding", "label": "No 'hope you're well', 'thanks in advance', or similar social filler"},
+              {"id": "no_short_lists", "label": "Two items are written as a sentence — bullet points only used for 3 or more items"}
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Derek optimizes for inbox velocity — his emails are designed to be processed in under 10 seconds. Non-negotiable: the subject line must carry the message. Will reject any draft with social pleasantries in internal emails. External emails (investors, customers) get slightly more padding but same structure."
+      }
+    },
+    {
+      "name": "Carmen Vasquez",
+      "role": "Chief of Staff at a mid-size healthcare company",
+      "writing_type": "professional emails",
+      "project_name": "Executive Communications",
+      "core_preferences": "Diplomatic and polished. Balances multiple stakeholders. Reads the room before writing.",
+      "hidden_preferences": "When writing on behalf of a senior executive, the email must sound like that person — not like a well-written email from an anonymous professional; this means mirroring the exec's known verbal patterns and vocabulary level. Always positions requests as serving the RECIPIENT's interest, even when the ask primarily benefits the sender — 'This will help your team plan' not 'We need this for our planning'; the reframe must be genuine, not manipulative. In emails with multiple stakeholders CC'd, carefully controls what each person learns — the primary recipient gets the ask, but the CC'd audience gets a specific signal (that this is happening, that someone is accountable, that leadership is watching). Never uses conditional language ('would you be able to', 'if possible') for things that are actually required — conditional framing for non-negotiable requests undermines authority and creates ambiguity. But genuine options always get genuine optionality language.",
+      "dealbreakers": "Emails that accidentally reveal information to the wrong audience in CC, requests disguised as suggestions when they're actually directives, tone that doesn't match the voice of the exec being represented",
+      "initial_task": "Help me draft an email from our CEO to department heads about a company-wide hiring freeze — the CEO is direct but empathetic, and the CFO and board chair will be CC'd.",
+      "tasks": [
+        "Help me draft an email from our CEO to department heads about a company-wide hiring freeze — the CEO is direct but empathetic, and the CFO and board chair will be CC'd.",
+        "I need to email the VP of Sales on behalf of the COO asking him to revise his Q3 forecast downward — the board expects accuracy over optimism, and the CFO will be CC'd.",
+        "Help me write an email from the CEO to the full company about a reorganization that eliminates one management layer — some people's reporting lines change, no one is being laid off.",
+        "I need to draft an email from the CEO to a departing executive's direct reports explaining the transition — the departure wasn't entirely voluntary but we can't say that.",
+        "Help me write an email from the COO to cross-functional leads asking them to cut 15% from their Q4 budgets — this is mandatory but we want to frame it as empowering them to prioritize."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+        "rubric": [
+          {
+            "name": "CC Audience Awareness",
+            "category": "Audience",
+            "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+            "dimensions": [
+              {"id": "cc_has_purpose", "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"},
+              {"id": "no_info_leaks", "label": "Nothing in the email reveals information inappropriate for any CC'd reader"},
+              {"id": "primary_vs_secondary_clear", "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"},
+              {"id": "cc_signal_intentional", "label": "The CC list itself sends a message — the choice of who is included is deliberate"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Directive Clarity",
+            "category": "Style",
+            "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+            "dimensions": [
+              {"id": "no_false_conditionals", "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"},
+              {"id": "genuine_options_flagged", "label": "Truly optional items use optionality language to distinguish them from requirements"},
+              {"id": "authority_matches_ask", "label": "The level of directness matches the sender's authority relative to the recipient"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Recipient-Interest Framing",
+            "category": "Content",
+            "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+            "dimensions": [
+              {"id": "recipient_benefit_stated", "label": "The email explains how the ask serves the recipient or their team, not just the sender"},
+              {"id": "genuine_not_manipulative", "label": "The benefit framing is credible — the recipient would agree it serves them if asked"},
+              {"id": "no_sender_centering", "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Voice Matching",
+            "category": "Style",
+            "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+            "dimensions": [
+              {"id": "exec_vocabulary", "label": "Uses words and phrases the named executive would actually use"},
+              {"id": "matches_known_style", "label": "Sentence length, formality level, and directness match the executive's established pattern"},
+              {"id": "not_generic_professional", "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"}
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+      }
+    },
+    {
+      "name": "Kofi Mensah",
+      "role": "Regional Sales Director at an enterprise software company",
+      "writing_type": "professional emails",
+      "project_name": "Sales Emails",
+      "core_preferences": "Confident without arrogance. Relationship-first but always advancing the deal. Clear next steps.",
+      "hidden_preferences": "Every email to a prospect must reference something SPECIFIC from a previous interaction — a comment they made, a concern they raised, a goal they mentioned — never a generic callback like 'as we discussed'; this proves the sender was listening and distinguishes the email from a template. Price and commercial terms are never introduced in email — email establishes the need and books the conversation; putting numbers in writing before a live discussion loses all negotiation leverage. When following up after silence, reframes the value proposition rather than asking 'just checking in' — each follow-up must give the prospect a NEW reason to respond, whether it's a customer win, a relevant data point, or a deadline. Internal emails about deals always lead with the RISK to closing, not the opportunity — 'they're evaluating a competitor's pilot' is more actionable than 'great meeting, they're interested.'",
+      "dealbreakers": "Generic follow-ups ('just touching base'), revealing pricing in email before a live conversation, emails that sound like templates, internal updates that are only positive without flagging risks",
+      "initial_task": "Help me draft a follow-up email to a VP of Operations at a logistics company after our second demo — she was impressed with the routing optimization but concerned about integration with their legacy TMS.",
+      "tasks": [
+        "Help me draft a follow-up email to a VP of Operations at a logistics company after our second demo — she was impressed with the routing optimization but concerned about integration with their legacy TMS.",
+        "I need to email a prospect who went dark after receiving our proposal two weeks ago — they were excited in the meeting but haven't responded since.",
+        "Help me write an email introducing our solution to a CTO I met at a conference — we had a 5-minute conversation about their data pipeline challenges.",
+        "I need to draft an internal email to my VP updating her on a deal that's at risk — the champion we were working with just left the company.",
+        "Help me write a follow-up email to a CFO who asked for ROI data during our last call — I want to share a relevant case study without putting our pricing in writing."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes sales emails that feel like personal correspondence, not campaigns. Every email advances the relationship and the deal simultaneously. Treats email as a tool for creating conversations, never for closing them.",
+        "rubric": [
+          {
+            "name": "Specific Callback",
+            "category": "Content",
+            "description": "Every prospect email references something specific from a prior interaction — a concern they raised, a phrase they used, a goal they mentioned. Never generic callbacks like 'as we discussed' or 'following up on our meeting.'",
+            "dimensions": [
+              {"id": "specific_reference", "label": "References a specific comment, question, or concern the prospect raised in a prior interaction"},
+              {"id": "not_templateable", "label": "The reference could not apply to a different prospect — it's unique to this person"},
+              {"id": "no_generic_callbacks", "label": "Does not use 'as discussed', 'per our conversation', or 'following up on our meeting' without specifics"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "No Commercial Terms in Writing",
+            "category": "Content",
+            "description": "Price, discounts, contract terms, and commercial details are never put in email. Email establishes need and books conversations. Numbers in writing before a live discussion forfeit negotiation leverage.",
+            "dimensions": [
+              {"id": "no_pricing", "label": "Does not include any specific pricing, discount percentages, or contract terms"},
+              {"id": "drives_to_conversation", "label": "Steers toward a live meeting or call for any commercial discussion"},
+              {"id": "value_not_cost", "label": "Discusses value, outcomes, and ROI — never the cost to achieve them"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Re-engagement Over Check-ins",
+            "category": "Style",
+            "description": "Follow-ups after silence never 'just check in.' Each follow-up provides a new reason to respond — a relevant customer win, fresh data, a deadline, or a reframed value proposition.",
+            "dimensions": [
+              {"id": "new_value_each_touch", "label": "Each follow-up email introduces new information the prospect didn't have before"},
+              {"id": "no_checking_in", "label": "Does not use 'just checking in', 'touching base', 'wanted to follow up', or equivalent"},
+              {"id": "reason_to_respond_now", "label": "Creates a specific, time-relevant reason for the prospect to reply"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Risk-First Internal Updates",
+            "category": "Structure",
+            "description": "Internal deal updates lead with the risk to closing, not the opportunity. 'They're evaluating a competitor pilot' is more useful than 'great meeting, they're interested.'",
+            "dimensions": [
+              {"id": "risk_leads", "label": "The first substantive sentence identifies the primary risk or blocker to the deal"},
+              {"id": "ask_is_specific", "label": "The internal email requests a specific action to mitigate the risk, not just awareness"},
+              {"id": "no_false_optimism", "label": "Does not lead with or overweight positive signals when risks exist"}
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Kofi treats every prospect email as proof he was listening — specificity is his differentiator from competitors' outreach. Non-negotiable: never put pricing in email. Will reject any follow-up that doesn't give the prospect a new reason to respond."
+      }
+    },
+    {
+      "name": "Rachel Thornton",
+      "role": "Engineering Manager at a Series C fintech",
+      "writing_type": "professional emails",
+      "project_name": "Engineering Emails",
+      "core_preferences": "Async-first communication. Provides full context so recipients can act without scheduling a meeting.",
+      "hidden_preferences": "Every email about a decision includes the OPTIONS CONSIDERED and why the chosen path was picked — stating a decision without alternatives is just issuing an edict, and engineers need to understand the tradeoff space to stay aligned. Links to documents, PRs, or dashboards replace inline explanations — if it exists somewhere, link it; duplicating information in email creates drift. When requesting a review or input, always specifies WHAT KIND of feedback is needed ('architecture concerns only' vs 'line-level review') and the deadline — unbounded review requests get deprioritized. Thread discipline: one topic per email thread, ever; if the conversation drifts to a new topic, starts a new thread with a new subject line rather than continuing.",
+      "dealbreakers": "Emails that could have been a Slack message, scheduling meetings for things that could be resolved async, burying the decision in the middle of context paragraphs",
+      "initial_task": "Help me draft an email to my team about our decision to migrate from REST to gRPC for inter-service communication — we considered GraphQL too but ruled it out.",
+      "tasks": [
+        "Help me draft an email to my team about our decision to migrate from REST to gRPC for inter-service communication — we considered GraphQL too but ruled it out.",
+        "I need to email my team asking for architecture review on a new caching layer proposal — I only want feedback on the invalidation strategy, not the implementation details yet.",
+        "Help me write an email to the platform team about an incident where our service caused cascading failures — I need to share the postmortem findings and the remediation plan.",
+        "I need to email my skip-level manager about promoting one of my senior engineers to staff level — I need to make the case with specific evidence.",
+        "Help me draft an email to the security team requesting an exception to a new policy that would break our CI/CD pipeline — I have a mitigation plan."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {"id": "alternatives_listed", "label": "Names at least one alternative that was seriously considered"},
+              {"id": "rejection_rationale", "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"},
+              {"id": "tradeoff_acknowledged", "label": "Acknowledges what the chosen option sacrifices compared to alternatives"},
+              {"id": "decision_not_buried", "label": "The decision itself appears in the first two sentences, not after paragraphs of context"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {"id": "links_to_sources", "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"},
+              {"id": "no_content_duplication", "label": "Does not reproduce information that's already available at a linked source"},
+              {"id": "link_context_sufficient", "label": "Each link has enough surrounding context that the reader knows why to click it"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {"id": "feedback_scope_stated", "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"},
+              {"id": "review_deadline", "label": "Includes a specific deadline or timeframe for the review"},
+              {"id": "out_of_scope_noted", "label": "Explicitly notes what is NOT in scope for this review round"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {"id": "single_topic", "label": "The email addresses exactly one topic — does not bundle unrelated items"},
+              {"id": "subject_matches_content", "label": "The subject line accurately describes the current content, not a prior topic in the thread"},
+              {"id": "new_thread_for_new_topic", "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"}
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "name": "James Okafor",
+      "role": "Clinic administrator at a multi-site dermatology practice",
+      "writing_type": "professional emails",
+      "project_name": "Clinic Emails",
+      "core_preferences": "Clear and respectful. HIPAA-conscious. Balances medical staff and administrative staff as audiences.",
+      "hidden_preferences": "Never names patients in any email, even internal ones — uses case numbers or 'the patient in Room 3'-style references because email isn't a secure channel and habits matter more than rules. When communicating schedule changes or new procedures, always includes the IMPACT ON PATIENT FLOW first — how many extra minutes per appointment, which rooms are affected, what the patient will experience differently — before explaining the operational reason. Staff instructions always include a FALLBACK for when the new process fails — 'if the system is down, do X instead' — because clinical settings can't just stop when technology breaks. Uses numbered steps for any process that involves more than two actions, but caps at 5 steps — if a process needs more than 5 steps in an email, it needs a training session, not an email.",
+      "dealbreakers": "Patient names in email, instructions without fallback procedures, emails that assume all recipients have the same technical literacy, process changes communicated only once with no follow-up mechanism",
+      "initial_task": "Help me email the front desk staff about a new patient check-in procedure using tablets instead of paper forms — the system might have connectivity issues in our older building.",
+      "tasks": [
+        "Help me email the front desk staff about a new patient check-in procedure using tablets instead of paper forms — the system might have connectivity issues in our older building.",
+        "I need to email our dermatologists about a new insurance pre-authorization requirement that adds 48 hours to certain procedure approvals — it affects their scheduling.",
+        "Help me write an email to all staff about rearranging the waiting room to comply with new accessibility requirements — some patients will experience a different flow.",
+        "I need to draft an email to the billing team about a change in how we code telehealth visits — the insurance companies updated their requirements and we've been coding some incorrectly.",
+        "Help me email the clinical staff about implementing a new electronic consent form process — the old paper forms are being phased out but we need a paper backup."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {"id": "patient_impact_leads", "label": "The first substantive paragraph describes how the change affects patient experience or flow"},
+              {"id": "quantified_time_impact", "label": "Includes specific time estimates for how the change affects appointment duration or wait times"},
+              {"id": "operational_reason_follows", "label": "The business or compliance reason for the change appears after the patient impact, not before"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {"id": "fallback_stated", "label": "Includes a specific 'if X fails, do Y instead' instruction"},
+              {"id": "fallback_is_actionable", "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"},
+              {"id": "failure_scenario_named", "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {"id": "no_patient_names", "label": "Does not include any patient names, initials, or uniquely identifying information"},
+              {"id": "uses_neutral_references", "label": "Refers to patients by case number, room number, appointment time, or generic reference"},
+              {"id": "no_clinical_details", "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {"id": "numbered_steps", "label": "Processes with more than two actions use numbered steps"},
+              {"id": "max_five_steps", "label": "No process in the email exceeds 5 numbered steps"},
+              {"id": "complex_deferred", "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"}
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "name": "Aisha Patel",
+      "role": "Senior Consultant at a management consulting firm",
+      "writing_type": "professional emails",
+      "project_name": "Client Emails",
+      "core_preferences": "Structured and analytical. Options-oriented. Balances authority with collaboration.",
+      "hidden_preferences": "Every client email that presents a recommendation must include exactly TWO options — the recommended path and one credible alternative — because presenting only one option feels like the consultant already decided, and three or more creates decision paralysis. The recommended option is always listed SECOND, not first — this creates a contrast effect where the reader sees the adequate option, then the better one, and feels like they chose rather than being told. Status updates must quantify progress against the original scope — 'we've completed 3 of 5 workstreams' not 'things are on track'; vague progress claims erode client trust even when true. Internal emails use the pyramid structure strictly: conclusion first, key reasons, supporting detail — but client emails REVERSE this to build-up, because clients need to feel the logic unfolding rather than being told the answer.",
+      "dealbreakers": "Presenting three or more options to a client, burying the recommendation at the end, internal emails that don't lead with the conclusion, using 'I think' instead of 'our analysis shows'",
+      "initial_task": "Help me email our client's COO with a recommendation about whether to consolidate their three regional warehouses into one central hub or upgrade the existing facilities — we think consolidation is right but the upgrade has merit.",
+      "tasks": [
+        "Help me email our client's COO with a recommendation about whether to consolidate their three regional warehouses into one central hub or upgrade the existing facilities.",
+        "I need to email a client's VP of Finance with our mid-project status update — we're on track but discovered a data quality issue that might extend one workstream by two weeks.",
+        "Help me write an email to a client's CEO recommending they restructure their sales team from geographic to industry verticals — the alternative is keeping geographic but adding specialist overlays.",
+        "I need to draft an internal email to my partner summarizing where we are on three active engagements — one is going well, one is at risk, and one needs additional staffing.",
+        "Help me email a prospective client after a capabilities presentation — they asked us to propose on a supply chain diagnostic but we think they actually need a broader operations review."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {"id": "exactly_two_options", "label": "Presents exactly two options — not one, not three or more"},
+              {"id": "recommended_second", "label": "The recommended option is presented second, after the alternative"},
+              {"id": "alternative_is_credible", "label": "The non-recommended option is presented as genuinely viable, not a strawman"},
+              {"id": "recommendation_explicit", "label": "Clearly states which option is recommended and why, after presenting both"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {"id": "progress_against_scope", "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"},
+              {"id": "no_vague_status", "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"},
+              {"id": "risks_quantified", "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {"id": "internal_pyramid", "label": "Internal emails state the conclusion or ask in the first sentence"},
+              {"id": "client_buildup", "label": "Client emails build the logical case before stating the recommendation"},
+              {"id": "logic_is_visible", "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {"id": "analysis_not_opinion", "label": "Recommendations reference data, analysis, or evidence — not personal judgment"},
+              {"id": "no_i_think", "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"},
+              {"id": "evidence_cited", "label": "Each recommendation links to a specific finding, data point, or analysis outcome"}
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "name": "Tom Brennan",
+      "role": "Construction Project Manager at a commercial general contractor",
+      "writing_type": "professional emails",
+      "project_name": "Project Emails",
+      "core_preferences": "Direct and documented. CYA-aware — every email is a potential exhibit. Clear accountability.",
+      "hidden_preferences": "Every email about a problem or delay includes the COST IMPACT in dollars or schedule days before anything else — 'this adds $12K and 3 days' before explaining the cause; people respond to numbers faster than narratives. When documenting a disagreement or change order, uses precise non-inflammatory language that reads well in arbitration — 'the architect's revised drawing differs from the approved submittal' not 'the architect changed the design without telling us'; the email must be factual enough to read in court without editorial. Always separates the NOTIFICATION from the REQUEST — 'this happened' and 'here's what I need from you' are two distinct paragraphs, never merged, because contractual notice requirements demand clear evidence of when parties were informed vs. when they were asked to act. Attaches photos or markup to any email about site conditions — verbal descriptions of physical problems are ambiguous in ways photos aren't, and the timestamp on the photo matters legally.",
+      "dealbreakers": "Emotional language in emails about disputes, combining notification and request in the same sentence, estimates without dollar figures, emails about site problems without photo documentation",
+      "initial_task": "Help me email the structural engineer about a discrepancy we found between the foundation drawings and the actual site conditions — the footer depth doesn't match and it'll cost us time and money.",
+      "tasks": [
+        "Help me email the structural engineer about a discrepancy we found between the foundation drawings and the actual site conditions — the footer depth doesn't match.",
+        "I need to email the owner's representative about a weather delay claim — we lost 4 working days to rain this month and it pushes the completion date.",
+        "Help me write an email to a subcontractor who missed their installation deadline by a week and it's now affecting two other trades on the critical path.",
+        "I need to draft an email to the architect requesting clarification on a wall section detail — three trades have interpreted it differently and we need one answer before we can proceed.",
+        "Help me email the owner about a change order for unforeseen soil conditions — we hit rock where the geotech report said clay, and it requires different equipment."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes construction emails that function as both communication and legal documentation. Every email is written with the awareness that it may be read in arbitration. Cost impact leads, language is precise and non-inflammatory, and notification is separated from request.",
+        "rubric": [
+          {
+            "name": "Cost/Schedule Impact First",
+            "category": "Structure",
+            "description": "Every problem or delay email opens with the cost impact in dollars and/or schedule days before explaining the cause or context. Numbers create urgency and clarity faster than narrative.",
+            "dimensions": [
+              {"id": "dollar_amount_first", "label": "The cost or schedule impact appears in the first two sentences, before the explanation"},
+              {"id": "quantified_impact", "label": "Impact is stated in specific dollars, days, or both — never 'significant' or 'substantial'"},
+              {"id": "cause_follows_impact", "label": "The explanation of what caused the impact appears after the numbers, not before"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Arbitration-Ready Language",
+            "category": "Style",
+            "description": "Language is precise, factual, and non-inflammatory. Emails about disputes or changes use language that reads well in legal proceedings — stating facts without editorial commentary or emotional framing.",
+            "dimensions": [
+              {"id": "factual_not_editorial", "label": "Describes what happened without characterizing intent, blame, or motive"},
+              {"id": "precise_references", "label": "References specific documents, dates, submittal numbers, or drawing revisions — not vague summaries"},
+              {"id": "no_inflammatory_language", "label": "Avoids words like 'failed to', 'refused', 'ignored' — uses neutral equivalents like 'did not provide', 'has not responded'"},
+              {"id": "reads_well_in_court", "label": "A neutral reader (judge, arbitrator) would find the tone professional and the facts verifiable"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Notification/Request Separation",
+            "category": "Structure",
+            "description": "Notification ('this happened') and request ('here's what I need') are always in separate, clearly distinct paragraphs. Contractual notice requirements demand clear evidence of when a party was informed vs. when they were asked to act.",
+            "dimensions": [
+              {"id": "separate_paragraphs", "label": "The notification of the issue and the request for action are in different paragraphs"},
+              {"id": "notification_standalone", "label": "The notification paragraph is a complete statement of fact that stands alone without the request"},
+              {"id": "request_is_specific", "label": "The request paragraph names who needs to do what by when"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Visual Documentation Attached",
+            "category": "Content",
+            "description": "Emails about physical site conditions always reference attached photos or markup. Verbal descriptions of physical problems are ambiguous in ways photos aren't, and timestamps matter legally.",
+            "dimensions": [
+              {"id": "photos_referenced", "label": "Email references attached photos, markups, or visual documentation for physical conditions"},
+              {"id": "photos_described", "label": "Each attached photo has a brief description of what it shows and why it matters"},
+              {"id": "timestamp_noted", "label": "The date the photo was taken or the condition was observed is stated explicitly"}
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Tom writes every email as if it will be read aloud in a deposition — because it might be. Non-negotiable: dollar impact in the first two sentences, and notification is always separated from request. Will reject any email with emotional or editorial language about disputes."
+      }
+    },
+    {
+      "name": "Lin Zhang",
+      "role": "University department administrator managing faculty and graduate students",
+      "writing_type": "professional emails",
+      "project_name": "Department Emails",
+      "core_preferences": "Respectful of faculty autonomy. Policy-aware but human. Handles sensitive academic politics.",
+      "hidden_preferences": "When communicating a deadline or requirement to faculty, always frames it as an EXTERNAL constraint ('the dean's office requires' or 'the accreditation body needs') rather than a personal ask — faculty respond better to institutional requirements than to administrative requests, and the admin should never be positioned as the enforcer. Emails about budget or resource allocation always include what was ASKED FOR vs. what was APPROVED and why the gap exists — faculty who understand the constraint accept the outcome better than faculty who just see a number. When CC'ing a chair or dean on an email, never does it to escalate — the CC is always to INFORM, and the email explicitly states 'copying Dr. X for awareness' to prevent misreading the CC as a threat. For graduate student communications, always provides the specific form, link, or resource they need — never tells them to 'check the website'; graduate students navigating bureaucracy need hand-holding on process even when they're brilliant at their work.",
+      "dealbreakers": "Positioning the admin as the authority enforcing rules on faculty, CC'ing superiors without stating why, telling students to 'check the website' for process questions, using academic hierarchy language that makes staff feel subordinate to faculty",
+      "initial_task": "Help me email the faculty about the annual course preference survey deadline — the provost's office needs it by next Friday and half the faculty haven't submitted.",
+      "tasks": [
+        "Help me email the faculty about the annual course preference survey deadline — the provost's office needs it by next Friday and half the faculty haven't submitted.",
+        "I need to email a professor whose travel reimbursement request exceeds the approved budget — they requested $3,200 but the department can only cover $2,400 due to a college-wide cap.",
+        "Help me write an email to graduate students about the thesis formatting review deadline — they need to book an appointment with the graduate school and the slots fill up fast.",
+        "I need to email the department chair about a scheduling conflict between two faculty who both want the same classroom and time slot — one is senior and one is newly hired.",
+        "Help me draft an email to faculty about a new mandatory training requirement from the provost's office — it's about research compliance and they have to complete it by end of semester."
+      ],
+      "rubric": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes academic administrative emails that respect faculty autonomy while still achieving compliance. Positions requirements as institutional obligations rather than personal requests, and always provides concrete resources rather than sending people to 'check' things.",
+        "rubric": [
+          {
+            "name": "External Constraint Framing",
+            "category": "Audience",
+            "description": "Requirements and deadlines are attributed to the institutional source (dean's office, accreditation body, provost) rather than presented as the administrator's own ask. Faculty respond to institutional obligations differently than to administrative requests.",
+            "dimensions": [
+              {"id": "source_attributed", "label": "The deadline or requirement names the specific office, body, or regulation it comes from"},
+              {"id": "admin_not_enforcer", "label": "The email positions the administrator as relaying or facilitating the requirement, not imposing it"},
+              {"id": "institutional_language", "label": "Uses 'the provost's office requires' or 'accreditation standards mandate' rather than 'I need you to' or 'please make sure to'"}
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Budget Gap Transparency",
+            "category": "Content",
+            "description": "Budget communications include what was requested, what was approved, and why the gap exists. Faculty who understand the constraint accept the outcome better than faculty who just see a number.",
+            "dimensions": [
+              {"id": "requested_vs_approved", "label": "States both the requested amount and the approved amount"},
+              {"id": "gap_reason_stated", "label": "Explains the specific constraint causing the gap (college cap, policy limit, fund depletion)"},
+              {"id": "not_apologetic", "label": "Presents the gap as a factual constraint, not an apology — does not use 'unfortunately' or 'I wish I could'"}
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Direct Resource Provision",
+            "category": "Content",
+            "description": "Emails about processes include the specific form, link, contact, or resource needed — never tells the reader to 'check the website' or 'refer to the handbook.' Especially critical for graduate students navigating bureaucracy.",
+            "dimensions": [
+              {"id": "specific_link_or_form", "label": "Includes a direct link to the form, portal, or resource — not a generic website URL"},
+              {"id": "no_check_the_website", "label": "Does not tell the reader to find information on their own when the sender could provide it directly"},
+              {"id": "step_by_step_if_complex", "label": "If the process has multiple steps, provides them in order rather than pointing to a general resource"}
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Transparent CC Purpose",
+            "category": "Audience",
+            "description": "When CC'ing a chair, dean, or other authority, the email explicitly states why they're copied ('copying Dr. X for awareness') to prevent the CC from being misread as escalation or threat.",
+            "dimensions": [
+              {"id": "cc_reason_stated", "label": "The email includes a phrase like 'copying X for awareness' or 'cc'ing X as this relates to their area'"},
+              {"id": "cc_not_escalation", "label": "The CC is framed as informational, not as implicit pressure on the recipient"},
+              {"id": "tone_unchanged_by_cc", "label": "The email reads the same way whether or not the CC'd person was included — no performative language for the CC audience"}
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Lin operates in a context where faculty are peers, not subordinates, and the administrator's authority is relational, not hierarchical. Non-negotiable: never position yourself as the enforcer. Will reject any email that CC's a dean without stating why, or that tells a student to 'check the website' when a direct link exists."
+      }
+    }
+  ]

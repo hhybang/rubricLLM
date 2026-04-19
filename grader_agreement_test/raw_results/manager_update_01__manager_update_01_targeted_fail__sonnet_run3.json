@@ -1,0 +1,110 @@
+{
+  "scenario_id": "manager_update_01",
+  "draft_id": "manager_update_01_targeted_fail",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Phone-Scannable Brevity\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"bullets_only\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section contains a prose paragraph ('Auth service team pushed their API freeze back, which is creating some complications...') rather than bullet points.\"\n        },\n        {\n          \"dimension_id\": \"one_two_line_bullets\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section is a multi-sentence paragraph, not a 1–2 line self-contained bullet.\"\n        },\n        {\n          \"dimension_id\": \"no_redundancy\",\n          \"grade\": \"MET\",\n          \"evidence\": \"No information appears to be repeated across sections; the auth service issue is mentioned in the Summary and detailed only in Blockers, with the Wednesday sync appearing only in Next Steps.\"\n        },\n        {\n          \"dimension_id\": \"minimal_sections\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The four sections (Summary, Progress, Blockers, Next Steps) are distinct and do not obviously overlap in a way that would allow consolidation.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Bottom-Line-Up-Front Summary\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_summary\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The very first line after the greeting is '**Summary:** Platform migration is on track for the June 6 milestone...', which is a status summary, not context-setting.\"\n        },\n        {\n          \"dimension_id\": \"covers_key_status\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary line references both the on-track milestone ('on track for the June 6 milestone') and the shifted dependency ('auth service dependency we flagged last week is being handled').\"\n        },\n        {\n          \"dimension_id\": \"signals_escalation_need\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary explicitly states 'no action needed from you.'\"\n        },\n        {\n          \"dimension_id\": \"plain_label\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary uses the straightforward label '**Summary:**' rather than casual shorthand like 'TL;DR'.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Calibrated Risk Framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"neutral_language\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary uses 'being handled' and the blockers section uses 'looking into workarounds' rather than alarm words like 'setback' or 'crisis'.\"\n        },\n        {\n          \"dimension_id\": \"timeline_impact_quantified\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The blocker description says 'it's possible this could shift things, though it might not' — no concrete timeline impact (e.g., '~1 week') is stated.\"\n        },\n        {\n          \"dimension_id\": \"resolution_timeline\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The blocker section says 'we'll keep monitoring the situation and circle back when we know more' without specifying when the resolution path will be clear, though Wednesday is mentioned only in Next Steps as a sync date.\"\n        },\n        {\n          \"dimension_id\": \"escalation_signal\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary explicitly states 'no action needed from you,' signaling that escalation is not required.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Recipient-Calibrated Register\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_casual_shorthand\",\n          \"grade\": \"MET\",\n          \"evidence\": \"No internet-style abbreviations or casual labels are used; the summary uses '**Summary:**' rather than 'TL;DR' or similar.\"\n        },\n        {\n          \"dimension_id\": \"direct_not_stiff\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The closing line 'Let me know if you want to dig into anything' is approachable and conversational without being overly formal.\"\n        },\n        {\n          \"dimension_id\": \"recipient_modeled\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The update avoids jargon overload, uses plain language, and is structured for mobile scanning, reflecting awareness of a director who reads between meetings.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 1658,
+  "output_tokens": 1153,
+  "latency_ms": 16568,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Phone-Scannable Brevity",
+        "dimension_grades": [
+          {
+            "dimension_id": "bullets_only",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section contains a prose paragraph ('Auth service team pushed their API freeze back, which is creating some complications...') rather than bullet points."
+          },
+          {
+            "dimension_id": "one_two_line_bullets",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section is a multi-sentence paragraph, not a 1–2 line self-contained bullet."
+          },
+          {
+            "dimension_id": "no_redundancy",
+            "grade": "MET",
+            "evidence": "No information appears to be repeated across sections; the auth service issue is mentioned in the Summary and detailed only in Blockers, with the Wednesday sync appearing only in Next Steps."
+          },
+          {
+            "dimension_id": "minimal_sections",
+            "grade": "MET",
+            "evidence": "The four sections (Summary, Progress, Blockers, Next Steps) are distinct and do not obviously overlap in a way that would allow consolidation."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Bottom-Line-Up-Front Summary",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_summary",
+            "grade": "MET",
+            "evidence": "The very first line after the greeting is '**Summary:** Platform migration is on track for the June 6 milestone...', which is a status summary, not context-setting."
+          },
+          {
+            "dimension_id": "covers_key_status",
+            "grade": "MET",
+            "evidence": "The summary line references both the on-track milestone ('on track for the June 6 milestone') and the shifted dependency ('auth service dependency we flagged last week is being handled')."
+          },
+          {
+            "dimension_id": "signals_escalation_need",
+            "grade": "MET",
+            "evidence": "The summary explicitly states 'no action needed from you.'"
+          },
+          {
+            "dimension_id": "plain_label",
+            "grade": "MET",
+            "evidence": "The summary uses the straightforward label '**Summary:**' rather than casual shorthand like 'TL;DR'."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Calibrated Risk Framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "neutral_language",
+            "grade": "MET",
+            "evidence": "The summary uses 'being handled' and the blockers section uses 'looking into workarounds' rather than alarm words like 'setback' or 'crisis'."
+          },
+          {
+            "dimension_id": "timeline_impact_quantified",
+            "grade": "NOT_MET",
+            "evidence": "The blocker description says 'it's possible this could shift things, though it might not' — no concrete timeline impact (e.g., '~1 week') is stated."
+          },
+          {
+            "dimension_id": "resolution_timeline",
+            "grade": "NOT_MET",
+            "evidence": "The blocker section says 'we'll keep monitoring the situation and circle back when we know more' without specifying when the resolution path will be clear, though Wednesday is mentioned only in Next Steps as a sync date."
+          },
+          {
+            "dimension_id": "escalation_signal",
+            "grade": "MET",
+            "evidence": "The summary explicitly states 'no action needed from you,' signaling that escalation is not required."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Recipient-Calibrated Register",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_casual_shorthand",
+            "grade": "MET",
+            "evidence": "No internet-style abbreviations or casual labels are used; the summary uses '**Summary:**' rather than 'TL;DR' or similar."
+          },
+          {
+            "dimension_id": "direct_not_stiff",
+            "grade": "MET",
+            "evidence": "The closing line 'Let me know if you want to dig into anything' is approachable and conversational without being overly formal."
+          },
+          {
+            "dimension_id": "recipient_modeled",
+            "grade": "MET",
+            "evidence": "The update avoids jargon overload, uses plain language, and is structured for mobile scanning, reflecting awareness of a director who reads between meetings."
+          }
+        ]
+      }
+    ]
+  }
+}

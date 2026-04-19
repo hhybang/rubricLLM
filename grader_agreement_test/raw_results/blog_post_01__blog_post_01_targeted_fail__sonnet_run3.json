@@ -1,0 +1,135 @@
+{
+  "scenario_id": "blog_post_01",
+  "draft_id": "blog_post_01_targeted_fail",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Unflinching honesty about wrong turns\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"wrong_leads_shown\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Redis connection pool theory is described in full detail: reading ioredis source code, finding a closed 2021 issue, writing a test harness, simulating thousands of connections — all over a day and a half — before being proven wrong.\"\n        },\n        {\n          \"dimension_id\": \"personal_accountability\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'The real bug — the one that cost us three and a half extra days — was me, choosing investigation theater over the boring diagnostic step that would have actually worked.'\"\n        },\n        {\n          \"dimension_id\": \"time_cost_visible\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'The whole thing took four days. It should have taken four hours' and 'a full day and a half in — I was still staring at Redis internals' make the wasted time explicit.\"\n        },\n        {\n          \"dimension_id\": \"self_deprecating_not_flagellating\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I'd been doing the engineering equivalent of diagnosing a car engine by reading the owner's manual in a different room from the car' is wry and self-deprecating without being self-pitying.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Investigation pacing with delayed reveals\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"confusion_before_clarity\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The author shows initial misreadings — believing the Redis theory, grep'ing the codebase and finding nothing, walking past the retainer chain clue twice — before understanding emerges.\"\n        },\n        {\n          \"dimension_id\": \"progressive_narrowing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Clues build incrementally: heap snapshot → plain JS objects → order-shaped objects → retainer chain → Map called 'cache' → node_modules → specific library file.\"\n        },\n        {\n          \"dimension_id\": \"reveal_earned\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The root cause (the unbounded Map in fast-schema-check) is only revealed after the Redis dead end, the heap snapshot section, the grep section, and the retainer chain trace — sustained across multiple sections.\"\n        },\n        {\n          \"dimension_id\": \"emotional_beats_present\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Emotional states are named throughout: 'dopamine hit of I've found it,' 'genuinely confused,' 'I watched it for an hour, refreshing the dashboard like a nervous parent' for relief.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete, non-preachy takeaways\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"actionable_practice\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each takeaway names a specific behavior: taking a heap snapshot before forming any theory (made a checklist item in the runbook), searching node_modules early, explaining a hypothesis out loud before investing two hours in it.\"\n        },\n        {\n          \"dimension_id\": \"generic_advice_rejected\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I'm not going to tell you to always monitor your memory or profile before optimizing. You know that. I knew that. I did it anyway.'\"\n        },\n        {\n          \"dimension_id\": \"grounded_in_story\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each takeaway references a specific narrative moment: the snapshot rule ties to 'The snapshot on Tuesday would have saved me a full day if I'd taken it on Friday'; the out-loud rule ties to Priya's question in standup.\"\n        },\n        {\n          \"dimension_id\": \"peer_tone\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'You know that. I knew that. I did it anyway' treats the reader as an equal who already knows the basics rather than someone being instructed.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code snippets as narrative anchors\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"minimal_snippet_count\",\n          \"grade\": \"MET\",\n          \"evidence\": \"There are exactly two code snippets in the entire post — the library source showing the leak and the before/after fix — both directly serving the narrative.\"\n        },\n        {\n          \"dimension_id\": \"annotated_key_lines\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The critical line in the first snippet is marked with '// <-- THIS LINE' and the second snippet includes '// disable internal cache' and comments labeling before/after behavior.\"\n        },\n        {\n          \"dimension_id\": \"before_after_contrast\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The fix section explicitly shows 'Before: default caching behavior (unbounded Map)' and 'After: caching disabled' with both code versions presented.\"\n        },\n        {\n          \"dimension_id\": \"prose_frames_code\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I opened the relevant file and found this:' and 'Look at that cache key' frame the snippet before and after, directing the reader's attention to the problematic line.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Immersive scene-setting with specific details\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"sensory_anchors\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'4:47 PM on a Friday,' 'RSS was sitting at 1.2 GB on a container with a 1.5 GB limit,' and 'I Slacked my team... Three thumbs-up reacts' provide concrete environmental and temporal anchors.\"\n        },\n        {\n          \"dimension_id\": \"named_tools\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Real tool names are used throughout: PagerDuty, Datadog, Kubernetes, Chrome DevTools, Kafka, Postgres, ioredis, ajv, fast-schema-check, Jira, Slack.\"\n        },\n        {\n          \"dimension_id\": \"scene_not_summary\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Key moments like the standup exchange with Priya and the Wednesday grep session are narrated in retrospective summary ('Priya finally asked in standup') rather than dramatized as present-tense scenes with action and dialogue.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 3816,
+  "output_tokens": 1653,
+  "latency_ms": 26095,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Unflinching honesty about wrong turns",
+        "dimension_grades": [
+          {
+            "dimension_id": "wrong_leads_shown",
+            "grade": "MET",
+            "evidence": "The Redis connection pool theory is described in full detail: reading ioredis source code, finding a closed 2021 issue, writing a test harness, simulating thousands of connections — all over a day and a half — before being proven wrong."
+          },
+          {
+            "dimension_id": "personal_accountability",
+            "grade": "MET",
+            "evidence": "'The real bug — the one that cost us three and a half extra days — was me, choosing investigation theater over the boring diagnostic step that would have actually worked.'"
+          },
+          {
+            "dimension_id": "time_cost_visible",
+            "grade": "MET",
+            "evidence": "'The whole thing took four days. It should have taken four hours' and 'a full day and a half in — I was still staring at Redis internals' make the wasted time explicit."
+          },
+          {
+            "dimension_id": "self_deprecating_not_flagellating",
+            "grade": "MET",
+            "evidence": "'I'd been doing the engineering equivalent of diagnosing a car engine by reading the owner's manual in a different room from the car' is wry and self-deprecating without being self-pitying."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Investigation pacing with delayed reveals",
+        "dimension_grades": [
+          {
+            "dimension_id": "confusion_before_clarity",
+            "grade": "MET",
+            "evidence": "The author shows initial misreadings — believing the Redis theory, grep'ing the codebase and finding nothing, walking past the retainer chain clue twice — before understanding emerges."
+          },
+          {
+            "dimension_id": "progressive_narrowing",
+            "grade": "MET",
+            "evidence": "Clues build incrementally: heap snapshot → plain JS objects → order-shaped objects → retainer chain → Map called 'cache' → node_modules → specific library file."
+          },
+          {
+            "dimension_id": "reveal_earned",
+            "grade": "MET",
+            "evidence": "The root cause (the unbounded Map in fast-schema-check) is only revealed after the Redis dead end, the heap snapshot section, the grep section, and the retainer chain trace — sustained across multiple sections."
+          },
+          {
+            "dimension_id": "emotional_beats_present",
+            "grade": "MET",
+            "evidence": "Emotional states are named throughout: 'dopamine hit of I've found it,' 'genuinely confused,' 'I watched it for an hour, refreshing the dashboard like a nervous parent' for relief."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete, non-preachy takeaways",
+        "dimension_grades": [
+          {
+            "dimension_id": "actionable_practice",
+            "grade": "MET",
+            "evidence": "Each takeaway names a specific behavior: taking a heap snapshot before forming any theory (made a checklist item in the runbook), searching node_modules early, explaining a hypothesis out loud before investing two hours in it."
+          },
+          {
+            "dimension_id": "generic_advice_rejected",
+            "grade": "MET",
+            "evidence": "'I'm not going to tell you to always monitor your memory or profile before optimizing. You know that. I knew that. I did it anyway.'"
+          },
+          {
+            "dimension_id": "grounded_in_story",
+            "grade": "MET",
+            "evidence": "Each takeaway references a specific narrative moment: the snapshot rule ties to 'The snapshot on Tuesday would have saved me a full day if I'd taken it on Friday'; the out-loud rule ties to Priya's question in standup."
+          },
+          {
+            "dimension_id": "peer_tone",
+            "grade": "MET",
+            "evidence": "'You know that. I knew that. I did it anyway' treats the reader as an equal who already knows the basics rather than someone being instructed."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code snippets as narrative anchors",
+        "dimension_grades": [
+          {
+            "dimension_id": "minimal_snippet_count",
+            "grade": "MET",
+            "evidence": "There are exactly two code snippets in the entire post — the library source showing the leak and the before/after fix — both directly serving the narrative."
+          },
+          {
+            "dimension_id": "annotated_key_lines",
+            "grade": "MET",
+            "evidence": "The critical line in the first snippet is marked with '// <-- THIS LINE' and the second snippet includes '// disable internal cache' and comments labeling before/after behavior."
+          },
+          {
+            "dimension_id": "before_after_contrast",
+            "grade": "MET",
+            "evidence": "The fix section explicitly shows 'Before: default caching behavior (unbounded Map)' and 'After: caching disabled' with both code versions presented."
+          },
+          {
+            "dimension_id": "prose_frames_code",
+            "grade": "MET",
+            "evidence": "'I opened the relevant file and found this:' and 'Look at that cache key' frame the snippet before and after, directing the reader's attention to the problematic line."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Immersive scene-setting with specific details",
+        "dimension_grades": [
+          {
+            "dimension_id": "sensory_anchors",
+            "grade": "MET",
+            "evidence": "'4:47 PM on a Friday,' 'RSS was sitting at 1.2 GB on a container with a 1.5 GB limit,' and 'I Slacked my team... Three thumbs-up reacts' provide concrete environmental and temporal anchors."
+          },
+          {
+            "dimension_id": "named_tools",
+            "grade": "MET",
+            "evidence": "Real tool names are used throughout: PagerDuty, Datadog, Kubernetes, Chrome DevTools, Kafka, Postgres, ioredis, ajv, fast-schema-check, Jira, Slack."
+          },
+          {
+            "dimension_id": "scene_not_summary",
+            "grade": "NOT_MET",
+            "evidence": "Key moments like the standup exchange with Priya and the Wednesday grep session are narrated in retrospective summary ('Priya finally asked in standup') rather than dramatized as present-tense scenes with action and dialogue."
+          }
+        ]
+      }
+    ]
+  }
+}

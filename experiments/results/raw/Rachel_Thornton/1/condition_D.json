@@ -1,0 +1,1712 @@
+{
+  "persona": "Rachel Thornton",
+  "task_index": 1,
+  "task_description": "I need to email my team asking for architecture review on a new caching layer proposal — I only want feedback on the invalidation strategy, not the implementation details yet.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+    "rubric": [
+      {
+        "name": "Decision Tradeoff Transparency",
+        "category": "Content",
+        "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+        "dimensions": [
+          {
+            "id": "alternatives_listed",
+            "label": "Names at least one alternative that was seriously considered"
+          },
+          {
+            "id": "rejection_rationale",
+            "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+          },
+          {
+            "id": "tradeoff_acknowledged",
+            "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+          },
+          {
+            "id": "decision_not_buried",
+            "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Link, Don't Duplicate",
+        "category": "Content",
+        "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+        "dimensions": [
+          {
+            "id": "links_to_sources",
+            "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+          },
+          {
+            "id": "no_content_duplication",
+            "label": "Does not reproduce information that's already available at a linked source"
+          },
+          {
+            "id": "link_context_sufficient",
+            "label": "Each link has enough surrounding context that the reader knows why to click it"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Scoped Review Requests",
+        "category": "Audience",
+        "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+        "dimensions": [
+          {
+            "id": "feedback_scope_stated",
+            "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+          },
+          {
+            "id": "review_deadline",
+            "label": "Includes a specific deadline or timeframe for the review"
+          },
+          {
+            "id": "out_of_scope_noted",
+            "label": "Explicitly notes what is NOT in scope for this review round"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Thread Discipline",
+        "category": "Structure",
+        "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+        "dimensions": [
+          {
+            "id": "single_topic",
+            "label": "The email addresses exactly one topic — does not bundle unrelated items"
+          },
+          {
+            "id": "subject_matches_content",
+            "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+          },
+          {
+            "id": "new_thread_for_new_topic",
+            "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Link, Don't Duplicate",
+        "issue": "The grader is penalizing placeholder links (e.g., '[design doc]') as if they represent a structural failure to link, dropping the score from 8 to 7 between rounds even though Round 2 actually added more specific link references (consistency requirements section, resilience section). The grader is treating template scaffolding artifacts as real violations. Worse, Round 2 is scored lower than Round 1 despite being structurally superior — it links to more specific sections and avoids more duplication. The grader is also inconsistently applying the placeholder logic: Round 1 got an 8 with the same placeholder pattern, Round 2 got a 7 with more links. This is backwards.",
+        "negative_examples": [
+          "Penalizing a draft for using '[design doc]' placeholder syntax when the email is clearly a template meant to be filled in — the structural pattern is what matters, not whether the URL is live",
+          "Scoring Round 2 lower than Round 1 on this criterion when Round 2 references more specific sections (consistency requirements, resilience) and directs readers to those sources rather than reproducing content inline",
+          "Treating 'links_to_sources not fully satisfied' as a meaningful deduction when the only issue is placeholder brackets, not a decision to describe docs in prose instead of linking"
+        ],
+        "clarification": "What I actually care about is whether the email's structure uses links as the primary vehicle for detailed information rather than reproducing that information inline. The violation I want penalized is writing out explanations that already exist in a doc — not using bracket placeholders in a template. A draft that says 'see the [resilience section] for mitigations' is doing exactly what I want: pointing rather than duplicating. The placeholder is a fill-in-later artifact, not a structural failure. Round 2 should score higher than Round 1 on this criterion, not lower.",
+        "priority_adjustment": null
+      },
+      {
+        "criterion_name": "Decision Tradeoff Transparency",
+        "issue": "The grader is holding both rounds at 9 and citing 'decision_not_buried' as the reason Round 1 loses a point — but then Round 2 fixes that exact issue (decision appears in sentence one) and still scores 9. The grader's justification for Round 2's 9 shifts to 'only one alternative is named' as the new deduction. This is moving the goalposts. The criterion says 'names at least one alternative' — one is sufficient. The grader is inventing a higher bar (multiple alternatives) that isn't in the rubric.",
+        "negative_examples": [
+          "Deducting points because only one alternative was named when the rubric dimension says 'at least one alternative that was seriously considered'",
+          "Keeping the score at 9 after the decision_not_buried issue is fixed in Round 2, then finding a new reason to justify the same score rather than reflecting the improvement"
+        ],
+        "clarification": "If the decision is in the first sentence, one alternative is named with specific rejection rationale, and the tradeoff of the chosen path is explicitly acknowledged — that's a full score. I don't require exhaustive enumeration of every option ever considered. One well-reasoned alternative with a specific rejection rationale and an acknowledged cost is exactly what I want. Round 2 satisfies all four dimensions and should score higher than Round 1, not the same.",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+    "rubric": [
+      {
+        "name": "Decision Tradeoff Transparency",
+        "category": "Content",
+        "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+        "dimensions": [
+          {
+            "id": "alternatives_listed",
+            "label": "Names at least one alternative that was seriously considered"
+          },
+          {
+            "id": "rejection_rationale",
+            "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+          },
+          {
+            "id": "tradeoff_acknowledged",
+            "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+          },
+          {
+            "id": "decision_not_buried",
+            "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high",
+        "negative_examples": [
+          "Deducting points because only one alternative was named when the rubric dimension says 'at least one alternative that was seriously considered'",
+          "Keeping the score at 9 after the decision_not_buried issue is fixed in Round 2, then finding a new reason to justify the same score rather than reflecting the improvement"
+        ],
+        "clarification": "If the decision is in the first sentence, one alternative is named with specific rejection rationale, and the tradeoff of the chosen path is explicitly acknowledged — that's a full score. I don't require exhaustive enumeration of every option ever considered. One well-reasoned alternative with a specific rejection rationale and an acknowledged cost is exactly what I want. Round 2 satisfies all four dimensions and should score higher than Round 1, not the same."
+      },
+      {
+        "name": "Link, Don't Duplicate",
+        "category": "Content",
+        "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+        "dimensions": [
+          {
+            "id": "links_to_sources",
+            "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+          },
+          {
+            "id": "no_content_duplication",
+            "label": "Does not reproduce information that's already available at a linked source"
+          },
+          {
+            "id": "link_context_sufficient",
+            "label": "Each link has enough surrounding context that the reader knows why to click it"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high",
+        "negative_examples": [
+          "Penalizing a draft for using '[design doc]' placeholder syntax when the email is clearly a template meant to be filled in — the structural pattern is what matters, not whether the URL is live",
+          "Scoring Round 2 lower than Round 1 on this criterion when Round 2 references more specific sections (consistency requirements, resilience) and directs readers to those sources rather than reproducing content inline",
+          "Treating 'links_to_sources not fully satisfied' as a meaningful deduction when the only issue is placeholder brackets, not a decision to describe docs in prose instead of linking"
+        ],
+        "clarification": "What I actually care about is whether the email's structure uses links as the primary vehicle for detailed information rather than reproducing that information inline. The violation I want penalized is writing out explanations that already exist in a doc — not using bracket placeholders in a template. A draft that says 'see the [resilience section] for mitigations' is doing exactly what I want: pointing rather than duplicating. The placeholder is a fill-in-later artifact, not a structural failure. Round 2 should score higher than Round 1 on this criterion, not lower."
+      },
+      {
+        "name": "Scoped Review Requests",
+        "category": "Audience",
+        "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+        "dimensions": [
+          {
+            "id": "feedback_scope_stated",
+            "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+          },
+          {
+            "id": "review_deadline",
+            "label": "Includes a specific deadline or timeframe for the review"
+          },
+          {
+            "id": "out_of_scope_noted",
+            "label": "Explicitly notes what is NOT in scope for this review round"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Thread Discipline",
+        "category": "Structure",
+        "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+        "dimensions": [
+          {
+            "id": "single_topic",
+            "label": "The email addresses exactly one topic — does not bundle unrelated items"
+          },
+          {
+            "id": "subject_matches_content",
+            "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+          },
+          {
+            "id": "new_thread_for_new_topic",
+            "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy (feedback by [DATE])\n\n---\n\nHi team,\n\nWe're moving forward with adding a caching layer to [system/service name]. I'm asking for architecture feedback on the **invalidation strategy specifically** — implementation details are not in scope for this round.\n\n**The proposal:** [link to design doc]\n\n**What I need from you:**\n\nPlease review the invalidation strategy section and share feedback on:\n- Whether the chosen approach is sound given our consistency requirements\n- Any edge cases or failure modes you see that the design doesn't address\n- Concerns about how it interacts with [relevant upstream/downstream system]\n\n**What's out of scope this round:** Implementation specifics, library choices, and rollout sequencing. I'll open a separate thread for those once the invalidation approach is settled.\n\n**Please reply to this thread by [specific date/time].**\n\n---\n\n**For context on the decision already made:**\n\nThe proposal uses [chosen invalidation strategy, e.g., event-driven invalidation] rather than [alternative, e.g., TTL-based expiration]. TTL was rejected because [specific reason — e.g., our data mutation patterns are unpredictable enough that stale reads within a TTL window would cause correctness issues in X and Y flows]. The tradeoff we're accepting with event-driven is [e.g., higher operational complexity and a dependency on the event bus being reliable] — that's a known cost, and the proposal addresses it in the [resilience section / linked doc].\n\nIf you have questions about the overall caching approach rather than the invalidation strategy, please start a new thread so we can keep this one focused.\n\nThanks,\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision (event-driven invalidation over TTL) appears in the 'For context' section, which is not within the first two sentences of the email — it comes after several paragraphs of review scaffolding, which is a minor miss on 'decision_not_buried.' However, the draft names TTL as a seriously considered alternative, provides specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows), and explicitly acknowledges the tradeoff accepted (higher operational complexity, event bus reliability dependency). Three of four dimensions are cleanly satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 8,
+              "justification": "The design doc is hyperlinked via '[link to design doc]' and the email avoids reproducing its contents inline, instead pointing readers to the 'resilience section / linked doc' for tradeoff details. Each link has sufficient surrounding context. The placeholder nature of the link is a template artifact rather than a structural failure, and no content duplication is present. All three dimensions are effectively satisfied."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined — invalidation strategy soundness, edge cases/failure modes, and upstream/downstream interaction — and implementation specifics, library choices, and rollout sequencing are explicitly called out as out of scope. A specific deadline placeholder ('by [specific date/time]') is included. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic (invalidation strategy review), the subject line accurately reflects that content, and the email proactively instructs readers to start a new thread for questions about the broader caching approach. All three dimensions are cleanly met."
+            }
+          ],
+          "overall_weighted_score": 0.9,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The draft names the alternative (TTL-based expiration), explains why it was rejected with specific reasoning tied to data mutation patterns and correctness issues in named flows, and explicitly acknowledges the tradeoff accepted (higher operational complexity, event bus dependency). The decision appears early in the email's context section, though it comes after the review request framing rather than in the first two sentences — a minor structural issue that keeps this from a perfect score."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 8,
+              "justification": "The proposal is linked via '[link to design doc]' and the email avoids reproducing the full design inline, instead pointing readers to the resilience section within the linked doc. The link has sufficient context (readers know it's the design doc for the invalidation strategy). The placeholder nature of the link is a template artifact, not a structural flaw, but the draft does not duplicate content from the linked source."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is precisely stated across three bullet points (soundness given consistency requirements, edge cases/failure modes, upstream/downstream interaction). A specific deadline placeholder is included ('by [specific date/time]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing), satisfying all three dimensions cleanly."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects this. The draft proactively instructs readers to start a new thread for questions about the broader caching approach, demonstrating explicit thread hygiene enforcement. No unrelated topics are bundled in."
+            }
+          ],
+          "overall_weighted_score": 0.9,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision (event-driven invalidation over TTL) appears in the 'For context' section, which is not buried but does come after several paragraphs — it's not in the first two sentences, which is a minor miss. However, the alternative (TTL-based expiration) is explicitly named, the rejection rationale is specific (unpredictable mutation patterns causing stale reads in X and Y flows), and the tradeoff of the chosen approach (higher operational complexity, event bus reliability dependency) is clearly acknowledged. All four dimensions are substantially met except the decision placement."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 8,
+              "justification": "The proposal is linked via '[link to design doc]' with clear context (it's the design doc for the invalidation strategy). The email does not reproduce the full design content — it references the resilience section of the linked doc rather than restating it. The link has sufficient surrounding context. The only weakness is that the link is a placeholder, but structurally the approach is correct and the dimensions are met."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined (invalidation strategy: soundness, edge cases, upstream/downstream interaction). A specific deadline placeholder is included ('by [specific date/time]'). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for off-topic questions about the overall caching approach, demonstrating strong thread hygiene. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 0.9,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 9.0,
+          "Link, Don't Duplicate": 8.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 0.9,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision (event-driven invalidation over TTL) appears in the 'For context' section, which is not within the first two sentences of the email — it comes after several paragraphs of review scaffolding, which is a minor miss on 'decision_not_buried.' However, the draft names TTL as a seriously considered alternative, provides specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows), and explicitly acknowledges the tradeoff accepted (higher operational complexity, event bus reliability dependency). Three of four dimensions are cleanly satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 8,
+                "justification": "The design doc is hyperlinked via '[link to design doc]' and the email avoids reproducing its contents inline, instead pointing readers to the 'resilience section / linked doc' for tradeoff details. Each link has sufficient surrounding context. The placeholder nature of the link is a template artifact rather than a structural failure, and no content duplication is present. All three dimensions are effectively satisfied."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined — invalidation strategy soundness, edge cases/failure modes, and upstream/downstream interaction — and implementation specifics, library choices, and rollout sequencing are explicitly called out as out of scope. A specific deadline placeholder ('by [specific date/time]') is included. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic (invalidation strategy review), the subject line accurately reflects that content, and the email proactively instructs readers to start a new thread for questions about the broader caching approach. All three dimensions are cleanly met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1360,
+              "output_tokens": 487
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The draft names the alternative (TTL-based expiration), explains why it was rejected with specific reasoning tied to data mutation patterns and correctness issues in named flows, and explicitly acknowledges the tradeoff accepted (higher operational complexity, event bus dependency). The decision appears early in the email's context section, though it comes after the review request framing rather than in the first two sentences — a minor structural issue that keeps this from a perfect score."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 8,
+                "justification": "The proposal is linked via '[link to design doc]' and the email avoids reproducing the full design inline, instead pointing readers to the resilience section within the linked doc. The link has sufficient context (readers know it's the design doc for the invalidation strategy). The placeholder nature of the link is a template artifact, not a structural flaw, but the draft does not duplicate content from the linked source."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is precisely stated across three bullet points (soundness given consistency requirements, edge cases/failure modes, upstream/downstream interaction). A specific deadline placeholder is included ('by [specific date/time]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing), satisfying all three dimensions cleanly."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects this. The draft proactively instructs readers to start a new thread for questions about the broader caching approach, demonstrating explicit thread hygiene enforcement. No unrelated topics are bundled in."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1360,
+              "output_tokens": 469
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision (event-driven invalidation over TTL) appears in the 'For context' section, which is not buried but does come after several paragraphs — it's not in the first two sentences, which is a minor miss. However, the alternative (TTL-based expiration) is explicitly named, the rejection rationale is specific (unpredictable mutation patterns causing stale reads in X and Y flows), and the tradeoff of the chosen approach (higher operational complexity, event bus reliability dependency) is clearly acknowledged. All four dimensions are substantially met except the decision placement."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 8,
+                "justification": "The proposal is linked via '[link to design doc]' with clear context (it's the design doc for the invalidation strategy). The email does not reproduce the full design content — it references the resilience section of the linked doc rather than restating it. The link has sufficient surrounding context. The only weakness is that the link is a placeholder, but structurally the approach is correct and the dimensions are met."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined (invalidation strategy: soundness, edge cases, upstream/downstream interaction). A specific deadline placeholder is included ('by [specific date/time]'). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for off-topic questions about the overall caching approach, demonstrating strong thread hygiene. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1360,
+              "output_tokens": 498
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 9.0/10\n  Justification: The decision (event-driven invalidation over TTL) appears in the 'For context' section, which is not within the first two sentences of the email — it comes after several paragraphs of review scaffolding, which is a minor miss on 'decision_not_buried.' However, the draft names TTL as a seriously considered alternative, provides specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows), and explicitly acknowledges the tradeoff accepted (higher operational complexity, event bus reliability dependency). Three of four dimensions are cleanly satisfied.\n- Link, Don't Duplicate: 8.0/10\n  Justification: The design doc is hyperlinked via '[link to design doc]' and the email avoids reproducing its contents inline, instead pointing readers to the 'resilience section / linked doc' for tradeoff details. Each link has sufficient surrounding context. The placeholder nature of the link is a template artifact rather than a structural failure, and no content duplication is present. All three dimensions are effectively satisfied.\n- Scoped Review Requests: 10.0/10\n  Justification: The feedback scope is tightly defined — invalidation strategy soundness, edge cases/failure modes, and upstream/downstream interaction — and implementation specifics, library choices, and rollout sequencing are explicitly called out as out of scope. A specific deadline placeholder ('by [specific date/time]') is included. All three dimensions are fully satisfied.\n- Thread Discipline: 10.0/10\n  Justification: The email addresses exactly one topic (invalidation strategy review), the subject line accurately reflects that content, and the email proactively instructs readers to start a new thread for questions about the broader caching approach. All three dimensions are cleanly met.\n\nYour weakest criteria are: Link, Don't Duplicate, Decision Tradeoff Transparency. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy (feedback by [DATE])\n\n---\n\nHi team,\n\nWe're moving forward with event-driven invalidation (rather than TTL-based expiration) for the new caching layer — the full proposal is in the [design doc]. I'm asking for architecture feedback on the invalidation strategy specifically before we move to implementation.\n\n**What I need from you:**\n\nPlease review the invalidation strategy section and share feedback on:\n- Whether the chosen approach is sound given our consistency requirements\n- Any edge cases or failure modes you see that the design doesn't address\n- Concerns about how it interacts with [relevant upstream/downstream system]\n\n**What's out of scope this round:** Implementation specifics, library choices, and rollout sequencing. I'll open a separate thread for those once the invalidation approach is settled.\n\n**Please reply to this thread by [specific date/time].**\n\n---\n\n**Why event-driven over TTL:**\n\nTTL was the main alternative considered. We rejected it because our data mutation patterns are unpredictable enough that stale reads within a TTL window would cause correctness issues in [X and Y flows] — this is documented in the [consistency requirements section] of the design doc.\n\nThe cost we're accepting with event-driven is higher operational complexity and a hard dependency on event bus reliability. The design doc addresses this in the [resilience section] — please read that before weighing in, since it covers the mitigations already scoped in.\n\nIf you have questions about the overall caching approach rather than the invalidation strategy, please start a new thread so we can keep this one focused.\n\nThanks,\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence, satisfying decision_not_buried. TTL is named as the alternative considered, and the rejection rationale is specific — unpredictable mutation patterns causing stale reads in named flows. The tradeoff is explicitly acknowledged: higher operational complexity and event bus reliability dependency. The only minor gap is that only one alternative is named, but the reasoning is thorough and the tradeoff is clearly stated."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 7,
+              "justification": "The email references a design doc, a consistency requirements section, and a resilience section, and directs readers to those sources rather than reproducing their content inline. However, the links appear as bracketed placeholders (e.g., '[design doc]', '[consistency requirements section]') rather than actual hyperlinks, so links_to_sources is not fully satisfied. Link context is sufficient — each reference explains why the reader should click. No content duplication is present."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 9,
+              "justification": "The feedback scope is clearly stated with three specific bullet points covering soundness, edge cases/failure modes, and system interaction. A deadline is included ('by [specific date/time]'), satisfying review_deadline. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing), satisfying out_of_scope_noted. The only minor issue is the placeholder date, but the structure is fully compliant."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review. The subject line accurately matches the content. The email proactively instructs readers to start a new thread for off-topic questions about the overall caching approach, demonstrating strong thread hygiene discipline."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence, satisfying decision_not_buried. TTL is named as the alternative considered (alternatives_listed), and the rejection rationale is specific — unpredictable mutation patterns causing stale reads in X and Y flows (rejection_rationale). The tradeoff is explicitly acknowledged: higher operational complexity and hard dependency on event bus reliability (tradeoff_acknowledged). The only minor gap is that only one alternative is named, but the rubric requires 'at least one,' so this is fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 7,
+              "justification": "The email references a design doc, a consistency requirements section, and a resilience section, and uses bracketed placeholders suggesting hyperlinks (links_to_sources). It avoids reproducing the full content of those sections, instead pointing readers to them (no_content_duplication). Each link reference has surrounding context explaining why to click it (link_context_sufficient). The score is not a 10 because the links are placeholders rather than actual hyperlinks, leaving ambiguity about whether they are truly linked or just described in prose."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 9,
+              "justification": "The feedback scope is tightly defined: consistency soundness, edge cases/failure modes, and upstream/downstream interaction — all architecture-level concerns (feedback_scope_stated). A specific deadline placeholder is included ('by [specific date/time]'), satisfying review_deadline in intent if not in final form. Out-of-scope items are explicitly listed: implementation specifics, library choices, and rollout sequencing (out_of_scope_noted). The only deduction is that the date/time remains a placeholder, which in a real send would be a gap."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items (single_topic). The subject line accurately describes the content: architecture review of the caching layer invalidation strategy (subject_matches_content). The email proactively instructs readers to start a new thread for questions about the broader caching approach, demonstrating explicit thread hygiene awareness (new_thread_for_new_topic)."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence, satisfying decision_not_buried. TTL is named as the alternative considered, and the rejection rationale is specific — unpredictable mutation patterns causing stale reads in named flows. The tradeoff is explicitly acknowledged: higher operational complexity and event bus reliability dependency. The only minor gap is that only one alternative is named, but the reasoning for that single alternative is thorough and specific."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 7,
+              "justification": "The email references a design doc, a consistency requirements section, and a resilience section, and each has surrounding context explaining why to click. However, the bracketed placeholders like [design doc] and [consistency requirements section] are not actual hyperlinks — they are described in prose with placeholder formatting, which technically fails links_to_sources. The email avoids duplicating content from those sources, directing readers there instead, which is good discipline. If real links were present, this would score higher."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 9,
+              "justification": "The feedback scope is tightly defined across three specific bullets (soundness given consistency requirements, edge cases/failure modes, upstream/downstream interaction), satisfying feedback_scope_stated. A deadline placeholder is included ('by [specific date/time]'), satisfying review_deadline in intent if not in final form. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing), fully satisfying out_of_scope_noted. The only weakness is the placeholder deadline rather than an actual date."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects this. The email proactively instructs readers to start new threads for off-topic questions (overall caching approach) and commits to opening a separate thread for implementation specifics. All three dimensions are clearly satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 9.0,
+          "Link, Don't Duplicate": 7.0,
+          "Scoped Review Requests": 9.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 0.85,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence, satisfying decision_not_buried. TTL is named as the alternative considered, and the rejection rationale is specific — unpredictable mutation patterns causing stale reads in named flows. The tradeoff is explicitly acknowledged: higher operational complexity and event bus reliability dependency. The only minor gap is that only one alternative is named, but the reasoning is thorough and the tradeoff is clearly stated."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 7,
+                "justification": "The email references a design doc, a consistency requirements section, and a resilience section, and directs readers to those sources rather than reproducing their content inline. However, the links appear as bracketed placeholders (e.g., '[design doc]', '[consistency requirements section]') rather than actual hyperlinks, so links_to_sources is not fully satisfied. Link context is sufficient — each reference explains why the reader should click. No content duplication is present."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 9,
+                "justification": "The feedback scope is clearly stated with three specific bullet points covering soundness, edge cases/failure modes, and system interaction. A deadline is included ('by [specific date/time]'), satisfying review_deadline. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing), satisfying out_of_scope_noted. The only minor issue is the placeholder date, but the structure is fully compliant."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review. The subject line accurately matches the content. The email proactively instructs readers to start a new thread for off-topic questions about the overall caching approach, demonstrating strong thread hygiene discipline."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1347,
+              "output_tokens": 499
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence, satisfying decision_not_buried. TTL is named as the alternative considered (alternatives_listed), and the rejection rationale is specific — unpredictable mutation patterns causing stale reads in X and Y flows (rejection_rationale). The tradeoff is explicitly acknowledged: higher operational complexity and hard dependency on event bus reliability (tradeoff_acknowledged). The only minor gap is that only one alternative is named, but the rubric requires 'at least one,' so this is fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 7,
+                "justification": "The email references a design doc, a consistency requirements section, and a resilience section, and uses bracketed placeholders suggesting hyperlinks (links_to_sources). It avoids reproducing the full content of those sections, instead pointing readers to them (no_content_duplication). Each link reference has surrounding context explaining why to click it (link_context_sufficient). The score is not a 10 because the links are placeholders rather than actual hyperlinks, leaving ambiguity about whether they are truly linked or just described in prose."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 9,
+                "justification": "The feedback scope is tightly defined: consistency soundness, edge cases/failure modes, and upstream/downstream interaction — all architecture-level concerns (feedback_scope_stated). A specific deadline placeholder is included ('by [specific date/time]'), satisfying review_deadline in intent if not in final form. Out-of-scope items are explicitly listed: implementation specifics, library choices, and rollout sequencing (out_of_scope_noted). The only deduction is that the date/time remains a placeholder, which in a real send would be a gap."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items (single_topic). The subject line accurately describes the content: architecture review of the caching layer invalidation strategy (subject_matches_content). The email proactively instructs readers to start a new thread for questions about the broader caching approach, demonstrating explicit thread hygiene awareness (new_thread_for_new_topic)."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1347,
+              "output_tokens": 599
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence, satisfying decision_not_buried. TTL is named as the alternative considered, and the rejection rationale is specific — unpredictable mutation patterns causing stale reads in named flows. The tradeoff is explicitly acknowledged: higher operational complexity and event bus reliability dependency. The only minor gap is that only one alternative is named, but the reasoning for that single alternative is thorough and specific."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 7,
+                "justification": "The email references a design doc, a consistency requirements section, and a resilience section, and each has surrounding context explaining why to click. However, the bracketed placeholders like [design doc] and [consistency requirements section] are not actual hyperlinks — they are described in prose with placeholder formatting, which technically fails links_to_sources. The email avoids duplicating content from those sources, directing readers there instead, which is good discipline. If real links were present, this would score higher."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 9,
+                "justification": "The feedback scope is tightly defined across three specific bullets (soundness given consistency requirements, edge cases/failure modes, upstream/downstream interaction), satisfying feedback_scope_stated. A deadline placeholder is included ('by [specific date/time]'), satisfying review_deadline in intent if not in final form. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing), fully satisfying out_of_scope_noted. The only weakness is the placeholder deadline rather than an actual date."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects this. The email proactively instructs readers to start new threads for off-topic questions (overall caching approach) and commits to opening a separate thread for implementation specifics. All three dimensions are clearly satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1347,
+              "output_tokens": 528
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 9.0/10\n  Justification: The decision (event-driven invalidation) appears in the first sentence, satisfying decision_not_buried. TTL is named as the alternative considered, and the rejection rationale is specific — unpredictable mutation patterns causing stale reads in named flows. The tradeoff is explicitly acknowledged: higher operational complexity and event bus reliability dependency. The only minor gap is that only one alternative is named, but the reasoning is thorough and the tradeoff is clearly stated.\n- Link, Don't Duplicate: 7.0/10\n  Justification: The email references a design doc, a consistency requirements section, and a resilience section, and directs readers to those sources rather than reproducing their content inline. However, the links appear as bracketed placeholders (e.g., '[design doc]', '[consistency requirements section]') rather than actual hyperlinks, so links_to_sources is not fully satisfied. Link context is sufficient — each reference explains why the reader should click. No content duplication is present.\n- Scoped Review Requests: 9.0/10\n  Justification: The feedback scope is clearly stated with three specific bullet points covering soundness, edge cases/failure modes, and system interaction. A deadline is included ('by [specific date/time]'), satisfying review_deadline. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing), satisfying out_of_scope_noted. The only minor issue is the placeholder date, but the structure is fully compliant.\n- Thread Discipline: 10.0/10\n  Justification: The email addresses exactly one topic — the invalidation strategy review. The subject line accurately matches the content. The email proactively instructs readers to start a new thread for off-topic questions about the overall caching approach, demonstrating strong thread hygiene discipline.\n\nYour weakest criteria are: Link, Don't Duplicate, Decision Tradeoff Transparency. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy (feedback by [DATE])\n\n---\n\nHi team,\n\nWe're moving forward with event-driven invalidation (rather than TTL-based expiration) for the new caching layer — full details in the [design doc](URL). I'm asking for architecture feedback on the invalidation strategy specifically before we move to implementation.\n\n**What I need from you:**\n\nPlease review the [invalidation strategy section](URL) and share feedback on:\n- Whether the chosen approach is sound given our [consistency requirements](URL)\n- Any edge cases or failure modes you see that the design doesn't address\n- Concerns about how it interacts with [relevant upstream/downstream system]\n\n**What's out of scope this round:** Implementation specifics, library choices, and rollout sequencing. I'll open a separate thread for those once the invalidation approach is settled.\n\n**Please reply to this thread by [specific date/time].**\n\n---\n\n**Why event-driven over TTL:**\n\nTTL was the main alternative considered. We rejected it because our data mutation patterns are unpredictable enough that stale reads within a TTL window would cause correctness issues in [X and Y flows] — see the [consistency requirements section](URL) for the full analysis.\n\nThe cost we're accepting with event-driven is higher operational complexity and a hard dependency on event bus reliability. Please read the [resilience section](URL) before weighing in — it covers the mitigations already scoped in, and we're not looking for feedback on those tradeoffs in this round.\n\nIf you have questions about the overall caching approach rather than the invalidation strategy, please start a new thread so we can keep this one focused.\n\nThanks,\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No information is duplicated from the linked sources; the email points rather than explains."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 9,
+              "justification": "Feedback scope is clearly stated (architecture review of the invalidation strategy, with three specific focus areas). A deadline is included via '[specific date/time]' placeholder, which is a fill-in artifact rather than a structural failure. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are satisfied; the only minor gap is the unfilled date placeholder."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start new threads for off-topic questions (overall caching approach) and commits to opening a separate thread for implementation specifics, demonstrating strong thread hygiene."
+            }
+          ],
+          "overall_weighted_score": 0.98,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. The email avoids duplicating content that lives in those linked sources."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A deadline is included ('by [specific date/time]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing), and the email even redirects resilience tradeoff feedback out of scope for this round. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for questions about the overall caching approach, demonstrating active thread hygiene enforcement."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. The email avoids duplicating content that lives in those linked sources."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is precisely stated (architecture review of the invalidation strategy, with three specific sub-questions). A deadline is included ('by [specific date/time]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic (invalidation strategy architecture review). The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the broader caching approach, reinforcing thread hygiene explicitly."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 10.0,
+          "Scoped Review Requests": 9.666666666666666,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.5773502691896257,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 0.9933333333333333,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No information is duplicated from the linked sources; the email points rather than explains."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 9,
+                "justification": "Feedback scope is clearly stated (architecture review of the invalidation strategy, with three specific focus areas). A deadline is included via '[specific date/time]' placeholder, which is a fill-in artifact rather than a structural failure. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are satisfied; the only minor gap is the unfilled date placeholder."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start new threads for off-topic questions (overall caching approach) and commits to opening a separate thread for implementation specifics, demonstrating strong thread hygiene."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1817,
+              "output_tokens": 451
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. The email avoids duplicating content that lives in those linked sources."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A deadline is included ('by [specific date/time]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing), and the email even redirects resilience tradeoff feedback out of scope for this round. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for questions about the overall caching approach, demonstrating active thread hygiene enforcement."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1817,
+              "output_tokens": 439
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. The email avoids duplicating content that lives in those linked sources."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is precisely stated (architecture review of the invalidation strategy, with three specific sub-questions). A deadline is included ('by [specific date/time]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic (invalidation strategy architecture review). The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the broader caching approach, reinforcing thread hygiene explicitly."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1817,
+              "output_tokens": 413
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied.\n- Link, Don't Duplicate: 10.0/10\n  Justification: The email consistently uses hyperlinks as the primary vehicle for detailed information — design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No information is duplicated from the linked sources; the email points rather than explains.\n- Scoped Review Requests: 9.7/10\n  Justification: Feedback scope is clearly stated (architecture review of the invalidation strategy, with three specific focus areas). A deadline is included via '[specific date/time]' placeholder, which is a fill-in artifact rather than a structural failure. Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are satisfied; the only minor gap is the unfilled date placeholder.\n- Thread Discipline: 10.0/10\n  Justification: The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start new threads for off-topic questions (overall caching approach) and commits to opening a separate thread for implementation specifics, demonstrating strong thread hygiene.\n\nYour weakest criteria are: Scoped Review Requests, Decision Tradeoff Transparency. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Deducting points because only one alternative was named when the rubric dimension says 'at least one alternative that was seriously considered'",
+              "Keeping the score at 9 after the decision_not_buried issue is fixed in Round 2, then finding a new reason to justify the same score rather than reflecting the improvement"
+            ],
+            "clarification": "If the decision is in the first sentence, one alternative is named with specific rejection rationale, and the tradeoff of the chosen path is explicitly acknowledged — that's a full score. I don't require exhaustive enumeration of every option ever considered. One well-reasoned alternative with a specific rejection rationale and an acknowledged cost is exactly what I want. Round 2 satisfies all four dimensions and should score higher than Round 1, not the same."
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a draft for using '[design doc]' placeholder syntax when the email is clearly a template meant to be filled in — the structural pattern is what matters, not whether the URL is live",
+              "Scoring Round 2 lower than Round 1 on this criterion when Round 2 references more specific sections (consistency requirements, resilience) and directs readers to those sources rather than reproducing content inline",
+              "Treating 'links_to_sources not fully satisfied' as a meaningful deduction when the only issue is placeholder brackets, not a decision to describe docs in prose instead of linking"
+            ],
+            "clarification": "What I actually care about is whether the email's structure uses links as the primary vehicle for detailed information rather than reproducing that information inline. The violation I want penalized is writing out explanations that already exist in a doc — not using bracket placeholders in a template. A draft that says 'see the [resilience section] for mitigations' is doing exactly what I want: pointing rather than duplicating. The placeholder is a fill-in-later artifact, not a structural failure. Round 2 should score higher than Round 1 on this criterion, not lower."
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy (feedback by [DATE])\n\n---\n\nHi team,\n\nWe're moving forward with event-driven invalidation (rather than TTL-based expiration) for the new caching layer — full details in the [design doc](URL). I'm asking for architecture feedback on the invalidation strategy specifically before we move to implementation. **Please reply to this thread by [specific date, e.g., Thursday, June 19 at 5pm PT].**\n\n**What I need from you:**\n\nPlease review the [invalidation strategy section](URL) and share feedback on:\n- Whether the chosen approach is sound given our [consistency requirements](URL)\n- Any edge cases or failure modes you see that the design doesn't address\n- Concerns about how it interacts with [relevant upstream/downstream system]\n\n**What's out of scope this round:** Implementation specifics, library choices, and rollout sequencing. I'll open a separate thread for those once the invalidation approach is settled.\n\n---\n\n**Why event-driven over TTL:**\n\nTTL was the main alternative considered. We rejected it because our data mutation patterns are unpredictable enough that stale reads within a TTL window would cause correctness issues in [X and Y flows] — see the [consistency requirements section](URL) for the full analysis.\n\nThe cost we're accepting with event-driven is higher operational complexity and a hard dependency on event bus reliability. Please read the [resilience section](URL) before weighing in — it covers the mitigations already scoped in, and we're not looking for feedback on those tradeoffs in this round.\n\nIf you have questions about the overall caching approach rather than the invalidation strategy, please start a new thread so we can keep this one focused.\n\nThanks,\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — the design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No content is duplicated from the linked sources; the email only summarizes the decision logic at a high level."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A concrete deadline is included ('by [specific date, e.g., Thursday, June 19 at 5pm PT]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the overall caching approach, reinforcing thread hygiene. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — the design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No content is duplicated from the linked sources; the email only summarizes the decision logic at a high level."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A concrete deadline is included ('by [specific date, e.g., Thursday, June 19 at 5pm PT]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email explicitly instructs readers to start a new thread for questions about the broader caching approach, actively enforcing thread hygiene. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — the design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No content is duplicated from the linked sources; the email only summarizes the decision logic at a high level."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A concrete deadline is included ('by [specific date, e.g., Thursday, June 19 at 5pm PT]'). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the overall caching approach, reinforcing thread hygiene. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 10.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — the design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No content is duplicated from the linked sources; the email only summarizes the decision logic at a high level."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A concrete deadline is included ('by [specific date, e.g., Thursday, June 19 at 5pm PT]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the overall caching approach, reinforcing thread hygiene. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1830,
+              "output_tokens": 444
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — the design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No content is duplicated from the linked sources; the email only summarizes the decision logic at a high level."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A concrete deadline is included ('by [specific date, e.g., Thursday, June 19 at 5pm PT]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email explicitly instructs readers to start a new thread for questions about the broader caching approach, actively enforcing thread hygiene. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1830,
+              "output_tokens": 448
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently uses hyperlinks as the primary vehicle for detailed information — the design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No content is duplicated from the linked sources; the email only summarizes the decision logic at a high level."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A concrete deadline is included ('by [specific date, e.g., Thursday, June 19 at 5pm PT]'). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the overall caching approach, reinforcing thread hygiene. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1830,
+              "output_tokens": 443
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied.\n- Link, Don't Duplicate: 10.0/10\n  Justification: The email consistently uses hyperlinks as the primary vehicle for detailed information — the design doc, invalidation strategy section, consistency requirements, and resilience section are all linked rather than reproduced inline. Each link has sufficient surrounding context explaining why the reader should click it. No content is duplicated from the linked sources; the email only summarizes the decision logic at a high level.\n- Scoped Review Requests: 10.0/10\n  Justification: The feedback scope is precisely stated (architecture feedback on the invalidation strategy, with three specific sub-questions). A concrete deadline is included ('by [specific date, e.g., Thursday, June 19 at 5pm PT]'). Out-of-scope items are explicitly enumerated (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied.\n- Thread Discipline: 10.0/10\n  Justification: The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the overall caching approach, reinforcing thread hygiene. All three dimensions are satisfied.\n\nYour weakest criteria are: Decision Tradeoff Transparency, Link, Don't Duplicate. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Deducting points because only one alternative was named when the rubric dimension says 'at least one alternative that was seriously considered'",
+              "Keeping the score at 9 after the decision_not_buried issue is fixed in Round 2, then finding a new reason to justify the same score rather than reflecting the improvement"
+            ],
+            "clarification": "If the decision is in the first sentence, one alternative is named with specific rejection rationale, and the tradeoff of the chosen path is explicitly acknowledged — that's a full score. I don't require exhaustive enumeration of every option ever considered. One well-reasoned alternative with a specific rejection rationale and an acknowledged cost is exactly what I want. Round 2 satisfies all four dimensions and should score higher than Round 1, not the same."
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a draft for using '[design doc]' placeholder syntax when the email is clearly a template meant to be filled in — the structural pattern is what matters, not whether the URL is live",
+              "Scoring Round 2 lower than Round 1 on this criterion when Round 2 references more specific sections (consistency requirements, resilience) and directs readers to those sources rather than reproducing content inline",
+              "Treating 'links_to_sources not fully satisfied' as a meaningful deduction when the only issue is placeholder brackets, not a decision to describe docs in prose instead of linking"
+            ],
+            "clarification": "What I actually care about is whether the email's structure uses links as the primary vehicle for detailed information rather than reproducing that information inline. The violation I want penalized is writing out explanations that already exist in a doc — not using bracket placeholders in a template. A draft that says 'see the [resilience section] for mitigations' is doing exactly what I want: pointing rather than duplicating. The placeholder is a fill-in-later artifact, not a structural failure. Round 2 should score higher than Round 1 on this criterion, not lower."
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy (feedback by [DATE])\n\n---\n\nHi team,\n\nWe're moving forward with event-driven invalidation (rather than TTL-based expiration) for the new caching layer — full details in the [design doc](URL). I'm asking for architecture feedback on the invalidation strategy specifically before we move to implementation. **Please reply to this thread by [specific date, e.g., Thursday, June 19 at 5pm PT].**\n\n**What I need from you:**\n\nPlease review the [invalidation strategy section](URL) and share feedback on:\n- Whether the chosen approach is sound given our [consistency requirements](URL)\n- Any edge cases or failure modes you see that the design doesn't address\n- Concerns about how it interacts with [relevant upstream/downstream system]\n\n**What's out of scope this round:** Implementation specifics, library choices, and rollout sequencing. I'll open a separate thread for those once the invalidation approach is settled.\n\n---\n\n**Why event-driven over TTL:**\n\nTTL was the main alternative considered. We rejected it because our data mutation patterns are unpredictable enough that stale reads within a TTL window would cause correctness issues in [X and Y flows] — see the [consistency requirements section](URL) for the full analysis.\n\nThe cost we're accepting with event-driven is higher operational complexity and a hard dependency on event bus reliability. Please read the [resilience section](URL) before weighing in — it covers the mitigations already scoped in, and we're not looking for feedback on those tradeoffs in this round.\n\nIf you have questions about the overall caching approach rather than the invalidation strategy, please start a new thread so we can keep this one focused.\n\nThanks,\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently points to linked sources rather than reproducing content inline — the design doc, invalidation strategy section, consistency requirements, and resilience section are all referenced with bracket-link placeholders and sufficient context for why to click each. No information is duplicated from those sources; the email summarizes just enough to orient the reader and then defers to the canonical docs."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is tightly specified (soundness of invalidation approach given consistency requirements, edge cases/failure modes, upstream/downstream interaction). A concrete deadline is included (Thursday, June 19 at 5pm PT placeholder). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic (invalidation strategy review). The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for questions about the broader caching approach, demonstrating active thread hygiene enforcement."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence. TTL-based expiration is named as the alternative considered, with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The cost of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently points to linked sources rather than reproducing content inline — the design doc, invalidation strategy section, consistency requirements, and resilience section are all referenced with bracket-placeholder links. Each link has sufficient surrounding context explaining why the reader should click it. No information is duplicated from the linked sources; the email describes what's there without restating it."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is tightly defined: architecture soundness of the invalidation strategy, edge cases/failure modes, and interaction with upstream/downstream systems. A specific deadline is included (Thursday, June 19 at 5pm PT as an example). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing), satisfying all three dimensions."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the overall caching approach, reinforcing thread hygiene rather than allowing drift."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently points to linked sources rather than reproducing content inline — the design doc, invalidation strategy section, consistency requirements, and resilience section are all referenced with bracket-link placeholders. Each link has clear surrounding context explaining why the reader should click it. No information is duplicated from those sources; the email summarizes only enough to orient the reader."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is tightly defined (architecture soundness of the invalidation strategy, edge cases/failure modes, upstream/downstream interaction). A specific deadline format is provided ('Thursday, June 19 at 5pm PT'). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for questions about the broader caching approach, reinforcing thread hygiene. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 10.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently points to linked sources rather than reproducing content inline — the design doc, invalidation strategy section, consistency requirements, and resilience section are all referenced with bracket-link placeholders and sufficient context for why to click each. No information is duplicated from those sources; the email summarizes just enough to orient the reader and then defers to the canonical docs."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is tightly specified (soundness of invalidation approach given consistency requirements, edge cases/failure modes, upstream/downstream interaction). A concrete deadline is included (Thursday, June 19 at 5pm PT placeholder). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic (invalidation strategy review). The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for questions about the broader caching approach, demonstrating active thread hygiene enforcement."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1830,
+              "output_tokens": 439
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence. TTL-based expiration is named as the alternative considered, with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The cost of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently points to linked sources rather than reproducing content inline — the design doc, invalidation strategy section, consistency requirements, and resilience section are all referenced with bracket-placeholder links. Each link has sufficient surrounding context explaining why the reader should click it. No information is duplicated from the linked sources; the email describes what's there without restating it."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is tightly defined: architecture soundness of the invalidation strategy, edge cases/failure modes, and interaction with upstream/downstream systems. A specific deadline is included (Thursday, June 19 at 5pm PT as an example). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing), satisfying all three dimensions."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content. The email proactively instructs readers to start a new thread for questions about the overall caching approach, reinforcing thread hygiene rather than allowing drift."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1830,
+              "output_tokens": 436
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first sentence. TTL is named as the alternative with specific rejection rationale (unpredictable mutation patterns causing stale reads in X and Y flows). The tradeoff of the chosen path is explicitly acknowledged (higher operational complexity and hard dependency on event bus reliability). All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently points to linked sources rather than reproducing content inline — the design doc, invalidation strategy section, consistency requirements, and resilience section are all referenced with bracket-link placeholders. Each link has clear surrounding context explaining why the reader should click it. No information is duplicated from those sources; the email summarizes only enough to orient the reader."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is tightly defined (architecture soundness of the invalidation strategy, edge cases/failure modes, upstream/downstream interaction). A specific deadline format is provided ('Thursday, June 19 at 5pm PT'). Out-of-scope items are explicitly listed (implementation specifics, library choices, rollout sequencing). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy architecture review. The subject line accurately reflects the content and includes the feedback deadline. The email proactively instructs readers to start a new thread for questions about the broader caching approach, reinforcing thread hygiene. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1830,
+              "output_tokens": 443
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Deducting points because only one alternative was named when the rubric dimension says 'at least one alternative that was seriously considered'",
+              "Keeping the score at 9 after the decision_not_buried issue is fixed in Round 2, then finding a new reason to justify the same score rather than reflecting the improvement"
+            ],
+            "clarification": "If the decision is in the first sentence, one alternative is named with specific rejection rationale, and the tradeoff of the chosen path is explicitly acknowledged — that's a full score. I don't require exhaustive enumeration of every option ever considered. One well-reasoned alternative with a specific rejection rationale and an acknowledged cost is exactly what I want. Round 2 satisfies all four dimensions and should score higher than Round 1, not the same."
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a draft for using '[design doc]' placeholder syntax when the email is clearly a template meant to be filled in — the structural pattern is what matters, not whether the URL is live",
+              "Scoring Round 2 lower than Round 1 on this criterion when Round 2 references more specific sections (consistency requirements, resilience) and directs readers to those sources rather than reproducing content inline",
+              "Treating 'links_to_sources not fully satisfied' as a meaningful deduction when the only issue is placeholder brackets, not a decision to describe docs in prose instead of linking"
+            ],
+            "clarification": "What I actually care about is whether the email's structure uses links as the primary vehicle for detailed information rather than reproducing that information inline. The violation I want penalized is writing out explanations that already exist in a doc — not using bracket placeholders in a template. A draft that says 'see the [resilience section] for mitigations' is doing exactly what I want: pointing rather than duplicating. The placeholder is a fill-in-later artifact, not a structural failure. Round 2 should score higher than Round 1 on this criterion, not lower."
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 10,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Options considered and rationale for chosen path",
+        "satisfied": "yes",
+        "evidence": "The 'Why event-driven over TTL' section explicitly names TTL as the alternative considered and explains why it was rejected ('stale reads within a TTL window would cause correctness issues in [X and Y flows]') as well as the accepted tradeoffs of the chosen approach."
+      },
+      {
+        "preference": "Links to documents/PRs/dashboards instead of inline duplication",
+        "satisfied": "yes",
+        "evidence": "Multiple links are used throughout: [design doc](URL), [invalidation strategy section](URL), [consistency requirements](URL), [resilience section](URL). The email avoids duplicating content from those documents and instead directs readers to the source."
+      },
+      {
+        "preference": "Specifies what kind of feedback is needed and the deadline",
+        "satisfied": "yes",
+        "evidence": "Explicitly scopes feedback to architecture concerns on the invalidation strategy, lists three specific areas, states what's out of scope ('Implementation specifics, library choices, and rollout sequencing'), and provides a clear deadline: 'Please reply to this thread by [specific date, e.g., Thursday, June 19 at 5pm PT].'"
+      },
+      {
+        "preference": "Thread discipline: one topic per thread, new topic = new thread",
+        "satisfied": "yes",
+        "evidence": "'If you have questions about the overall caching approach rather than the invalidation strategy, please start a new thread so we can keep this one focused.' Also: 'I'll open a separate thread for those once the invalidation approach is settled.'"
+      },
+      {
+        "preference": "Async-first with full context to act without a meeting",
+        "satisfied": "yes",
+        "evidence": "The entire email is structured for async consumption: full context via links, clear scope, clear deadline, no mention of scheduling a meeting. Recipients have everything they need to provide feedback independently."
+      },
+      {
+        "preference": "Decision not buried in middle of context paragraphs",
+        "satisfied": "yes",
+        "evidence": "The decision ('We're moving forward with event-driven invalidation') is stated in the very first sentence of the email, immediately visible and not buried."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 822,
+      "output_tokens": 582
+    }
+  }
+}

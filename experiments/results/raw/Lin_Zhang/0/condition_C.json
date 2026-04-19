@@ -1,0 +1,1065 @@
+{
+  "persona": "Lin Zhang",
+  "task_index": 0,
+  "task_description": "Help me email the faculty about the annual course preference survey deadline — the provost's office needs it by next Friday and half the faculty haven't submitted.",
+  "condition": "C",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes academic administrative emails that respect faculty autonomy while still achieving compliance. Positions requirements as institutional obligations rather than personal requests, and always provides concrete resources rather than sending people to 'check' things.",
+    "rubric": [
+      {
+        "name": "External Constraint Framing",
+        "category": "Audience",
+        "description": "Requirements and deadlines are attributed to the institutional source (dean's office, accreditation body, provost) rather than presented as the administrator's own ask. Faculty respond to institutional obligations differently than to administrative requests.",
+        "dimensions": [
+          {
+            "id": "source_attributed",
+            "label": "The deadline or requirement names the specific office, body, or regulation it comes from"
+          },
+          {
+            "id": "admin_not_enforcer",
+            "label": "The email positions the administrator as relaying or facilitating the requirement, not imposing it"
+          },
+          {
+            "id": "institutional_language",
+            "label": "Uses 'the provost's office requires' or 'accreditation standards mandate' rather than 'I need you to' or 'please make sure to'"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Budget Gap Transparency",
+        "category": "Content",
+        "description": "Budget communications include what was requested, what was approved, and why the gap exists. Faculty who understand the constraint accept the outcome better than faculty who just see a number.",
+        "dimensions": [
+          {
+            "id": "requested_vs_approved",
+            "label": "States both the requested amount and the approved amount"
+          },
+          {
+            "id": "gap_reason_stated",
+            "label": "Explains the specific constraint causing the gap (college cap, policy limit, fund depletion)"
+          },
+          {
+            "id": "not_apologetic",
+            "label": "Presents the gap as a factual constraint, not an apology — does not use 'unfortunately' or 'I wish I could'"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Direct Resource Provision",
+        "category": "Content",
+        "description": "Emails about processes include the specific form, link, contact, or resource needed — never tells the reader to 'check the website' or 'refer to the handbook.' Especially critical for graduate students navigating bureaucracy.",
+        "dimensions": [
+          {
+            "id": "specific_link_or_form",
+            "label": "Includes a direct link to the form, portal, or resource — not a generic website URL"
+          },
+          {
+            "id": "no_check_the_website",
+            "label": "Does not tell the reader to find information on their own when the sender could provide it directly"
+          },
+          {
+            "id": "step_by_step_if_complex",
+            "label": "If the process has multiple steps, provides them in order rather than pointing to a general resource"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Transparent CC Purpose",
+        "category": "Audience",
+        "description": "When CC'ing a chair, dean, or other authority, the email explicitly states why they're copied ('copying Dr. X for awareness') to prevent the CC from being misread as escalation or threat.",
+        "dimensions": [
+          {
+            "id": "cc_reason_stated",
+            "label": "The email includes a phrase like 'copying X for awareness' or 'cc'ing X as this relates to their area'"
+          },
+          {
+            "id": "cc_not_escalation",
+            "label": "The CC is framed as informational, not as implicit pressure on the recipient"
+          },
+          {
+            "id": "tone_unchanged_by_cc",
+            "label": "The email reads the same way whether or not the CC'd person was included — no performative language for the CC audience"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Lin operates in a context where faculty are peers, not subordinates, and the administrator's authority is relational, not hierarchical. Non-negotiable: never position yourself as the enforcer. Will reject any email that CC's a dean without stating why, or that tells a student to 'check the website' when a direct link exists."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Course Preference Survey — Provost's Office Deadline This Friday\n\nDear Colleagues,\n\nThe Provost's Office requires all faculty course preference submissions by **this Friday, [Date]** as part of the annual scheduling process. Responses are used to build the preliminary schedule for [semester], and the Provost's Office has indicated they cannot begin that process until all submissions are received.\n\nAs of today, roughly half of the department has submitted. If you have already done so, thank you — no further action is needed on your part.\n\nIf you haven't yet submitted, you can access the survey directly here:\n\n**[Direct link to survey portal]**\n\nThe survey takes approximately 10–15 minutes and covers teaching preferences, load considerations, and any scheduling constraints for [semester]. If you encounter a technical issue with the portal, contact [Scheduling Coordinator Name] at [email] directly — they can assist or accept your preferences by email if needed.\n\nPlease reach out if you have questions about the process.\n\nBest,\n[Your Name]\n[Title]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email consistently attributes the requirement to the Provost's Office ('The Provost's Office requires,' 'the Provost's Office has indicated they cannot begin that process'). The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication's subject matter, neither satisfying nor violating it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link placeholder ('[Direct link to survey portal]') rather than directing faculty to a generic website, and offers a named contact with email for technical issues. There is no 'check the website' language. The process is simple enough that step-by-step instructions are not needed, and the email appropriately notes the ~10-15 minute scope and topics covered."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 8,
+              "justification": "No CC is present in this draft, so the criterion's dimensions about stating CC purpose and avoiding escalation framing are not triggered. The absence of an unexplained CC is itself compliant with the rubric's non-negotiable. Score reflects full compliance with the spirit of the criterion given the email's context."
+            }
+          ],
+          "overall_weighted_score": 0.81,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email consistently attributes the requirement to the Provost's Office ('The Provost's Office requires,' 'the Provost's Office has indicated they cannot begin that process'). The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this particular email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication's subject matter, neither satisfying nor violating it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also offers a concrete fallback contact (scheduling coordinator name and email) for technical issues. The process is simple enough that step-by-step instructions are not necessary, and the email correctly avoids any 'check the website' language."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 7,
+              "justification": "No CC recipients are present in this draft, so the criterion's specific dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. The absence of any CC is itself a safe choice that avoids the risk of misread escalation, which aligns with the coaching notes, but the criterion cannot be fully evaluated without a CC scenario."
+            }
+          ],
+          "overall_weighted_score": 0.8,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office' and repeats this attribution ('the Provost's Office has indicated they cannot begin that process until all submissions are received'). The administrator is clearly positioned as a relay point, not an enforcer — there is no 'I need you to' or 'please make sure to' language anywhere. Institutional language is used consistently throughout."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to the draft, which is a course preference survey email rather than a budget communication. No budget figures, requested vs. approved amounts, or gap explanations are present — but none are needed given the email's subject matter. Scoring reflects that the criterion simply does not apply rather than a failure to meet it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website. It also provides a named contact with an email address for technical issues and notes that preferences can be submitted by email as a fallback. There is no 'check the website' language, and the process is described concisely with enough detail to act without seeking additional information."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 7,
+              "justification": "No CC recipients are visible in the draft, so the CC transparency dimensions cannot be evaluated as satisfied or failed. The email does not include any CC'd parties, meaning there is no risk of an unexplained CC being misread as escalation — but also no opportunity to demonstrate the practice. Score reflects neutral absence rather than a violation."
+            }
+          ],
+          "overall_weighted_score": 0.82,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 10.0,
+          "Budget Gap Transparency": 5.0,
+          "Direct Resource Provision": 9.333333333333334,
+          "Transparent CC Purpose": 7.333333333333333
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.5773502691896257,
+          "Transparent CC Purpose": 0.5773502691896257
+        },
+        "mean_overall": 0.81,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email consistently attributes the requirement to the Provost's Office ('The Provost's Office requires,' 'the Provost's Office has indicated they cannot begin that process'). The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication's subject matter, neither satisfying nor violating it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link placeholder ('[Direct link to survey portal]') rather than directing faculty to a generic website, and offers a named contact with email for technical issues. There is no 'check the website' language. The process is simple enough that step-by-step instructions are not needed, and the email appropriately notes the ~10-15 minute scope and topics covered."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 8,
+                "justification": "No CC is present in this draft, so the criterion's dimensions about stating CC purpose and avoiding escalation framing are not triggered. The absence of an unexplained CC is itself compliant with the rubric's non-negotiable. Score reflects full compliance with the spirit of the criterion given the email's context."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1298,
+              "output_tokens": 433
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email consistently attributes the requirement to the Provost's Office ('The Provost's Office requires,' 'the Provost's Office has indicated they cannot begin that process'). The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this particular email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication's subject matter, neither satisfying nor violating it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also offers a concrete fallback contact (scheduling coordinator name and email) for technical issues. The process is simple enough that step-by-step instructions are not necessary, and the email correctly avoids any 'check the website' language."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 7,
+                "justification": "No CC recipients are present in this draft, so the criterion's specific dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. The absence of any CC is itself a safe choice that avoids the risk of misread escalation, which aligns with the coaching notes, but the criterion cannot be fully evaluated without a CC scenario."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1298,
+              "output_tokens": 441
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office' and repeats this attribution ('the Provost's Office has indicated they cannot begin that process until all submissions are received'). The administrator is clearly positioned as a relay point, not an enforcer — there is no 'I need you to' or 'please make sure to' language anywhere. Institutional language is used consistently throughout."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to the draft, which is a course preference survey email rather than a budget communication. No budget figures, requested vs. approved amounts, or gap explanations are present — but none are needed given the email's subject matter. Scoring reflects that the criterion simply does not apply rather than a failure to meet it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website. It also provides a named contact with an email address for technical issues and notes that preferences can be submitted by email as a fallback. There is no 'check the website' language, and the process is described concisely with enough detail to act without seeking additional information."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 7,
+                "justification": "No CC recipients are visible in the draft, so the CC transparency dimensions cannot be evaluated as satisfied or failed. The email does not include any CC'd parties, meaning there is no risk of an unexplained CC being misread as escalation — but also no opportunity to demonstrate the practice. Score reflects neutral absence rather than a violation."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1298,
+              "output_tokens": 453
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 10.0/10\n  Justification: The email consistently attributes the requirement to the Provost's Office ('The Provost's Office requires,' 'the Provost's Office has indicated they cannot begin that process'). The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft.\n- Budget Gap Transparency: 5.0/10\n  Justification: This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication's subject matter, neither satisfying nor violating it.\n- Direct Resource Provision: 9.3/10\n  Justification: The email provides a direct link placeholder ('[Direct link to survey portal]') rather than directing faculty to a generic website, and offers a named contact with email for technical issues. There is no 'check the website' language. The process is simple enough that step-by-step instructions are not needed, and the email appropriately notes the ~10-15 minute scope and topics covered.\n- Transparent CC Purpose: 7.3/10\n  Justification: No CC is present in this draft, so the criterion's dimensions about stating CC purpose and avoiding escalation framing are not triggered. The absence of an unexplained CC is itself compliant with the rubric's non-negotiable. Score reflects full compliance with the spirit of the criterion given the email's context.\n\nYour weakest criteria are: Budget Gap Transparency, Transparent CC Purpose. Focus your revision on improving these."
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Course Preference Survey — Provost's Office Deadline This Friday\n\nDear Colleagues,\n\nThe Provost's Office requires all faculty course preference submissions by **this Friday, [Date]** as part of the annual scheduling process. Responses are used to build the preliminary schedule for [semester], and the Provost's Office has indicated they cannot begin that process until all submissions are received.\n\nAs of today, roughly half of the department has submitted. If you have already done so, thank you — no further action is needed on your part.\n\nIf you haven't yet submitted, you can access the survey directly here:\n\n**[Direct link to survey portal]**\n\nThe survey takes approximately 10–15 minutes and covers teaching preferences, load considerations, and any scheduling constraints for [semester]. If you encounter a technical issue with the portal, contact [Scheduling Coordinator Name] at [email] directly — they can assist or accept your preferences by email if needed.\n\nI'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.\n\nPlease reach out if you have questions about the process.\n\nBest,\n[Your Name]\n[Title]\n\ncc: [Department Chair Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and repeats 'the Provost's Office has indicated they cannot begin that process until all submissions are received,' clearly naming the institutional source. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness'), never as the enforcer. Language like 'I need you to' or 'please make sure to' is entirely absent."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to the draft, which is a course preference survey reminder rather than a budget communication. No budget figures, requested vs. approved amounts, or gap explanations are present, but none are needed given the email's purpose. Scoring reflects that the criterion simply does not apply rather than a failure to meet it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also offers a specific fallback contact (name and email) for technical issues, and even notes that preferences can be submitted by email if the portal fails. There is no 'check the website' language anywhere, and the process is described concisely in-line."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and forward-looking, not as implicit pressure, and the tone of the email is consistent throughout with no performative language directed at the CC'd audience."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring at midpoint as the criterion simply does not apply to this communication context rather than being failed."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website, and includes a named contact with email for technical issues. It also describes what the survey covers, giving faculty a clear sense of what to expect. The only minor gap is that the link and contact details are placeholders, but the structure correctly anticipates direct provision rather than self-directed searching."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational with a clear functional reason, there is no implicit pressure, and the tone of the email is consistent throughout with no performative language directed at the CC'd party."
+            }
+          ],
+          "overall_weighted_score": 0.83,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens with 'The Provost's Office requires' and attributes the deadline explicitly to that office twice. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office') rather than an enforcer. Phrases like 'I need you to' or 'please make sure to' are entirely absent, replaced with institutional language throughout."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to the draft, which is a course preference survey email rather than a budget communication. No budget figures, requested vs. approved amounts, or gap explanations are present — but none are needed given the email's subject matter. Scoring reflects non-applicability rather than failure; the email does not violate this criterion."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also names a specific contact person with an email address for technical issues and notes that preferences can be submitted by email as an alternative — covering edge cases without vague redirection. No 'check the website' language appears anywhere."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and logistically grounded, not as implicit pressure. The tone of the email is consistent and collegial throughout, with no performative language directed at the CC'd audience."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 10.0,
+          "Budget Gap Transparency": 5.0,
+          "Direct Resource Provision": 9.666666666666666,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.5773502691896257,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 0.8433333333333333,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and repeats 'the Provost's Office has indicated they cannot begin that process until all submissions are received,' clearly naming the institutional source. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness'), never as the enforcer. Language like 'I need you to' or 'please make sure to' is entirely absent."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to the draft, which is a course preference survey reminder rather than a budget communication. No budget figures, requested vs. approved amounts, or gap explanations are present, but none are needed given the email's purpose. Scoring reflects that the criterion simply does not apply rather than a failure to meet it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also offers a specific fallback contact (name and email) for technical issues, and even notes that preferences can be submitted by email if the portal fails. There is no 'check the website' language anywhere, and the process is described concisely in-line."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and forward-looking, not as implicit pressure, and the tone of the email is consistent throughout with no performative language directed at the CC'd audience."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1337,
+              "output_tokens": 473
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring at midpoint as the criterion simply does not apply to this communication context rather than being failed."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website, and includes a named contact with email for technical issues. It also describes what the survey covers, giving faculty a clear sense of what to expect. The only minor gap is that the link and contact details are placeholders, but the structure correctly anticipates direct provision rather than self-directed searching."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational with a clear functional reason, there is no implicit pressure, and the tone of the email is consistent throughout with no performative language directed at the CC'd party."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1337,
+              "output_tokens": 451
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens with 'The Provost's Office requires' and attributes the deadline explicitly to that office twice. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office') rather than an enforcer. Phrases like 'I need you to' or 'please make sure to' are entirely absent, replaced with institutional language throughout."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to the draft, which is a course preference survey email rather than a budget communication. No budget figures, requested vs. approved amounts, or gap explanations are present — but none are needed given the email's subject matter. Scoring reflects non-applicability rather than failure; the email does not violate this criterion."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also names a specific contact person with an email address for technical issues and notes that preferences can be submitted by email as an alternative — covering edge cases without vague redirection. No 'check the website' language appears anywhere."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and logistically grounded, not as implicit pressure. The tone of the email is consistent and collegial throughout, with no performative language directed at the CC'd audience."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1337,
+              "output_tokens": 466
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 10.0/10\n  Justification: The email opens by attributing the requirement directly to 'The Provost's Office requires' and repeats 'the Provost's Office has indicated they cannot begin that process until all submissions are received,' clearly naming the institutional source. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness'), never as the enforcer. Language like 'I need you to' or 'please make sure to' is entirely absent.\n- Budget Gap Transparency: 5.0/10\n  Justification: This criterion is not applicable to the draft, which is a course preference survey reminder rather than a budget communication. No budget figures, requested vs. approved amounts, or gap explanations are present, but none are needed given the email's purpose. Scoring reflects that the criterion simply does not apply rather than a failure to meet it.\n- Direct Resource Provision: 9.7/10\n  Justification: The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also offers a specific fallback contact (name and email) for technical issues, and even notes that preferences can be submitted by email if the portal fails. There is no 'check the website' language anywhere, and the process is described concisely in-line.\n- Transparent CC Purpose: 10.0/10\n  Justification: The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and forward-looking, not as implicit pressure, and the tone of the email is consistent throughout with no performative language directed at the CC'd audience.\n\nYour weakest criteria are: Budget Gap Transparency, Direct Resource Provision. Focus your revision on improving these."
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Course Preference Survey — Provost's Office Deadline This Friday\n\nDear Colleagues,\n\nThe Provost's Office requires all faculty course preference submissions by **this Friday, [Date]** as part of the annual scheduling process. Responses are used to build the preliminary schedule for [semester], and the Provost's Office has indicated they cannot begin that process until all submissions are received.\n\nAs of today, roughly half of the department has submitted. If you have already done so, thank you — no further action is needed on your part.\n\nIf you haven't yet submitted, you can access the survey directly here:\n\n**[Direct link to survey portal]**\n\nThe survey takes approximately 10–15 minutes and covers three areas:\n1. Teaching preferences (course, level, modality)\n2. Load considerations for [semester]\n3. Scheduling constraints (days, times, campus location)\n\nIf you encounter a technical issue with the portal, contact [Scheduling Coordinator Name] at [email] directly — they can assist or accept your preferences by email if needed.\n\nI'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.\n\nPlease reach out if you have questions about the process.\n\nBest,\n[Your Name]\n[Title]\n\ncc: [Department Chair Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens with 'The Provost's Office requires' and consistently attributes the deadline and process to that institutional body. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office') rather than an enforcer. Phrases like 'the Provost's Office has indicated they cannot begin that process until all submissions are received' reinforce institutional obligation without any 'I need you to' language."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication type, neither helping nor hurting the draft on its own terms."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website. It also breaks the survey into three clearly labeled content areas so recipients know what to expect, and provides a named contact with an email address for technical issues — including the alternative of submitting preferences by email. No 'check the website' language appears anywhere."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and logistically grounded, not as implicit pressure. The tone of the email is consistent and collegial throughout, with no performative language directed at the CC'd audience."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this particular email, which concerns course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication context rather than a failure to meet it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also breaks down the survey into three numbered areas so recipients know what to expect, and provides a specific named contact with email for technical issues. The only minor gap is that the link and contact details are placeholders, but the structure clearly calls for specific resources rather than generic redirects."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This clearly frames the CC as informational and tied to a functional reason, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+            }
+          ],
+          "overall_weighted_score": 0.83,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email consistently attributes the requirement to the Provost's Office ('The Provost's Office requires,' 'the Provost's Office has indicated they cannot begin that process'). The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication context rather than a failure to meet it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website. It includes a step-by-step breakdown of the three survey areas and offers a named contact with email for technical issues. The only minor gap is that the link and contact details are placeholders, but the structure clearly calls for specific resources rather than generic redirects."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and functional, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+            }
+          ],
+          "overall_weighted_score": 0.83,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 10.0,
+          "Budget Gap Transparency": 5.0,
+          "Direct Resource Provision": 9.333333333333334,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.5773502691896257,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 0.8366666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens with 'The Provost's Office requires' and consistently attributes the deadline and process to that institutional body. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office') rather than an enforcer. Phrases like 'the Provost's Office has indicated they cannot begin that process until all submissions are received' reinforce institutional obligation without any 'I need you to' language."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication type, neither helping nor hurting the draft on its own terms."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website. It also breaks the survey into three clearly labeled content areas so recipients know what to expect, and provides a named contact with an email address for technical issues — including the alternative of submitting preferences by email. No 'check the website' language appears anywhere."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and logistically grounded, not as implicit pressure. The tone of the email is consistent and collegial throughout, with no performative language directed at the CC'd audience."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1363,
+              "output_tokens": 472
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this particular email, which concerns course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication context rather than a failure to meet it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a generic website. It also breaks down the survey into three numbered areas so recipients know what to expect, and provides a specific named contact with email for technical issues. The only minor gap is that the link and contact details are placeholders, but the structure clearly calls for specific resources rather than generic redirects."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This clearly frames the CC as informational and tied to a functional reason, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1363,
+              "output_tokens": 447
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email consistently attributes the requirement to the Provost's Office ('The Provost's Office requires,' 'the Provost's Office has indicated they cannot begin that process'). The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication context rather than a failure to meet it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the survey portal rather than directing faculty to a general website. It includes a step-by-step breakdown of the three survey areas and offers a named contact with email for technical issues. The only minor gap is that the link and contact details are placeholders, but the structure clearly calls for specific resources rather than generic redirects."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and functional, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1363,
+              "output_tokens": 429
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 10.0/10\n  Justification: The email opens with 'The Provost's Office requires' and consistently attributes the deadline and process to that institutional body. The administrator is positioned as a relay ('I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office') rather than an enforcer. Phrases like 'the Provost's Office has indicated they cannot begin that process until all submissions are received' reinforce institutional obligation without any 'I need you to' language.\n- Budget Gap Transparency: 5.0/10\n  Justification: This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication type, neither helping nor hurting the draft on its own terms.\n- Direct Resource Provision: 9.3/10\n  Justification: The email provides a direct link to the survey portal rather than directing faculty to a general website. It also breaks the survey into three clearly labeled content areas so recipients know what to expect, and provides a named contact with an email address for technical issues — including the alternative of submitting preferences by email. No 'check the website' language appears anywhere.\n- Transparent CC Purpose: 10.0/10\n  Justification: The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying all three dimensions. The CC is framed as informational and logistically grounded, not as implicit pressure. The tone of the email is consistent and collegial throughout, with no performative language directed at the CC'd audience.\n\nYour weakest criteria are: Budget Gap Transparency, Direct Resource Provision. Focus your revision on improving these."
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Course Preference Survey — Provost's Office Deadline This Friday\n\nDear Colleagues,\n\nThe Provost's Office requires all faculty course preference submissions by **this Friday, [Date]** as part of the annual scheduling process. Responses are used to build the preliminary schedule for [semester], and the Provost's Office has indicated they cannot begin that process until all submissions are received.\n\nAs of today, roughly half of the department has submitted. If you have already done so, thank you — no further action is needed on your part.\n\nIf you haven't yet submitted, you can access the survey directly here:\n\n**[Direct link to survey portal]**\n\nLog in with your university credentials ([netID]@[university].edu). The survey takes approximately 10–15 minutes and covers three areas:\n1. Teaching preferences (course, level, modality)\n2. Load considerations for [semester]\n3. Scheduling constraints (days, times, campus location)\n\nIf you run into a login issue, use the password reset tool at **[direct link to password reset]**. If you encounter any other technical issue with the portal, contact [Scheduling Coordinator Name] at [email] directly — they can assist or accept your preferences by email if needed.\n\nI'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.\n\nPlease reach out if you have questions about the process.\n\nBest,\n[Your Name]\n[Title]\n\ncc: [Department Chair Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay, not an enforcer — there is no 'I need you to' or 'please make sure to' language anywhere in the email. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is a course preference survey reminder rather than a budget communication. No budget figures, gaps, or constraints are relevant here. Scoring at the midpoint to reflect that the criterion simply does not apply rather than that the draft fails it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues. It never tells the reader to 'check the website' or 'refer to the handbook.' The process is broken into three numbered areas so faculty know exactly what to expect. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying the cc_reason_stated dimension with a clear, informational rationale. The framing is purely logistical and does not imply escalation or pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay, not an enforcer — there is no 'I need you to' or 'please make sure to' language anywhere in the email. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is a course preference survey reminder rather than a budget communication. No budget figures, gaps, or constraints are relevant here. Scoring at the midpoint to reflect that the criterion simply does not apply rather than that the draft fails it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues. It never tells the reader to 'check the website' or 'refer to the handbook.' The process is broken into three numbered areas so faculty know exactly what to expect. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying the cc_reason_stated dimension with a clear, informational rationale. The framing is purely logistical and does not imply escalation or pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication context rather than a failure to meet it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The email provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues — including the option to submit preferences by email if the portal fails. There is no 'check the website' language, and the three-area breakdown of the survey gives recipients a clear sense of what to expect without redirecting them elsewhere."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and process-related, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 10.0,
+          "Budget Gap Transparency": 5.0,
+          "Direct Resource Provision": 10.0,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.0,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 0.85,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay, not an enforcer — there is no 'I need you to' or 'please make sure to' language anywhere in the email. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is a course preference survey reminder rather than a budget communication. No budget figures, gaps, or constraints are relevant here. Scoring at the midpoint to reflect that the criterion simply does not apply rather than that the draft fails it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues. It never tells the reader to 'check the website' or 'refer to the handbook.' The process is broken into three numbered areas so faculty know exactly what to expect. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying the cc_reason_stated dimension with a clear, informational rationale. The framing is purely logistical and does not imply escalation or pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1404,
+              "output_tokens": 467
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay, not an enforcer — there is no 'I need you to' or 'please make sure to' language anywhere in the email. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is a course preference survey reminder rather than a budget communication. No budget figures, gaps, or constraints are relevant here. Scoring at the midpoint to reflect that the criterion simply does not apply rather than that the draft fails it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues. It never tells the reader to 'check the website' or 'refer to the handbook.' The process is broken into three numbered areas so faculty know exactly what to expect. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying the cc_reason_stated dimension with a clear, informational rationale. The framing is purely logistical and does not imply escalation or pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1404,
+              "output_tokens": 467
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring reflects that the criterion simply does not apply to this communication context rather than a failure to meet it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The email provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues — including the option to submit preferences by email if the portal fails. There is no 'check the website' language, and the three-area breakdown of the survey gives recipients a clear sense of what to expect without redirecting them elsewhere."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and process-related, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1404,
+              "output_tokens": 443
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 10.0/10\n  Justification: The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay, not an enforcer — there is no 'I need you to' or 'please make sure to' language anywhere in the email. All three dimensions are fully satisfied.\n- Budget Gap Transparency: 5.0/10\n  Justification: This criterion is not applicable to this email, which is a course preference survey reminder rather than a budget communication. No budget figures, gaps, or constraints are relevant here. Scoring at the midpoint to reflect that the criterion simply does not apply rather than that the draft fails it.\n- Direct Resource Provision: 10.0/10\n  Justification: The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues. It never tells the reader to 'check the website' or 'refer to the handbook.' The process is broken into three numbered areas so faculty know exactly what to expect. All three dimensions are fully satisfied.\n- Transparent CC Purpose: 10.0/10\n  Justification: The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete,' satisfying the cc_reason_stated dimension with a clear, informational rationale. The framing is purely logistical and does not imply escalation or pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience.\n\nYour weakest criteria are: Budget Gap Transparency, Direct Resource Provision. Focus your revision on improving these."
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Course Preference Survey — Provost's Office Deadline This Friday\n\nDear Colleagues,\n\nThe Provost's Office requires all faculty course preference submissions by **this Friday, [Date]** as part of the annual scheduling process. Responses are used to build the preliminary schedule for [semester], and the Provost's Office has indicated they cannot begin that process until all submissions are received.\n\nAs of today, roughly half of the department has submitted. If you have already done so, thank you — no further action is needed on your part.\n\nIf you haven't yet submitted, you can access the survey directly here:\n\n**[Direct link to survey portal]**\n\nLog in with your university credentials ([netID]@[university].edu). The survey takes approximately 10–15 minutes and covers three areas:\n1. Teaching preferences (course, level, modality)\n2. Load considerations for [semester]\n3. Scheduling constraints (days, times, campus location)\n\nIf you run into a login issue, use the password reset tool at **[direct link to password reset]**. For any other technical issue with the portal, contact [Scheduling Coordinator Name] at [email] directly — they can assist or accept your preferences by email if needed.\n\nI'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.\n\nPlease reach out if you have questions about the process.\n\nBest,\n[Your Name]\n[Title]\n\ncc: [Department Chair Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring at midpoint as the criterion simply does not apply to this communication type rather than being failed."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues — including the fallback option of submitting preferences by email. There is no 'check the website' language, and the three-area breakdown of the survey content gives recipients a clear preview of what to expect. All resources are specific and actionable."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and forward-looking, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this particular email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are relevant here. Scoring reflects that the criterion simply does not apply rather than a failure — the draft neither violates nor fulfills it."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues. It explicitly offers an alternative submission path (email to coordinator) if the portal fails. There is no 'check the website' language, and the three-area breakdown of the survey gives recipients a clear sense of what to expect without pointing to a general resource."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and forward-looking, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 5,
+              "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, requested vs. approved amounts, or gap explanations are relevant here. Scoring at midpoint to reflect non-applicability rather than failure."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues — including the option to submit preferences by email if the portal fails. There is no 'check the website' language, and the three-area breakdown of the survey gives recipients a clear sense of what to expect, functioning as a lightweight step-by-step guide."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as purely informational with a clear functional reason, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 10.0,
+          "Budget Gap Transparency": 5.0,
+          "Direct Resource Provision": 10.0,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.0,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 0.85,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are present. Scoring at midpoint as the criterion simply does not apply to this communication type rather than being failed."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues — including the fallback option of submitting preferences by email. There is no 'check the website' language, and the three-area breakdown of the survey content gives recipients a clear preview of what to expect. All resources are specific and actionable."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and forward-looking, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1402,
+              "output_tokens": 447
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this particular email, which is about course preference submissions rather than budget matters. No budget figures, gaps, or constraints are relevant here. Scoring reflects that the criterion simply does not apply rather than a failure — the draft neither violates nor fulfills it."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues. It explicitly offers an alternative submission path (email to coordinator) if the portal fails. There is no 'check the website' language, and the three-area breakdown of the survey gives recipients a clear sense of what to expect without pointing to a general resource."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as informational and forward-looking, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1402,
+              "output_tokens": 455
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by attributing the requirement directly to 'The Provost's Office requires' and reinforces this with 'the Provost's Office has indicated they cannot begin that process until all submissions are received.' The administrator is clearly positioned as a relay point, not an enforcer. There is no 'I need you to' or 'please make sure to' language anywhere in the draft."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 5,
+                "justification": "This criterion is not applicable to this email, which is about course preference submissions rather than budget matters. No budget figures, requested vs. approved amounts, or gap explanations are relevant here. Scoring at midpoint to reflect non-applicability rather than failure."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The draft provides a direct link to the survey portal, a direct link to the password reset tool, and a named contact with email for technical issues — including the option to submit preferences by email if the portal fails. There is no 'check the website' language, and the three-area breakdown of the survey gives recipients a clear sense of what to expect, functioning as a lightweight step-by-step guide."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.' This frames the CC as purely informational with a clear functional reason, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1402,
+              "output_tokens": 453
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Frame deadlines as external constraints, not personal asks",
+        "satisfied": "yes",
+        "evidence": "\"The Provost's Office requires all faculty course preference submissions by this Friday\" and \"the Provost's Office has indicated they cannot begin that process\" — the deadline is clearly attributed to an external institutional body."
+      },
+      {
+        "preference": "Admin should never be positioned as the enforcer",
+        "satisfied": "yes",
+        "evidence": "The tone is facilitative throughout. The admin provides links, troubleshooting help, and frames themselves as a resource rather than an authority figure. No language positions the admin as enforcing compliance."
+      },
+      {
+        "preference": "CC'ing a chair/dean always explicitly states it's for awareness, not escalation",
+        "satisfied": "yes",
+        "evidence": "\"I'm copying [Department Chair Name] here for awareness, as they'll be coordinating with the Provost's Office once submissions are complete.\" — explicitly states the reason for the CC."
+      },
+      {
+        "preference": "Provide specific forms, links, and resources rather than telling people to 'check the website'",
+        "satisfied": "yes",
+        "evidence": "Includes direct link to survey portal, direct link to password reset tool, specific contact person with email for technical issues, and step-by-step login instructions."
+      },
+      {
+        "preference": "Respectful of faculty autonomy, no hierarchy language making staff feel subordinate",
+        "satisfied": "yes",
+        "evidence": "Uses \"Dear Colleagues,\" addresses faculty respectfully, acknowledges those who already submitted, and offers help without being directive or condescending."
+      },
+      {
+        "preference": "Budget/resource communications include what was asked for vs. approved with explanation of gaps",
+        "satisfied": "partially",
+        "evidence": "Not applicable to this email — it's about a course preference survey, not budget allocation. No violation, but the preference isn't tested here."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 825,
+      "output_tokens": 514
+    }
+  }
+}

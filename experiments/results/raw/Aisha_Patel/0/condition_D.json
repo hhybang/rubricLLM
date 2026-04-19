@@ -1,0 +1,1712 @@
+{
+  "persona": "Aisha Patel",
+  "task_index": 0,
+  "task_description": "Help me email our client's COO with a recommendation about whether to consolidate their three regional warehouses into one central hub or upgrade the existing facilities.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+    "rubric": [
+      {
+        "name": "Two-Option Framework",
+        "category": "Structure",
+        "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+        "dimensions": [
+          {
+            "id": "exactly_two_options",
+            "label": "Presents exactly two options — not one, not three or more"
+          },
+          {
+            "id": "recommended_second",
+            "label": "The recommended option is presented second, after the alternative"
+          },
+          {
+            "id": "alternative_is_credible",
+            "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+          },
+          {
+            "id": "recommendation_explicit",
+            "label": "Clearly states which option is recommended and why, after presenting both"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Quantified Progress",
+        "category": "Content",
+        "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+        "dimensions": [
+          {
+            "id": "progress_against_scope",
+            "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+          },
+          {
+            "id": "no_vague_status",
+            "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+          },
+          {
+            "id": "risks_quantified",
+            "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Audience-Appropriate Logic Flow",
+        "category": "Structure",
+        "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+        "dimensions": [
+          {
+            "id": "internal_pyramid",
+            "label": "Internal emails state the conclusion or ask in the first sentence"
+          },
+          {
+            "id": "client_buildup",
+            "label": "Client emails build the logical case before stating the recommendation"
+          },
+          {
+            "id": "logic_is_visible",
+            "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Analytical Authority",
+        "category": "Style",
+        "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+        "dimensions": [
+          {
+            "id": "analysis_not_opinion",
+            "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+          },
+          {
+            "id": "no_i_think",
+            "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+          },
+          {
+            "id": "evidence_cited",
+            "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Two-Option Framework",
+        "issue": "The grader is deducting points for stylistic framing choices — noting that 'The Two Paths Forward' header 'telegraphs the structure' or that the recommendation section could 'more directly echo the option labels.' These are not violations of what I care about. The grader seems to be inventing minor stylistic concerns to justify withholding a perfect score, when the actual criteria (exactly two options, recommended second, credible alternative, explicit recommendation) are all fully satisfied in both drafts.",
+        "negative_examples": [
+          "Deducting points because a section header announces that two options will follow — this is not a structural violation, it's clear organization",
+          "Penalizing the recommendation section for not repeating the exact option label names — what matters is that the recommendation is explicit and grounded, not that it mirrors header wording"
+        ],
+        "clarification": "The Two-Option Framework is fully satisfied when: exactly two options are presented, the recommended one is second, the alternative is genuinely credible (not a strawman), and the recommendation is clearly stated with reasoning. Stylistic choices about headers or label echoing are irrelevant to whether this criterion is met. Both drafts execute this perfectly and should score 10.",
+        "priority_adjustment": null
+      },
+      {
+        "criterion_name": "Quantified Progress",
+        "issue": "In Round 1, the grader penalized the draft for not tracking progress against a project scope (e.g., workstreams completed), treating this as a significant gap and scoring it 7. But the Round 1 draft is a recommendation email, not a status update — the quantified progress criterion is primarily about ensuring status updates don't use vague language. The grader is misapplying a status-update criterion to a recommendation email and penalizing it for not containing status-update content that was never appropriate to include.",
+        "negative_examples": [
+          "Scoring a recommendation email low on 'Quantified Progress' because it doesn't list workstreams completed — a recommendation email's job is to present findings and options, not project status",
+          "Treating the absence of scope-tracking language in a non-status-update email as a criterion failure"
+        ],
+        "clarification": "Quantified Progress applies when the email is functioning as a status update or contains status claims. When an email is a recommendation communication, the criterion should evaluate whether any progress or status claims made within it are quantified — not penalize the email for omitting status content that doesn't belong there. The Round 1 draft quantified all its analytical claims rigorously and should not have been scored 7 for lacking workstream completion language.",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+    "rubric": [
+      {
+        "name": "Two-Option Framework",
+        "category": "Structure",
+        "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+        "dimensions": [
+          {
+            "id": "exactly_two_options",
+            "label": "Presents exactly two options — not one, not three or more"
+          },
+          {
+            "id": "recommended_second",
+            "label": "The recommended option is presented second, after the alternative"
+          },
+          {
+            "id": "alternative_is_credible",
+            "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+          },
+          {
+            "id": "recommendation_explicit",
+            "label": "Clearly states which option is recommended and why, after presenting both"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high",
+        "negative_examples": [
+          "Deducting points because a section header announces that two options will follow — this is not a structural violation, it's clear organization",
+          "Penalizing the recommendation section for not repeating the exact option label names — what matters is that the recommendation is explicit and grounded, not that it mirrors header wording"
+        ],
+        "clarification": "The Two-Option Framework is fully satisfied when: exactly two options are presented, the recommended one is second, the alternative is genuinely credible (not a strawman), and the recommendation is clearly stated with reasoning. Stylistic choices about headers or label echoing are irrelevant to whether this criterion is met. Both drafts execute this perfectly and should score 10."
+      },
+      {
+        "name": "Quantified Progress",
+        "category": "Content",
+        "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+        "dimensions": [
+          {
+            "id": "progress_against_scope",
+            "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+          },
+          {
+            "id": "no_vague_status",
+            "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+          },
+          {
+            "id": "risks_quantified",
+            "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high",
+        "negative_examples": [
+          "Scoring a recommendation email low on 'Quantified Progress' because it doesn't list workstreams completed — a recommendation email's job is to present findings and options, not project status",
+          "Treating the absence of scope-tracking language in a non-status-update email as a criterion failure"
+        ],
+        "clarification": "Quantified Progress applies when the email is functioning as a status update or contains status claims. When an email is a recommendation communication, the criterion should evaluate whether any progress or status claims made within it are quantified — not penalize the email for omitting status content that doesn't belong there. The Round 1 draft quantified all its analytical claims rigorously and should not have been scored 7 for lacking workstream completion language."
+      },
+      {
+        "name": "Audience-Appropriate Logic Flow",
+        "category": "Structure",
+        "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+        "dimensions": [
+          {
+            "id": "internal_pyramid",
+            "label": "Internal emails state the conclusion or ask in the first sentence"
+          },
+          {
+            "id": "client_buildup",
+            "label": "Client emails build the logical case before stating the recommendation"
+          },
+          {
+            "id": "logic_is_visible",
+            "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Analytical Authority",
+        "category": "Style",
+        "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+        "dimensions": [
+          {
+            "id": "analysis_not_opinion",
+            "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+          },
+          {
+            "id": "no_i_think",
+            "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+          },
+          {
+            "id": "evidence_cited",
+            "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Warehouse Network Decision — Analysis and Recommendation\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested in the site visits and data-sharing over the past three weeks. With that foundation in place, we want to walk you through our findings and present a clear path forward for your warehouse network.\n\n**What the Analysis Shows**\n\nAcross all three regional facilities, our assessment examined unit handling costs, inventory redundancy, fulfillment lead times, and capital expenditure requirements. A few findings stand out:\n\n- Regional inventory duplication is running at approximately 34%, meaning roughly one-third of your SKU volume is being held in multiple locations without a meaningful service-level justification.\n- Average fulfillment lead times from the Midwest and Southeast facilities are within 6 hours of one another for 78% of your customer zip codes — a gap that does not materially differentiate service delivery.\n- Combined annual operating costs across the three facilities total $14.2M, against a benchmark of $9.8M for a network of comparable throughput volume.\n\nThese findings point to a network that is carrying structural cost without delivering proportional service advantage.\n\n**The Two Paths Forward**\n\n*Option 1: Upgrade the Existing Regional Facilities*\n\nThis path would involve targeted capital investment — estimated at $4.1M — to modernize automation and inventory management systems at each site. It preserves your current geographic footprint and avoids the operational disruption of a transition. For an organization with strong regional labor relationships or near-term capacity constraints, this is a defensible choice. Upgraded facilities would likely reduce operating costs by approximately $1.8M annually, bringing your network closer to benchmark.\n\n*Option 2: Consolidate into a Single Central Hub*\n\nThis path involves a more significant transition — an estimated $11.3M capital investment and a 14-month implementation timeline — but the financial and operational case is materially stronger. Our modeling projects annual operating savings of $4.7M once the hub reaches steady state, representing a full payback in under 30 months. Critically, the lead time analysis indicates that 78% of your customer base would see no degradation in delivery windows from a centrally located hub, and inventory redundancy costs would be eliminated rather than reduced.\n\n**Our Recommendation**\n\nThe analysis supports consolidation. The $2.9M gap in annual savings between the two options compounds significantly over a five-year horizon — the difference between $9M and $23.5M in cumulative savings. The upgrade path is a reasonable near-term stabilizer, but it does not resolve the structural inefficiency the data identifies; it moderates it.\n\nWe recognize this is a significant operational decision, and we are prepared to model any adjusted assumptions — geography, phasing, labor transition costs — before you move to a final decision. We would suggest a working session this week or next to walk through the sensitivity analysis together.\n\nPlease let us know how you would like to proceed.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with specific cost savings ($1.8M) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. The recommendation is explicit and grounded in the analysis. The only minor gap is that the section header 'The Two Paths Forward' slightly telegraphs the structure rather than letting it unfold naturally, but this does not undermine the framework's execution."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 7,
+              "justification": "This is a recommendation email rather than a status update, so the quantified progress criterion applies differently here — the draft quantifies findings and projections rigorously (34% inventory duplication, 78% zip code coverage, $14.2M vs. $9.8M benchmark, 14-month timeline, 30-month payback). There are no vague status phrases. However, the draft does not explicitly measure progress against an original project scope (e.g., 'workstreams completed'), and no risks or delays are quantified with specific impact estimates, which are dimensions the rubric calls for in status contexts. The quantification present is strong but the scope-tracking dimension is absent."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure correctly: it opens with context and gratitude, presents findings before conclusions, walks through the evidence systematically, and only states the recommendation after the logical case is fully constructed. The reasoning is highly visible — the reader can trace exactly how the $4.7M savings projection and 78% lead-time finding lead to the consolidation recommendation. No pyramid inversion occurs in this client-facing document."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific data points — modeling projections, benchmark comparisons, lead time analysis — with no use of 'I think,' 'I believe,' or opinion-based framing. Phrases like 'our modeling projects,' 'the analysis supports,' and 'the data identifies' consistently attribute conclusions to evidence rather than personal judgment. Each recommendation links to a specific finding, and the five-year cumulative savings comparison ($9M vs. $23.5M) exemplifies evidence-driven conviction rather than assertion."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with specific cost savings ($1.8M annually) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. The recommendation is explicit and grounded in the analysis. The only minor gap is that the section header 'The Two Paths Forward' slightly telegraphs the structure rather than letting it unfold naturally, but this does not undermine the framework's effectiveness."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 7,
+              "justification": "The draft is a recommendation email rather than a status update, so the quantified progress criterion applies differently here. Where it does apply — in characterizing the analytical work done — the draft references 'three weeks' of site visits and data-sharing and quantifies findings with specific metrics (34% inventory duplication, 78% zip code coverage, $14.2M vs. $9.8M benchmark). However, there is no explicit accounting of workstreams completed or milestones hit against an original project scope, and no risks or delays are quantified with specific impact estimates. The draft scores well on avoiding vague language but does not fully satisfy the progress-against-scope or risks-quantified dimensions."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and it follows the build-up structure correctly: it opens with context, presents findings, walks through both options with supporting data, and only states the recommendation at the end. The logic is fully visible — the reader can trace the path from inventory duplication and cost benchmarking through the savings differential to the consolidation recommendation. The reasoning unfolds rather than being declared upfront, which matches the client-facing structure the rubric requires."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "The draft consistently grounds recommendations in data and modeling rather than personal judgment — 'the analysis supports consolidation,' 'our modeling projects,' 'the lead time analysis indicates.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Every recommendation links to a specific finding or data point: the $2.9M annual savings gap, the 78% customer zip code coverage, the 30-month payback period. The authority is conveyed entirely through the strength of the evidence, not through first-person assertion."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, noting it is 'a defensible choice' for organizations with regional labor relationships or capacity constraints, avoiding strawman framing. The recommendation is explicit and grounded after both options are presented. The only minor gap is that the recommendation section could more crisply restate 'we recommend Option 2' before elaborating, but the intent is unambiguous."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 8,
+              "justification": "The email is a recommendation memo rather than a status update, so 'progress against scope' is partially applicable — but where it does apply, the draft performs well. Specific figures are cited throughout: 34% inventory duplication, 78% of zip codes, $14.2M vs. $9.8M benchmark, $4.1M vs. $11.3M capital costs, $1.8M vs. $4.7M annual savings, 14-month timeline, and 30-month payback. No vague status language appears. The rubric's 'risks_quantified' dimension is partially met — the 14-month implementation timeline is noted, but specific risk impacts (e.g., delay scenarios) are not quantified beyond the offer to model sensitivity."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with context and gratitude, presents findings, walks through both options with evidence, and only then states the recommendation. The logic is fully visible — the reader can trace from the 34% duplication and cost gap findings directly to the consolidation recommendation. The reasoning chain (structural cost without service advantage → two paths → savings differential → recommendation) is explicit and sequential, satisfying the client build-up requirement."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "The draft consistently grounds recommendations in data and modeling: 'our assessment examined,' 'our modeling projects,' 'the analysis supports consolidation,' 'the data identifies.' No instances of 'I think,' 'I believe,' or 'in my opinion' appear. Every recommendation links to a specific finding — the consolidation recommendation is tied to the $2.9M annual savings gap, the 78% lead time equivalence, and the five-year cumulative savings differential. Analytical authority is maintained throughout without any lapse into personal assertion."
+            }
+          ],
+          "overall_weighted_score": 0.88,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 9.0,
+          "Quantified Progress": 7.333333333333333,
+          "Audience-Appropriate Logic Flow": 9.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.5773502691896257,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 0.86,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with specific cost savings ($1.8M) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. The recommendation is explicit and grounded in the analysis. The only minor gap is that the section header 'The Two Paths Forward' slightly telegraphs the structure rather than letting it unfold naturally, but this does not undermine the framework's execution."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 7,
+                "justification": "This is a recommendation email rather than a status update, so the quantified progress criterion applies differently here — the draft quantifies findings and projections rigorously (34% inventory duplication, 78% zip code coverage, $14.2M vs. $9.8M benchmark, 14-month timeline, 30-month payback). There are no vague status phrases. However, the draft does not explicitly measure progress against an original project scope (e.g., 'workstreams completed'), and no risks or delays are quantified with specific impact estimates, which are dimensions the rubric calls for in status contexts. The quantification present is strong but the scope-tracking dimension is absent."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure correctly: it opens with context and gratitude, presents findings before conclusions, walks through the evidence systematically, and only states the recommendation after the logical case is fully constructed. The reasoning is highly visible — the reader can trace exactly how the $4.7M savings projection and 78% lead-time finding lead to the consolidation recommendation. No pyramid inversion occurs in this client-facing document."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific data points — modeling projections, benchmark comparisons, lead time analysis — with no use of 'I think,' 'I believe,' or opinion-based framing. Phrases like 'our modeling projects,' 'the analysis supports,' and 'the data identifies' consistently attribute conclusions to evidence rather than personal judgment. Each recommendation links to a specific finding, and the five-year cumulative savings comparison ($9M vs. $23.5M) exemplifies evidence-driven conviction rather than assertion."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1665,
+              "output_tokens": 638
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with specific cost savings ($1.8M annually) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. The recommendation is explicit and grounded in the analysis. The only minor gap is that the section header 'The Two Paths Forward' slightly telegraphs the structure rather than letting it unfold naturally, but this does not undermine the framework's effectiveness."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 7,
+                "justification": "The draft is a recommendation email rather than a status update, so the quantified progress criterion applies differently here. Where it does apply — in characterizing the analytical work done — the draft references 'three weeks' of site visits and data-sharing and quantifies findings with specific metrics (34% inventory duplication, 78% zip code coverage, $14.2M vs. $9.8M benchmark). However, there is no explicit accounting of workstreams completed or milestones hit against an original project scope, and no risks or delays are quantified with specific impact estimates. The draft scores well on avoiding vague language but does not fully satisfy the progress-against-scope or risks-quantified dimensions."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and it follows the build-up structure correctly: it opens with context, presents findings, walks through both options with supporting data, and only states the recommendation at the end. The logic is fully visible — the reader can trace the path from inventory duplication and cost benchmarking through the savings differential to the consolidation recommendation. The reasoning unfolds rather than being declared upfront, which matches the client-facing structure the rubric requires."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "The draft consistently grounds recommendations in data and modeling rather than personal judgment — 'the analysis supports consolidation,' 'our modeling projects,' 'the lead time analysis indicates.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Every recommendation links to a specific finding or data point: the $2.9M annual savings gap, the 78% customer zip code coverage, the 30-month payback period. The authority is conveyed entirely through the strength of the evidence, not through first-person assertion."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1665,
+              "output_tokens": 640
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, noting it is 'a defensible choice' for organizations with regional labor relationships or capacity constraints, avoiding strawman framing. The recommendation is explicit and grounded after both options are presented. The only minor gap is that the recommendation section could more crisply restate 'we recommend Option 2' before elaborating, but the intent is unambiguous."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 8,
+                "justification": "The email is a recommendation memo rather than a status update, so 'progress against scope' is partially applicable — but where it does apply, the draft performs well. Specific figures are cited throughout: 34% inventory duplication, 78% of zip codes, $14.2M vs. $9.8M benchmark, $4.1M vs. $11.3M capital costs, $1.8M vs. $4.7M annual savings, 14-month timeline, and 30-month payback. No vague status language appears. The rubric's 'risks_quantified' dimension is partially met — the 14-month implementation timeline is noted, but specific risk impacts (e.g., delay scenarios) are not quantified beyond the offer to model sensitivity."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with context and gratitude, presents findings, walks through both options with evidence, and only then states the recommendation. The logic is fully visible — the reader can trace from the 34% duplication and cost gap findings directly to the consolidation recommendation. The reasoning chain (structural cost without service advantage → two paths → savings differential → recommendation) is explicit and sequential, satisfying the client build-up requirement."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "The draft consistently grounds recommendations in data and modeling: 'our assessment examined,' 'our modeling projects,' 'the analysis supports consolidation,' 'the data identifies.' No instances of 'I think,' 'I believe,' or 'in my opinion' appear. Every recommendation links to a specific finding — the consolidation recommendation is tied to the $2.9M annual savings gap, the 78% lead time equivalence, and the five-year cumulative savings differential. Analytical authority is maintained throughout without any lapse into personal assertion."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1665,
+              "output_tokens": 654
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 9.0/10\n  Justification: The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with specific cost savings ($1.8M) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. The recommendation is explicit and grounded in the analysis. The only minor gap is that the section header 'The Two Paths Forward' slightly telegraphs the structure rather than letting it unfold naturally, but this does not undermine the framework's execution.\n- Quantified Progress: 7.3/10\n  Justification: This is a recommendation email rather than a status update, so the quantified progress criterion applies differently here — the draft quantifies findings and projections rigorously (34% inventory duplication, 78% zip code coverage, $14.2M vs. $9.8M benchmark, 14-month timeline, 30-month payback). There are no vague status phrases. However, the draft does not explicitly measure progress against an original project scope (e.g., 'workstreams completed'), and no risks or delays are quantified with specific impact estimates, which are dimensions the rubric calls for in status contexts. The quantification present is strong but the scope-tracking dimension is absent.\n- Audience-Appropriate Logic Flow: 9.0/10\n  Justification: This is a client email and follows the build-up → logic → recommendation structure correctly: it opens with context and gratitude, presents findings before conclusions, walks through the evidence systematically, and only states the recommendation after the logical case is fully constructed. The reasoning is highly visible — the reader can trace exactly how the $4.7M savings projection and 78% lead-time finding lead to the consolidation recommendation. No pyramid inversion occurs in this client-facing document.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in specific data points — modeling projections, benchmark comparisons, lead time analysis — with no use of 'I think,' 'I believe,' or opinion-based framing. Phrases like 'our modeling projects,' 'the analysis supports,' and 'the data identifies' consistently attribute conclusions to evidence rather than personal judgment. Each recommendation links to a specific finding, and the five-year cumulative savings comparison ($9M vs. $23.5M) exemplifies evidence-driven conviction rather than assertion.\n\nYour weakest criteria are: Quantified Progress, Audience-Appropriate Logic Flow. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Warehouse Network Decision — Analysis and Recommendation\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested across the site visits, data-sharing sessions, and working interviews over the past three weeks. We have now completed all five assessment workstreams — facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping — and are in a position to present our findings and a recommended path forward.\n\n**What the Analysis Shows**\n\nOur assessment examined unit handling costs, inventory redundancy, fulfillment lead times, and capital expenditure requirements across all three regional facilities. Several findings shape the decision directly:\n\n- Regional inventory duplication is running at approximately 34%, meaning roughly one-third of your SKU volume is held across multiple locations without a meaningful service-level justification.\n- Average fulfillment lead times from the Midwest and Southeast facilities are within 6 hours of one another for 78% of your customer zip codes — a gap that does not materially differentiate service delivery.\n- Combined annual operating costs across the three facilities total $14.2M, against a benchmark of $9.8M for a network of comparable throughput volume.\n\nThe pattern across these findings is consistent: the current network carries structural cost without delivering proportional service advantage.\n\n**Two Paths Forward**\n\n*Option 1: Upgrade the Existing Regional Facilities*\n\nThis path involves targeted capital investment — estimated at $4.1M — to modernize automation and inventory management systems at each site. It preserves your geographic footprint and avoids transition disruption. For an organization with strong regional labor relationships or near-term capacity constraints, this is a defensible choice. Upgraded facilities would reduce operating costs by approximately $1.8M annually, bringing your network meaningfully closer to benchmark. The risk to this path is bounded: if implementation runs long, our modeling estimates a delay of up to two quarters before savings materialize, with no structural impact on the facilities themselves.\n\n*Option 2: Consolidate into a Single Central Hub*\n\nThis path involves a more significant transition — an estimated $11.3M capital investment and a 14-month implementation timeline — but the financial and operational case is materially stronger. Our modeling projects annual operating savings of $4.7M once the hub reaches steady state, representing full payback in under 30 months. The lead time analysis confirms that 78% of your customer base would see no degradation in delivery windows from a centrally located hub, and inventory redundancy costs would be eliminated rather than reduced. The primary execution risk is the labor transition across the three closing facilities; our scoping work estimates this adds approximately six weeks to the implementation timeline if managed through a standard severance and redeployment program.\n\n**Our Recommendation**\n\nThe analysis supports consolidation. The $2.9M annual savings gap between the two options compounds significantly over five years — the difference between $9M and $23.5M in cumulative savings. The upgrade path is a reasonable near-term stabilizer, but the data shows it moderates the structural inefficiency rather than resolving it. The consolidation path does.\n\nWe are prepared to model adjusted assumptions — phasing, geography, or revised labor transition costs — before you reach a final decision. A working session this week or next to walk through the sensitivity analysis together would be a natural next step.\n\nPlease let us know how you would like to proceed.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast-effect structure the rubric requires. The alternative (Option 1) is presented as genuinely defensible ('a defensible choice' for organizations with regional labor relationships or capacity constraints), not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the recommendation section could more directly echo the option labels, but this is a negligible stylistic point."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "The opening paragraph explicitly states all five workstreams are complete, satisfying progress-against-scope. Every data point is specific: 34% inventory duplication, 78% of zip codes within 6 hours, $14.2M vs. $9.8M benchmark, $4.1M vs. $11.3M capital, $1.8M vs. $4.7M savings, 14-month timeline, six-week labor transition risk. There are no vague status phrases, and risks are quantified with specific impact estimates (two-quarter delay, six-week addition). This is a model status update."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with context and scope completion, moves through analytical findings, presents options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow from the 34% redundancy and $4.4M cost gap findings directly to the consolidation conclusion. The logic is visible and explicit throughout. No issues with this criterion."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in 'our analysis,' 'our modeling,' 'the data shows,' or 'the lead time analysis confirms' — never personal opinion. There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to a specific finding or modeled output (e.g., the $2.9M annual savings gap, the 78% customer zip code finding). The authority is conveyed entirely through the weight of evidence, consistent with the rubric's intent."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast-effect structure the rubric requires. The alternative (Option 1) is presented as genuinely credible: 'a defensible choice' with real savings figures and bounded risk, not a strawman. The recommendation is explicit and grounded in the final section. The only minor gap is that the recommendation section could more directly echo the option labels, but this is a negligible stylistic point."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "The opening paragraph explicitly states all five workstreams are complete, naming each one — satisfying 'progress against scope' with precision. No vague language like 'on track' appears anywhere. Risks are quantified: Option 1 carries 'up to two quarters' delay before savings materialize, and the labor transition risk in Option 2 is estimated at 'approximately six weeks.' Every status claim is backed by a specific number."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: findings are presented first, the pattern is named, options are laid out with evidence, and the recommendation comes last. The reader can trace the logic from the 34% inventory duplication and $4.4M cost gap to the consolidation recommendation. The reasoning is fully visible and sequenced — no conclusion is stated before the evidence is established."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "No first-person opinion language appears anywhere in the draft. Every recommendation is attributed to 'the analysis,' 'our modeling,' or 'the data shows.' Specific findings anchor each claim: the 34% redundancy figure, the 78% zip code overlap, the $14.2M vs. $9.8M benchmark comparison, and the $2.9M annual savings gap. The authority is entirely evidence-derived, never asserted through personal conviction."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast-effect structure the rubric requires. The alternative (Option 1) is presented as genuinely credible: 'a defensible choice' with real savings figures and bounded risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the recommendation section could more directly echo the option labels, but this is a negligible stylistic point."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "The opening paragraph explicitly states all five workstreams are complete, naming each one — satisfying progress-against-scope with precision. No vague status language ('on track,' 'going well') appears anywhere. Risks are quantified: the upgrade path delay is 'up to two quarters,' and the labor transition risk adds 'approximately six weeks' to the consolidation timeline. Every material claim carries a specific number."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with context and data, moves through findings, presents options, and only then states the recommendation. The logic is fully visible — the reader can trace how 34% inventory duplication, the 6-hour lead time gap, and the $4.4M cost-above-benchmark directly motivate the consolidation recommendation. The conclusion does not appear until the final section, which is appropriate for a client audience."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Every recommendation is anchored to specific analytical outputs: 'our modeling projects,' 'the lead time analysis confirms,' 'the data shows.' The $2.9M annual savings gap and the 30-month payback figure are cited as evidence for the recommendation, not as assertions of personal conviction. The tone throughout is that of analysis speaking, not the consultant."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 9.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 9.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 0.94,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast-effect structure the rubric requires. The alternative (Option 1) is presented as genuinely defensible ('a defensible choice' for organizations with regional labor relationships or capacity constraints), not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the recommendation section could more directly echo the option labels, but this is a negligible stylistic point."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "The opening paragraph explicitly states all five workstreams are complete, satisfying progress-against-scope. Every data point is specific: 34% inventory duplication, 78% of zip codes within 6 hours, $14.2M vs. $9.8M benchmark, $4.1M vs. $11.3M capital, $1.8M vs. $4.7M savings, 14-month timeline, six-week labor transition risk. There are no vague status phrases, and risks are quantified with specific impact estimates (two-quarter delay, six-week addition). This is a model status update."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with context and scope completion, moves through analytical findings, presents options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow from the 34% redundancy and $4.4M cost gap findings directly to the consolidation conclusion. The logic is visible and explicit throughout. No issues with this criterion."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in 'our analysis,' 'our modeling,' 'the data shows,' or 'the lead time analysis confirms' — never personal opinion. There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to a specific finding or modeled output (e.g., the $2.9M annual savings gap, the 78% customer zip code finding). The authority is conveyed entirely through the weight of evidence, consistent with the rubric's intent."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1759,
+              "output_tokens": 594
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast-effect structure the rubric requires. The alternative (Option 1) is presented as genuinely credible: 'a defensible choice' with real savings figures and bounded risk, not a strawman. The recommendation is explicit and grounded in the final section. The only minor gap is that the recommendation section could more directly echo the option labels, but this is a negligible stylistic point."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "The opening paragraph explicitly states all five workstreams are complete, naming each one — satisfying 'progress against scope' with precision. No vague language like 'on track' appears anywhere. Risks are quantified: Option 1 carries 'up to two quarters' delay before savings materialize, and the labor transition risk in Option 2 is estimated at 'approximately six weeks.' Every status claim is backed by a specific number."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: findings are presented first, the pattern is named, options are laid out with evidence, and the recommendation comes last. The reader can trace the logic from the 34% inventory duplication and $4.4M cost gap to the consolidation recommendation. The reasoning is fully visible and sequenced — no conclusion is stated before the evidence is established."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "No first-person opinion language appears anywhere in the draft. Every recommendation is attributed to 'the analysis,' 'our modeling,' or 'the data shows.' Specific findings anchor each claim: the 34% redundancy figure, the 78% zip code overlap, the $14.2M vs. $9.8M benchmark comparison, and the $2.9M annual savings gap. The authority is entirely evidence-derived, never asserted through personal conviction."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1759,
+              "output_tokens": 533
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast-effect structure the rubric requires. The alternative (Option 1) is presented as genuinely credible: 'a defensible choice' with real savings figures and bounded risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the recommendation section could more directly echo the option labels, but this is a negligible stylistic point."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "The opening paragraph explicitly states all five workstreams are complete, naming each one — satisfying progress-against-scope with precision. No vague status language ('on track,' 'going well') appears anywhere. Risks are quantified: the upgrade path delay is 'up to two quarters,' and the labor transition risk adds 'approximately six weeks' to the consolidation timeline. Every material claim carries a specific number."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with context and data, moves through findings, presents options, and only then states the recommendation. The logic is fully visible — the reader can trace how 34% inventory duplication, the 6-hour lead time gap, and the $4.4M cost-above-benchmark directly motivate the consolidation recommendation. The conclusion does not appear until the final section, which is appropriate for a client audience."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Every recommendation is anchored to specific analytical outputs: 'our modeling projects,' 'the lead time analysis confirms,' 'the data shows.' The $2.9M annual savings gap and the 30-month payback figure are cited as evidence for the recommendation, not as assertions of personal conviction. The tone throughout is that of analysis speaking, not the consultant."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1759,
+              "output_tokens": 543
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 9.0/10\n  Justification: The draft presents exactly two options, with the upgrade path listed first and consolidation second — precisely the contrast-effect structure the rubric requires. The alternative (Option 1) is presented as genuinely defensible ('a defensible choice' for organizations with regional labor relationships or capacity constraints), not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the recommendation section could more directly echo the option labels, but this is a negligible stylistic point.\n- Quantified Progress: 10.0/10\n  Justification: The opening paragraph explicitly states all five workstreams are complete, satisfying progress-against-scope. Every data point is specific: 34% inventory duplication, 78% of zip codes within 6 hours, $14.2M vs. $9.8M benchmark, $4.1M vs. $11.3M capital, $1.8M vs. $4.7M savings, 14-month timeline, six-week labor transition risk. There are no vague status phrases, and risks are quantified with specific impact estimates (two-quarter delay, six-week addition). This is a model status update.\n- Audience-Appropriate Logic Flow: 9.0/10\n  Justification: This is a client email and follows the build-up structure correctly: it opens with context and scope completion, moves through analytical findings, presents options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow from the 34% redundancy and $4.4M cost gap findings directly to the consolidation conclusion. The logic is visible and explicit throughout. No issues with this criterion.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in 'our analysis,' 'our modeling,' 'the data shows,' or 'the lead time analysis confirms' — never personal opinion. There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to a specific finding or modeled output (e.g., the $2.9M annual savings gap, the 78% customer zip code finding). The authority is conveyed entirely through the weight of evidence, consistent with the rubric's intent.\n\nYour weakest criteria are: Audience-Appropriate Logic Flow, Two-Option Framework. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Warehouse Network Decision — Analysis and Recommendation\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested across the site visits, data-sharing sessions, and working interviews over the past three weeks. We have now completed all five assessment workstreams — facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping — and are in a position to share our findings and a recommended path forward.\n\n**What the Analysis Shows**\n\nOur assessment examined unit handling costs, inventory redundancy, fulfillment lead times, and capital expenditure requirements across all three regional facilities. Three findings shape the decision directly.\n\nFirst, regional inventory duplication is running at approximately 34% — roughly one-third of your SKU volume held across multiple locations without a meaningful service-level justification. Second, fulfillment lead times from the Midwest and Southeast facilities fall within 6 hours of one another for 78% of your customer zip codes, a gap that does not materially differentiate service delivery. Third, combined annual operating costs across the three facilities total $14.2M, against a benchmark of $9.8M for a network of comparable throughput volume.\n\nTaken together, these findings describe a network carrying $4.4M in structural cost above benchmark — without a corresponding service advantage that would justify it. That gap is what the two options below are designed to address.\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nTargeted capital investment — estimated at $4.1M — would modernize automation and inventory management systems at each site, preserving your geographic footprint and avoiding transition disruption. For an organization with strong regional labor relationships or near-term capacity constraints, this is a defensible choice. Upgraded facilities would reduce operating costs by approximately $1.8M annually, bringing your network meaningfully closer to benchmark. The execution risk is bounded: if implementation runs long, our modeling estimates a delay of up to two quarters before savings materialize, with no structural impact on the facilities themselves.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nConsolidation involves a more significant commitment — an estimated $11.3M capital investment and a 14-month implementation timeline — but the financial and operational case is materially stronger. Our modeling projects annual operating savings of $4.7M once the hub reaches steady state, representing full payback in under 30 months. The lead time analysis confirms that 78% of your customer base would see no degradation in delivery windows from a centrally located hub, and inventory redundancy costs would be eliminated rather than reduced. The primary execution risk is the labor transition across the three closing facilities; our scoping work estimates this adds approximately six weeks to the implementation timeline if managed through a standard severance and redeployment program.\n\n**Our Recommendation**\n\nThe evidence points to consolidation. The upgrade path addresses the symptom — elevated operating costs — but leaves the underlying structural inefficiency intact. Consolidation resolves it. The $2.9M annual savings gap between the two options compounds to a $14.5M difference in cumulative savings over five years, a spread that the upgrade path cannot close through incremental improvement.\n\nWe are prepared to model adjusted assumptions — phasing, geography, or revised labor transition costs — before you reach a final decision. A working session this week or next to walk through the sensitivity analysis together would be a natural next step.\n\nPlease let us know how you would like to proceed.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) is listed first and is genuinely credible — it's presented with real numbers ($4.1M investment, $1.8M annual savings) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. Option 2 (consolidation) is listed second and is clearly the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides grounded reasoning comparing the two options. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified — not whether it tracks workstream completion. The draft does open with a specific progress statement ('completed all five assessment workstreams') and names each one explicitly. All analytical claims are rigorously quantified: 34% inventory duplication, 78% of customer zip codes, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap, $4.1M vs. $11.3M capital estimates, $1.8M vs. $4.7M savings, 30-month payback, six-week labor transition impact. No vague status language appears anywhere."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context and scope completion, then presents three specific findings that establish the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reasoning is fully visible — the reader can trace exactly how the 34% redundancy, 78% lead-time equivalence, and $4.4M benchmark gap lead to the consolidation conclusion. No dimension is violated."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in data and analysis: 'our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to specific findings — the $2.9M annual savings gap and $14.5M five-year compounding difference are cited as the basis for preferring consolidation over the upgrade path. Analytical authority is maintained throughout without any personal assertion language."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first as a credible alternative with genuine merits ('defensible choice,' bounded execution risk, $1.8M savings), and Option 2 (consolidation) listed second as the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides clear reasoning — the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so workstream-tracking language is not required. However, the email does quantify its analytical claims rigorously: 34% inventory duplication, 78% of customer zip codes within 6 hours, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap, $4.1M vs. $11.3M capital estimates, $1.8M vs. $4.7M annual savings, 30-month payback, six-week labor transition impact, and $14.5M five-year cumulative difference. No vague status language appears. All quantified claims are specific and grounded."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context (three weeks of work, five workstreams completed), then presents three specific findings that establish the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is reached, satisfying the client-buildup and logic-is-visible dimensions fully."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in data and analysis: 'Our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or model output — the $4.7M savings projection ties to the modeling, the six-week labor estimate ties to scoping work, and the five-year compounding calculation is explicitly derived. All three dimensions are fully satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) is listed first and is genuinely credible — it's presented with real numbers ($4.1M investment, $1.8M annual savings) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. Option 2 (consolidation) is listed second and is clearly the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides specific reasoning grounded in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies only to any status or progress claims made within it. The draft does include a progress claim — 'We have now completed all five assessment workstreams' — and names all five specifically (facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping), which is a concrete, quantified completion statement rather than a vague 'on track.' All analytical claims are rigorously quantified (34% SKU duplication, 78% zip code coverage, $14.2M vs. $9.8M benchmark, etc.), satisfying the spirit of the criterion fully."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context-setting (three weeks of work, five workstreams completed), then presents the analytical findings (three specific data points), then frames the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then delivers the recommendation. The reader can trace every step of the reasoning before the conclusion is stated. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific data points and modeling outputs — 'our modeling projects,' 'the lead time analysis confirms,' 'the evidence points to consolidation.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to a specific finding: the $2.9M annual savings gap, the 78% customer zip code coverage, and the structural inefficiency framing all serve as explicit evidentiary anchors. All three dimensions are fully satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) is listed first and is genuinely credible — it's presented with real numbers ($4.1M investment, $1.8M annual savings) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. Option 2 (consolidation) is listed second and is clearly the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides grounded reasoning comparing the two options. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified — not whether it tracks workstream completion. The draft does open with a specific progress statement ('completed all five assessment workstreams') and names each one explicitly. All analytical claims are rigorously quantified: 34% inventory duplication, 78% of customer zip codes, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap, $4.1M vs. $11.3M capital estimates, $1.8M vs. $4.7M savings, 30-month payback, six-week labor transition impact. No vague status language appears anywhere."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context and scope completion, then presents three specific findings that establish the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reasoning is fully visible — the reader can trace exactly how the 34% redundancy, 78% lead-time equivalence, and $4.4M benchmark gap lead to the consolidation conclusion. No dimension is violated."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in data and analysis: 'our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to specific findings — the $2.9M annual savings gap and $14.5M five-year compounding difference are cited as the basis for preferring consolidation over the upgrade path. Analytical authority is maintained throughout without any personal assertion language."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 647
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first as a credible alternative with genuine merits ('defensible choice,' bounded execution risk, $1.8M savings), and Option 2 (consolidation) listed second as the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides clear reasoning — the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so workstream-tracking language is not required. However, the email does quantify its analytical claims rigorously: 34% inventory duplication, 78% of customer zip codes within 6 hours, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap, $4.1M vs. $11.3M capital estimates, $1.8M vs. $4.7M annual savings, 30-month payback, six-week labor transition impact, and $14.5M five-year cumulative difference. No vague status language appears. All quantified claims are specific and grounded."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context (three weeks of work, five workstreams completed), then presents three specific findings that establish the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is reached, satisfying the client-buildup and logic-is-visible dimensions fully."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in data and analysis: 'Our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or model output — the $4.7M savings projection ties to the modeling, the six-week labor estimate ties to scoping work, and the five-year compounding calculation is explicitly derived. All three dimensions are fully satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 615
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) is listed first and is genuinely credible — it's presented with real numbers ($4.1M investment, $1.8M annual savings) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. Option 2 (consolidation) is listed second and is clearly the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides specific reasoning grounded in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies only to any status or progress claims made within it. The draft does include a progress claim — 'We have now completed all five assessment workstreams' — and names all five specifically (facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping), which is a concrete, quantified completion statement rather than a vague 'on track.' All analytical claims are rigorously quantified (34% SKU duplication, 78% zip code coverage, $14.2M vs. $9.8M benchmark, etc.), satisfying the spirit of the criterion fully."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context-setting (three weeks of work, five workstreams completed), then presents the analytical findings (three specific data points), then frames the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then delivers the recommendation. The reader can trace every step of the reasoning before the conclusion is stated. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific data points and modeling outputs — 'our modeling projects,' 'the lead time analysis confirms,' 'the evidence points to consolidation.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to a specific finding: the $2.9M annual savings gap, the 78% customer zip code coverage, and the structural inefficiency framing all serve as explicit evidentiary anchors. All three dimensions are fully satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 630
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options: Option 1 (upgrade existing facilities) is listed first and is genuinely credible — it's presented with real numbers ($4.1M investment, $1.8M annual savings) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. Option 2 (consolidation) is listed second and is clearly the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides grounded reasoning comparing the two options. All four dimensions are fully satisfied.\n- Quantified Progress: 10.0/10\n  Justification: This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified — not whether it tracks workstream completion. The draft does open with a specific progress statement ('completed all five assessment workstreams') and names each one explicitly. All analytical claims are rigorously quantified: 34% inventory duplication, 78% of customer zip codes, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap, $4.1M vs. $11.3M capital estimates, $1.8M vs. $4.7M savings, 30-month payback, six-week labor transition impact. No vague status language appears anywhere.\n- Audience-Appropriate Logic Flow: 10.0/10\n  Justification: This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context and scope completion, then presents three specific findings that establish the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reasoning is fully visible — the reader can trace exactly how the 34% redundancy, 78% lead-time equivalence, and $4.4M benchmark gap lead to the consolidation conclusion. No dimension is violated.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in data and analysis: 'our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' Each recommendation links to specific findings — the $2.9M annual savings gap and $14.5M five-year compounding difference are cited as the basis for preferring consolidation over the upgrade path. Analytical authority is maintained throughout without any personal assertion language.\n\nYour weakest criteria are: Analytical Authority, Audience-Appropriate Logic Flow. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Deducting points because a section header announces that two options will follow — this is not a structural violation, it's clear organization",
+              "Penalizing the recommendation section for not repeating the exact option label names — what matters is that the recommendation is explicit and grounded, not that it mirrors header wording"
+            ],
+            "clarification": "The Two-Option Framework is fully satisfied when: exactly two options are presented, the recommended one is second, the alternative is genuinely credible (not a strawman), and the recommendation is clearly stated with reasoning. Stylistic choices about headers or label echoing are irrelevant to whether this criterion is met. Both drafts execute this perfectly and should score 10."
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Scoring a recommendation email low on 'Quantified Progress' because it doesn't list workstreams completed — a recommendation email's job is to present findings and options, not project status",
+              "Treating the absence of scope-tracking language in a non-status-update email as a criterion failure"
+            ],
+            "clarification": "Quantified Progress applies when the email is functioning as a status update or contains status claims. When an email is a recommendation communication, the criterion should evaluate whether any progress or status claims made within it are quantified — not penalize the email for omitting status content that doesn't belong there. The Round 1 draft quantified all its analytical claims rigorously and should not have been scored 7 for lacking workstream completion language."
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Warehouse Network Decision — Analysis and Recommendation\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested across the site visits, data-sharing sessions, and working interviews over the past three weeks. We have now completed all five assessment workstreams — facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping — and are in a position to share our findings and a recommended path forward.\n\n**What the Analysis Shows**\n\nOur assessment examined unit handling costs, inventory redundancy, fulfillment lead times, and capital expenditure requirements across all three regional facilities. Three findings shape the decision directly.\n\nFirst, regional inventory duplication is running at approximately 34% — roughly one-third of your SKU volume held across multiple locations without a meaningful service-level justification. Second, fulfillment lead times from the Midwest and Southeast facilities fall within 6 hours of one another for 78% of your customer zip codes, a gap that does not materially differentiate service delivery. Third, combined annual operating costs across the three facilities total $14.2M, against a benchmark of $9.8M for a network of comparable throughput volume.\n\nTaken together, these findings describe a network carrying $4.4M in structural cost above benchmark — without a corresponding service advantage that would justify it. That gap is what the two options below are designed to address.\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nTargeted capital investment — estimated at $4.1M — would modernize automation and inventory management systems at each site, preserving your geographic footprint and avoiding transition disruption. For an organization with strong regional labor relationships or near-term capacity constraints, this is a defensible choice. Upgraded facilities would reduce operating costs by approximately $1.8M annually, bringing your network meaningfully closer to benchmark. The execution risk is bounded: if implementation runs long, our modeling estimates a delay of up to two quarters before savings materialize, with no structural impact on the facilities themselves.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nConsolidation involves a more significant commitment — an estimated $11.3M capital investment and a 14-month implementation timeline — but the financial and operational case is materially stronger. Our modeling projects annual operating savings of $4.7M once the hub reaches steady state, representing full payback in under 30 months. The lead time analysis confirms that 78% of your customer base would see no degradation in delivery windows from a centrally located hub, and inventory redundancy costs would be eliminated rather than reduced. The primary execution risk is the labor transition across the three closing facilities; our scoping work estimates this adds approximately six weeks to the implementation timeline if managed through a standard severance and redeployment program.\n\n**Our Recommendation**\n\nThe evidence points to consolidation. The upgrade path addresses the symptom — elevated operating costs — but leaves the underlying structural inefficiency intact. Consolidation resolves it. The $2.9M annual savings gap between the two options compounds to a $14.5M difference in cumulative savings over five years, a spread that the upgrade path cannot close through incremental improvement.\n\nWe are prepared to model adjusted assumptions — phasing, geography, or revised labor transition costs — before you reach a final decision. A working session this week or next to walk through the sensitivity analysis together would be a natural next step.\n\nPlease let us know how you would like to proceed.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly states 'The evidence points to consolidation' and provides clear reasoning grounded in the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The draft opens by noting all five assessment workstreams are complete (named explicitly: facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping), which is a precise scope-completion claim. All analytical claims are rigorously quantified: 34% inventory duplication, 78% of zip codes, $14.2M vs. $9.8M benchmark, $4.4M gap, $4.1M vs. $11.3M capital, $1.8M vs. $4.7M savings, 30-month payback, six-week labor transition impact. No vague status language appears."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure throughout. The email opens with context-setting (three weeks of work, five workstreams complete), then presents the analytical findings (three specific data points), then frames the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning: the findings establish the problem, the options address it differently, and the recommendation follows from the quantified comparison. No conclusion is front-loaded."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in data and analysis: 'Our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to specific findings — the consolidation recommendation is explicitly tied to the $2.9M annual savings gap, the 78% lead time finding, and the structural inefficiency argument. Personal conviction is expressed entirely through the weight of the evidence presented."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly states 'The evidence points to consolidation' and provides clear reasoning grounded in the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The opening paragraph quantifies scope completion precisely: 'all five assessment workstreams — facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping.' Every analytical claim is backed by specific numbers (34% redundancy, 78% zip code coverage, $14.2M vs. $9.8M benchmark). No vague status language appears anywhere in the draft."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "As a client email, the draft correctly uses build-up logic rather than pyramid structure. It opens with context and scope completion, moves through three specific findings that establish the problem ($4.4M structural cost gap), presents both options with evidence, and only then states the recommendation. The reader can trace the full logical chain: findings → cost gap → options → recommendation. The reasoning is fully visible and sequenced for a client audience."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'Our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or data point — the $4.4M gap, the 78% zip code figure, the 30-month payback, the $14.5M five-year compounding difference. Personal conviction is expressed entirely through the weight of the evidence."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings of $1.8M annually — not a strawman. The recommendation section explicitly states 'The evidence points to consolidation' with clear reasoning grounded in the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies only to any status or progress claims made within it. The draft does quantify its analytical scope — 'all five assessment workstreams' are named explicitly — and every analytical claim is rigorously quantified (34% inventory duplication, 78% of zip codes, $14.2M vs. $9.8M benchmark, $4.4M gap). No vague status language appears. The criterion is fully satisfied in the context of this email type."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure throughout. The email opens with context-setting, moves through three specific analytical findings that establish the problem, presents both options with evidence, and only then states the recommendation. The reasoning is fully traceable: the $4.4M structural cost gap established in the analysis section directly motivates the recommendation for consolidation over the upgrade path."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in data — 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or quantified outcome: the recommendation for consolidation is tied explicitly to the $2.9M annual savings gap and the five-year $14.5M cumulative difference. Analytical authority is maintained throughout."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly states 'The evidence points to consolidation' and provides clear reasoning grounded in the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The draft opens by noting all five assessment workstreams are complete (named explicitly: facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping), which is a precise scope-completion claim. All analytical claims are rigorously quantified: 34% inventory duplication, 78% of zip codes, $14.2M vs. $9.8M benchmark, $4.4M gap, $4.1M vs. $11.3M capital, $1.8M vs. $4.7M savings, 30-month payback, six-week labor transition impact. No vague status language appears."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure throughout. The email opens with context-setting (three weeks of work, five workstreams complete), then presents the analytical findings (three specific data points), then frames the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning: the findings establish the problem, the options address it differently, and the recommendation follows from the quantified comparison. No conclusion is front-loaded."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in data and analysis: 'Our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to specific findings — the consolidation recommendation is explicitly tied to the $2.9M annual savings gap, the 78% lead time finding, and the structural inefficiency argument. Personal conviction is expressed entirely through the weight of the evidence presented."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 662
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly states 'The evidence points to consolidation' and provides clear reasoning grounded in the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The opening paragraph quantifies scope completion precisely: 'all five assessment workstreams — facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping.' Every analytical claim is backed by specific numbers (34% redundancy, 78% zip code coverage, $14.2M vs. $9.8M benchmark). No vague status language appears anywhere in the draft."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "As a client email, the draft correctly uses build-up logic rather than pyramid structure. It opens with context and scope completion, moves through three specific findings that establish the problem ($4.4M structural cost gap), presents both options with evidence, and only then states the recommendation. The reader can trace the full logical chain: findings → cost gap → options → recommendation. The reasoning is fully visible and sequenced for a client audience."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'Our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or data point — the $4.4M gap, the 78% zip code figure, the 30-month payback, the $14.5M five-year compounding difference. Personal conviction is expressed entirely through the weight of the evidence."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 584
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings of $1.8M annually — not a strawman. The recommendation section explicitly states 'The evidence points to consolidation' with clear reasoning grounded in the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies only to any status or progress claims made within it. The draft does quantify its analytical scope — 'all five assessment workstreams' are named explicitly — and every analytical claim is rigorously quantified (34% inventory duplication, 78% of zip codes, $14.2M vs. $9.8M benchmark, $4.4M gap). No vague status language appears. The criterion is fully satisfied in the context of this email type."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure throughout. The email opens with context-setting, moves through three specific analytical findings that establish the problem, presents both options with evidence, and only then states the recommendation. The reasoning is fully traceable: the $4.4M structural cost gap established in the analysis section directly motivates the recommendation for consolidation over the upgrade path."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in data — 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or quantified outcome: the recommendation for consolidation is tied explicitly to the $2.9M annual savings gap and the five-year $14.5M cumulative difference. Analytical authority is maintained throughout."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 555
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly states 'The evidence points to consolidation' and provides clear reasoning grounded in the $2.9M annual savings gap and structural inefficiency argument. All four dimensions are fully satisfied.\n- Quantified Progress: 10.0/10\n  Justification: This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The draft opens by noting all five assessment workstreams are complete (named explicitly: facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping), which is a precise scope-completion claim. All analytical claims are rigorously quantified: 34% inventory duplication, 78% of zip codes, $14.2M vs. $9.8M benchmark, $4.4M gap, $4.1M vs. $11.3M capital, $1.8M vs. $4.7M savings, 30-month payback, six-week labor transition impact. No vague status language appears.\n- Audience-Appropriate Logic Flow: 10.0/10\n  Justification: This is a client email and follows the build-up → logic → recommendation structure throughout. The email opens with context-setting (three weeks of work, five workstreams complete), then presents the analytical findings (three specific data points), then frames the problem ($4.4M structural cost gap), then presents the two options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning: the findings establish the problem, the options address it differently, and the recommendation follows from the quantified comparison. No conclusion is front-loaded.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in data and analysis: 'Our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to specific findings — the consolidation recommendation is explicitly tied to the $2.9M annual savings gap, the 78% lead time finding, and the structural inefficiency argument. Personal conviction is expressed entirely through the weight of the evidence presented.\n\nYour weakest criteria are: Analytical Authority, Audience-Appropriate Logic Flow. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Deducting points because a section header announces that two options will follow — this is not a structural violation, it's clear organization",
+              "Penalizing the recommendation section for not repeating the exact option label names — what matters is that the recommendation is explicit and grounded, not that it mirrors header wording"
+            ],
+            "clarification": "The Two-Option Framework is fully satisfied when: exactly two options are presented, the recommended one is second, the alternative is genuinely credible (not a strawman), and the recommendation is clearly stated with reasoning. Stylistic choices about headers or label echoing are irrelevant to whether this criterion is met. Both drafts execute this perfectly and should score 10."
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Scoring a recommendation email low on 'Quantified Progress' because it doesn't list workstreams completed — a recommendation email's job is to present findings and options, not project status",
+              "Treating the absence of scope-tracking language in a non-status-update email as a criterion failure"
+            ],
+            "clarification": "Quantified Progress applies when the email is functioning as a status update or contains status claims. When an email is a recommendation communication, the criterion should evaluate whether any progress or status claims made within it are quantified — not penalize the email for omitting status content that doesn't belong there. The Round 1 draft quantified all its analytical claims rigorously and should not have been scored 7 for lacking workstream completion language."
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Warehouse Network Decision — Analysis and Recommendation\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested across the site visits, data-sharing sessions, and working interviews over the past three weeks. We have now completed all five assessment workstreams — facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping — and are in a position to share our findings and a recommended path forward.\n\n**What the Analysis Shows**\n\nOur assessment examined unit handling costs, inventory redundancy, fulfillment lead times, and capital expenditure requirements across all three regional facilities. Three findings shape the decision directly.\n\nFirst, regional inventory duplication is running at approximately 34% — roughly one-third of your SKU volume held across multiple locations without a meaningful service-level justification. Second, fulfillment lead times from the Midwest and Southeast facilities fall within 6 hours of one another for 78% of your customer zip codes, a gap that does not materially differentiate service delivery. Third, combined annual operating costs across the three facilities total $14.2M, against a benchmark of $9.8M for a network of comparable throughput volume.\n\nTaken together, these findings describe a network carrying $4.4M in structural cost above benchmark — without a corresponding service advantage that would justify it. That gap is what the two options below are designed to address.\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nTargeted capital investment — estimated at $4.1M — would modernize automation and inventory management systems at each site, preserving your geographic footprint and avoiding transition disruption. For an organization with strong regional labor relationships or near-term capacity constraints, this is a defensible choice. Upgraded facilities would reduce operating costs by approximately $1.8M annually, bringing your network meaningfully closer to benchmark. The execution risk is bounded: if implementation runs long, our modeling estimates a delay of up to two quarters before savings materialize, with no structural impact on the facilities themselves.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nConsolidation involves a more significant commitment — an estimated $11.3M capital investment and a 14-month implementation timeline — but the financial and operational case is materially stronger. Our modeling projects annual operating savings of $4.7M once the hub reaches steady state, representing full payback in under 30 months. The lead time analysis confirms that 78% of your customer base would see no degradation in delivery windows from a centrally located hub, and inventory redundancy costs would be eliminated rather than reduced. The primary execution risk is the labor transition across the three closing facilities; our scoping work estimates this adds approximately six weeks to the implementation timeline if managed through a standard severance and redeployment program.\n\n**Our Recommendation**\n\nThe evidence points to consolidation. The upgrade path addresses the symptom — elevated operating costs — but leaves the underlying structural inefficiency intact. Consolidation resolves it. The $2.9M annual savings gap between the two options compounds to a $14.5M difference in cumulative savings over five years, a spread that the upgrade path cannot close through incremental improvement.\n\nWe are prepared to model adjusted assumptions — phasing, geography, or revised labor transition costs — before you reach a final decision. A working session this week or next to walk through the sensitivity analysis together would be a natural next step.\n\nPlease let us know how you would like to proceed.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) is listed first and is genuinely credible — it's presented with real numbers ($4.1M investment, $1.8M annual savings) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. Option 2 (consolidation) is listed second and is clearly the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides specific reasoning grounded in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies only to any status or progress claims made within it. The opening paragraph quantifies completion precisely: 'all five assessment workstreams' are named explicitly (facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping). No vague status language like 'on track' or 'going well' appears anywhere. All analytical claims are rigorously quantified with specific figures (34% redundancy, 78% zip codes, $14.2M vs. $9.8M benchmark, etc.)."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure throughout. The email opens with context-setting (site visits, workstreams completed), moves into the analytical findings section that lays out three specific data points, then presents the two options with their respective evidence, and only arrives at the recommendation in the final named section. The reader can trace exactly how the $4.4M structural cost gap leads to the two options and how the $2.9M annual savings differential drives the consolidation recommendation. Logic is fully visible and sequenced for a client audience."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific data: 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates,' and 'the evidence points to consolidation.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a concrete finding — the consolidation recommendation is tied to the $2.9M annual savings gap, the 78% customer zip code finding, and the elimination (vs. reduction) of inventory redundancy costs. Analytical authority is maintained throughout without any personal assertion substituting for evidence."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly names consolidation and grounds it in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The opening paragraph quantifies project completion precisely: 'all five assessment workstreams' are named individually. All analytical claims are rigorously quantified — 34% inventory duplication, 78% of customer zip codes, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap, $4.1M vs. $11.3M capital estimates, 14-month timeline, six-week labor transition addition. No vague status language appears anywhere."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure correctly. The email opens with context and scope completion, then presents the analytical findings (three specific data points), then frames the problem ($4.4M structural gap), then presents the two options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is reached. Logic is fully visible throughout."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in data and analysis — 'our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or data point: the $2.9M savings gap, the 78% customer zip code finding, the 30-month payback calculation. Authority is expressed entirely through the strength of the evidence."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly names consolidation and grounds it in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The opening paragraph quantifies project completion precisely: 'all five assessment workstreams' are named individually. All analytical claims are rigorously quantified — 34% inventory duplication, 78% of customer zip codes, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap. No vague status language appears anywhere in the draft."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with context and scope completion, then presents the analytical findings (three specific data points), then uses those findings to frame the decision gap, then presents the two options, and only then states the recommendation. The reader can trace the full logical chain from evidence to conclusion. The recommendation does not appear until the final named section, after the reasoning has been fully laid out."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific analysis: 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim in the recommendation section links back to a specific finding or data point — the $2.9M savings gap, the 78% customer coverage figure, the structural inefficiency framing. Personal conviction is expressed entirely through the weight of the evidence presented."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) is listed first and is genuinely credible — it's presented with real numbers ($4.1M investment, $1.8M annual savings) and a legitimate rationale for organizations with regional labor relationships or capacity constraints. Option 2 (consolidation) is listed second and is clearly the recommended path. The recommendation section explicitly states 'The evidence points to consolidation' and provides specific reasoning grounded in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies only to any status or progress claims made within it. The opening paragraph quantifies completion precisely: 'all five assessment workstreams' are named explicitly (facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping). No vague status language like 'on track' or 'going well' appears anywhere. All analytical claims are rigorously quantified with specific figures (34% redundancy, 78% zip codes, $14.2M vs. $9.8M benchmark, etc.)."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure throughout. The email opens with context-setting (site visits, workstreams completed), moves into the analytical findings section that lays out three specific data points, then presents the two options with their respective evidence, and only arrives at the recommendation in the final named section. The reader can trace exactly how the $4.4M structural cost gap leads to the two options and how the $2.9M annual savings differential drives the consolidation recommendation. Logic is fully visible and sequenced for a client audience."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific data: 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates,' and 'the evidence points to consolidation.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a concrete finding — the consolidation recommendation is tied to the $2.9M annual savings gap, the 78% customer zip code finding, and the elimination (vs. reduction) of inventory redundancy costs. Analytical authority is maintained throughout without any personal assertion substituting for evidence."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 654
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly names consolidation and grounds it in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The opening paragraph quantifies project completion precisely: 'all five assessment workstreams' are named individually. All analytical claims are rigorously quantified — 34% inventory duplication, 78% of customer zip codes, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap, $4.1M vs. $11.3M capital estimates, 14-month timeline, six-week labor transition addition. No vague status language appears anywhere."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure correctly. The email opens with context and scope completion, then presents the analytical findings (three specific data points), then frames the problem ($4.4M structural gap), then presents the two options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is reached. Logic is fully visible throughout."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in data and analysis — 'our assessment examined,' 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or data point: the $2.9M savings gap, the 78% customer zip code finding, the 30-month payback calculation. Authority is expressed entirely through the strength of the evidence."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 582
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options: Option 1 (upgrade existing facilities) listed first, Option 2 (consolidation) listed second. The upgrade option is presented as genuinely credible — 'a defensible choice' with real savings figures ($1.8M annually) and bounded execution risk, not a strawman. The recommendation section explicitly names consolidation and grounds it in the $2.9M annual savings gap and the structural inefficiency argument. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "This is a recommendation email, not a status update, so the criterion applies to whether any status or progress claims made within it are quantified. The opening paragraph quantifies project completion precisely: 'all five assessment workstreams' are named individually. All analytical claims are rigorously quantified — 34% inventory duplication, 78% of customer zip codes, $14.2M vs. $9.8M benchmark, $4.4M structural cost gap. No vague status language appears anywhere in the draft."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with context and scope completion, then presents the analytical findings (three specific data points), then uses those findings to frame the decision gap, then presents the two options, and only then states the recommendation. The reader can trace the full logical chain from evidence to conclusion. The recommendation does not appear until the final named section, after the reasoning has been fully laid out."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific analysis: 'our modeling projects,' 'the lead time analysis confirms,' 'our scoping work estimates.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim in the recommendation section links back to a specific finding or data point — the $2.9M savings gap, the 78% customer coverage figure, the structural inefficiency framing. Personal conviction is expressed entirely through the weight of the evidence presented."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2107,
+              "output_tokens": 557
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Deducting points because a section header announces that two options will follow — this is not a structural violation, it's clear organization",
+              "Penalizing the recommendation section for not repeating the exact option label names — what matters is that the recommendation is explicit and grounded, not that it mirrors header wording"
+            ],
+            "clarification": "The Two-Option Framework is fully satisfied when: exactly two options are presented, the recommended one is second, the alternative is genuinely credible (not a strawman), and the recommendation is clearly stated with reasoning. Stylistic choices about headers or label echoing are irrelevant to whether this criterion is met. Both drafts execute this perfectly and should score 10."
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Scoring a recommendation email low on 'Quantified Progress' because it doesn't list workstreams completed — a recommendation email's job is to present findings and options, not project status",
+              "Treating the absence of scope-tracking language in a non-status-update email as a criterion failure"
+            ],
+            "clarification": "Quantified Progress applies when the email is functioning as a status update or contains status claims. When an email is a recommendation communication, the criterion should evaluate whether any progress or status claims made within it are quantified — not penalize the email for omitting status content that doesn't belong there. The Round 1 draft quantified all its analytical claims rigorously and should not have been scored 7 for lacking workstream completion language."
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Exactly TWO options presented to client",
+        "satisfied": "yes",
+        "evidence": "The email presents exactly two options: Option 1 (Upgrade Existing Facilities) and Option 2 (Consolidate into a Single Central Hub)."
+      },
+      {
+        "preference": "Recommended option listed SECOND (contrast effect)",
+        "satisfied": "yes",
+        "evidence": "Option 1 (the adequate but non-recommended path) is listed first, and Option 2 (the recommended consolidation) is listed second, creating the desired contrast effect."
+      },
+      {
+        "preference": "Quantify progress against original scope",
+        "satisfied": "yes",
+        "evidence": "'We have now completed all five assessment workstreams — facility cost modeling, lead time mapping, inventory redundancy analysis, capital benchmarking, and labor transition scoping' — explicitly names and counts all five workstreams."
+      },
+      {
+        "preference": "Client emails use build-up structure (not pyramid/conclusion-first)",
+        "satisfied": "yes",
+        "evidence": "The email builds from analysis findings → two options → recommendation at the end. The logic unfolds progressively rather than leading with the conclusion."
+      },
+      {
+        "preference": "Avoid 'I think' — use 'our analysis shows' framing",
+        "satisfied": "yes",
+        "evidence": "The email consistently uses evidence-based language: 'Our assessment examined,' 'Our modeling projects,' 'The evidence points to consolidation.' No instances of 'I think.'"
+      },
+      {
+        "preference": "Balance authority with collaboration",
+        "satisfied": "yes",
+        "evidence": "The email makes a clear recommendation ('The evidence points to consolidation') while offering collaborative next steps: 'We are prepared to model adjusted assumptions' and 'A working session this week or next... would be a natural next step.'"
+      },
+      {
+        "preference": "Don't bury the recommendation at the end without clear labeling",
+        "satisfied": "yes",
+        "evidence": "The recommendation is clearly labeled under its own bold heading '**Our Recommendation**' and is stated decisively: 'The evidence points to consolidation.' It's positioned after the options (as the build-up structure requires for client emails) but is not buried or ambiguous."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1210,
+      "output_tokens": 600
+    }
+  }
+}

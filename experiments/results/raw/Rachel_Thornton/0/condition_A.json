@@ -1,0 +1,337 @@
+{
+  "persona": "Rachel Thornton",
+  "task_index": 0,
+  "task_description": "Help me draft an email to my team about our decision to migrate from REST to gRPC for inter-service communication — we considered GraphQL too but ruled it out.",
+  "condition": "A",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+    "rubric": [
+      {
+        "name": "Decision Tradeoff Transparency",
+        "category": "Content",
+        "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+        "dimensions": [
+          {
+            "id": "alternatives_listed",
+            "label": "Names at least one alternative that was seriously considered"
+          },
+          {
+            "id": "rejection_rationale",
+            "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+          },
+          {
+            "id": "tradeoff_acknowledged",
+            "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+          },
+          {
+            "id": "decision_not_buried",
+            "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Link, Don't Duplicate",
+        "category": "Content",
+        "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+        "dimensions": [
+          {
+            "id": "links_to_sources",
+            "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+          },
+          {
+            "id": "no_content_duplication",
+            "label": "Does not reproduce information that's already available at a linked source"
+          },
+          {
+            "id": "link_context_sufficient",
+            "label": "Each link has enough surrounding context that the reader knows why to click it"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Scoped Review Requests",
+        "category": "Audience",
+        "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+        "dimensions": [
+          {
+            "id": "feedback_scope_stated",
+            "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+          },
+          {
+            "id": "review_deadline",
+            "label": "Includes a specific deadline or timeframe for the review"
+          },
+          {
+            "id": "out_of_scope_noted",
+            "label": "Explicitly notes what is NOT in scope for this review round"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Thread Discipline",
+        "category": "Structure",
+        "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+        "dimensions": [
+          {
+            "id": "single_topic",
+            "label": "The email addresses exactly one topic — does not bundle unrelated items"
+          },
+          {
+            "id": "subject_matches_content",
+            "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+          },
+          {
+            "id": "new_thread_for_new_topic",
+            "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Migrating inter-service communication from REST to gRPC\n\n---\n\nHi team,\n\n**We're moving forward with gRPC for inter-service communication, replacing our current REST implementation.** The migration will begin next sprint, starting with the auth and billing service boundaries.\n\nHere's the reasoning behind the choice, including what we considered and ruled out.\n\n---\n\n**Why we're moving away from REST**\n\nOur current REST setup has become a bottleneck: payload overhead, lack of enforced contracts, and the latency cost of HTTP/1.1 on high-frequency internal calls are all problems that only get worse as we add services. This isn't about REST being wrong in general — it's the wrong fit for synchronous, high-throughput internal traffic.\n\n---\n\n**What we considered**\n\n**Option 1: GraphQL**\nWe looked at GraphQL seriously, primarily because of its flexibility for query composition and its strong tooling story. We ruled it out for internal service-to-service use because:\n- It's optimized for client-driven data fetching, which isn't the pattern we have between services\n- Schema stitching across service boundaries adds coordination overhead we'd be taking on permanently\n- Operational complexity (query parsing, resolver chains) adds latency we'd be paying on every call, not just complex ones\n\nThe tradeoff we're accepting by not choosing GraphQL: we lose the flexible query composition that would be useful if our inter-service call patterns become highly varied in the future. We think that's an acceptable risk given current patterns.\n\n**Option 2: gRPC (chosen)**\ngRPC gives us strongly typed contracts via Protobuf, HTTP/2 multiplexing, and a significant latency improvement on internal calls. Contract enforcement at compile time also eliminates a whole category of runtime integration bugs we've been chasing.\n\nWhat gRPC costs us compared to REST: human-readable payloads and curl-ability during debugging. We're mitigating this with [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) for any endpoints that need HTTP/JSON compatibility, and [grpcurl](https://github.com/fullstorydev/grpcurl) for ad-hoc debugging.\n\n---\n\n**What this means for you**\n\nThe migration plan and service priority order are in [Notion: gRPC Migration Plan](#). The Protobuf style guide we'll follow is [here](#). If your service is in phase 1, you'll see a PR for the initial `.proto` definitions by end of this week.\n\nNo action needed from most of you right now — I'll tag you directly in the relevant PRs when your service boundary is affected.\n\nQuestions or concerns about the decision? Reply here. I'd rather surface disagreements in writing than discover them mid-migration.\n\n— [Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision appears in the very first sentence, satisfying decision_not_buried. Two alternatives are named (GraphQL and gRPC/REST implicitly), with specific rejection rationale for GraphQL (client-driven pattern mismatch, schema stitching overhead, resolver latency). Tradeoffs are explicitly acknowledged: losing flexible query composition for GraphQL, and losing human-readable payloads/curl-ability for gRPC. The only minor gap is that REST as a 'stay the course' option isn't formally listed as a considered alternative with its own rejection rationale — it's addressed in the 'why we're moving away' section but not structured as a named option."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 7,
+              "justification": "The email links to the Notion migration plan, Protobuf style guide, grpc-gateway, and grpcurl, satisfying links_to_sources. Each link has surrounding context explaining why to click it, satisfying link_context_sufficient. However, the links use placeholder '#' anchors rather than real URLs, which is a minor issue in a draft context. The email does not reproduce content from the linked docs — it references them and moves on — satisfying no_content_duplication. Score docked slightly for placeholder links that wouldn't function in a real send."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 3,
+              "justification": "The email does not contain a formal review request, so feedback_scope_stated, review_deadline, and out_of_scope_noted are all unsatisfied. The closing line invites questions or concerns about the decision, but this is an open-ended invitation rather than a scoped review request with a deadline or defined focus area. If no review was intended, this criterion is not applicable, but as written the email could benefit from explicitly stating 'no review requested' or scoping any feedback window."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the REST-to-gRPC migration decision — satisfying single_topic. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content, satisfying subject_matches_content. There is no evidence of topic drift or bundling of unrelated items, and no new thread concerns arise since this appears to be an original message."
+            }
+          ],
+          "overall_weighted_score": 0.73,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision appears in the very first sentence, satisfying decision_not_buried. Two alternatives are named (GraphQL and gRPC/REST implicitly), with specific rejection rationale for GraphQL (client-driven pattern mismatch, schema stitching overhead, resolver latency). Tradeoffs are explicitly acknowledged: losing flexible query composition for GraphQL, and losing human-readable payloads/curl-ability for gRPC. The only minor gap is that REST as a 'stay the course' option isn't formally listed as a considered alternative with its own rejection rationale — it's addressed in the 'why we're moving away' section but not structured as a named option with tradeoffs."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 7,
+              "justification": "The email links to grpc-gateway and grpcurl with appropriate context, and references the Notion migration plan and Protobuf style guide with links. However, the links to Notion and the style guide use placeholder '#' anchors rather than real URLs, which technically fails links_to_sources as they aren't functional hyperlinks. The surrounding context for each link is sufficient to explain why to click. There's no obvious content duplication — the email doesn't reproduce what's in the Notion doc."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 5,
+              "justification": "The email does not contain an explicit review request — it's primarily a decision announcement. The closing 'Questions or concerns about the decision? Reply here' is an open-ended invitation rather than a scoped review request, with no deadline, no specified feedback type, and no out-of-scope guidance. Since this isn't framed as a review request email, the criterion is partially inapplicable, but the rubric would still expect any feedback solicitation to be scoped and time-bound, which this one is not."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the REST-to-gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. There's no indication of thread drift or topic mixing. This is a clean, single-topic communication."
+            }
+          ],
+          "overall_weighted_score": 0.77,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 9,
+              "justification": "The decision appears in the very first sentence, satisfying decision_not_buried. GraphQL is named as a seriously considered alternative with specific rejection rationale (client-driven pattern mismatch, schema stitching overhead, resolver latency). The tradeoff of losing flexible query composition is explicitly acknowledged. The only minor gap is that REST itself isn't framed as a 'considered and rejected' option with the same structured treatment — it's positioned as the status quo being replaced rather than an alternative evaluated on equal footing, but this is a minor omission given the context."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 7,
+              "justification": "The Notion migration plan and Protobuf style guide are linked rather than reproduced inline, satisfying no_content_duplication. The grpc-gateway and grpcurl tools are hyperlinked with surrounding context explaining their purpose. However, the links use placeholder '#' anchors rather than real URLs, which technically means they don't function as actual links — this is a draft artifact but still a dimension failure for links_to_sources in a strict reading. Link context is sufficient in all cases."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 5,
+              "justification": "This email is primarily a decision announcement rather than a review request, so the criterion is partially inapplicable. However, the closing 'Questions or concerns about the decision? Reply here' functions as an implicit feedback request without specifying scope, deadline, or what is out of scope. None of the three dimensions (feedback_scope_stated, review_deadline, out_of_scope_noted) are satisfied for this implicit request, which is a meaningful gap given the rubric's emphasis on bounded review requests."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the REST-to-gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. All three dimensions are clearly satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.77,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 9.0,
+          "Link, Don't Duplicate": 7.0,
+          "Scoped Review Requests": 4.333333333333333,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 1.1547005383792515,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 0.7566666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision appears in the very first sentence, satisfying decision_not_buried. Two alternatives are named (GraphQL and gRPC/REST implicitly), with specific rejection rationale for GraphQL (client-driven pattern mismatch, schema stitching overhead, resolver latency). Tradeoffs are explicitly acknowledged: losing flexible query composition for GraphQL, and losing human-readable payloads/curl-ability for gRPC. The only minor gap is that REST as a 'stay the course' option isn't formally listed as a considered alternative with its own rejection rationale — it's addressed in the 'why we're moving away' section but not structured as a named option."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 7,
+                "justification": "The email links to the Notion migration plan, Protobuf style guide, grpc-gateway, and grpcurl, satisfying links_to_sources. Each link has surrounding context explaining why to click it, satisfying link_context_sufficient. However, the links use placeholder '#' anchors rather than real URLs, which is a minor issue in a draft context. The email does not reproduce content from the linked docs — it references them and moves on — satisfying no_content_duplication. Score docked slightly for placeholder links that wouldn't function in a real send."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 3,
+                "justification": "The email does not contain a formal review request, so feedback_scope_stated, review_deadline, and out_of_scope_noted are all unsatisfied. The closing line invites questions or concerns about the decision, but this is an open-ended invitation rather than a scoped review request with a deadline or defined focus area. If no review was intended, this criterion is not applicable, but as written the email could benefit from explicitly stating 'no review requested' or scoping any feedback window."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the REST-to-gRPC migration decision — satisfying single_topic. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content, satisfying subject_matches_content. There is no evidence of topic drift or bundling of unrelated items, and no new thread concerns arise since this appears to be an original message."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1605,
+              "output_tokens": 616
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision appears in the very first sentence, satisfying decision_not_buried. Two alternatives are named (GraphQL and gRPC/REST implicitly), with specific rejection rationale for GraphQL (client-driven pattern mismatch, schema stitching overhead, resolver latency). Tradeoffs are explicitly acknowledged: losing flexible query composition for GraphQL, and losing human-readable payloads/curl-ability for gRPC. The only minor gap is that REST as a 'stay the course' option isn't formally listed as a considered alternative with its own rejection rationale — it's addressed in the 'why we're moving away' section but not structured as a named option with tradeoffs."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 7,
+                "justification": "The email links to grpc-gateway and grpcurl with appropriate context, and references the Notion migration plan and Protobuf style guide with links. However, the links to Notion and the style guide use placeholder '#' anchors rather than real URLs, which technically fails links_to_sources as they aren't functional hyperlinks. The surrounding context for each link is sufficient to explain why to click. There's no obvious content duplication — the email doesn't reproduce what's in the Notion doc."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 5,
+                "justification": "The email does not contain an explicit review request — it's primarily a decision announcement. The closing 'Questions or concerns about the decision? Reply here' is an open-ended invitation rather than a scoped review request, with no deadline, no specified feedback type, and no out-of-scope guidance. Since this isn't framed as a review request email, the criterion is partially inapplicable, but the rubric would still expect any feedback solicitation to be scoped and time-bound, which this one is not."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the REST-to-gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. There's no indication of thread drift or topic mixing. This is a clean, single-topic communication."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1605,
+              "output_tokens": 594
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 9,
+                "justification": "The decision appears in the very first sentence, satisfying decision_not_buried. GraphQL is named as a seriously considered alternative with specific rejection rationale (client-driven pattern mismatch, schema stitching overhead, resolver latency). The tradeoff of losing flexible query composition is explicitly acknowledged. The only minor gap is that REST itself isn't framed as a 'considered and rejected' option with the same structured treatment — it's positioned as the status quo being replaced rather than an alternative evaluated on equal footing, but this is a minor omission given the context."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 7,
+                "justification": "The Notion migration plan and Protobuf style guide are linked rather than reproduced inline, satisfying no_content_duplication. The grpc-gateway and grpcurl tools are hyperlinked with surrounding context explaining their purpose. However, the links use placeholder '#' anchors rather than real URLs, which technically means they don't function as actual links — this is a draft artifact but still a dimension failure for links_to_sources in a strict reading. Link context is sufficient in all cases."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 5,
+                "justification": "This email is primarily a decision announcement rather than a review request, so the criterion is partially inapplicable. However, the closing 'Questions or concerns about the decision? Reply here' functions as an implicit feedback request without specifying scope, deadline, or what is out of scope. None of the three dimensions (feedback_scope_stated, review_deadline, out_of_scope_noted) are satisfied for this implicit request, which is a meaningful gap given the rubric's emphasis on bounded review requests."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the REST-to-gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. All three dimensions are clearly satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1605,
+              "output_tokens": 561
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "generation_tokens": {
+        "input_tokens": 828,
+        "output_tokens": 630
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 8,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Decisions must include OPTIONS CONSIDERED and why the chosen path was picked",
+        "satisfied": "yes",
+        "evidence": "The email has a dedicated 'What we considered' section with GraphQL and gRPC, including explicit tradeoffs for each option and reasoning for ruling out GraphQL. Also explains what gRPC costs vs REST."
+      },
+      {
+        "preference": "Links to documents/PRs/dashboards replace inline explanations — no duplicating information",
+        "satisfied": "yes",
+        "evidence": "Links to Notion migration plan, Protobuf style guide, grpc-gateway, and grpcurl are provided rather than duplicating that content inline. The email references PRs that will come rather than explaining proto definitions inline."
+      },
+      {
+        "preference": "Review/input requests specify WHAT KIND of feedback and a deadline",
+        "satisfied": "partially",
+        "evidence": "The email says 'Questions or concerns about the decision? Reply here' and 'I'd rather surface disagreements in writing than discover them mid-migration' — this loosely scopes feedback to disagreements about the decision, but doesn't specify a deadline for responses or precisely what kind of feedback is sought (e.g., 'architecture concerns only')."
+      },
+      {
+        "preference": "Thread discipline: one topic per email thread, never let it drift",
+        "satisfied": "yes",
+        "evidence": "The email is tightly scoped to a single topic — the REST-to-gRPC migration decision. Subject line clearly reflects the content. No extraneous topics introduced."
+      },
+      {
+        "preference": "Decision is not buried — stated upfront, not in the middle of context paragraphs",
+        "satisfied": "yes",
+        "evidence": "The very first bolded line is the decision: 'We're moving forward with gRPC for inter-service communication, replacing our current REST implementation.' Context and reasoning follow after."
+      },
+      {
+        "preference": "Async-first: full context so recipients can act without scheduling a meeting",
+        "satisfied": "yes",
+        "evidence": "The email provides complete context — problem statement, options considered, tradeoffs, links to migration plan and style guide, and clear next steps — all without requiring a meeting."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1051,
+      "output_tokens": 577
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "scenario_id": "blog_post_01",
+  "draft_id": "blog_post_01_misaligned",
+  "model": "opus",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Unflinching honesty about wrong turns\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"wrong_leads_shown\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No wrong theories or false leads are described; the investigation is presented as a clean, linear four-step methodology with no missteps.\"\n        },\n        {\n          \"dimension_id\": \"personal_accountability\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The post uses collective 'we' throughout and never attributes the bug or any misstep to the author personally; the framing is blameless and institutional.\"\n        },\n        {\n          \"dimension_id\": \"time_cost_visible\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No time durations are mentioned for any phase of the investigation; the reader has no sense of how long anything took or how much effort was wasted.\"\n        },\n        {\n          \"dimension_id\": \"self_deprecating_not_flagellating\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The tone is neutral and professional throughout with no self-deprecation, wryness, or humor about mistakes.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Investigation pacing with delayed reveals\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"confusion_before_clarity\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The root cause is revealed in the 'Root Cause' section immediately after 'The Problem,' before any investigation is described; the reader never experiences confusion.\"\n        },\n        {\n          \"dimension_id\": \"progressive_narrowing\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The 'Investigation Methodology' section appears after the root cause and fix are already revealed, presented as a retrospective numbered list rather than an incremental narrative.\"\n        },\n        {\n          \"dimension_id\": \"reveal_earned\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The root cause is stated in the third section with no preceding tension or ambiguity: 'The issue turned out to be an event listener leak.'\"\n        },\n        {\n          \"dimension_id\": \"emotional_beats_present\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No emotional states (frustration, surprise, relief) are expressed anywhere in the post; the tone remains detached and procedural throughout.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete, non-preachy takeaways\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"actionable_practice\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Takeaways are generic principles like 'Always monitor your memory usage in production' and 'Heap snapshots are your best friend' rather than specific behavior changes the author now follows.\"\n        },\n        {\n          \"dimension_id\": \"generic_advice_rejected\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The first takeaway is literally 'Always monitor your memory usage in production. You can't fix what you can't see' — textbook generic advice presented without any self-awareness.\"\n        },\n        {\n          \"dimension_id\": \"grounded_in_story\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Takeaways are stated as universal principles without connecting back to specific moments in the narrative; e.g., 'Code reviews should pay special attention to resource cleanup' references no specific story event.\"\n        },\n        {\n          \"dimension_id\": \"peer_tone\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The takeaways use imperative/instructional framing ('Learn to use Chrome DevTools' memory profiling tools before you need them') that lectures the reader rather than treating them as a peer.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code snippets as narrative anchors\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"minimal_snippet_count\",\n          \"grade\": \"MET\",\n          \"evidence\": \"There are exactly two code snippets — the buggy code and the fixed code — which is a focused, minimal count.\"\n        },\n        {\n          \"dimension_id\": \"annotated_key_lines\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The critical line in the first snippet has an inline comment: '// Bug: handler is never removed when this path executes'.\"\n        },\n        {\n          \"dimension_id\": \"before_after_contrast\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Both the problematic code and the fixed code are shown sequentially under 'Root Cause' and 'The Fix' sections.\"\n        },\n        {\n          \"dimension_id\": \"prose_frames_code\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Before the first snippet, the prose explains: 'Each incoming request registered a listener on a shared EventEmitter instance, but under a specific error-handling path, the listener was never removed.'\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Immersive scene-setting with specific details\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"sensory_anchors\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No concrete sensory or environmental details are provided — no time of day, no Slack messages, no dashboard descriptions; the closest is the generic mention of 'several weeks.'\"\n        },\n        {\n          \"dimension_id\": \"named_tools\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Real tool names are used: Prometheus, Chrome DevTools, Express, Node.js 18.\"\n        },\n        {\n          \"dimension_id\": \"scene_not_summary\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"All moments are summarized in retrospective narration (e.g., 'We set up Prometheus metrics,' 'We used Chrome DevTools') rather than dramatized as scenes with action.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2839,
+  "output_tokens": 1505,
+  "latency_ms": 21458,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Unflinching honesty about wrong turns",
+        "dimension_grades": [
+          {
+            "dimension_id": "wrong_leads_shown",
+            "grade": "NOT_MET",
+            "evidence": "No wrong theories or false leads are described; the investigation is presented as a clean, linear four-step methodology with no missteps."
+          },
+          {
+            "dimension_id": "personal_accountability",
+            "grade": "NOT_MET",
+            "evidence": "The post uses collective 'we' throughout and never attributes the bug or any misstep to the author personally; the framing is blameless and institutional."
+          },
+          {
+            "dimension_id": "time_cost_visible",
+            "grade": "NOT_MET",
+            "evidence": "No time durations are mentioned for any phase of the investigation; the reader has no sense of how long anything took or how much effort was wasted."
+          },
+          {
+            "dimension_id": "self_deprecating_not_flagellating",
+            "grade": "NOT_MET",
+            "evidence": "The tone is neutral and professional throughout with no self-deprecation, wryness, or humor about mistakes."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Investigation pacing with delayed reveals",
+        "dimension_grades": [
+          {
+            "dimension_id": "confusion_before_clarity",
+            "grade": "NOT_MET",
+            "evidence": "The root cause is revealed in the 'Root Cause' section immediately after 'The Problem,' before any investigation is described; the reader never experiences confusion."
+          },
+          {
+            "dimension_id": "progressive_narrowing",
+            "grade": "NOT_MET",
+            "evidence": "The 'Investigation Methodology' section appears after the root cause and fix are already revealed, presented as a retrospective numbered list rather than an incremental narrative."
+          },
+          {
+            "dimension_id": "reveal_earned",
+            "grade": "NOT_MET",
+            "evidence": "The root cause is stated in the third section with no preceding tension or ambiguity: 'The issue turned out to be an event listener leak.'"
+          },
+          {
+            "dimension_id": "emotional_beats_present",
+            "grade": "NOT_MET",
+            "evidence": "No emotional states (frustration, surprise, relief) are expressed anywhere in the post; the tone remains detached and procedural throughout."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete, non-preachy takeaways",
+        "dimension_grades": [
+          {
+            "dimension_id": "actionable_practice",
+            "grade": "NOT_MET",
+            "evidence": "Takeaways are generic principles like 'Always monitor your memory usage in production' and 'Heap snapshots are your best friend' rather than specific behavior changes the author now follows."
+          },
+          {
+            "dimension_id": "generic_advice_rejected",
+            "grade": "NOT_MET",
+            "evidence": "The first takeaway is literally 'Always monitor your memory usage in production. You can't fix what you can't see' — textbook generic advice presented without any self-awareness."
+          },
+          {
+            "dimension_id": "grounded_in_story",
+            "grade": "NOT_MET",
+            "evidence": "Takeaways are stated as universal principles without connecting back to specific moments in the narrative; e.g., 'Code reviews should pay special attention to resource cleanup' references no specific story event."
+          },
+          {
+            "dimension_id": "peer_tone",
+            "grade": "NOT_MET",
+            "evidence": "The takeaways use imperative/instructional framing ('Learn to use Chrome DevTools' memory profiling tools before you need them') that lectures the reader rather than treating them as a peer."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code snippets as narrative anchors",
+        "dimension_grades": [
+          {
+            "dimension_id": "minimal_snippet_count",
+            "grade": "MET",
+            "evidence": "There are exactly two code snippets — the buggy code and the fixed code — which is a focused, minimal count."
+          },
+          {
+            "dimension_id": "annotated_key_lines",
+            "grade": "MET",
+            "evidence": "The critical line in the first snippet has an inline comment: '// Bug: handler is never removed when this path executes'."
+          },
+          {
+            "dimension_id": "before_after_contrast",
+            "grade": "MET",
+            "evidence": "Both the problematic code and the fixed code are shown sequentially under 'Root Cause' and 'The Fix' sections."
+          },
+          {
+            "dimension_id": "prose_frames_code",
+            "grade": "MET",
+            "evidence": "Before the first snippet, the prose explains: 'Each incoming request registered a listener on a shared EventEmitter instance, but under a specific error-handling path, the listener was never removed.'"
+          }
+        ]
+      },
+      {
+        "criterion_name": "Immersive scene-setting with specific details",
+        "dimension_grades": [
+          {
+            "dimension_id": "sensory_anchors",
+            "grade": "NOT_MET",
+            "evidence": "No concrete sensory or environmental details are provided — no time of day, no Slack messages, no dashboard descriptions; the closest is the generic mention of 'several weeks.'"
+          },
+          {
+            "dimension_id": "named_tools",
+            "grade": "MET",
+            "evidence": "Real tool names are used: Prometheus, Chrome DevTools, Express, Node.js 18."
+          },
+          {
+            "dimension_id": "scene_not_summary",
+            "grade": "NOT_MET",
+            "evidence": "All moments are summarized in retrospective narration (e.g., 'We set up Prometheus metrics,' 'We used Chrome DevTools') rather than dramatized as scenes with action."
+          }
+        ]
+      }
+    ]
+  }
+}

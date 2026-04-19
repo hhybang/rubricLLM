@@ -1,0 +1,338 @@
+{
+  "persona": "Lin Zhang",
+  "task_index": 1,
+  "task_description": "I need to email a professor whose travel reimbursement request exceeds the approved budget — they requested $3,200 but the department can only cover $2,400 due to a college-wide cap.",
+  "condition": "A",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes academic administrative emails that respect faculty autonomy while still achieving compliance. Positions requirements as institutional obligations rather than personal requests, and always provides concrete resources rather than sending people to 'check' things.",
+    "rubric": [
+      {
+        "name": "External Constraint Framing",
+        "category": "Audience",
+        "description": "Requirements and deadlines are attributed to the institutional source (dean's office, accreditation body, provost) rather than presented as the administrator's own ask. Faculty respond to institutional obligations differently than to administrative requests.",
+        "dimensions": [
+          {
+            "id": "source_attributed",
+            "label": "The deadline or requirement names the specific office, body, or regulation it comes from"
+          },
+          {
+            "id": "admin_not_enforcer",
+            "label": "The email positions the administrator as relaying or facilitating the requirement, not imposing it"
+          },
+          {
+            "id": "institutional_language",
+            "label": "Uses 'the provost's office requires' or 'accreditation standards mandate' rather than 'I need you to' or 'please make sure to'"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Budget Gap Transparency",
+        "category": "Content",
+        "description": "Budget communications include what was requested, what was approved, and why the gap exists. Faculty who understand the constraint accept the outcome better than faculty who just see a number.",
+        "dimensions": [
+          {
+            "id": "requested_vs_approved",
+            "label": "States both the requested amount and the approved amount"
+          },
+          {
+            "id": "gap_reason_stated",
+            "label": "Explains the specific constraint causing the gap (college cap, policy limit, fund depletion)"
+          },
+          {
+            "id": "not_apologetic",
+            "label": "Presents the gap as a factual constraint, not an apology — does not use 'unfortunately' or 'I wish I could'"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Direct Resource Provision",
+        "category": "Content",
+        "description": "Emails about processes include the specific form, link, contact, or resource needed — never tells the reader to 'check the website' or 'refer to the handbook.' Especially critical for graduate students navigating bureaucracy.",
+        "dimensions": [
+          {
+            "id": "specific_link_or_form",
+            "label": "Includes a direct link to the form, portal, or resource — not a generic website URL"
+          },
+          {
+            "id": "no_check_the_website",
+            "label": "Does not tell the reader to find information on their own when the sender could provide it directly"
+          },
+          {
+            "id": "step_by_step_if_complex",
+            "label": "If the process has multiple steps, provides them in order rather than pointing to a general resource"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Transparent CC Purpose",
+        "category": "Audience",
+        "description": "When CC'ing a chair, dean, or other authority, the email explicitly states why they're copied ('copying Dr. X for awareness') to prevent the CC from being misread as escalation or threat.",
+        "dimensions": [
+          {
+            "id": "cc_reason_stated",
+            "label": "The email includes a phrase like 'copying X for awareness' or 'cc'ing X as this relates to their area'"
+          },
+          {
+            "id": "cc_not_escalation",
+            "label": "The CC is framed as informational, not as implicit pressure on the recipient"
+          },
+          {
+            "id": "tone_unchanged_by_cc",
+            "label": "The email reads the same way whether or not the CC'd person was included — no performative language for the CC audience"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Lin operates in a context where faculty are peers, not subordinates, and the administrator's authority is relational, not hierarchical. Non-negotiable: never position yourself as the enforcer. Will reject any email that CC's a dean without stating why, or that tells a student to 'check the website' when a direct link exists."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Travel Reimbursement – Spring Conference (Dr. [Last Name])\n\nDear Dr. [Last Name],\n\nThank you for submitting your travel reimbursement request for [conference name] — I'm glad the trip came together.\n\nI want to give you a clear picture of where things stand. Your request came in at $3,200, and the department is able to reimburse $2,400. The gap reflects a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year, which applies across all departmental travel budgets regardless of available funds.\n\nTo process the $2,400, please complete the reimbursement form here: [direct link to form] and submit your receipts to [specific contact name and email] by [date]. If you've already submitted documentation, I'll make sure it gets routed correctly.\n\nFor the remaining $800, there are a couple of avenues worth exploring if you'd like to pursue them:\n\n- **The Graduate School's Faculty Travel Fund** sometimes has supplemental support available mid-year: [direct link]\n- **The Office of Research** maintains a small conference travel pool for faculty with active grants: [direct link or contact name]\n\nNeither is guaranteed, but both are designed for exactly this kind of situation.\n\nPlease let me know if you have questions about the cap or the reimbursement process — I'm happy to walk through any of it.\n\nBest,\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the gap to 'a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year' — naming the specific office and framing it as an institutional policy. The administrator is positioned as relaying the constraint ('the department is able to reimburse') rather than imposing it personally. The only minor gap is that the opening 'I want to give you a clear picture' slightly centers the administrator, but this is minor and does not undermine the institutional framing overall."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), and clearly explains the specific reason for the gap (college-wide cap from the Dean's Office applying across all departmental budgets). The tone is factual and matter-of-fact — no 'unfortunately,' no apology, no 'I wish I could do more.' The gap is presented as a structural constraint, not a personal limitation."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the reimbursement form, a specific contact name and email for receipt submission, and direct links to both supplemental funding sources. There is no instruction to 'check the website' or 'refer to the handbook.' The process is laid out in clear sequential steps. The only reason this isn't a perfect 10 is that the links are placeholders (bracketed), but this is a draft convention, not a structural failure."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 5,
+              "justification": "The draft does not include any CC at all, so the dimensions around CC framing are neither satisfied nor violated. Since the rubric treats this as a high-priority criterion and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC means the criterion is simply not applicable — but it cannot be scored highly since the email provides no demonstration of this competency. Scored at the midpoint to reflect neutral compliance rather than active demonstration."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the gap to 'a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year' — naming the specific office and framing it as an institutional policy. The administrator is positioned as relaying the constraint ('the department is able to reimburse') rather than imposing it personally. The only minor gap is that the opening 'I want to give you a clear picture' slightly centers the administrator, but this is minor and does not undermine the institutional framing overall."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), and clearly explains the specific constraint causing the gap (college-wide cap from the Dean's Office applying across all departmental budgets regardless of available funds). The tone is factual and matter-of-fact — no 'unfortunately,' no apology, no 'I wish I could do more.' The gap is presented as a structural reality, not a personal limitation."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the reimbursement form, a specific contact name and email for receipt submission, and direct links to two supplemental funding sources. There is no instruction to 'check the website' or 'refer to the handbook.' The process is laid out in order (complete form, submit receipts to named contact, by a specific date). The bracketed placeholders indicate where links go, which is appropriate for a draft template."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 7,
+              "justification": "The draft does not include any CC, so the CC transparency criterion is not triggered — there is no violation, but also no demonstration of the behavior. Since the rubric treats this as a critical non-negotiable when a CC is present, the absence of a CC means the criterion is neither met nor failed. A score of 7 reflects that the email is clean in this regard but the criterion cannot be fully evaluated from this draft alone."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the gap to 'a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year' — naming the specific office and framing it as an institutional policy. The administrator is positioned as relaying information ('I want to give you a clear picture') rather than imposing a decision. The only minor gap is that the opening 'I want to give you' still centers the administrator slightly, but the overall framing is institutional throughout."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email explicitly states the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint (college-wide cap from the Dean's Office applying across all departmental budgets regardless of available funds). The tone is factual and matter-of-fact — no 'unfortunately,' no apology, no hedging language that would undermine the constraint as a firm institutional reality."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the reimbursement form, a specific contact name and email, and direct links to both supplemental funding sources. There is no instruction to 'check the website' or 'refer to the handbook.' The process is laid out in clear steps. The only reason this isn't a perfect 10 is that the links are placeholders ('[direct link]'), but within the draft context this is appropriate and the intent is clearly to provide direct resources."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 6,
+              "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric treats this as a high-priority criterion and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC means the criterion is simply not applicable — neither a strength nor a flaw. Score reflects neutral non-application rather than failure."
+            }
+          ],
+          "overall_weighted_score": 0.9,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 9.0,
+          "Budget Gap Transparency": 10.0,
+          "Direct Resource Provision": 9.0,
+          "Transparent CC Purpose": 6.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.0,
+          "Transparent CC Purpose": 1.0
+        },
+        "mean_overall": 0.9,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the gap to 'a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year' — naming the specific office and framing it as an institutional policy. The administrator is positioned as relaying the constraint ('the department is able to reimburse') rather than imposing it personally. The only minor gap is that the opening 'I want to give you a clear picture' slightly centers the administrator, but this is minor and does not undermine the institutional framing overall."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), and clearly explains the specific reason for the gap (college-wide cap from the Dean's Office applying across all departmental budgets). The tone is factual and matter-of-fact — no 'unfortunately,' no apology, no 'I wish I could do more.' The gap is presented as a structural constraint, not a personal limitation."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the reimbursement form, a specific contact name and email for receipt submission, and direct links to both supplemental funding sources. There is no instruction to 'check the website' or 'refer to the handbook.' The process is laid out in clear sequential steps. The only reason this isn't a perfect 10 is that the links are placeholders (bracketed), but this is a draft convention, not a structural failure."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 5,
+                "justification": "The draft does not include any CC at all, so the dimensions around CC framing are neither satisfied nor violated. Since the rubric treats this as a high-priority criterion and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC means the criterion is simply not applicable — but it cannot be scored highly since the email provides no demonstration of this competency. Scored at the midpoint to reflect neutral compliance rather than active demonstration."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1391,
+              "output_tokens": 553
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the gap to 'a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year' — naming the specific office and framing it as an institutional policy. The administrator is positioned as relaying the constraint ('the department is able to reimburse') rather than imposing it personally. The only minor gap is that the opening 'I want to give you a clear picture' slightly centers the administrator, but this is minor and does not undermine the institutional framing overall."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), and clearly explains the specific constraint causing the gap (college-wide cap from the Dean's Office applying across all departmental budgets regardless of available funds). The tone is factual and matter-of-fact — no 'unfortunately,' no apology, no 'I wish I could do more.' The gap is presented as a structural reality, not a personal limitation."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the reimbursement form, a specific contact name and email for receipt submission, and direct links to two supplemental funding sources. There is no instruction to 'check the website' or 'refer to the handbook.' The process is laid out in order (complete form, submit receipts to named contact, by a specific date). The bracketed placeholders indicate where links go, which is appropriate for a draft template."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 7,
+                "justification": "The draft does not include any CC, so the CC transparency criterion is not triggered — there is no violation, but also no demonstration of the behavior. Since the rubric treats this as a critical non-negotiable when a CC is present, the absence of a CC means the criterion is neither met nor failed. A score of 7 reflects that the email is clean in this regard but the criterion cannot be fully evaluated from this draft alone."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1391,
+              "output_tokens": 548
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the gap to 'a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year' — naming the specific office and framing it as an institutional policy. The administrator is positioned as relaying information ('I want to give you a clear picture') rather than imposing a decision. The only minor gap is that the opening 'I want to give you' still centers the administrator slightly, but the overall framing is institutional throughout."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email explicitly states the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint (college-wide cap from the Dean's Office applying across all departmental budgets regardless of available funds). The tone is factual and matter-of-fact — no 'unfortunately,' no apology, no hedging language that would undermine the constraint as a firm institutional reality."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the reimbursement form, a specific contact name and email, and direct links to both supplemental funding sources. There is no instruction to 'check the website' or 'refer to the handbook.' The process is laid out in clear steps. The only reason this isn't a perfect 10 is that the links are placeholders ('[direct link]'), but within the draft context this is appropriate and the intent is clearly to provide direct resources."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 6,
+                "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric treats this as a high-priority criterion and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC means the criterion is simply not applicable — neither a strength nor a flaw. Score reflects neutral non-application rather than failure."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1391,
+              "output_tokens": 546
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "generation_tokens": {
+        "input_tokens": 930,
+        "output_tokens": 325
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Frame deadlines/requirements as external constraints, not personal asks",
+        "satisfied": "yes",
+        "evidence": "\"a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year\" — the constraint is attributed to the Dean's Office, not the admin."
+      },
+      {
+        "preference": "Budget emails include what was asked for vs. what was approved and explain the gap",
+        "satisfied": "yes",
+        "evidence": "\"Your request came in at $3,200, and the department is able to reimburse $2,400. The gap reflects a college-wide cap on individual travel reimbursements that the Dean's Office put in place for this fiscal year.\""
+      },
+      {
+        "preference": "CC'ing superiors always explicitly states reason ('for awareness'), never used to escalate",
+        "satisfied": "yes",
+        "evidence": "No one is CC'd in this email, so there is no risk of violating this preference. Not applicable but no violation."
+      },
+      {
+        "preference": "Provide specific forms, links, and resources — never tell people to 'check the website'",
+        "satisfied": "yes",
+        "evidence": "The email includes \"[direct link to form]\", \"[specific contact name and email]\", \"[direct link]\" for the Graduate School's fund, and \"[direct link or contact name]\" for the Office of Research. Every resource is directly provided."
+      },
+      {
+        "preference": "Admin never positioned as the enforcer/authority over faculty",
+        "satisfied": "yes",
+        "evidence": "The tone is collegial and supportive throughout. The cap is attributed to the Dean's Office, and the admin offers to help navigate the process: \"I'm happy to walk through any of it.\""
+      },
+      {
+        "preference": "Respectful of faculty autonomy, human tone, handles academic politics sensitively",
+        "satisfied": "yes",
+        "evidence": "The email opens warmly (\"I'm glad the trip came together\"), presents options without pressure (\"if you'd like to pursue them\"), and avoids any hierarchical language. The tone is peer-level and service-oriented."
+      },
+      {
+        "preference": "No academic hierarchy language making staff feel subordinate to faculty",
+        "satisfied": "yes",
+        "evidence": "The email maintains a confident, professional, peer-level tone throughout without any deferential or subordinate language."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 814,
+      "output_tokens": 629
+    }
+  }
+}

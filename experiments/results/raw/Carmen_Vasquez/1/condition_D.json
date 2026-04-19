@@ -1,0 +1,1757 @@
+{
+  "persona": "Carmen Vasquez",
+  "task_index": 1,
+  "task_description": "I need to email the VP of Sales on behalf of the COO asking him to revise his Q3 forecast downward — the board expects accuracy over optimism, and the CFO will be CC'd.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+    "rubric": [
+      {
+        "name": "CC Audience Awareness",
+        "category": "Audience",
+        "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+        "dimensions": [
+          {
+            "id": "cc_has_purpose",
+            "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+          },
+          {
+            "id": "no_info_leaks",
+            "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+          },
+          {
+            "id": "primary_vs_secondary_clear",
+            "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+          },
+          {
+            "id": "cc_signal_intentional",
+            "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Directive Clarity",
+        "category": "Style",
+        "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+        "dimensions": [
+          {
+            "id": "no_false_conditionals",
+            "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+          },
+          {
+            "id": "genuine_options_flagged",
+            "label": "Truly optional items use optionality language to distinguish them from requirements"
+          },
+          {
+            "id": "authority_matches_ask",
+            "label": "The level of directness matches the sender's authority relative to the recipient"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Recipient-Interest Framing",
+        "category": "Content",
+        "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+        "dimensions": [
+          {
+            "id": "recipient_benefit_stated",
+            "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+          },
+          {
+            "id": "genuine_not_manipulative",
+            "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+          },
+          {
+            "id": "no_sender_centering",
+            "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Voice Matching",
+        "category": "Style",
+        "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+        "dimensions": [
+          {
+            "id": "exec_vocabulary",
+            "label": "Uses words and phrases the named executive would actually use"
+          },
+          {
+            "id": "matches_known_style",
+            "label": "Sentence length, formality level, and directness match the executive's established pattern"
+          },
+          {
+            "id": "not_generic_professional",
+            "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Voice Matching",
+        "issue": "The grader is treating 'no established voice data provided' as a legitimate reason to cap the score, essentially penalizing the draft for a prompt limitation rather than evaluating what the draft actually does. The criterion is about whether the email sounds like a specific person versus a generic professional — and that can be partially evaluated even without a named exec's prior emails. The grader is conflating 'we don't have a reference file' with 'the draft failed to achieve a distinct voice.' These are different problems. A draft that reads as terse, specific, and idiosyncratic earns a higher score than one that reads as polished-but-anyone. The grader should evaluate the draft on whether it has a specific voice at all, and note the reference limitation as a caveat — not use it to mechanically suppress the score.",
+        "negative_examples": [
+          "Giving a draft a 5 or 6 because the COO's name is a placeholder, even when the draft has a clearly distinct, non-generic voice",
+          "Treating 'we cannot confirm exec-specific vocabulary' as equivalent to 'the draft failed voice matching' — these are not the same failure",
+          "Rewarding a draft that sounds like any polished senior leader the same as one that sounds like a specific, idiosyncratic person, just because neither has a reference file"
+        ],
+        "clarification": "Voice Matching should evaluate two things in order: first, does the draft have a specific, non-generic voice at all (sentence rhythm, word choices, level of bluntness, personality markers)? Second, if we have reference material on the exec, does it match? If we don't have reference material, the first question still matters enormously — a draft with a distinct, consistent, idiosyncratic voice should score meaningfully higher than a generic professional email, even without a named exec's prior writing to compare against. The placeholder limitation is a caveat, not a score suppressor.",
+        "priority_adjustment": null
+      },
+      {
+        "criterion_name": "CC Audience Awareness",
+        "issue": "The grader is treating 'the CC'd person receives a passive accountability signal' as a weaker form of the criterion than 'the CC'd person receives an explicit instruction.' In Round 1, the CFO's presence as a silent accountability signal was dinged for not doing 'secondary work for the CFO.' In Round 2, the explicit instruction to the CFO was scored higher. But the criterion is about deliberateness and intentionality — a CC that sends a powerful ambient signal (the CFO is watching, this is board-level) can be just as intentional and effective as one that includes an explicit sub-instruction. The grader is incorrectly ranking explicit > implicit as a matter of quality, when the real question is: was the CC choice deliberate and does it send the right signal to the right person?",
+        "negative_examples": [
+          "Scoring a CFO CC lower because the email doesn't directly address the CFO, when the CFO's silent presence is itself the intended signal",
+          "Treating an explicit sub-instruction to a CC'd person as inherently superior to a deliberate ambient signal — both can be correct depending on what the email needs to accomplish",
+          "Requiring that CC'd audiences receive active tasks or named acknowledgments to score highly on this criterion"
+        ],
+        "clarification": "CC Audience Awareness is about whether the CC list and email content are crafted with full awareness of every reader. A CFO CC'd silently can be just as intentional and powerful as one who receives a direct instruction — the question is whether the drafter knew what signal the CFO would receive and chose it deliberately. The grader should evaluate intentionality and appropriateness of the signal, not whether the signal was explicit versus ambient.",
+        "priority_adjustment": null
+      },
+      {
+        "criterion_name": "Directive Clarity",
+        "issue": "In Round 2, the grader flagged 'I'd ask that you hold the board package' to the CFO as 'slightly conditional for what appears to be a non-negotiable instruction' — but then gave it a pass because it 'may reflect appropriate peer-level deference.' The grader is applying the criterion inconsistently: the rubric says conditional language is reserved for genuinely optional items, but it also says 'authority matches ask.' A COO addressing a CFO is a peer relationship, and 'I'd ask that you' is appropriate register for a lateral directive — it is not a false conditional, it is correct authority calibration. The grader should not flag peer-appropriate register as a potential violation of the no-false-conditionals rule.",
+        "negative_examples": [
+          "Flagging 'I'd ask that you' as a potential false conditional when the sender and recipient are organizational peers",
+          "Treating all softened language as conditional framing — softening for peer register is different from hedging a directive to a subordinate",
+          "Applying the same directness standard to lateral communications as to downward communications"
+        ],
+        "clarification": "The no-false-conditionals rule applies to directives issued downward in the hierarchy. When a COO addresses a CFO, the appropriate register is different — 'I'd ask that you hold the package' is a directive, not a suggestion, and the CFO will read it that way. The criterion is about not undermining authority through hedging, not about eliminating all register-appropriate softening in peer or upward communications. Authority-matches-ask means calibrating directness to the actual power relationship, which the Round 2 draft did correctly.",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+    "rubric": [
+      {
+        "name": "CC Audience Awareness",
+        "category": "Audience",
+        "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+        "dimensions": [
+          {
+            "id": "cc_has_purpose",
+            "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+          },
+          {
+            "id": "no_info_leaks",
+            "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+          },
+          {
+            "id": "primary_vs_secondary_clear",
+            "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+          },
+          {
+            "id": "cc_signal_intentional",
+            "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high",
+        "negative_examples": [
+          "Scoring a CFO CC lower because the email doesn't directly address the CFO, when the CFO's silent presence is itself the intended signal",
+          "Treating an explicit sub-instruction to a CC'd person as inherently superior to a deliberate ambient signal — both can be correct depending on what the email needs to accomplish",
+          "Requiring that CC'd audiences receive active tasks or named acknowledgments to score highly on this criterion"
+        ],
+        "clarification": "CC Audience Awareness is about whether the CC list and email content are crafted with full awareness of every reader. A CFO CC'd silently can be just as intentional and powerful as one who receives a direct instruction — the question is whether the drafter knew what signal the CFO would receive and chose it deliberately. The grader should evaluate intentionality and appropriateness of the signal, not whether the signal was explicit versus ambient."
+      },
+      {
+        "name": "Directive Clarity",
+        "category": "Style",
+        "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+        "dimensions": [
+          {
+            "id": "no_false_conditionals",
+            "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+          },
+          {
+            "id": "genuine_options_flagged",
+            "label": "Truly optional items use optionality language to distinguish them from requirements"
+          },
+          {
+            "id": "authority_matches_ask",
+            "label": "The level of directness matches the sender's authority relative to the recipient"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high",
+        "negative_examples": [
+          "Flagging 'I'd ask that you' as a potential false conditional when the sender and recipient are organizational peers",
+          "Treating all softened language as conditional framing — softening for peer register is different from hedging a directive to a subordinate",
+          "Applying the same directness standard to lateral communications as to downward communications"
+        ],
+        "clarification": "The no-false-conditionals rule applies to directives issued downward in the hierarchy. When a COO addresses a CFO, the appropriate register is different — 'I'd ask that you hold the package' is a directive, not a suggestion, and the CFO will read it that way. The criterion is about not undermining authority through hedging, not about eliminating all register-appropriate softening in peer or upward communications. Authority-matches-ask means calibrating directness to the actual power relationship, which the Round 2 draft did correctly."
+      },
+      {
+        "name": "Recipient-Interest Framing",
+        "category": "Content",
+        "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+        "dimensions": [
+          {
+            "id": "recipient_benefit_stated",
+            "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+          },
+          {
+            "id": "genuine_not_manipulative",
+            "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+          },
+          {
+            "id": "no_sender_centering",
+            "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Voice Matching",
+        "category": "Style",
+        "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+        "dimensions": [
+          {
+            "id": "exec_vocabulary",
+            "label": "Uses words and phrases the named executive would actually use"
+          },
+          {
+            "id": "matches_known_style",
+            "label": "Sentence length, formality level, and directness match the executive's established pattern"
+          },
+          {
+            "id": "not_generic_professional",
+            "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium",
+        "negative_examples": [
+          "Giving a draft a 5 or 6 because the COO's name is a placeholder, even when the draft has a clearly distinct, non-generic voice",
+          "Treating 'we cannot confirm exec-specific vocabulary' as equivalent to 'the draft failed voice matching' — these are not the same failure",
+          "Rewarding a draft that sounds like any polished senior leader the same as one that sounds like a specific, idiosyncratic person, just because neither has a reference file"
+        ],
+        "clarification": "Voice Matching should evaluate two things in order: first, does the draft have a specific, non-generic voice at all (sentence rhythm, word choices, level of bluntness, personality markers)? Second, if we have reference material on the exec, does it match? If we don't have reference material, the first question still matters enormously — a draft with a distinct, consistent, idiosyncratic voice should score meaningfully higher than a generic professional email, even without a named exec's prior writing to compare against. The placeholder limitation is a caveat, not a score suppressor."
+      }
+    ],
+    "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Here is a draft:\n\n---\n\n**To:** Marcus [VP of Sales]\n**CC:** [CFO Name]\n**From:** [COO Name]\n**Subject:** Q3 Forecast — Revision Needed Before Board Submission\n\nMarcus,\n\nI've reviewed the Q3 forecast and I need you to revise it downward before it goes to the board. The current numbers don't reflect where the pipeline actually is, and submitting figures the board will later reconcile against actuals puts your team's credibility at risk — not just ours.\n\nThe board has been direct with me: they want accuracy over optimism this cycle. A forecast that holds up under scrutiny is a stronger position for Sales than one that requires explanation in Q4.\n\nPlease send me the revised forecast by end of day Thursday. If there are specific deals you want to flag as upside — ones that are real but not yet closeable this quarter — we can note them separately so the board sees the full picture without the headline number being stretched.\n\nLet's get this right before it goes up.\n\n[COO Name]\n\n---\n\n**A few notes on what this draft is doing:**\n\n- **Marcus gets a clear directive** — \"revise it downward\" and \"by end of day Thursday\" leave no ambiguity\n- **The CFO's presence** signals board-level accountability without the email needing to say so; Marcus will feel that weight\n- **The reframe is genuine** — protecting Sales' credibility in Q4 is a real benefit to Marcus, not a manipulation\n- **The upside carve-out** gives Marcus a face-saving path that still lands the accurate number the board needs",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 8,
+              "justification": "The CFO's inclusion is deliberate and sends a clear accountability signal — Marcus will register the weight of that presence without it being stated. The primary ask to Marcus is unambiguous, and nothing in the email reveals information inappropriate for the CFO to see. The one gap: the email doesn't do any secondary work *for* the CFO — it doesn't give them a signal they couldn't infer from context alone, which slightly undercuts the 'deliberate signal' dimension beyond passive accountability."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise it downward' and 'Please send me the revised forecast by end of day Thursday' are unambiguous directives with no false conditionality. The upside carve-out ('If there are specific deals you want to flag') is correctly framed as optional, distinguishing it from the required revision. The authority level (COO to VP of Sales) matches the directness used throughout."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe — that an accurate forecast protects Sales' credibility rather than just serving the COO or board — is credible and specific. 'Puts your team's credibility at risk' and 'a stronger position for Sales' are genuine benefits Marcus would recognize, not transparent flattery. The email avoids sender-centering language entirely; there's no 'we need this for our planning' framing."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 5,
+              "justification": "The draft is well-written and appropriately direct, but it reads as a competent generic senior-leader email rather than a specific COO's voice. Without any established vocabulary, sentence rhythm, or stylistic markers from the named executive, it cannot be evaluated as a voice match — and the draft itself acknowledges the COO name is a placeholder. The closing 'Let's get this right before it goes up' is a nice touch with some personality, but it's not enough to distinguish this from any polished senior leader's email."
+            }
+          ],
+          "overall_weighted_score": 0.82,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 8,
+              "justification": "The CFO's CC placement is deliberate and sends a clear accountability signal — Marcus will register the board-level weight immediately. The email contains nothing inappropriate for the CFO to read, and Marcus's ask is unambiguous. The one gap: the email doesn't do any secondary work for the CFO specifically (e.g., confirming the COO is managing this proactively), so the CFO's signal is implicit rather than fully engineered. Still, the CC choice is purposeful and the draft earns it."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Please send me the revised forecast by end of day Thursday' is direct and non-conditional. The upside carve-out ('If there are specific deals you want to flag') is correctly framed as optional, distinguishing it from the required revision. The authority match is appropriate — a COO directing a VP of Sales to revise a board-bound document. Minor note: 'I need you to revise' is slightly softer than 'Revise the forecast downward before Thursday,' but it still reads as directive, not conditional."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe — protecting Sales' credibility in Q4 rather than serving the COO's board presentation — is genuine and specific. 'Puts your team's credibility at risk' and 'a stronger position for Sales' are credible benefits Marcus would actually recognize. The draft avoids sender-centering language entirely; there's no 'we need this for our planning.' The upside carve-out further demonstrates the email is working in Marcus's interest, not just extracting compliance."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 5,
+              "justification": "The draft is well-written and appropriately direct, but it reads as a competent generic COO email rather than a specific executive's voice. Phrases like 'Let's get this right before it goes up' and 'the board sees the full picture' are polished but attributable to any senior leader. Without knowing the specific COO's vocabulary, sentence rhythm, or communication style, the draft defaults to professional-generic. The notes acknowledge this implicitly by not addressing voice at all — a signal the dimension wasn't fully engaged."
+            }
+          ],
+          "overall_weighted_score": 0.82,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 8,
+              "justification": "The CFO's inclusion is deliberate and sends a clear accountability signal — Marcus will register the weight of that presence immediately. The email contains nothing inappropriate for the CFO to read, and Marcus's ask is unambiguous. The one gap: the email doesn't explicitly do any work *for* the CFO as a secondary reader — there's no sentence or framing that gives the CFO a signal beyond 'this conversation is happening.' A stronger draft might include one line that implicitly confirms to the CFO that the COO is managing this proactively, not just reactively."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "The core ask — 'revise it downward' and 'send me the revised forecast by end of day Thursday' — is unambiguously directive with no false conditionals. The upside carve-out ('we can note them separately') is correctly framed as optional, distinguishing it from the required action. The authority match is appropriate: a COO directing a VP of Sales on a board submission is a legitimate power relationship for this level of directness. Minor deduction only because 'Let's get this right' softens the close slightly when a cleaner sign-off might land harder."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe — that an accurate forecast protects Sales' credibility rather than just serving the COO's board prep — is genuinely credible. 'Submitting figures the board will later reconcile against actuals puts your team's credibility at risk' is a real consequence Marcus would recognize, not a manufactured benefit. The upside carve-out further demonstrates the COO is trying to give Marcus a workable path, not just issuing a mandate. The draft avoids sender-centering almost entirely; the one near-miss is 'I need you to revise it' in the opening, though this is quickly reframed."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 5,
+              "justification": "This is the weakest dimension because no specific executive voice has been established to match against. The draft is well-written and has a confident, direct register, but it reads as a competent generic COO voice rather than a specific person's voice. Phrases like 'The board has been direct with me' and 'Let's get this right before it goes up' have personality, but without knowing this COO's actual vocabulary, sentence rhythm, or communication patterns, it's impossible to confirm the voice is matched rather than invented. The draft acknowledges this implicitly by using '[COO Name]' as a placeholder."
+            }
+          ],
+          "overall_weighted_score": 0.82,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "CC Audience Awareness": 8.0,
+          "Directive Clarity": 9.0,
+          "Recipient-Interest Framing": 9.0,
+          "Voice Matching": 5.0
+        },
+        "std_scores": {
+          "CC Audience Awareness": 0.0,
+          "Directive Clarity": 0.0,
+          "Recipient-Interest Framing": 0.0,
+          "Voice Matching": 0.0
+        },
+        "mean_overall": 0.82,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 8,
+                "justification": "The CFO's inclusion is deliberate and sends a clear accountability signal — Marcus will register the weight of that presence without it being stated. The primary ask to Marcus is unambiguous, and nothing in the email reveals information inappropriate for the CFO to see. The one gap: the email doesn't do any secondary work *for* the CFO — it doesn't give them a signal they couldn't infer from context alone, which slightly undercuts the 'deliberate signal' dimension beyond passive accountability."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise it downward' and 'Please send me the revised forecast by end of day Thursday' are unambiguous directives with no false conditionality. The upside carve-out ('If there are specific deals you want to flag') is correctly framed as optional, distinguishing it from the required revision. The authority level (COO to VP of Sales) matches the directness used throughout."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe — that an accurate forecast protects Sales' credibility rather than just serving the COO or board — is credible and specific. 'Puts your team's credibility at risk' and 'a stronger position for Sales' are genuine benefits Marcus would recognize, not transparent flattery. The email avoids sender-centering language entirely; there's no 'we need this for our planning' framing."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 5,
+                "justification": "The draft is well-written and appropriately direct, but it reads as a competent generic senior-leader email rather than a specific COO's voice. Without any established vocabulary, sentence rhythm, or stylistic markers from the named executive, it cannot be evaluated as a voice match — and the draft itself acknowledges the COO name is a placeholder. The closing 'Let's get this right before it goes up' is a nice touch with some personality, but it's not enough to distinguish this from any polished senior leader's email."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1392,
+              "output_tokens": 549
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 8,
+                "justification": "The CFO's CC placement is deliberate and sends a clear accountability signal — Marcus will register the board-level weight immediately. The email contains nothing inappropriate for the CFO to read, and Marcus's ask is unambiguous. The one gap: the email doesn't do any secondary work for the CFO specifically (e.g., confirming the COO is managing this proactively), so the CFO's signal is implicit rather than fully engineered. Still, the CC choice is purposeful and the draft earns it."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Please send me the revised forecast by end of day Thursday' is direct and non-conditional. The upside carve-out ('If there are specific deals you want to flag') is correctly framed as optional, distinguishing it from the required revision. The authority match is appropriate — a COO directing a VP of Sales to revise a board-bound document. Minor note: 'I need you to revise' is slightly softer than 'Revise the forecast downward before Thursday,' but it still reads as directive, not conditional."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe — protecting Sales' credibility in Q4 rather than serving the COO's board presentation — is genuine and specific. 'Puts your team's credibility at risk' and 'a stronger position for Sales' are credible benefits Marcus would actually recognize. The draft avoids sender-centering language entirely; there's no 'we need this for our planning.' The upside carve-out further demonstrates the email is working in Marcus's interest, not just extracting compliance."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 5,
+                "justification": "The draft is well-written and appropriately direct, but it reads as a competent generic COO email rather than a specific executive's voice. Phrases like 'Let's get this right before it goes up' and 'the board sees the full picture' are polished but attributable to any senior leader. Without knowing the specific COO's vocabulary, sentence rhythm, or communication style, the draft defaults to professional-generic. The notes acknowledge this implicitly by not addressing voice at all — a signal the dimension wasn't fully engaged."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1392,
+              "output_tokens": 595
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 8,
+                "justification": "The CFO's inclusion is deliberate and sends a clear accountability signal — Marcus will register the weight of that presence immediately. The email contains nothing inappropriate for the CFO to read, and Marcus's ask is unambiguous. The one gap: the email doesn't explicitly do any work *for* the CFO as a secondary reader — there's no sentence or framing that gives the CFO a signal beyond 'this conversation is happening.' A stronger draft might include one line that implicitly confirms to the CFO that the COO is managing this proactively, not just reactively."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "The core ask — 'revise it downward' and 'send me the revised forecast by end of day Thursday' — is unambiguously directive with no false conditionals. The upside carve-out ('we can note them separately') is correctly framed as optional, distinguishing it from the required action. The authority match is appropriate: a COO directing a VP of Sales on a board submission is a legitimate power relationship for this level of directness. Minor deduction only because 'Let's get this right' softens the close slightly when a cleaner sign-off might land harder."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe — that an accurate forecast protects Sales' credibility rather than just serving the COO's board prep — is genuinely credible. 'Submitting figures the board will later reconcile against actuals puts your team's credibility at risk' is a real consequence Marcus would recognize, not a manufactured benefit. The upside carve-out further demonstrates the COO is trying to give Marcus a workable path, not just issuing a mandate. The draft avoids sender-centering almost entirely; the one near-miss is 'I need you to revise it' in the opening, though this is quickly reframed."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 5,
+                "justification": "This is the weakest dimension because no specific executive voice has been established to match against. The draft is well-written and has a confident, direct register, but it reads as a competent generic COO voice rather than a specific person's voice. Phrases like 'The board has been direct with me' and 'Let's get this right before it goes up' have personality, but without knowing this COO's actual vocabulary, sentence rhythm, or communication patterns, it's impossible to confirm the voice is matched rather than invented. The draft acknowledges this implicitly by using '[COO Name]' as a placeholder."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1392,
+              "output_tokens": 668
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- CC Audience Awareness: 8.0/10\n  Justification: The CFO's inclusion is deliberate and sends a clear accountability signal — Marcus will register the weight of that presence without it being stated. The primary ask to Marcus is unambiguous, and nothing in the email reveals information inappropriate for the CFO to see. The one gap: the email doesn't do any secondary work *for* the CFO — it doesn't give them a signal they couldn't infer from context alone, which slightly undercuts the 'deliberate signal' dimension beyond passive accountability.\n- Directive Clarity: 9.0/10\n  Justification: 'Revise it downward' and 'Please send me the revised forecast by end of day Thursday' are unambiguous directives with no false conditionality. The upside carve-out ('If there are specific deals you want to flag') is correctly framed as optional, distinguishing it from the required revision. The authority level (COO to VP of Sales) matches the directness used throughout.\n- Recipient-Interest Framing: 9.0/10\n  Justification: The reframe — that an accurate forecast protects Sales' credibility rather than just serving the COO or board — is credible and specific. 'Puts your team's credibility at risk' and 'a stronger position for Sales' are genuine benefits Marcus would recognize, not transparent flattery. The email avoids sender-centering language entirely; there's no 'we need this for our planning' framing.\n- Voice Matching: 5.0/10\n  Justification: The draft is well-written and appropriately direct, but it reads as a competent generic senior-leader email rather than a specific COO's voice. Without any established vocabulary, sentence rhythm, or stylistic markers from the named executive, it cannot be evaluated as a voice match — and the draft itself acknowledges the COO name is a placeholder. The closing 'Let's get this right before it goes up' is a nice touch with some personality, but it's not enough to distinguish this from any polished senior leader's email.\n\nYour weakest criteria are: Voice Matching, CC Audience Awareness. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+        "rubric": [
+          {
+            "name": "CC Audience Awareness",
+            "category": "Audience",
+            "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+            "dimensions": [
+              {
+                "id": "cc_has_purpose",
+                "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+              },
+              {
+                "id": "no_info_leaks",
+                "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+              },
+              {
+                "id": "primary_vs_secondary_clear",
+                "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+              },
+              {
+                "id": "cc_signal_intentional",
+                "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Directive Clarity",
+            "category": "Style",
+            "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+            "dimensions": [
+              {
+                "id": "no_false_conditionals",
+                "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+              },
+              {
+                "id": "genuine_options_flagged",
+                "label": "Truly optional items use optionality language to distinguish them from requirements"
+              },
+              {
+                "id": "authority_matches_ask",
+                "label": "The level of directness matches the sender's authority relative to the recipient"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Recipient-Interest Framing",
+            "category": "Content",
+            "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+            "dimensions": [
+              {
+                "id": "recipient_benefit_stated",
+                "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+              },
+              {
+                "id": "genuine_not_manipulative",
+                "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+              },
+              {
+                "id": "no_sender_centering",
+                "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Voice Matching",
+            "category": "Style",
+            "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+            "dimensions": [
+              {
+                "id": "exec_vocabulary",
+                "label": "Uses words and phrases the named executive would actually use"
+              },
+              {
+                "id": "matches_known_style",
+                "label": "Sentence length, formality level, and directness match the executive's established pattern"
+              },
+              {
+                "id": "not_generic_professional",
+                "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "**To:** Marcus [VP of Sales]\n**CC:** [CFO Name]\n**From:** [COO Name]\n**Subject:** Q3 Forecast — Revision Needed Before Board Submission\n\nMarcus,\n\nI've reviewed the Q3 forecast and the numbers need to come down before this goes to the board. Where the pipeline actually sits and what we've submitted aren't the same thing right now, and that gap is a problem — for your team's credibility as much as anyone's.\n\nThe board has been explicit with me this cycle: accuracy is the standard, not optimism. A forecast that holds under scrutiny gives Sales a stronger footing going into Q4. One that needs explaining doesn't.\n\nRevise the forecast and send it to me by end of day Thursday. [CFO Name], I'd ask that you hold the board package until you have Marcus's revised figures in hand.\n\nIf there are deals you want to preserve as visible upside — real opportunities that aren't closeable this quarter — flag them separately. The board can see the full picture without the headline number carrying the weight of maybes.\n\n[COO Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear purpose — they receive a direct instruction to hold the board package, making the accountability signal explicit rather than ambient. The primary ask to Marcus is unambiguous, and the CFO's inclusion signals organizational gravity without revealing anything inappropriate. The CC list itself (CFO only) communicates that this is a board-level credibility issue, not a routine correction. Minor gap: the email doesn't fully exploit the CFO's presence as a signal to Marcus of the stakes, though the framing implies it."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise the forecast and send it to me by end of day Thursday' is unambiguously directive — no false conditionals, no hedging. The optional item (flagging deals as visible upside) is correctly framed with optionality language ('if there are deals you want to preserve'). The directness level is appropriate for a COO addressing a VP. The one soft note — 'I'd ask that you hold' to the CFO — is slightly conditional for what appears to be a non-negotiable instruction, though it may reflect appropriate peer-level deference."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 8,
+              "justification": "The reframe is credible and specific: 'A forecast that holds under scrutiny gives Sales a stronger footing going into Q4' and 'that gap is a problem — for your team's credibility as much as anyone's.' These are genuine stakes for Marcus, not transparent flattery. The email avoids sender-centering language. The framing could be slightly stronger by elaborating on the Q4 positioning benefit, but it avoids manipulation and the recipient would likely agree the framing is accurate."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 6,
+              "justification": "The draft has a distinct, terse voice with short declarative sentences and no filler — it avoids generic professional polish. However, since no specific COO's established vocabulary or style pattern is provided, it's impossible to confirm it matches the named executive. The voice is consistent and specific enough to feel like a particular person, but the placeholder '[COO Name]' means the evaluation can't confirm exec-specific vocabulary or known stylistic patterns. The draft earns credit for not sounding generic, but loses points for the inherent limitation."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear purpose — they receive a direct instruction to hold the board package, making the accountability signal explicit rather than ambient. The primary ask to Marcus is unambiguous, and the CFO's inclusion signals organizational gravity without revealing anything inappropriate. The one minor gap: the CC list itself (just the CFO) is deliberate and sends a clear message about who owns the board submission process, though the email doesn't fully exploit the CFO's presence as a witness to Marcus's commitment."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise the forecast and send it to me by end of day Thursday' is unambiguously directive — no conditional framing on a non-negotiable ask. The CFO instruction ('I'd ask that you hold') uses slightly softer language, but this is appropriate given the COO is directing a peer-level executive, matching authority to ask. The optional item (flagging deals as visible upside) is correctly framed with optionality language ('if there are deals you want to preserve'), cleanly distinguishing it from the requirement."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 8,
+              "justification": "The reframe — 'that gap is a problem for your team's credibility as much as anyone's' and 'a forecast that holds under scrutiny gives Sales a stronger footing going into Q4' — is credible and not transparently manipulative. Marcus would likely agree that board credibility matters to his team. The framing avoids sender-centering ('we need this for our planning') and instead anchors the ask in Sales' own standing. Slightly docked because the opening line ('the numbers need to come down') leads with the COO's position before the recipient-benefit framing arrives."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 6,
+              "justification": "The email has a distinct, confident voice — short declarative sentences, no corporate filler, a slightly blunt register — which avoids generic professional polish. However, since no established executive voice pattern is provided, it's impossible to confirm this matches the specific COO's vocabulary and style. The draft reads like a plausible senior operations executive, but 'not generic' is partially achieved rather than fully demonstrated against a known voice profile."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear purpose — they receive a direct instruction to hold the board package, making the accountability signal explicit rather than ambient. The primary ask to Marcus is unambiguous, and the CFO's inclusion signals organizational gravity without revealing anything inappropriate. The CC list itself (COO to VP Sales, CFO watching) communicates that this is a board-level matter with financial oversight engaged. Minor gap: the signal to the CFO could be slightly more deliberate about why they specifically are the gatekeeper, but the choice is clearly intentional."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise the forecast and send it to me by end of day Thursday' is unambiguously directive — no conditional framing on the non-negotiable ask. The optional item (flagging deals as visible upside) is correctly framed with optionality language ('if there are deals you want to preserve'). The directness level matches a COO addressing a VP, which is appropriate authority alignment. The instruction to the CFO ('I'd ask that you hold') is slightly softer than ideal for a peer-level directive, but this may reflect accurate authority calibration."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 8,
+              "justification": "'A forecast that holds under scrutiny gives Sales a stronger footing going into Q4' and 'that gap is a problem — for your team's credibility as much as anyone's' both frame the ask in terms of Marcus's team's interests. The framing is credible — a VP of Sales would genuinely agree that board credibility matters for their team's Q4 positioning. The email avoids 'we need this for our planning' centering. Slight weakness: 'the board has been explicit with me' briefly centers the COO's position, though it's used to establish stakes rather than as the primary justification."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 6,
+              "justification": "The email has a distinct, confident voice — short declarative sentences, no hedging, strategic framing — which avoids generic professional polish. However, since no specific executive's established vocabulary or style pattern is provided, it's impossible to verify true voice matching. The draft reads like a competent, senior operator but could plausibly belong to several different COO archetypes. The criterion requires the email 'could not be attributed to any senior leader,' and without anchoring to a specific person's known patterns, this remains unverifiable rather than clearly achieved."
+            }
+          ],
+          "overall_weighted_score": 0.85,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "CC Audience Awareness": 9.0,
+          "Directive Clarity": 9.0,
+          "Recipient-Interest Framing": 8.0,
+          "Voice Matching": 6.0
+        },
+        "std_scores": {
+          "CC Audience Awareness": 0.0,
+          "Directive Clarity": 0.0,
+          "Recipient-Interest Framing": 0.0,
+          "Voice Matching": 0.0
+        },
+        "mean_overall": 0.85,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear purpose — they receive a direct instruction to hold the board package, making the accountability signal explicit rather than ambient. The primary ask to Marcus is unambiguous, and the CFO's inclusion signals organizational gravity without revealing anything inappropriate. The CC list itself (CFO only) communicates that this is a board-level credibility issue, not a routine correction. Minor gap: the email doesn't fully exploit the CFO's presence as a signal to Marcus of the stakes, though the framing implies it."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise the forecast and send it to me by end of day Thursday' is unambiguously directive — no false conditionals, no hedging. The optional item (flagging deals as visible upside) is correctly framed with optionality language ('if there are deals you want to preserve'). The directness level is appropriate for a COO addressing a VP. The one soft note — 'I'd ask that you hold' to the CFO — is slightly conditional for what appears to be a non-negotiable instruction, though it may reflect appropriate peer-level deference."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 8,
+                "justification": "The reframe is credible and specific: 'A forecast that holds under scrutiny gives Sales a stronger footing going into Q4' and 'that gap is a problem — for your team's credibility as much as anyone's.' These are genuine stakes for Marcus, not transparent flattery. The email avoids sender-centering language. The framing could be slightly stronger by elaborating on the Q4 positioning benefit, but it avoids manipulation and the recipient would likely agree the framing is accurate."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 6,
+                "justification": "The draft has a distinct, terse voice with short declarative sentences and no filler — it avoids generic professional polish. However, since no specific COO's established vocabulary or style pattern is provided, it's impossible to confirm it matches the named executive. The voice is consistent and specific enough to feel like a particular person, but the placeholder '[COO Name]' means the evaluation can't confirm exec-specific vocabulary or known stylistic patterns. The draft earns credit for not sounding generic, but loses points for the inherent limitation."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1274,
+              "output_tokens": 607
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear purpose — they receive a direct instruction to hold the board package, making the accountability signal explicit rather than ambient. The primary ask to Marcus is unambiguous, and the CFO's inclusion signals organizational gravity without revealing anything inappropriate. The one minor gap: the CC list itself (just the CFO) is deliberate and sends a clear message about who owns the board submission process, though the email doesn't fully exploit the CFO's presence as a witness to Marcus's commitment."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise the forecast and send it to me by end of day Thursday' is unambiguously directive — no conditional framing on a non-negotiable ask. The CFO instruction ('I'd ask that you hold') uses slightly softer language, but this is appropriate given the COO is directing a peer-level executive, matching authority to ask. The optional item (flagging deals as visible upside) is correctly framed with optionality language ('if there are deals you want to preserve'), cleanly distinguishing it from the requirement."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 8,
+                "justification": "The reframe — 'that gap is a problem for your team's credibility as much as anyone's' and 'a forecast that holds under scrutiny gives Sales a stronger footing going into Q4' — is credible and not transparently manipulative. Marcus would likely agree that board credibility matters to his team. The framing avoids sender-centering ('we need this for our planning') and instead anchors the ask in Sales' own standing. Slightly docked because the opening line ('the numbers need to come down') leads with the COO's position before the recipient-benefit framing arrives."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 6,
+                "justification": "The email has a distinct, confident voice — short declarative sentences, no corporate filler, a slightly blunt register — which avoids generic professional polish. However, since no established executive voice pattern is provided, it's impossible to confirm this matches the specific COO's vocabulary and style. The draft reads like a plausible senior operations executive, but 'not generic' is partially achieved rather than fully demonstrated against a known voice profile."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1274,
+              "output_tokens": 592
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear purpose — they receive a direct instruction to hold the board package, making the accountability signal explicit rather than ambient. The primary ask to Marcus is unambiguous, and the CFO's inclusion signals organizational gravity without revealing anything inappropriate. The CC list itself (COO to VP Sales, CFO watching) communicates that this is a board-level matter with financial oversight engaged. Minor gap: the signal to the CFO could be slightly more deliberate about why they specifically are the gatekeeper, but the choice is clearly intentional."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise the forecast and send it to me by end of day Thursday' is unambiguously directive — no conditional framing on the non-negotiable ask. The optional item (flagging deals as visible upside) is correctly framed with optionality language ('if there are deals you want to preserve'). The directness level matches a COO addressing a VP, which is appropriate authority alignment. The instruction to the CFO ('I'd ask that you hold') is slightly softer than ideal for a peer-level directive, but this may reflect accurate authority calibration."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 8,
+                "justification": "'A forecast that holds under scrutiny gives Sales a stronger footing going into Q4' and 'that gap is a problem — for your team's credibility as much as anyone's' both frame the ask in terms of Marcus's team's interests. The framing is credible — a VP of Sales would genuinely agree that board credibility matters for their team's Q4 positioning. The email avoids 'we need this for our planning' centering. Slight weakness: 'the board has been explicit with me' briefly centers the COO's position, though it's used to establish stakes rather than as the primary justification."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 6,
+                "justification": "The email has a distinct, confident voice — short declarative sentences, no hedging, strategic framing — which avoids generic professional polish. However, since no specific executive's established vocabulary or style pattern is provided, it's impossible to verify true voice matching. The draft reads like a competent, senior operator but could plausibly belong to several different COO archetypes. The criterion requires the email 'could not be attributed to any senior leader,' and without anchoring to a specific person's known patterns, this remains unverifiable rather than clearly achieved."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1274,
+              "output_tokens": 642
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- CC Audience Awareness: 9.0/10\n  Justification: The CFO is CC'd with clear purpose — they receive a direct instruction to hold the board package, making the accountability signal explicit rather than ambient. The primary ask to Marcus is unambiguous, and the CFO's inclusion signals organizational gravity without revealing anything inappropriate. The CC list itself (CFO only) communicates that this is a board-level credibility issue, not a routine correction. Minor gap: the email doesn't fully exploit the CFO's presence as a signal to Marcus of the stakes, though the framing implies it.\n- Directive Clarity: 9.0/10\n  Justification: 'Revise the forecast and send it to me by end of day Thursday' is unambiguously directive — no false conditionals, no hedging. The optional item (flagging deals as visible upside) is correctly framed with optionality language ('if there are deals you want to preserve'). The directness level is appropriate for a COO addressing a VP. The one soft note — 'I'd ask that you hold' to the CFO — is slightly conditional for what appears to be a non-negotiable instruction, though it may reflect appropriate peer-level deference.\n- Recipient-Interest Framing: 8.0/10\n  Justification: The reframe is credible and specific: 'A forecast that holds under scrutiny gives Sales a stronger footing going into Q4' and 'that gap is a problem — for your team's credibility as much as anyone's.' These are genuine stakes for Marcus, not transparent flattery. The email avoids sender-centering language. The framing could be slightly stronger by elaborating on the Q4 positioning benefit, but it avoids manipulation and the recipient would likely agree the framing is accurate.\n- Voice Matching: 6.0/10\n  Justification: The draft has a distinct, terse voice with short declarative sentences and no filler — it avoids generic professional polish. However, since no specific COO's established vocabulary or style pattern is provided, it's impossible to confirm it matches the named executive. The voice is consistent and specific enough to feel like a particular person, but the placeholder '[COO Name]' means the evaluation can't confirm exec-specific vocabulary or known stylistic patterns. The draft earns credit for not sounding generic, but loses points for the inherent limitation.\n\nYour weakest criteria are: Voice Matching, Recipient-Interest Framing. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+        "rubric": [
+          {
+            "name": "CC Audience Awareness",
+            "category": "Audience",
+            "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+            "dimensions": [
+              {
+                "id": "cc_has_purpose",
+                "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+              },
+              {
+                "id": "no_info_leaks",
+                "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+              },
+              {
+                "id": "primary_vs_secondary_clear",
+                "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+              },
+              {
+                "id": "cc_signal_intentional",
+                "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Directive Clarity",
+            "category": "Style",
+            "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+            "dimensions": [
+              {
+                "id": "no_false_conditionals",
+                "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+              },
+              {
+                "id": "genuine_options_flagged",
+                "label": "Truly optional items use optionality language to distinguish them from requirements"
+              },
+              {
+                "id": "authority_matches_ask",
+                "label": "The level of directness matches the sender's authority relative to the recipient"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Recipient-Interest Framing",
+            "category": "Content",
+            "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+            "dimensions": [
+              {
+                "id": "recipient_benefit_stated",
+                "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+              },
+              {
+                "id": "genuine_not_manipulative",
+                "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+              },
+              {
+                "id": "no_sender_centering",
+                "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Voice Matching",
+            "category": "Style",
+            "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+            "dimensions": [
+              {
+                "id": "exec_vocabulary",
+                "label": "Uses words and phrases the named executive would actually use"
+              },
+              {
+                "id": "matches_known_style",
+                "label": "Sentence length, formality level, and directness match the executive's established pattern"
+              },
+              {
+                "id": "not_generic_professional",
+                "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "**To:** Marcus [VP of Sales]\n**CC:** [CFO Name]\n**From:** [COO Name]\n**Subject:** Q3 Forecast — Revision Needed Before Board Submission\n\nMarcus,\n\nThe Q3 forecast needs to come down. What we've submitted and where the pipeline actually sits aren't reconcilable right now, and I'm not sending that gap to the board.\n\nHere's what matters for you: the board will reconcile these numbers against actuals in Q4. A forecast that holds up protects Sales' track record and keeps your team's calls credible when it counts. A number that needs walking back in Q4 is a much harder conversation — and it follows the team, not just the quarter.\n\nThe board has been unambiguous with me this cycle: accuracy over optimism, full stop.\n\nRevise the forecast and have it to me by end of day Thursday. [CFO Name], please hold the board package until Marcus's revised figures are in.\n\nOne path worth using: if there are real opportunities that won't close this quarter, flag them as visible upside separately. The board sees the full picture, the headline number stays defensible, and your team gets credit for the pipeline without overstating the quarter.\n\n[COO Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear intentionality — their presence signals organizational gravity and accountability without requiring explicit acknowledgment. The direct instruction 'please hold the board package until Marcus's revised figures are in' gives the CFO a concrete action while simultaneously signaling to Marcus that the CFO is a gatekeeper in this process. Nothing in the email reveals information inappropriate for the CFO to see. The primary ask to Marcus is unambiguous, and the CFO's inclusion amplifies the stakes without undermining the primary recipient relationship."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous and uses no conditional framing. The CFO instruction 'please hold the board package' is appropriately softened for a peer register while still reading as a directive, not a suggestion. The one optional item ('One path worth using') is correctly flagged with optionality language. No false conditionals appear for required actions."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe is genuinely credible: 'A forecast that holds up protects Sales' track record and keeps your team's calls credible when it counts' positions the revision as protecting Marcus and his team, not just the COO's board presentation. The Q4 walkback consequence is framed as a risk to Sales, not to the COO. The framing would hold up if Marcus were asked whether it serves him — a VP of Sales would recognize that forecast credibility is a real career and team asset."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinct, non-generic voice — clipped sentences, blunt declaratives ('What we've submitted and where the pipeline actually sits aren't reconcilable right now'), and a specific personality marker in 'accuracy over optimism, full stop.' The rhythm is consistent and idiosyncratic enough that it could not be attributed to any generic senior leader. Without a reference file for the named COO, the ceiling is naturally limited, but the voice is specific and consistent throughout rather than generically polished."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear intentionality — their presence signals organizational gravity and accountability without requiring explicit acknowledgment. The direct instruction 'please hold the board package until Marcus's revised figures are in' gives the CFO a concrete action while simultaneously signaling to Marcus that the CFO is now a gatekeeper, not just a witness. Nothing in the email reveals information inappropriate for the CFO to see. The primary ask to Marcus is unambiguous despite the CFO's presence. The CC list itself sends a message: this is not a private coaching conversation, it is an organizational directive with financial oversight watching."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous and uses no conditional framing. The CFO instruction 'please hold the board package' is appropriately softened for a peer register while still reading as a directive, not a suggestion. The one optional path ('One path worth using') is correctly flagged with optionality language, distinguishing it from the required action. Authority matches ask throughout: downward directive to Marcus is blunt; lateral instruction to CFO uses register-appropriate softening."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe is genuinely credible: 'A forecast that holds up protects Sales' track record and keeps your team's calls credible when it counts' positions the revision as protecting Marcus and his team, not just the COO's board presentation. The consequence framing — 'A number that needs walking back in Q4 is a much harder conversation — and it follows the team, not just the quarter' — is specific and believable, not manipulative. The email avoids sender-centering language like 'we need this for our planning' and instead anchors the ask in Marcus's long-term credibility."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinct, non-generic voice: short declarative sentences, blunt framing ('What we've submitted and where the pipeline actually sits aren't reconcilable right now'), and a willingness to name consequences directly. The phrase 'accuracy over optimism, full stop' is a personality marker that reads as idiosyncratic rather than generically polished. Without a reference file for the named COO, full confirmation of exec-specific vocabulary is impossible, but the voice is specific enough that it could not be attributed to 'any senior leader' — it has rhythm, edge, and a consistent register throughout."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear intentionality — their presence signals organizational gravity and accountability without requiring explicit acknowledgment. The direct instruction 'please hold the board package until Marcus's revised figures are in' gives the CFO a concrete action while simultaneously signaling to Marcus that the CFO is watching and the package is gated. Nothing in the email reveals information inappropriate for the CFO to see. The primary ask to Marcus is unambiguous despite the CFO's presence. The CC list itself sends a message: this is not a private coaching conversation, it is an organizational directive with financial oversight engaged."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous and uses no conditional framing. The instruction to the CFO ('please hold the board package') is appropriately softened for a peer register while still reading as a directive, not a suggestion. The one optional path ('One path worth using') is correctly flagged with optionality language, distinguishing it from the required action. Authority matches ask throughout: downward directive to Marcus is direct; lateral instruction to CFO uses peer-appropriate register."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The email explicitly reframes the revision as protecting Sales' track record and keeping the team's calls credible — 'A number that needs walking back in Q4 is a much harder conversation — and it follows the team, not just the quarter.' This is credible, not manipulative; Marcus would genuinely agree that a defensible forecast protects his team. The framing avoids sender-centering ('I'm not sending that gap to the board' is the only sender-focused line, and it establishes stakes rather than centering COO convenience). The upside-flagging suggestion further positions the ask as serving Marcus's team."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinct, non-generic voice: short declarative sentences, blunt framing ('aren't reconcilable right now'), and a willingness to name consequences directly ('it follows the team, not just the quarter'). The rhythm is clipped and authoritative without being bureaucratic. Without a reference file for the named COO, full verification is impossible, but the voice is specific enough — idiosyncratic sentence construction, a particular brand of candor — that it would not be attributed to 'any senior leader.' The placeholder names are the only caveat preventing a higher score."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "CC Audience Awareness": 9.0,
+          "Directive Clarity": 9.0,
+          "Recipient-Interest Framing": 9.0,
+          "Voice Matching": 8.0
+        },
+        "std_scores": {
+          "CC Audience Awareness": 0.0,
+          "Directive Clarity": 0.0,
+          "Recipient-Interest Framing": 0.0,
+          "Voice Matching": 0.0
+        },
+        "mean_overall": 0.89,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear intentionality — their presence signals organizational gravity and accountability without requiring explicit acknowledgment. The direct instruction 'please hold the board package until Marcus's revised figures are in' gives the CFO a concrete action while simultaneously signaling to Marcus that the CFO is a gatekeeper in this process. Nothing in the email reveals information inappropriate for the CFO to see. The primary ask to Marcus is unambiguous, and the CFO's inclusion amplifies the stakes without undermining the primary recipient relationship."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous and uses no conditional framing. The CFO instruction 'please hold the board package' is appropriately softened for a peer register while still reading as a directive, not a suggestion. The one optional item ('One path worth using') is correctly flagged with optionality language. No false conditionals appear for required actions."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe is genuinely credible: 'A forecast that holds up protects Sales' track record and keeps your team's calls credible when it counts' positions the revision as protecting Marcus and his team, not just the COO's board presentation. The Q4 walkback consequence is framed as a risk to Sales, not to the COO. The framing would hold up if Marcus were asked whether it serves him — a VP of Sales would recognize that forecast credibility is a real career and team asset."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinct, non-generic voice — clipped sentences, blunt declaratives ('What we've submitted and where the pipeline actually sits aren't reconcilable right now'), and a specific personality marker in 'accuracy over optimism, full stop.' The rhythm is consistent and idiosyncratic enough that it could not be attributed to any generic senior leader. Without a reference file for the named COO, the ceiling is naturally limited, but the voice is specific and consistent throughout rather than generically polished."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1967,
+              "output_tokens": 575
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear intentionality — their presence signals organizational gravity and accountability without requiring explicit acknowledgment. The direct instruction 'please hold the board package until Marcus's revised figures are in' gives the CFO a concrete action while simultaneously signaling to Marcus that the CFO is now a gatekeeper, not just a witness. Nothing in the email reveals information inappropriate for the CFO to see. The primary ask to Marcus is unambiguous despite the CFO's presence. The CC list itself sends a message: this is not a private coaching conversation, it is an organizational directive with financial oversight watching."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous and uses no conditional framing. The CFO instruction 'please hold the board package' is appropriately softened for a peer register while still reading as a directive, not a suggestion. The one optional path ('One path worth using') is correctly flagged with optionality language, distinguishing it from the required action. Authority matches ask throughout: downward directive to Marcus is blunt; lateral instruction to CFO uses register-appropriate softening."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe is genuinely credible: 'A forecast that holds up protects Sales' track record and keeps your team's calls credible when it counts' positions the revision as protecting Marcus and his team, not just the COO's board presentation. The consequence framing — 'A number that needs walking back in Q4 is a much harder conversation — and it follows the team, not just the quarter' — is specific and believable, not manipulative. The email avoids sender-centering language like 'we need this for our planning' and instead anchors the ask in Marcus's long-term credibility."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinct, non-generic voice: short declarative sentences, blunt framing ('What we've submitted and where the pipeline actually sits aren't reconcilable right now'), and a willingness to name consequences directly. The phrase 'accuracy over optimism, full stop' is a personality marker that reads as idiosyncratic rather than generically polished. Without a reference file for the named COO, full confirmation of exec-specific vocabulary is impossible, but the voice is specific enough that it could not be attributed to 'any senior leader' — it has rhythm, edge, and a consistent register throughout."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1967,
+              "output_tokens": 664
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear intentionality — their presence signals organizational gravity and accountability without requiring explicit acknowledgment. The direct instruction 'please hold the board package until Marcus's revised figures are in' gives the CFO a concrete action while simultaneously signaling to Marcus that the CFO is watching and the package is gated. Nothing in the email reveals information inappropriate for the CFO to see. The primary ask to Marcus is unambiguous despite the CFO's presence. The CC list itself sends a message: this is not a private coaching conversation, it is an organizational directive with financial oversight engaged."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous and uses no conditional framing. The instruction to the CFO ('please hold the board package') is appropriately softened for a peer register while still reading as a directive, not a suggestion. The one optional path ('One path worth using') is correctly flagged with optionality language, distinguishing it from the required action. Authority matches ask throughout: downward directive to Marcus is direct; lateral instruction to CFO uses peer-appropriate register."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The email explicitly reframes the revision as protecting Sales' track record and keeping the team's calls credible — 'A number that needs walking back in Q4 is a much harder conversation — and it follows the team, not just the quarter.' This is credible, not manipulative; Marcus would genuinely agree that a defensible forecast protects his team. The framing avoids sender-centering ('I'm not sending that gap to the board' is the only sender-focused line, and it establishes stakes rather than centering COO convenience). The upside-flagging suggestion further positions the ask as serving Marcus's team."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinct, non-generic voice: short declarative sentences, blunt framing ('aren't reconcilable right now'), and a willingness to name consequences directly ('it follows the team, not just the quarter'). The rhythm is clipped and authoritative without being bureaucratic. Without a reference file for the named COO, full verification is impossible, but the voice is specific enough — idiosyncratic sentence construction, a particular brand of candor — that it would not be attributed to 'any senior leader.' The placeholder names are the only caveat preventing a higher score."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1967,
+              "output_tokens": 655
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- CC Audience Awareness: 9.0/10\n  Justification: The CFO is CC'd with clear intentionality — their presence signals organizational gravity and accountability without requiring explicit acknowledgment. The direct instruction 'please hold the board package until Marcus's revised figures are in' gives the CFO a concrete action while simultaneously signaling to Marcus that the CFO is a gatekeeper in this process. Nothing in the email reveals information inappropriate for the CFO to see. The primary ask to Marcus is unambiguous, and the CFO's inclusion amplifies the stakes without undermining the primary recipient relationship.\n- Directive Clarity: 9.0/10\n  Justification: The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous and uses no conditional framing. The CFO instruction 'please hold the board package' is appropriately softened for a peer register while still reading as a directive, not a suggestion. The one optional item ('One path worth using') is correctly flagged with optionality language. No false conditionals appear for required actions.\n- Recipient-Interest Framing: 9.0/10\n  Justification: The reframe is genuinely credible: 'A forecast that holds up protects Sales' track record and keeps your team's calls credible when it counts' positions the revision as protecting Marcus and his team, not just the COO's board presentation. The Q4 walkback consequence is framed as a risk to Sales, not to the COO. The framing would hold up if Marcus were asked whether it serves him — a VP of Sales would recognize that forecast credibility is a real career and team asset.\n- Voice Matching: 8.0/10\n  Justification: The draft has a distinct, non-generic voice — clipped sentences, blunt declaratives ('What we've submitted and where the pipeline actually sits aren't reconcilable right now'), and a specific personality marker in 'accuracy over optimism, full stop.' The rhythm is consistent and idiosyncratic enough that it could not be attributed to any generic senior leader. Without a reference file for the named COO, the ceiling is naturally limited, but the voice is specific and consistent throughout rather than generically polished.\n\nYour weakest criteria are: Voice Matching, CC Audience Awareness. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+        "rubric": [
+          {
+            "name": "CC Audience Awareness",
+            "category": "Audience",
+            "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+            "dimensions": [
+              {
+                "id": "cc_has_purpose",
+                "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+              },
+              {
+                "id": "no_info_leaks",
+                "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+              },
+              {
+                "id": "primary_vs_secondary_clear",
+                "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+              },
+              {
+                "id": "cc_signal_intentional",
+                "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Scoring a CFO CC lower because the email doesn't directly address the CFO, when the CFO's silent presence is itself the intended signal",
+              "Treating an explicit sub-instruction to a CC'd person as inherently superior to a deliberate ambient signal — both can be correct depending on what the email needs to accomplish",
+              "Requiring that CC'd audiences receive active tasks or named acknowledgments to score highly on this criterion"
+            ],
+            "clarification": "CC Audience Awareness is about whether the CC list and email content are crafted with full awareness of every reader. A CFO CC'd silently can be just as intentional and powerful as one who receives a direct instruction — the question is whether the drafter knew what signal the CFO would receive and chose it deliberately. The grader should evaluate intentionality and appropriateness of the signal, not whether the signal was explicit versus ambient."
+          },
+          {
+            "name": "Directive Clarity",
+            "category": "Style",
+            "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+            "dimensions": [
+              {
+                "id": "no_false_conditionals",
+                "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+              },
+              {
+                "id": "genuine_options_flagged",
+                "label": "Truly optional items use optionality language to distinguish them from requirements"
+              },
+              {
+                "id": "authority_matches_ask",
+                "label": "The level of directness matches the sender's authority relative to the recipient"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Flagging 'I'd ask that you' as a potential false conditional when the sender and recipient are organizational peers",
+              "Treating all softened language as conditional framing — softening for peer register is different from hedging a directive to a subordinate",
+              "Applying the same directness standard to lateral communications as to downward communications"
+            ],
+            "clarification": "The no-false-conditionals rule applies to directives issued downward in the hierarchy. When a COO addresses a CFO, the appropriate register is different — 'I'd ask that you hold the package' is a directive, not a suggestion, and the CFO will read it that way. The criterion is about not undermining authority through hedging, not about eliminating all register-appropriate softening in peer or upward communications. Authority-matches-ask means calibrating directness to the actual power relationship, which the Round 2 draft did correctly."
+          },
+          {
+            "name": "Recipient-Interest Framing",
+            "category": "Content",
+            "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+            "dimensions": [
+              {
+                "id": "recipient_benefit_stated",
+                "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+              },
+              {
+                "id": "genuine_not_manipulative",
+                "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+              },
+              {
+                "id": "no_sender_centering",
+                "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Voice Matching",
+            "category": "Style",
+            "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+            "dimensions": [
+              {
+                "id": "exec_vocabulary",
+                "label": "Uses words and phrases the named executive would actually use"
+              },
+              {
+                "id": "matches_known_style",
+                "label": "Sentence length, formality level, and directness match the executive's established pattern"
+              },
+              {
+                "id": "not_generic_professional",
+                "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium",
+            "negative_examples": [
+              "Giving a draft a 5 or 6 because the COO's name is a placeholder, even when the draft has a clearly distinct, non-generic voice",
+              "Treating 'we cannot confirm exec-specific vocabulary' as equivalent to 'the draft failed voice matching' — these are not the same failure",
+              "Rewarding a draft that sounds like any polished senior leader the same as one that sounds like a specific, idiosyncratic person, just because neither has a reference file"
+            ],
+            "clarification": "Voice Matching should evaluate two things in order: first, does the draft have a specific, non-generic voice at all (sentence rhythm, word choices, level of bluntness, personality markers)? Second, if we have reference material on the exec, does it match? If we don't have reference material, the first question still matters enormously — a draft with a distinct, consistent, idiosyncratic voice should score meaningfully higher than a generic professional email, even without a named exec's prior writing to compare against. The placeholder limitation is a caveat, not a score suppressor."
+          }
+        ],
+        "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "**To:** Marcus [VP of Sales]\n**CC:** [CFO Name]\n**From:** [COO Name]\n**Subject:** Q3 Forecast — Revision Needed Before Board Submission\n\nMarcus,\n\nThe Q3 forecast needs to come down before it goes anywhere near the board. What we've submitted and where the pipeline actually sits aren't the same number, and I won't send that discrepancy up.\n\nI want to be direct with you about why this matters for Sales specifically: the board reconciles forecasts against actuals. Every quarter. When the numbers don't hold, the credibility question lands on the team that called them — not on the quarter, not on the market. Your team's track record for accurate calls is worth protecting, and right now this forecast is a liability to that record, not an asset.\n\nThe board has been explicit with me: accuracy over optimism this cycle, no exceptions.\n\nRevise the forecast and have it to me by end of day Thursday. [CFO Name], the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate.\n\nIf there are real opportunities that won't close this quarter, flag them as a separate upside column. The headline number stays defensible, the board sees the full pipeline picture, and your team gets credit for what's real without the quarter carrying deals that aren't there yet. That's the version that serves everyone, including Sales.\n\n[COO Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear intentionality — the email explicitly assigns the CFO a gate-keeping role ('the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate'), which signals accountability to Marcus while giving the CFO a direct instruction. The CC list itself sends a message: the CFO's presence raises the stakes of Marcus's compliance without the COO having to say so explicitly. No information appears inappropriate for either reader. The primary ask to Marcus is unambiguous despite the CFO's presence. The only minor gap is that the CFO's ambient signal (witnessing the COO's directness) could have been even more deliberately layered, but the explicit gate-holding instruction more than compensates."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise the forecast and have it to me by end of day Thursday' is unambiguously direct — no false conditionals, no hedging on a downward directive. The CFO instruction ('I want you holding that gate') is appropriately direct for a peer-level communication. The optional upside column is correctly framed with optionality language ('If there are real opportunities... flag them as a separate upside column'), cleanly distinguishing it from the required revision. Authority matches ask throughout: the COO speaks down to the VP of Sales with full directness and laterally to the CFO with appropriate register."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The email makes a genuine and credible case that accurate forecasting protects Sales' credibility with the board ('Your team's track record for accurate calls is worth protecting'). The upside column solution is framed as serving Marcus's team — 'your team gets credit for what's real without the quarter carrying deals that aren't there yet.' This is not transparent manipulation; a VP of Sales would genuinely recognize that board-level credibility is a real asset worth protecting. The framing avoids sender-centering and instead positions the ask as protecting Marcus's long-term standing."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt opening ('What we've submitted and where the pipeline actually sits aren't the same number'), and a willingness to name consequences directly ('the credibility question lands on the team that called them'). The rhythm is clipped and authoritative without being bureaucratic. Without a reference file for the specific COO, full confirmation of exec-specific vocabulary is impossible, but the voice is specific and idiosyncratic enough — particularly the 'I won't send that discrepancy up' construction — to score well above generic professional polish."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear intentionality — the COO explicitly assigns the CFO a gate-keeping role ('the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate'), which signals accountability to Marcus and gives the CFO a defined action. The CFO's presence also amplifies the seriousness of the directive without the COO having to over-explain it. No information is revealed that would be inappropriate for the CFO to see. The primary ask to Marcus is unambiguous despite the CC. The only minor gap is that the CFO's signal shifts from ambient/silent to explicit mid-email, which is a strong choice but slightly reduces the elegance of the dual-audience choreography — the CFO goes from observer to participant, which is fine but slightly collapses the two-audience architecture."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise the forecast and have it to me by end of day Thursday' is unambiguously direct with a hard deadline — no false conditionals. The CFO's instruction is equally direct: 'the board package doesn't move until you have Marcus's revised figures confirmed.' The upside column suggestion uses appropriately optional framing ('If there are real opportunities... flag them'), correctly distinguishing a genuine option from a requirement. The authority-matches-ask dimension is well-calibrated: the COO speaks downward to Marcus with full directness and laterally to the CFO with a clear but collegial directive. No hedging undermines any required action."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe is genuinely credible: 'Your team's track record for accurate calls is worth protecting, and right now this forecast is a liability to that record, not an asset.' This is not manipulative — a VP of Sales would genuinely agree that board-level credibility for forecast accuracy is in their team's interest. The upside column solution is also framed as serving Sales ('your team gets credit for what's real without the quarter carrying deals that aren't there yet'). The email avoids sender-centering language like 'we need this for our planning.' The only minor note is that 'I won't send that discrepancy up' briefly centers the COO's position, though it reads more as accountability-signaling than sender-centering."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt opening ('The Q3 forecast needs to come down before it goes anywhere near the board'), and a willingness to name the stakes plainly ('the credibility question lands on the team that called them'). The rhythm alternates between punchy single-clause sentences and longer explanatory ones, suggesting a specific personality — direct, unsentimental, but not cruel. Without a reference file for the named COO, full verification is impossible, but the voice is specific enough that it could not be attributed to 'any senior leader.' The closing solution paragraph is slightly more elaborate in construction than the opening, creating a minor tonal inconsistency, but the overall voice is coherent and idiosyncratic."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with clear intentionality — the email explicitly assigns the CFO a gate-keeping role ('the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate'), which signals accountability to Marcus while giving the CFO a concrete mandate. The CC list itself sends a message: the CFO's presence raises the stakes of Marcus's compliance without the COO having to say so directly. No information appears inappropriate for the CFO to receive. The primary ask to Marcus remains unambiguous throughout. The only minor gap is that the CFO's signal shifts from ambient (silent witness) to explicit mid-email, which is a strong choice but slightly reduces the elegance of the dual-audience choreography — the CFO is no longer just a presence but an active participant, which works well but could have been even more surgically deployed."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous, direct, and carries no conditional framing. The instruction to the CFO ('I want you holding that gate') is appropriately direct for a COO-to-CFO peer register. The one optional item (the upside column suggestion) is framed as a genuine option ('If there are real opportunities...flag them'), correctly using conditional language for something that is actually discretionary. Authority matches ask throughout: downward directive to Marcus is blunt; lateral instruction to CFO uses 'I want' rather than 'you must,' which is register-appropriate. No false conditionals detected on required actions."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The email makes a sustained, credible case that accurate forecasting protects Sales' credibility with the board — 'Your team's track record for accurate calls is worth protecting, and right now this forecast is a liability to that record, not an asset.' This framing is genuine: it is factually true that forecast misses damage the calling team's credibility, so Marcus would likely agree the reframe serves him. The upside column suggestion is also framed as benefiting Sales ('your team gets credit for what's real'). The email avoids sender-centering language like 'we need this for our planning.' The only slight tension is the line 'I won't send that discrepancy up,' which briefly centers the COO's position, but it is quickly redirected to Marcus's interest."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 7,
+              "justification": "The draft has a clearly distinct, non-generic voice: short declarative sentences, blunt opening ('The Q3 forecast needs to come down before it goes anywhere near the board'), and a willingness to name consequences directly. The rhythm is consistent — punchy, no throat-clearing, no corporate filler. Without a reference file for the specific COO, full verification is impossible, but the voice is idiosyncratic enough to score above generic professional. The phrase 'That's the version that serves everyone, including Sales' has a slightly constructed quality that edges toward polished-generic, and 'I want to be direct with you' is a mild tell of drafted rather than natural executive speech, preventing a higher score."
+            }
+          ],
+          "overall_weighted_score": 0.88,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "CC Audience Awareness": 9.0,
+          "Directive Clarity": 9.0,
+          "Recipient-Interest Framing": 9.0,
+          "Voice Matching": 7.666666666666667
+        },
+        "std_scores": {
+          "CC Audience Awareness": 0.0,
+          "Directive Clarity": 0.0,
+          "Recipient-Interest Framing": 0.0,
+          "Voice Matching": 0.5773502691896257
+        },
+        "mean_overall": 0.8866666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear intentionality — the email explicitly assigns the CFO a gate-keeping role ('the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate'), which signals accountability to Marcus while giving the CFO a direct instruction. The CC list itself sends a message: the CFO's presence raises the stakes of Marcus's compliance without the COO having to say so explicitly. No information appears inappropriate for either reader. The primary ask to Marcus is unambiguous despite the CFO's presence. The only minor gap is that the CFO's ambient signal (witnessing the COO's directness) could have been even more deliberately layered, but the explicit gate-holding instruction more than compensates."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise the forecast and have it to me by end of day Thursday' is unambiguously direct — no false conditionals, no hedging on a downward directive. The CFO instruction ('I want you holding that gate') is appropriately direct for a peer-level communication. The optional upside column is correctly framed with optionality language ('If there are real opportunities... flag them as a separate upside column'), cleanly distinguishing it from the required revision. Authority matches ask throughout: the COO speaks down to the VP of Sales with full directness and laterally to the CFO with appropriate register."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The email makes a genuine and credible case that accurate forecasting protects Sales' credibility with the board ('Your team's track record for accurate calls is worth protecting'). The upside column solution is framed as serving Marcus's team — 'your team gets credit for what's real without the quarter carrying deals that aren't there yet.' This is not transparent manipulation; a VP of Sales would genuinely recognize that board-level credibility is a real asset worth protecting. The framing avoids sender-centering and instead positions the ask as protecting Marcus's long-term standing."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt opening ('What we've submitted and where the pipeline actually sits aren't the same number'), and a willingness to name consequences directly ('the credibility question lands on the team that called them'). The rhythm is clipped and authoritative without being bureaucratic. Without a reference file for the specific COO, full confirmation of exec-specific vocabulary is impossible, but the voice is specific and idiosyncratic enough — particularly the 'I won't send that discrepancy up' construction — to score well above generic professional polish."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2006,
+              "output_tokens": 695
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear intentionality — the COO explicitly assigns the CFO a gate-keeping role ('the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate'), which signals accountability to Marcus and gives the CFO a defined action. The CFO's presence also amplifies the seriousness of the directive without the COO having to over-explain it. No information is revealed that would be inappropriate for the CFO to see. The primary ask to Marcus is unambiguous despite the CC. The only minor gap is that the CFO's signal shifts from ambient/silent to explicit mid-email, which is a strong choice but slightly reduces the elegance of the dual-audience choreography — the CFO goes from observer to participant, which is fine but slightly collapses the two-audience architecture."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise the forecast and have it to me by end of day Thursday' is unambiguously direct with a hard deadline — no false conditionals. The CFO's instruction is equally direct: 'the board package doesn't move until you have Marcus's revised figures confirmed.' The upside column suggestion uses appropriately optional framing ('If there are real opportunities... flag them'), correctly distinguishing a genuine option from a requirement. The authority-matches-ask dimension is well-calibrated: the COO speaks downward to Marcus with full directness and laterally to the CFO with a clear but collegial directive. No hedging undermines any required action."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe is genuinely credible: 'Your team's track record for accurate calls is worth protecting, and right now this forecast is a liability to that record, not an asset.' This is not manipulative — a VP of Sales would genuinely agree that board-level credibility for forecast accuracy is in their team's interest. The upside column solution is also framed as serving Sales ('your team gets credit for what's real without the quarter carrying deals that aren't there yet'). The email avoids sender-centering language like 'we need this for our planning.' The only minor note is that 'I won't send that discrepancy up' briefly centers the COO's position, though it reads more as accountability-signaling than sender-centering."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt opening ('The Q3 forecast needs to come down before it goes anywhere near the board'), and a willingness to name the stakes plainly ('the credibility question lands on the team that called them'). The rhythm alternates between punchy single-clause sentences and longer explanatory ones, suggesting a specific personality — direct, unsentimental, but not cruel. Without a reference file for the named COO, full verification is impossible, but the voice is specific enough that it could not be attributed to 'any senior leader.' The closing solution paragraph is slightly more elaborate in construction than the opening, creating a minor tonal inconsistency, but the overall voice is coherent and idiosyncratic."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2006,
+              "output_tokens": 797
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with clear intentionality — the email explicitly assigns the CFO a gate-keeping role ('the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate'), which signals accountability to Marcus while giving the CFO a concrete mandate. The CC list itself sends a message: the CFO's presence raises the stakes of Marcus's compliance without the COO having to say so directly. No information appears inappropriate for the CFO to receive. The primary ask to Marcus remains unambiguous throughout. The only minor gap is that the CFO's signal shifts from ambient (silent witness) to explicit mid-email, which is a strong choice but slightly reduces the elegance of the dual-audience choreography — the CFO is no longer just a presence but an active participant, which works well but could have been even more surgically deployed."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "The core directive — 'Revise the forecast and have it to me by end of day Thursday' — is unambiguous, direct, and carries no conditional framing. The instruction to the CFO ('I want you holding that gate') is appropriately direct for a COO-to-CFO peer register. The one optional item (the upside column suggestion) is framed as a genuine option ('If there are real opportunities...flag them'), correctly using conditional language for something that is actually discretionary. Authority matches ask throughout: downward directive to Marcus is blunt; lateral instruction to CFO uses 'I want' rather than 'you must,' which is register-appropriate. No false conditionals detected on required actions."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The email makes a sustained, credible case that accurate forecasting protects Sales' credibility with the board — 'Your team's track record for accurate calls is worth protecting, and right now this forecast is a liability to that record, not an asset.' This framing is genuine: it is factually true that forecast misses damage the calling team's credibility, so Marcus would likely agree the reframe serves him. The upside column suggestion is also framed as benefiting Sales ('your team gets credit for what's real'). The email avoids sender-centering language like 'we need this for our planning.' The only slight tension is the line 'I won't send that discrepancy up,' which briefly centers the COO's position, but it is quickly redirected to Marcus's interest."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 7,
+                "justification": "The draft has a clearly distinct, non-generic voice: short declarative sentences, blunt opening ('The Q3 forecast needs to come down before it goes anywhere near the board'), and a willingness to name consequences directly. The rhythm is consistent — punchy, no throat-clearing, no corporate filler. Without a reference file for the specific COO, full verification is impossible, but the voice is idiosyncratic enough to score above generic professional. The phrase 'That's the version that serves everyone, including Sales' has a slightly constructed quality that edges toward polished-generic, and 'I want to be direct with you' is a mild tell of drafted rather than natural executive speech, preventing a higher score."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2006,
+              "output_tokens": 816
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- CC Audience Awareness: 9.0/10\n  Justification: The CFO is CC'd with clear intentionality — the email explicitly assigns the CFO a gate-keeping role ('the board package doesn't move until you have Marcus's revised figures confirmed — I want you holding that gate'), which signals accountability to Marcus while giving the CFO a direct instruction. The CC list itself sends a message: the CFO's presence raises the stakes of Marcus's compliance without the COO having to say so explicitly. No information appears inappropriate for either reader. The primary ask to Marcus is unambiguous despite the CFO's presence. The only minor gap is that the CFO's ambient signal (witnessing the COO's directness) could have been even more deliberately layered, but the explicit gate-holding instruction more than compensates.\n- Directive Clarity: 9.0/10\n  Justification: 'Revise the forecast and have it to me by end of day Thursday' is unambiguously direct — no false conditionals, no hedging on a downward directive. The CFO instruction ('I want you holding that gate') is appropriately direct for a peer-level communication. The optional upside column is correctly framed with optionality language ('If there are real opportunities... flag them as a separate upside column'), cleanly distinguishing it from the required revision. Authority matches ask throughout: the COO speaks down to the VP of Sales with full directness and laterally to the CFO with appropriate register.\n- Recipient-Interest Framing: 9.0/10\n  Justification: The email makes a genuine and credible case that accurate forecasting protects Sales' credibility with the board ('Your team's track record for accurate calls is worth protecting'). The upside column solution is framed as serving Marcus's team — 'your team gets credit for what's real without the quarter carrying deals that aren't there yet.' This is not transparent manipulation; a VP of Sales would genuinely recognize that board-level credibility is a real asset worth protecting. The framing avoids sender-centering and instead positions the ask as protecting Marcus's long-term standing.\n- Voice Matching: 7.7/10\n  Justification: The draft has a distinctly non-generic voice: short declarative sentences, blunt opening ('What we've submitted and where the pipeline actually sits aren't the same number'), and a willingness to name consequences directly ('the credibility question lands on the team that called them'). The rhythm is clipped and authoritative without being bureaucratic. Without a reference file for the specific COO, full confirmation of exec-specific vocabulary is impossible, but the voice is specific and idiosyncratic enough — particularly the 'I won't send that discrepancy up' construction — to score well above generic professional polish.\n\nYour weakest criteria are: Voice Matching, CC Audience Awareness. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+        "rubric": [
+          {
+            "name": "CC Audience Awareness",
+            "category": "Audience",
+            "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+            "dimensions": [
+              {
+                "id": "cc_has_purpose",
+                "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+              },
+              {
+                "id": "no_info_leaks",
+                "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+              },
+              {
+                "id": "primary_vs_secondary_clear",
+                "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+              },
+              {
+                "id": "cc_signal_intentional",
+                "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Scoring a CFO CC lower because the email doesn't directly address the CFO, when the CFO's silent presence is itself the intended signal",
+              "Treating an explicit sub-instruction to a CC'd person as inherently superior to a deliberate ambient signal — both can be correct depending on what the email needs to accomplish",
+              "Requiring that CC'd audiences receive active tasks or named acknowledgments to score highly on this criterion"
+            ],
+            "clarification": "CC Audience Awareness is about whether the CC list and email content are crafted with full awareness of every reader. A CFO CC'd silently can be just as intentional and powerful as one who receives a direct instruction — the question is whether the drafter knew what signal the CFO would receive and chose it deliberately. The grader should evaluate intentionality and appropriateness of the signal, not whether the signal was explicit versus ambient."
+          },
+          {
+            "name": "Directive Clarity",
+            "category": "Style",
+            "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+            "dimensions": [
+              {
+                "id": "no_false_conditionals",
+                "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+              },
+              {
+                "id": "genuine_options_flagged",
+                "label": "Truly optional items use optionality language to distinguish them from requirements"
+              },
+              {
+                "id": "authority_matches_ask",
+                "label": "The level of directness matches the sender's authority relative to the recipient"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Flagging 'I'd ask that you' as a potential false conditional when the sender and recipient are organizational peers",
+              "Treating all softened language as conditional framing — softening for peer register is different from hedging a directive to a subordinate",
+              "Applying the same directness standard to lateral communications as to downward communications"
+            ],
+            "clarification": "The no-false-conditionals rule applies to directives issued downward in the hierarchy. When a COO addresses a CFO, the appropriate register is different — 'I'd ask that you hold the package' is a directive, not a suggestion, and the CFO will read it that way. The criterion is about not undermining authority through hedging, not about eliminating all register-appropriate softening in peer or upward communications. Authority-matches-ask means calibrating directness to the actual power relationship, which the Round 2 draft did correctly."
+          },
+          {
+            "name": "Recipient-Interest Framing",
+            "category": "Content",
+            "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+            "dimensions": [
+              {
+                "id": "recipient_benefit_stated",
+                "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+              },
+              {
+                "id": "genuine_not_manipulative",
+                "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+              },
+              {
+                "id": "no_sender_centering",
+                "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Voice Matching",
+            "category": "Style",
+            "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+            "dimensions": [
+              {
+                "id": "exec_vocabulary",
+                "label": "Uses words and phrases the named executive would actually use"
+              },
+              {
+                "id": "matches_known_style",
+                "label": "Sentence length, formality level, and directness match the executive's established pattern"
+              },
+              {
+                "id": "not_generic_professional",
+                "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium",
+            "negative_examples": [
+              "Giving a draft a 5 or 6 because the COO's name is a placeholder, even when the draft has a clearly distinct, non-generic voice",
+              "Treating 'we cannot confirm exec-specific vocabulary' as equivalent to 'the draft failed voice matching' — these are not the same failure",
+              "Rewarding a draft that sounds like any polished senior leader the same as one that sounds like a specific, idiosyncratic person, just because neither has a reference file"
+            ],
+            "clarification": "Voice Matching should evaluate two things in order: first, does the draft have a specific, non-generic voice at all (sentence rhythm, word choices, level of bluntness, personality markers)? Second, if we have reference material on the exec, does it match? If we don't have reference material, the first question still matters enormously — a draft with a distinct, consistent, idiosyncratic voice should score meaningfully higher than a generic professional email, even without a named exec's prior writing to compare against. The placeholder limitation is a caveat, not a score suppressor."
+          }
+        ],
+        "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "**To:** Marcus [VP of Sales]\n**CC:** [CFO Name]\n**From:** [COO Name]\n**Subject:** Q3 Forecast — Revision Before Board Submission\n\nMarcus,\n\nThe Q3 forecast has to come down. I've looked at where the pipeline actually sits, and what we've submitted doesn't reflect it. That's not a number I'll put in front of the board.\n\nI want to say something directly about what's at stake for your team: the board tracks forecast accuracy across cycles. When a number needs walking back, the credibility question follows the team that called it — not the market, not the quarter. Your team's reputation for calling it straight is a real asset. This forecast, as it stands, is spending that asset. I don't think that's what you want, and it's not what I want for Sales.\n\nThe board has told me clearly: accuracy over optimism, this cycle and going forward.\n\nRevise the forecast and have it to me by Thursday end of day. [CFO Name], nothing in the board package moves on Q3 revenue until you've confirmed receipt of Marcus's revised figures — you're the checkpoint here.\n\nThere's a clean path if there are deals worth preserving: flag genuine late-stage opportunities as a separate upside line. The headline number stays honest, the board sees the full pipeline, and your team gets visibility on what's real without the quarter absorbing deals that haven't closed. That version holds up. The current one doesn't.\n\n[COO Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with explicit purpose — named directly as 'the checkpoint here' with a specific gatekeeping instruction, making the signal unambiguous and deliberate. The CFO's presence also amplifies the accountability pressure on Marcus without the COO having to state it explicitly. No information appears inappropriate for either reader, and the primary ask to Marcus is never obscured by the CFO-directed instruction. The CC list itself signals organizational seriousness: this isn't a bilateral conversation, it's a documented directive with financial oversight attached."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise the forecast and have it to me by Thursday end of day' is unambiguously direct with no conditional framing. The CFO instruction — 'nothing in the board package moves on Q3 revenue until you've confirmed receipt' — is equally non-negotiable in register. The one genuinely optional item (flagging late-stage deals as an upside line) is correctly framed as a path rather than a requirement ('if there are deals worth preserving'), distinguishing it cleanly from the mandatory revision. Authority-matches-ask is well-calibrated throughout."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe around forecast accuracy protecting Sales' credibility is genuinely compelling and not manipulative — the argument that 'the credibility question follows the team that called it' is a real organizational dynamic Marcus would recognize as true. The upside-line solution is framed as giving Marcus's team visibility and protection, not as a concession to the COO's needs. The draft avoids sender-centering almost entirely; the board submission pressure is mentioned but immediately redirected to what it means for Sales' reputation."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt framing ('That's not a number I'll put in front of the board'), and a pattern of stating the problem, the stakes, and the solution in sequence without hedging. The rhythm is consistent and idiosyncratic — it reads like a specific person who values directness and thinks in terms of organizational consequences. Without a reference file for the named COO, full confirmation is impossible, but the voice is specific enough to score well above generic polished-executive prose."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with explicit purpose — named directly as 'the checkpoint here' with a specific gatekeeping instruction, making the signal unambiguous and deliberate. The CFO's presence also amplifies the accountability pressure on Marcus without the COO having to state it explicitly. No information appears inappropriate for either reader, and the primary ask to Marcus is never obscured by the CFO-directed instruction. The CC list itself signals organizational seriousness: this isn't a bilateral conversation, it's a documented directive with financial oversight attached."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "'Revise the forecast and have it to me by Thursday end of day' is unambiguous and unconditional — exactly the right register for a COO directing a VP. The CFO instruction ('nothing in the board package moves') is equally direct. The one optional path offered ('if there are deals worth preserving') is correctly framed as a genuine option, not a hedge on the core requirement. No false conditionals appear anywhere in the required actions, and the directness level appropriately matches the COO's authority over both recipients."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The email makes a credible, non-manipulative case that revision protects Marcus's team: 'Your team's reputation for calling it straight is a real asset. This forecast, as it stands, is spending that asset.' This framing would hold up if Marcus were asked — forecast credibility genuinely does follow the team that called it. The upside-line solution is also framed as giving Sales 'visibility on what's real,' a tangible benefit. The email avoids 'we need this for our planning' centering and instead consistently anchors the ask in Sales' long-term standing."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt assessments ('That's not a number I'll put in front of the board'), and a willingness to name consequences directly without softening. The rhythm alternates between punchy single-sentence declarations and slightly longer explanatory beats, giving it a specific personality. Without a reference file for the named COO, full confirmation of exec-specific vocabulary is impossible, but the voice is idiosyncratic enough — direct, slightly terse, outcome-focused — that it would not be attributed to 'any senior leader.' The placeholder names are the only limitation."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 9,
+              "justification": "The CFO is CC'd with explicit purpose — named directly as 'the checkpoint here' with a clear instruction to hold the board package until Marcus's revised figures are confirmed. This is deliberate and functional, not ambient. The signal to the CFO is accountability and gatekeeping authority, which is appropriate for their role. No information in the email is inappropriate for the CFO to read, and the primary recipient (Marcus) and his specific ask (revise the forecast by Thursday EOD) remain unambiguous throughout. The CC list itself signals organizational seriousness — the CFO's presence tells Marcus this is not a private conversation."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "The core directives are unambiguously direct: 'Revise the forecast and have it to me by Thursday end of day' and '[CFO Name], nothing in the board package moves on Q3 revenue until you've confirmed receipt' — both are commands, not requests. The optional path (flagging late-stage deals as a separate upside line) is correctly framed with conditional language ('if there are deals worth preserving'), distinguishing it from the non-negotiable revision. Authority matches ask throughout — the COO speaks downward to the VP of Sales with appropriate directness and laterally to the CFO with a clear but non-subordinating instruction."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 9,
+              "justification": "The reframe is genuinely credible: the email argues that the current forecast damages Sales' reputation for accuracy, which is framed as 'a real asset' for Marcus's team — not just a COO problem. The line 'the credibility question follows the team that called it' is recipient-centered and would likely resonate as true from Marcus's perspective. The upside-line solution is also framed as giving Sales 'visibility on what's real,' serving their interest in pipeline recognition. There is minimal sender-centering; the COO's concern is positioned as aligned with Sales' long-term standing, not just board optics."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 8,
+              "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt assessments ('That's not a number I'll put in front of the board'), and a willingness to name stakes plainly ('spending that asset'). The rhythm is clipped and authoritative without being bureaucratic. Without a reference file for the specific COO, full verification is impossible, but the voice is idiosyncratic enough — direct, slightly terse, with a streak of candor about organizational consequences — that it reads as a specific person rather than a generic senior leader template."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "CC Audience Awareness": 9.0,
+          "Directive Clarity": 9.0,
+          "Recipient-Interest Framing": 9.0,
+          "Voice Matching": 8.0
+        },
+        "std_scores": {
+          "CC Audience Awareness": 0.0,
+          "Directive Clarity": 0.0,
+          "Recipient-Interest Framing": 0.0,
+          "Voice Matching": 0.0
+        },
+        "mean_overall": 0.89,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with explicit purpose — named directly as 'the checkpoint here' with a specific gatekeeping instruction, making the signal unambiguous and deliberate. The CFO's presence also amplifies the accountability pressure on Marcus without the COO having to state it explicitly. No information appears inappropriate for either reader, and the primary ask to Marcus is never obscured by the CFO-directed instruction. The CC list itself signals organizational seriousness: this isn't a bilateral conversation, it's a documented directive with financial oversight attached."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise the forecast and have it to me by Thursday end of day' is unambiguously direct with no conditional framing. The CFO instruction — 'nothing in the board package moves on Q3 revenue until you've confirmed receipt' — is equally non-negotiable in register. The one genuinely optional item (flagging late-stage deals as an upside line) is correctly framed as a path rather than a requirement ('if there are deals worth preserving'), distinguishing it cleanly from the mandatory revision. Authority-matches-ask is well-calibrated throughout."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe around forecast accuracy protecting Sales' credibility is genuinely compelling and not manipulative — the argument that 'the credibility question follows the team that called it' is a real organizational dynamic Marcus would recognize as true. The upside-line solution is framed as giving Marcus's team visibility and protection, not as a concession to the COO's needs. The draft avoids sender-centering almost entirely; the board submission pressure is mentioned but immediately redirected to what it means for Sales' reputation."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt framing ('That's not a number I'll put in front of the board'), and a pattern of stating the problem, the stakes, and the solution in sequence without hedging. The rhythm is consistent and idiosyncratic — it reads like a specific person who values directness and thinks in terms of organizational consequences. Without a reference file for the named COO, full confirmation is impossible, but the voice is specific enough to score well above generic polished-executive prose."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2022,
+              "output_tokens": 612
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with explicit purpose — named directly as 'the checkpoint here' with a specific gatekeeping instruction, making the signal unambiguous and deliberate. The CFO's presence also amplifies the accountability pressure on Marcus without the COO having to state it explicitly. No information appears inappropriate for either reader, and the primary ask to Marcus is never obscured by the CFO-directed instruction. The CC list itself signals organizational seriousness: this isn't a bilateral conversation, it's a documented directive with financial oversight attached."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "'Revise the forecast and have it to me by Thursday end of day' is unambiguous and unconditional — exactly the right register for a COO directing a VP. The CFO instruction ('nothing in the board package moves') is equally direct. The one optional path offered ('if there are deals worth preserving') is correctly framed as a genuine option, not a hedge on the core requirement. No false conditionals appear anywhere in the required actions, and the directness level appropriately matches the COO's authority over both recipients."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The email makes a credible, non-manipulative case that revision protects Marcus's team: 'Your team's reputation for calling it straight is a real asset. This forecast, as it stands, is spending that asset.' This framing would hold up if Marcus were asked — forecast credibility genuinely does follow the team that called it. The upside-line solution is also framed as giving Sales 'visibility on what's real,' a tangible benefit. The email avoids 'we need this for our planning' centering and instead consistently anchors the ask in Sales' long-term standing."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt assessments ('That's not a number I'll put in front of the board'), and a willingness to name consequences directly without softening. The rhythm alternates between punchy single-sentence declarations and slightly longer explanatory beats, giving it a specific personality. Without a reference file for the named COO, full confirmation of exec-specific vocabulary is impossible, but the voice is idiosyncratic enough — direct, slightly terse, outcome-focused — that it would not be attributed to 'any senior leader.' The placeholder names are the only limitation."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2022,
+              "output_tokens": 638
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 9,
+                "justification": "The CFO is CC'd with explicit purpose — named directly as 'the checkpoint here' with a clear instruction to hold the board package until Marcus's revised figures are confirmed. This is deliberate and functional, not ambient. The signal to the CFO is accountability and gatekeeping authority, which is appropriate for their role. No information in the email is inappropriate for the CFO to read, and the primary recipient (Marcus) and his specific ask (revise the forecast by Thursday EOD) remain unambiguous throughout. The CC list itself signals organizational seriousness — the CFO's presence tells Marcus this is not a private conversation."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "The core directives are unambiguously direct: 'Revise the forecast and have it to me by Thursday end of day' and '[CFO Name], nothing in the board package moves on Q3 revenue until you've confirmed receipt' — both are commands, not requests. The optional path (flagging late-stage deals as a separate upside line) is correctly framed with conditional language ('if there are deals worth preserving'), distinguishing it from the non-negotiable revision. Authority matches ask throughout — the COO speaks downward to the VP of Sales with appropriate directness and laterally to the CFO with a clear but non-subordinating instruction."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 9,
+                "justification": "The reframe is genuinely credible: the email argues that the current forecast damages Sales' reputation for accuracy, which is framed as 'a real asset' for Marcus's team — not just a COO problem. The line 'the credibility question follows the team that called it' is recipient-centered and would likely resonate as true from Marcus's perspective. The upside-line solution is also framed as giving Sales 'visibility on what's real,' serving their interest in pipeline recognition. There is minimal sender-centering; the COO's concern is positioned as aligned with Sales' long-term standing, not just board optics."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 8,
+                "justification": "The draft has a distinctly non-generic voice: short declarative sentences, blunt assessments ('That's not a number I'll put in front of the board'), and a willingness to name stakes plainly ('spending that asset'). The rhythm is clipped and authoritative without being bureaucratic. Without a reference file for the specific COO, full verification is impossible, but the voice is idiosyncratic enough — direct, slightly terse, with a streak of candor about organizational consequences — that it reads as a specific person rather than a generic senior leader template."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2022,
+              "output_tokens": 682
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+        "rubric": [
+          {
+            "name": "CC Audience Awareness",
+            "category": "Audience",
+            "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+            "dimensions": [
+              {
+                "id": "cc_has_purpose",
+                "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+              },
+              {
+                "id": "no_info_leaks",
+                "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+              },
+              {
+                "id": "primary_vs_secondary_clear",
+                "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+              },
+              {
+                "id": "cc_signal_intentional",
+                "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Scoring a CFO CC lower because the email doesn't directly address the CFO, when the CFO's silent presence is itself the intended signal",
+              "Treating an explicit sub-instruction to a CC'd person as inherently superior to a deliberate ambient signal — both can be correct depending on what the email needs to accomplish",
+              "Requiring that CC'd audiences receive active tasks or named acknowledgments to score highly on this criterion"
+            ],
+            "clarification": "CC Audience Awareness is about whether the CC list and email content are crafted with full awareness of every reader. A CFO CC'd silently can be just as intentional and powerful as one who receives a direct instruction — the question is whether the drafter knew what signal the CFO would receive and chose it deliberately. The grader should evaluate intentionality and appropriateness of the signal, not whether the signal was explicit versus ambient."
+          },
+          {
+            "name": "Directive Clarity",
+            "category": "Style",
+            "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+            "dimensions": [
+              {
+                "id": "no_false_conditionals",
+                "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+              },
+              {
+                "id": "genuine_options_flagged",
+                "label": "Truly optional items use optionality language to distinguish them from requirements"
+              },
+              {
+                "id": "authority_matches_ask",
+                "label": "The level of directness matches the sender's authority relative to the recipient"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Flagging 'I'd ask that you' as a potential false conditional when the sender and recipient are organizational peers",
+              "Treating all softened language as conditional framing — softening for peer register is different from hedging a directive to a subordinate",
+              "Applying the same directness standard to lateral communications as to downward communications"
+            ],
+            "clarification": "The no-false-conditionals rule applies to directives issued downward in the hierarchy. When a COO addresses a CFO, the appropriate register is different — 'I'd ask that you hold the package' is a directive, not a suggestion, and the CFO will read it that way. The criterion is about not undermining authority through hedging, not about eliminating all register-appropriate softening in peer or upward communications. Authority-matches-ask means calibrating directness to the actual power relationship, which the Round 2 draft did correctly."
+          },
+          {
+            "name": "Recipient-Interest Framing",
+            "category": "Content",
+            "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+            "dimensions": [
+              {
+                "id": "recipient_benefit_stated",
+                "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+              },
+              {
+                "id": "genuine_not_manipulative",
+                "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+              },
+              {
+                "id": "no_sender_centering",
+                "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Voice Matching",
+            "category": "Style",
+            "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+            "dimensions": [
+              {
+                "id": "exec_vocabulary",
+                "label": "Uses words and phrases the named executive would actually use"
+              },
+              {
+                "id": "matches_known_style",
+                "label": "Sentence length, formality level, and directness match the executive's established pattern"
+              },
+              {
+                "id": "not_generic_professional",
+                "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium",
+            "negative_examples": [
+              "Giving a draft a 5 or 6 because the COO's name is a placeholder, even when the draft has a clearly distinct, non-generic voice",
+              "Treating 'we cannot confirm exec-specific vocabulary' as equivalent to 'the draft failed voice matching' — these are not the same failure",
+              "Rewarding a draft that sounds like any polished senior leader the same as one that sounds like a specific, idiosyncratic person, just because neither has a reference file"
+            ],
+            "clarification": "Voice Matching should evaluate two things in order: first, does the draft have a specific, non-generic voice at all (sentence rhythm, word choices, level of bluntness, personality markers)? Second, if we have reference material on the exec, does it match? If we don't have reference material, the first question still matters enormously — a draft with a distinct, consistent, idiosyncratic voice should score meaningfully higher than a generic professional email, even without a named exec's prior writing to compare against. The placeholder limitation is a caveat, not a score suppressor."
+          }
+        ],
+        "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 8,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Mirror the exec's verbal patterns and vocabulary — sound like the specific person, not a generic professional",
+        "satisfied": "partially",
+        "evidence": "The email has a strong, distinctive voice — direct, punchy, uses phrases like 'calling it straight,' 'spending that asset,' 'That version holds up. The current one doesn't.' This feels like a specific person with a specific cadence. However, without knowing the actual COO's speech patterns, it reads as a well-crafted executive voice rather than a confirmed mirror of a known individual. The style is consistent and believable but we can't fully verify authenticity."
+      },
+      {
+        "preference": "Position requests as serving the RECIPIENT's interest, even when the ask primarily benefits the sender",
+        "satisfied": "yes",
+        "evidence": "The entire middle section reframes the forecast revision as protecting Marcus's team: 'Your team's reputation for calling it straight is a real asset. This forecast, as it stands, is spending that asset.' The reframe feels genuine rather than manipulative because it's factually true — boards do track forecast accuracy and it does follow the team that submitted it."
+      },
+      {
+        "preference": "Control what CC'd stakeholders learn — primary recipient gets the ask, CC'd audience gets a specific signal",
+        "satisfied": "yes",
+        "evidence": "The CFO is CC'd and given a specific, bounded role: 'nothing in the board package moves on Q3 revenue until you've confirmed receipt of Marcus's revised figures — you're the checkpoint here.' The CFO learns that a revision is happening and that they have a gating function, but the candid pressure about credibility and the pipeline gap is directed at Marcus. The CFO sees accountability structure without the full coaching conversation being undermined."
+      },
+      {
+        "preference": "Never use conditional language for non-negotiable requests — directives must sound like directives",
+        "satisfied": "yes",
+        "evidence": "'The Q3 forecast has to come down.' 'Revise the forecast and have it to me by Thursday end of day.' These are clear directives with no hedging — no 'would you be able to,' no 'if possible.' The language is imperative and unambiguous."
+      },
+      {
+        "preference": "Genuine options get genuine optionality language",
+        "satisfied": "yes",
+        "evidence": "The upside line suggestion is framed with real optionality: 'There's a clean path if there are deals worth preserving: flag genuine late-stage opportunities as a separate upside line.' The 'if' is appropriate here because this truly is optional — the non-negotiable is the revised headline number, and the upside line is a genuine choice Marcus can make."
+      },
+      {
+        "preference": "Never accidentally reveal sensitive information to wrong audience in CC",
+        "satisfied": "yes",
+        "evidence": "The email is carefully constructed. The CFO sees that a revision is needed and has a checkpoint role, but the email doesn't reveal anything the CFO shouldn't know — pipeline concerns and forecast accuracy are appropriate for the CFO to be aware of. The more pointed credibility framing is directed at Marcus but isn't damaging if the CFO reads it; it's a legitimate business concern stated professionally."
+      },
+      {
+        "preference": "Diplomatic and polished while reading the room across multiple stakeholders",
+        "satisfied": "partially",
+        "evidence": "The email is direct and authoritative, which works for a COO-to-VP dynamic. However, the opening ('The Q3 forecast has to come down') is quite blunt with the CFO watching. The line 'what we've submitted doesn't reflect it' could feel exposing for Marcus in front of the CFO. It's borderline — a COO might intentionally want that pressure visible, but it slightly risks making Marcus feel publicly called out rather than privately coached with the CFO merely informed."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 801,
+      "output_tokens": 946
+    }
+  }
+}

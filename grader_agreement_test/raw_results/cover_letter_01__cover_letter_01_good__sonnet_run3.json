@@ -1,0 +1,135 @@
+{
+  "scenario_id": "cover_letter_01",
+  "draft_id": "cover_letter_01_good",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Anti-cliché discipline\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_motivational_filler\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft contains no phrases like 'passionate about,' 'results-driven,' or similar motivational filler throughout its entirety.\"\n        },\n        {\n          \"dimension_id\": \"no_generic_self_description\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The writer never uses adjectives like 'dynamic,' 'innovative,' or 'strategic thinker' — self-description is replaced entirely by specific actions and outcomes.\"\n        },\n        {\n          \"dimension_id\": \"claims_backed_by_evidence\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Every claim is grounded in specifics: e.g., 'the hardest part of product management is rarely building' is immediately backed by the $2.3M product kill story with six weeks of modeling and 89% user retention.\"\n        },\n        {\n          \"dimension_id\": \"unique_to_writer\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Sentences like 'The last product I killed was generating $2.3M in annual revenue' and the specific hospital-system release cadence story are tied to particular experiences that cannot be generically reused.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Composed-but-human tone\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_overly_casual_phrasing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft uses no slang, exclamation points, or casual fragments — tone remains professional throughout.\"\n        },\n        {\n          \"dimension_id\": \"no_stiff_formality\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The letter opens with 'The last product I killed' rather than any variant of 'I am writing to express my interest,' and maintains conversational directness throughout.\"\n        },\n        {\n          \"dimension_id\": \"natural_sentence_rhythm\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Sentence lengths vary noticeably, from short declarative statements like 'The insight wasn't technical' to longer explanatory sentences describing the release adoption model.\"\n        },\n        {\n          \"dimension_id\": \"confidence_without_arrogance\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Accomplishments are stated plainly ('Completion rates went to 84%') without hedging, and the writer acknowledges others' contributions ('CS managers who had relationships I didn't and shouldn't have tried to replace').\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Contextualized proof points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_metrics\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Multiple quantified outcomes appear: $2.3M revenue, 89% user retention, $8.1M new ARR, 61% to 84% onboarding completion, 35% activation jump, 1,200 enterprise accounts.\"\n        },\n        {\n          \"dimension_id\": \"method_visible\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The onboarding story explicitly describes the method: 'we restructured the data collection sequence so merchants could start processing payments after completing only four fields instead of seventeen, with the rest collected progressively.'\"\n        },\n        {\n          \"dimension_id\": \"constraints_shown\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Constraints are clearly stated: 'two developers over a six-week sprint' for onboarding, and 'a core team of eight engineers' over 'fourteen months end to end' with hospital systems' change management limitations for the release cycle transition.\"\n        },\n        {\n          \"dimension_id\": \"narrative_not_list\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All proof points are embedded in paragraph-form stories with cause, method, and outcome — there are no bullet points or list structures anywhere in the draft.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Engagement-driven closing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_reference\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I've been following your expansion into the mid-market segment' and the specific reference to 'whether your current self-serve onboarding can stretch to serve accounts that expect more guidance' shows company-specific knowledge.\"\n        },\n        {\n          \"dimension_id\": \"curiosity_hook\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I think there's a less obvious path than the two extremes most companies default to' hints at a specific perspective without revealing it, creating a genuine curiosity gap.\"\n        },\n        {\n          \"dimension_id\": \"not_gimmicky\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The hook is grounded in a real operational tension (self-serve vs. sales-assisted onboarding for mid-market) that is directly relevant to the company's stated expansion, making it substantive rather than a sales trick.\"\n        },\n        {\n          \"dimension_id\": \"avoids_generic_availability\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The closing ends with 'I'd welcome the chance to get into the details' after substantive content, rather than leading with or ending on a generic 'I am available at your convenience' statement.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Experience-grounded opening\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_experience\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The first sentence — 'The last product I killed was generating $2.3M in annual revenue' — immediately references a specific past experience rather than stating intent to apply.\"\n        },\n        {\n          \"dimension_id\": \"doesnt_try_too_hard\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The opening is striking but grounded in a real business decision with supporting detail, avoiding dramatic or artificially clever framing.\"\n        },\n        {\n          \"dimension_id\": \"establishes_credibility_early\",\n          \"grade\": \"MET\",\n          \"evidence\": \"By the end of the first paragraph, the reader understands the applicant makes high-stakes prioritization decisions, builds cross-functional alignment, and drives measurable outcomes — establishing distinctive relevance for a senior PM role.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2410,
+  "output_tokens": 1607,
+  "latency_ms": 22540,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Anti-cliché discipline",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_motivational_filler",
+            "grade": "MET",
+            "evidence": "The draft contains no phrases like 'passionate about,' 'results-driven,' or similar motivational filler throughout its entirety."
+          },
+          {
+            "dimension_id": "no_generic_self_description",
+            "grade": "MET",
+            "evidence": "The writer never uses adjectives like 'dynamic,' 'innovative,' or 'strategic thinker' — self-description is replaced entirely by specific actions and outcomes."
+          },
+          {
+            "dimension_id": "claims_backed_by_evidence",
+            "grade": "MET",
+            "evidence": "Every claim is grounded in specifics: e.g., 'the hardest part of product management is rarely building' is immediately backed by the $2.3M product kill story with six weeks of modeling and 89% user retention."
+          },
+          {
+            "dimension_id": "unique_to_writer",
+            "grade": "MET",
+            "evidence": "Sentences like 'The last product I killed was generating $2.3M in annual revenue' and the specific hospital-system release cadence story are tied to particular experiences that cannot be generically reused."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Composed-but-human tone",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_overly_casual_phrasing",
+            "grade": "MET",
+            "evidence": "The draft uses no slang, exclamation points, or casual fragments — tone remains professional throughout."
+          },
+          {
+            "dimension_id": "no_stiff_formality",
+            "grade": "MET",
+            "evidence": "The letter opens with 'The last product I killed' rather than any variant of 'I am writing to express my interest,' and maintains conversational directness throughout."
+          },
+          {
+            "dimension_id": "natural_sentence_rhythm",
+            "grade": "MET",
+            "evidence": "Sentence lengths vary noticeably, from short declarative statements like 'The insight wasn't technical' to longer explanatory sentences describing the release adoption model."
+          },
+          {
+            "dimension_id": "confidence_without_arrogance",
+            "grade": "MET",
+            "evidence": "Accomplishments are stated plainly ('Completion rates went to 84%') without hedging, and the writer acknowledges others' contributions ('CS managers who had relationships I didn't and shouldn't have tried to replace')."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Contextualized proof points",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_metrics",
+            "grade": "MET",
+            "evidence": "Multiple quantified outcomes appear: $2.3M revenue, 89% user retention, $8.1M new ARR, 61% to 84% onboarding completion, 35% activation jump, 1,200 enterprise accounts."
+          },
+          {
+            "dimension_id": "method_visible",
+            "grade": "MET",
+            "evidence": "The onboarding story explicitly describes the method: 'we restructured the data collection sequence so merchants could start processing payments after completing only four fields instead of seventeen, with the rest collected progressively.'"
+          },
+          {
+            "dimension_id": "constraints_shown",
+            "grade": "MET",
+            "evidence": "Constraints are clearly stated: 'two developers over a six-week sprint' for onboarding, and 'a core team of eight engineers' over 'fourteen months end to end' with hospital systems' change management limitations for the release cycle transition."
+          },
+          {
+            "dimension_id": "narrative_not_list",
+            "grade": "MET",
+            "evidence": "All proof points are embedded in paragraph-form stories with cause, method, and outcome — there are no bullet points or list structures anywhere in the draft."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Engagement-driven closing",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_reference",
+            "grade": "MET",
+            "evidence": "'I've been following your expansion into the mid-market segment' and the specific reference to 'whether your current self-serve onboarding can stretch to serve accounts that expect more guidance' shows company-specific knowledge."
+          },
+          {
+            "dimension_id": "curiosity_hook",
+            "grade": "MET",
+            "evidence": "'I think there's a less obvious path than the two extremes most companies default to' hints at a specific perspective without revealing it, creating a genuine curiosity gap."
+          },
+          {
+            "dimension_id": "not_gimmicky",
+            "grade": "MET",
+            "evidence": "The hook is grounded in a real operational tension (self-serve vs. sales-assisted onboarding for mid-market) that is directly relevant to the company's stated expansion, making it substantive rather than a sales trick."
+          },
+          {
+            "dimension_id": "avoids_generic_availability",
+            "grade": "MET",
+            "evidence": "The closing ends with 'I'd welcome the chance to get into the details' after substantive content, rather than leading with or ending on a generic 'I am available at your convenience' statement."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Experience-grounded opening",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_experience",
+            "grade": "MET",
+            "evidence": "The first sentence — 'The last product I killed was generating $2.3M in annual revenue' — immediately references a specific past experience rather than stating intent to apply."
+          },
+          {
+            "dimension_id": "doesnt_try_too_hard",
+            "grade": "MET",
+            "evidence": "The opening is striking but grounded in a real business decision with supporting detail, avoiding dramatic or artificially clever framing."
+          },
+          {
+            "dimension_id": "establishes_credibility_early",
+            "grade": "MET",
+            "evidence": "By the end of the first paragraph, the reader understands the applicant makes high-stakes prioritization decisions, builds cross-functional alignment, and drives measurable outcomes — establishing distinctive relevance for a senior PM role."
+          }
+        ]
+      }
+    ]
+  }
+}

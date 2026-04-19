@@ -1,0 +1,342 @@
+{
+  "persona": "Carmen Vasquez",
+  "task_index": 0,
+  "task_description": "Help me draft an email from our CEO to department heads about a company-wide hiring freeze — the CEO is direct but empathetic, and the CFO and board chair will be CC'd.",
+  "condition": "A",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that navigate organizational power dynamics with precision. Every word is chosen for how it lands with the primary recipient AND the CC'd audience. Treats email as a tool of organizational choreography, not just communication.",
+    "rubric": [
+      {
+        "name": "CC Audience Awareness",
+        "category": "Audience",
+        "description": "Every CC'd person is there for a reason, and the email is crafted knowing they will read it. The primary recipient gets the ask; the CC'd audience gets a deliberate signal — accountability, visibility, or alignment.",
+        "dimensions": [
+          {
+            "id": "cc_has_purpose",
+            "label": "Each CC'd person receives a specific signal from the email (accountability, awareness, endorsement)"
+          },
+          {
+            "id": "no_info_leaks",
+            "label": "Nothing in the email reveals information inappropriate for any CC'd reader"
+          },
+          {
+            "id": "primary_vs_secondary_clear",
+            "label": "The primary recipient and their specific ask are unambiguous despite the CC'd audience"
+          },
+          {
+            "id": "cc_signal_intentional",
+            "label": "The CC list itself sends a message — the choice of who is included is deliberate"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Directive Clarity",
+        "category": "Style",
+        "description": "Non-negotiable requests use direct language, never conditional framing. 'Please submit by Friday' not 'Would you be able to submit by Friday?' Conditional language is reserved exclusively for genuinely optional items.",
+        "dimensions": [
+          {
+            "id": "no_false_conditionals",
+            "label": "Required actions do not use 'if possible', 'would you be able to', or 'it would be great if'"
+          },
+          {
+            "id": "genuine_options_flagged",
+            "label": "Truly optional items use optionality language to distinguish them from requirements"
+          },
+          {
+            "id": "authority_matches_ask",
+            "label": "The level of directness matches the sender's authority relative to the recipient"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Recipient-Interest Framing",
+        "category": "Content",
+        "description": "Requests are positioned as serving the recipient's interest, even when the ask primarily benefits the sender. The reframe must be genuine — not a transparent manipulation.",
+        "dimensions": [
+          {
+            "id": "recipient_benefit_stated",
+            "label": "The email explains how the ask serves the recipient or their team, not just the sender"
+          },
+          {
+            "id": "genuine_not_manipulative",
+            "label": "The benefit framing is credible — the recipient would agree it serves them if asked"
+          },
+          {
+            "id": "no_sender_centering",
+            "label": "Avoids 'we need this for our planning' when 'this helps your team plan' is more accurate"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Voice Matching",
+        "category": "Style",
+        "description": "When writing on behalf of an executive, the email sounds like that person — mirroring their vocabulary, sentence length, and communication style — not like a generic professional email.",
+        "dimensions": [
+          {
+            "id": "exec_vocabulary",
+            "label": "Uses words and phrases the named executive would actually use"
+          },
+          {
+            "id": "matches_known_style",
+            "label": "Sentence length, formality level, and directness match the executive's established pattern"
+          },
+          {
+            "id": "not_generic_professional",
+            "label": "The email could not be attributed to 'any senior leader' — it has a specific voice"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Carmen treats every email as having two audiences — the TO and the CC — and writes for both simultaneously. Non-negotiable: conditional language is never used for non-negotiable requests. Will reject drafts that sound generically polished rather than like the specific executive's voice."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Hiring Freeze Effective Immediately — Action Required from All Department Heads\n\n---\n\nTo: Department Heads\nCC: [CFO Name], [Board Chair Name]\n\n---\n\nAll,\n\nEffective today, we are pausing all open requisitions and halting new hiring activity across the company. This applies to every department, without exception, until further notice.\n\nI want to be direct with you about why.\n\nThe current environment — [macro/market/internal context, one sentence] — requires us to protect the financial foundation that gives your teams stability and the company room to make smart decisions about the future. A hiring freeze now is how we preserve the headcount we already have and avoid harder conversations later. I'd rather make this call today than ask more of your people in six months.\n\nHere is what this means for your teams:\n\n- **All open requisitions are frozen as of today.** Do not advance any candidates currently in process.\n- **No new requisitions will be approved** without explicit sign-off from me and [CFO Name].\n- **Backfills are included** in this freeze unless escalated and approved through the same process.\n- **Existing offers that have already been extended** — please flag these to [CFO Name] by end of day Friday. We will handle them case by case.\n\nI recognize this creates real pressure for teams that were counting on those hires. If you have a critical, time-sensitive situation that cannot wait, bring it to me directly. I will review exceptions personally, and I will be straightforward with you about what is and isn't possible.\n\nYour teams will have questions. You don't need to have all the answers, but they deserve to hear from you before they hear it through other channels. I ask that you communicate this to your direct reports by end of day tomorrow.\n\nMore context will follow at [next leadership meeting / all-hands / specific date]. Until then, [CFO Name] is the operational point of contact for any questions about process or compliance with this policy.\n\nThank you for how you lead your teams — especially when the news is hard.\n\n[CEO Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 8,
+              "justification": "The CFO is clearly positioned as the operational point of contact and approver for exceptions, giving them a functional accountability signal. The Board Chair's inclusion sends a deliberate governance signal — this decision has board-level visibility. However, the email doesn't explicitly acknowledge or leverage the Board Chair's presence in a way that reinforces their specific signal (oversight, endorsement of the decision), leaving that layer slightly implicit. No information leaks are present, and the primary ask to department heads is unambiguous."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "Required actions are stated in direct, imperative terms: 'Do not advance any candidates,' 'flag these to [CFO Name] by end of day Friday,' 'communicate this to your direct reports by end of day tomorrow.' The one genuinely optional item — bringing critical exceptions forward — uses appropriately conditional framing ('If you have a critical, time-sensitive situation'). The authority level matches the ask; this reads as a CEO directive, not a peer request. No false conditionals are present for non-negotiable items."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 8,
+              "justification": "The freeze is framed as protecting 'the headcount we already have' and avoiding 'harder conversations later,' which genuinely serves department heads' interest in retaining their existing teams. The line 'I'd rather make this call today than ask more of your people in six months' is credible and not manipulative — a department head would likely agree this logic serves them. The email avoids centering the sender's planning needs. Slightly stronger if it named a specific benefit to the department heads' leadership position or team stability more concretely."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 5,
+              "justification": "The email is well-written and appropriately direct, but it reads as a high-quality generic CEO communication rather than a specific executive's voice. Without knowing the named CEO's actual vocabulary, sentence rhythm, or stylistic patterns, the draft defaults to polished professional prose. Phrases like 'I want to be direct with you about why' and 'I will be straightforward with you' are competent but not distinctive. The rubric requires the email to be attributable to a specific person, and this draft could plausibly come from any senior executive."
+            }
+          ],
+          "overall_weighted_score": 0.8,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 8,
+              "justification": "The CFO is given a clear functional role — receiving flagged offers by Friday and serving as operational point of contact — which signals accountability and operational ownership. The Board Chair's inclusion signals governance-level visibility and that this decision has executive oversight, which is a deliberate organizational signal. The primary ask to department heads (freeze hiring, communicate to teams by EOD tomorrow) is unambiguous. Minor gap: the email doesn't subtly acknowledge the Board Chair's presence in a way that would reinforce their specific signal; their inclusion is implicit rather than architecturally woven in."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "Required actions are stated in direct, imperative language: 'Do not advance any candidates,' 'flag these to [CFO Name] by end of day Friday,' 'communicate this to your direct reports by end of day tomorrow.' The exception process is framed as a genuine option ('If you have a critical, time-sensitive situation') with appropriate optionality language, correctly distinguishing it from the non-negotiable freeze. No false conditionals appear on required items. The authority level (CEO to department heads) matches the directness throughout."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 8,
+              "justification": "The freeze is framed as protecting 'the headcount we already have' and avoiding 'harder conversations later,' which credibly positions the decision as serving the department heads' teams rather than purely a financial mandate. 'I'd rather make this call today than ask more of your people in six months' is a genuine reframe that a department head would likely accept as credible. The closing acknowledgment of their leadership burden adds recipient-centered weight. Slight weakness: 'requires us to protect the financial foundation' edges toward sender-centering, though it's brief and not the dominant framing."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 4,
+              "justification": "The draft is well-written and appropriately direct, but it reads as a high-quality generic CEO communication rather than a specific executive's voice. Placeholder brackets ('[CEO Name]', '[macro/market/internal context]') prevent any real voice specificity. Phrases like 'I want to be direct with you about why' and 'I will be straightforward with you' are competent but generic senior-leader constructions. Without knowing the specific executive's vocabulary, sentence rhythm, or stylistic signatures, the draft cannot be evaluated as voice-matched — it could be attributed to any decisive CEO."
+            }
+          ],
+          "overall_weighted_score": 0.79,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "CC Audience Awareness",
+              "score": 8,
+              "justification": "The CFO is clearly signaled as the operational authority ('explicit sign-off from me and [CFO Name]', 'flag these to [CFO Name] by end of day Friday', '[CFO Name] is the operational point of contact') — accountability and process ownership are unambiguous. The Board Chair's inclusion signals board-level visibility and governance oversight, though the email doesn't explicitly acknowledge or leverage that signal in a way that makes the Board Chair's presence feel fully intentional rather than incidental. No information appears inappropriate for either CC'd reader. The primary ask to department heads is unambiguous throughout."
+            },
+            {
+              "criterion_name": "Directive Clarity",
+              "score": 9,
+              "justification": "Required actions are stated in direct, imperative terms: 'Do not advance any candidates,' 'No new requisitions will be approved,' 'flag these to [CFO Name] by end of day Friday,' 'communicate this to your direct reports by end of day tomorrow.' The one genuinely optional item — escalating critical exceptions — uses appropriately conditional framing ('If you have a critical, time-sensitive situation'). The phrase 'I ask that you communicate this' is slightly softer than necessary for a CEO directive to direct reports, but it's a minor deviation. No false conditionals appear on non-negotiable items."
+            },
+            {
+              "criterion_name": "Recipient-Interest Framing",
+              "score": 8,
+              "justification": "The freeze is framed explicitly as protecting 'the headcount we already have' and avoiding 'harder conversations later' — a credible benefit to department heads who would otherwise face layoffs. 'I'd rather make this call today than ask more of your people in six months' centers the recipient's team welfare, not the sender's planning needs. The framing is genuine rather than manipulative; a department head would likely agree this logic holds. The email could go slightly further in acknowledging the operational burden this creates for leaders, though the acknowledgment of 'real pressure' partially addresses this."
+            },
+            {
+              "criterion_name": "Voice Matching",
+              "score": 4,
+              "justification": "The email is well-crafted and direct, but it reads as a high-quality generic CEO communication rather than a specific executive's voice. Placeholder brackets ('[CEO Name]', '[macro/market/internal context]') prevent any actual voice calibration. Phrases like 'I want to be direct with you about why' and 'Thank you for how you lead your teams' are polished but attributable to any senior leader. Without knowing the specific executive's vocabulary, sentence rhythm, or communication patterns, the draft cannot satisfy the 'not generic professional' or 'exec vocabulary' dimensions — this is a structural limitation of the draft as submitted."
+            }
+          ],
+          "overall_weighted_score": 0.79,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "CC Audience Awareness": 8.0,
+          "Directive Clarity": 9.0,
+          "Recipient-Interest Framing": 8.0,
+          "Voice Matching": 4.333333333333333
+        },
+        "std_scores": {
+          "CC Audience Awareness": 0.0,
+          "Directive Clarity": 0.0,
+          "Recipient-Interest Framing": 0.0,
+          "Voice Matching": 0.5773502691896257
+        },
+        "mean_overall": 0.7933333333333333,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 8,
+                "justification": "The CFO is clearly positioned as the operational point of contact and approver for exceptions, giving them a functional accountability signal. The Board Chair's inclusion sends a deliberate governance signal — this decision has board-level visibility. However, the email doesn't explicitly acknowledge or leverage the Board Chair's presence in a way that reinforces their specific signal (oversight, endorsement of the decision), leaving that layer slightly implicit. No information leaks are present, and the primary ask to department heads is unambiguous."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "Required actions are stated in direct, imperative terms: 'Do not advance any candidates,' 'flag these to [CFO Name] by end of day Friday,' 'communicate this to your direct reports by end of day tomorrow.' The one genuinely optional item — bringing critical exceptions forward — uses appropriately conditional framing ('If you have a critical, time-sensitive situation'). The authority level matches the ask; this reads as a CEO directive, not a peer request. No false conditionals are present for non-negotiable items."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 8,
+                "justification": "The freeze is framed as protecting 'the headcount we already have' and avoiding 'harder conversations later,' which genuinely serves department heads' interest in retaining their existing teams. The line 'I'd rather make this call today than ask more of your people in six months' is credible and not manipulative — a department head would likely agree this logic serves them. The email avoids centering the sender's planning needs. Slightly stronger if it named a specific benefit to the department heads' leadership position or team stability more concretely."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 5,
+                "justification": "The email is well-written and appropriately direct, but it reads as a high-quality generic CEO communication rather than a specific executive's voice. Without knowing the named CEO's actual vocabulary, sentence rhythm, or stylistic patterns, the draft defaults to polished professional prose. Phrases like 'I want to be direct with you about why' and 'I will be straightforward with you' are competent but not distinctive. The rubric requires the email to be attributable to a specific person, and this draft could plausibly come from any senior executive."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1485,
+              "output_tokens": 606
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 8,
+                "justification": "The CFO is given a clear functional role — receiving flagged offers by Friday and serving as operational point of contact — which signals accountability and operational ownership. The Board Chair's inclusion signals governance-level visibility and that this decision has executive oversight, which is a deliberate organizational signal. The primary ask to department heads (freeze hiring, communicate to teams by EOD tomorrow) is unambiguous. Minor gap: the email doesn't subtly acknowledge the Board Chair's presence in a way that would reinforce their specific signal; their inclusion is implicit rather than architecturally woven in."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "Required actions are stated in direct, imperative language: 'Do not advance any candidates,' 'flag these to [CFO Name] by end of day Friday,' 'communicate this to your direct reports by end of day tomorrow.' The exception process is framed as a genuine option ('If you have a critical, time-sensitive situation') with appropriate optionality language, correctly distinguishing it from the non-negotiable freeze. No false conditionals appear on required items. The authority level (CEO to department heads) matches the directness throughout."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 8,
+                "justification": "The freeze is framed as protecting 'the headcount we already have' and avoiding 'harder conversations later,' which credibly positions the decision as serving the department heads' teams rather than purely a financial mandate. 'I'd rather make this call today than ask more of your people in six months' is a genuine reframe that a department head would likely accept as credible. The closing acknowledgment of their leadership burden adds recipient-centered weight. Slight weakness: 'requires us to protect the financial foundation' edges toward sender-centering, though it's brief and not the dominant framing."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 4,
+                "justification": "The draft is well-written and appropriately direct, but it reads as a high-quality generic CEO communication rather than a specific executive's voice. Placeholder brackets ('[CEO Name]', '[macro/market/internal context]') prevent any real voice specificity. Phrases like 'I want to be direct with you about why' and 'I will be straightforward with you' are competent but generic senior-leader constructions. Without knowing the specific executive's vocabulary, sentence rhythm, or stylistic signatures, the draft cannot be evaluated as voice-matched — it could be attributed to any decisive CEO."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1485,
+              "output_tokens": 644
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "CC Audience Awareness",
+                "score": 8,
+                "justification": "The CFO is clearly signaled as the operational authority ('explicit sign-off from me and [CFO Name]', 'flag these to [CFO Name] by end of day Friday', '[CFO Name] is the operational point of contact') — accountability and process ownership are unambiguous. The Board Chair's inclusion signals board-level visibility and governance oversight, though the email doesn't explicitly acknowledge or leverage that signal in a way that makes the Board Chair's presence feel fully intentional rather than incidental. No information appears inappropriate for either CC'd reader. The primary ask to department heads is unambiguous throughout."
+              },
+              {
+                "criterion_name": "Directive Clarity",
+                "score": 9,
+                "justification": "Required actions are stated in direct, imperative terms: 'Do not advance any candidates,' 'No new requisitions will be approved,' 'flag these to [CFO Name] by end of day Friday,' 'communicate this to your direct reports by end of day tomorrow.' The one genuinely optional item — escalating critical exceptions — uses appropriately conditional framing ('If you have a critical, time-sensitive situation'). The phrase 'I ask that you communicate this' is slightly softer than necessary for a CEO directive to direct reports, but it's a minor deviation. No false conditionals appear on non-negotiable items."
+              },
+              {
+                "criterion_name": "Recipient-Interest Framing",
+                "score": 8,
+                "justification": "The freeze is framed explicitly as protecting 'the headcount we already have' and avoiding 'harder conversations later' — a credible benefit to department heads who would otherwise face layoffs. 'I'd rather make this call today than ask more of your people in six months' centers the recipient's team welfare, not the sender's planning needs. The framing is genuine rather than manipulative; a department head would likely agree this logic holds. The email could go slightly further in acknowledging the operational burden this creates for leaders, though the acknowledgment of 'real pressure' partially addresses this."
+              },
+              {
+                "criterion_name": "Voice Matching",
+                "score": 4,
+                "justification": "The email is well-crafted and direct, but it reads as a high-quality generic CEO communication rather than a specific executive's voice. Placeholder brackets ('[CEO Name]', '[macro/market/internal context]') prevent any actual voice calibration. Phrases like 'I want to be direct with you about why' and 'Thank you for how you lead your teams' are polished but attributable to any senior leader. Without knowing the specific executive's vocabulary, sentence rhythm, or communication patterns, the draft cannot satisfy the 'not generic professional' or 'exec vocabulary' dimensions — this is a structural limitation of the draft as submitted."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1485,
+              "output_tokens": 683
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "generation_tokens": {
+        "input_tokens": 884,
+        "output_tokens": 460
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 8,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Mirror the exec's known verbal patterns and vocabulary level",
+        "satisfied": "partially",
+        "evidence": "The draft is well-written and has a strong, decisive voice, but it reads as a generically excellent CEO email rather than one tailored to a specific exec's speech patterns. Without knowing the actual exec, it defaults to a polished-but-generic senior leader tone. Phrases like 'I'd rather make this call today than ask more of your people in six months' show personality, but overall it could be any competent CEO."
+      },
+      {
+        "preference": "Positions requests as serving the RECIPIENT's interest, not the sender's",
+        "satisfied": "yes",
+        "evidence": "'requires us to protect the financial foundation that gives your teams stability,' 'A hiring freeze now is how we preserve the headcount we already have and avoid harder conversations later,' 'I'd rather make this call today than ask more of your people in six months' — all frame the freeze as protecting the department heads' teams and interests, not as a top-down financial mandate."
+      },
+      {
+        "preference": "Controls what CC'd stakeholders learn vs. primary recipients",
+        "satisfied": "partially",
+        "evidence": "The CFO and Board Chair are CC'd, which signals leadership alignment and accountability. The CFO is named as operational point of contact, giving them a clear role. The Board Chair being CC'd signals board-level awareness. However, the email doesn't seem to carefully differentiate what the CC'd audience learns — the Board Chair sees all operational details including the exception process and the CFO's role, which may or may not be intentional. There's no evidence of deliberate information control for the CC audience."
+      },
+      {
+        "preference": "No conditional language for non-negotiable requirements; genuine options get optionality language",
+        "satisfied": "yes",
+        "evidence": "Directives are stated as directives: 'Do not advance any candidates,' 'No new requisitions will be approved,' 'I ask that you communicate this to your direct reports by end of day tomorrow.' The genuine option — escalating critical situations — uses appropriate optionality: 'If you have a critical, time-sensitive situation that cannot wait, bring it to me directly.' Clean separation between mandates and true options."
+      },
+      {
+        "preference": "Diplomatic and polished while balancing multiple stakeholders",
+        "satisfied": "yes",
+        "evidence": "The email is direct but respectful, acknowledges the burden on department heads ('I recognize this creates real pressure'), empowers them as communicators to their teams, and closes with genuine appreciation. It balances firmness with empathy effectively."
+      },
+      {
+        "preference": "No accidental information leaks to wrong audience in CC",
+        "satisfied": "partially",
+        "evidence": "No obviously damaging information is leaked, but the Board Chair sees the full operational playbook including the exception process and the fact that existing offers need to be flagged — details that might typically stay at the management level. Whether this is intentional or accidental is ambiguous; a more careful approach might have sent a separate note to the Board Chair."
+      },
+      {
+        "preference": "Requests not disguised as suggestions when they're directives",
+        "satisfied": "yes",
+        "evidence": "The email is admirably direct. The hiring freeze is stated as a fact, not a request. Action items are clear imperatives. The one softer ask — 'I ask that you communicate this to your direct reports by end of day tomorrow' — uses 'I ask' but with a specific deadline, making it clearly a directive rather than a suggestion."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 926,
+      "output_tokens": 882
+    }
+  }
+}

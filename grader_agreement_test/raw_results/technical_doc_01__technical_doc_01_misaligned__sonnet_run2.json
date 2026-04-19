@@ -1,0 +1,140 @@
+{
+  "scenario_id": "technical_doc_01",
+  "draft_id": "technical_doc_01_misaligned",
+  "model": "sonnet",
+  "run": 2,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Critical decisions front-loaded in summaries\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"decisions_in_tldr\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The document has no TL;DR or summary section; it opens with a multi-paragraph introduction about background and history, never stating architectural decisions (e.g., fail-open vs. fail-closed, retry semantics) upfront.\"\n        },\n        {\n          \"dimension_id\": \"non_obvious_defaults_highlighted\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Non-obvious default behaviors such as fail-open/fail-closed semantics or retry behavior are never mentioned anywhere in the document, let alone called out prominently.\"\n        },\n        {\n          \"dimension_id\": \"non_goals_stated\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no non-goals section anywhere in the document; the document moves from introduction to historical context to design philosophy without ever listing what the system explicitly will not do.\"\n        },\n        {\n          \"dimension_id\": \"decisions_before_implementation\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Caller-constraining decisions (e.g., domain-level authorization, descriptor model requirements) are embedded within Section 6 (API Design) and Section 10 (Security) rather than appearing before implementation details.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code examples as primary entry points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"caller_side_examples\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The only code shown is a protobuf schema definition (server-side); no caller-side code examples in any real programming language are provided for any integration point.\"\n        },\n        {\n          \"dimension_id\": \"realistic_production_patterns\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No examples using actual client libraries, middleware patterns, or production idioms are present; the document only shows a protobuf definition and a YAML configuration snippet.\"\n        },\n        {\n          \"dimension_id\": \"error_handling_shown\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No code examples demonstrate error handling or edge cases; the document contains no code examples in any language that would show how to handle a rejected request or a service failure.\"\n        },\n        {\n          \"dimension_id\": \"inline_annotations\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Neither the protobuf definition nor the YAML configuration example contains any inline comments explaining the 'why' behind non-obvious lines.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete debugging artifacts in operational sections\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"exact_error_output\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No exact gRPC status codes, HTTP responses, or error messages are shown anywhere in the document; Section 10 (Security) and Section 11 (Monitoring) describe behaviors only in prose.\"\n        },\n        {\n          \"dimension_id\": \"caller_perspective\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Failure modes are described from the server's internal perspective (e.g., 'requests are rejected when the bucket is empty') without describing what the caller actually receives or experiences.\"\n        },\n        {\n          \"dimension_id\": \"observability_signals_named\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Section 11 mentions 'request volume, rejection rate, latency distribution, and current counter values' as dashboard panels but never names specific metric names, log field names, or trace attributes.\"\n        },\n        {\n          \"dimension_id\": \"auth_rejection_examples\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Section 10 states that unauthorized domain access attempts 'are rejected' but provides no example of the rejected request, the gRPC status code returned, or the response body.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Tradeoff transparency with escape hatches\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tradeoff_flagged\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Design decisions such as choosing Redis-backed counters, the 30-second config propagation delay, or the fixed window boundary problem are mentioned but never explicitly flagged as tradeoffs with acknowledged costs.\"\n        },\n        {\n          \"dimension_id\": \"affected_parties_named\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No section identifies which specific teams, use cases, or workflows are negatively affected by any design decision; teams are mentioned only in historical context, not as parties affected by current tradeoffs.\"\n        },\n        {\n          \"dimension_id\": \"alternative_provided\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"While off-the-shelf alternatives like Envoy are briefly mentioned in Section 2 as rejected options, no workarounds or alternatives are offered for the constraints imposed by the chosen design.\"\n        },\n        {\n          \"dimension_id\": \"visually_distinct_callout\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The document contains no admonition boxes, blockquotes, or visually distinct callout formatting of any kind; all content is presented as uniform prose or code blocks.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Scan-optimized formatting\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tables_for_comparisons\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The algorithm comparison in Section 5 and the performance characteristics in Section 9 are written entirely in prose paragraphs rather than tables, despite being structured comparisons.\"\n        },\n        {\n          \"dimension_id\": \"bold_key_terms\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No bold or emphasized text appears anywhere in the document body; key terms, decisions, and requirements are embedded in unformatted prose throughout.\"\n        },\n        {\n          \"dimension_id\": \"sections_self_contained\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Section 6 (API Design) references the domain concept without defining it, requiring the reader to have read Section 7 (Configuration Model) or the introduction to understand the context.\"\n        },\n        {\n          \"dimension_id\": \"admonition_boxes_for_warnings\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Warnings such as the fixed window 'boundary problem' and the 30-second config propagation delay are buried in prose paragraphs with no callout boxes or visual distinction.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 5904,
+  "output_tokens": 1677,
+  "latency_ms": 27345,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Critical decisions front-loaded in summaries",
+        "dimension_grades": [
+          {
+            "dimension_id": "decisions_in_tldr",
+            "grade": "NOT_MET",
+            "evidence": "The document has no TL;DR or summary section; it opens with a multi-paragraph introduction about background and history, never stating architectural decisions (e.g., fail-open vs. fail-closed, retry semantics) upfront."
+          },
+          {
+            "dimension_id": "non_obvious_defaults_highlighted",
+            "grade": "NOT_MET",
+            "evidence": "Non-obvious default behaviors such as fail-open/fail-closed semantics or retry behavior are never mentioned anywhere in the document, let alone called out prominently."
+          },
+          {
+            "dimension_id": "non_goals_stated",
+            "grade": "NOT_MET",
+            "evidence": "There is no non-goals section anywhere in the document; the document moves from introduction to historical context to design philosophy without ever listing what the system explicitly will not do."
+          },
+          {
+            "dimension_id": "decisions_before_implementation",
+            "grade": "NOT_MET",
+            "evidence": "Caller-constraining decisions (e.g., domain-level authorization, descriptor model requirements) are embedded within Section 6 (API Design) and Section 10 (Security) rather than appearing before implementation details."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code examples as primary entry points",
+        "dimension_grades": [
+          {
+            "dimension_id": "caller_side_examples",
+            "grade": "NOT_MET",
+            "evidence": "The only code shown is a protobuf schema definition (server-side); no caller-side code examples in any real programming language are provided for any integration point."
+          },
+          {
+            "dimension_id": "realistic_production_patterns",
+            "grade": "NOT_MET",
+            "evidence": "No examples using actual client libraries, middleware patterns, or production idioms are present; the document only shows a protobuf definition and a YAML configuration snippet."
+          },
+          {
+            "dimension_id": "error_handling_shown",
+            "grade": "NOT_MET",
+            "evidence": "No code examples demonstrate error handling or edge cases; the document contains no code examples in any language that would show how to handle a rejected request or a service failure."
+          },
+          {
+            "dimension_id": "inline_annotations",
+            "grade": "NOT_MET",
+            "evidence": "Neither the protobuf definition nor the YAML configuration example contains any inline comments explaining the 'why' behind non-obvious lines."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete debugging artifacts in operational sections",
+        "dimension_grades": [
+          {
+            "dimension_id": "exact_error_output",
+            "grade": "NOT_MET",
+            "evidence": "No exact gRPC status codes, HTTP responses, or error messages are shown anywhere in the document; Section 10 (Security) and Section 11 (Monitoring) describe behaviors only in prose."
+          },
+          {
+            "dimension_id": "caller_perspective",
+            "grade": "NOT_MET",
+            "evidence": "Failure modes are described from the server's internal perspective (e.g., 'requests are rejected when the bucket is empty') without describing what the caller actually receives or experiences."
+          },
+          {
+            "dimension_id": "observability_signals_named",
+            "grade": "NOT_MET",
+            "evidence": "Section 11 mentions 'request volume, rejection rate, latency distribution, and current counter values' as dashboard panels but never names specific metric names, log field names, or trace attributes."
+          },
+          {
+            "dimension_id": "auth_rejection_examples",
+            "grade": "NOT_MET",
+            "evidence": "Section 10 states that unauthorized domain access attempts 'are rejected' but provides no example of the rejected request, the gRPC status code returned, or the response body."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Tradeoff transparency with escape hatches",
+        "dimension_grades": [
+          {
+            "dimension_id": "tradeoff_flagged",
+            "grade": "NOT_MET",
+            "evidence": "Design decisions such as choosing Redis-backed counters, the 30-second config propagation delay, or the fixed window boundary problem are mentioned but never explicitly flagged as tradeoffs with acknowledged costs."
+          },
+          {
+            "dimension_id": "affected_parties_named",
+            "grade": "NOT_MET",
+            "evidence": "No section identifies which specific teams, use cases, or workflows are negatively affected by any design decision; teams are mentioned only in historical context, not as parties affected by current tradeoffs."
+          },
+          {
+            "dimension_id": "alternative_provided",
+            "grade": "NOT_MET",
+            "evidence": "While off-the-shelf alternatives like Envoy are briefly mentioned in Section 2 as rejected options, no workarounds or alternatives are offered for the constraints imposed by the chosen design."
+          },
+          {
+            "dimension_id": "visually_distinct_callout",
+            "grade": "NOT_MET",
+            "evidence": "The document contains no admonition boxes, blockquotes, or visually distinct callout formatting of any kind; all content is presented as uniform prose or code blocks."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Scan-optimized formatting",
+        "dimension_grades": [
+          {
+            "dimension_id": "tables_for_comparisons",
+            "grade": "NOT_MET",
+            "evidence": "The algorithm comparison in Section 5 and the performance characteristics in Section 9 are written entirely in prose paragraphs rather than tables, despite being structured comparisons."
+          },
+          {
+            "dimension_id": "bold_key_terms",
+            "grade": "NOT_MET",
+            "evidence": "No bold or emphasized text appears anywhere in the document body; key terms, decisions, and requirements are embedded in unformatted prose throughout."
+          },
+          {
+            "dimension_id": "sections_self_contained",
+            "grade": "NOT_MET",
+            "evidence": "Section 6 (API Design) references the domain concept without defining it, requiring the reader to have read Section 7 (Configuration Model) or the introduction to understand the context."
+          },
+          {
+            "dimension_id": "admonition_boxes_for_warnings",
+            "grade": "NOT_MET",
+            "evidence": "Warnings such as the fixed window 'boundary problem' and the 30-second config propagation delay are buried in prose paragraphs with no callout boxes or visual distinction."
+          }
+        ]
+      }
+    ]
+  }
+}

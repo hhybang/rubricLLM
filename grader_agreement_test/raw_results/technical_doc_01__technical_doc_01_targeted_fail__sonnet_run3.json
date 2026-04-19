@@ -1,0 +1,140 @@
+{
+  "scenario_id": "technical_doc_01",
+  "draft_id": "technical_doc_01_targeted_fail",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Critical decisions front-loaded in summaries\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"decisions_in_tldr\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The TL;DR explicitly lists 5 numbered architectural decisions including fail-open default, synchronous sidecar model, token bucket algorithm, header propagation requirement, and no global rate limiting.\"\n        },\n        {\n          \"dimension_id\": \"non_obvious_defaults_highlighted\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Fail-open default is called out as item #1 in the TL;DR with bold emphasis: '**Fail-open by default.** If the Throttle service is unreachable, your request **will be allowed through**'.\"\n        },\n        {\n          \"dimension_id\": \"non_goals_stated\",\n          \"grade\": \"MET\",\n          \"evidence\": \"A dedicated 'Non-Goals' section with a table explicitly lists sliding window, global exact counting, DDoS mitigation, edge rate limiting, and multi-region coordination.\"\n        },\n        {\n          \"dimension_id\": \"decisions_before_implementation\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The TL;DR and Non-Goals sections appear before the Architecture Overview and API Surface sections, so caller-constraining decisions precede implementation details.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code examples as primary entry points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"caller_side_examples\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Integration Guide provides full caller-side code examples in both Go (gRPC middleware interceptor) and Python (Flask decorator), showing how callers invoke the AllowRequest RPC.\"\n        },\n        {\n          \"dimension_id\": \"realistic_production_patterns\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Go example uses actual gRPC UnaryServerInterceptor pattern with the internal client library; Python example uses a Flask decorator with grpc channel to Unix socket, both matching production idioms.\"\n        },\n        {\n          \"dimension_id\": \"error_handling_shown\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Both Go and Python examples explicitly handle the fail-open error path (sidecar unreachable) and the rate-limit-exceeded path alongside the happy path.\"\n        },\n        {\n          \"dimension_id\": \"inline_annotations\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Code examples include inline comments explaining non-obvious lines, e.g., '// Connect to sidecar over Unix socket — no TLS needed for localhost', '// 50ms hard timeout — fail open if exceeded', and '// search is expensive — costs 5 tokens per call'.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete debugging artifacts in operational sections\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"exact_error_output\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The 'What a 429 Looks Like to Your Caller' section shows exact gRPC error output with code, description, trailing metadata, and exact HTTP response with headers and JSON body.\"\n        },\n        {\n          \"dimension_id\": \"caller_perspective\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Error Code Reference table describes each scenario from the caller's perspective with 'What Caller Sees' column, and the 429 examples show what the caller's client receives.\"\n        },\n        {\n          \"dimension_id\": \"observability_signals_named\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Observability table names specific metrics (throttle_decisions_total, throttle_failopen_total, throttle_sidecar_latency_seconds, etc.) with labels and alert thresholds, plus structured log fields with exact field names.\"\n        },\n        {\n          \"dimension_id\": \"auth_rejection_examples\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Security section includes a concrete CLI example showing the exact error output for an unauthorized config push, including reason, required_approvers, actual_approvers, and exit_code.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Tradeoff transparency with escape hatches\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tradeoff_flagged\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Three tradeoffs are explicitly flagged with '🔶 Tradeoff:' headers: eventual consistency in token counts, fail-open default, and no sliding window.\"\n        },\n        {\n          \"dimension_id\": \"affected_parties_named\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each tradeoff callout names specific affected teams, e.g., 'Affected teams: Any service with strict per-tenant billing... (e.g., Payments, Partner API)' and 'Search indexing, ML inference'.\"\n        },\n        {\n          \"dimension_id\": \"alternative_provided\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each tradeoff includes an 'Escape hatch' with a concrete alternative, e.g., using ReportUsage RPC for strict counting, fail-closed mode for availability, and setting bucket_size equal to refill_rate to approximate fixed-window.\"\n        },\n        {\n          \"dimension_id\": \"visually_distinct_callout\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All three tradeoffs use blockquote-style callout boxes with '🔶 Tradeoff:' emoji headers, making them visually distinct from surrounding prose.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Scan-optimized formatting\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tables_for_comparisons\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Tables are used for Non-Goals, config field reference, error code reference, observability signals, rollout plan, and client library versions rather than inline prose.\"\n        },\n        {\n          \"dimension_id\": \"bold_key_terms\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Key terms and decisions are bolded throughout, e.g., '**Fail-open by default**', '**sub-2ms p99 local call**', '**sidecar container**', '**eventual consistency (~500ms)**'.\"\n        },\n        {\n          \"dimension_id\": \"sections_self_contained\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Sections like 'Failure Modes & Debugging Reference', 'Fail-Closed Mode', and 'Tradeoffs & Escape Hatches' each contain sufficient context and cross-references to be read independently.\"\n        },\n        {\n          \"dimension_id\": \"admonition_boxes_for_warnings\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Warnings use blockquote admonition boxes with emoji indicators, e.g., '> **⚠️ Warning:** Key patterns are evaluated in order' and '> **⚠️ This is opt-in and changes your availability characteristics.**'\"\n        }\n      ]\n    }\n  ]\n}",
+  "input_tokens": 7075,
+  "output_tokens": 1776,
+  "latency_ms": 29596,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Critical decisions front-loaded in summaries",
+        "dimension_grades": [
+          {
+            "dimension_id": "decisions_in_tldr",
+            "grade": "MET",
+            "evidence": "The TL;DR explicitly lists 5 numbered architectural decisions including fail-open default, synchronous sidecar model, token bucket algorithm, header propagation requirement, and no global rate limiting."
+          },
+          {
+            "dimension_id": "non_obvious_defaults_highlighted",
+            "grade": "MET",
+            "evidence": "Fail-open default is called out as item #1 in the TL;DR with bold emphasis: '**Fail-open by default.** If the Throttle service is unreachable, your request **will be allowed through**'."
+          },
+          {
+            "dimension_id": "non_goals_stated",
+            "grade": "MET",
+            "evidence": "A dedicated 'Non-Goals' section with a table explicitly lists sliding window, global exact counting, DDoS mitigation, edge rate limiting, and multi-region coordination."
+          },
+          {
+            "dimension_id": "decisions_before_implementation",
+            "grade": "MET",
+            "evidence": "The TL;DR and Non-Goals sections appear before the Architecture Overview and API Surface sections, so caller-constraining decisions precede implementation details."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code examples as primary entry points",
+        "dimension_grades": [
+          {
+            "dimension_id": "caller_side_examples",
+            "grade": "MET",
+            "evidence": "The Integration Guide provides full caller-side code examples in both Go (gRPC middleware interceptor) and Python (Flask decorator), showing how callers invoke the AllowRequest RPC."
+          },
+          {
+            "dimension_id": "realistic_production_patterns",
+            "grade": "MET",
+            "evidence": "Go example uses actual gRPC UnaryServerInterceptor pattern with the internal client library; Python example uses a Flask decorator with grpc channel to Unix socket, both matching production idioms."
+          },
+          {
+            "dimension_id": "error_handling_shown",
+            "grade": "MET",
+            "evidence": "Both Go and Python examples explicitly handle the fail-open error path (sidecar unreachable) and the rate-limit-exceeded path alongside the happy path."
+          },
+          {
+            "dimension_id": "inline_annotations",
+            "grade": "MET",
+            "evidence": "Code examples include inline comments explaining non-obvious lines, e.g., '// Connect to sidecar over Unix socket — no TLS needed for localhost', '// 50ms hard timeout — fail open if exceeded', and '// search is expensive — costs 5 tokens per call'."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete debugging artifacts in operational sections",
+        "dimension_grades": [
+          {
+            "dimension_id": "exact_error_output",
+            "grade": "MET",
+            "evidence": "The 'What a 429 Looks Like to Your Caller' section shows exact gRPC error output with code, description, trailing metadata, and exact HTTP response with headers and JSON body."
+          },
+          {
+            "dimension_id": "caller_perspective",
+            "grade": "MET",
+            "evidence": "The Error Code Reference table describes each scenario from the caller's perspective with 'What Caller Sees' column, and the 429 examples show what the caller's client receives."
+          },
+          {
+            "dimension_id": "observability_signals_named",
+            "grade": "MET",
+            "evidence": "The Observability table names specific metrics (throttle_decisions_total, throttle_failopen_total, throttle_sidecar_latency_seconds, etc.) with labels and alert thresholds, plus structured log fields with exact field names."
+          },
+          {
+            "dimension_id": "auth_rejection_examples",
+            "grade": "MET",
+            "evidence": "The Security section includes a concrete CLI example showing the exact error output for an unauthorized config push, including reason, required_approvers, actual_approvers, and exit_code."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Tradeoff transparency with escape hatches",
+        "dimension_grades": [
+          {
+            "dimension_id": "tradeoff_flagged",
+            "grade": "MET",
+            "evidence": "Three tradeoffs are explicitly flagged with '🔶 Tradeoff:' headers: eventual consistency in token counts, fail-open default, and no sliding window."
+          },
+          {
+            "dimension_id": "affected_parties_named",
+            "grade": "MET",
+            "evidence": "Each tradeoff callout names specific affected teams, e.g., 'Affected teams: Any service with strict per-tenant billing... (e.g., Payments, Partner API)' and 'Search indexing, ML inference'."
+          },
+          {
+            "dimension_id": "alternative_provided",
+            "grade": "MET",
+            "evidence": "Each tradeoff includes an 'Escape hatch' with a concrete alternative, e.g., using ReportUsage RPC for strict counting, fail-closed mode for availability, and setting bucket_size equal to refill_rate to approximate fixed-window."
+          },
+          {
+            "dimension_id": "visually_distinct_callout",
+            "grade": "MET",
+            "evidence": "All three tradeoffs use blockquote-style callout boxes with '🔶 Tradeoff:' emoji headers, making them visually distinct from surrounding prose."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Scan-optimized formatting",
+        "dimension_grades": [
+          {
+            "dimension_id": "tables_for_comparisons",
+            "grade": "MET",
+            "evidence": "Tables are used for Non-Goals, config field reference, error code reference, observability signals, rollout plan, and client library versions rather than inline prose."
+          },
+          {
+            "dimension_id": "bold_key_terms",
+            "grade": "MET",
+            "evidence": "Key terms and decisions are bolded throughout, e.g., '**Fail-open by default**', '**sub-2ms p99 local call**', '**sidecar container**', '**eventual consistency (~500ms)**'."
+          },
+          {
+            "dimension_id": "sections_self_contained",
+            "grade": "MET",
+            "evidence": "Sections like 'Failure Modes & Debugging Reference', 'Fail-Closed Mode', and 'Tradeoffs & Escape Hatches' each contain sufficient context and cross-references to be read independently."
+          },
+          {
+            "dimension_id": "admonition_boxes_for_warnings",
+            "grade": "MET",
+            "evidence": "Warnings use blockquote admonition boxes with emoji indicators, e.g., '> **⚠️ Warning:** Key patterns are evaluated in order' and '> **⚠️ This is opt-in and changes your availability characteristics.**'"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "scenario_id": "manager_update_01",
+  "draft_id": "manager_update_01_targeted_fail",
+  "model": "opus",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Phone-Scannable Brevity\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"bullets_only\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section contains a full narrative paragraph ('Auth service team pushed their API freeze back, which is creating some complications...') rather than bullet points.\"\n        },\n        {\n          \"dimension_id\": \"one_two_line_bullets\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section is a multi-sentence prose block that would span many lines on a phone screen, violating the 1–2 line self-contained bullet requirement.\"\n        },\n        {\n          \"dimension_id\": \"no_redundancy\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The auth service dependency is mentioned in the Summary, discussed at length in Blockers, and referenced again in Next Steps ('Sync with auth service team Wednesday'), with overlapping information about the situation.\"\n        },\n        {\n          \"dimension_id\": \"minimal_sections\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The update uses four lean sections (Summary, Progress, Blockers, Next Steps) which represent the minimum logical groupings needed for a status update.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Bottom-Line-Up-Front Summary\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_summary\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The very first line after 'Hi Dana,' is the **Summary:** line giving the key status takeaway.\"\n        },\n        {\n          \"dimension_id\": \"covers_key_status\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary captures both the win ('Platform migration is on track for the June 6 milestone') and the shift ('auth service dependency we flagged last week is being handled') in one sentence.\"\n        },\n        {\n          \"dimension_id\": \"signals_escalation_need\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary explicitly states 'no action needed from you,' signaling no escalation is required.\"\n        },\n        {\n          \"dimension_id\": \"plain_label\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary uses the straightforward label '**Summary:**' rather than casual shorthand like 'TL;DR.'\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Calibrated Risk Framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"neutral_language\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary uses 'being handled' and the blockers section uses 'creating some complications' and 'looking into workarounds' — neutral language without alarm words.\"\n        },\n        {\n          \"dimension_id\": \"timeline_impact_quantified\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section says 'we're not entirely sure yet how long the delay will be' and 'it's possible this could shift things, though it might not' — no concrete timeline impact is stated.\"\n        },\n        {\n          \"dimension_id\": \"resolution_timeline\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section says 'we're hoping to have a better picture soon' and 'we'll keep monitoring the situation and circle back when we know more' without specifying when the resolution path will be clear; the Wednesday sync is only in Next Steps, not framed as a resolution timeline in the blocker itself.\"\n        },\n        {\n          \"dimension_id\": \"escalation_signal\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary explicitly states 'no action needed from you,' signaling that escalation is not required.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Recipient-Calibrated Register\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_casual_shorthand\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft avoids internet-style abbreviations and casual labels throughout, using professional language consistently.\"\n        },\n        {\n          \"dimension_id\": \"direct_not_stiff\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The closing line 'Let me know if you want to dig into anything' is approachable and direct without being overly formal.\"\n        },\n        {\n          \"dimension_id\": \"recipient_modeled\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The tone is professional yet approachable, with a clean structure suited for a director reading on mobile, and avoids jargon that might not land well.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 1658,
+  "output_tokens": 1182,
+  "latency_ms": 18051,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Phone-Scannable Brevity",
+        "dimension_grades": [
+          {
+            "dimension_id": "bullets_only",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section contains a full narrative paragraph ('Auth service team pushed their API freeze back, which is creating some complications...') rather than bullet points."
+          },
+          {
+            "dimension_id": "one_two_line_bullets",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section is a multi-sentence prose block that would span many lines on a phone screen, violating the 1–2 line self-contained bullet requirement."
+          },
+          {
+            "dimension_id": "no_redundancy",
+            "grade": "NOT_MET",
+            "evidence": "The auth service dependency is mentioned in the Summary, discussed at length in Blockers, and referenced again in Next Steps ('Sync with auth service team Wednesday'), with overlapping information about the situation."
+          },
+          {
+            "dimension_id": "minimal_sections",
+            "grade": "MET",
+            "evidence": "The update uses four lean sections (Summary, Progress, Blockers, Next Steps) which represent the minimum logical groupings needed for a status update."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Bottom-Line-Up-Front Summary",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_summary",
+            "grade": "MET",
+            "evidence": "The very first line after 'Hi Dana,' is the **Summary:** line giving the key status takeaway."
+          },
+          {
+            "dimension_id": "covers_key_status",
+            "grade": "MET",
+            "evidence": "The summary captures both the win ('Platform migration is on track for the June 6 milestone') and the shift ('auth service dependency we flagged last week is being handled') in one sentence."
+          },
+          {
+            "dimension_id": "signals_escalation_need",
+            "grade": "MET",
+            "evidence": "The summary explicitly states 'no action needed from you,' signaling no escalation is required."
+          },
+          {
+            "dimension_id": "plain_label",
+            "grade": "MET",
+            "evidence": "The summary uses the straightforward label '**Summary:**' rather than casual shorthand like 'TL;DR.'"
+          }
+        ]
+      },
+      {
+        "criterion_name": "Calibrated Risk Framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "neutral_language",
+            "grade": "MET",
+            "evidence": "The summary uses 'being handled' and the blockers section uses 'creating some complications' and 'looking into workarounds' — neutral language without alarm words."
+          },
+          {
+            "dimension_id": "timeline_impact_quantified",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section says 'we're not entirely sure yet how long the delay will be' and 'it's possible this could shift things, though it might not' — no concrete timeline impact is stated."
+          },
+          {
+            "dimension_id": "resolution_timeline",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section says 'we're hoping to have a better picture soon' and 'we'll keep monitoring the situation and circle back when we know more' without specifying when the resolution path will be clear; the Wednesday sync is only in Next Steps, not framed as a resolution timeline in the blocker itself."
+          },
+          {
+            "dimension_id": "escalation_signal",
+            "grade": "MET",
+            "evidence": "The summary explicitly states 'no action needed from you,' signaling that escalation is not required."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Recipient-Calibrated Register",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_casual_shorthand",
+            "grade": "MET",
+            "evidence": "The draft avoids internet-style abbreviations and casual labels throughout, using professional language consistently."
+          },
+          {
+            "dimension_id": "direct_not_stiff",
+            "grade": "MET",
+            "evidence": "The closing line 'Let me know if you want to dig into anything' is approachable and direct without being overly formal."
+          },
+          {
+            "dimension_id": "recipient_modeled",
+            "grade": "MET",
+            "evidence": "The tone is professional yet approachable, with a clean structure suited for a director reading on mobile, and avoids jargon that might not land well."
+          }
+        ]
+      }
+    ]
+  }
+}

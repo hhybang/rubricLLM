@@ -1,0 +1,1745 @@
+{
+  "persona": "Alex Chen",
+  "task_index": 1,
+  "task_description": "I need to email a key customer — Priya at Northfield Logistics — letting her know that a feature she requested six months ago is finally shipping next week.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+    "rubric": [
+      {
+        "name": "Emotional Arc Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+        "dimensions": [
+          {
+            "id": "ack_before_news",
+            "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"
+          },
+          {
+            "id": "stakes_after_news",
+            "label": "Explains why the news matters AFTER stating it, not before"
+          },
+          {
+            "id": "reader_perspective_stakes",
+            "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"
+          },
+          {
+            "id": "cta_is_final",
+            "label": "The call to action is the last substantive element — nothing trails after it"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Single-Owner Action Items",
+        "category": "Content",
+        "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+        "dimensions": [
+          {
+            "id": "named_owner",
+            "label": "Each action item has a single named person responsible, not a group"
+          },
+          {
+            "id": "has_deadline",
+            "label": "Action items include a specific deadline or timeframe"
+          },
+          {
+            "id": "no_group_asks",
+            "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"
+          },
+          {
+            "id": "no_org_overreach",
+            "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "No Trailing Sentiment",
+        "category": "Style",
+        "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+        "dimensions": [
+          {
+            "id": "forward_looking_close",
+            "label": "The closing line references a future action or outcome, not past effort or gratitude"
+          },
+          {
+            "id": "no_platitudes",
+            "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"
+          },
+          {
+            "id": "no_post_cta_filler",
+            "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Compression Without Ambiguity",
+        "category": "Style",
+        "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+        "dimensions": [
+          {
+            "id": "no_redundant_sentences",
+            "label": "No sentence restates information already conveyed in another sentence"
+          },
+          {
+            "id": "cut_over_compress",
+            "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"
+          },
+          {
+            "id": "one_idea_per_sentence",
+            "label": "Each sentence carries one main idea — no run-ons or stacked clauses"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Single-Owner Action Items",
+        "issue": "The grader is penalizing Round 1 for saying 'confirm with your IT contact' as if naming a third party is an org-overreach or diffuse delegation problem. It's not — Priya is still the single owner of the action. The grader is also rewarding Round 2 slightly more for removing the IT contact reference, but that removal actually creates ambiguity about who does the technical check. The criterion is about not having GROUP asks ('everyone please review') and not over-specifying internal structure the sender wouldn't know. Telling Priya to coordinate with her IT contact is neither — it's a natural, non-presumptuous instruction that keeps Priya as the accountable owner.",
+        "negative_examples": [
+          "Penalizing 'confirm with your IT contact' as a diffuse ask — Priya is still the named owner, the IT contact is just the mechanism",
+          "Treating removal of the IT contact reference as an improvement when it actually makes the action less clear about what's technically required",
+          "Conflating 'names a third party as a resource' with 'diffuse group ownership'"
+        ],
+        "clarification": "Single owner means one person is accountable for the action item — that person can involve others to execute it. The problem I care about is 'everyone please review' where no one is accountable. Saying 'Priya, confirm with your IT contact' keeps Priya accountable while acknowledging a realistic dependency. That's good writing, not a violation. The org-overreach concern is about assuming internal hierarchy or delegation I wouldn't know — e.g., 'have your VP approve this' or 'assign this to your ops team.' Mentioning an IT contact for a technical environment check is not overreach.",
+        "priority_adjustment": null
+      },
+      {
+        "criterion_name": "Emotional Arc Sequencing",
+        "issue": "The grader keeps flagging the fused acknowledgment-and-news sentence as a 'minor quibble' across both rounds, treating it as a slight imperfection. But this is actually fine — my preference is that acknowledgment comes BEFORE the news, and within a single sentence the acknowledgment clause does precede the news clause. The grader is applying the rule too literally as if acknowledgment must be a fully standalone sentence. My actual preference is sequencing order, not sentence count. A fused sentence that acknowledges first and then delivers news satisfies the spirit and the letter of the rule.",
+        "negative_examples": [
+          "Docking points because acknowledgment and news share a sentence rather than being in separate sentences",
+          "Treating 'You've been waiting on this one — the feature ships Tuesday' as a sequencing violation when the acknowledgment clearly precedes the news within the sentence",
+          "Requiring acknowledgment to be a standalone sentence as a hard rule"
+        ],
+        "clarification": "The rule is about ORDER, not sentence count. Acknowledgment must come before news — that's the non-negotiable. If both fit cleanly in one sentence with acknowledgment first, that's fine and arguably tighter. The '1 sentence max' on acknowledgment is a ceiling to prevent over-dwelling on the acknowledgment, not a requirement that it be isolated. Both drafts satisfy this criterion fully and should score 10, not 9.",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+    "rubric": [
+      {
+        "name": "Emotional Arc Sequencing",
+        "category": "Structure",
+        "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+        "dimensions": [
+          {
+            "id": "ack_before_news",
+            "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"
+          },
+          {
+            "id": "stakes_after_news",
+            "label": "Explains why the news matters AFTER stating it, not before"
+          },
+          {
+            "id": "reader_perspective_stakes",
+            "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"
+          },
+          {
+            "id": "cta_is_final",
+            "label": "The call to action is the last substantive element — nothing trails after it"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high",
+        "negative_examples": [
+          "Docking points because acknowledgment and news share a sentence rather than being in separate sentences",
+          "Treating 'You've been waiting on this one — the feature ships Tuesday' as a sequencing violation when the acknowledgment clearly precedes the news within the sentence",
+          "Requiring acknowledgment to be a standalone sentence as a hard rule"
+        ],
+        "clarification": "The rule is about ORDER, not sentence count. Acknowledgment must come before news — that's the non-negotiable. If both fit cleanly in one sentence with acknowledgment first, that's fine and arguably tighter. The '1 sentence max' on acknowledgment is a ceiling to prevent over-dwelling on the acknowledgment, not a requirement that it be isolated. Both drafts satisfy this criterion fully and should score 10, not 9."
+      },
+      {
+        "name": "Single-Owner Action Items",
+        "category": "Content",
+        "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+        "dimensions": [
+          {
+            "id": "named_owner",
+            "label": "Each action item has a single named person responsible, not a group"
+          },
+          {
+            "id": "has_deadline",
+            "label": "Action items include a specific deadline or timeframe"
+          },
+          {
+            "id": "no_group_asks",
+            "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"
+          },
+          {
+            "id": "no_org_overreach",
+            "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high",
+        "negative_examples": [
+          "Penalizing 'confirm with your IT contact' as a diffuse ask — Priya is still the named owner, the IT contact is just the mechanism",
+          "Treating removal of the IT contact reference as an improvement when it actually makes the action less clear about what's technically required",
+          "Conflating 'names a third party as a resource' with 'diffuse group ownership'"
+        ],
+        "clarification": "Single owner means one person is accountable for the action item — that person can involve others to execute it. The problem I care about is 'everyone please review' where no one is accountable. Saying 'Priya, confirm with your IT contact' keeps Priya accountable while acknowledging a realistic dependency. That's good writing, not a violation. The org-overreach concern is about assuming internal hierarchy or delegation I wouldn't know — e.g., 'have your VP approve this' or 'assign this to your ops team.' Mentioning an IT contact for a technical environment check is not overreach."
+      },
+      {
+        "name": "No Trailing Sentiment",
+        "category": "Style",
+        "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+        "dimensions": [
+          {
+            "id": "forward_looking_close",
+            "label": "The closing line references a future action or outcome, not past effort or gratitude"
+          },
+          {
+            "id": "no_platitudes",
+            "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"
+          },
+          {
+            "id": "no_post_cta_filler",
+            "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Compression Without Ambiguity",
+        "category": "Style",
+        "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+        "dimensions": [
+          {
+            "id": "no_redundant_sentences",
+            "label": "No sentence restates information already conveyed in another sentence"
+          },
+          {
+            "id": "cut_over_compress",
+            "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"
+          },
+          {
+            "id": "one_idea_per_sentence",
+            "label": "Each sentence carries one main idea — no run-ons or stacked clauses"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "**Subject: Your routing optimization feature ships next week**\n\nHi Priya,\n\nYou've been waiting on this one for a while — the routing optimization feature you requested is shipping next Tuesday, May 20.\n\nThis means your dispatch team can start configuring automated route assignments before the end of the month, without the manual workarounds you've been running.\n\nPlease confirm with your IT contact that your environment is on version 4.2 or higher before Tuesday so the rollout goes smoothly.\n\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 9,
+              "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective (dispatch team, manual workarounds), then ends with the CTA. All four elements are present in the correct order. The stakes are framed entirely from the reader's perspective ('your dispatch team,' 'you've been running'), not the sender's. The only minor quibble is the acknowledgment and news are in the same sentence, but it reads as acknowledgment-first structurally."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 7,
+              "justification": "The action item asks Priya to 'confirm with your IT contact' with a clear deadline (before Tuesday). There is a named recipient (Priya) and a deadline, and no group asks. However, 'your IT contact' is slightly diffuse — it doesn't name a single person responsible for the actual task, which could be seen as a mild group/ambiguous delegation. The deadline is specific and the ask is directed at Priya as the single owner, which partially compensates."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends immediately after the CTA with no trailing sentiment, platitudes, or filler. '[Your name]' is just the signature. There is no 'thanks for your patience,' 'excited about this,' or any softening language after the action item. The close is clean and forward-looking."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 9,
+              "justification": "Every sentence carries a distinct idea: acknowledgment/news, impact, and action. There are no redundant sentences and no stacked clauses. The phrase 'without the manual workarounds you've been running' efficiently adds context without a separate sentence. The email is tight without sacrificing clarity anywhere."
+            }
+          ],
+          "overall_weighted_score": 0.86,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 9,
+              "justification": "The email opens with a one-sentence acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective (dispatch team, manual workarounds), then ends with the CTA. All four elements are in the correct order. The stakes are framed entirely from the reader's perspective ('your dispatch team,' 'you've been running'), not the sender's. The CTA is the final substantive element with nothing trailing after it. Minor note: the acknowledgment and news are in the same sentence, which is borderline but still reads as acknowledgment-first."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 7,
+              "justification": "The action item names a role ('your IT contact') rather than a specific person, which is a partial miss on named_owner — though this is likely appropriate given the sender wouldn't know the specific IT contact's name, so it avoids org overreach. A deadline is clearly stated (before Tuesday). There are no diffuse group asks. The email doesn't over-specify internal structure. The ambiguity around the IT contact name is a real gap but contextually defensible."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly with the action item and rationale ('so the rollout goes smoothly'), then closes with just '[Your name].' There are no platitudes, no gratitude, no motivational filler, and nothing after the CTA. The closing phrase 'so the rollout goes smoothly' is forward-looking and functional, not sentimental."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 9,
+              "justification": "Every sentence carries a distinct idea: acknowledgment/news, impact on the reader, and the action step. There is no redundancy between sentences. The email is tight without being cryptic — 'manual workarounds you've been running' efficiently conveys context without over-explaining. Each sentence is clean and single-idea. No subordinate clause stacking or run-ons detected."
+            }
+          ],
+          "overall_weighted_score": 0.86,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 9,
+              "justification": "The email opens with a one-sentence acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective (dispatch team, manual workarounds), then ends with the CTA. All four elements are present in the correct order. The stakes are framed entirely from the reader's perspective ('your dispatch team,' 'you've been running'), not the sender's. The only minor quibble is that the acknowledgment and news are in the same sentence, but the acknowledgment still precedes the news within that sentence, so it satisfies the intent."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 7,
+              "justification": "The action item names Priya as the responsible party ('Please confirm with your IT contact'), which is appropriately scoped without dictating internal structure. There is a specific deadline ('before Tuesday'). However, the action is slightly diffuse in that it delegates to an unnamed 'IT contact' rather than naming a single owner outright — though this is appropriate given the sender's limited knowledge of Priya's org. No group asks are present. The deadline is clear and specific."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends immediately after the CTA with no trailing sentiment, platitudes, or softening language. '[Your name]' is just a signature placeholder. The closing line is purely action-oriented ('before Tuesday so the rollout goes smoothly'), which is forward-looking. No filler whatsoever."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 9,
+              "justification": "Every sentence carries a distinct idea: acknowledgment/news, reader impact, and action. There are no redundant sentences and no stacked clauses. The phrase 'without the manual workarounds you've been running' efficiently adds context without a separate sentence. The email is tight and clear throughout with no points that feel squeezed or compressed into ambiguity."
+            }
+          ],
+          "overall_weighted_score": 0.86,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Emotional Arc Sequencing": 9.0,
+          "Single-Owner Action Items": 7.0,
+          "No Trailing Sentiment": 10.0,
+          "Compression Without Ambiguity": 9.0
+        },
+        "std_scores": {
+          "Emotional Arc Sequencing": 0.0,
+          "Single-Owner Action Items": 0.0,
+          "No Trailing Sentiment": 0.0,
+          "Compression Without Ambiguity": 0.0
+        },
+        "mean_overall": 0.86,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 9,
+                "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective (dispatch team, manual workarounds), then ends with the CTA. All four elements are present in the correct order. The stakes are framed entirely from the reader's perspective ('your dispatch team,' 'you've been running'), not the sender's. The only minor quibble is the acknowledgment and news are in the same sentence, but it reads as acknowledgment-first structurally."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 7,
+                "justification": "The action item asks Priya to 'confirm with your IT contact' with a clear deadline (before Tuesday). There is a named recipient (Priya) and a deadline, and no group asks. However, 'your IT contact' is slightly diffuse — it doesn't name a single person responsible for the actual task, which could be seen as a mild group/ambiguous delegation. The deadline is specific and the ask is directed at Priya as the single owner, which partially compensates."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends immediately after the CTA with no trailing sentiment, platitudes, or filler. '[Your name]' is just the signature. There is no 'thanks for your patience,' 'excited about this,' or any softening language after the action item. The close is clean and forward-looking."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 9,
+                "justification": "Every sentence carries a distinct idea: acknowledgment/news, impact, and action. There are no redundant sentences and no stacked clauses. The phrase 'without the manual workarounds you've been running' efficiently adds context without a separate sentence. The email is tight without sacrificing clarity anywhere."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1187,
+              "output_tokens": 517
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 9,
+                "justification": "The email opens with a one-sentence acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective (dispatch team, manual workarounds), then ends with the CTA. All four elements are in the correct order. The stakes are framed entirely from the reader's perspective ('your dispatch team,' 'you've been running'), not the sender's. The CTA is the final substantive element with nothing trailing after it. Minor note: the acknowledgment and news are in the same sentence, which is borderline but still reads as acknowledgment-first."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 7,
+                "justification": "The action item names a role ('your IT contact') rather than a specific person, which is a partial miss on named_owner — though this is likely appropriate given the sender wouldn't know the specific IT contact's name, so it avoids org overreach. A deadline is clearly stated (before Tuesday). There are no diffuse group asks. The email doesn't over-specify internal structure. The ambiguity around the IT contact name is a real gap but contextually defensible."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly with the action item and rationale ('so the rollout goes smoothly'), then closes with just '[Your name].' There are no platitudes, no gratitude, no motivational filler, and nothing after the CTA. The closing phrase 'so the rollout goes smoothly' is forward-looking and functional, not sentimental."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 9,
+                "justification": "Every sentence carries a distinct idea: acknowledgment/news, impact on the reader, and the action step. There is no redundancy between sentences. The email is tight without being cryptic — 'manual workarounds you've been running' efficiently conveys context without over-explaining. Each sentence is clean and single-idea. No subordinate clause stacking or run-ons detected."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1187,
+              "output_tokens": 555
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 9,
+                "justification": "The email opens with a one-sentence acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective (dispatch team, manual workarounds), then ends with the CTA. All four elements are present in the correct order. The stakes are framed entirely from the reader's perspective ('your dispatch team,' 'you've been running'), not the sender's. The only minor quibble is that the acknowledgment and news are in the same sentence, but the acknowledgment still precedes the news within that sentence, so it satisfies the intent."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 7,
+                "justification": "The action item names Priya as the responsible party ('Please confirm with your IT contact'), which is appropriately scoped without dictating internal structure. There is a specific deadline ('before Tuesday'). However, the action is slightly diffuse in that it delegates to an unnamed 'IT contact' rather than naming a single owner outright — though this is appropriate given the sender's limited knowledge of Priya's org. No group asks are present. The deadline is clear and specific."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends immediately after the CTA with no trailing sentiment, platitudes, or softening language. '[Your name]' is just a signature placeholder. The closing line is purely action-oriented ('before Tuesday so the rollout goes smoothly'), which is forward-looking. No filler whatsoever."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 9,
+                "justification": "Every sentence carries a distinct idea: acknowledgment/news, reader impact, and action. There are no redundant sentences and no stacked clauses. The phrase 'without the manual workarounds you've been running' efficiently adds context without a separate sentence. The email is tight and clear throughout with no points that feel squeezed or compressed into ambiguity."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1187,
+              "output_tokens": 535
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Emotional Arc Sequencing: 9.0/10\n  Justification: The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective (dispatch team, manual workarounds), then ends with the CTA. All four elements are present in the correct order. The stakes are framed entirely from the reader's perspective ('your dispatch team,' 'you've been running'), not the sender's. The only minor quibble is the acknowledgment and news are in the same sentence, but it reads as acknowledgment-first structurally.\n- Single-Owner Action Items: 7.0/10\n  Justification: The action item asks Priya to 'confirm with your IT contact' with a clear deadline (before Tuesday). There is a named recipient (Priya) and a deadline, and no group asks. However, 'your IT contact' is slightly diffuse — it doesn't name a single person responsible for the actual task, which could be seen as a mild group/ambiguous delegation. The deadline is specific and the ask is directed at Priya as the single owner, which partially compensates.\n- No Trailing Sentiment: 10.0/10\n  Justification: The email ends immediately after the CTA with no trailing sentiment, platitudes, or filler. '[Your name]' is just the signature. There is no 'thanks for your patience,' 'excited about this,' or any softening language after the action item. The close is clean and forward-looking.\n- Compression Without Ambiguity: 9.0/10\n  Justification: Every sentence carries a distinct idea: acknowledgment/news, impact, and action. There are no redundant sentences and no stacked clauses. The phrase 'without the manual workarounds you've been running' efficiently adds context without a separate sentence. The email is tight without sacrificing clarity anywhere.\n\nYour weakest criteria are: Single-Owner Action Items, Compression Without Ambiguity. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+        "rubric": [
+          {
+            "name": "Emotional Arc Sequencing",
+            "category": "Structure",
+            "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+            "dimensions": [
+              {
+                "id": "ack_before_news",
+                "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"
+              },
+              {
+                "id": "stakes_after_news",
+                "label": "Explains why the news matters AFTER stating it, not before"
+              },
+              {
+                "id": "reader_perspective_stakes",
+                "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"
+              },
+              {
+                "id": "cta_is_final",
+                "label": "The call to action is the last substantive element — nothing trails after it"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Single-Owner Action Items",
+            "category": "Content",
+            "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+            "dimensions": [
+              {
+                "id": "named_owner",
+                "label": "Each action item has a single named person responsible, not a group"
+              },
+              {
+                "id": "has_deadline",
+                "label": "Action items include a specific deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Trailing Sentiment",
+            "category": "Style",
+            "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+            "dimensions": [
+              {
+                "id": "forward_looking_close",
+                "label": "The closing line references a future action or outcome, not past effort or gratitude"
+              },
+              {
+                "id": "no_platitudes",
+                "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"
+              },
+              {
+                "id": "no_post_cta_filler",
+                "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Compression Without Ambiguity",
+            "category": "Style",
+            "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+            "dimensions": [
+              {
+                "id": "no_redundant_sentences",
+                "label": "No sentence restates information already conveyed in another sentence"
+              },
+              {
+                "id": "cut_over_compress",
+                "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"
+              },
+              {
+                "id": "one_idea_per_sentence",
+                "label": "Each sentence carries one main idea — no run-ons or stacked clauses"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "**Subject: Your routing optimization feature ships next week**\n\nHi Priya,\n\nYou've been waiting on this one for a while — the routing optimization feature you requested is shipping next Tuesday, May 20.\n\nYour dispatch team can start configuring automated route assignments before the end of the month, no more manual workarounds.\n\nPlease confirm your environment is on version 4.2 or higher before Tuesday so the rollout goes smoothly.\n\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 9,
+              "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective ('Your dispatch team can start configuring...no more manual workarounds'), then ends with the CTA. The stakes are framed from the reader's perspective, not the sender's. The only minor quibble is that the acknowledgment and news are fused in one sentence, but the acknowledgment does precede the news within that sentence, satisfying the spirit of the sequencing rule."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 8,
+              "justification": "The action item is directed to Priya specifically ('Please confirm your environment'), which is a named single owner with a clear deadline ('before Tuesday'). There are no diffuse group asks. The email does not over-specify internal org structure. The only slight ambiguity is that 'confirm your environment' could imply Priya personally or her team, but the address to Priya keeps ownership clear enough."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly with the CTA ('Please confirm your environment is on version 4.2 or higher before Tuesday so the rollout goes smoothly') and then just the sign-off. There are no platitudes, no gratitude filler, no motivational closing lines. The close is forward-looking and action-oriented."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 9,
+              "justification": "Every sentence carries a distinct idea: acknowledgment/news, reader benefit, and action step. There is no redundancy between sentences, and no ideas are stacked awkwardly into subordinate clauses. The draft is tight without sacrificing clarity. No points feel compressed to the point of confusion."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 9,
+              "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while') before delivering the news, satisfying ack_before_news. The stakes ('your dispatch team can start configuring...no more manual workarounds') follow the core message and are framed from the reader's perspective. The CTA ('Please confirm your environment is on version 4.2 or higher before Tuesday') is the final substantive element with nothing trailing after it. Minor deduction: the acknowledgment and news are fused in one sentence, which is borderline but still sequenced correctly."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 8,
+              "justification": "The action item is directed to Priya specifically ('Please confirm your environment...'), implying a single named owner. A deadline is included ('before Tuesday'). There are no group asks. However, the named owner is implicit (Priya, the recipient) rather than explicitly named in the action sentence, which is a minor gap. No org overreach is present."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA with no platitudes, gratitude, or filler sentiment. The closing is purely forward-looking and action-oriented. Nothing trails after the call to action."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 9,
+              "justification": "Each sentence carries a single idea and no information is redundantly restated. The email is tight without sacrificing clarity — 'no more manual workarounds' efficiently conveys the benefit without a separate sentence. No stacked clauses or run-ons are present. The draft is a strong example of cutting over compressing."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 9,
+              "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while') before delivering the news, satisfying ack_before_news. The stakes ('your dispatch team can start configuring...no more manual workarounds') follow the core message and are framed from the reader's perspective. The CTA ('Please confirm your environment is on version 4.2 or higher before Tuesday') is the final substantive element with nothing trailing after it. Minor deduction: the acknowledgment and news are fused in one sentence, which is borderline but still sequenced correctly."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 8,
+              "justification": "The action item is directed to Priya specifically ('Please confirm your environment...'), implying a single named owner. A deadline is included ('before Tuesday'). There are no group asks. However, the named owner is implicit (Priya, the recipient) rather than explicitly named in the action sentence, which is a minor gap. No org overreach is present."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA with no platitudes, gratitude, or filler sentiment. The closing is purely forward-looking and action-oriented. Nothing trails after the call to action."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 9,
+              "justification": "Each sentence carries a single idea and no information is redundantly restated. The email is tight without sacrificing clarity — 'no more manual workarounds' efficiently conveys the benefit without a separate sentence. No stacked clauses or run-ons are present. The draft is a strong example of cutting over compressing."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Emotional Arc Sequencing": 9.0,
+          "Single-Owner Action Items": 8.0,
+          "No Trailing Sentiment": 10.0,
+          "Compression Without Ambiguity": 9.0
+        },
+        "std_scores": {
+          "Emotional Arc Sequencing": 0.0,
+          "Single-Owner Action Items": 0.0,
+          "No Trailing Sentiment": 0.0,
+          "Compression Without Ambiguity": 0.0
+        },
+        "mean_overall": 0.89,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 9,
+                "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective ('Your dispatch team can start configuring...no more manual workarounds'), then ends with the CTA. The stakes are framed from the reader's perspective, not the sender's. The only minor quibble is that the acknowledgment and news are fused in one sentence, but the acknowledgment does precede the news within that sentence, satisfying the spirit of the sequencing rule."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 8,
+                "justification": "The action item is directed to Priya specifically ('Please confirm your environment'), which is a named single owner with a clear deadline ('before Tuesday'). There are no diffuse group asks. The email does not over-specify internal org structure. The only slight ambiguity is that 'confirm your environment' could imply Priya personally or her team, but the address to Priya keeps ownership clear enough."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly with the CTA ('Please confirm your environment is on version 4.2 or higher before Tuesday so the rollout goes smoothly') and then just the sign-off. There are no platitudes, no gratitude filler, no motivational closing lines. The close is forward-looking and action-oriented."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 9,
+                "justification": "Every sentence carries a distinct idea: acknowledgment/news, reader benefit, and action step. There is no redundancy between sentences, and no ideas are stacked awkwardly into subordinate clauses. The draft is tight without sacrificing clarity. No points feel compressed to the point of confusion."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1176,
+              "output_tokens": 501
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 9,
+                "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while') before delivering the news, satisfying ack_before_news. The stakes ('your dispatch team can start configuring...no more manual workarounds') follow the core message and are framed from the reader's perspective. The CTA ('Please confirm your environment is on version 4.2 or higher before Tuesday') is the final substantive element with nothing trailing after it. Minor deduction: the acknowledgment and news are fused in one sentence, which is borderline but still sequenced correctly."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 8,
+                "justification": "The action item is directed to Priya specifically ('Please confirm your environment...'), implying a single named owner. A deadline is included ('before Tuesday'). There are no group asks. However, the named owner is implicit (Priya, the recipient) rather than explicitly named in the action sentence, which is a minor gap. No org overreach is present."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA with no platitudes, gratitude, or filler sentiment. The closing is purely forward-looking and action-oriented. Nothing trails after the call to action."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 9,
+                "justification": "Each sentence carries a single idea and no information is redundantly restated. The email is tight without sacrificing clarity — 'no more manual workarounds' efficiently conveys the benefit without a separate sentence. No stacked clauses or run-ons are present. The draft is a strong example of cutting over compressing."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1176,
+              "output_tokens": 474
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 9,
+                "justification": "The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while') before delivering the news, satisfying ack_before_news. The stakes ('your dispatch team can start configuring...no more manual workarounds') follow the core message and are framed from the reader's perspective. The CTA ('Please confirm your environment is on version 4.2 or higher before Tuesday') is the final substantive element with nothing trailing after it. Minor deduction: the acknowledgment and news are fused in one sentence, which is borderline but still sequenced correctly."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 8,
+                "justification": "The action item is directed to Priya specifically ('Please confirm your environment...'), implying a single named owner. A deadline is included ('before Tuesday'). There are no group asks. However, the named owner is implicit (Priya, the recipient) rather than explicitly named in the action sentence, which is a minor gap. No org overreach is present."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA with no platitudes, gratitude, or filler sentiment. The closing is purely forward-looking and action-oriented. Nothing trails after the call to action."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 9,
+                "justification": "Each sentence carries a single idea and no information is redundantly restated. The email is tight without sacrificing clarity — 'no more manual workarounds' efficiently conveys the benefit without a separate sentence. No stacked clauses or run-ons are present. The draft is a strong example of cutting over compressing."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1176,
+              "output_tokens": 474
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Emotional Arc Sequencing: 9.0/10\n  Justification: The email opens with a brief acknowledgment of the reader's wait ('You've been waiting on this one for a while'), then delivers the core news, then explains why it matters from Priya's perspective ('Your dispatch team can start configuring...no more manual workarounds'), then ends with the CTA. The stakes are framed from the reader's perspective, not the sender's. The only minor quibble is that the acknowledgment and news are fused in one sentence, but the acknowledgment does precede the news within that sentence, satisfying the spirit of the sequencing rule.\n- Single-Owner Action Items: 8.0/10\n  Justification: The action item is directed to Priya specifically ('Please confirm your environment'), which is a named single owner with a clear deadline ('before Tuesday'). There are no diffuse group asks. The email does not over-specify internal org structure. The only slight ambiguity is that 'confirm your environment' could imply Priya personally or her team, but the address to Priya keeps ownership clear enough.\n- No Trailing Sentiment: 10.0/10\n  Justification: The email ends cleanly with the CTA ('Please confirm your environment is on version 4.2 or higher before Tuesday so the rollout goes smoothly') and then just the sign-off. There are no platitudes, no gratitude filler, no motivational closing lines. The close is forward-looking and action-oriented.\n- Compression Without Ambiguity: 9.0/10\n  Justification: Every sentence carries a distinct idea: acknowledgment/news, reader benefit, and action step. There is no redundancy between sentences, and no ideas are stacked awkwardly into subordinate clauses. The draft is tight without sacrificing clarity. No points feel compressed to the point of confusion.\n\nYour weakest criteria are: Single-Owner Action Items, Compression Without Ambiguity. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+        "rubric": [
+          {
+            "name": "Emotional Arc Sequencing",
+            "category": "Structure",
+            "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+            "dimensions": [
+              {
+                "id": "ack_before_news",
+                "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"
+              },
+              {
+                "id": "stakes_after_news",
+                "label": "Explains why the news matters AFTER stating it, not before"
+              },
+              {
+                "id": "reader_perspective_stakes",
+                "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"
+              },
+              {
+                "id": "cta_is_final",
+                "label": "The call to action is the last substantive element — nothing trails after it"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Single-Owner Action Items",
+            "category": "Content",
+            "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+            "dimensions": [
+              {
+                "id": "named_owner",
+                "label": "Each action item has a single named person responsible, not a group"
+              },
+              {
+                "id": "has_deadline",
+                "label": "Action items include a specific deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Trailing Sentiment",
+            "category": "Style",
+            "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+            "dimensions": [
+              {
+                "id": "forward_looking_close",
+                "label": "The closing line references a future action or outcome, not past effort or gratitude"
+              },
+              {
+                "id": "no_platitudes",
+                "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"
+              },
+              {
+                "id": "no_post_cta_filler",
+                "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Compression Without Ambiguity",
+            "category": "Style",
+            "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+            "dimensions": [
+              {
+                "id": "no_redundant_sentences",
+                "label": "No sentence restates information already conveyed in another sentence"
+              },
+              {
+                "id": "cut_over_compress",
+                "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"
+              },
+              {
+                "id": "one_idea_per_sentence",
+                "label": "Each sentence carries one main idea — no run-ons or stacked clauses"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "**Subject: Your routing optimization feature ships next week**\n\nHi Priya,\n\nYou've been waiting on this one for a while — the routing optimization feature you requested ships next Tuesday, May 20.\n\nYour dispatch team can start configuring automated route assignments before end of month, no more manual workarounds.\n\nPlease confirm by Monday that your environment is on version 4.2 or higher.\n\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). Stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The email doesn't overreach into Priya's org structure or delegation — it simply asks her to confirm an environment version, which is a reasonable single-owner ask."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA with no trailing gratitude, platitudes, or filler. '[Your name]' is just a signature placeholder. There is no 'thanks for your patience' or motivational close anywhere in the draft."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries a single idea and earns its place: acknowledgment+news, stakes, CTA. No sentence restates another. The stakes line ('no more manual workarounds') adds concrete meaning without redundancy. Nothing is compressed into dense subordinate clauses — low-priority points appear to have been cut entirely rather than squeezed in."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20') within the same sentence — exactly the pattern the rubric endorses. Stakes follow the news and are framed from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. All four dimensions are satisfied in correct order."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item. A specific deadline ('by Monday') is included. There are no diffuse group asks. The mention of the environment version check is a technical requirement directed at Priya, not an org-structure assumption — no overreach is present. All four dimensions are satisfied."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly with the CTA ('Please confirm by Monday that your environment is on version 4.2 or higher'). There is no gratitude, platitude, or filler after the action item. The close is forward-looking and action-oriented. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries distinct information: the ship date, the business benefit, and the required action. No sentence restates another. The stakes sentence ('no more manual workarounds') is a clean single idea that adds reader-relevant context without redundancy. The draft is four sentences with no stacked clauses or run-ons, and nothing feels squeezed or cut to the point of confusion."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). The stakes follow the news and are framed from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA is the final substantive element with nothing trailing after it. Order is perfect."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item. The deadline is specific (Monday). There are no group asks. The environment check is a reasonable technical dependency, not org overreach — it mirrors the 'confirm with your IT contact' pattern explicitly called out as acceptable."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA ('Please confirm by Monday that your environment is on version 4.2 or higher'). No gratitude, no platitudes, no softening language appears after the action item. The close is entirely forward-looking."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries distinct information: acknowledgment+news, reader benefit, action item. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate clauses. The email is four sentences and loses nothing by being so."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Emotional Arc Sequencing": 10.0,
+          "Single-Owner Action Items": 10.0,
+          "No Trailing Sentiment": 10.0,
+          "Compression Without Ambiguity": 10.0
+        },
+        "std_scores": {
+          "Emotional Arc Sequencing": 0.0,
+          "Single-Owner Action Items": 0.0,
+          "No Trailing Sentiment": 0.0,
+          "Compression Without Ambiguity": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). Stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The email doesn't overreach into Priya's org structure or delegation — it simply asks her to confirm an environment version, which is a reasonable single-owner ask."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA with no trailing gratitude, platitudes, or filler. '[Your name]' is just a signature placeholder. There is no 'thanks for your patience' or motivational close anywhere in the draft."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries a single idea and earns its place: acknowledgment+news, stakes, CTA. No sentence restates another. The stakes line ('no more manual workarounds') adds concrete meaning without redundancy. Nothing is compressed into dense subordinate clauses — low-priority points appear to have been cut entirely rather than squeezed in."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 434
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20') within the same sentence — exactly the pattern the rubric endorses. Stakes follow the news and are framed from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. All four dimensions are satisfied in correct order."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item. A specific deadline ('by Monday') is included. There are no diffuse group asks. The mention of the environment version check is a technical requirement directed at Priya, not an org-structure assumption — no overreach is present. All four dimensions are satisfied."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly with the CTA ('Please confirm by Monday that your environment is on version 4.2 or higher'). There is no gratitude, platitude, or filler after the action item. The close is forward-looking and action-oriented. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries distinct information: the ship date, the business benefit, and the required action. No sentence restates another. The stakes sentence ('no more manual workarounds') is a clean single idea that adds reader-relevant context without redundancy. The draft is four sentences with no stacked clauses or run-ons, and nothing feels squeezed or cut to the point of confusion."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 480
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). The stakes follow the news and are framed from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA is the final substantive element with nothing trailing after it. Order is perfect."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item. The deadline is specific (Monday). There are no group asks. The environment check is a reasonable technical dependency, not org overreach — it mirrors the 'confirm with your IT contact' pattern explicitly called out as acceptable."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA ('Please confirm by Monday that your environment is on version 4.2 or higher'). No gratitude, no platitudes, no softening language appears after the action item. The close is entirely forward-looking."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries distinct information: acknowledgment+news, reader benefit, action item. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate clauses. The email is four sentences and loses nothing by being so."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 409
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Emotional Arc Sequencing: 10.0/10\n  Justification: The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). Stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect.\n- Single-Owner Action Items: 10.0/10\n  Justification: Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The email doesn't overreach into Priya's org structure or delegation — it simply asks her to confirm an environment version, which is a reasonable single-owner ask.\n- No Trailing Sentiment: 10.0/10\n  Justification: The email ends cleanly on the CTA with no trailing gratitude, platitudes, or filler. '[Your name]' is just a signature placeholder. There is no 'thanks for your patience' or motivational close anywhere in the draft.\n- Compression Without Ambiguity: 10.0/10\n  Justification: Every sentence carries a single idea and earns its place: acknowledgment+news, stakes, CTA. No sentence restates another. The stakes line ('no more manual workarounds') adds concrete meaning without redundancy. Nothing is compressed into dense subordinate clauses — low-priority points appear to have been cut entirely rather than squeezed in.\n\nYour weakest criteria are: Compression Without Ambiguity, Emotional Arc Sequencing. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+        "rubric": [
+          {
+            "name": "Emotional Arc Sequencing",
+            "category": "Structure",
+            "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+            "dimensions": [
+              {
+                "id": "ack_before_news",
+                "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"
+              },
+              {
+                "id": "stakes_after_news",
+                "label": "Explains why the news matters AFTER stating it, not before"
+              },
+              {
+                "id": "reader_perspective_stakes",
+                "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"
+              },
+              {
+                "id": "cta_is_final",
+                "label": "The call to action is the last substantive element — nothing trails after it"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Docking points because acknowledgment and news share a sentence rather than being in separate sentences",
+              "Treating 'You've been waiting on this one — the feature ships Tuesday' as a sequencing violation when the acknowledgment clearly precedes the news within the sentence",
+              "Requiring acknowledgment to be a standalone sentence as a hard rule"
+            ],
+            "clarification": "The rule is about ORDER, not sentence count. Acknowledgment must come before news — that's the non-negotiable. If both fit cleanly in one sentence with acknowledgment first, that's fine and arguably tighter. The '1 sentence max' on acknowledgment is a ceiling to prevent over-dwelling on the acknowledgment, not a requirement that it be isolated. Both drafts satisfy this criterion fully and should score 10, not 9."
+          },
+          {
+            "name": "Single-Owner Action Items",
+            "category": "Content",
+            "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+            "dimensions": [
+              {
+                "id": "named_owner",
+                "label": "Each action item has a single named person responsible, not a group"
+              },
+              {
+                "id": "has_deadline",
+                "label": "Action items include a specific deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing 'confirm with your IT contact' as a diffuse ask — Priya is still the named owner, the IT contact is just the mechanism",
+              "Treating removal of the IT contact reference as an improvement when it actually makes the action less clear about what's technically required",
+              "Conflating 'names a third party as a resource' with 'diffuse group ownership'"
+            ],
+            "clarification": "Single owner means one person is accountable for the action item — that person can involve others to execute it. The problem I care about is 'everyone please review' where no one is accountable. Saying 'Priya, confirm with your IT contact' keeps Priya accountable while acknowledging a realistic dependency. That's good writing, not a violation. The org-overreach concern is about assuming internal hierarchy or delegation I wouldn't know — e.g., 'have your VP approve this' or 'assign this to your ops team.' Mentioning an IT contact for a technical environment check is not overreach."
+          },
+          {
+            "name": "No Trailing Sentiment",
+            "category": "Style",
+            "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+            "dimensions": [
+              {
+                "id": "forward_looking_close",
+                "label": "The closing line references a future action or outcome, not past effort or gratitude"
+              },
+              {
+                "id": "no_platitudes",
+                "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"
+              },
+              {
+                "id": "no_post_cta_filler",
+                "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Compression Without Ambiguity",
+            "category": "Style",
+            "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+            "dimensions": [
+              {
+                "id": "no_redundant_sentences",
+                "label": "No sentence restates information already conveyed in another sentence"
+              },
+              {
+                "id": "cut_over_compress",
+                "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"
+              },
+              {
+                "id": "one_idea_per_sentence",
+                "label": "Each sentence carries one main idea — no run-ons or stacked clauses"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "**Subject: Your routing optimization feature ships next week**\n\nHi Priya,\n\nYou've been waiting on this one for a while — the routing optimization feature you requested ships next Tuesday, May 20.\n\nYour dispatch team can start configuring automated route assignments before end of month, no more manual workarounds.\n\nPlease confirm by Monday that your environment is on version 4.2 or higher.\n\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). Stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The email doesn't overreach into internal org structure — it simply asks Priya to confirm an environment version, which is a reasonable and bounded ask."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA with no platitudes, gratitude, or filler sentiment. The sign-off '[Your name]' is a structural placeholder, not trailing sentiment. Nothing appears after the action item."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 9,
+              "justification": "Each sentence carries a single idea and no information is redundantly restated. The stakes sentence ('no more manual workarounds') is tight and clear. A minor note: 'before end of month' and 'no more manual workarounds' are stacked in one sentence, but they're closely related and don't create confusion. Overall compression is strong with no ambiguity introduced."
+            }
+          ],
+          "overall_weighted_score": 0.99,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20'). Stakes follow the news and are framed entirely from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The ask to confirm the environment version is appropriately scoped without dictating internal org structure or delegation."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA with no gratitude, platitudes, or filler. '[Your name]' is a signature placeholder, not sentiment. Nothing trails after the action item."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries a distinct idea: acknowledgment + news, stakes, action item. No sentence restates another. The stakes sentence efficiently conveys both the capability unlocked and the pain eliminated without becoming a run-on. Nothing feels squeezed or redundant."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news within the same sentence — exactly the pattern the rubric endorses. Stakes follow the news and are framed from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA is the final substantive element with nothing trailing after it. All four dimensions are satisfied in correct order."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the one action item ('Please confirm by Monday'). A specific deadline is given (Monday). There are no group asks. The ask to confirm environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure, just asks Priya to verify a technical prerequisite."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA with no gratitude, platitudes, or filler. 'Please confirm by Monday that your environment is on version 4.2 or higher' is the final substantive line, followed only by the sign-off. Nothing trails after the action item."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries distinct information: the news, the benefit, and the action. There is no redundancy — the benefit sentence ('no more manual workarounds') adds new meaning rather than restating the ship date. Each sentence holds one idea and none are dense or stacked. The draft is tight without sacrificing clarity."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Emotional Arc Sequencing": 10.0,
+          "Single-Owner Action Items": 10.0,
+          "No Trailing Sentiment": 10.0,
+          "Compression Without Ambiguity": 9.666666666666666
+        },
+        "std_scores": {
+          "Emotional Arc Sequencing": 0.0,
+          "Single-Owner Action Items": 0.0,
+          "No Trailing Sentiment": 0.0,
+          "Compression Without Ambiguity": 0.5773502691896257
+        },
+        "mean_overall": 0.9966666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). Stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The email doesn't overreach into internal org structure — it simply asks Priya to confirm an environment version, which is a reasonable and bounded ask."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA with no platitudes, gratitude, or filler sentiment. The sign-off '[Your name]' is a structural placeholder, not trailing sentiment. Nothing appears after the action item."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 9,
+                "justification": "Each sentence carries a single idea and no information is redundantly restated. The stakes sentence ('no more manual workarounds') is tight and clear. A minor note: 'before end of month' and 'no more manual workarounds' are stacked in one sentence, but they're closely related and don't create confusion. Overall compression is strong with no ambiguity introduced."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 433
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20'). Stakes follow the news and are framed entirely from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The ask to confirm the environment version is appropriately scoped without dictating internal org structure or delegation."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA with no gratitude, platitudes, or filler. '[Your name]' is a signature placeholder, not sentiment. Nothing trails after the action item."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries a distinct idea: acknowledgment + news, stakes, action item. No sentence restates another. The stakes sentence efficiently conveys both the capability unlocked and the pain eliminated without becoming a run-on. Nothing feels squeezed or redundant."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 396
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news within the same sentence — exactly the pattern the rubric endorses. Stakes follow the news and are framed from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA is the final substantive element with nothing trailing after it. All four dimensions are satisfied in correct order."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the one action item ('Please confirm by Monday'). A specific deadline is given (Monday). There are no group asks. The ask to confirm environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure, just asks Priya to verify a technical prerequisite."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA with no gratitude, platitudes, or filler. 'Please confirm by Monday that your environment is on version 4.2 or higher' is the final substantive line, followed only by the sign-off. Nothing trails after the action item."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries distinct information: the news, the benefit, and the action. There is no redundancy — the benefit sentence ('no more manual workarounds') adds new meaning rather than restating the ship date. Each sentence holds one idea and none are dense or stacked. The draft is tight without sacrificing clarity."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 452
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Emotional Arc Sequencing: 10.0/10\n  Justification: The email opens with a clean acknowledgment ('You've been waiting on this one for a while') before delivering the news (ships Tuesday, May 20). Stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect.\n- Single-Owner Action Items: 10.0/10\n  Justification: Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The email doesn't overreach into internal org structure — it simply asks Priya to confirm an environment version, which is a reasonable and bounded ask.\n- No Trailing Sentiment: 10.0/10\n  Justification: The email ends cleanly on the CTA with no platitudes, gratitude, or filler sentiment. The sign-off '[Your name]' is a structural placeholder, not trailing sentiment. Nothing appears after the action item.\n- Compression Without Ambiguity: 9.7/10\n  Justification: Each sentence carries a single idea and no information is redundantly restated. The stakes sentence ('no more manual workarounds') is tight and clear. A minor note: 'before end of month' and 'no more manual workarounds' are stacked in one sentence, but they're closely related and don't create confusion. Overall compression is strong with no ambiguity introduced.\n\nYour weakest criteria are: Compression Without Ambiguity, Emotional Arc Sequencing. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+        "rubric": [
+          {
+            "name": "Emotional Arc Sequencing",
+            "category": "Structure",
+            "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+            "dimensions": [
+              {
+                "id": "ack_before_news",
+                "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"
+              },
+              {
+                "id": "stakes_after_news",
+                "label": "Explains why the news matters AFTER stating it, not before"
+              },
+              {
+                "id": "reader_perspective_stakes",
+                "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"
+              },
+              {
+                "id": "cta_is_final",
+                "label": "The call to action is the last substantive element — nothing trails after it"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Docking points because acknowledgment and news share a sentence rather than being in separate sentences",
+              "Treating 'You've been waiting on this one — the feature ships Tuesday' as a sequencing violation when the acknowledgment clearly precedes the news within the sentence",
+              "Requiring acknowledgment to be a standalone sentence as a hard rule"
+            ],
+            "clarification": "The rule is about ORDER, not sentence count. Acknowledgment must come before news — that's the non-negotiable. If both fit cleanly in one sentence with acknowledgment first, that's fine and arguably tighter. The '1 sentence max' on acknowledgment is a ceiling to prevent over-dwelling on the acknowledgment, not a requirement that it be isolated. Both drafts satisfy this criterion fully and should score 10, not 9."
+          },
+          {
+            "name": "Single-Owner Action Items",
+            "category": "Content",
+            "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+            "dimensions": [
+              {
+                "id": "named_owner",
+                "label": "Each action item has a single named person responsible, not a group"
+              },
+              {
+                "id": "has_deadline",
+                "label": "Action items include a specific deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing 'confirm with your IT contact' as a diffuse ask — Priya is still the named owner, the IT contact is just the mechanism",
+              "Treating removal of the IT contact reference as an improvement when it actually makes the action less clear about what's technically required",
+              "Conflating 'names a third party as a resource' with 'diffuse group ownership'"
+            ],
+            "clarification": "Single owner means one person is accountable for the action item — that person can involve others to execute it. The problem I care about is 'everyone please review' where no one is accountable. Saying 'Priya, confirm with your IT contact' keeps Priya accountable while acknowledging a realistic dependency. That's good writing, not a violation. The org-overreach concern is about assuming internal hierarchy or delegation I wouldn't know — e.g., 'have your VP approve this' or 'assign this to your ops team.' Mentioning an IT contact for a technical environment check is not overreach."
+          },
+          {
+            "name": "No Trailing Sentiment",
+            "category": "Style",
+            "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+            "dimensions": [
+              {
+                "id": "forward_looking_close",
+                "label": "The closing line references a future action or outcome, not past effort or gratitude"
+              },
+              {
+                "id": "no_platitudes",
+                "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"
+              },
+              {
+                "id": "no_post_cta_filler",
+                "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Compression Without Ambiguity",
+            "category": "Style",
+            "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+            "dimensions": [
+              {
+                "id": "no_redundant_sentences",
+                "label": "No sentence restates information already conveyed in another sentence"
+              },
+              {
+                "id": "cut_over_compress",
+                "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"
+              },
+              {
+                "id": "one_idea_per_sentence",
+                "label": "Each sentence carries one main idea — no run-ons or stacked clauses"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "**Subject: Your routing optimization feature ships next week**\n\nHi Priya,\n\nYou've been waiting on this one for a while — the routing optimization feature you requested ships next Tuesday, May 20.\n\nYour dispatch team can start configuring automated route assignments before end of month — no more manual workarounds.\n\nPlease confirm by Monday that your environment is on version 4.2 or higher.\n\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20') within the same sentence — exactly the pattern the rubric endorses. Stakes follow the news and are framed from Priya's perspective ('Your dispatch team can start configuring... no more manual workarounds'). The CTA ('Please confirm by Monday...') is the final substantive element with nothing trailing after it. All four dimensions are satisfied in correct order."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The ask to confirm the environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure. All four dimensions are met cleanly."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends on the CTA with no trailing sentiment, platitudes, or filler. There is no 'thanks for your patience' or motivational close. The sign-off is a bare '[Your name]' which adds nothing extraneous. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries distinct information: the ship date, the operational benefit, and the required action. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate phrases. The email is four sentences and a sign-off — nothing could be cut without losing meaning."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email follows the prescribed order precisely: acknowledgment ('You've been waiting on this one for a while') precedes the core news (ships Tuesday, May 20), stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'), and the CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. The acknowledgment and news share one sentence with acknowledgment clearly first — exactly the tight construction the rubric endorses."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item, the deadline is specific (Monday), and there are no diffuse group asks. The ask to confirm the environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure, and the rubric explicitly supports mentioning a technical dependency without treating it as overreach."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly with the CTA ('Please confirm by Monday that your environment is on version 4.2 or higher') and nothing follows — no gratitude, no platitudes, no softening filler. The close is entirely forward-looking and action-oriented."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries a distinct idea: acknowledgment + ship date, reader benefit, and action item. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate constructions. The email is four sentences and loses nothing by being so."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Emotional Arc Sequencing",
+              "score": 10,
+              "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20'). Stakes follow the news and are framed entirely from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+            },
+            {
+              "criterion_name": "Single-Owner Action Items",
+              "score": 10,
+              "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The ask to confirm the environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure the sender wouldn't know."
+            },
+            {
+              "criterion_name": "No Trailing Sentiment",
+              "score": 10,
+              "justification": "The email ends cleanly on the CTA with no gratitude, platitudes, or filler. '[Your name]' is a signature placeholder, not trailing sentiment. The close is entirely forward-looking and action-oriented."
+            },
+            {
+              "criterion_name": "Compression Without Ambiguity",
+              "score": 10,
+              "justification": "Every sentence carries a single idea and earns its place: acknowledgment+news, stakes, CTA. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate clauses. The email is four lines and loses nothing by being so."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Emotional Arc Sequencing": 10.0,
+          "Single-Owner Action Items": 10.0,
+          "No Trailing Sentiment": 10.0,
+          "Compression Without Ambiguity": 10.0
+        },
+        "std_scores": {
+          "Emotional Arc Sequencing": 0.0,
+          "Single-Owner Action Items": 0.0,
+          "No Trailing Sentiment": 0.0,
+          "Compression Without Ambiguity": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20') within the same sentence — exactly the pattern the rubric endorses. Stakes follow the news and are framed from Priya's perspective ('Your dispatch team can start configuring... no more manual workarounds'). The CTA ('Please confirm by Monday...') is the final substantive element with nothing trailing after it. All four dimensions are satisfied in correct order."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The ask to confirm the environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure. All four dimensions are met cleanly."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends on the CTA with no trailing sentiment, platitudes, or filler. There is no 'thanks for your patience' or motivational close. The sign-off is a bare '[Your name]' which adds nothing extraneous. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries distinct information: the ship date, the operational benefit, and the required action. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate phrases. The email is four sentences and a sign-off — nothing could be cut without losing meaning."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 454
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email follows the prescribed order precisely: acknowledgment ('You've been waiting on this one for a while') precedes the core news (ships Tuesday, May 20), stakes are framed from Priya's perspective after the news ('your dispatch team can start configuring... no more manual workarounds'), and the CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. The acknowledgment and news share one sentence with acknowledgment clearly first — exactly the tight construction the rubric endorses."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item, the deadline is specific (Monday), and there are no diffuse group asks. The ask to confirm the environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure, and the rubric explicitly supports mentioning a technical dependency without treating it as overreach."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly with the CTA ('Please confirm by Monday that your environment is on version 4.2 or higher') and nothing follows — no gratitude, no platitudes, no softening filler. The close is entirely forward-looking and action-oriented."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries a distinct idea: acknowledgment + ship date, reader benefit, and action item. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate constructions. The email is four sentences and loses nothing by being so."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 455
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Emotional Arc Sequencing",
+                "score": 10,
+                "justification": "The email opens with a clean acknowledgment ('You've been waiting on this one for a while') that precedes the core news ('ships next Tuesday, May 20'). Stakes follow the news and are framed entirely from Priya's perspective ('your dispatch team can start configuring... no more manual workarounds'). The CTA ('confirm by Monday') is the final substantive element with nothing trailing after it. Order is perfect."
+              },
+              {
+                "criterion_name": "Single-Owner Action Items",
+                "score": 10,
+                "justification": "Priya is the single named owner of the action item. The deadline is specific ('by Monday'). There are no diffuse group asks. The ask to confirm the environment version is appropriately scoped — it doesn't dictate internal delegation or assume org structure the sender wouldn't know."
+              },
+              {
+                "criterion_name": "No Trailing Sentiment",
+                "score": 10,
+                "justification": "The email ends cleanly on the CTA with no gratitude, platitudes, or filler. '[Your name]' is a signature placeholder, not trailing sentiment. The close is entirely forward-looking and action-oriented."
+              },
+              {
+                "criterion_name": "Compression Without Ambiguity",
+                "score": 10,
+                "justification": "Every sentence carries a single idea and earns its place: acknowledgment+news, stakes, CTA. There is no redundancy between sentences, no stacked clauses, and no points compressed into ambiguous subordinate clauses. The email is four lines and loses nothing by being so."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1591,
+              "output_tokens": 417
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that land with clarity and respect — readers should know exactly what happened, why it matters to them, and what to do next. Values emotional intelligence in sequencing and refuses to waste a reader's time.",
+        "rubric": [
+          {
+            "name": "Emotional Arc Sequencing",
+            "category": "Structure",
+            "description": "Information follows a strict order: acknowledge the situation or effort first (1 sentence max), then deliver the core message, then explain why it matters from the reader's perspective, then state the next step. Violating this order — even if all elements are present — makes the email feel wrong.",
+            "dimensions": [
+              {
+                "id": "ack_before_news",
+                "label": "Opens with a brief acknowledgment of the reader's context or effort before delivering the main point"
+              },
+              {
+                "id": "stakes_after_news",
+                "label": "Explains why the news matters AFTER stating it, not before"
+              },
+              {
+                "id": "reader_perspective_stakes",
+                "label": "Stakes are framed from the reader's perspective ('your team planned around this') not the sender's ('we want quality')"
+              },
+              {
+                "id": "cta_is_final",
+                "label": "The call to action is the last substantive element — nothing trails after it"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Docking points because acknowledgment and news share a sentence rather than being in separate sentences",
+              "Treating 'You've been waiting on this one — the feature ships Tuesday' as a sequencing violation when the acknowledgment clearly precedes the news within the sentence",
+              "Requiring acknowledgment to be a standalone sentence as a hard rule"
+            ],
+            "clarification": "The rule is about ORDER, not sentence count. Acknowledgment must come before news — that's the non-negotiable. If both fit cleanly in one sentence with acknowledgment first, that's fine and arguably tighter. The '1 sentence max' on acknowledgment is a ceiling to prevent over-dwelling on the acknowledgment, not a requirement that it be isolated. Both drafts satisfy this criterion fully and should score 10, not 9."
+          },
+          {
+            "name": "Single-Owner Action Items",
+            "category": "Content",
+            "description": "When action is needed, names ONE clear owner with a deadline rather than diffuse group asks. 'Everyone please review' is treated as a non-action. But avoids over-specifying org structure details the email shouldn't contain.",
+            "dimensions": [
+              {
+                "id": "named_owner",
+                "label": "Each action item has a single named person responsible, not a group"
+              },
+              {
+                "id": "has_deadline",
+                "label": "Action items include a specific deadline or timeframe"
+              },
+              {
+                "id": "no_group_asks",
+                "label": "Avoids diffuse asks like 'everyone please' or 'team, let's all'"
+              },
+              {
+                "id": "no_org_overreach",
+                "label": "Does not assume or dictate internal team structure, delegation, or process the sender wouldn't know"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing 'confirm with your IT contact' as a diffuse ask — Priya is still the named owner, the IT contact is just the mechanism",
+              "Treating removal of the IT contact reference as an improvement when it actually makes the action less clear about what's technically required",
+              "Conflating 'names a third party as a resource' with 'diffuse group ownership'"
+            ],
+            "clarification": "Single owner means one person is accountable for the action item — that person can involve others to execute it. The problem I care about is 'everyone please review' where no one is accountable. Saying 'Priya, confirm with your IT contact' keeps Priya accountable while acknowledging a realistic dependency. That's good writing, not a violation. The org-overreach concern is about assuming internal hierarchy or delegation I wouldn't know — e.g., 'have your VP approve this' or 'assign this to your ops team.' Mentioning an IT contact for a technical environment check is not overreach."
+          },
+          {
+            "name": "No Trailing Sentiment",
+            "category": "Style",
+            "description": "Closing lines are forward-looking and action-oriented. No 'thanks for your patience,' motivational platitudes, or filler sentiment after the CTA. The email ends when the action is stated.",
+            "dimensions": [
+              {
+                "id": "forward_looking_close",
+                "label": "The closing line references a future action or outcome, not past effort or gratitude"
+              },
+              {
+                "id": "no_platitudes",
+                "label": "Does not end with generic encouragement ('excited about this!', 'great work team!')"
+              },
+              {
+                "id": "no_post_cta_filler",
+                "label": "Nothing substantive appears after the call to action — no trailing paragraphs or softening"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Compression Without Ambiguity",
+            "category": "Style",
+            "description": "Every sentence earns its place, but brevity never creates confusion. Prefers cutting entire points over compressing them into dense, hard-to-parse sentences.",
+            "dimensions": [
+              {
+                "id": "no_redundant_sentences",
+                "label": "No sentence restates information already conveyed in another sentence"
+              },
+              {
+                "id": "cut_over_compress",
+                "label": "Removes low-priority points entirely rather than squeezing them into subordinate clauses"
+              },
+              {
+                "id": "one_idea_per_sentence",
+                "label": "Each sentence carries one main idea — no run-ons or stacked clauses"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Alex treats email as a precision tool — every structural choice signals respect for the reader's time and emotional state. Will reject drafts that have all the right content in the wrong order. Non-negotiable: the reader's perspective drives the 'why', never the sender's."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 6,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Strict emotional arc: acknowledge effort/situation → news → why it matters → concrete next step",
+        "satisfied": "partially",
+        "evidence": "The arc is close — 'You've been waiting on this one' acknowledges the situation, then delivers the news (ships May 20), then gives a benefit ('no more manual workarounds'), then a next step. However, the 'why it matters' is thin — it describes a feature benefit but doesn't frame the stakes from Priya's perspective (e.g., how this affects her team's planning, capacity, or deadlines). It reads more like a feature announcement than a stakes explanation."
+      },
+      {
+        "preference": "'Why' framing from the READER's perspective, not the sender's",
+        "satisfied": "partially",
+        "evidence": "'Your dispatch team can start configuring automated route assignments — no more manual workarounds' is reader-facing in that it references her team, but it's more of a capability statement than a stakes framing. A stronger version would say something like 'This matters because your dispatch team has been absorbing extra hours on manual routing' — connecting to their pain, not just the feature's capability."
+      },
+      {
+        "preference": "Closing line must be forward-looking and action-oriented, no platitudes or trailing sentiment after CTA",
+        "satisfied": "yes",
+        "evidence": "The email ends cleanly with 'Please confirm by Monday that your environment is on version 4.2 or higher.' No trailing 'thanks for your patience' or motivational filler. Strong finish."
+      },
+      {
+        "preference": "ONE clear owner with a deadline, not group asks; avoid over-specifying org structure",
+        "satisfied": "yes",
+        "evidence": "Priya is the clear owner, Monday is the deadline, and the ask is specific without assuming internal org details. Well done."
+      },
+      {
+        "preference": "Concise, short paragraphs, no walls of text",
+        "satisfied": "yes",
+        "evidence": "Four very short paragraphs, each one sentence. Clean and scannable."
+      },
+      {
+        "preference": "No corporate jargon, passive aggression, or excessive exclamation marks",
+        "satisfied": "yes",
+        "evidence": "Tone is natural and direct. No jargon, no passive aggression, zero exclamation marks."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 552,
+      "output_tokens": 609
+    }
+  }
+}

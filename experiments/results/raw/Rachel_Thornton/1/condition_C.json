@@ -1,0 +1,1069 @@
+{
+  "persona": "Rachel Thornton",
+  "task_index": 1,
+  "task_description": "I need to email my team asking for architecture review on a new caching layer proposal — I only want feedback on the invalidation strategy, not the implementation details yet.",
+  "condition": "C",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+    "rubric": [
+      {
+        "name": "Decision Tradeoff Transparency",
+        "category": "Content",
+        "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+        "dimensions": [
+          {
+            "id": "alternatives_listed",
+            "label": "Names at least one alternative that was seriously considered"
+          },
+          {
+            "id": "rejection_rationale",
+            "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+          },
+          {
+            "id": "tradeoff_acknowledged",
+            "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+          },
+          {
+            "id": "decision_not_buried",
+            "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Link, Don't Duplicate",
+        "category": "Content",
+        "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+        "dimensions": [
+          {
+            "id": "links_to_sources",
+            "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+          },
+          {
+            "id": "no_content_duplication",
+            "label": "Does not reproduce information that's already available at a linked source"
+          },
+          {
+            "id": "link_context_sufficient",
+            "label": "Each link has enough surrounding context that the reader knows why to click it"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Scoped Review Requests",
+        "category": "Audience",
+        "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+        "dimensions": [
+          {
+            "id": "feedback_scope_stated",
+            "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+          },
+          {
+            "id": "review_deadline",
+            "label": "Includes a specific deadline or timeframe for the review"
+          },
+          {
+            "id": "out_of_scope_noted",
+            "label": "Explicitly notes what is NOT in scope for this review round"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Thread Discipline",
+        "category": "Structure",
+        "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+        "dimensions": [
+          {
+            "id": "single_topic",
+            "label": "The email addresses exactly one topic — does not bundle unrelated items"
+          },
+          {
+            "id": "subject_matches_content",
+            "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+          },
+          {
+            "id": "new_thread_for_new_topic",
+            "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy\n\nHi team,\n\nWe're moving forward with adding a dedicated caching layer to the service. **The immediate ask: please review the invalidation strategy in the proposal and share feedback by end of day Friday.**\n\nThe full proposal is in Confluence: [Caching Layer Architecture Proposal](link). For this round, focus exclusively on the **invalidation strategy** (Section 3, pages 8–11). Implementation details, library selection, and deployment topology are out of scope for now — we'll cover those in a follow-up review once the invalidation approach is locked.\n\n**What I'm looking for on the invalidation strategy specifically:**\n- Does the TTL-based expiry with event-driven override hold up under the failure modes described in Section 3.2?\n- Are there edge cases in the cache-aside pattern we haven't accounted for?\n- Does the strategy work with our existing event bus, or does it create new coupling we should be concerned about?\n\nA note on the direction we landed on: we chose event-driven invalidation over pure TTL and over write-through invalidation. Pure TTL was rejected because stale windows of up to 60 seconds were unacceptable for the order status data we're caching. Write-through was rejected because it would require coordinating cache writes inside the existing DB transaction boundary — adding latency and a new failure mode we don't currently have. The tradeoff we're accepting with event-driven is added operational complexity: the cache is now dependent on event bus availability, which pure TTL wouldn't have required.\n\nPlease leave comments directly in the Confluence doc. If you have a concern that feels too nuanced for a comment, reply to this thread — I'd rather keep the discussion async and in one place than schedule a walkthrough.\n\nThanks,\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The email explicitly names two alternatives (pure TTL and write-through invalidation), provides specific rejection rationale for each (60-second stale windows unacceptable; DB transaction coordination adds latency and a new failure mode), and acknowledges the tradeoff accepted with the chosen approach (operational complexity and event bus dependency). The decision to move forward with event-driven invalidation appears in the first paragraph, well within the first two sentences."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The full proposal is hyperlinked to Confluence rather than reproduced inline, and the email directs readers to specific pages (Section 3, pages 8–11) rather than summarizing them. The inline questions about failure modes and edge cases provide just enough context to orient the reader without duplicating the proposal content. The only minor gap is that the decision rationale paragraph partially restates content likely in the proposal, though it serves a distinct purpose of surfacing the decision logic without requiring the reader to dig for it."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review scope is tightly defined to the invalidation strategy in Section 3, pages 8–11, with three specific questions guiding the feedback. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly named (implementation details, library selection, deployment topology), with a clear reason why they're deferred."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The email names two alternatives (pure TTL and write-through invalidation), explains specific rejection rationale for each (60-second stale windows unacceptable; DB transaction coordination adds latency and a new failure mode), and explicitly acknowledges the tradeoff accepted with the chosen approach (operational complexity and event bus dependency). The decision to move forward with event-driven invalidation is stated in the opening paragraph, well within the first two sentences."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The full proposal is hyperlinked to Confluence rather than reproduced inline, and the email directs readers to specific pages (Section 3, pages 8–11) rather than summarizing the content. The surrounding context clearly explains why to click the link. The only minor consideration is that the three bullet-point questions partially describe content from the proposal, but these serve as scoping guidance rather than duplication of the source material."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined to the invalidation strategy with three specific questions covering failure modes, edge cases, and event bus coupling. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly named (implementation details, library selection, deployment topology), leaving no ambiguity about what reviewers should and should not address."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line precisely matches the content. There is no evidence of topic drift or continuation of a mismatched thread."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The email names two alternatives (pure TTL and write-through invalidation) and provides specific rejection rationale for each — 60-second stale windows for TTL, transaction boundary coordination and new failure modes for write-through. The tradeoff of the chosen approach (event bus dependency and operational complexity) is explicitly acknowledged. The decision appears in the first sentence."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The Confluence proposal is hyperlinked and the email directs readers to specific sections (Section 3, pages 8–11) rather than reproducing the content inline. The inline questions and decision rationale are not duplicating the doc but providing navigational context and decision transparency that belongs in the email itself. Each link has clear surrounding context explaining why to click it."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined — invalidation strategy only, with three specific questions to guide reviewers. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly listed (implementation details, library selection, deployment topology), satisfying all three dimensions cleanly."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects that. There is no topic drift. The only minor ambiguity is a brief mention of a 'follow-up review' for other topics, but this is a forward reference rather than bundling a second topic into the thread, so it does not violate thread discipline."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 9.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 9.666666666666666
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.5773502691896257
+        },
+        "mean_overall": 0.9666666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The email explicitly names two alternatives (pure TTL and write-through invalidation), provides specific rejection rationale for each (60-second stale windows unacceptable; DB transaction coordination adds latency and a new failure mode), and acknowledges the tradeoff accepted with the chosen approach (operational complexity and event bus dependency). The decision to move forward with event-driven invalidation appears in the first paragraph, well within the first two sentences."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The full proposal is hyperlinked to Confluence rather than reproduced inline, and the email directs readers to specific pages (Section 3, pages 8–11) rather than summarizing them. The inline questions about failure modes and edge cases provide just enough context to orient the reader without duplicating the proposal content. The only minor gap is that the decision rationale paragraph partially restates content likely in the proposal, though it serves a distinct purpose of surfacing the decision logic without requiring the reader to dig for it."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review scope is tightly defined to the invalidation strategy in Section 3, pages 8–11, with three specific questions guiding the feedback. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly named (implementation details, library selection, deployment topology), with a clear reason why they're deferred."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1380,
+              "output_tokens": 472
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The email names two alternatives (pure TTL and write-through invalidation), explains specific rejection rationale for each (60-second stale windows unacceptable; DB transaction coordination adds latency and a new failure mode), and explicitly acknowledges the tradeoff accepted with the chosen approach (operational complexity and event bus dependency). The decision to move forward with event-driven invalidation is stated in the opening paragraph, well within the first two sentences."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The full proposal is hyperlinked to Confluence rather than reproduced inline, and the email directs readers to specific pages (Section 3, pages 8–11) rather than summarizing the content. The surrounding context clearly explains why to click the link. The only minor consideration is that the three bullet-point questions partially describe content from the proposal, but these serve as scoping guidance rather than duplication of the source material."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined to the invalidation strategy with three specific questions covering failure modes, edge cases, and event bus coupling. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly named (implementation details, library selection, deployment topology), leaving no ambiguity about what reviewers should and should not address."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line precisely matches the content. There is no evidence of topic drift or continuation of a mismatched thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1380,
+              "output_tokens": 456
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The email names two alternatives (pure TTL and write-through invalidation) and provides specific rejection rationale for each — 60-second stale windows for TTL, transaction boundary coordination and new failure modes for write-through. The tradeoff of the chosen approach (event bus dependency and operational complexity) is explicitly acknowledged. The decision appears in the first sentence."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The Confluence proposal is hyperlinked and the email directs readers to specific sections (Section 3, pages 8–11) rather than reproducing the content inline. The inline questions and decision rationale are not duplicating the doc but providing navigational context and decision transparency that belongs in the email itself. Each link has clear surrounding context explaining why to click it."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined — invalidation strategy only, with three specific questions to guide reviewers. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly listed (implementation details, library selection, deployment topology), satisfying all three dimensions cleanly."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects that. There is no topic drift. The only minor ambiguity is a brief mention of a 'follow-up review' for other topics, but this is a forward reference rather than bundling a second topic into the thread, so it does not violate thread discipline."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1380,
+              "output_tokens": 444
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The email explicitly names two alternatives (pure TTL and write-through invalidation), provides specific rejection rationale for each (60-second stale windows unacceptable; DB transaction coordination adds latency and a new failure mode), and acknowledges the tradeoff accepted with the chosen approach (operational complexity and event bus dependency). The decision to move forward with event-driven invalidation appears in the first paragraph, well within the first two sentences.\n- Link, Don't Duplicate: 9.0/10\n  Justification: The full proposal is hyperlinked to Confluence rather than reproduced inline, and the email directs readers to specific pages (Section 3, pages 8–11) rather than summarizing them. The inline questions about failure modes and edge cases provide just enough context to orient the reader without duplicating the proposal content. The only minor gap is that the decision rationale paragraph partially restates content likely in the proposal, though it serves a distinct purpose of surfacing the decision logic without requiring the reader to dig for it.\n- Scoped Review Requests: 10.0/10\n  Justification: The review scope is tightly defined to the invalidation strategy in Section 3, pages 8–11, with three specific questions guiding the feedback. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly named (implementation details, library selection, deployment topology), with a clear reason why they're deferred.\n- Thread Discipline: 9.7/10\n  Justification: The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread.\n\nYour weakest criteria are: Link, Don't Duplicate, Thread Discipline. Focus your revision on improving these."
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy\n\nHi team,\n\nWe're moving forward with adding a dedicated caching layer to the service. **The immediate ask: please review the invalidation strategy in the proposal and share feedback by end of day Friday.**\n\nThe full proposal is in Confluence: [Caching Layer Architecture Proposal](link). For this round, focus exclusively on the **invalidation strategy** ([Section 3, pages 8–11](link)). Implementation details, library selection, and deployment topology are out of scope for now — we'll cover those in a follow-up review once the invalidation approach is locked.\n\n**What I'm looking for on the invalidation strategy specifically:**\n- Does the TTL-based expiry with event-driven override hold up under the failure modes described in [Section 3.2](link)?\n- Are there edge cases in the cache-aside pattern we haven't accounted for?\n- Does the strategy work with our existing event bus, or does it create new coupling we should be concerned about?\n\nWe chose event-driven invalidation over pure TTL and over write-through. The decision rationale — including the stale window constraints and transaction boundary concerns that ruled out the alternatives, and the operational tradeoffs we're accepting — is documented in [Section 2 (Decision Log)](link). That section is worth a quick read before reviewing Section 3, since it explains the constraints the invalidation strategy is designed around.\n\nPlease leave comments directly in the Confluence doc. If you have a concern that feels too nuanced for a comment, reply to this thread — I'd rather keep the discussion async and in one place than schedule a walkthrough.\n\nThanks,\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 6,
+              "justification": "The email names two alternatives (pure TTL and write-through) and points to a Decision Log for rationale, which is better than nothing. However, the rejection rationale and tradeoff acknowledgment are deferred entirely to the linked document rather than stated inline — the email only gestures at 'stale window constraints and transaction boundary concerns' without actually explaining them. The decision appears early (first paragraph), satisfying that dimension, but the tradeoff of what the chosen option sacrifices is not acknowledged in the email body itself. Per the rubric, stating a decision without alternatives is an edict; here the alternatives are named but the reasoning is outsourced, leaving the email incomplete on this criterion."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email consistently links to the Confluence proposal, specific sections (3, 3.2, and the Decision Log in Section 2), and avoids reproducing content from those sources inline. Each link has clear surrounding context explaining why the reader should click it. There is no detectable content duplication — the email describes what to look for rather than restating the proposal content. This is a strong execution of the link-don't-duplicate principle."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request is tightly scoped: it specifies the exact section to review (Section 3, pages 8–11), provides three concrete focus questions covering failure modes, edge cases, and coupling concerns, sets a clear deadline (end of day Friday), and explicitly calls out what is out of scope (implementation details, library selection, deployment topology). All three dimensions are fully satisfied with specificity."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content ('Architecture Review Request: Caching Layer Invalidation Strategy'). There is no indication of topic drift or continuation of a mismatched thread. All three dimensions are cleanly satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.81,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 6,
+              "justification": "The email names the alternatives (pure TTL and write-through) and points to a Decision Log in Section 2, which is a reasonable approach. However, the rejection rationale and tradeoff acknowledgment are deferred to the linked document rather than stated inline — 'stale window constraints and transaction boundary concerns' are mentioned but not explained, leaving the reader without the actual reasoning unless they click through. The decision itself appears early but is somewhat buried behind the review ask framing. The tradeoff the chosen option sacrifices is not acknowledged in the email body at all."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email consistently links to the Confluence proposal, specific sections (3, 3.2, and 2), and avoids reproducing content from those sources. Each link has clear surrounding context explaining why the reader should click it. There is no content duplication — the email describes what's in the doc without restating it. This is a strong example of the link-don't-duplicate principle in practice."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request is tightly scoped: it specifies the exact section to review (Section 3, pages 8–11), provides three concrete questions defining the feedback type (failure modes, edge cases, coupling concerns), sets a clear deadline (end of day Friday), and explicitly calls out what is out of scope (implementation details, library selection, deployment topology). This fully satisfies all three dimensions."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects that content. There is no bundling of unrelated items, and the email is clearly a fresh thread rather than a reply to an unrelated conversation. Full compliance with all three dimensions."
+            }
+          ],
+          "overall_weighted_score": 0.81,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 6,
+              "justification": "The email names two alternatives (pure TTL and write-through) and references a Decision Log in Section 2, which is a reasonable approach. However, the rejection rationale and tradeoff acknowledgment are deferred to the linked document rather than stated inline — 'stale window constraints and transaction boundary concerns' are mentioned but not explained, so a reader cannot understand why alternatives were rejected without clicking through. The decision appears early (paragraph 4), but it is not in the first two sentences. The tradeoff the chosen option sacrifices is not acknowledged in the email body at all."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email consistently links to the Confluence proposal and specific sections rather than reproducing content inline. Each link has clear surrounding context explaining why to click it (e.g., 'Section 2 (Decision Log)' is framed as prerequisite reading for Section 3). There is no apparent duplication of content that exists in the linked document. This is a strong example of the link-don't-duplicate principle."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request is tightly scoped: it specifies the exact section to review (Section 3, pages 8–11), provides three concrete questions defining the type of feedback needed (failure modes, edge cases, coupling concerns), sets a clear deadline (end of day Friday), and explicitly calls out what is out of scope (implementation details, library selection, deployment topology). All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no indication of topic drift or mismatched subject. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.81,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 6.0,
+          "Link, Don't Duplicate": 9.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 0.81,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 6,
+                "justification": "The email names two alternatives (pure TTL and write-through) and points to a Decision Log for rationale, which is better than nothing. However, the rejection rationale and tradeoff acknowledgment are deferred entirely to the linked document rather than stated inline — the email only gestures at 'stale window constraints and transaction boundary concerns' without actually explaining them. The decision appears early (first paragraph), satisfying that dimension, but the tradeoff of what the chosen option sacrifices is not acknowledged in the email body itself. Per the rubric, stating a decision without alternatives is an edict; here the alternatives are named but the reasoning is outsourced, leaving the email incomplete on this criterion."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email consistently links to the Confluence proposal, specific sections (3, 3.2, and the Decision Log in Section 2), and avoids reproducing content from those sources inline. Each link has clear surrounding context explaining why the reader should click it. There is no detectable content duplication — the email describes what to look for rather than restating the proposal content. This is a strong execution of the link-don't-duplicate principle."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request is tightly scoped: it specifies the exact section to review (Section 3, pages 8–11), provides three concrete focus questions covering failure modes, edge cases, and coupling concerns, sets a clear deadline (end of day Friday), and explicitly calls out what is out of scope (implementation details, library selection, deployment topology). All three dimensions are fully satisfied with specificity."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content ('Architecture Review Request: Caching Layer Invalidation Strategy'). There is no indication of topic drift or continuation of a mismatched thread. All three dimensions are cleanly satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1346,
+              "output_tokens": 547
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 6,
+                "justification": "The email names the alternatives (pure TTL and write-through) and points to a Decision Log in Section 2, which is a reasonable approach. However, the rejection rationale and tradeoff acknowledgment are deferred to the linked document rather than stated inline — 'stale window constraints and transaction boundary concerns' are mentioned but not explained, leaving the reader without the actual reasoning unless they click through. The decision itself appears early but is somewhat buried behind the review ask framing. The tradeoff the chosen option sacrifices is not acknowledged in the email body at all."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email consistently links to the Confluence proposal, specific sections (3, 3.2, and 2), and avoids reproducing content from those sources. Each link has clear surrounding context explaining why the reader should click it. There is no content duplication — the email describes what's in the doc without restating it. This is a strong example of the link-don't-duplicate principle in practice."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request is tightly scoped: it specifies the exact section to review (Section 3, pages 8–11), provides three concrete questions defining the feedback type (failure modes, edge cases, coupling concerns), sets a clear deadline (end of day Friday), and explicitly calls out what is out of scope (implementation details, library selection, deployment topology). This fully satisfies all three dimensions."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — and the subject line accurately reflects that content. There is no bundling of unrelated items, and the email is clearly a fresh thread rather than a reply to an unrelated conversation. Full compliance with all three dimensions."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1346,
+              "output_tokens": 501
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 6,
+                "justification": "The email names two alternatives (pure TTL and write-through) and references a Decision Log in Section 2, which is a reasonable approach. However, the rejection rationale and tradeoff acknowledgment are deferred to the linked document rather than stated inline — 'stale window constraints and transaction boundary concerns' are mentioned but not explained, so a reader cannot understand why alternatives were rejected without clicking through. The decision appears early (paragraph 4), but it is not in the first two sentences. The tradeoff the chosen option sacrifices is not acknowledged in the email body at all."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email consistently links to the Confluence proposal and specific sections rather than reproducing content inline. Each link has clear surrounding context explaining why to click it (e.g., 'Section 2 (Decision Log)' is framed as prerequisite reading for Section 3). There is no apparent duplication of content that exists in the linked document. This is a strong example of the link-don't-duplicate principle."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request is tightly scoped: it specifies the exact section to review (Section 3, pages 8–11), provides three concrete questions defining the type of feedback needed (failure modes, edge cases, coupling concerns), sets a clear deadline (end of day Friday), and explicitly calls out what is out of scope (implementation details, library selection, deployment topology). All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no indication of topic drift or mismatched subject. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1346,
+              "output_tokens": 499
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 6.0/10\n  Justification: The email names two alternatives (pure TTL and write-through) and points to a Decision Log for rationale, which is better than nothing. However, the rejection rationale and tradeoff acknowledgment are deferred entirely to the linked document rather than stated inline — the email only gestures at 'stale window constraints and transaction boundary concerns' without actually explaining them. The decision appears early (first paragraph), satisfying that dimension, but the tradeoff of what the chosen option sacrifices is not acknowledged in the email body itself. Per the rubric, stating a decision without alternatives is an edict; here the alternatives are named but the reasoning is outsourced, leaving the email incomplete on this criterion.\n- Link, Don't Duplicate: 9.0/10\n  Justification: The email consistently links to the Confluence proposal, specific sections (3, 3.2, and the Decision Log in Section 2), and avoids reproducing content from those sources inline. Each link has clear surrounding context explaining why the reader should click it. There is no detectable content duplication — the email describes what to look for rather than restating the proposal content. This is a strong execution of the link-don't-duplicate principle.\n- Scoped Review Requests: 10.0/10\n  Justification: The review request is tightly scoped: it specifies the exact section to review (Section 3, pages 8–11), provides three concrete focus questions covering failure modes, edge cases, and coupling concerns, sets a clear deadline (end of day Friday), and explicitly calls out what is out of scope (implementation details, library selection, deployment topology). All three dimensions are fully satisfied with specificity.\n- Thread Discipline: 10.0/10\n  Justification: The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content ('Architecture Review Request: Caching Layer Invalidation Strategy'). There is no indication of topic drift or continuation of a mismatched thread. All three dimensions are cleanly satisfied.\n\nYour weakest criteria are: Decision Tradeoff Transparency, Link, Don't Duplicate. Focus your revision on improving these."
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy\n\nHi team,\n\nWe're moving forward with adding a dedicated caching layer to the service. **The immediate ask: please review the invalidation strategy in the proposal and share feedback by end of day Friday.**\n\nThe full proposal is in Confluence: [Caching Layer Architecture Proposal](link). For this round, focus exclusively on the **invalidation strategy** ([Section 3, pages 8–11](link)). Implementation details, library selection, and deployment topology are out of scope for now — we'll cover those in a follow-up review once the invalidation approach is locked.\n\n**What I'm looking for on the invalidation strategy specifically:**\n- Does the TTL-based expiry with event-driven override hold up under the failure modes described in [Section 3.2](link)?\n- Are there edge cases in the cache-aside pattern we haven't accounted for?\n- Does the strategy work with our existing event bus, or does it create new coupling we should be concerned about?\n\nWe chose event-driven invalidation over two alternatives:\n\n- **Pure TTL** was rejected because stale windows of up to 60 seconds are unacceptable for order status data — a customer could see an outdated order state well after it's changed.\n- **Write-through invalidation** was rejected because it requires coordinating cache writes inside the existing DB transaction boundary, adding latency and introducing a new failure mode we don't currently have to manage.\n\nThe tradeoff we're accepting: the cache is now dependent on event bus availability. If the event bus has an outage, invalidation falls back to TTL expiry — meaning we're back to the stale window problem we rejected above, under failure conditions. That's a known risk; see [Section 2 (Decision Log)](link) for how we've assessed it.\n\nPlease leave comments directly in the Confluence doc. If you have a concern that feels too nuanced for a comment, reply to this thread — I'd rather keep the discussion async and in one place than schedule a walkthrough.\n\nThanks,\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named with specific rejection rationale — pure TTL rejected due to 60-second stale windows for order status data, write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means stale window problem resurfaces under failure conditions, which is precisely what was rejected in the alternatives."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — each with clear context for why to click. The email does not reproduce the full proposal content inline. The only minor concern is that the three bullet-point review questions partially describe content that may exist in the proposal, but these serve as navigation guides rather than duplicating the source material."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is tightly defined: invalidation strategy only, with three specific sub-questions (failure modes, edge cases in cache-aside, event bus coupling). The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology are all called out as deferred to a follow-up review."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line 'Architecture Review Request: Caching Layer Invalidation Strategy' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named with specific rejection rationale — pure TTL rejected due to 60-second stale windows for order status data, write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the very stale window problem that motivated the decision. All four dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — each with clear context explaining why to click. The email does not reproduce the proposal content inline, only summarizing enough to orient the reader. The only minor gap is that the links are placeholders ('link') rather than real URLs, but structurally the pattern is correct and no content duplication occurs."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined with three specific questions targeting the invalidation strategy. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully satisfied with no ambiguity."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. The only reason this isn't a perfect 10 is that the mention of 'a follow-up review once the invalidation approach is locked' could be seen as lightly previewing a future topic, but it does not introduce or bundle that topic into this thread."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named with specific rejection rationale — pure TTL rejected due to 60-second stale windows for order status data, write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means stale window problem resurfaces under failure conditions, which is precisely what was rejected in the alternatives."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — each with clear context for why to click. The email does not reproduce the full proposal content inline. The only minor concern is that the three bullet-point review questions partially describe content that may exist in the proposal, but these serve as navigation guides rather than duplicating the source material."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "Feedback scope is tightly defined: invalidation strategy only, with three specific sub-questions (failure modes, edge cases in cache-aside, event bus coupling). The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology are all called out as deferred to a follow-up review."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line 'Architecture Review Request: Caching Layer Invalidation Strategy' accurately matches the content. There is no evidence of topic drift or continuation of a mismatched thread."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 9.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 9.666666666666666
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.5773502691896257
+        },
+        "mean_overall": 0.9666666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named with specific rejection rationale — pure TTL rejected due to 60-second stale windows for order status data, write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means stale window problem resurfaces under failure conditions, which is precisely what was rejected in the alternatives."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — each with clear context for why to click. The email does not reproduce the full proposal content inline. The only minor concern is that the three bullet-point review questions partially describe content that may exist in the proposal, but these serve as navigation guides rather than duplicating the source material."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is tightly defined: invalidation strategy only, with three specific sub-questions (failure modes, edge cases in cache-aside, event bus coupling). The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology are all called out as deferred to a follow-up review."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line 'Architecture Review Request: Caching Layer Invalidation Strategy' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1437,
+              "output_tokens": 494
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named with specific rejection rationale — pure TTL rejected due to 60-second stale windows for order status data, write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the very stale window problem that motivated the decision. All four dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — each with clear context explaining why to click. The email does not reproduce the proposal content inline, only summarizing enough to orient the reader. The only minor gap is that the links are placeholders ('link') rather than real URLs, but structurally the pattern is correct and no content duplication occurs."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined with three specific questions targeting the invalidation strategy. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully satisfied with no ambiguity."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. The only reason this isn't a perfect 10 is that the mention of 'a follow-up review once the invalidation approach is locked' could be seen as lightly previewing a future topic, but it does not introduce or bundle that topic into this thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1437,
+              "output_tokens": 523
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named with specific rejection rationale — pure TTL rejected due to 60-second stale windows for order status data, write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means stale window problem resurfaces under failure conditions, which is precisely what was rejected in the alternatives."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — each with clear context for why to click. The email does not reproduce the full proposal content inline. The only minor concern is that the three bullet-point review questions partially describe content that may exist in the proposal, but these serve as navigation guides rather than duplicating the source material."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "Feedback scope is tightly defined: invalidation strategy only, with three specific sub-questions (failure modes, edge cases in cache-aside, event bus coupling). The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology are all called out as deferred to a follow-up review."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line 'Architecture Review Request: Caching Layer Invalidation Strategy' accurately matches the content. There is no evidence of topic drift or continuation of a mismatched thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1437,
+              "output_tokens": 494
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named with specific rejection rationale — pure TTL rejected due to 60-second stale windows for order status data, write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means stale window problem resurfaces under failure conditions, which is precisely what was rejected in the alternatives.\n- Link, Don't Duplicate: 9.0/10\n  Justification: The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — each with clear context for why to click. The email does not reproduce the full proposal content inline. The only minor concern is that the three bullet-point review questions partially describe content that may exist in the proposal, but these serve as navigation guides rather than duplicating the source material.\n- Scoped Review Requests: 10.0/10\n  Justification: Feedback scope is tightly defined: invalidation strategy only, with three specific sub-questions (failure modes, edge cases in cache-aside, event bus coupling). The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology are all called out as deferred to a follow-up review.\n- Thread Discipline: 9.7/10\n  Justification: The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line 'Architecture Review Request: Caching Layer Invalidation Strategy' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread.\n\nYour weakest criteria are: Link, Don't Duplicate, Thread Discipline. Focus your revision on improving these."
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy\n\nHi team,\n\nWe're moving forward with adding a dedicated caching layer to the service. **The immediate ask: please review the invalidation strategy and share feedback by end of day Friday.**\n\nThe full proposal is in Confluence: [Caching Layer Architecture Proposal](link). For this round, focus exclusively on the **invalidation strategy** ([Section 3, pages 8–11](link)). Implementation details, library selection, and deployment topology are out of scope for now — we'll cover those in a follow-up review once the invalidation approach is locked.\n\n**What I'm looking for on the invalidation strategy specifically:**\n- Does the TTL-based expiry with event-driven override hold up under the failure modes described in [Section 3.2](link)?\n- Are there edge cases in the cache-aside pattern we haven't accounted for?\n- Does the strategy work with our existing event bus, or does it create new coupling we should be concerned about?\n\nWe chose event-driven invalidation over two alternatives:\n\n- **Pure TTL** was rejected because stale windows of up to 60 seconds are unacceptable for order status data — a customer could see an outdated order state well after it's changed.\n- **Write-through invalidation** was rejected because it requires coordinating cache writes inside the existing DB transaction boundary, adding latency and introducing a new failure mode we don't currently have to manage.\n\nThe tradeoff we're accepting: the cache is now dependent on event bus availability. If the event bus has an outage, invalidation falls back to TTL expiry — meaning we're back to the stale window problem we rejected above, under failure conditions. That's a known risk; the full assessment is in [Section 2 (Decision Log)](link).\n\nPlease leave comments directly in the Confluence doc. If you have a concern that feels too nuanced for a comment, reply to this thread — I'd rather keep the discussion async and in one place than schedule a walkthrough.\n\nThanks,\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first two sentences implicitly and is clearly stated early. Two alternatives (Pure TTL, Write-through) are named with specific rejection rationale — stale windows of 60 seconds for order status data, and transaction boundary coordination adding latency and failure modes. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the very stale-window problem that motivated rejecting Pure TTL. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to the Confluence proposal, Section 3 (pages 8–11), Section 3.2, and Section 2 (Decision Log) rather than reproducing their content inline. Each link has clear surrounding context explaining why to click it. The inline prose is limited to framing and summary rather than duplicating document content. Minor note: the decision log risk assessment is briefly summarized ('known risk; full assessment in Section 2') which is appropriate framing rather than duplication."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined with three specific questions targeting the invalidation strategy only. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully and unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review. The subject line accurately matches the content. There is no bundling of unrelated items, and the email explicitly defers other topics (implementation, library selection, deployment) to future separate reviews rather than including them here."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision (event-driven invalidation) appears in the first two sentences implicitly and is clearly stated early. Two alternatives (Pure TTL, Write-through) are named with specific rejection rationale — stale windows of 60 seconds for order status data, and transaction boundary coordination adding latency and a new failure mode. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the stale window problem under failure conditions. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to the Confluence proposal, Section 3 specifically, Section 3.2, and the Decision Log rather than reproducing their content inline. Each link has clear surrounding context explaining why to click it. The email does include some inline summary of rejection rationale, but this serves the decision transparency criterion rather than duplicating canonical content — the full assessments are deferred to the linked sections. No meaningful content duplication is present."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined: invalidation strategy only, with three specific questions covering failure modes, edge cases, and event bus coupling. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no evidence of topic drift or mismatched subject. The slight deduction is because we cannot verify from the draft alone whether this is a new thread or a reply to an existing one, though the subject line format strongly suggests it is a fresh thread."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Two alternatives (Pure TTL and Write-through invalidation) are named with specific rejection rationale — Pure TTL rejected due to 60-second stale windows for order status data, Write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the very stale window problem that motivated rejecting Pure TTL. All four dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — all hyperlinked rather than described in prose. The email does not reproduce the content of those sections but instead directs readers to them with clear context for why each link matters. The only minor gap is that the links use placeholder text '(link)' rather than actual URLs, but structurally the approach is sound and all three dimensions are met."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined with three specific questions targeting the invalidation strategy only. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully satisfied with no ambiguity."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line 'Architecture Review Request: Caching Layer Invalidation Strategy' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 9.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 9.666666666666666
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.5773502691896257
+        },
+        "mean_overall": 0.9666666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first two sentences implicitly and is clearly stated early. Two alternatives (Pure TTL, Write-through) are named with specific rejection rationale — stale windows of 60 seconds for order status data, and transaction boundary coordination adding latency and failure modes. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the very stale-window problem that motivated rejecting Pure TTL. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to the Confluence proposal, Section 3 (pages 8–11), Section 3.2, and Section 2 (Decision Log) rather than reproducing their content inline. Each link has clear surrounding context explaining why to click it. The inline prose is limited to framing and summary rather than duplicating document content. Minor note: the decision log risk assessment is briefly summarized ('known risk; full assessment in Section 2') which is appropriate framing rather than duplication."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined with three specific questions targeting the invalidation strategy only. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully and unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review. The subject line accurately matches the content. There is no bundling of unrelated items, and the email explicitly defers other topics (implementation, library selection, deployment) to future separate reviews rather than including them here."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1431,
+              "output_tokens": 486
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision (event-driven invalidation) appears in the first two sentences implicitly and is clearly stated early. Two alternatives (Pure TTL, Write-through) are named with specific rejection rationale — stale windows of 60 seconds for order status data, and transaction boundary coordination adding latency and a new failure mode. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the stale window problem under failure conditions. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to the Confluence proposal, Section 3 specifically, Section 3.2, and the Decision Log rather than reproducing their content inline. Each link has clear surrounding context explaining why to click it. The email does include some inline summary of rejection rationale, but this serves the decision transparency criterion rather than duplicating canonical content — the full assessments are deferred to the linked sections. No meaningful content duplication is present."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined: invalidation strategy only, with three specific questions covering failure modes, edge cases, and event bus coupling. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review — with no bundled unrelated items. The subject line accurately describes the content. There is no evidence of topic drift or mismatched subject. The slight deduction is because we cannot verify from the draft alone whether this is a new thread or a reply to an existing one, though the subject line format strongly suggests it is a fresh thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1431,
+              "output_tokens": 498
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Two alternatives (Pure TTL and Write-through invalidation) are named with specific rejection rationale — Pure TTL rejected due to 60-second stale windows for order status data, Write-through rejected due to transaction boundary coordination and new failure modes. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the very stale window problem that motivated rejecting Pure TTL. All four dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to the full Confluence proposal, Section 3 specifically, Section 3.2 for failure modes, and Section 2 (Decision Log) — all hyperlinked rather than described in prose. The email does not reproduce the content of those sections but instead directs readers to them with clear context for why each link matters. The only minor gap is that the links use placeholder text '(link)' rather than actual URLs, but structurally the approach is sound and all three dimensions are met."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined with three specific questions targeting the invalidation strategy only. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully satisfied with no ambiguity."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the invalidation strategy review — with no bundled unrelated items. The subject line 'Architecture Review Request: Caching Layer Invalidation Strategy' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1431,
+              "output_tokens": 502
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision (event-driven invalidation) appears in the first two sentences implicitly and is clearly stated early. Two alternatives (Pure TTL, Write-through) are named with specific rejection rationale — stale windows of 60 seconds for order status data, and transaction boundary coordination adding latency and failure modes. The tradeoff is explicitly acknowledged: event bus dependency means fallback to the very stale-window problem that motivated rejecting Pure TTL. All four dimensions are fully satisfied.\n- Link, Don't Duplicate: 9.0/10\n  Justification: The email links to the Confluence proposal, Section 3 (pages 8–11), Section 3.2, and Section 2 (Decision Log) rather than reproducing their content inline. Each link has clear surrounding context explaining why to click it. The inline prose is limited to framing and summary rather than duplicating document content. Minor note: the decision log risk assessment is briefly summarized ('known risk; full assessment in Section 2') which is appropriate framing rather than duplication.\n- Scoped Review Requests: 10.0/10\n  Justification: The feedback scope is tightly defined with three specific questions targeting the invalidation strategy only. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. All three dimensions are fully and unambiguously satisfied.\n- Thread Discipline: 9.7/10\n  Justification: The email addresses exactly one topic — the caching layer invalidation strategy review. The subject line accurately matches the content. There is no bundling of unrelated items, and the email explicitly defers other topics (implementation, library selection, deployment) to future separate reviews rather than including them here.\n\nYour weakest criteria are: Link, Don't Duplicate, Thread Discipline. Focus your revision on improving these."
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Architecture Review Request: Caching Layer Invalidation Strategy\n\nHi team,\n\nWe're moving forward with adding a dedicated caching layer to the service. **The immediate ask: please review the invalidation strategy and share feedback by end of day Friday.**\n\nThe full proposal is in Confluence: [Caching Layer Architecture Proposal](link). For this round, focus exclusively on the **invalidation strategy** ([Section 3, pages 8–11](link)). Implementation details, library selection, and deployment topology are out of scope for now — we'll cover those in a follow-up review once the invalidation approach is locked.\n\n**Three specific questions to guide your review:**\n- Does the TTL-based expiry with event-driven override hold up under the failure modes described in [Section 3.2](link)?\n- Are there edge cases in the cache-aside pattern we haven't accounted for?\n- Does the strategy create problematic coupling with our existing event bus?\n\nWe chose event-driven invalidation over two alternatives:\n\n- **Pure TTL** was rejected because stale windows of up to 60 seconds are unacceptable for order status data — a customer could see an outdated order state well after it's changed.\n- **Write-through invalidation** was rejected because it requires coordinating cache writes inside the existing DB transaction boundary, adding latency and introducing a new failure mode we don't currently have to manage.\n\nThe tradeoff we're accepting: the cache is now dependent on event bus availability. If the event bus has an outage, invalidation falls back to TTL expiry — meaning the stale window problem we rejected above resurfaces under failure conditions. The full risk assessment is in [Section 2 (Decision Log)](link).\n\nPlease leave comments directly in the Confluence doc. If something feels too nuanced for a comment, reply to this thread — I'd rather keep the discussion async and in one place than schedule a walkthrough.\n\nThanks,\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named and rejected with specific, concrete reasoning (60-second stale windows for order status data; DB transaction boundary latency and new failure modes). The tradeoff is explicitly acknowledged: event bus dependency means the stale window problem resurfaces under failure conditions — exactly the problem that drove rejection of pure TTL."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The full proposal, Section 3 (pages 8–11), Section 3.2, and the Decision Log are all hyperlinked rather than reproduced inline. The email does not duplicate the content of those sections. Each link has sufficient surrounding context (e.g., 'focus exclusively on the invalidation strategy' before the Section 3 link, 'full risk assessment' before the Decision Log link). Minor note: the inline explanation of the three review questions partially describes content that may exist in the proposal, but this serves as scoping guidance rather than duplication."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined: invalidation strategy only, with three specific guiding questions. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. This is a textbook scoped review request."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review. The subject line accurately matches the content. There is no bundling of unrelated items. The only minor ambiguity is the mention of 'a follow-up review once the invalidation approach is locked,' but this is a forward reference, not a second topic introduced in this thread."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named and rejected with specific, concrete reasoning (60-second stale windows for order status data; DB transaction boundary latency and new failure modes). The tradeoff is explicitly acknowledged: event bus dependency means the stale window problem resurfaces under failure conditions — exactly the problem that drove rejection of pure TTL."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The full proposal, Section 3, Section 3.2, and the Decision Log are all hyperlinked rather than reproduced inline. Each link has clear surrounding context explaining why to click it. The email does include some inline explanation of the decision rationale, but this serves the transparency criterion rather than duplicating canonical content — the full risk assessment is deferred to the linked Section 2, not restated."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined (invalidation strategy, Section 3 pages 8–11) with three specific guiding questions. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly listed (implementation details, library selection, deployment topology), with a note that those will be addressed in a follow-up review."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic: the caching layer invalidation strategy review. The subject line accurately and specifically describes the content. There is no bundling of unrelated items, and the email explicitly defers other topics (library selection, deployment topology) to future threads."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named and rejected with specific, concrete reasoning (60-second stale windows for order status data; DB transaction boundary latency and new failure modes). The tradeoff is explicitly acknowledged: event bus dependency means the stale window problem resurfaces under failure conditions — exactly the problem that drove rejection of pure TTL."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The full proposal, Section 3 (pages 8–11), Section 3.2, and the Decision Log are all hyperlinked rather than reproduced inline. The email does not duplicate the content of those sections. Each link has sufficient surrounding context (e.g., 'focus exclusively on the invalidation strategy' before the Section 3 link, 'full risk assessment' before the Decision Log link). Minor note: the inline explanation of the three review questions partially describes content that may exist in the proposal, but this serves as scoping guidance rather than duplication."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback scope is tightly defined: invalidation strategy only, with three specific guiding questions. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. This is a textbook scoped review request."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review. The subject line accurately matches the content. There is no bundling of unrelated items. The only minor ambiguity is the mention of 'a follow-up review once the invalidation approach is locked,' but this is a forward reference, not a second topic introduced in this thread."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 9.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 9.333333333333334
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.5773502691896257
+        },
+        "mean_overall": 0.9633333333333333,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named and rejected with specific, concrete reasoning (60-second stale windows for order status data; DB transaction boundary latency and new failure modes). The tradeoff is explicitly acknowledged: event bus dependency means the stale window problem resurfaces under failure conditions — exactly the problem that drove rejection of pure TTL."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The full proposal, Section 3 (pages 8–11), Section 3.2, and the Decision Log are all hyperlinked rather than reproduced inline. The email does not duplicate the content of those sections. Each link has sufficient surrounding context (e.g., 'focus exclusively on the invalidation strategy' before the Section 3 link, 'full risk assessment' before the Decision Log link). Minor note: the inline explanation of the three review questions partially describes content that may exist in the proposal, but this serves as scoping guidance rather than duplication."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined: invalidation strategy only, with three specific guiding questions. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. This is a textbook scoped review request."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review. The subject line accurately matches the content. There is no bundling of unrelated items. The only minor ambiguity is the mention of 'a follow-up review once the invalidation approach is locked,' but this is a forward reference, not a second topic introduced in this thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1406,
+              "output_tokens": 513
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named and rejected with specific, concrete reasoning (60-second stale windows for order status data; DB transaction boundary latency and new failure modes). The tradeoff is explicitly acknowledged: event bus dependency means the stale window problem resurfaces under failure conditions — exactly the problem that drove rejection of pure TTL."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The full proposal, Section 3, Section 3.2, and the Decision Log are all hyperlinked rather than reproduced inline. Each link has clear surrounding context explaining why to click it. The email does include some inline explanation of the decision rationale, but this serves the transparency criterion rather than duplicating canonical content — the full risk assessment is deferred to the linked Section 2, not restated."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined (invalidation strategy, Section 3 pages 8–11) with three specific guiding questions. The deadline is explicit (end of day Friday). Out-of-scope items are explicitly listed (implementation details, library selection, deployment topology), with a note that those will be addressed in a follow-up review."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic: the caching layer invalidation strategy review. The subject line accurately and specifically describes the content. There is no bundling of unrelated items, and the email explicitly defers other topics (library selection, deployment topology) to future threads."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1406,
+              "output_tokens": 469
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence ('We're moving forward with adding a dedicated caching layer'). Both alternatives (pure TTL and write-through invalidation) are named and rejected with specific, concrete reasoning (60-second stale windows for order status data; DB transaction boundary latency and new failure modes). The tradeoff is explicitly acknowledged: event bus dependency means the stale window problem resurfaces under failure conditions — exactly the problem that drove rejection of pure TTL."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The full proposal, Section 3 (pages 8–11), Section 3.2, and the Decision Log are all hyperlinked rather than reproduced inline. The email does not duplicate the content of those sections. Each link has sufficient surrounding context (e.g., 'focus exclusively on the invalidation strategy' before the Section 3 link, 'full risk assessment' before the Decision Log link). Minor note: the inline explanation of the three review questions partially describes content that may exist in the proposal, but this serves as scoping guidance rather than duplication."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback scope is tightly defined: invalidation strategy only, with three specific guiding questions. The deadline is explicit ('end of day Friday'). Out-of-scope items are explicitly listed: implementation details, library selection, and deployment topology. This is a textbook scoped review request."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the caching layer invalidation strategy review. The subject line accurately matches the content. There is no bundling of unrelated items. The only minor ambiguity is the mention of 'a follow-up review once the invalidation approach is locked,' but this is a forward reference, not a second topic introduced in this thread."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1406,
+              "output_tokens": 513
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Options considered and rationale for chosen path",
+        "satisfied": "yes",
+        "evidence": "The email explicitly lists two rejected alternatives (Pure TTL and Write-through invalidation) with clear reasons for rejection, and states the accepted tradeoff of the chosen approach: 'The tradeoff we're accepting: the cache is now dependent on event bus availability.'"
+      },
+      {
+        "preference": "Links to documents replace inline explanations",
+        "satisfied": "yes",
+        "evidence": "Multiple links are provided: Confluence proposal link, Section 3 pages 8-11 link, Section 3.2 link, Section 2 Decision Log link. Inline content is kept to summaries rather than duplicating document content."
+      },
+      {
+        "preference": "Specifies what kind of feedback and deadline",
+        "satisfied": "yes",
+        "evidence": "Explicitly scopes feedback: 'focus exclusively on the invalidation strategy' and 'Implementation details, library selection, and deployment topology are out of scope.' Deadline is 'end of day Friday.' Three specific guiding questions further narrow the feedback scope."
+      },
+      {
+        "preference": "Thread discipline: one topic per thread",
+        "satisfied": "yes",
+        "evidence": "The subject line is specific ('Architecture Review Request: Caching Layer Invalidation Strategy') and the email mentions follow-up reviews will happen separately: 'we'll cover those in a follow-up review once the invalidation approach is locked.'"
+      },
+      {
+        "preference": "Async-first, full context, no unnecessary meetings",
+        "satisfied": "yes",
+        "evidence": "'I'd rather keep the discussion async and in one place than schedule a walkthrough.' The email provides sufficient context and links for recipients to act without a meeting."
+      },
+      {
+        "preference": "Decision not buried in middle of context paragraphs",
+        "satisfied": "yes",
+        "evidence": "The immediate ask is bolded and placed in the first paragraph. The decision and alternatives are clearly structured with bold headers and bullet points, not buried in prose."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 852,
+      "output_tokens": 539
+    }
+  }
+}

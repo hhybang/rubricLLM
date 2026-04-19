@@ -1,0 +1,135 @@
+{
+  "scenario_id": "cover_letter_01",
+  "draft_id": "cover_letter_01_good",
+  "model": "opus",
+  "run": 2,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Anti-cliché discipline\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_motivational_filler\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The letter contains no phrases like 'passionate about,' 'results-driven,' or similar motivational filler; every sentence is grounded in specific actions or observations.\"\n        },\n        {\n          \"dimension_id\": \"no_generic_self_description\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The writer never uses generic adjectives like 'dynamic,' 'innovative,' or 'strategic leader' — identity is conveyed entirely through described actions and outcomes.\"\n        },\n        {\n          \"dimension_id\": \"claims_backed_by_evidence\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Every positive claim is supported by specifics, e.g., the claim about choosing what not to build is backed by the $2.3M product kill story with modeling, migration path, and 89% user retention.\"\n        },\n        {\n          \"dimension_id\": \"unique_to_writer\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Sentences like 'I spent three weeks interviewing churned merchants and reviewing session recordings before proposing something less exciting: we restructured the data collection sequence so merchants could start processing payments after completing only four fields instead of seventeen' are specific to this person's experience and could not be reused.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Composed-but-human tone\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_overly_casual_phrasing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The letter uses no slang, exclamation points, or sentence fragments for effect; the tone is conversational but professional throughout.\"\n        },\n        {\n          \"dimension_id\": \"no_stiff_formality\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The letter avoids stiff constructions — it opens with 'The last product I killed' rather than 'I am writing to express my interest,' and maintains a natural register throughout.\"\n        },\n        {\n          \"dimension_id\": \"natural_sentence_rhythm\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Sentence lengths vary considerably, from short declarative statements ('The insight wasn't technical.') to longer complex sentences describing processes, creating a natural reading rhythm.\"\n        },\n        {\n          \"dimension_id\": \"confidence_without_arrogance\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Accomplishments are stated directly ('Completion rates went to 84%') without hedging or boasting, and the writer credits others where appropriate ('customer success managers who had relationships I didn't and shouldn't have tried to replace').\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Contextualized proof points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_metrics\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Multiple quantified outcomes are included: '$8.1M in new ARR,' onboarding completion from 61% to 84%, merchant activation up 35%, 89% user retention during migration.\"\n        },\n        {\n          \"dimension_id\": \"method_visible\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Methods are clearly described, e.g., 'I spent three weeks interviewing churned merchants and reviewing session recordings' and 'modeling opportunity costs, running scenario analyses with finance, and building a migration path.'\"\n        },\n        {\n          \"dimension_id\": \"constraints_shown\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Constraints are explicitly mentioned: 'two developers over a six-week sprint,' 'a core team of eight engineers,' 'fourteen months end to end,' and hospital systems' change management processes assuming quarterly updates.\"\n        },\n        {\n          \"dimension_id\": \"narrative_not_list\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Proof points are embedded in narrative paragraphs with setup, action, and outcome — none are presented as bullet points or disconnected achievement lists.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Engagement-driven closing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_reference\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I've been following your expansion into the mid-market segment' references a specific strategic move by the company.\"\n        },\n        {\n          \"dimension_id\": \"curiosity_hook\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I think there's a less obvious path than the two extremes most companies default to' hints at a specific perspective without fully revealing it, creating a curiosity gap.\"\n        },\n        {\n          \"dimension_id\": \"not_gimmicky\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The hook is grounded in a real strategic tension ('whether your current self-serve onboarding can stretch to serve accounts that expect more guidance without building a full sales-assisted motion') and draws on stated prior experience, making it substantive rather than gimmicky.\"\n        },\n        {\n          \"dimension_id\": \"avoids_generic_availability\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The final sentence 'I'd welcome the chance to get into the details' is tied to the specific strategic discussion just introduced, not a generic 'I'm available at your convenience' statement.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Experience-grounded opening\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_experience\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'The last product I killed was generating $2.3M in annual revenue' opens with a specific experience rather than a statement of intent to apply.\"\n        },\n        {\n          \"dimension_id\": \"doesnt_try_too_hard\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The opening is attention-getting but earned — 'The last product I killed' is direct and factual rather than straining for drama, and immediately follows with concrete context.\"\n        },\n        {\n          \"dimension_id\": \"establishes_credibility_early\",\n          \"grade\": \"MET\",\n          \"evidence\": \"By the end of the first paragraph, the reader understands the writer makes high-stakes product decisions backed by rigorous analysis, with the $2.3M kill leading to $8.1M in new ARR.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2410,
+  "output_tokens": 1605,
+  "latency_ms": 22109,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Anti-cliché discipline",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_motivational_filler",
+            "grade": "MET",
+            "evidence": "The letter contains no phrases like 'passionate about,' 'results-driven,' or similar motivational filler; every sentence is grounded in specific actions or observations."
+          },
+          {
+            "dimension_id": "no_generic_self_description",
+            "grade": "MET",
+            "evidence": "The writer never uses generic adjectives like 'dynamic,' 'innovative,' or 'strategic leader' — identity is conveyed entirely through described actions and outcomes."
+          },
+          {
+            "dimension_id": "claims_backed_by_evidence",
+            "grade": "MET",
+            "evidence": "Every positive claim is supported by specifics, e.g., the claim about choosing what not to build is backed by the $2.3M product kill story with modeling, migration path, and 89% user retention."
+          },
+          {
+            "dimension_id": "unique_to_writer",
+            "grade": "MET",
+            "evidence": "Sentences like 'I spent three weeks interviewing churned merchants and reviewing session recordings before proposing something less exciting: we restructured the data collection sequence so merchants could start processing payments after completing only four fields instead of seventeen' are specific to this person's experience and could not be reused."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Composed-but-human tone",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_overly_casual_phrasing",
+            "grade": "MET",
+            "evidence": "The letter uses no slang, exclamation points, or sentence fragments for effect; the tone is conversational but professional throughout."
+          },
+          {
+            "dimension_id": "no_stiff_formality",
+            "grade": "MET",
+            "evidence": "The letter avoids stiff constructions — it opens with 'The last product I killed' rather than 'I am writing to express my interest,' and maintains a natural register throughout."
+          },
+          {
+            "dimension_id": "natural_sentence_rhythm",
+            "grade": "MET",
+            "evidence": "Sentence lengths vary considerably, from short declarative statements ('The insight wasn't technical.') to longer complex sentences describing processes, creating a natural reading rhythm."
+          },
+          {
+            "dimension_id": "confidence_without_arrogance",
+            "grade": "MET",
+            "evidence": "Accomplishments are stated directly ('Completion rates went to 84%') without hedging or boasting, and the writer credits others where appropriate ('customer success managers who had relationships I didn't and shouldn't have tried to replace')."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Contextualized proof points",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_metrics",
+            "grade": "MET",
+            "evidence": "Multiple quantified outcomes are included: '$8.1M in new ARR,' onboarding completion from 61% to 84%, merchant activation up 35%, 89% user retention during migration."
+          },
+          {
+            "dimension_id": "method_visible",
+            "grade": "MET",
+            "evidence": "Methods are clearly described, e.g., 'I spent three weeks interviewing churned merchants and reviewing session recordings' and 'modeling opportunity costs, running scenario analyses with finance, and building a migration path.'"
+          },
+          {
+            "dimension_id": "constraints_shown",
+            "grade": "MET",
+            "evidence": "Constraints are explicitly mentioned: 'two developers over a six-week sprint,' 'a core team of eight engineers,' 'fourteen months end to end,' and hospital systems' change management processes assuming quarterly updates."
+          },
+          {
+            "dimension_id": "narrative_not_list",
+            "grade": "MET",
+            "evidence": "Proof points are embedded in narrative paragraphs with setup, action, and outcome — none are presented as bullet points or disconnected achievement lists."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Engagement-driven closing",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_reference",
+            "grade": "MET",
+            "evidence": "'I've been following your expansion into the mid-market segment' references a specific strategic move by the company."
+          },
+          {
+            "dimension_id": "curiosity_hook",
+            "grade": "MET",
+            "evidence": "'I think there's a less obvious path than the two extremes most companies default to' hints at a specific perspective without fully revealing it, creating a curiosity gap."
+          },
+          {
+            "dimension_id": "not_gimmicky",
+            "grade": "MET",
+            "evidence": "The hook is grounded in a real strategic tension ('whether your current self-serve onboarding can stretch to serve accounts that expect more guidance without building a full sales-assisted motion') and draws on stated prior experience, making it substantive rather than gimmicky."
+          },
+          {
+            "dimension_id": "avoids_generic_availability",
+            "grade": "MET",
+            "evidence": "The final sentence 'I'd welcome the chance to get into the details' is tied to the specific strategic discussion just introduced, not a generic 'I'm available at your convenience' statement."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Experience-grounded opening",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_experience",
+            "grade": "MET",
+            "evidence": "'The last product I killed was generating $2.3M in annual revenue' opens with a specific experience rather than a statement of intent to apply."
+          },
+          {
+            "dimension_id": "doesnt_try_too_hard",
+            "grade": "MET",
+            "evidence": "The opening is attention-getting but earned — 'The last product I killed' is direct and factual rather than straining for drama, and immediately follows with concrete context."
+          },
+          {
+            "dimension_id": "establishes_credibility_early",
+            "grade": "MET",
+            "evidence": "By the end of the first paragraph, the reader understands the writer makes high-stakes product decisions backed by rigorous analysis, with the $2.3M kill leading to $8.1M in new ARR."
+          }
+        ]
+      }
+    ]
+  }
+}

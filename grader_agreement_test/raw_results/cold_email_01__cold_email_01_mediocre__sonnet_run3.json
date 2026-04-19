@@ -1,0 +1,130 @@
+{
+  "scenario_id": "cold_email_01",
+  "draft_id": "cold_email_01_mediocre",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Transparent intent\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_false_softeners\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft contains multiple false softeners: 'even if the timing isn't right,' 'No worries if now isn't the right time,' and 'I'd love to just get 15 minutes.'\"\n        },\n        {\n          \"dimension_id\": \"explicit_ask\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I'd love to just get 15 minutes on your calendar to share what we're working on' states a meeting request explicitly.\"\n        },\n        {\n          \"dimension_id\": \"honest_framing\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The framing hedges the funding intent with 'could be a great fit' and 'for the right investor,' obscuring that this is a direct funding ask.\"\n        },\n        {\n          \"dimension_id\": \"no_trick_feel\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'I think you'd find it interesting' and 'No worries if now isn't the right time' read as strategic false-modesty tactics designed to lower resistance.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Traction as narrative momentum\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"temporal_arc\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Metrics are listed with no time-based sequence or progression; there is no 'launched X months ago → now at Y' structure anywhere in the draft.\"\n        },\n        {\n          \"dimension_id\": \"no_bullet_stats\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Traction data is presented as a five-item bullet list: '$1.2M ARR,' '340% YoY growth,' '47 enterprise customers,' 'NPS of 72,' 'Recently signed 3 Fortune 500 pilots.'\"\n        },\n        {\n          \"dimension_id\": \"implied_trajectory\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The isolated bullet points provide no narrative context from which a reader could extrapolate forward momentum.\"\n        },\n        {\n          \"dimension_id\": \"organic_demand_signal\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No detail in the draft suggests customer pull or surprise growth; the metrics are stated flatly with no indication of how or why demand arose.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Double-duty personalization\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_source\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'I've been following your work at Meridian Ventures for a while now. Really impressive portfolio you've built.' references only the fund and portfolio generally, not any specific talk, post, or interview.\"\n        },\n        {\n          \"dimension_id\": \"thesis_connection\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No thesis or stated insight of the recipient is referenced; the email only says the company 'could be a great fit for your fund' without connecting to any specific investor view.\"\n        },\n        {\n          \"dimension_id\": \"proof_embedded\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The personalization paragraph contains only generic flattery and no metric or evidence point from the sender's business.\"\n        },\n        {\n          \"dimension_id\": \"natural_integration\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The flattery ('Really impressive portfolio you've built') sits as a standalone compliment entirely disconnected from the email's subsequent argument.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Peer-to-peer framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_deference_markers\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft contains 'I know you're incredibly busy,' 'Happy to work around your schedule,' and 'whenever works best for you' — all heavy deference markers.\"\n        },\n        {\n          \"dimension_id\": \"mutual_value\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'I'd be grateful for the opportunity to tell you more' frames the conversation as a favor to the sender, not as mutually interesting or valuable.\"\n        },\n        {\n          \"dimension_id\": \"direct_scheduling\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'Whenever works best for you' leaves scheduling entirely open-ended with no proposed time window or concrete coordination step.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Signal-dense subject line\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"credibility_upfront\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Subject line 'Quick chat?' contains no traction figure, role, or domain signal of any kind.\"\n        },\n        {\n          \"dimension_id\": \"ask_visible\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'Quick chat?' does not indicate whether this is a funding ask, partnership inquiry, or something else entirely.\"\n        },\n        {\n          \"dimension_id\": \"no_cleverness_tricks\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'Quick chat?' is a vague teaser designed to manufacture curiosity rather than communicate substance, functioning as a low-stakes hook trick.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2252,
+  "output_tokens": 1391,
+  "latency_ms": 20764,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Transparent intent",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_false_softeners",
+            "grade": "NOT_MET",
+            "evidence": "The draft contains multiple false softeners: 'even if the timing isn't right,' 'No worries if now isn't the right time,' and 'I'd love to just get 15 minutes.'"
+          },
+          {
+            "dimension_id": "explicit_ask",
+            "grade": "MET",
+            "evidence": "'I'd love to just get 15 minutes on your calendar to share what we're working on' states a meeting request explicitly."
+          },
+          {
+            "dimension_id": "honest_framing",
+            "grade": "NOT_MET",
+            "evidence": "The framing hedges the funding intent with 'could be a great fit' and 'for the right investor,' obscuring that this is a direct funding ask."
+          },
+          {
+            "dimension_id": "no_trick_feel",
+            "grade": "NOT_MET",
+            "evidence": "'I think you'd find it interesting' and 'No worries if now isn't the right time' read as strategic false-modesty tactics designed to lower resistance."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Traction as narrative momentum",
+        "dimension_grades": [
+          {
+            "dimension_id": "temporal_arc",
+            "grade": "NOT_MET",
+            "evidence": "Metrics are listed with no time-based sequence or progression; there is no 'launched X months ago → now at Y' structure anywhere in the draft."
+          },
+          {
+            "dimension_id": "no_bullet_stats",
+            "grade": "NOT_MET",
+            "evidence": "Traction data is presented as a five-item bullet list: '$1.2M ARR,' '340% YoY growth,' '47 enterprise customers,' 'NPS of 72,' 'Recently signed 3 Fortune 500 pilots.'"
+          },
+          {
+            "dimension_id": "implied_trajectory",
+            "grade": "NOT_MET",
+            "evidence": "The isolated bullet points provide no narrative context from which a reader could extrapolate forward momentum."
+          },
+          {
+            "dimension_id": "organic_demand_signal",
+            "grade": "NOT_MET",
+            "evidence": "No detail in the draft suggests customer pull or surprise growth; the metrics are stated flatly with no indication of how or why demand arose."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Double-duty personalization",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_source",
+            "grade": "NOT_MET",
+            "evidence": "'I've been following your work at Meridian Ventures for a while now. Really impressive portfolio you've built.' references only the fund and portfolio generally, not any specific talk, post, or interview."
+          },
+          {
+            "dimension_id": "thesis_connection",
+            "grade": "NOT_MET",
+            "evidence": "No thesis or stated insight of the recipient is referenced; the email only says the company 'could be a great fit for your fund' without connecting to any specific investor view."
+          },
+          {
+            "dimension_id": "proof_embedded",
+            "grade": "NOT_MET",
+            "evidence": "The personalization paragraph contains only generic flattery and no metric or evidence point from the sender's business."
+          },
+          {
+            "dimension_id": "natural_integration",
+            "grade": "NOT_MET",
+            "evidence": "The flattery ('Really impressive portfolio you've built') sits as a standalone compliment entirely disconnected from the email's subsequent argument."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Peer-to-peer framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_deference_markers",
+            "grade": "NOT_MET",
+            "evidence": "The draft contains 'I know you're incredibly busy,' 'Happy to work around your schedule,' and 'whenever works best for you' — all heavy deference markers."
+          },
+          {
+            "dimension_id": "mutual_value",
+            "grade": "NOT_MET",
+            "evidence": "'I'd be grateful for the opportunity to tell you more' frames the conversation as a favor to the sender, not as mutually interesting or valuable."
+          },
+          {
+            "dimension_id": "direct_scheduling",
+            "grade": "NOT_MET",
+            "evidence": "'Whenever works best for you' leaves scheduling entirely open-ended with no proposed time window or concrete coordination step."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Signal-dense subject line",
+        "dimension_grades": [
+          {
+            "dimension_id": "credibility_upfront",
+            "grade": "NOT_MET",
+            "evidence": "Subject line 'Quick chat?' contains no traction figure, role, or domain signal of any kind."
+          },
+          {
+            "dimension_id": "ask_visible",
+            "grade": "NOT_MET",
+            "evidence": "'Quick chat?' does not indicate whether this is a funding ask, partnership inquiry, or something else entirely."
+          },
+          {
+            "dimension_id": "no_cleverness_tricks",
+            "grade": "NOT_MET",
+            "evidence": "'Quick chat?' is a vague teaser designed to manufacture curiosity rather than communicate substance, functioning as a low-stakes hook trick."
+          }
+        ]
+      }
+    ]
+  }
+}

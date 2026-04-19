@@ -1,0 +1,135 @@
+{
+  "scenario_id": "blog_post_01",
+  "draft_id": "blog_post_01_misaligned",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Unflinching honesty about wrong turns\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"wrong_leads_shown\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft jumps directly to the root cause with no description of any wrong theories or false leads pursued during the investigation.\"\n        },\n        {\n          \"dimension_id\": \"personal_accountability\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft uses passive/collective framing ('the issue turned out to be') and never has the author take personal ownership of a mistake or misjudgment.\"\n        },\n        {\n          \"dimension_id\": \"time_cost_visible\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No time spent on wrong paths is mentioned; the only time reference is 'several weeks' of memory growth, not time wasted on incorrect hypotheses.\"\n        },\n        {\n          \"dimension_id\": \"self_deprecating_not_flagellating\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The tone is neutral and clinical throughout, with no self-deprecating or wry humor about mistakes made.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Investigation pacing with delayed reveals\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"confusion_before_clarity\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The root cause is stated in the second section ('The issue turned out to be an event listener leak') with no prior presentation of ambiguous evidence or initial misreadings.\"\n        },\n        {\n          \"dimension_id\": \"progressive_narrowing\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The 'Investigation Methodology' section lists steps 1–4 as a retrospective numbered list, not an incremental unfolding of clues with building understanding.\"\n        },\n        {\n          \"dimension_id\": \"reveal_earned\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The root cause is revealed in the 'Root Cause' section before any investigation narrative, so there is no sustained tension preceding it.\"\n        },\n        {\n          \"dimension_id\": \"emotional_beats_present\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft contains no mention of the author's emotional state — no frustration, surprise, or relief — at any point during the investigation.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete, non-preachy takeaways\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"actionable_practice\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Takeaways like 'Always monitor your memory usage in production' and 'Be disciplined about removing listeners' are general principles, not specific behavior changes the author now follows.\"\n        },\n        {\n          \"dimension_id\": \"generic_advice_rejected\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The first takeaway is literally 'Always monitor your memory usage in production' — classic generic advice that is presented earnestly rather than acknowledged and moved past.\"\n        },\n        {\n          \"dimension_id\": \"grounded_in_story\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Takeaways are listed as abstract bullet points with no explicit callback to a specific moment in the narrative where the lesson was learned.\"\n        },\n        {\n          \"dimension_id\": \"peer_tone\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The conclusion says 'I hope this walkthrough helps you the next time you're facing a similar issue,' adopting a teacher-to-student framing rather than peer-to-peer.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code snippets as narrative anchors\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"minimal_snippet_count\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft contains exactly two focused code snippets — the buggy version and the fixed version — which is appropriately minimal.\"\n        },\n        {\n          \"dimension_id\": \"annotated_key_lines\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The critical line in the buggy snippet is marked with '// Bug: handler is never removed when this path executes', directing the reader's attention.\"\n        },\n        {\n          \"dimension_id\": \"before_after_contrast\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Both the problematic code and the fixed code are shown in separate snippets, clearly illustrating the transformation.\"\n        },\n        {\n          \"dimension_id\": \"prose_frames_code\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Before the first snippet, the prose explains 'Each incoming request registered a listener on a shared EventEmitter instance, but under a specific error-handling path, the listener was never removed,' telling the reader what to look for.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Immersive scene-setting with specific details\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"sensory_anchors\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No concrete sensory or environmental details appear — no time of day, no description of a dashboard view, no Slack message or similar grounding detail.\"\n        },\n        {\n          \"dimension_id\": \"named_tools\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft names specific tools: Prometheus, Chrome DevTools, Node.js 18, and Express, rather than using generic descriptions.\"\n        },\n        {\n          \"dimension_id\": \"scene_not_summary\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The entire investigation is presented as a retrospective numbered list summary ('Here's the systematic approach we followed') rather than dramatized scenes with action.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2839,
+  "output_tokens": 1472,
+  "latency_ms": 20823,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Unflinching honesty about wrong turns",
+        "dimension_grades": [
+          {
+            "dimension_id": "wrong_leads_shown",
+            "grade": "NOT_MET",
+            "evidence": "The draft jumps directly to the root cause with no description of any wrong theories or false leads pursued during the investigation."
+          },
+          {
+            "dimension_id": "personal_accountability",
+            "grade": "NOT_MET",
+            "evidence": "The draft uses passive/collective framing ('the issue turned out to be') and never has the author take personal ownership of a mistake or misjudgment."
+          },
+          {
+            "dimension_id": "time_cost_visible",
+            "grade": "NOT_MET",
+            "evidence": "No time spent on wrong paths is mentioned; the only time reference is 'several weeks' of memory growth, not time wasted on incorrect hypotheses."
+          },
+          {
+            "dimension_id": "self_deprecating_not_flagellating",
+            "grade": "NOT_MET",
+            "evidence": "The tone is neutral and clinical throughout, with no self-deprecating or wry humor about mistakes made."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Investigation pacing with delayed reveals",
+        "dimension_grades": [
+          {
+            "dimension_id": "confusion_before_clarity",
+            "grade": "NOT_MET",
+            "evidence": "The root cause is stated in the second section ('The issue turned out to be an event listener leak') with no prior presentation of ambiguous evidence or initial misreadings."
+          },
+          {
+            "dimension_id": "progressive_narrowing",
+            "grade": "NOT_MET",
+            "evidence": "The 'Investigation Methodology' section lists steps 1–4 as a retrospective numbered list, not an incremental unfolding of clues with building understanding."
+          },
+          {
+            "dimension_id": "reveal_earned",
+            "grade": "NOT_MET",
+            "evidence": "The root cause is revealed in the 'Root Cause' section before any investigation narrative, so there is no sustained tension preceding it."
+          },
+          {
+            "dimension_id": "emotional_beats_present",
+            "grade": "NOT_MET",
+            "evidence": "The draft contains no mention of the author's emotional state — no frustration, surprise, or relief — at any point during the investigation."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete, non-preachy takeaways",
+        "dimension_grades": [
+          {
+            "dimension_id": "actionable_practice",
+            "grade": "NOT_MET",
+            "evidence": "Takeaways like 'Always monitor your memory usage in production' and 'Be disciplined about removing listeners' are general principles, not specific behavior changes the author now follows."
+          },
+          {
+            "dimension_id": "generic_advice_rejected",
+            "grade": "NOT_MET",
+            "evidence": "The first takeaway is literally 'Always monitor your memory usage in production' — classic generic advice that is presented earnestly rather than acknowledged and moved past."
+          },
+          {
+            "dimension_id": "grounded_in_story",
+            "grade": "NOT_MET",
+            "evidence": "Takeaways are listed as abstract bullet points with no explicit callback to a specific moment in the narrative where the lesson was learned."
+          },
+          {
+            "dimension_id": "peer_tone",
+            "grade": "NOT_MET",
+            "evidence": "The conclusion says 'I hope this walkthrough helps you the next time you're facing a similar issue,' adopting a teacher-to-student framing rather than peer-to-peer."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code snippets as narrative anchors",
+        "dimension_grades": [
+          {
+            "dimension_id": "minimal_snippet_count",
+            "grade": "MET",
+            "evidence": "The draft contains exactly two focused code snippets — the buggy version and the fixed version — which is appropriately minimal."
+          },
+          {
+            "dimension_id": "annotated_key_lines",
+            "grade": "MET",
+            "evidence": "The critical line in the buggy snippet is marked with '// Bug: handler is never removed when this path executes', directing the reader's attention."
+          },
+          {
+            "dimension_id": "before_after_contrast",
+            "grade": "MET",
+            "evidence": "Both the problematic code and the fixed code are shown in separate snippets, clearly illustrating the transformation."
+          },
+          {
+            "dimension_id": "prose_frames_code",
+            "grade": "MET",
+            "evidence": "Before the first snippet, the prose explains 'Each incoming request registered a listener on a shared EventEmitter instance, but under a specific error-handling path, the listener was never removed,' telling the reader what to look for."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Immersive scene-setting with specific details",
+        "dimension_grades": [
+          {
+            "dimension_id": "sensory_anchors",
+            "grade": "NOT_MET",
+            "evidence": "No concrete sensory or environmental details appear — no time of day, no description of a dashboard view, no Slack message or similar grounding detail."
+          },
+          {
+            "dimension_id": "named_tools",
+            "grade": "MET",
+            "evidence": "The draft names specific tools: Prometheus, Chrome DevTools, Node.js 18, and Express, rather than using generic descriptions."
+          },
+          {
+            "dimension_id": "scene_not_summary",
+            "grade": "NOT_MET",
+            "evidence": "The entire investigation is presented as a retrospective numbered list summary ('Here's the systematic approach we followed') rather than dramatized scenes with action."
+          }
+        ]
+      }
+    ]
+  }
+}

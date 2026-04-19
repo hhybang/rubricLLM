@@ -1,0 +1,110 @@
+{
+  "scenario_id": "manager_update_01",
+  "draft_id": "manager_update_01_mediocre",
+  "model": "sonnet",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Phone-Scannable Brevity\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"bullets_only\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Project Alpha and the Blockers & Risks section are written as narrative prose paragraphs, not bullet points.\"\n        },\n        {\n          \"dimension_id\": \"one_two_line_bullets\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Beta section has properly concise bullets, but the Alpha and Blockers sections are paragraphs, so not all status information meets this standard.\"\n        },\n        {\n          \"dimension_id\": \"no_redundancy\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'Resolve the database migration issue' and 'Figure out coverage for Jake's absence' appear in both Blockers & Risks and Next Steps.\"\n        },\n        {\n          \"dimension_id\": \"minimal_sections\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Next Steps contains 7 bullets including items like 'Update the project tracker' and 'Schedule sync with Platform team' that could be folded into project-level sections or omitted from a leadership update.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Bottom-Line-Up-Front Summary\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_summary\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The email opens with 'Hope you had a good weekend! I wanted to give you a rundown...' — pleasantries and context-setting, not a status summary.\"\n        },\n        {\n          \"dimension_id\": \"covers_key_status\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no single summary sentence capturing wins and timeline shifts; the database blocker and Jake's absence are buried in the body.\"\n        },\n        {\n          \"dimension_id\": \"signals_escalation_need\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No line in the email explicitly signals whether the reader needs to act or not; the closing only says 'let me know if you have any questions.'\"\n        },\n        {\n          \"dimension_id\": \"plain_label\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no summary line at all, so no label (plain or otherwise) is present.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Calibrated Risk Framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"neutral_language\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft uses 'pretty significant setback,' 'real problem,' and 'scrambling' to describe the database migration issue — all alarm-register words.\"\n        },\n        {\n          \"dimension_id\": \"timeline_impact_quantified\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'Could potentially push things back' is vague with no concrete estimate such as '~1 week.'\"\n        },\n        {\n          \"dimension_id\": \"resolution_timeline\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft says 'Will keep you posted as we learn more' with no specific date by which the resolution path will be clear.\"\n        },\n        {\n          \"dimension_id\": \"escalation_signal\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft never states that the database issue or staffing gap does not require director intervention; it leaves escalation ambiguous.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Recipient-Calibrated Register\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_casual_shorthand\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft contains no internet-style abbreviations or casual shorthand labels such as 'TL;DR.'\"\n        },\n        {\n          \"dimension_id\": \"direct_not_stiff\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The closing uses 'Best regards' which is overly formal, and the opening weekend pleasantry adds filler rather than approachable directness.\"\n        },\n        {\n          \"dimension_id\": \"recipient_modeled\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The update is written as a long narrative walkthrough ('I think it's worth walking through the details so you have full context') with no apparent awareness that Maria reads on mobile between meetings and needs brevity.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 1984,
+  "output_tokens": 1150,
+  "latency_ms": 17970,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Phone-Scannable Brevity",
+        "dimension_grades": [
+          {
+            "dimension_id": "bullets_only",
+            "grade": "NOT_MET",
+            "evidence": "Project Alpha and the Blockers & Risks section are written as narrative prose paragraphs, not bullet points."
+          },
+          {
+            "dimension_id": "one_two_line_bullets",
+            "grade": "NOT_MET",
+            "evidence": "The Beta section has properly concise bullets, but the Alpha and Blockers sections are paragraphs, so not all status information meets this standard."
+          },
+          {
+            "dimension_id": "no_redundancy",
+            "grade": "NOT_MET",
+            "evidence": "'Resolve the database migration issue' and 'Figure out coverage for Jake's absence' appear in both Blockers & Risks and Next Steps."
+          },
+          {
+            "dimension_id": "minimal_sections",
+            "grade": "NOT_MET",
+            "evidence": "Next Steps contains 7 bullets including items like 'Update the project tracker' and 'Schedule sync with Platform team' that could be folded into project-level sections or omitted from a leadership update."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Bottom-Line-Up-Front Summary",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_summary",
+            "grade": "NOT_MET",
+            "evidence": "The email opens with 'Hope you had a good weekend! I wanted to give you a rundown...' — pleasantries and context-setting, not a status summary."
+          },
+          {
+            "dimension_id": "covers_key_status",
+            "grade": "NOT_MET",
+            "evidence": "There is no single summary sentence capturing wins and timeline shifts; the database blocker and Jake's absence are buried in the body."
+          },
+          {
+            "dimension_id": "signals_escalation_need",
+            "grade": "NOT_MET",
+            "evidence": "No line in the email explicitly signals whether the reader needs to act or not; the closing only says 'let me know if you have any questions.'"
+          },
+          {
+            "dimension_id": "plain_label",
+            "grade": "NOT_MET",
+            "evidence": "There is no summary line at all, so no label (plain or otherwise) is present."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Calibrated Risk Framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "neutral_language",
+            "grade": "NOT_MET",
+            "evidence": "The draft uses 'pretty significant setback,' 'real problem,' and 'scrambling' to describe the database migration issue — all alarm-register words."
+          },
+          {
+            "dimension_id": "timeline_impact_quantified",
+            "grade": "NOT_MET",
+            "evidence": "'Could potentially push things back' is vague with no concrete estimate such as '~1 week.'"
+          },
+          {
+            "dimension_id": "resolution_timeline",
+            "grade": "NOT_MET",
+            "evidence": "The draft says 'Will keep you posted as we learn more' with no specific date by which the resolution path will be clear."
+          },
+          {
+            "dimension_id": "escalation_signal",
+            "grade": "NOT_MET",
+            "evidence": "The draft never states that the database issue or staffing gap does not require director intervention; it leaves escalation ambiguous."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Recipient-Calibrated Register",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_casual_shorthand",
+            "grade": "MET",
+            "evidence": "The draft contains no internet-style abbreviations or casual shorthand labels such as 'TL;DR.'"
+          },
+          {
+            "dimension_id": "direct_not_stiff",
+            "grade": "NOT_MET",
+            "evidence": "The closing uses 'Best regards' which is overly formal, and the opening weekend pleasantry adds filler rather than approachable directness."
+          },
+          {
+            "dimension_id": "recipient_modeled",
+            "grade": "NOT_MET",
+            "evidence": "The update is written as a long narrative walkthrough ('I think it's worth walking through the details so you have full context') with no apparent awareness that Maria reads on mobile between meetings and needs brevity."
+          }
+        ]
+      }
+    ]
+  }
+}

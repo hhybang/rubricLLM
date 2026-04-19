@@ -1,0 +1,338 @@
+{
+  "persona": "Kofi Mensah",
+  "task_index": 0,
+  "task_description": "Help me draft a follow-up email to a VP of Operations at a logistics company after our second demo — she was impressed with the routing optimization but concerned about integration with their legacy TMS.",
+  "condition": "A",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes sales emails that feel like personal correspondence, not campaigns. Every email advances the relationship and the deal simultaneously. Treats email as a tool for creating conversations, never for closing them.",
+    "rubric": [
+      {
+        "name": "Specific Callback",
+        "category": "Content",
+        "description": "Every prospect email references something specific from a prior interaction — a concern they raised, a phrase they used, a goal they mentioned. Never generic callbacks like 'as we discussed' or 'following up on our meeting.'",
+        "dimensions": [
+          {
+            "id": "specific_reference",
+            "label": "References a specific comment, question, or concern the prospect raised in a prior interaction"
+          },
+          {
+            "id": "not_templateable",
+            "label": "The reference could not apply to a different prospect — it's unique to this person"
+          },
+          {
+            "id": "no_generic_callbacks",
+            "label": "Does not use 'as discussed', 'per our conversation', or 'following up on our meeting' without specifics"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "No Commercial Terms in Writing",
+        "category": "Content",
+        "description": "Price, discounts, contract terms, and commercial details are never put in email. Email establishes need and books conversations. Numbers in writing before a live discussion forfeit negotiation leverage.",
+        "dimensions": [
+          {
+            "id": "no_pricing",
+            "label": "Does not include any specific pricing, discount percentages, or contract terms"
+          },
+          {
+            "id": "drives_to_conversation",
+            "label": "Steers toward a live meeting or call for any commercial discussion"
+          },
+          {
+            "id": "value_not_cost",
+            "label": "Discusses value, outcomes, and ROI — never the cost to achieve them"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Re-engagement Over Check-ins",
+        "category": "Style",
+        "description": "Follow-ups after silence never 'just check in.' Each follow-up provides a new reason to respond — a relevant customer win, fresh data, a deadline, or a reframed value proposition.",
+        "dimensions": [
+          {
+            "id": "new_value_each_touch",
+            "label": "Each follow-up email introduces new information the prospect didn't have before"
+          },
+          {
+            "id": "no_checking_in",
+            "label": "Does not use 'just checking in', 'touching base', 'wanted to follow up', or equivalent"
+          },
+          {
+            "id": "reason_to_respond_now",
+            "label": "Creates a specific, time-relevant reason for the prospect to reply"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Risk-First Internal Updates",
+        "category": "Structure",
+        "description": "Internal deal updates lead with the risk to closing, not the opportunity. 'They're evaluating a competitor pilot' is more useful than 'great meeting, they're interested.'",
+        "dimensions": [
+          {
+            "id": "risk_leads",
+            "label": "The first substantive sentence identifies the primary risk or blocker to the deal"
+          },
+          {
+            "id": "ask_is_specific",
+            "label": "The internal email requests a specific action to mitigate the risk, not just awareness"
+          },
+          {
+            "id": "no_false_optimism",
+            "label": "Does not lead with or overweight positive signals when risks exist"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Kofi treats every prospect email as proof he was listening — specificity is his differentiator from competitors' outreach. Non-negotiable: never put pricing in email. Will reject any follow-up that doesn't give the prospect a new reason to respond."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: The TMS question you raised — a relevant example\n\nHi [Name],\n\nAfter our call, I kept thinking about the concern you flagged around your legacy TMS. That's not a minor implementation wrinkle — for a team running the volume you described, a clunky integration could easily erase the routing gains before you ever see them on a dashboard.\n\nI wanted to share something relevant: we just completed a deployment with a regional carrier that was running a 12-year-old TMS with no modern API layer. Their ops team had the same hesitation you did. The integration ended up being handled through a middleware connector we've built specifically for that scenario — no rip-and-replace, no extended downtime. They were processing live routes through the new system within the first few weeks.\n\nThat situation isn't identical to yours, but the core constraint — preserving what's working in the existing stack while unlocking the routing intelligence on top of it — is exactly what your team would be navigating.\n\nI think it's worth getting our integration lead on a call with you and whoever owns your TMS environment. Thirty minutes with the right technical voice in the room tends to answer questions that a demo deck can't.\n\nAre you available this week or next? I can have [integration lead's name] ready to go whenever works for you.\n\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email references a specific concern the prospect raised — their legacy TMS and integration hesitation — in a way that is clearly unique to this person's situation ('the volume you described,' 'the concern you flagged around your legacy TMS'). There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the prospect's exact phrasing isn't quoted, but the reference is specific enough to be non-templateable."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The email drives toward a live call ('getting our integration lead on a call with you') and discusses value and outcomes exclusively — routing gains, integration approach, operational continuity — with no mention of cost."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces new information the prospect didn't have before — a specific customer deployment story with a comparable legacy TMS constraint and a concrete resolution. There is no 'just checking in' or equivalent language. The reason to respond is grounded in the relevance of the new example to their specific situation, though the urgency or time-sensitivity could be slightly stronger to fully satisfy 'reason to respond now.'"
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal updates, and the draft is a prospect-facing email, not an internal communication. As written, it cannot be evaluated against the risk-leads, ask-is-specific, or no-false-optimism dimensions. The score reflects that the criterion is simply not applicable to this draft rather than a failure of execution."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email references a specific concern the prospect raised — their legacy TMS and integration hesitation — which is concrete and not generic. The phrase 'the concern you flagged around your legacy TMS' and 'the same hesitation you did' are clearly tied to this prospect's situation. The subject line itself ('The TMS question you raised') signals specificity. No generic callbacks like 'as we discussed' appear. The only minor gap is that no verbatim phrase or exact quote from the prospect is used, which would make it even more uniquely non-templateable, but the reference is still highly specific."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The email drives toward a live call ('getting our integration lead on a call with you') for deeper discussion. Value is framed entirely around outcomes — routing gains, no downtime, live routes within weeks — with zero mention of cost."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 8,
+              "justification": "The email introduces new information the prospect didn't have before — the regional carrier case study with a 12-year-old TMS and the middleware connector solution. There is no 'just checking in' or equivalent language. However, the time-relevant urgency is relatively soft; the call-to-action ('this week or next') doesn't create a specific deadline or external trigger that makes responding now feel more pressing than responding later, which slightly weakens the 'reason to respond now' dimension."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal updates, and the draft is a prospect-facing email, not an internal update. As written, it cannot be evaluated against the risk-leads, ask-is-specific, or no-false-optimism dimensions. The score reflects that the criterion is simply not applicable to this draft rather than a failure of execution."
+            }
+          ],
+          "overall_weighted_score": 0.87,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email references a specific concern the prospect raised — their legacy TMS and integration hesitation — in a way that is clearly unique to this person's situation ('the volume you described,' 'the concern you flagged around your legacy TMS'). There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the prospect's exact phrasing isn't quoted, but the reference is specific enough to be non-templateable."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The email drives toward a live call ('getting our integration lead on a call with you') and discusses value and outcomes exclusively — routing gains, integration approach, operational continuity. Cost is never mentioned."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces a new, concrete customer win (the regional carrier with a 12-year-old TMS) that the prospect did not have before, giving a genuine reason to re-engage. There is no 'just checking in' or equivalent language. The reason to respond is tied to a specific, relevant analogy rather than a manufactured deadline, which is slightly softer on time-urgency but still substantive and prospect-relevant."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal updates, but the draft is a prospect-facing email, not an internal communication. As written, it cannot be evaluated against the risk-leads, ask-is-specific, or no-false-optimism dimensions. The score reflects that the criterion is simply not applicable to this draft rather than a failure of execution."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Specific Callback": 9.0,
+          "No Commercial Terms in Writing": 10.0,
+          "Re-engagement Over Check-ins": 8.666666666666666,
+          "Risk-First Internal Updates": 5.0
+        },
+        "std_scores": {
+          "Specific Callback": 0.0,
+          "No Commercial Terms in Writing": 0.0,
+          "Re-engagement Over Check-ins": 0.5773502691896257,
+          "Risk-First Internal Updates": 0.0
+        },
+        "mean_overall": 0.8833333333333333,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email references a specific concern the prospect raised — their legacy TMS and integration hesitation — in a way that is clearly unique to this person's situation ('the volume you described,' 'the concern you flagged around your legacy TMS'). There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the prospect's exact phrasing isn't quoted, but the reference is specific enough to be non-templateable."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The email drives toward a live call ('getting our integration lead on a call with you') and discusses value and outcomes exclusively — routing gains, integration approach, operational continuity — with no mention of cost."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces new information the prospect didn't have before — a specific customer deployment story with a comparable legacy TMS constraint and a concrete resolution. There is no 'just checking in' or equivalent language. The reason to respond is grounded in the relevance of the new example to their specific situation, though the urgency or time-sensitivity could be slightly stronger to fully satisfy 'reason to respond now.'"
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal updates, and the draft is a prospect-facing email, not an internal communication. As written, it cannot be evaluated against the risk-leads, ask-is-specific, or no-false-optimism dimensions. The score reflects that the criterion is simply not applicable to this draft rather than a failure of execution."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1268,
+              "output_tokens": 470
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email references a specific concern the prospect raised — their legacy TMS and integration hesitation — which is concrete and not generic. The phrase 'the concern you flagged around your legacy TMS' and 'the same hesitation you did' are clearly tied to this prospect's situation. The subject line itself ('The TMS question you raised') signals specificity. No generic callbacks like 'as we discussed' appear. The only minor gap is that no verbatim phrase or exact quote from the prospect is used, which would make it even more uniquely non-templateable, but the reference is still highly specific."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The email drives toward a live call ('getting our integration lead on a call with you') for deeper discussion. Value is framed entirely around outcomes — routing gains, no downtime, live routes within weeks — with zero mention of cost."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 8,
+                "justification": "The email introduces new information the prospect didn't have before — the regional carrier case study with a 12-year-old TMS and the middleware connector solution. There is no 'just checking in' or equivalent language. However, the time-relevant urgency is relatively soft; the call-to-action ('this week or next') doesn't create a specific deadline or external trigger that makes responding now feel more pressing than responding later, which slightly weakens the 'reason to respond now' dimension."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal updates, and the draft is a prospect-facing email, not an internal update. As written, it cannot be evaluated against the risk-leads, ask-is-specific, or no-false-optimism dimensions. The score reflects that the criterion is simply not applicable to this draft rather than a failure of execution."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1268,
+              "output_tokens": 523
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email references a specific concern the prospect raised — their legacy TMS and integration hesitation — in a way that is clearly unique to this person's situation ('the volume you described,' 'the concern you flagged around your legacy TMS'). There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the prospect's exact phrasing isn't quoted, but the reference is specific enough to be non-templateable."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The email drives toward a live call ('getting our integration lead on a call with you') and discusses value and outcomes exclusively — routing gains, integration approach, operational continuity. Cost is never mentioned."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces a new, concrete customer win (the regional carrier with a 12-year-old TMS) that the prospect did not have before, giving a genuine reason to re-engage. There is no 'just checking in' or equivalent language. The reason to respond is tied to a specific, relevant analogy rather than a manufactured deadline, which is slightly softer on time-urgency but still substantive and prospect-relevant."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal updates, but the draft is a prospect-facing email, not an internal communication. As written, it cannot be evaluated against the risk-leads, ask-is-specific, or no-false-optimism dimensions. The score reflects that the criterion is simply not applicable to this draft rather than a failure of execution."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1268,
+              "output_tokens": 476
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "generation_tokens": {
+        "input_tokens": 835,
+        "output_tokens": 292
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Reference something SPECIFIC from a previous interaction, not generic callbacks",
+        "satisfied": "yes",
+        "evidence": "\"the concern you flagged around your legacy TMS\" and \"a team running the volume you described\" and \"the same hesitation you did\" — multiple specific references to what the prospect actually said, no generic 'as we discussed' language"
+      },
+      {
+        "preference": "Never introduce price or commercial terms in email",
+        "satisfied": "yes",
+        "evidence": "No pricing, no commercial terms mentioned anywhere. The email focuses entirely on establishing need and booking a technical conversation."
+      },
+      {
+        "preference": "Follow-ups give a NEW reason to respond (customer win, data point, deadline) rather than 'just checking in'",
+        "satisfied": "yes",
+        "evidence": "The email leads with a relevant customer deployment story — 'we just completed a deployment with a regional carrier that was running a 12-year-old TMS with no modern API layer' — providing a concrete new reason to engage."
+      },
+      {
+        "preference": "Internal emails lead with RISK to closing, not just opportunity",
+        "satisfied": "partially",
+        "evidence": "This is a prospect-facing email, not an internal one, so this preference doesn't directly apply. However, the email does acknowledge the prospect's concern/risk ('a clunky integration could easily erase the routing gains') which shows risk-awareness in framing."
+      },
+      {
+        "preference": "Confident without arrogance, relationship-first but advancing the deal",
+        "satisfied": "yes",
+        "evidence": "Tone is assured but not pushy — 'I think it's worth getting our integration lead on a call' rather than demanding. Validates the prospect's concern ('That's not a minor implementation wrinkle') while confidently presenting a path forward."
+      },
+      {
+        "preference": "Clear next steps",
+        "satisfied": "yes",
+        "evidence": "\"Are you available this week or next? I can have [integration lead's name] ready to go whenever works for you.\" — specific, actionable, easy to respond to."
+      },
+      {
+        "preference": "Emails must not sound like templates",
+        "satisfied": "yes",
+        "evidence": "The email is deeply contextualized to the prospect's specific situation — legacy TMS, volume concerns, integration hesitation. The case study is framed as analogous to their exact problem. This reads as genuinely crafted for this person."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 744,
+      "output_tokens": 636
+    }
+  }
+}

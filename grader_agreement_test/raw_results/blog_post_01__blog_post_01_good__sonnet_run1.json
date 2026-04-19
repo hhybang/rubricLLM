@@ -1,0 +1,135 @@
+{
+  "scenario_id": "blog_post_01",
+  "draft_id": "blog_post_01_good",
+  "model": "sonnet",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Unflinching honesty about wrong turns\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"wrong_leads_shown\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Redis-om false lead is described in full detail: five hours of source code reading, a reproduction script, a GitHub issue opened without evidence, and continued testing even after flat results.\"\n        },\n        {\n          \"dimension_id\": \"personal_accountability\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I had written them. I had reviewed my own PR... I had deployed them. And I had spent a day blaming a Redis library for my own event listener leak.'\"\n        },\n        {\n          \"dimension_id\": \"time_cost_visible\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'The total time from first alert to deployed fix was about 44 hours... 6 were spent on the Redis dead end' and 'I spent roughly five hours reading redis-om source code.'\"\n        },\n        {\n          \"dimension_id\": \"self_deprecating_not_flagellating\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Phrases like 'felt the specific kind of stupid that comes from not doing the obvious thing first' and 'I wanted to crawl under my desk' are wry and self-deprecating without tipping into self-pity.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Investigation pacing with delayed reveals\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"confusion_before_clarity\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The heap snapshot section shows initial misreading: 'I assumed we had a logging problem' and spent 45 minutes on pino before realizing the strings looked like log output but weren't from logging.\"\n        },\n        {\n          \"dimension_id\": \"progressive_narrowing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Clues build incrementally: staircase graph → Redis theory eliminated → heap snapshot → strings → logging theory eliminated → retainer chain → RequestTracer → _spans → then the real cause in the middleware.\"\n        },\n        {\n          \"dimension_id\": \"reveal_earned\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The root cause (metricsEmitter.on inside middleware) is withheld until 'Thursday Afternoon' after two full sections of wrong turns and narrowing, landing with 'THIS. THIS RIGHT HERE.'\"\n        },\n        {\n          \"dimension_id\": \"emotional_beats_present\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Emotional states are explicit throughout: 'My stomach dropped a little,' 'felt the specific kind of stupid,' 'I wanted to scream,' and 'I sat there for a minute, just looking at the three lines of code.'\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete, non-preachy takeaways\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"actionable_practice\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each takeaway names a specific behavior: overlaying deploy markers before forming theories, grepping for '.on(' in PRs, a custom ESLint rule, taking heap snapshots in pairs with a shell script, blocking self-merges.\"\n        },\n        {\n          \"dimension_id\": \"generic_advice_rejected\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I'm not going to tell you to always clean up your event listeners or monitor your memory usage. You know that. I knew that. Knowing it didn't stop me.'\"\n        },\n        {\n          \"dimension_id\": \"grounded_in_story\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each takeaway explicitly references the narrative moment that prompted it, e.g., the deploy-timeline check references 'Wednesday morning' and the five wasted hours, and the self-review ban references 'the week I wrote the leaking code.'\"\n        },\n        {\n          \"dimension_id\": \"peer_tone\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'You know that. I knew that.' treats the reader as an equal who already knows basic advice, and takeaways are framed as personal behavior changes rather than instructions.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code snippets as narrative anchors\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"minimal_snippet_count\",\n          \"grade\": \"MET\",\n          \"evidence\": \"There are four focused snippets total: the alert text, the buggy RequestTracer class, the leaking middleware, and the fixed middleware plus dispose() — each tied to a specific narrative moment.\"\n        },\n        {\n          \"dimension_id\": \"annotated_key_lines\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The critical line in the leaking middleware is marked '// THIS. THIS RIGHT HERE.' and the endSpan method has inline comments: '// No cleanup. No removal from this._spans. Nothing.'\"\n        },\n        {\n          \"dimension_id\": \"before_after_contrast\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The buggy middleware with metricsEmitter.on inside the handler is shown, then the fixed version using res.on('finish') is shown immediately after under 'The Fix.'\"\n        },\n        {\n          \"dimension_id\": \"prose_frames_code\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Before the RequestTracer snippet: 'Here's the relevant section, stripped down' and 'Do you see it?' directs the reader's attention before and after the code appears.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Immersive scene-setting with specific details\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"sensory_anchors\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I remember this because I got toothpaste on the screen trying to swipe it open' and 'still in boxers' ground the opening scene with concrete sensory/environmental detail.\"\n        },\n        {\n          \"dimension_id\": \"named_tools\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Real tool names used throughout: PagerDuty, Datadog, Kubernetes, ioredis, redis-om, pino, Chrome DevTools, kubectl, ESLint, Express, EventEmitter.\"\n        },\n        {\n          \"dimension_id\": \"scene_not_summary\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Key moments are dramatized as scenes: the Slack exchange with Priya is quoted verbatim, the heap snapshot process is narrated step by step with timing, and the retainer chain discovery is shown as a live click-through.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 4836,
+  "output_tokens": 1684,
+  "latency_ms": 29867,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Unflinching honesty about wrong turns",
+        "dimension_grades": [
+          {
+            "dimension_id": "wrong_leads_shown",
+            "grade": "MET",
+            "evidence": "The Redis-om false lead is described in full detail: five hours of source code reading, a reproduction script, a GitHub issue opened without evidence, and continued testing even after flat results."
+          },
+          {
+            "dimension_id": "personal_accountability",
+            "grade": "MET",
+            "evidence": "'I had written them. I had reviewed my own PR... I had deployed them. And I had spent a day blaming a Redis library for my own event listener leak.'"
+          },
+          {
+            "dimension_id": "time_cost_visible",
+            "grade": "MET",
+            "evidence": "'The total time from first alert to deployed fix was about 44 hours... 6 were spent on the Redis dead end' and 'I spent roughly five hours reading redis-om source code.'"
+          },
+          {
+            "dimension_id": "self_deprecating_not_flagellating",
+            "grade": "MET",
+            "evidence": "Phrases like 'felt the specific kind of stupid that comes from not doing the obvious thing first' and 'I wanted to crawl under my desk' are wry and self-deprecating without tipping into self-pity."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Investigation pacing with delayed reveals",
+        "dimension_grades": [
+          {
+            "dimension_id": "confusion_before_clarity",
+            "grade": "MET",
+            "evidence": "The heap snapshot section shows initial misreading: 'I assumed we had a logging problem' and spent 45 minutes on pino before realizing the strings looked like log output but weren't from logging."
+          },
+          {
+            "dimension_id": "progressive_narrowing",
+            "grade": "MET",
+            "evidence": "Clues build incrementally: staircase graph → Redis theory eliminated → heap snapshot → strings → logging theory eliminated → retainer chain → RequestTracer → _spans → then the real cause in the middleware."
+          },
+          {
+            "dimension_id": "reveal_earned",
+            "grade": "MET",
+            "evidence": "The root cause (metricsEmitter.on inside middleware) is withheld until 'Thursday Afternoon' after two full sections of wrong turns and narrowing, landing with 'THIS. THIS RIGHT HERE.'"
+          },
+          {
+            "dimension_id": "emotional_beats_present",
+            "grade": "MET",
+            "evidence": "Emotional states are explicit throughout: 'My stomach dropped a little,' 'felt the specific kind of stupid,' 'I wanted to scream,' and 'I sat there for a minute, just looking at the three lines of code.'"
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete, non-preachy takeaways",
+        "dimension_grades": [
+          {
+            "dimension_id": "actionable_practice",
+            "grade": "MET",
+            "evidence": "Each takeaway names a specific behavior: overlaying deploy markers before forming theories, grepping for '.on(' in PRs, a custom ESLint rule, taking heap snapshots in pairs with a shell script, blocking self-merges."
+          },
+          {
+            "dimension_id": "generic_advice_rejected",
+            "grade": "MET",
+            "evidence": "'I'm not going to tell you to always clean up your event listeners or monitor your memory usage. You know that. I knew that. Knowing it didn't stop me.'"
+          },
+          {
+            "dimension_id": "grounded_in_story",
+            "grade": "MET",
+            "evidence": "Each takeaway explicitly references the narrative moment that prompted it, e.g., the deploy-timeline check references 'Wednesday morning' and the five wasted hours, and the self-review ban references 'the week I wrote the leaking code.'"
+          },
+          {
+            "dimension_id": "peer_tone",
+            "grade": "MET",
+            "evidence": "'You know that. I knew that.' treats the reader as an equal who already knows basic advice, and takeaways are framed as personal behavior changes rather than instructions."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code snippets as narrative anchors",
+        "dimension_grades": [
+          {
+            "dimension_id": "minimal_snippet_count",
+            "grade": "MET",
+            "evidence": "There are four focused snippets total: the alert text, the buggy RequestTracer class, the leaking middleware, and the fixed middleware plus dispose() — each tied to a specific narrative moment."
+          },
+          {
+            "dimension_id": "annotated_key_lines",
+            "grade": "MET",
+            "evidence": "The critical line in the leaking middleware is marked '// THIS. THIS RIGHT HERE.' and the endSpan method has inline comments: '// No cleanup. No removal from this._spans. Nothing.'"
+          },
+          {
+            "dimension_id": "before_after_contrast",
+            "grade": "MET",
+            "evidence": "The buggy middleware with metricsEmitter.on inside the handler is shown, then the fixed version using res.on('finish') is shown immediately after under 'The Fix.'"
+          },
+          {
+            "dimension_id": "prose_frames_code",
+            "grade": "MET",
+            "evidence": "Before the RequestTracer snippet: 'Here's the relevant section, stripped down' and 'Do you see it?' directs the reader's attention before and after the code appears."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Immersive scene-setting with specific details",
+        "dimension_grades": [
+          {
+            "dimension_id": "sensory_anchors",
+            "grade": "MET",
+            "evidence": "'I remember this because I got toothpaste on the screen trying to swipe it open' and 'still in boxers' ground the opening scene with concrete sensory/environmental detail."
+          },
+          {
+            "dimension_id": "named_tools",
+            "grade": "MET",
+            "evidence": "Real tool names used throughout: PagerDuty, Datadog, Kubernetes, ioredis, redis-om, pino, Chrome DevTools, kubectl, ESLint, Express, EventEmitter."
+          },
+          {
+            "dimension_id": "scene_not_summary",
+            "grade": "MET",
+            "evidence": "Key moments are dramatized as scenes: the Slack exchange with Priya is quoted verbatim, the heap snapshot process is narrated step by step with timing, and the retainer chain discovery is shown as a live click-through."
+          }
+        ]
+      }
+    ]
+  }
+}

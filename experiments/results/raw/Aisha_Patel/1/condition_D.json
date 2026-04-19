@@ -1,0 +1,1682 @@
+{
+  "persona": "Aisha Patel",
+  "task_index": 1,
+  "task_description": "I need to email a client's VP of Finance with our mid-project status update — we're on track but discovered a data quality issue that might extend one workstream by two weeks.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+    "rubric": [
+      {
+        "name": "Two-Option Framework",
+        "category": "Structure",
+        "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+        "dimensions": [
+          {
+            "id": "exactly_two_options",
+            "label": "Presents exactly two options — not one, not three or more"
+          },
+          {
+            "id": "recommended_second",
+            "label": "The recommended option is presented second, after the alternative"
+          },
+          {
+            "id": "alternative_is_credible",
+            "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+          },
+          {
+            "id": "recommendation_explicit",
+            "label": "Clearly states which option is recommended and why, after presenting both"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Quantified Progress",
+        "category": "Content",
+        "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+        "dimensions": [
+          {
+            "id": "progress_against_scope",
+            "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+          },
+          {
+            "id": "no_vague_status",
+            "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+          },
+          {
+            "id": "risks_quantified",
+            "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Audience-Appropriate Logic Flow",
+        "category": "Structure",
+        "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+        "dimensions": [
+          {
+            "id": "internal_pyramid",
+            "label": "Internal emails state the conclusion or ask in the first sentence"
+          },
+          {
+            "id": "client_buildup",
+            "label": "Client emails build the logical case before stating the recommendation"
+          },
+          {
+            "id": "logic_is_visible",
+            "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Analytical Authority",
+        "category": "Style",
+        "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+        "dimensions": [
+          {
+            "id": "analysis_not_opinion",
+            "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+          },
+          {
+            "id": "no_i_think",
+            "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+          },
+          {
+            "id": "evidence_cited",
+            "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Audience-Appropriate Logic Flow",
+        "issue": "The grader is docking points for the opening sentence being 'slightly soft' ('I wanted to share') in both rounds, treating this as a minor flaw. But this is actually correct client email behavior — client emails should NOT open with the conclusion or a hard declarative. The grader seems to be unconsciously applying internal email standards (pyramid/conclusion-first) to client emails, then partially crediting the draft for 'mostly' following build-up structure. A 9 instead of 10 suggests the grader thinks there's a structural imperfection, but the soft opening is intentional and correct for a client audience. The criterion should score 10 when the build-up structure is followed correctly throughout, regardless of whether the opening sentence is 'assertive.'",
+        "negative_examples": [
+          "Penalizing a client email for not opening with a strong declarative statement — that would be internal email behavior, not client email behavior",
+          "Treating 'I wanted to share a structured update' as a flaw when it correctly defers the conclusion and begins the build-up sequence"
+        ],
+        "clarification": "Client emails should build up to the recommendation — the opening should orient the reader, not lead with the conclusion. A soft, orienting opening sentence is correct client email structure, not a weakness. The criterion scores 10 when the full email follows build-up logic (context → finding → options → recommendation) and the recommendation does not appear before the reasoning. Internal emails score 10 when the conclusion appears in the first sentence. The grader should not penalize client emails for lacking the assertive opening that belongs in internal emails.",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+    "rubric": [
+      {
+        "name": "Two-Option Framework",
+        "category": "Structure",
+        "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+        "dimensions": [
+          {
+            "id": "exactly_two_options",
+            "label": "Presents exactly two options — not one, not three or more"
+          },
+          {
+            "id": "recommended_second",
+            "label": "The recommended option is presented second, after the alternative"
+          },
+          {
+            "id": "alternative_is_credible",
+            "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+          },
+          {
+            "id": "recommendation_explicit",
+            "label": "Clearly states which option is recommended and why, after presenting both"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Quantified Progress",
+        "category": "Content",
+        "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+        "dimensions": [
+          {
+            "id": "progress_against_scope",
+            "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+          },
+          {
+            "id": "no_vague_status",
+            "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+          },
+          {
+            "id": "risks_quantified",
+            "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Audience-Appropriate Logic Flow",
+        "category": "Structure",
+        "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+        "dimensions": [
+          {
+            "id": "internal_pyramid",
+            "label": "Internal emails state the conclusion or ask in the first sentence"
+          },
+          {
+            "id": "client_buildup",
+            "label": "Client emails build the logical case before stating the recommendation"
+          },
+          {
+            "id": "logic_is_visible",
+            "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high",
+        "negative_examples": [
+          "Penalizing a client email for not opening with a strong declarative statement — that would be internal email behavior, not client email behavior",
+          "Treating 'I wanted to share a structured update' as a flaw when it correctly defers the conclusion and begins the build-up sequence"
+        ],
+        "clarification": "Client emails should build up to the recommendation — the opening should orient the reader, not lead with the conclusion. A soft, orienting opening sentence is correct client email structure, not a weakness. The criterion scores 10 when the full email follows build-up logic (context → finding → options → recommendation) and the recommendation does not appear before the reasoning. Internal emails score 10 when the conclusion appears in the first sentence. The grader should not penalize client emails for lacking the assertive opening that belongs in internal emails."
+      },
+      {
+        "name": "Analytical Authority",
+        "category": "Style",
+        "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+        "dimensions": [
+          {
+            "id": "analysis_not_opinion",
+            "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+          },
+          {
+            "id": "no_i_think",
+            "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+          },
+          {
+            "id": "evidence_cited",
+            "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Phase 2 Status Update — Data Quality Finding and Path Forward\n\n---\n\nDear [VP Name],\n\nI wanted to share a structured update on where we stand at the midpoint of Phase 2, along with a finding from this week's analysis that warrants your input on next steps.\n\n**Where We Stand**\n\nOf the five workstreams in scope for Phase 2, three are complete and one is ahead of schedule:\n\n- **Workstream 1 (Revenue Reconciliation):** Complete\n- **Workstream 2 (Cost Allocation Model):** Complete\n- **Workstream 3 (Intercompany Eliminations):** Complete — delivered three days ahead of schedule\n- **Workstream 4 (Variance Analysis):** In progress, on schedule for [date]\n- **Workstream 5 (Executive Reporting Package):** Not yet started; scheduled to begin [date]\n\nThat puts us at 3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.\n\n**A Finding That Requires Your Decision**\n\nDuring Workstream 4, our analysis identified inconsistencies in the source data feeding the variance model — specifically, [X]% of transaction records in the [system name] export contain mismatched cost center codes. Left unaddressed, these inconsistencies would undermine the reliability of the variance outputs and, by extension, the Executive Reporting Package.\n\nThere are two ways to proceed:\n\n**Option A — Proceed with Available Data**\nWe continue Workstream 4 using the current dataset, flagging the affected records and documenting the limitations in the final deliverable. This keeps Workstream 4 on its current timeline and preserves the Phase 2 completion date. The tradeoff is that the variance analysis will carry a qualification, and the Executive Reporting Package will reflect that caveat.\n\n**Option B — Remediate the Data Before Finalizing the Analysis (Recommended)**\nWe pause Workstream 4 for two weeks while your team corrects the cost center coding errors at the source. Our analysis indicates this remediation window is sufficient to address the full affected record set. Workstream 4 and the Executive Reporting Package would each shift by two weeks, moving the Phase 2 close to [revised date]. The output, however, would be fully defensible — which matters given that these findings will inform [Q3 planning / board reporting / etc.].\n\nOur analysis supports Option B. The downstream use of this data makes a qualified variance report a meaningful risk; the two-week extension is a contained and recoverable schedule impact.\n\n**Requested Response**\n\nIf you're able to confirm your preferred path by [date], we can maintain continuity on Workstreams 4 and 5 without further schedule disruption. I'm available for a call this week if it would be helpful to walk through the data finding in more detail before deciding.\n\nThank you for your continued partnership on this engagement.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options: 'Our analysis supports Option B,' with explicit reasoning about downstream risk and schedule impact."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 9,
+              "justification": "Progress is precisely quantified: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized,' with individual workstream statuses listed. The risk is quantified as a 'two-week extension' affecting specific workstreams. The one minor gap is that '[X]%' is a placeholder rather than an actual figure, but this is clearly a template artifact rather than a structural failure. No vague status language like 'on track' appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, surfaces the finding with evidence, presents both options with tradeoffs, and only then states the recommendation. The reader can trace the logic — data inconsistency → reliability risk → downstream reporting impact → Option B. The reasoning is fully visible and sequenced to let the client feel the conclusion emerge rather than being told upfront."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "All recommendations are grounded in analysis: 'our analysis identified inconsistencies,' 'our analysis indicates this remediation window is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the percentage of mismatched records, the two-week remediation estimate, and the downstream use case for the data."
+            }
+          ],
+          "overall_weighted_score": 0.95,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning about downstream risk and schedule impact."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 9,
+              "justification": "Progress is precisely quantified against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' The data quality risk is quantified ('[X]% of transaction records contain mismatched cost center codes') and the schedule impact is specific ('two-week extension'). The one minor gap is that '[X]%' is a placeholder, but this is clearly intentional for the template format rather than a vagueness failure. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and it correctly uses build-up structure: it opens with context (where we stand), then presents the finding and its implications, then walks through both options, and only then states the recommendation. The reasoning is fully visible — the reader can trace from the data inconsistency finding → downstream reliability risk → recommendation for remediation. The logic chain is explicit and unfolds naturally before the conclusion is stated."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "All recommendations are grounded in analysis: 'our analysis identified inconsistencies,' 'our analysis indicates this remediation window is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a specific finding — the percentage of affected records, the two-week remediation estimate, and the downstream use case for the data."
+            }
+          ],
+          "overall_weighted_score": 0.95,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning about downstream risk and schedule impact."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 9,
+              "justification": "Progress is precisely quantified against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' The data quality risk is quantified ('[X]% of transaction records contain mismatched cost center codes'), and the schedule impact is specific ('two-week extension'). The one minor gap is that '[X]%' is a placeholder, but this is clearly intentional for the template format rather than a vagueness failure. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with a status context, presents the finding and its implications, walks through both options with tradeoffs, and only then states the recommendation. The reasoning is fully visible — the reader can trace from the data quality finding to the downstream risk to the recommendation for Option B. The logic chain is explicit and unfolds naturally before the conclusion is stated."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "All recommendations are grounded in analysis: 'our analysis identified inconsistencies,' 'Our analysis indicates this remediation window is sufficient,' and 'Our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a specific finding — the percentage of affected records, the two-week remediation estimate, and the downstream use case for the data."
+            }
+          ],
+          "overall_weighted_score": 0.95,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 9.0,
+          "Audience-Appropriate Logic Flow": 9.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 0.95,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options: 'Our analysis supports Option B,' with explicit reasoning about downstream risk and schedule impact."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 9,
+                "justification": "Progress is precisely quantified: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized,' with individual workstream statuses listed. The risk is quantified as a 'two-week extension' affecting specific workstreams. The one minor gap is that '[X]%' is a placeholder rather than an actual figure, but this is clearly a template artifact rather than a structural failure. No vague status language like 'on track' appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, surfaces the finding with evidence, presents both options with tradeoffs, and only then states the recommendation. The reader can trace the logic — data inconsistency → reliability risk → downstream reporting impact → Option B. The reasoning is fully visible and sequenced to let the client feel the conclusion emerge rather than being told upfront."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "All recommendations are grounded in analysis: 'our analysis identified inconsistencies,' 'our analysis indicates this remediation window is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the percentage of mismatched records, the two-week remediation estimate, and the downstream use case for the data."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1679,
+              "output_tokens": 520
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning about downstream risk and schedule impact."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 9,
+                "justification": "Progress is precisely quantified against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' The data quality risk is quantified ('[X]% of transaction records contain mismatched cost center codes') and the schedule impact is specific ('two-week extension'). The one minor gap is that '[X]%' is a placeholder, but this is clearly intentional for the template format rather than a vagueness failure. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and it correctly uses build-up structure: it opens with context (where we stand), then presents the finding and its implications, then walks through both options, and only then states the recommendation. The reasoning is fully visible — the reader can trace from the data inconsistency finding → downstream reliability risk → recommendation for remediation. The logic chain is explicit and unfolds naturally before the conclusion is stated."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "All recommendations are grounded in analysis: 'our analysis identified inconsistencies,' 'our analysis indicates this remediation window is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a specific finding — the percentage of affected records, the two-week remediation estimate, and the downstream use case for the data."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1679,
+              "output_tokens": 540
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning about downstream risk and schedule impact."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 9,
+                "justification": "Progress is precisely quantified against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' The data quality risk is quantified ('[X]% of transaction records contain mismatched cost center codes'), and the schedule impact is specific ('two-week extension'). The one minor gap is that '[X]%' is a placeholder, but this is clearly intentional for the template format rather than a vagueness failure. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with a status context, presents the finding and its implications, walks through both options with tradeoffs, and only then states the recommendation. The reasoning is fully visible — the reader can trace from the data quality finding to the downstream risk to the recommendation for Option B. The logic chain is explicit and unfolds naturally before the conclusion is stated."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "All recommendations are grounded in analysis: 'our analysis identified inconsistencies,' 'Our analysis indicates this remediation window is sufficient,' and 'Our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a specific finding — the percentage of affected records, the two-week remediation estimate, and the downstream use case for the data."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1679,
+              "output_tokens": 539
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options: 'Our analysis supports Option B,' with explicit reasoning about downstream risk and schedule impact.\n- Quantified Progress: 9.0/10\n  Justification: Progress is precisely quantified: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized,' with individual workstream statuses listed. The risk is quantified as a 'two-week extension' affecting specific workstreams. The one minor gap is that '[X]%' is a placeholder rather than an actual figure, but this is clearly a template artifact rather than a structural failure. No vague status language like 'on track' appears without supporting metrics.\n- Audience-Appropriate Logic Flow: 9.0/10\n  Justification: This is a client email and follows the build-up structure correctly: it opens with a status update, surfaces the finding with evidence, presents both options with tradeoffs, and only then states the recommendation. The reader can trace the logic — data inconsistency → reliability risk → downstream reporting impact → Option B. The reasoning is fully visible and sequenced to let the client feel the conclusion emerge rather than being told upfront.\n- Analytical Authority: 10.0/10\n  Justification: All recommendations are grounded in analysis: 'our analysis identified inconsistencies,' 'our analysis indicates this remediation window is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the percentage of mismatched records, the two-week remediation estimate, and the downstream use case for the data.\n\nYour weakest criteria are: Audience-Appropriate Logic Flow, Quantified Progress. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Phase 2 Status Update — Data Quality Finding and Path Forward\n\n---\n\nDear [VP Name],\n\nI wanted to share a structured update on where we stand at the midpoint of Phase 2, along with a finding from this week's analysis that requires your input before we proceed.\n\n**Where We Stand**\n\nOf the five workstreams in scope for Phase 2, three are complete and one is ahead of schedule:\n\n- **Workstream 1 (Revenue Reconciliation):** Complete\n- **Workstream 2 (Cost Allocation Model):** Complete\n- **Workstream 3 (Intercompany Eliminations):** Complete — delivered three days ahead of schedule\n- **Workstream 4 (Variance Analysis):** In progress, on schedule for [date]\n- **Workstream 5 (Executive Reporting Package):** Not yet started; scheduled to begin [date]\n\nThat puts us at 3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.\n\n**A Finding That Requires Your Decision**\n\nDuring Workstream 4, our analysis identified inconsistencies in the source data feeding the variance model. Specifically, 23% of transaction records in the [system name] export contain mismatched cost center codes — a volume large enough that it cannot be addressed through documentation alone without compromising the integrity of the output.\n\nThis matters because the variance analysis is the direct input to the Executive Reporting Package. Inconsistencies at the source propagate forward: a qualified variance report produces a qualified executive report. Given that these findings will inform [Q3 planning / board reporting], the reliability of the underlying data is not a peripheral concern.\n\nThere are two ways to proceed:\n\n**Option A — Proceed with Available Data**\nWe continue Workstream 4 using the current dataset, flagging the 23% of affected records and documenting the limitations in the final deliverable. This keeps Workstream 4 on its current timeline and preserves the original Phase 2 completion date. The tradeoff is that both the variance analysis and the Executive Reporting Package will carry a formal qualification reflecting the data limitations.\n\n**Option B — Remediate the Data Before Finalizing the Analysis (Recommended)**\nWe pause Workstream 4 for two weeks while your team corrects the cost center coding errors at the source. Our analysis of the affected record set indicates two weeks is sufficient for full remediation. Workstream 4 and the Executive Reporting Package would each shift by two weeks, moving the Phase 2 close from [original date] to [revised date]. The output would be fully defensible and unqualified — which, given the downstream use of these findings, is the material difference between the two options.\n\nOur analysis supports Option B. The 23% data inconsistency rate represents a systemic issue, not an isolated exception, and the two-week extension is a contained and recoverable schedule impact relative to the risk of delivering qualified findings to [board / executive leadership].\n\n**Requested Response**\n\nIf you are able to confirm your preferred path by [date], we can maintain continuity across Workstreams 4 and 5 without further schedule disruption. I am available for a call this week if it would be helpful to walk through the data finding in more detail before deciding.\n\nThank you for your continued partnership on this engagement.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning tied to the systemic nature of the issue and the contained schedule impact."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is precisely measured against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data finding is quantified at '23% of transaction records,' and the risk impact is specific: 'two-week extension,' with original and revised completion dates referenced. No vague language like 'on track' or 'going well' appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, then introduces the finding, explains why it matters (propagation to executive reporting, downstream use in board/Q3 planning), and only then presents the options and recommendation. The logic is fully traceable — the reader can follow from data inconsistency → output qualification → downstream risk → recommendation. A minor note: the opening sentence ('I wanted to share') is slightly soft, but it does not undermine the overall build-up structure."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "All recommendations are grounded in analysis: '23% of transaction records,' 'our analysis of the affected record set indicates two weeks is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a specific finding — the systemic nature of the inconsistency rate and the quantified schedule impact — rather than personal judgment."
+            }
+          ],
+          "overall_weighted_score": 0.98,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options (Option A and Option B), with the non-recommended option (proceed with available data) listed first and the recommended option (remediate) listed second. Option A is presented as genuinely viable — it preserves the timeline and is described with its real tradeoff, not dismissed. The recommendation is explicit: 'Our analysis supports Option B,' with a clear rationale linking the 23% inconsistency rate and downstream use to the recommendation."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is precisely measured against the original five-workstream scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Workstream 3 is noted as three days ahead of schedule. The risk is quantified with specificity: 23% of transaction records affected, a two-week pause, and the Phase 2 close shifting from [original date] to [revised date]. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, introduces the finding with context, explains why it matters (propagation to executive reporting, downstream use in board/Q3 planning), and only then presents the options and recommendation. The logic is fully traceable — the reader can follow the chain from data inconsistency to qualified output to strategic risk to the recommendation. The only minor note is that the subject line hints at a 'finding and path forward,' which slightly telegraphs the conclusion, but this is a negligible deviation from the build-up ideal."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: '23% of transaction records contain mismatched cost center codes,' 'our analysis of the affected record set indicates two weeks is sufficient,' and 'our analysis supports Option B.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' The recommendation in Option B is explicitly labeled '(Recommended)' and the closing rationale cites the systemic nature of the inconsistency and the contained schedule impact as the evidentiary basis, not personal judgment."
+            }
+          ],
+          "overall_weighted_score": 0.98,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real benefit (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning about the systemic nature of the issue and the contained schedule impact."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is precisely measured against the original five-workstream scope ('3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized'). The draft avoids vague status language — each workstream has a concrete status. Risks are quantified with specificity: '23% of transaction records,' 'two-week extension,' and the exact shift from original to revised completion date are all called out."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, then introduces the finding, explains why it matters (downstream propagation to executive reporting), presents both options, and only then states the recommendation. The logic is fully traceable — the reader can follow the chain from data inconsistency to qualified output to downstream risk to the recommendation. The only minor note is that the subject line hints at a 'finding and path forward,' which slightly telegraphs the conclusion, but this is a negligible deviation from the build-up pattern."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: '23% of transaction records,' 'our analysis of the affected record set indicates two weeks is sufficient,' and 'the 23% data inconsistency rate represents a systemic issue, not an isolated exception.' There are no instances of 'I think' or 'I believe.' The phrase 'I wanted to share' in the opening is a framing device, not a recommendation assertion, and does not undermine the analytical grounding of the substantive content."
+            }
+          ],
+          "overall_weighted_score": 0.98,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 9.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 0.98,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning tied to the systemic nature of the issue and the contained schedule impact."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is precisely measured against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data finding is quantified at '23% of transaction records,' and the risk impact is specific: 'two-week extension,' with original and revised completion dates referenced. No vague language like 'on track' or 'going well' appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, then introduces the finding, explains why it matters (propagation to executive reporting, downstream use in board/Q3 planning), and only then presents the options and recommendation. The logic is fully traceable — the reader can follow from data inconsistency → output qualification → downstream risk → recommendation. A minor note: the opening sentence ('I wanted to share') is slightly soft, but it does not undermine the overall build-up structure."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "All recommendations are grounded in analysis: '23% of transaction records,' 'our analysis of the affected record set indicates two weeks is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a specific finding — the systemic nature of the inconsistency rate and the quantified schedule impact — rather than personal judgment."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1766,
+              "output_tokens": 547
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options (Option A and Option B), with the non-recommended option (proceed with available data) listed first and the recommended option (remediate) listed second. Option A is presented as genuinely viable — it preserves the timeline and is described with its real tradeoff, not dismissed. The recommendation is explicit: 'Our analysis supports Option B,' with a clear rationale linking the 23% inconsistency rate and downstream use to the recommendation."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is precisely measured against the original five-workstream scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Workstream 3 is noted as three days ahead of schedule. The risk is quantified with specificity: 23% of transaction records affected, a two-week pause, and the Phase 2 close shifting from [original date] to [revised date]. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, introduces the finding with context, explains why it matters (propagation to executive reporting, downstream use in board/Q3 planning), and only then presents the options and recommendation. The logic is fully traceable — the reader can follow the chain from data inconsistency to qualified output to strategic risk to the recommendation. The only minor note is that the subject line hints at a 'finding and path forward,' which slightly telegraphs the conclusion, but this is a negligible deviation from the build-up ideal."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: '23% of transaction records contain mismatched cost center codes,' 'our analysis of the affected record set indicates two weeks is sufficient,' and 'our analysis supports Option B.' There are no instances of 'I think,' 'I believe,' or 'in my opinion.' The recommendation in Option B is explicitly labeled '(Recommended)' and the closing rationale cites the systemic nature of the inconsistency and the contained schedule impact as the evidentiary basis, not personal judgment."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1766,
+              "output_tokens": 610
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real benefit (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning about the systemic nature of the issue and the contained schedule impact."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is precisely measured against the original five-workstream scope ('3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized'). The draft avoids vague status language — each workstream has a concrete status. Risks are quantified with specificity: '23% of transaction records,' 'two-week extension,' and the exact shift from original to revised completion date are all called out."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with a status update, then introduces the finding, explains why it matters (downstream propagation to executive reporting), presents both options, and only then states the recommendation. The logic is fully traceable — the reader can follow the chain from data inconsistency to qualified output to downstream risk to the recommendation. The only minor note is that the subject line hints at a 'finding and path forward,' which slightly telegraphs the conclusion, but this is a negligible deviation from the build-up pattern."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: '23% of transaction records,' 'our analysis of the affected record set indicates two weeks is sufficient,' and 'the 23% data inconsistency rate represents a systemic issue, not an isolated exception.' There are no instances of 'I think' or 'I believe.' The phrase 'I wanted to share' in the opening is a framing device, not a recommendation assertion, and does not undermine the analytical grounding of the substantive content."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1766,
+              "output_tokens": 561
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (timeline preservation), not a strawman. The recommendation is clearly stated after both options are presented: 'Our analysis supports Option B,' with explicit reasoning tied to the systemic nature of the issue and the contained schedule impact.\n- Quantified Progress: 10.0/10\n  Justification: Progress is precisely measured against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data finding is quantified at '23% of transaction records,' and the risk impact is specific: 'two-week extension,' with original and revised completion dates referenced. No vague language like 'on track' or 'going well' appears without supporting metrics.\n- Audience-Appropriate Logic Flow: 9.0/10\n  Justification: This is a client email and follows the build-up structure correctly: it opens with a status update, then introduces the finding, explains why it matters (propagation to executive reporting, downstream use in board/Q3 planning), and only then presents the options and recommendation. The logic is fully traceable — the reader can follow from data inconsistency → output qualification → downstream risk → recommendation. A minor note: the opening sentence ('I wanted to share') is slightly soft, but it does not undermine the overall build-up structure.\n- Analytical Authority: 10.0/10\n  Justification: All recommendations are grounded in analysis: '23% of transaction records,' 'our analysis of the affected record set indicates two weeks is sufficient,' and 'our analysis supports Option B.' No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links to a specific finding — the systemic nature of the inconsistency rate and the quantified schedule impact — rather than personal judgment.\n\nYour weakest criteria are: Audience-Appropriate Logic Flow, Analytical Authority. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Phase 2 Status Update — Data Quality Finding and Path Forward\n\n---\n\nDear [VP Name],\n\nThis update covers two things: where Phase 2 stands against the original scope, and a data quality finding from Workstream 4 that requires a decision on how to proceed.\n\n**Where We Stand**\n\nOf the five workstreams in scope for Phase 2, three are complete and one is ahead of schedule:\n\n- **Workstream 1 (Revenue Reconciliation):** Complete\n- **Workstream 2 (Cost Allocation Model):** Complete\n- **Workstream 3 (Intercompany Eliminations):** Complete — delivered three days ahead of schedule\n- **Workstream 4 (Variance Analysis):** In progress, on schedule for [date]\n- **Workstream 5 (Executive Reporting Package):** Not yet started; scheduled to begin [date]\n\nThat puts us at 3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.\n\n**A Finding That Requires Your Decision**\n\nDuring Workstream 4, our analysis identified inconsistencies in the source data feeding the variance model. 23% of transaction records in the [system name] export contain mismatched cost center codes — a rate that our analysis confirms is systemic rather than isolated, and one that cannot be resolved through documentation flags alone without compromising the integrity of the output.\n\nThe downstream consequence is direct: the variance analysis is the primary input to the Executive Reporting Package. Inconsistencies at the source propagate forward, meaning a qualified variance report produces a qualified executive report. Given that these findings will inform [Q3 planning / board reporting], the reliability of the underlying data affects the usability of the final deliverable.\n\nThere are two ways to proceed:\n\n**Option A — Proceed with Available Data**\nWe continue Workstream 4 using the current dataset, flagging the affected 23% of records and documenting the limitations in the final deliverable. This preserves the original Phase 2 completion date. The tradeoff is that both the variance analysis and the Executive Reporting Package will carry a formal qualification reflecting the data limitations.\n\n**Option B — Remediate the Data Before Finalizing the Analysis (Recommended)**\nWe pause Workstream 4 for two weeks while your team corrects the cost center coding errors at the source. Analysis of the affected record set confirms two weeks is sufficient for full remediation. Workstream 4 and the Executive Reporting Package would each shift by two weeks, moving Phase 2 close from [original date] to [revised date]. The output would be fully defensible and unqualified.\n\nThe case for Option B rests on two findings: the 23% inconsistency rate reflects a systemic data issue, not an edge case that can be footnoted away; and the two-week extension is a contained, recoverable schedule impact relative to the risk of delivering qualified findings to [board / executive leadership]. The schedule cost is fixed. The credibility cost of a qualified report is not.\n\n**Requested Response**\n\nIf you are able to confirm your preferred path by [date], continuity across Workstreams 4 and 5 can be maintained without further schedule disruption. A call this week is available if it would be helpful to walk through the data finding in more detail before deciding.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' moving Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides quantified context (workstream status), then introduces the finding with evidence (23% inconsistency rate, systemic nature, downstream consequence), then presents options, then states the recommendation with reasoning. The recommendation does not appear before the evidence is laid out, and the opening is appropriately orienting rather than declarative."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact — rather than personal judgment."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' moving Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides quantified context (workstream status), then introduces the finding with evidence (23% inconsistency rate, systemic nature, downstream consequence), then presents options, then states the recommendation with reasoning. The recommendation does not appear before the evidence is laid out, and the opening is appropriately orienting rather than declarative."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact — rather than personal judgment."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' The data quality risk is quantified at 23% of transaction records. The schedule impact of Option B is specified as a two-week extension per workstream. No vague status language ('on track,' 'going well') appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (scope update + decision needed), then establishes context (workstream status), then presents the finding and its downstream consequences, then offers options, and only then states the recommendation. The recommendation does not appear before the reasoning is fully laid out, which is exactly correct client email structure."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'the 23% inconsistency rate reflects a systemic data issue.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or data point, maintaining full analytical authority throughout."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' moving Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides quantified context (workstream status), then introduces the finding with evidence (23% inconsistency rate, systemic nature, downstream consequence), then presents options, then states the recommendation with reasoning. The recommendation does not appear before the evidence is laid out, and the opening is appropriately orienting rather than declarative."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact — rather than personal judgment."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1955,
+              "output_tokens": 533
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' moving Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides quantified context (workstream status), then introduces the finding with evidence (23% inconsistency rate, systemic nature, downstream consequence), then presents options, then states the recommendation with reasoning. The recommendation does not appear before the evidence is laid out, and the opening is appropriately orienting rather than declarative."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact — rather than personal judgment."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1955,
+              "output_tokens": 533
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' The data quality risk is quantified at 23% of transaction records. The schedule impact of Option B is specified as a two-week extension per workstream. No vague status language ('on track,' 'going well') appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (scope update + decision needed), then establishes context (workstream status), then presents the finding and its downstream consequences, then offers options, and only then states the recommendation. The recommendation does not appear before the reasoning is fully laid out, which is exactly correct client email structure."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'the 23% inconsistency rate reflects a systemic data issue.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding or data point, maintaining full analytical authority throughout."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1955,
+              "output_tokens": 499
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not.\n- Quantified Progress: 10.0/10\n  Justification: Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' moving Phase 2 close from original to revised date). No vague status language appears without supporting metrics.\n- Audience-Appropriate Logic Flow: 10.0/10\n  Justification: This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides quantified context (workstream status), then introduces the finding with evidence (23% inconsistency rate, systemic nature, downstream consequence), then presents options, then states the recommendation with reasoning. The recommendation does not appear before the evidence is laid out, and the opening is appropriately orienting rather than declarative.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact — rather than personal judgment.\n\nYour weakest criteria are: Analytical Authority, Audience-Appropriate Logic Flow. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a client email for not opening with a strong declarative statement — that would be internal email behavior, not client email behavior",
+              "Treating 'I wanted to share a structured update' as a flaw when it correctly defers the conclusion and begins the build-up sequence"
+            ],
+            "clarification": "Client emails should build up to the recommendation — the opening should orient the reader, not lead with the conclusion. A soft, orienting opening sentence is correct client email structure, not a weakness. The criterion scores 10 when the full email follows build-up logic (context → finding → options → recommendation) and the recommendation does not appear before the reasoning. Internal emails score 10 when the conclusion appears in the first sentence. The grader should not penalize client emails for lacking the assertive opening that belongs in internal emails."
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Phase 2 Status Update — Data Quality Finding and Path Forward\n\n---\n\nDear [VP Name],\n\nThis update covers two things: where Phase 2 stands against the original scope, and a data quality finding from Workstream 4 that requires a decision on how to proceed.\n\n**Where We Stand**\n\nOf the five workstreams in scope for Phase 2, three are complete and one is ahead of schedule:\n\n- **Workstream 1 (Revenue Reconciliation):** Complete\n- **Workstream 2 (Cost Allocation Model):** Complete\n- **Workstream 3 (Intercompany Eliminations):** Complete — delivered three days ahead of schedule\n- **Workstream 4 (Variance Analysis):** In progress, on schedule for [date]\n- **Workstream 5 (Executive Reporting Package):** Not yet started; scheduled to begin [date]\n\nThat puts us at 3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.\n\n**A Finding That Requires Your Decision**\n\nDuring Workstream 4, our analysis identified inconsistencies in the source data feeding the variance model. 23% of transaction records in the [system name] export contain mismatched cost center codes — a rate that our analysis confirms is systemic rather than isolated, and one that cannot be resolved through documentation flags alone without compromising the integrity of the output.\n\nThe downstream consequence is direct: the variance analysis is the primary input to the Executive Reporting Package. Inconsistencies at the source propagate forward, meaning a qualified variance report produces a qualified executive report. Given that these findings will inform [Q3 planning / board reporting], the reliability of the underlying data affects the usability of the final deliverable.\n\nThere are two ways to proceed:\n\n**Option A — Proceed with Available Data**\nWe continue Workstream 4 using the current dataset, flagging the affected 23% of records and documenting the limitations in the final deliverable. This preserves the original Phase 2 completion date. The tradeoff is that both the variance analysis and the Executive Reporting Package will carry a formal qualification reflecting the data limitations.\n\n**Option B — Remediate the Data Before Finalizing the Analysis (Recommended)**\nWe pause Workstream 4 for two weeks while your team corrects the cost center coding errors at the source. Analysis of the affected record set confirms two weeks is sufficient for full remediation. Workstream 4 and the Executive Reporting Package would each shift by two weeks, moving Phase 2 close from [original date] to [revised date]. The output would be fully defensible and unqualified.\n\nThe case for Option B rests on two findings: the 23% inconsistency rate reflects a systemic data issue, not an edge case that can be footnoted away; and the two-week extension is a contained, recoverable schedule impact relative to the risk of delivering qualified findings to [board / executive leadership]. The schedule cost is fixed. The credibility cost of a qualified report is not.\n\n**Requested Response**\n\nIf you are able to confirm your preferred path by [date], continuity across Workstreams 4 and 5 can be maintained without further schedule disruption. A call this week is available if it would be helpful to walk through the data finding in more detail before deciding.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' shifting Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides scope context, then introduces the finding with evidence, then explains downstream consequences, then presents options, and only then states the recommendation. The recommendation does not appear before the reasoning is fully laid out. The logical chain from data finding → downstream impact → options → recommendation is fully traceable."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact estimate."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while the credibility cost of a qualified report is not."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data finding is quantified at 23% of transaction records. The risk impact is specific: a two-week extension to Workstreams 4 and 5, with the revised Phase 2 close date noted. No vague status language appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (scope update + decision needed), then establishes context (workstream status), then presents the finding and its downstream consequences, then offers options, and only then states the recommendation. The recommendation does not appear before the reasoning is fully laid out. The logical chain from data inconsistency → downstream propagation → qualified output → credibility risk → Option B is fully traceable."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific data point (23% inconsistency rate, two-week remediation window, downstream propagation to the Executive Reporting Package)."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated ('Recommended' in the header) and justified with specific evidence in the paragraph following both options."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified at 23% of transaction records, and the schedule impact is specified as a two-week extension. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: it opens with an orienting statement, establishes scope progress, introduces the finding with evidence, explains downstream consequences, then presents options and recommendation. The recommendation does not appear before the reasoning — it emerges from the logical chain. The structure follows context → finding → consequence → options → recommendation precisely."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific data point or analytical finding, and personal conviction is expressed entirely through the strength of the evidence."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' shifting Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides scope context, then introduces the finding with evidence, then explains downstream consequences, then presents options, and only then states the recommendation. The recommendation does not appear before the reasoning is fully laid out. The logical chain from data finding → downstream impact → options → recommendation is fully traceable."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact estimate."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1955,
+              "output_tokens": 521
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while the credibility cost of a qualified report is not."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data finding is quantified at 23% of transaction records. The risk impact is specific: a two-week extension to Workstreams 4 and 5, with the revised Phase 2 close date noted. No vague status language appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (scope update + decision needed), then establishes context (workstream status), then presents the finding and its downstream consequences, then offers options, and only then states the recommendation. The recommendation does not appear before the reasoning is fully laid out. The logical chain from data inconsistency → downstream propagation → qualified output → credibility risk → Option B is fully traceable."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific data point (23% inconsistency rate, two-week remediation window, downstream propagation to the Executive Reporting Package)."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1955,
+              "output_tokens": 551
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with the recommended option explicitly placed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated ('Recommended' in the header) and justified with specific evidence in the paragraph following both options."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified at 23% of transaction records, and the schedule impact is specified as a two-week extension. No vague status language like 'on track' or 'going well' appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: it opens with an orienting statement, establishes scope progress, introduces the finding with evidence, explains downstream consequences, then presents options and recommendation. The recommendation does not appear before the reasoning — it emerges from the logical chain. The structure follows context → finding → consequence → options → recommendation precisely."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific data point or analytical finding, and personal conviction is expressed entirely through the strength of the evidence."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1955,
+              "output_tokens": 495
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first), with Option B explicitly marked as recommended and listed second. Option A is presented as genuinely viable with a real tradeoff (preserving the original completion date), not a strawman. The recommendation is clearly stated with explicit reasoning: the 23% rate is systemic, and the two-week schedule cost is fixed while credibility cost is not.\n- Quantified Progress: 10.0/10\n  Justification: Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records, systemic classification) and the schedule impact is specific ('two-week extension,' shifting Phase 2 close from original to revised date). No vague status language appears without supporting metrics.\n- Audience-Appropriate Logic Flow: 10.0/10\n  Justification: This is a client email and correctly follows build-up logic: the opening orients the reader (two topics covered), then provides scope context, then introduces the finding with evidence, then explains downstream consequences, then presents options, and only then states the recommendation. The recommendation does not appear before the reasoning is fully laid out. The logical chain from data finding → downstream impact → options → recommendation is fully traceable.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in analysis: 'our analysis confirms is systemic rather than isolated,' 'Analysis of the affected record set confirms two weeks is sufficient,' and 'The case for Option B rests on two findings.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each recommendation links to a specific finding — the 23% rate, the systemic classification, and the contained two-week impact estimate.\n\nYour weakest criteria are: Analytical Authority, Audience-Appropriate Logic Flow. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a client email for not opening with a strong declarative statement — that would be internal email behavior, not client email behavior",
+              "Treating 'I wanted to share a structured update' as a flaw when it correctly defers the conclusion and begins the build-up sequence"
+            ],
+            "clarification": "Client emails should build up to the recommendation — the opening should orient the reader, not lead with the conclusion. A soft, orienting opening sentence is correct client email structure, not a weakness. The criterion scores 10 when the full email follows build-up logic (context → finding → options → recommendation) and the recommendation does not appear before the reasoning. Internal emails score 10 when the conclusion appears in the first sentence. The grader should not penalize client emails for lacking the assertive opening that belongs in internal emails."
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Phase 2 Status Update — Data Quality Finding and Path Forward\n\n---\n\nDear [VP Name],\n\nThis update covers two things: where Phase 2 stands against the original scope, and a data quality finding from Workstream 4 that requires a decision on how to proceed.\n\n**Where We Stand**\n\nOf the five workstreams in scope for Phase 2, three are complete and one is ahead of schedule:\n\n- **Workstream 1 (Revenue Reconciliation):** Complete\n- **Workstream 2 (Cost Allocation Model):** Complete\n- **Workstream 3 (Intercompany Eliminations):** Complete — delivered three days ahead of schedule\n- **Workstream 4 (Variance Analysis):** In progress, on schedule for [date]\n- **Workstream 5 (Executive Reporting Package):** Not yet started; scheduled to begin [date]\n\nThat puts us at 3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.\n\n**A Finding That Requires Your Decision**\n\nDuring Workstream 4, our analysis identified inconsistencies in the source data feeding the variance model. 23% of transaction records in the [system name] export contain mismatched cost center codes. Cross-referencing the error distribution across cost centers confirms the pattern is systemic — the mismatches are not concentrated in a single data entry point or time period, which means documentation flags cannot adequately contain the integrity risk.\n\nThe downstream consequence is direct: the variance analysis is the primary input to the Executive Reporting Package. Inconsistencies at the source propagate forward — a qualified variance report produces a qualified executive report. Given that these findings will inform [Q3 planning / board reporting], the reliability of the underlying data determines the usability of the final deliverable.\n\nThere are two ways to proceed:\n\n**Option A — Proceed with Available Data**\nWe continue Workstream 4 using the current dataset, flagging the affected 23% of records and documenting the limitations in the final deliverable. This preserves the original Phase 2 completion date. The tradeoff is that both the variance analysis and the Executive Reporting Package will carry a formal qualification reflecting the data limitations.\n\n**Option B — Remediate the Data Before Finalizing the Analysis (Recommended)**\nWe pause Workstream 4 for two weeks while your team corrects the cost center coding errors at the source. Analysis of the error volume and correction complexity confirms two weeks is sufficient for full remediation. Workstream 4 and the Executive Reporting Package would each shift by two weeks, moving Phase 2 close from [original date] to [revised date]. The output would be fully defensible and unqualified.\n\nThe case for Option B follows from the two findings above: the systemic distribution of errors means there is no scoping boundary around which records to trust, and the two-week extension is a fixed, recoverable schedule impact. The schedule cost of Option B is known. The credibility cost of delivering qualified findings to [board / executive leadership] is not.\n\n**Requested Response**\n\nIf you are able to confirm your preferred path by [date], continuity across Workstreams 4 and 5 can be maintained without further schedule disruption. A call this week is available if it would be helpful to walk through the error distribution analysis before deciding.\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first, recommended). Option A is presented first and is credible: it preserves the original timeline and is described without dismissiveness. Option B is presented second and is explicitly labeled 'Recommended.' The recommendation is justified with specific reasoning after both options are laid out, satisfying all four dimensions cleanly."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records affected), and the schedule impact of Option B is specific: a two-week extension to Workstreams 4 and 5, with revised close date noted. No vague status language appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: it opens with an orienting statement (scope update + finding), presents evidence (workstream status, 23% error rate, systemic distribution), explains downstream consequences, then presents options and recommendation last. The recommendation does not appear before the reasoning — it emerges from the analysis. The logic chain is fully traceable: systemic errors → propagation risk → two-week fixed cost vs. unknown credibility cost → Option B."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific findings: the 23% error rate, the systemic distribution confirmed by cross-referencing, the two-week remediation estimate derived from 'error volume and correction complexity analysis.' No first-person opinion language ('I think,' 'I believe') appears anywhere. The closing argument for Option B is framed as a logical consequence of the two findings, not personal conviction, fully satisfying all three dimensions."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first, recommended). Option A is credible and genuinely viable, not a strawman — it preserves the original timeline and is described with its real tradeoff. Option B is listed second and explicitly labeled 'Recommended,' with the reasoning stated clearly after both options are presented. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream's status is individually itemized. The data quality risk is quantified (23% of records affected), and the schedule impact of Option B is specific ('two-week extension,' moving Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: it opens with an orienting statement, presents scope progress, then introduces the finding, explains the downstream consequence, presents both options, and only then states the recommendation and its rationale. The recommendation does not appear before the reasoning — it emerges from the evidence. The logic chain (systemic errors → downstream propagation → fixed vs. unknown cost) is fully visible and traceable."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: 'our analysis identified,' 'cross-referencing the error distribution confirms,' 'analysis of the error volume and correction complexity confirms two weeks is sufficient.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding — the 23% error rate, the systemic distribution pattern, and the two-week remediation estimate are all cited as evidence supporting the recommendation."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first, recommended). Option A is presented first and is credible: it preserves the original timeline and is described without dismissiveness. Option B is presented second and is explicitly labeled 'Recommended' with a clear rationale grounded in the analysis. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original five-workstream scope ('3 of 5 workstreams complete, 60% of Phase 2 deliverables finalized'). The draft avoids vague status language — even 'on schedule' is paired with a specific date placeholder. Risks are quantified with a specific two-week extension impact on Workstream 4 and the Executive Reporting Package, including the revised Phase 2 close date. All three dimensions are met."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (scope status + finding requiring a decision), the body establishes the evidence (23% error rate, systemic distribution, downstream propagation), the options are then presented, and the recommendation follows with explicit reasoning. The recommendation does not appear before the reasoning is laid out. The logic is fully traceable from finding to consequence to options to recommendation."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in analysis: the 23% figure, the systemic error distribution confirmed by cross-referencing, the two-week remediation estimate derived from 'error volume and correction complexity.' No first-person opinion language ('I think,' 'I believe') appears anywhere. The case for Option B is built entirely from the two analytical findings stated earlier in the email, making the evidence-to-conclusion chain explicit and auditable."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first, recommended). Option A is presented first and is credible: it preserves the original timeline and is described without dismissiveness. Option B is presented second and is explicitly labeled 'Recommended.' The recommendation is justified with specific reasoning after both options are laid out, satisfying all four dimensions cleanly."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually tracked with status. The data quality risk is quantified (23% of records affected), and the schedule impact of Option B is specific: a two-week extension to Workstreams 4 and 5, with revised close date noted. No vague status language appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: it opens with an orienting statement (scope update + finding), presents evidence (workstream status, 23% error rate, systemic distribution), explains downstream consequences, then presents options and recommendation last. The recommendation does not appear before the reasoning — it emerges from the analysis. The logic chain is fully traceable: systemic errors → propagation risk → two-week fixed cost vs. unknown credibility cost → Option B."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific findings: the 23% error rate, the systemic distribution confirmed by cross-referencing, the two-week remediation estimate derived from 'error volume and correction complexity analysis.' No first-person opinion language ('I think,' 'I believe') appears anywhere. The closing argument for Option B is framed as a logical consequence of the two findings, not personal conviction, fully satisfying all three dimensions."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1958,
+              "output_tokens": 532
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first, recommended). Option A is credible and genuinely viable, not a strawman — it preserves the original timeline and is described with its real tradeoff. Option B is listed second and explicitly labeled 'Recommended,' with the reasoning stated clearly after both options are presented. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream's status is individually itemized. The data quality risk is quantified (23% of records affected), and the schedule impact of Option B is specific ('two-week extension,' moving Phase 2 close from original to revised date). No vague status language appears without supporting metrics."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: it opens with an orienting statement, presents scope progress, then introduces the finding, explains the downstream consequence, presents both options, and only then states the recommendation and its rationale. The recommendation does not appear before the reasoning — it emerges from the evidence. The logic chain (systemic errors → downstream propagation → fixed vs. unknown cost) is fully visible and traceable."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: 'our analysis identified,' 'cross-referencing the error distribution confirms,' 'analysis of the error volume and correction complexity confirms two weeks is sufficient.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding — the 23% error rate, the systemic distribution pattern, and the two-week remediation estimate are all cited as evidence supporting the recommendation."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1958,
+              "output_tokens": 525
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option A (proceed with available data) and Option B (remediate first, recommended). Option A is presented first and is credible: it preserves the original timeline and is described without dismissiveness. Option B is presented second and is explicitly labeled 'Recommended' with a clear rationale grounded in the analysis. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original five-workstream scope ('3 of 5 workstreams complete, 60% of Phase 2 deliverables finalized'). The draft avoids vague status language — even 'on schedule' is paired with a specific date placeholder. Risks are quantified with a specific two-week extension impact on Workstream 4 and the Executive Reporting Package, including the revised Phase 2 close date. All three dimensions are met."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and correctly follows build-up logic: the opening orients the reader (scope status + finding requiring a decision), the body establishes the evidence (23% error rate, systemic distribution, downstream propagation), the options are then presented, and the recommendation follows with explicit reasoning. The recommendation does not appear before the reasoning is laid out. The logic is fully traceable from finding to consequence to options to recommendation."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in analysis: the 23% figure, the systemic error distribution confirmed by cross-referencing, the two-week remediation estimate derived from 'error volume and correction complexity.' No first-person opinion language ('I think,' 'I believe') appears anywhere. The case for Option B is built entirely from the two analytical findings stated earlier in the email, making the evidence-to-conclusion chain explicit and auditable."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1958,
+              "output_tokens": 520
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+        "rubric": [
+          {
+            "name": "Two-Option Framework",
+            "category": "Structure",
+            "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+            "dimensions": [
+              {
+                "id": "exactly_two_options",
+                "label": "Presents exactly two options — not one, not three or more"
+              },
+              {
+                "id": "recommended_second",
+                "label": "The recommended option is presented second, after the alternative"
+              },
+              {
+                "id": "alternative_is_credible",
+                "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+              },
+              {
+                "id": "recommendation_explicit",
+                "label": "Clearly states which option is recommended and why, after presenting both"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Quantified Progress",
+            "category": "Content",
+            "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+            "dimensions": [
+              {
+                "id": "progress_against_scope",
+                "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+              },
+              {
+                "id": "no_vague_status",
+                "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+              },
+              {
+                "id": "risks_quantified",
+                "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-Appropriate Logic Flow",
+            "category": "Structure",
+            "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+            "dimensions": [
+              {
+                "id": "internal_pyramid",
+                "label": "Internal emails state the conclusion or ask in the first sentence"
+              },
+              {
+                "id": "client_buildup",
+                "label": "Client emails build the logical case before stating the recommendation"
+              },
+              {
+                "id": "logic_is_visible",
+                "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a client email for not opening with a strong declarative statement — that would be internal email behavior, not client email behavior",
+              "Treating 'I wanted to share a structured update' as a flaw when it correctly defers the conclusion and begins the build-up sequence"
+            ],
+            "clarification": "Client emails should build up to the recommendation — the opening should orient the reader, not lead with the conclusion. A soft, orienting opening sentence is correct client email structure, not a weakness. The criterion scores 10 when the full email follows build-up logic (context → finding → options → recommendation) and the recommendation does not appear before the reasoning. Internal emails score 10 when the conclusion appears in the first sentence. The grader should not penalize client emails for lacking the assertive opening that belongs in internal emails."
+          },
+          {
+            "name": "Analytical Authority",
+            "category": "Style",
+            "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+            "dimensions": [
+              {
+                "id": "analysis_not_opinion",
+                "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+              },
+              {
+                "id": "no_i_think",
+                "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+              },
+              {
+                "id": "evidence_cited",
+                "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Exactly TWO options in recommendation emails",
+        "satisfied": "yes",
+        "evidence": "The email presents exactly two options: Option A (Proceed with Available Data) and Option B (Remediate the Data Before Finalizing the Analysis)."
+      },
+      {
+        "preference": "Recommended option listed SECOND (contrast effect)",
+        "satisfied": "yes",
+        "evidence": "Option A is the adequate alternative listed first; Option B is labeled '(Recommended)' and listed second, creating the contrast effect."
+      },
+      {
+        "preference": "Status updates quantify progress against original scope",
+        "satisfied": "yes",
+        "evidence": "'That puts us at 3 of 5 workstreams complete, with 60% of Phase 2 deliverables finalized.' Each workstream is individually enumerated with status."
+      },
+      {
+        "preference": "Client emails use build-up structure (logic unfolding, not conclusion first)",
+        "satisfied": "yes",
+        "evidence": "The email builds from status → finding → analysis of the problem → downstream consequences → options → recommendation rationale. The client feels the logic unfolding rather than being told the answer upfront."
+      },
+      {
+        "preference": "Avoid 'I think' — use 'our analysis shows' language",
+        "satisfied": "yes",
+        "evidence": "'our analysis identified inconsistencies,' 'Cross-referencing the error distribution across cost centers confirms,' 'Analysis of the error volume and correction complexity confirms' — all analytical, evidence-based framing with no 'I think' language."
+      },
+      {
+        "preference": "Balances authority with collaboration",
+        "satisfied": "yes",
+        "evidence": "The email is authoritative in its analysis but frames the decision as the client's: 'A Finding That Requires Your Decision,' 'If you are able to confirm your preferred path,' and offers a call to discuss. The recommendation is clear but not imposed."
+      },
+      {
+        "preference": "Recommendation not buried at the end (dealbreaker check)",
+        "satisfied": "yes",
+        "evidence": "The recommendation is clearly labeled on Option B and followed by a persuasive rationale paragraph. It's not buried — it's positioned prominently within the options section, with the closing paragraph reinforcing the case."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1208,
+      "output_tokens": 599
+    }
+  }
+}

@@ -1,0 +1,1074 @@
+{
+  "persona": "Aisha Patel",
+  "task_index": 0,
+  "task_description": "Help me email our client's COO with a recommendation about whether to consolidate their three regional warehouses into one central hub or upgrade the existing facilities.",
+  "condition": "C",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes client communications that guide decisions without appearing to dictate them. Uses structural choices — option ordering, progress quantification, logic sequencing — to build trust and maintain the consultant's authority while keeping the client in control.",
+    "rubric": [
+      {
+        "name": "Two-Option Framework",
+        "category": "Structure",
+        "description": "Client recommendations present exactly two options — the adequate alternative listed first, then the recommended path. One option feels dictatorial; three creates paralysis. Listing the recommended option second creates a contrast effect that feels like a choice.",
+        "dimensions": [
+          {
+            "id": "exactly_two_options",
+            "label": "Presents exactly two options — not one, not three or more"
+          },
+          {
+            "id": "recommended_second",
+            "label": "The recommended option is presented second, after the alternative"
+          },
+          {
+            "id": "alternative_is_credible",
+            "label": "The non-recommended option is presented as genuinely viable, not a strawman"
+          },
+          {
+            "id": "recommendation_explicit",
+            "label": "Clearly states which option is recommended and why, after presenting both"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Quantified Progress",
+        "category": "Content",
+        "description": "Status updates quantify progress against the original scope — specific workstreams completed, milestones hit, percentage of deliverables done. 'On track' without numbers is not a status update.",
+        "dimensions": [
+          {
+            "id": "progress_against_scope",
+            "label": "Progress is measured against the original scope or plan (e.g., '3 of 5 workstreams complete')"
+          },
+          {
+            "id": "no_vague_status",
+            "label": "Does not use 'on track', 'going well', or 'making progress' without specific metrics"
+          },
+          {
+            "id": "risks_quantified",
+            "label": "Risks or delays include specific impact estimates (e.g., 'two-week extension to workstream 3')"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Audience-Appropriate Logic Flow",
+        "category": "Structure",
+        "description": "Internal emails use pyramid structure (conclusion → reasons → detail). Client emails reverse this (build-up → logic → recommendation) because clients need to feel the reasoning unfold.",
+        "dimensions": [
+          {
+            "id": "internal_pyramid",
+            "label": "Internal emails state the conclusion or ask in the first sentence"
+          },
+          {
+            "id": "client_buildup",
+            "label": "Client emails build the logical case before stating the recommendation"
+          },
+          {
+            "id": "logic_is_visible",
+            "label": "The reasoning is explicit — the reader can trace how the conclusion follows from the evidence"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Analytical Authority",
+        "category": "Style",
+        "description": "Recommendations are grounded in analysis, not opinion. 'Our analysis shows' not 'I think.' Personal conviction is expressed through the strength of the evidence presented, never through first-person assertions.",
+        "dimensions": [
+          {
+            "id": "analysis_not_opinion",
+            "label": "Recommendations reference data, analysis, or evidence — not personal judgment"
+          },
+          {
+            "id": "no_i_think",
+            "label": "Does not use 'I think', 'I believe', 'in my opinion' when making recommendations"
+          },
+          {
+            "id": "evidence_cited",
+            "label": "Each recommendation links to a specific finding, data point, or analysis outcome"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Aisha's consulting instinct: the client must feel they chose, never that they were told. Non-negotiable: exactly two options, recommended one second. Internal communications follow the exact opposite structure from client communications — conclusion first. Will reject drafts that present three options or bury the recommendation."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Warehouse Network Recommendation — Options for Your Review\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested in our facility assessments over the past three weeks. The data collected across all three regional sites gives us a clear foundation to work from, and we want to share our analysis and recommendation before your Q3 capital planning deadline.\n\n**What the Analysis Shows**\n\nAcross the three facilities, the assessment identified consistent patterns: average utilization rates of 67% against a designed capacity of 85%, fulfillment cycle times running 1.4 days above industry benchmark, and maintenance expenditure that has grown 22% year-over-year as the facilities age. Critically, demand modeling for the next five years projects a 31% volume increase concentrated in the central corridor — a geographic shift that the current three-node footprint was not designed to serve.\n\nThese findings point toward a structural decision, and we want to present the two paths your team should consider.\n\n---\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nThis path involves targeted capital investment across all three sites — modernizing material handling systems, refreshing the maintenance-intensive infrastructure, and adding capacity at the highest-utilization location. Estimated capital outlay is $14–17M, with implementation phased over 18 months to minimize operational disruption.\n\nThis option preserves your regional presence and keeps geographic redundancy intact, which has value if local delivery windows are a competitive differentiator for your customer base. It is the lower-risk path in the near term.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nThis path closes the three regional sites and establishes one purpose-built distribution center positioned in the central corridor where demand growth is concentrated. Estimated capital outlay is $28–32M, with an 18–24 month build and transition timeline.\n\nThe central hub eliminates the structural inefficiency of running three partially utilized facilities, reduces total operating cost by an estimated $4.2M annually once stabilized, and positions the network directly against the demand curve your volume projections describe. At that run-rate savings, the incremental capital above Option 1 recovers in under four years.\n\n---\n\n**Our Recommendation**\n\nThe analysis supports Option 2. The upgrade path addresses symptoms — aging infrastructure, suboptimal throughput — without resolving the underlying mismatch between your current footprint and where your volume is actually going. The consolidation investment is larger upfront, but the five-year total cost of ownership favors the hub by approximately $8.9M, and the network you would build is designed for your next decade of operations rather than inherited from the last one.\n\nWe recognize this is a significant capital commitment, and the right next step is a conversation with your team to pressure-test the demand assumptions and validate the site selection criteria before any decision is finalized.\n\nWould Thursday or Friday this week work for a 60-minute working session?\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — no more, no less. Option 1 (upgrade existing facilities) is listed first and treated as genuinely credible, with specific capital figures ($14–17M) and a legitimate rationale around geographic redundancy and lower near-term risk. Option 2 (consolidation) is listed second and explicitly recommended in a dedicated section with clear reasoning grounded in the analysis. The contrast effect is well-executed."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 7,
+              "justification": "The draft is a recommendation email rather than a status update, so the quantified progress criterion applies partially. Where metrics appear, they are specific and strong: 67% utilization vs. 85% design capacity, 1.4-day cycle time gap, 22% YoY maintenance growth, 31% projected volume increase, $4.2M annual savings, $8.9M five-year TCO advantage, and sub-four-year payback. However, the draft does not frame progress against an original project scope (e.g., 'X of Y workstreams complete'), and there are no risk quantifications with timeline impacts. The criterion is met in spirit for an analytical deliverable but not fully in the status-update sense."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. It opens with context (facility assessments, data foundation), moves through the analytical findings (utilization, cycle times, demand modeling), presents both options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is delivered, satisfying the 'logic is visible' dimension fully."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in cited data: utilization rates, benchmark gaps, demand projections, capital figures, and TCO calculations. The recommendation section opens with 'The analysis supports Option 2' — not 'I think' or 'I believe.' No first-person opinion language appears anywhere in the draft. The strength of the recommendation is conveyed entirely through the weight of the evidence presented."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — no more, no less. Option 1 (upgrade existing facilities) is listed first and treated as genuinely credible, with specific capital figures ($14–17M) and a legitimate rationale around geographic redundancy and lower near-term risk. Option 2 (consolidation) is listed second and explicitly recommended in a dedicated section with clear reasoning grounded in the analysis. The contrast effect is well-executed."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 7,
+              "justification": "The draft is a recommendation email rather than a status update, so the quantified progress criterion applies partially. Where metrics appear, they are specific and strong: 67% utilization vs. 85% design capacity, 1.4-day cycle time gap, 22% YoY maintenance growth, 31% projected volume increase, $4.2M annual savings, $8.9M five-year TCO advantage, and sub-four-year payback. However, the draft does not frame progress against an original project scope (e.g., 'X of Y workstreams complete'), and there are no risk quantifications with timeline impacts. The criterion is met in spirit for an analytical deliverable but not fully in the status-update sense."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. It opens with context (facility assessments, data foundation), moves through the analytical findings (utilization, cycle times, demand modeling), presents both options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is delivered, satisfying the 'logic is visible' dimension fully."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in cited data: utilization rates, benchmark gaps, demand projections, capital figures, and TCO calculations. The recommendation section opens with 'The analysis supports Option 2' — not 'I think' or 'I believe.' No first-person opinion language appears anywhere in the draft. The strength of the recommendation is conveyed entirely through the weight of the evidence presented."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options, with Option 1 (upgrade existing facilities) listed first as a credible alternative and Option 2 (consolidate to hub) listed second as the recommended path. Option 1 is presented genuinely — 'preserves your regional presence,' 'lower-risk path' — not as a strawman. The recommendation is explicit and grounded: 'The analysis supports Option 2,' followed by a clear rationale distinguishing symptom-treatment from structural resolution."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 9,
+              "justification": "The draft quantifies the analytical findings with specificity: 67% utilization vs. 85% design capacity, 1.4-day cycle time gap, 22% YoY maintenance cost growth, 31% projected volume increase, $4.2M annual operating savings, sub-four-year payback, and $8.9M five-year TCO advantage. No vague status language appears. The only minor gap is that this is a recommendation email rather than a status update, so 'risks_quantified' in the delay/extension sense isn't directly applicable — though the 18–24 month transition timeline is noted."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with context (facility assessments, data foundation), presents findings (utilization, cycle times, demand shift), walks through both options with evidence, and only then states the recommendation. The reader can trace the full logical chain from data to conclusion before the recommendation lands. No conclusion is front-loaded."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in cited analysis: 'The analysis supports Option 2,' 'demand modeling projects,' 'five-year total cost of ownership favors the hub by approximately $8.9M.' There are no instances of 'I think,' 'I believe,' or opinion-based framing. Each claim links to a specific data point or analytical output, maintaining consultant authority through evidence rather than assertion."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 7.666666666666667,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 1.1547005383792515,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 0.93,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — no more, no less. Option 1 (upgrade existing facilities) is listed first and treated as genuinely credible, with specific capital figures ($14–17M) and a legitimate rationale around geographic redundancy and lower near-term risk. Option 2 (consolidation) is listed second and explicitly recommended in a dedicated section with clear reasoning grounded in the analysis. The contrast effect is well-executed."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 7,
+                "justification": "The draft is a recommendation email rather than a status update, so the quantified progress criterion applies partially. Where metrics appear, they are specific and strong: 67% utilization vs. 85% design capacity, 1.4-day cycle time gap, 22% YoY maintenance growth, 31% projected volume increase, $4.2M annual savings, $8.9M five-year TCO advantage, and sub-four-year payback. However, the draft does not frame progress against an original project scope (e.g., 'X of Y workstreams complete'), and there are no risk quantifications with timeline impacts. The criterion is met in spirit for an analytical deliverable but not fully in the status-update sense."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. It opens with context (facility assessments, data foundation), moves through the analytical findings (utilization, cycle times, demand modeling), presents both options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is delivered, satisfying the 'logic is visible' dimension fully."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in cited data: utilization rates, benchmark gaps, demand projections, capital figures, and TCO calculations. The recommendation section opens with 'The analysis supports Option 2' — not 'I think' or 'I believe.' No first-person opinion language appears anywhere in the draft. The strength of the recommendation is conveyed entirely through the weight of the evidence presented."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1659,
+              "output_tokens": 575
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — no more, no less. Option 1 (upgrade existing facilities) is listed first and treated as genuinely credible, with specific capital figures ($14–17M) and a legitimate rationale around geographic redundancy and lower near-term risk. Option 2 (consolidation) is listed second and explicitly recommended in a dedicated section with clear reasoning grounded in the analysis. The contrast effect is well-executed."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 7,
+                "justification": "The draft is a recommendation email rather than a status update, so the quantified progress criterion applies partially. Where metrics appear, they are specific and strong: 67% utilization vs. 85% design capacity, 1.4-day cycle time gap, 22% YoY maintenance growth, 31% projected volume increase, $4.2M annual savings, $8.9M five-year TCO advantage, and sub-four-year payback. However, the draft does not frame progress against an original project scope (e.g., 'X of Y workstreams complete'), and there are no risk quantifications with timeline impacts. The criterion is met in spirit for an analytical deliverable but not fully in the status-update sense."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. It opens with context (facility assessments, data foundation), moves through the analytical findings (utilization, cycle times, demand modeling), presents both options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is delivered, satisfying the 'logic is visible' dimension fully."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in cited data: utilization rates, benchmark gaps, demand projections, capital figures, and TCO calculations. The recommendation section opens with 'The analysis supports Option 2' — not 'I think' or 'I believe.' No first-person opinion language appears anywhere in the draft. The strength of the recommendation is conveyed entirely through the weight of the evidence presented."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1659,
+              "output_tokens": 575
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options, with Option 1 (upgrade existing facilities) listed first as a credible alternative and Option 2 (consolidate to hub) listed second as the recommended path. Option 1 is presented genuinely — 'preserves your regional presence,' 'lower-risk path' — not as a strawman. The recommendation is explicit and grounded: 'The analysis supports Option 2,' followed by a clear rationale distinguishing symptom-treatment from structural resolution."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 9,
+                "justification": "The draft quantifies the analytical findings with specificity: 67% utilization vs. 85% design capacity, 1.4-day cycle time gap, 22% YoY maintenance cost growth, 31% projected volume increase, $4.2M annual operating savings, sub-four-year payback, and $8.9M five-year TCO advantage. No vague status language appears. The only minor gap is that this is a recommendation email rather than a status update, so 'risks_quantified' in the delay/extension sense isn't directly applicable — though the 18–24 month transition timeline is noted."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with context (facility assessments, data foundation), presents findings (utilization, cycle times, demand shift), walks through both options with evidence, and only then states the recommendation. The reader can trace the full logical chain from data to conclusion before the recommendation lands. No conclusion is front-loaded."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in cited analysis: 'The analysis supports Option 2,' 'demand modeling projects,' 'five-year total cost of ownership favors the hub by approximately $8.9M.' There are no instances of 'I think,' 'I believe,' or opinion-based framing. Each claim links to a specific data point or analytical output, maintaining consultant authority through evidence rather than assertion."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1659,
+              "output_tokens": 560
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options — no more, no less. Option 1 (upgrade existing facilities) is listed first and treated as genuinely credible, with specific capital figures ($14–17M) and a legitimate rationale around geographic redundancy and lower near-term risk. Option 2 (consolidation) is listed second and explicitly recommended in a dedicated section with clear reasoning grounded in the analysis. The contrast effect is well-executed.\n- Quantified Progress: 7.7/10\n  Justification: The draft is a recommendation email rather than a status update, so the quantified progress criterion applies partially. Where metrics appear, they are specific and strong: 67% utilization vs. 85% design capacity, 1.4-day cycle time gap, 22% YoY maintenance growth, 31% projected volume increase, $4.2M annual savings, $8.9M five-year TCO advantage, and sub-four-year payback. However, the draft does not frame progress against an original project scope (e.g., 'X of Y workstreams complete'), and there are no risk quantifications with timeline impacts. The criterion is met in spirit for an analytical deliverable but not fully in the status-update sense.\n- Audience-Appropriate Logic Flow: 10.0/10\n  Justification: This is a client email and follows the build-up → logic → recommendation structure precisely. It opens with context (facility assessments, data foundation), moves through the analytical findings (utilization, cycle times, demand modeling), presents both options with evidence, and only then states the recommendation. The reader can trace every step of the reasoning before the conclusion is delivered, satisfying the 'logic is visible' dimension fully.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in cited data: utilization rates, benchmark gaps, demand projections, capital figures, and TCO calculations. The recommendation section opens with 'The analysis supports Option 2' — not 'I think' or 'I believe.' No first-person opinion language appears anywhere in the draft. The strength of the recommendation is conveyed entirely through the weight of the evidence presented.\n\nYour weakest criteria are: Quantified Progress, Analytical Authority. Focus your revision on improving these."
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Warehouse Network Recommendation — Options for Your Review\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested in our facility assessments over the past three weeks. All three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand — which puts us in a position to share a clear recommendation ahead of your Q3 capital planning deadline.\n\n**What the Analysis Shows**\n\nAcross the three facilities, the assessment identified consistent patterns: average utilization rates of 67% against a designed capacity of 85%, fulfillment cycle times running 1.4 days above industry benchmark, and maintenance expenditure that has grown 22% year-over-year as the facilities age. Critically, demand modeling for the next five years projects a 31% volume increase concentrated in the central corridor — a geographic shift that the current three-node footprint was not designed to serve.\n\nOne risk worth flagging at the outset: if the capital decision is deferred beyond Q3, the preferred central hub site currently under consideration carries a six-to-eight week exclusivity window. A delay in committing would extend the overall consolidation timeline by an estimated three to four months and could require reopening site selection. These findings point toward a structural decision, and we want to present the two paths your team should consider.\n\n---\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nThis path involves targeted capital investment across all three sites — modernizing material handling systems, refreshing the maintenance-intensive infrastructure, and adding capacity at the highest-utilization location. Estimated capital outlay is $14–17M, with implementation phased over 18 months to minimize operational disruption.\n\nThis option preserves your regional presence and keeps geographic redundancy intact, which has value if local delivery windows are a competitive differentiator for your customer base. It is the lower-risk path in the near term.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nThis path closes the three regional sites and establishes one purpose-built distribution center positioned in the central corridor where demand growth is concentrated. Estimated capital outlay is $28–32M, with an 18–24 month build and transition timeline.\n\nThe central hub eliminates the structural inefficiency of running three partially utilized facilities, reduces total operating cost by an estimated $4.2M annually once stabilized, and positions the network directly against the demand curve your volume projections describe. At that run-rate savings, the incremental capital above Option 1 recovers in under four years.\n\n---\n\n**Our Recommendation**\n\nThe analysis supports Option 2. The upgrade path addresses symptoms — aging infrastructure, suboptimal throughput — without resolving the underlying mismatch between your current footprint and where your volume is actually going. The five-year total cost of ownership favors consolidation by approximately $8.9M, and the network produced by Option 2 is designed for your next decade of operations rather than inherited from the last one. The site exclusivity constraint reinforces the case for moving decisively: a three-to-four month delay does not change the strategic logic, but it does add execution risk and timeline exposure that the TCO model does not absorb.\n\nWe recognize this is a significant capital commitment, and the right next step is a conversation with your team to pressure-test the demand assumptions and validate the site selection criteria before any decision is finalized.\n\nWould Thursday or Friday this week work for a 60-minute working session?\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the upgrade path (Option 1) listed first and the recommended consolidation path (Option 2) listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with a legitimate rationale around geographic redundancy and lower near-term risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the alternative could be slightly more developed to feel fully equal in weight before the contrast lands, but it is not a strawman."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 9,
+              "justification": "Progress is quantified against scope: 'All three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand' — three of three named workstreams accounted for. No vague 'on track' language appears. The risk of deferral is quantified specifically as a 'three to four month' timeline extension and a 'six-to-eight week exclusivity window,' satisfying the risks_quantified dimension. This is a strong status update by the rubric's standards."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and it follows the build-up → logic → recommendation structure correctly: it opens with context and completed work, moves through the analytical findings (utilization rates, cycle times, demand projections), presents both options with supporting logic, and only then states the recommendation. The reasoning is fully traceable — the reader can follow from the data (67% utilization, 31% volume shift, $4.2M annual savings, $8.9M TCO advantage) to the conclusion. The logic_is_visible dimension is strongly satisfied."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in named analysis outputs: demand modeling, total cost of ownership analysis, utilization rates, cycle time benchmarks, and maintenance expenditure trends. No 'I think' or 'I believe' language appears anywhere. The recommendation section opens with 'The analysis supports Option 2' — a textbook example of the analysis_not_opinion dimension. Each claim links to a specific data point or finding, fully satisfying evidence_cited."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the upgrade path (Option 1) listed first and the recommended consolidation path (Option 2) listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with a legitimate rationale around geographic redundancy and lower near-term risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the alternative could be slightly more developed to feel fully equal in weight before the contrast lands, but it is not dismissive."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 9,
+              "justification": "Progress is quantified against scope with specificity: 'all three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand.' Risks are quantified with concrete estimates — 'six-to-eight week exclusivity window,' 'three to four months' timeline extension. No vague 'on track' language appears. The draft could marginally improve by framing progress as 'X of Y workstreams complete' rather than listing completions narratively, but the substance is specific and measurable throughout."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and it correctly uses build-up logic: it opens with context and completed work, moves through analytical findings (utilization rates, cycle times, demand projections), presents the risk constraint, then unfolds the two options before arriving at the recommendation. The reader can trace the reasoning from evidence to conclusion. The logic is fully visible — the recommendation follows directly from the five-year TCO differential ($8.9M), the demand curve mismatch, and the site exclusivity constraint. No dimension is violated."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific data: 67% utilization vs. 85% designed capacity, 1.4-day cycle time gap, 22% maintenance cost growth, 31% projected volume increase, $4.2M annual operating savings, sub-four-year payback, $8.9M TCO advantage. No 'I think' or 'I believe' language appears anywhere. The phrase 'The analysis supports Option 2' is the exact formulation the rubric calls for — authority expressed through evidence, not personal assertion. This dimension is executed without any gaps."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the upgrade path (Option 1) listed first and the recommended consolidation path (Option 2) listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with a legitimate rationale around geographic redundancy and lower near-term risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the alternative could be slightly more developed to feel fully equal in weight before the contrast lands, but it is not a strawman."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 9,
+              "justification": "Progress is quantified against scope: all three site visits complete, demand modeling finalized, TCO analysis in hand — three of three workstreams named and confirmed complete. Specific metrics are used throughout (67% utilization vs. 85% design, 1.4-day cycle time gap, 22% maintenance cost growth, 31% volume increase). Risks are quantified with a six-to-eight week exclusivity window and a three-to-four month delay estimate. No vague 'on track' language appears. The only minor gap is that the original scope is not explicitly enumerated (e.g., '3 of 5 workstreams'), but the named completions are specific enough to satisfy the spirit of the criterion."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and it follows the build-up → logic → recommendation structure correctly: it opens with context and completed work, then presents the analytical findings, then the options, then the recommendation. The reasoning is fully visible — the reader can trace how utilization rates, cycle time gaps, and demand shift projections lead to the consolidation recommendation. The logic chain from evidence to conclusion is explicit and unambiguous. No pyramid inversion occurs in this client-facing document."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in named analysis: 'the analysis supports Option 2,' 'the five-year total cost of ownership favors consolidation by approximately $8.9M,' 'demand modeling projects a 31% volume increase.' No 'I think' or 'I believe' language appears anywhere. Each recommendation links to a specific data point or analytical output, and personal conviction is expressed entirely through the strength of the evidence rather than first-person assertion. This dimension is executed flawlessly."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 9.0,
+          "Quantified Progress": 9.0,
+          "Audience-Appropriate Logic Flow": 9.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 0.91,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the upgrade path (Option 1) listed first and the recommended consolidation path (Option 2) listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with a legitimate rationale around geographic redundancy and lower near-term risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the alternative could be slightly more developed to feel fully equal in weight before the contrast lands, but it is not a strawman."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 9,
+                "justification": "Progress is quantified against scope: 'All three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand' — three of three named workstreams accounted for. No vague 'on track' language appears. The risk of deferral is quantified specifically as a 'three to four month' timeline extension and a 'six-to-eight week exclusivity window,' satisfying the risks_quantified dimension. This is a strong status update by the rubric's standards."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and it follows the build-up → logic → recommendation structure correctly: it opens with context and completed work, moves through the analytical findings (utilization rates, cycle times, demand projections), presents both options with supporting logic, and only then states the recommendation. The reasoning is fully traceable — the reader can follow from the data (67% utilization, 31% volume shift, $4.2M annual savings, $8.9M TCO advantage) to the conclusion. The logic_is_visible dimension is strongly satisfied."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in named analysis outputs: demand modeling, total cost of ownership analysis, utilization rates, cycle time benchmarks, and maintenance expenditure trends. No 'I think' or 'I believe' language appears anywhere. The recommendation section opens with 'The analysis supports Option 2' — a textbook example of the analysis_not_opinion dimension. Each claim links to a specific data point or finding, fully satisfying evidence_cited."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1785,
+              "output_tokens": 608
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the upgrade path (Option 1) listed first and the recommended consolidation path (Option 2) listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with a legitimate rationale around geographic redundancy and lower near-term risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the alternative could be slightly more developed to feel fully equal in weight before the contrast lands, but it is not dismissive."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 9,
+                "justification": "Progress is quantified against scope with specificity: 'all three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand.' Risks are quantified with concrete estimates — 'six-to-eight week exclusivity window,' 'three to four months' timeline extension. No vague 'on track' language appears. The draft could marginally improve by framing progress as 'X of Y workstreams complete' rather than listing completions narratively, but the substance is specific and measurable throughout."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and it correctly uses build-up logic: it opens with context and completed work, moves through analytical findings (utilization rates, cycle times, demand projections), presents the risk constraint, then unfolds the two options before arriving at the recommendation. The reader can trace the reasoning from evidence to conclusion. The logic is fully visible — the recommendation follows directly from the five-year TCO differential ($8.9M), the demand curve mismatch, and the site exclusivity constraint. No dimension is violated."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific data: 67% utilization vs. 85% designed capacity, 1.4-day cycle time gap, 22% maintenance cost growth, 31% projected volume increase, $4.2M annual operating savings, sub-four-year payback, $8.9M TCO advantage. No 'I think' or 'I believe' language appears anywhere. The phrase 'The analysis supports Option 2' is the exact formulation the rubric calls for — authority expressed through evidence, not personal assertion. This dimension is executed without any gaps."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1785,
+              "output_tokens": 635
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the upgrade path (Option 1) listed first and the recommended consolidation path (Option 2) listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with a legitimate rationale around geographic redundancy and lower near-term risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the alternative could be slightly more developed to feel fully equal in weight before the contrast lands, but it is not a strawman."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 9,
+                "justification": "Progress is quantified against scope: all three site visits complete, demand modeling finalized, TCO analysis in hand — three of three workstreams named and confirmed complete. Specific metrics are used throughout (67% utilization vs. 85% design, 1.4-day cycle time gap, 22% maintenance cost growth, 31% volume increase). Risks are quantified with a six-to-eight week exclusivity window and a three-to-four month delay estimate. No vague 'on track' language appears. The only minor gap is that the original scope is not explicitly enumerated (e.g., '3 of 5 workstreams'), but the named completions are specific enough to satisfy the spirit of the criterion."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and it follows the build-up → logic → recommendation structure correctly: it opens with context and completed work, then presents the analytical findings, then the options, then the recommendation. The reasoning is fully visible — the reader can trace how utilization rates, cycle time gaps, and demand shift projections lead to the consolidation recommendation. The logic chain from evidence to conclusion is explicit and unambiguous. No pyramid inversion occurs in this client-facing document."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in named analysis: 'the analysis supports Option 2,' 'the five-year total cost of ownership favors consolidation by approximately $8.9M,' 'demand modeling projects a 31% volume increase.' No 'I think' or 'I believe' language appears anywhere. Each recommendation links to a specific data point or analytical output, and personal conviction is expressed entirely through the strength of the evidence rather than first-person assertion. This dimension is executed flawlessly."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1785,
+              "output_tokens": 641
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 9.0/10\n  Justification: The draft presents exactly two options, with the upgrade path (Option 1) listed first and the recommended consolidation path (Option 2) listed second — precisely the contrast structure the rubric requires. The alternative (Option 1) is presented as genuinely credible, with a legitimate rationale around geographic redundancy and lower near-term risk, not a strawman. The recommendation is explicit and clearly grounded after both options are presented. The only minor gap is that the alternative could be slightly more developed to feel fully equal in weight before the contrast lands, but it is not a strawman.\n- Quantified Progress: 9.0/10\n  Justification: Progress is quantified against scope: 'All three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand' — three of three named workstreams accounted for. No vague 'on track' language appears. The risk of deferral is quantified specifically as a 'three to four month' timeline extension and a 'six-to-eight week exclusivity window,' satisfying the risks_quantified dimension. This is a strong status update by the rubric's standards.\n- Audience-Appropriate Logic Flow: 9.0/10\n  Justification: This is a client email and it follows the build-up → logic → recommendation structure correctly: it opens with context and completed work, moves through the analytical findings (utilization rates, cycle times, demand projections), presents both options with supporting logic, and only then states the recommendation. The reasoning is fully traceable — the reader can follow from the data (67% utilization, 31% volume shift, $4.2M annual savings, $8.9M TCO advantage) to the conclusion. The logic_is_visible dimension is strongly satisfied.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in named analysis outputs: demand modeling, total cost of ownership analysis, utilization rates, cycle time benchmarks, and maintenance expenditure trends. No 'I think' or 'I believe' language appears anywhere. The recommendation section opens with 'The analysis supports Option 2' — a textbook example of the analysis_not_opinion dimension. Each claim links to a specific data point or finding, fully satisfying evidence_cited.\n\nYour weakest criteria are: Audience-Appropriate Logic Flow, Quantified Progress. Focus your revision on improving these."
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Warehouse Network Recommendation — Options for Your Review\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested in our facility assessments over the past three weeks. All three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand — three of three planned workstreams delivered ahead of your Q3 capital planning deadline. That puts us in a position to share a structured recommendation today.\n\n**What the Analysis Shows**\n\nThe three workstreams converge on a consistent picture. Utilization data from the site assessments shows average occupancy of 67% against a designed capacity of 85% — structural underuse, not a temporary dip. Operational benchmarking places fulfillment cycle times 1.4 days above industry standard, with maintenance expenditure up 22% year-over-year as the facilities age. And demand modeling projects a 31% volume increase over the next five years, concentrated in the central corridor — a geographic shift the current three-node footprint was not built to absorb.\n\nTaken together, these findings indicate that the network has a structural alignment problem, not just an efficiency problem. That distinction matters for evaluating the options below.\n\nOne timing risk to flag before presenting those options: the preferred central hub site carries a six-to-eight week exclusivity window. A decision deferred beyond Q3 would extend the overall consolidation timeline by an estimated three to four months and would require reopening site selection — adding cost and execution exposure that the current TCO model does not reflect.\n\n---\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nThis path involves targeted capital investment across all three sites — modernizing material handling systems, refreshing aging infrastructure, and expanding capacity at the highest-utilization location. Estimated capital outlay is $14–17M, phased over 18 months.\n\nThe case for this option is real: it preserves geographic redundancy, maintains regional delivery coverage, and carries lower near-term execution risk. If local delivery windows are a meaningful competitive differentiator for your customer base, that regional presence has strategic value that the cost model alone does not fully capture. This is a defensible path.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nThis path closes all three regional sites and establishes one purpose-built distribution center in the central corridor, directly aligned with where projected volume growth is concentrated. Estimated capital outlay is $28–32M, with an 18–24 month build and transition timeline.\n\nConsolidation eliminates the inefficiency of operating three partially utilized facilities and reduces total operating cost by an estimated $4.2M annually once the hub is stabilized. The incremental capital above Option 1 recovers in under four years at that run rate. Over a five-year horizon, the total cost of ownership favors Option 2 by approximately $8.9M — and the network it produces is sized and positioned for the demand curve your own projections describe.\n\n---\n\n**Our Recommendation**\n\nThe analysis supports Option 2. Option 1 addresses the symptoms — aging infrastructure, throughput gaps — without resolving the structural misalignment between the current footprint and where volume is going. The upgrade investment would be spent maintaining a network that the demand data already shows is in the wrong configuration. The consolidation path costs more upfront, but the $8.9M five-year TCO advantage and the sub-four-year payback reflect a network built for the next decade, not the last one. The site exclusivity constraint adds a further consideration: the three-to-four month delay that would result from deferral does not change the strategic logic, but it does introduce execution risk and timeline exposure on top of an already-unfavorable long-run cost position.\n\nWe recognize this is a significant capital commitment, and the right next step is a working session with your team to pressure-test the demand assumptions and validate the site selection criteria before any decision is finalized.\n\nWould Thursday or Friday this week work for a 60-minute session?\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. Option 1 is presented as genuinely defensible ('This is a defensible path,' with real strategic rationale around geographic redundancy and delivery windows), not a strawman. The recommendation is explicit and clearly attributed to the analysis in the final section. The only minor gap is that the recommendation section could more crisply echo the two-option labels before explaining the choice, but this is a stylistic quibble, not a structural failure."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against scope: '3 of 3 planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by a specific number (67% utilization vs. 85% designed capacity, 1.4 days above industry standard, 22% YoY maintenance increase, 31% volume projection). The timing risk is quantified as a 'three to four month' delay with a 'six-to-eight week exclusivity window,' satisfying the risks-quantified dimension fully."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with scope completion context, then presents the analytical findings, then flags a timing risk, then lays out options, and only then states the recommendation — the reader experiences the reasoning unfolding before the conclusion arrives. The logic is fully traceable: structural misalignment finding → two paths evaluated → TCO and payback data → recommendation follows. The draft does not violate the internal-pyramid dimension because it is not an internal email, so that dimension is not applicable here."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in named analysis outputs: site assessment utilization data, operational benchmarking, demand modeling, and TCO analysis. No 'I think' or 'I believe' language appears anywhere. Each claim in the recommendation section links to a specific finding or data point (e.g., '$8.9M five-year TCO advantage,' 'sub-four-year payback,' 'demand data already shows is in the wrong configuration'), and the phrase 'The analysis supports Option 2' exemplifies the analytical-authority framing the rubric calls for."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. Option 1 is presented as genuinely credible ('This is a defensible path,' with real strategic rationale around geographic redundancy and delivery windows), not a strawman. The recommendation is explicit and clearly attributed to the analysis in the final section. The only minor gap is that the recommendation section could more crisply echo the two-option framing before explaining the choice, but this is a stylistic quibble, not a structural failure."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 3 planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by a specific number (67% utilization vs. 85% designed capacity, 1.4 days above industry standard, 22% YOY maintenance increase, 31% volume projection, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). The timing risk is also quantified: 'six-to-eight week exclusivity window' and 'three to four month' delay estimate. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with scope completion context, then presents the analytical findings, then flags a timing risk, then lays out the two options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow the chain from utilization data and demand modeling through to the TCO conclusion. The logic is visible and explicit throughout. No pyramid inversion occurs, which would be the failure mode here."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in named analysis outputs: site assessment utilization data, operational benchmarking, demand modeling, and TCO analysis. The phrase 'The analysis supports Option 2' is used rather than 'I think' or 'I believe.' No first-person opinion language appears anywhere in the recommendation sections. Each claim links to a specific finding or data point, and the recommendation section explicitly explains why the evidence favors Option 2 over Option 1 rather than asserting preference."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 9,
+              "justification": "The draft presents exactly two options, with the adequate alternative (upgrade existing facilities) listed first and the recommended path (consolidation) listed second — satisfying the contrast effect requirement. Option 1 is presented as genuinely credible, with a substantive case made for geographic redundancy and regional delivery value, not a strawman. The recommendation is explicit and clearly reasoned in a dedicated section. The only minor gap is that the recommendation section could more crisply restate 'we recommend Option 2' as its opening sentence rather than 'the analysis supports Option 2,' but this is a small stylistic point and the intent is unambiguous."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: '3 of 3 planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% occupancy vs. 85% designed capacity, 1.4 days above industry standard, 22% YoY maintenance increase, 31% volume projection). Risks are quantified with specificity: the site exclusivity window is given as six-to-eight weeks, and deferral impact is estimated at three-to-four months with explicit downstream consequences."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 9,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure correctly: it opens with context and completed work, moves through analytical findings (utilization data, benchmarking, demand modeling), flags a timing risk, presents both options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow how structural misalignment plus demand shift plus TCO math leads to Option 2. The logic is visible and explicit throughout, with no leaps."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in cited analysis: TCO figures, utilization percentages, payback period calculations, and demand projections are all referenced explicitly. No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. The phrase 'the analysis supports Option 2' correctly attributes the recommendation to the evidence rather than personal judgment, and each claim in the recommendation section links back to a specific finding established earlier in the email."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 9.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 9.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 0.94,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. Option 1 is presented as genuinely defensible ('This is a defensible path,' with real strategic rationale around geographic redundancy and delivery windows), not a strawman. The recommendation is explicit and clearly attributed to the analysis in the final section. The only minor gap is that the recommendation section could more crisply echo the two-option labels before explaining the choice, but this is a stylistic quibble, not a structural failure."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against scope: '3 of 3 planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by a specific number (67% utilization vs. 85% designed capacity, 1.4 days above industry standard, 22% YoY maintenance increase, 31% volume projection). The timing risk is quantified as a 'three to four month' delay with a 'six-to-eight week exclusivity window,' satisfying the risks-quantified dimension fully."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with scope completion context, then presents the analytical findings, then flags a timing risk, then lays out options, and only then states the recommendation — the reader experiences the reasoning unfolding before the conclusion arrives. The logic is fully traceable: structural misalignment finding → two paths evaluated → TCO and payback data → recommendation follows. The draft does not violate the internal-pyramid dimension because it is not an internal email, so that dimension is not applicable here."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in named analysis outputs: site assessment utilization data, operational benchmarking, demand modeling, and TCO analysis. No 'I think' or 'I believe' language appears anywhere. Each claim in the recommendation section links to a specific finding or data point (e.g., '$8.9M five-year TCO advantage,' 'sub-four-year payback,' 'demand data already shows is in the wrong configuration'), and the phrase 'The analysis supports Option 2' exemplifies the analytical-authority framing the rubric calls for."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1907,
+              "output_tokens": 638
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. Option 1 is presented as genuinely credible ('This is a defensible path,' with real strategic rationale around geographic redundancy and delivery windows), not a strawman. The recommendation is explicit and clearly attributed to the analysis in the final section. The only minor gap is that the recommendation section could more crisply echo the two-option framing before explaining the choice, but this is a stylistic quibble, not a structural failure."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 3 planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by a specific number (67% utilization vs. 85% designed capacity, 1.4 days above industry standard, 22% YOY maintenance increase, 31% volume projection, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). The timing risk is also quantified: 'six-to-eight week exclusivity window' and 'three to four month' delay estimate. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with scope completion context, then presents the analytical findings, then flags a timing risk, then lays out the two options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow the chain from utilization data and demand modeling through to the TCO conclusion. The logic is visible and explicit throughout. No pyramid inversion occurs, which would be the failure mode here."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in named analysis outputs: site assessment utilization data, operational benchmarking, demand modeling, and TCO analysis. The phrase 'The analysis supports Option 2' is used rather than 'I think' or 'I believe.' No first-person opinion language appears anywhere in the recommendation sections. Each claim links to a specific finding or data point, and the recommendation section explicitly explains why the evidence favors Option 2 over Option 1 rather than asserting preference."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1907,
+              "output_tokens": 634
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 9,
+                "justification": "The draft presents exactly two options, with the adequate alternative (upgrade existing facilities) listed first and the recommended path (consolidation) listed second — satisfying the contrast effect requirement. Option 1 is presented as genuinely credible, with a substantive case made for geographic redundancy and regional delivery value, not a strawman. The recommendation is explicit and clearly reasoned in a dedicated section. The only minor gap is that the recommendation section could more crisply restate 'we recommend Option 2' as its opening sentence rather than 'the analysis supports Option 2,' but this is a small stylistic point and the intent is unambiguous."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: '3 of 3 planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% occupancy vs. 85% designed capacity, 1.4 days above industry standard, 22% YoY maintenance increase, 31% volume projection). Risks are quantified with specificity: the site exclusivity window is given as six-to-eight weeks, and deferral impact is estimated at three-to-four months with explicit downstream consequences."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 9,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure correctly: it opens with context and completed work, moves through analytical findings (utilization data, benchmarking, demand modeling), flags a timing risk, presents both options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow how structural misalignment plus demand shift plus TCO math leads to Option 2. The logic is visible and explicit throughout, with no leaps."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in cited analysis: TCO figures, utilization percentages, payback period calculations, and demand projections are all referenced explicitly. No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. The phrase 'the analysis supports Option 2' correctly attributes the recommendation to the evidence rather than personal judgment, and each claim in the recommendation section links back to a specific finding established earlier in the email."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1907,
+              "output_tokens": 612
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 9.0/10\n  Justification: The draft presents exactly two options, with the non-recommended upgrade path listed first and the recommended consolidation path listed second — precisely the contrast structure the rubric requires. Option 1 is presented as genuinely defensible ('This is a defensible path,' with real strategic rationale around geographic redundancy and delivery windows), not a strawman. The recommendation is explicit and clearly attributed to the analysis in the final section. The only minor gap is that the recommendation section could more crisply echo the two-option labels before explaining the choice, but this is a stylistic quibble, not a structural failure.\n- Quantified Progress: 10.0/10\n  Justification: Progress is measured precisely against scope: '3 of 3 planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by a specific number (67% utilization vs. 85% designed capacity, 1.4 days above industry standard, 22% YoY maintenance increase, 31% volume projection). The timing risk is quantified as a 'three to four month' delay with a 'six-to-eight week exclusivity window,' satisfying the risks-quantified dimension fully.\n- Audience-Appropriate Logic Flow: 9.0/10\n  Justification: This is a client email and follows the build-up structure correctly: it opens with scope completion context, then presents the analytical findings, then flags a timing risk, then lays out options, and only then states the recommendation — the reader experiences the reasoning unfolding before the conclusion arrives. The logic is fully traceable: structural misalignment finding → two paths evaluated → TCO and payback data → recommendation follows. The draft does not violate the internal-pyramid dimension because it is not an internal email, so that dimension is not applicable here.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in named analysis outputs: site assessment utilization data, operational benchmarking, demand modeling, and TCO analysis. No 'I think' or 'I believe' language appears anywhere. Each claim in the recommendation section links to a specific finding or data point (e.g., '$8.9M five-year TCO advantage,' 'sub-four-year payback,' 'demand data already shows is in the wrong configuration'), and the phrase 'The analysis supports Option 2' exemplifies the analytical-authority framing the rubric calls for.\n\nYour weakest criteria are: Audience-Appropriate Logic Flow, Two-Option Framework. Focus your revision on improving these."
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Warehouse Network Recommendation — Options for Your Review\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested in our facility assessments over the past three weeks. All three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand — three of three planned workstreams delivered ahead of your Q3 capital planning deadline. That puts us in a position to share a structured recommendation today.\n\n**What the Analysis Shows**\n\nThe three workstreams converge on a consistent picture. Utilization data from the site assessments shows average occupancy of 67% against a designed capacity of 85% — structural underuse, not a temporary dip. Operational benchmarking places fulfillment cycle times 1.4 days above industry standard, with maintenance expenditure up 22% year-over-year as the facilities age. Demand modeling projects a 31% volume increase over the next five years, concentrated in the central corridor — a geographic shift the current three-node footprint was not built to absorb.\n\nTaken together, these findings indicate that the network has a structural alignment problem, not just an efficiency problem. That distinction is the key to evaluating the two paths below.\n\nOne timing consideration before presenting those options: the preferred central hub site carries a six-to-eight week exclusivity window. A decision deferred beyond Q3 would extend the overall consolidation timeline by an estimated three to four months and would require reopening site selection — adding cost and execution exposure that the current TCO model does not reflect.\n\n---\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nThis path involves targeted capital investment across all three sites — modernizing material handling systems, refreshing aging infrastructure, and expanding capacity at the highest-utilization location. Estimated capital outlay is $14–17M, phased over 18 months.\n\nThe case for this option is genuine. It preserves geographic redundancy, maintains regional delivery coverage, and carries lower near-term execution risk than a full consolidation. If local delivery windows are a meaningful competitive differentiator for your customer base, that regional presence holds strategic value the cost model alone does not fully capture. Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nThis path closes all three regional sites and establishes one purpose-built distribution center in the central corridor, directly aligned with where projected volume growth is concentrated. Estimated capital outlay is $28–32M, with an 18–24 month build and transition timeline.\n\nConsolidation eliminates the inefficiency of operating three partially utilized facilities and reduces total operating cost by an estimated $4.2M annually once the hub is stabilized. The incremental capital above Option 1 recovers in under four years at that run rate. Over a five-year horizon, the total cost of ownership favors Option 2 by approximately $8.9M — and the network it produces is sized and positioned for the demand curve your own projections describe.\n\n---\n\n**Our Recommendation: Option 2**\n\nThe analysis supports consolidation. Option 1 addresses the symptoms — aging infrastructure, throughput gaps — without resolving the structural misalignment the demand modeling makes visible. The upgrade investment would be spent maintaining a network the data shows is already in the wrong configuration for where volume is going. Option 2 costs more upfront, but the $8.9M five-year TCO advantage and sub-four-year payback reflect a network built for the next decade of your operations, not the last one. The site exclusivity window adds a further consideration: the three-to-four month delay that would follow a deferred decision does not change the strategic logic, but it introduces execution risk and timeline exposure on top of an already-unfavorable long-run cost position under Option 1.\n\nWe recognize this is a significant capital commitment. The right next step is a working session with your team to pressure-test the demand assumptions and validate the site selection criteria before any decision is finalized.\n\nWould Thursday or Friday this week work for a 60-minute session?\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options, with Option 1 (upgrade existing facilities) listed first and Option 2 (consolidation) listed second. Option 1 is presented as genuinely credible — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — not a strawman. The recommendation is explicit and clearly stated in a dedicated section ('Our Recommendation: Option 2') with specific reasoning grounded in the analysis. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "The opening paragraph quantifies progress precisely: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' The analysis section provides specific metrics throughout — 67% occupancy vs. 85% designed capacity, 1.4 days above industry standard, 22% year-over-year maintenance increase, 31% volume projection. Risks are quantified with 'three to four month' delay estimate and 'six-to-eight week exclusivity window.' No vague status language appears anywhere in the draft."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with context and completed workstreams, then presents the analytical findings, then frames the structural problem, then presents options, and only then states the recommendation. The reasoning is fully visible — the reader can trace how the 31% volume shift concentrated in the central corridor, combined with structural underuse and rising maintenance costs, leads logically to the consolidation recommendation. The logic-before-conclusion sequencing is consistently maintained."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific data points — utilization figures, TCO comparisons, payback periods, demand modeling outputs. Phrases like 'the analysis supports consolidation' and 'the data shows' are used instead of 'I think' or 'I believe.' Each claim links to a specific finding: the $8.9M TCO advantage ties to the five-year model, the sub-four-year payback ties to the $4.2M annual savings figure. No first-person opinion language appears anywhere in the recommendation sections."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options, with the adequate alternative (upgrade existing facilities) listed first and the recommended path (consolidation) listed second. Option 1 is presented as genuinely credible — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — not a strawman. The recommendation is explicit and clearly reasoned in the final section: 'The analysis supports consolidation.' All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' Risks are quantified with specificity: 'A decision deferred beyond Q3 would extend the overall consolidation timeline by an estimated three to four months.' No vague status language like 'on track' or 'going well' appears anywhere. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context (site visits complete), moves through the analytical findings (utilization data, benchmarking, demand modeling), introduces a timing consideration, presents both options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow how structural misalignment plus demand shift plus TCO math leads to Option 2. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific data: 67% utilization vs. 85% designed capacity, 1.4-day fulfillment gap, 22% maintenance cost increase, 31% projected volume growth, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback. No 'I think' or 'I believe' language appears anywhere. The phrase 'The analysis supports consolidation' exemplifies the analytical authority framing throughout. All three dimensions are fully satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options, with the adequate alternative (upgrade existing facilities) listed first and the recommended path (consolidation) listed second. Option 1 is presented as genuinely credible — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — not a strawman. The recommendation is explicit and clearly reasoned in the final section: 'The analysis supports consolidation,' followed by a direct comparison of why Option 2 is preferred. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% occupancy vs. 85% designed capacity, 1.4 days above industry standard, 22% YoY maintenance increase, 31% volume projection). Risks are quantified with specificity: 'six-to-eight week exclusivity window,' 'three to four months' delay, and the TCO delta of $8.9M. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context (workstreams complete), then presents the analytical findings, then introduces the timing consideration, then lays out both options with evidence, and only then states the recommendation. The reasoning is fully traceable: structural misalignment + demand shift + TCO advantage + payback period → consolidation. The client_buildup and logic_is_visible dimensions are both clearly satisfied; internal_pyramid is not applicable here as this is a client communication."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in specific data: utilization rates, cycle time benchmarks, cost projections, TCO comparisons, and payback calculations. No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links directly to a named finding — 'the demand modeling makes visible,' 'the $8.9M five-year TCO advantage,' 'sub-four-year payback' — satisfying all three dimensions of analytical authority."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options, with Option 1 (upgrade existing facilities) listed first and Option 2 (consolidation) listed second. Option 1 is presented as genuinely credible — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — not a strawman. The recommendation is explicit and clearly stated in a dedicated section ('Our Recommendation: Option 2') with specific reasoning grounded in the analysis. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "The opening paragraph quantifies progress precisely: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' The analysis section provides specific metrics throughout — 67% occupancy vs. 85% designed capacity, 1.4 days above industry standard, 22% year-over-year maintenance increase, 31% volume projection. Risks are quantified with 'three to four month' delay estimate and 'six-to-eight week exclusivity window.' No vague status language appears anywhere in the draft."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with context and completed workstreams, then presents the analytical findings, then frames the structural problem, then presents options, and only then states the recommendation. The reasoning is fully visible — the reader can trace how the 31% volume shift concentrated in the central corridor, combined with structural underuse and rising maintenance costs, leads logically to the consolidation recommendation. The logic-before-conclusion sequencing is consistently maintained."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific data points — utilization figures, TCO comparisons, payback periods, demand modeling outputs. Phrases like 'the analysis supports consolidation' and 'the data shows' are used instead of 'I think' or 'I believe.' Each claim links to a specific finding: the $8.9M TCO advantage ties to the five-year model, the sub-four-year payback ties to the $4.2M annual savings figure. No first-person opinion language appears anywhere in the recommendation sections."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1937,
+              "output_tokens": 601
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options, with the adequate alternative (upgrade existing facilities) listed first and the recommended path (consolidation) listed second. Option 1 is presented as genuinely credible — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — not a strawman. The recommendation is explicit and clearly reasoned in the final section: 'The analysis supports consolidation.' All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' Risks are quantified with specificity: 'A decision deferred beyond Q3 would extend the overall consolidation timeline by an estimated three to four months.' No vague status language like 'on track' or 'going well' appears anywhere. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context (site visits complete), moves through the analytical findings (utilization data, benchmarking, demand modeling), introduces a timing consideration, presents both options with evidence, and only then states the recommendation. The reasoning is fully traceable — the reader can follow how structural misalignment plus demand shift plus TCO math leads to Option 2. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific data: 67% utilization vs. 85% designed capacity, 1.4-day fulfillment gap, 22% maintenance cost increase, 31% projected volume growth, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback. No 'I think' or 'I believe' language appears anywhere. The phrase 'The analysis supports consolidation' exemplifies the analytical authority framing throughout. All three dimensions are fully satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1937,
+              "output_tokens": 562
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options, with the adequate alternative (upgrade existing facilities) listed first and the recommended path (consolidation) listed second. Option 1 is presented as genuinely credible — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — not a strawman. The recommendation is explicit and clearly reasoned in the final section: 'The analysis supports consolidation,' followed by a direct comparison of why Option 2 is preferred. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% occupancy vs. 85% designed capacity, 1.4 days above industry standard, 22% YoY maintenance increase, 31% volume projection). Risks are quantified with specificity: 'six-to-eight week exclusivity window,' 'three to four months' delay, and the TCO delta of $8.9M. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up → logic → recommendation structure precisely. The email opens with context (workstreams complete), then presents the analytical findings, then introduces the timing consideration, then lays out both options with evidence, and only then states the recommendation. The reasoning is fully traceable: structural misalignment + demand shift + TCO advantage + payback period → consolidation. The client_buildup and logic_is_visible dimensions are both clearly satisfied; internal_pyramid is not applicable here as this is a client communication."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in specific data: utilization rates, cycle time benchmarks, cost projections, TCO comparisons, and payback calculations. No first-person opinion language ('I think,' 'I believe') appears anywhere in the draft. Each recommendation links directly to a named finding — 'the demand modeling makes visible,' 'the $8.9M five-year TCO advantage,' 'sub-four-year payback' — satisfying all three dimensions of analytical authority."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1937,
+              "output_tokens": 620
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Two-Option Framework: 10.0/10\n  Justification: The draft presents exactly two options, with Option 1 (upgrade existing facilities) listed first and Option 2 (consolidation) listed second. Option 1 is presented as genuinely credible — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — not a strawman. The recommendation is explicit and clearly stated in a dedicated section ('Our Recommendation: Option 2') with specific reasoning grounded in the analysis. All four dimensions are fully satisfied.\n- Quantified Progress: 10.0/10\n  Justification: The opening paragraph quantifies progress precisely: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' The analysis section provides specific metrics throughout — 67% occupancy vs. 85% designed capacity, 1.4 days above industry standard, 22% year-over-year maintenance increase, 31% volume projection. Risks are quantified with 'three to four month' delay estimate and 'six-to-eight week exclusivity window.' No vague status language appears anywhere in the draft.\n- Audience-Appropriate Logic Flow: 10.0/10\n  Justification: This is a client email and follows the build-up structure correctly: it opens with context and completed workstreams, then presents the analytical findings, then frames the structural problem, then presents options, and only then states the recommendation. The reasoning is fully visible — the reader can trace how the 31% volume shift concentrated in the central corridor, combined with structural underuse and rising maintenance costs, leads logically to the consolidation recommendation. The logic-before-conclusion sequencing is consistently maintained.\n- Analytical Authority: 10.0/10\n  Justification: Every recommendation is grounded in specific data points — utilization figures, TCO comparisons, payback periods, demand modeling outputs. Phrases like 'the analysis supports consolidation' and 'the data shows' are used instead of 'I think' or 'I believe.' Each claim links to a specific finding: the $8.9M TCO advantage ties to the five-year model, the sub-four-year payback ties to the $4.2M annual savings figure. No first-person opinion language appears anywhere in the recommendation sections.\n\nYour weakest criteria are: Analytical Authority, Audience-Appropriate Logic Flow. Focus your revision on improving these."
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Warehouse Network Recommendation — Options for Your Review\n\n---\n\nDear [COO Name],\n\nThank you for the time your operations team invested in our facility assessments over the past three weeks. All three site visits are complete, the demand modeling workstream has been finalized, and the total cost of ownership analysis across both scenarios is in hand — three of three planned workstreams delivered ahead of your Q3 capital planning deadline. That puts us in a position to share a structured recommendation today.\n\n**What the Analysis Shows**\n\nThe three workstreams converge on a consistent picture, and the logic that connects them is worth walking through before presenting the options.\n\nThe site assessments establish the baseline: average utilization of 67% against a designed capacity of 85%, fulfillment cycle times 1.4 days above industry benchmark, and maintenance expenditure up 22% year-over-year as the facilities age. These figures confirm that the current network is underperforming — but underperformance alone would point toward an upgrade. What changes the calculus is what the demand modeling shows.\n\nDemand modeling projects a 31% volume increase over the next five years, concentrated in the central corridor. That is not a distribution of growth that spreads evenly across the existing three-node footprint — it is a geographic shift that the current network was not configured to serve. The operational benchmarking and site assessment data describe an efficiency problem. The demand modeling reveals a structural alignment problem underneath it. An upgrade addresses the first; only a reconfigured footprint addresses the second.\n\nThat distinction frames the two paths your team should consider.\n\nOne timing factor to note before presenting those options: the preferred central hub site carries a six-to-eight week exclusivity window. A decision deferred beyond Q3 would extend the overall consolidation timeline by an estimated three to four months and would require reopening site selection — adding cost and execution exposure that the current TCO model does not reflect.\n\n---\n\n**Option 1: Upgrade the Existing Regional Facilities**\n\nThis path involves targeted capital investment across all three sites — modernizing material handling systems, refreshing aging infrastructure, and expanding capacity at the highest-utilization location. Estimated capital outlay is $14–17M, phased over 18 months.\n\nThe case for this option is genuine. It preserves geographic redundancy, maintains regional delivery coverage, and carries lower near-term execution risk than a full consolidation. If local delivery windows are a meaningful competitive differentiator for your customer base, that regional presence holds strategic value the cost model alone does not fully capture. Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one.\n\n**Option 2: Consolidate into a Single Central Hub**\n\nThis path closes all three regional sites and establishes one purpose-built distribution center in the central corridor, directly aligned with where projected volume growth is concentrated. Estimated capital outlay is $28–32M, with an 18–24 month build and transition timeline.\n\nConsolidation eliminates the inefficiency of operating three partially utilized facilities and reduces total operating cost by an estimated $4.2M annually once the hub is stabilized. The incremental capital above Option 1 recovers in under four years at that run rate. Over a five-year horizon, the total cost of ownership favors Option 2 by approximately $8.9M — and the network it produces is sized and positioned for the demand curve your own projections describe.\n\n---\n\n**Our Recommendation: Option 2**\n\nThe analysis supports consolidation. The site assessment and benchmarking data confirm that the current facilities are underperforming — but the demand modeling establishes that the more consequential problem is positional, not operational. Option 1 resolves the operational layer; it does not resolve the positional one. Spending $14–17M to upgrade a network the demand data shows is already misaligned to future volume would improve near-term metrics while leaving the structural problem intact.\n\nOption 2 costs more upfront, but the $8.9M five-year TCO advantage and sub-four-year payback on the incremental capital reflect a network built for the next decade of your operations. The site exclusivity window reinforces the case for moving with intention: the three-to-four month delay that would follow a deferred decision introduces execution risk and timeline exposure on top of an already-unfavorable long-run cost position under Option 1.\n\nWe recognize this is a significant capital commitment. The right next step is a working session with your team to pressure-test the demand assumptions and validate the site selection criteria before any decision is finalized.\n\nWould Thursday or Friday this week work for a 60-minute session?\n\nBest regards,\n[Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options, with Option 1 (upgrade existing facilities) listed first as a credible alternative and Option 2 (consolidation) listed second as the recommendation. Option 1 is treated as genuinely viable — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — avoiding any strawman framing. The recommendation is explicit and clearly justified after both options are presented."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% utilization, 1.4 days above benchmark, 22% maintenance increase, 31% volume growth, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). Risks are also quantified: a deferred decision 'would extend the overall consolidation timeline by an estimated three to four months.'"
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with completed work, walks through the analytical findings (site data, demand modeling, structural vs. operational distinction), introduces a timing constraint, then presents options, and only states the recommendation at the end. The reasoning is fully visible — the reader can trace exactly how the demand modeling's geographic shift finding drives the recommendation for consolidation over upgrade."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in named workstreams and specific data points — 'the analysis supports consolidation,' 'the site assessment and benchmarking data confirm,' 'the demand modeling establishes.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding: the $8.9M TCO advantage, the sub-four-year payback, and the positional misalignment identified through demand modeling all serve as evidence anchors for the recommendation."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option 1 (upgrade existing facilities) listed first, Option 2 (consolidate) listed second as the recommended path. Option 1 is presented with genuine credibility, acknowledging geographic redundancy, regional delivery coverage, and strategic value for continuity-focused organizations. The recommendation is explicit, clearly labeled 'Our Recommendation: Option 2,' and grounded in the analytical distinction between operational and positional problems."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% utilization, 1.4 days above benchmark, 22% maintenance increase, 31% volume growth, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). The timing risk is also quantified: a deferred decision extends the timeline by 'three to four months.'"
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with completed workstreams, then walks through the analytical findings (site data, demand modeling, structural vs. operational distinction), then presents options, and only then states the recommendation. The reasoning is fully visible — the reader can trace exactly how the demand modeling's geographic concentration finding invalidates Option 1 and supports Option 2, making the conclusion feel earned rather than imposed."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in named workstreams and specific data points — site assessments, demand modeling, TCO analysis — with no use of 'I think,' 'I believe,' or opinion-based framing. The recommendation section explicitly attributes conclusions to 'the analysis' and 'the demand modeling,' and each claim links to a specific finding (e.g., the $8.9M TCO advantage, the sub-four-year payback on incremental capital). Authority is conveyed entirely through the weight of evidence."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Two-Option Framework",
+              "score": 10,
+              "justification": "The draft presents exactly two options — Option 1 (upgrade existing facilities) listed first, Option 2 (consolidate) listed second as the recommended path. Option 1 is presented with genuine credibility, including specific advantages like geographic redundancy and lower execution risk, and the explicit acknowledgment that 'upgrading is a credible path.' The recommendation is clearly stated in a dedicated section after both options are presented, with explicit reasoning grounded in the analysis."
+            },
+            {
+              "criterion_name": "Quantified Progress",
+              "score": 10,
+              "justification": "Progress is measured precisely against the original scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% utilization vs. 85% designed capacity, 1.4 days above benchmark, 22% maintenance increase, 31% volume projection, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). The timing risk is also quantified: a deferred decision would extend the timeline by 'three to four months.'"
+            },
+            {
+              "criterion_name": "Audience-Appropriate Logic Flow",
+              "score": 10,
+              "justification": "This is a client email and follows the build-up structure correctly: it opens with scope completion context, then walks through the analytical findings (site assessments, demand modeling, structural vs. operational distinction), then presents the options, and only then states the recommendation. The reasoning is fully visible — the reader can trace exactly how the demand modeling's geographic concentration finding distinguishes Option 2 from Option 1 and why Option 1 leaves the structural problem unresolved."
+            },
+            {
+              "criterion_name": "Analytical Authority",
+              "score": 10,
+              "justification": "Every recommendation is grounded in named workstreams and specific data points — 'the site assessment and benchmarking data confirm,' 'the demand modeling establishes,' '$8.9M five-year TCO advantage,' 'sub-four-year payback.' No first-person opinion language ('I think,' 'I believe') appears anywhere. The recommendation section explicitly attributes conclusions to 'the analysis' rather than personal judgment, maintaining analytical authority throughout."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Two-Option Framework": 10.0,
+          "Quantified Progress": 10.0,
+          "Audience-Appropriate Logic Flow": 10.0,
+          "Analytical Authority": 10.0
+        },
+        "std_scores": {
+          "Two-Option Framework": 0.0,
+          "Quantified Progress": 0.0,
+          "Audience-Appropriate Logic Flow": 0.0,
+          "Analytical Authority": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options, with Option 1 (upgrade existing facilities) listed first as a credible alternative and Option 2 (consolidation) listed second as the recommendation. Option 1 is treated as genuinely viable — 'Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one' — avoiding any strawman framing. The recommendation is explicit and clearly justified after both options are presented."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% utilization, 1.4 days above benchmark, 22% maintenance increase, 31% volume growth, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). Risks are also quantified: a deferred decision 'would extend the overall consolidation timeline by an estimated three to four months.'"
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with completed work, walks through the analytical findings (site data, demand modeling, structural vs. operational distinction), introduces a timing constraint, then presents options, and only states the recommendation at the end. The reasoning is fully visible — the reader can trace exactly how the demand modeling's geographic shift finding drives the recommendation for consolidation over upgrade."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in named workstreams and specific data points — 'the analysis supports consolidation,' 'the site assessment and benchmarking data confirm,' 'the demand modeling establishes.' No first-person opinion language ('I think,' 'I believe') appears anywhere. Each claim links to a specific finding: the $8.9M TCO advantage, the sub-four-year payback, and the positional misalignment identified through demand modeling all serve as evidence anchors for the recommendation."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2047,
+              "output_tokens": 571
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option 1 (upgrade existing facilities) listed first, Option 2 (consolidate) listed second as the recommended path. Option 1 is presented with genuine credibility, acknowledging geographic redundancy, regional delivery coverage, and strategic value for continuity-focused organizations. The recommendation is explicit, clearly labeled 'Our Recommendation: Option 2,' and grounded in the analytical distinction between operational and positional problems."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% utilization, 1.4 days above benchmark, 22% maintenance increase, 31% volume growth, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). The timing risk is also quantified: a deferred decision extends the timeline by 'three to four months.'"
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with completed workstreams, then walks through the analytical findings (site data, demand modeling, structural vs. operational distinction), then presents options, and only then states the recommendation. The reasoning is fully visible — the reader can trace exactly how the demand modeling's geographic concentration finding invalidates Option 1 and supports Option 2, making the conclusion feel earned rather than imposed."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in named workstreams and specific data points — site assessments, demand modeling, TCO analysis — with no use of 'I think,' 'I believe,' or opinion-based framing. The recommendation section explicitly attributes conclusions to 'the analysis' and 'the demand modeling,' and each claim links to a specific finding (e.g., the $8.9M TCO advantage, the sub-four-year payback on incremental capital). Authority is conveyed entirely through the weight of evidence."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2047,
+              "output_tokens": 574
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Two-Option Framework",
+                "score": 10,
+                "justification": "The draft presents exactly two options — Option 1 (upgrade existing facilities) listed first, Option 2 (consolidate) listed second as the recommended path. Option 1 is presented with genuine credibility, including specific advantages like geographic redundancy and lower execution risk, and the explicit acknowledgment that 'upgrading is a credible path.' The recommendation is clearly stated in a dedicated section after both options are presented, with explicit reasoning grounded in the analysis."
+              },
+              {
+                "criterion_name": "Quantified Progress",
+                "score": 10,
+                "justification": "Progress is measured precisely against the original scope: 'three of three planned workstreams delivered ahead of your Q3 capital planning deadline.' No vague status language appears — every claim is backed by specific figures (67% utilization vs. 85% designed capacity, 1.4 days above benchmark, 22% maintenance increase, 31% volume projection, $4.2M annual savings, $8.9M five-year TCO advantage, sub-four-year payback). The timing risk is also quantified: a deferred decision would extend the timeline by 'three to four months.'"
+              },
+              {
+                "criterion_name": "Audience-Appropriate Logic Flow",
+                "score": 10,
+                "justification": "This is a client email and follows the build-up structure correctly: it opens with scope completion context, then walks through the analytical findings (site assessments, demand modeling, structural vs. operational distinction), then presents the options, and only then states the recommendation. The reasoning is fully visible — the reader can trace exactly how the demand modeling's geographic concentration finding distinguishes Option 2 from Option 1 and why Option 1 leaves the structural problem unresolved."
+              },
+              {
+                "criterion_name": "Analytical Authority",
+                "score": 10,
+                "justification": "Every recommendation is grounded in named workstreams and specific data points — 'the site assessment and benchmarking data confirm,' 'the demand modeling establishes,' '$8.9M five-year TCO advantage,' 'sub-four-year payback.' No first-person opinion language ('I think,' 'I believe') appears anywhere. The recommendation section explicitly attributes conclusions to 'the analysis' rather than personal judgment, maintaining analytical authority throughout."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2047,
+              "output_tokens": 574
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Exactly TWO options presented to client",
+        "satisfied": "yes",
+        "evidence": "The email presents exactly two options: Option 1 (Upgrade Existing Facilities) and Option 2 (Consolidate into Central Hub)."
+      },
+      {
+        "preference": "Recommended option listed SECOND (contrast effect)",
+        "satisfied": "yes",
+        "evidence": "Option 1 (the adequate alternative) is listed first, and Option 2 (the recommended consolidation) is listed second, creating the desired contrast effect."
+      },
+      {
+        "preference": "Quantify progress against original scope",
+        "satisfied": "yes",
+        "evidence": "'three of three planned workstreams delivered ahead of your Q3 capital planning deadline' — explicit quantification against scope."
+      },
+      {
+        "preference": "Client emails use build-up structure (logic unfolding, not conclusion first)",
+        "satisfied": "yes",
+        "evidence": "The email walks through site assessments, then demand modeling, then the distinction between operational vs. structural problems, building the logical case before presenting options and the recommendation. The recommendation comes near the end after the full logic has unfolded."
+      },
+      {
+        "preference": "Avoid 'I think' — use 'our analysis shows' framing",
+        "satisfied": "yes",
+        "evidence": "The email consistently uses evidence-based language: 'The analysis supports consolidation,' 'The three workstreams converge on a consistent picture,' 'What the analysis shows.' No instances of 'I think.'"
+      },
+      {
+        "preference": "Alternative option presented as credible, not a straw man",
+        "satisfied": "yes",
+        "evidence": "'The case for this option is genuine. It preserves geographic redundancy, maintains regional delivery coverage, and carries lower near-term execution risk... Upgrading is a credible path, and for an organization prioritizing continuity over structural change, it is a reasonable one.'"
+      },
+      {
+        "preference": "Balance authority with collaboration",
+        "satisfied": "yes",
+        "evidence": "The email makes a clear, authoritative recommendation but closes with 'We recognize this is a significant capital commitment. The right next step is a working session with your team to pressure-test the demand assumptions' — collaborative without being deferential."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1487,
+      "output_tokens": 601
+    }
+  }
+}

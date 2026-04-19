@@ -1,0 +1,140 @@
+{
+  "scenario_id": "technical_doc_01",
+  "draft_id": "technical_doc_01_misaligned",
+  "model": "opus",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Critical decisions front-loaded in summaries\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"decisions_in_tldr\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The document has no TL;DR or summary section; it opens with general background prose about rate limiting in distributed systems, and critical decisions like fail-open/fail-closed behavior and retry semantics are never stated upfront.\"\n        },\n        {\n          \"dimension_id\": \"non_obvious_defaults_highlighted\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Non-obvious default behaviors such as fail-open vs. fail-closed semantics, retry behavior, and what happens when Redis is unavailable are never called out anywhere in the document, let alone prominently.\"\n        },\n        {\n          \"dimension_id\": \"non_goals_stated\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no non-goals section anywhere in the document; the closest is a brief mention of rejecting Envoy's built-in solution, but explicit non-goals to prevent scope misinterpretation are absent.\"\n        },\n        {\n          \"dimension_id\": \"decisions_before_implementation\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Architectural decisions are interleaved with or follow implementation details throughout; for example, the recommendation to use token bucket appears at the end of Section 5 after extensive algorithm implementation discussion, and caller-constraining decisions like domain-based authorization appear only in Section 10.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code examples as primary entry points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"caller_side_examples\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The only code shown is the protobuf service definition (server-side schema); there are no caller-side code examples in any programming language showing how to actually call the API.\"\n        },\n        {\n          \"dimension_id\": \"realistic_production_patterns\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No code examples use actual client libraries, middleware patterns, or production idioms; the protobuf definition and YAML config are schema definitions, not integration code.\"\n        },\n        {\n          \"dimension_id\": \"error_handling_shown\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No code example demonstrates error handling or edge cases; the protobuf definition includes an OVER_LIMIT enum value but no example shows how a caller should handle it.\"\n        },\n        {\n          \"dimension_id\": \"inline_annotations\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Neither the protobuf definition nor the YAML configuration include any inline comments explaining the 'why' behind non-obvious choices.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete debugging artifacts in operational sections\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"exact_error_output\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No exact error codes, HTTP status codes, gRPC status codes, or error response bodies are shown anywhere; Section 10 mentions authorization rejections but provides no concrete error output.\"\n        },\n        {\n          \"dimension_id\": \"caller_perspective\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Failure modes are described abstractly from the server's perspective (e.g., 'requests are rejected') without specifying what the caller actually sees in terms of response codes or error messages.\"\n        },\n        {\n          \"dimension_id\": \"observability_signals_named\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Section 11 mentions 'request volume, rejection rate, latency distribution, and current counter values' as dashboard panels but never names specific metric names, structured log fields, or tracing span names.\"\n        },\n        {\n          \"dimension_id\": \"auth_rejection_examples\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Section 10 states 'Attempts to check rate limits in a domain that the caller is not authorized to access are rejected' but provides no concrete example of the rejected request or response.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Tradeoff transparency with escape hatches\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tradeoff_flagged\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Design decisions are presented as settled conclusions without flagging tradeoffs; for example, the choice of Redis over alternatives, the 30-second config propagation delay, and the custom-build-vs-buy decision are not framed as tradeoffs with costs.\"\n        },\n        {\n          \"dimension_id\": \"affected_parties_named\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No specific teams, use cases, or workflows are identified as being negatively affected by any design decision; the fixed window boundary problem is mentioned but not tied to specific affected parties.\"\n        },\n        {\n          \"dimension_id\": \"alternative_provided\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No workarounds or alternative approaches are offered for teams constrained by design decisions; the algorithm section mentions consulting the Rate Limiting team but doesn't provide escape hatches for specific limitations.\"\n        },\n        {\n          \"dimension_id\": \"visually_distinct_callout\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The document contains no admonition boxes, blockquotes, or visually distinct callouts of any kind; all content is presented as uniform prose paragraphs.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Scan-optimized formatting\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tables_for_comparisons\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The algorithm comparison in Section 5 and performance characteristics in Section 9 are presented as prose paragraphs rather than tables, despite being natural candidates for tabular format.\"\n        },\n        {\n          \"dimension_id\": \"bold_key_terms\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No bold emphasis or other inline formatting is used anywhere in the document to highlight key terms, decisions, or requirements for scanning.\"\n        },\n        {\n          \"dimension_id\": \"sections_self_contained\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Sections rely on context from earlier sections; for example, Section 6 (API Design) cannot be fully understood without Section 5's algorithm discussion, and Section 7 references concepts introduced in Section 6 without re-establishing them.\"\n        },\n        {\n          \"dimension_id\": \"admonition_boxes_for_warnings\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No callout or admonition boxes are used anywhere in the document; warnings like the fixed window boundary problem and the 30-second config propagation delay are embedded in regular prose.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 5904,
+  "output_tokens": 1728,
+  "latency_ms": 29581,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Critical decisions front-loaded in summaries",
+        "dimension_grades": [
+          {
+            "dimension_id": "decisions_in_tldr",
+            "grade": "NOT_MET",
+            "evidence": "The document has no TL;DR or summary section; it opens with general background prose about rate limiting in distributed systems, and critical decisions like fail-open/fail-closed behavior and retry semantics are never stated upfront."
+          },
+          {
+            "dimension_id": "non_obvious_defaults_highlighted",
+            "grade": "NOT_MET",
+            "evidence": "Non-obvious default behaviors such as fail-open vs. fail-closed semantics, retry behavior, and what happens when Redis is unavailable are never called out anywhere in the document, let alone prominently."
+          },
+          {
+            "dimension_id": "non_goals_stated",
+            "grade": "NOT_MET",
+            "evidence": "There is no non-goals section anywhere in the document; the closest is a brief mention of rejecting Envoy's built-in solution, but explicit non-goals to prevent scope misinterpretation are absent."
+          },
+          {
+            "dimension_id": "decisions_before_implementation",
+            "grade": "NOT_MET",
+            "evidence": "Architectural decisions are interleaved with or follow implementation details throughout; for example, the recommendation to use token bucket appears at the end of Section 5 after extensive algorithm implementation discussion, and caller-constraining decisions like domain-based authorization appear only in Section 10."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code examples as primary entry points",
+        "dimension_grades": [
+          {
+            "dimension_id": "caller_side_examples",
+            "grade": "NOT_MET",
+            "evidence": "The only code shown is the protobuf service definition (server-side schema); there are no caller-side code examples in any programming language showing how to actually call the API."
+          },
+          {
+            "dimension_id": "realistic_production_patterns",
+            "grade": "NOT_MET",
+            "evidence": "No code examples use actual client libraries, middleware patterns, or production idioms; the protobuf definition and YAML config are schema definitions, not integration code."
+          },
+          {
+            "dimension_id": "error_handling_shown",
+            "grade": "NOT_MET",
+            "evidence": "No code example demonstrates error handling or edge cases; the protobuf definition includes an OVER_LIMIT enum value but no example shows how a caller should handle it."
+          },
+          {
+            "dimension_id": "inline_annotations",
+            "grade": "NOT_MET",
+            "evidence": "Neither the protobuf definition nor the YAML configuration include any inline comments explaining the 'why' behind non-obvious choices."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete debugging artifacts in operational sections",
+        "dimension_grades": [
+          {
+            "dimension_id": "exact_error_output",
+            "grade": "NOT_MET",
+            "evidence": "No exact error codes, HTTP status codes, gRPC status codes, or error response bodies are shown anywhere; Section 10 mentions authorization rejections but provides no concrete error output."
+          },
+          {
+            "dimension_id": "caller_perspective",
+            "grade": "NOT_MET",
+            "evidence": "Failure modes are described abstractly from the server's perspective (e.g., 'requests are rejected') without specifying what the caller actually sees in terms of response codes or error messages."
+          },
+          {
+            "dimension_id": "observability_signals_named",
+            "grade": "NOT_MET",
+            "evidence": "Section 11 mentions 'request volume, rejection rate, latency distribution, and current counter values' as dashboard panels but never names specific metric names, structured log fields, or tracing span names."
+          },
+          {
+            "dimension_id": "auth_rejection_examples",
+            "grade": "NOT_MET",
+            "evidence": "Section 10 states 'Attempts to check rate limits in a domain that the caller is not authorized to access are rejected' but provides no concrete example of the rejected request or response."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Tradeoff transparency with escape hatches",
+        "dimension_grades": [
+          {
+            "dimension_id": "tradeoff_flagged",
+            "grade": "NOT_MET",
+            "evidence": "Design decisions are presented as settled conclusions without flagging tradeoffs; for example, the choice of Redis over alternatives, the 30-second config propagation delay, and the custom-build-vs-buy decision are not framed as tradeoffs with costs."
+          },
+          {
+            "dimension_id": "affected_parties_named",
+            "grade": "NOT_MET",
+            "evidence": "No specific teams, use cases, or workflows are identified as being negatively affected by any design decision; the fixed window boundary problem is mentioned but not tied to specific affected parties."
+          },
+          {
+            "dimension_id": "alternative_provided",
+            "grade": "NOT_MET",
+            "evidence": "No workarounds or alternative approaches are offered for teams constrained by design decisions; the algorithm section mentions consulting the Rate Limiting team but doesn't provide escape hatches for specific limitations."
+          },
+          {
+            "dimension_id": "visually_distinct_callout",
+            "grade": "NOT_MET",
+            "evidence": "The document contains no admonition boxes, blockquotes, or visually distinct callouts of any kind; all content is presented as uniform prose paragraphs."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Scan-optimized formatting",
+        "dimension_grades": [
+          {
+            "dimension_id": "tables_for_comparisons",
+            "grade": "NOT_MET",
+            "evidence": "The algorithm comparison in Section 5 and performance characteristics in Section 9 are presented as prose paragraphs rather than tables, despite being natural candidates for tabular format."
+          },
+          {
+            "dimension_id": "bold_key_terms",
+            "grade": "NOT_MET",
+            "evidence": "No bold emphasis or other inline formatting is used anywhere in the document to highlight key terms, decisions, or requirements for scanning."
+          },
+          {
+            "dimension_id": "sections_self_contained",
+            "grade": "NOT_MET",
+            "evidence": "Sections rely on context from earlier sections; for example, Section 6 (API Design) cannot be fully understood without Section 5's algorithm discussion, and Section 7 references concepts introduced in Section 6 without re-establishing them."
+          },
+          {
+            "dimension_id": "admonition_boxes_for_warnings",
+            "grade": "NOT_MET",
+            "evidence": "No callout or admonition boxes are used anywhere in the document; warnings like the fixed window boundary problem and the 30-second config propagation delay are embedded in regular prose."
+          }
+        ]
+      }
+    ]
+  }
+}

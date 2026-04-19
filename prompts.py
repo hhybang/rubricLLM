@@ -532,7 +532,13 @@ You are tasked with creating or updating a personalized writing rubric based on 
 
 This rubric captures what THIS specific user values — not generic standards of "good writing."
 
-**CRITICAL — GENERALIZABILITY**: The rubric you produce must represent the user's **transferable writing style, preferences, and values** — NOT a grading sheet for the specific piece of writing in the conversation. The user will reuse this rubric across many future writing tasks of the same type. Every criterion and dimension must make sense applied to a *different* piece of writing by the same user.
+**CRITICAL — INCREMENTAL VALUE (zero-information test)**: Each criterion must add **information beyond what the writing task already implies**. A competent model already assumes genre-appropriate defaults (e.g. an email to a manager is generally professional, respectful, and clear). Criteria that only restate those defaults — e.g. "professional tone," "clear communication," "appropriate for workplace" for that scenario — are **low-value** and must **not** appear unless the conversation shows the user cares about a **specific interpretation** of those ideas (e.g. they rejected a draft for being *too* stiff, or insisted on a *particular* kind of warmth). In your `<analysis>`:
+1. Briefly list **what is already entailed** by the stated task, genre, and audience visible in the conversation (the "any good assistant would already do this" layer).
+2. For each candidate criterion, ask: **If we removed it, would coaching or evaluation change in a way the task description alone would not already fix?** If no, **drop or merge** it — do **not** pad the rubric to hit a count.
+
+**CRITICAL — CONTRASTIVE PREFERENCES**: Prefer criteria that **distinguish this user from a generic strong writer** in the same situation. Good criteria sound like habits, boundaries, or trade-offs the user **demonstrated** — e.g. "softens bad news with a brief personal check-in before the ask," "avoids bullet lists in notes to this audience because they read as cold," "prefers short declarative sentences over long compound ones." Bad criteria are **universal platitudes** with no contrastive bite. When evidence is thin, output **fewer** criteria with `confidence: "low"` rather than inventing safe generics.
+
+**CRITICAL — GENERALIZABILITY**: The rubric must represent the user's **transferable writing style, preferences, and values** for this **kind** of writing — NOT a grading sheet for one document. The user will reuse it across many future tasks of the same type. Every criterion and dimension must apply to a *different* piece of the same type. Do not bake in one-off names, dates, or topics from the thread.
 
 For example, if the user is writing a cold email to a specific person:
 - ✅ **Transferable**: "Opening line references something specific to the recipient" (applies to any cold email)
@@ -557,7 +563,7 @@ The rubric must be **concise, steerable, evaluable, and reusable across tasks**.
 - `version`
 - `writing_type`
 - `user_goals_summary`
-- **4–7 criteria**, each with:
+- **3–7 criteria** (prefer **fewer, high-value** criteria over filling slots; **never** add a criterion solely to reach a number), each with:
   - `name`
   - `category` (from a shared set of 3–5 categories)
   - `description` (1–3 sentences max)
@@ -577,6 +583,11 @@ The rubric must be **concise, steerable, evaluable, and reusable across tasks**.
 ## ANALYSIS PROCESS
 
 Before producing the rubric, write your reasoning inside `<analysis>` tags.
+
+### Step 0: Task entailment vs latent preferences
+- Infer the **writing situation** from early user messages (genre, audience, purpose).
+- List **obligations any strong model would already satisfy** for that situation (do not turn these into rubric criteria unless the user showed a *non-default* preference).
+- List **latent or distinctive preferences** — only these should drive most criteria.
 
 ### Step 1: Determine Scenario
 - **New rubric**: Create from scratch based on conversation evidence.
@@ -652,10 +663,10 @@ This is the most important distinction in rubric inference. The conversation is 
 - Content choices specific to this piece ("mention the Q3 results")
 
 **Transferable preferences** (DO put in rubric):
-- Tone and voice preferences (formal vs. conversational, warm vs. direct)
+- Tone and voice preferences **when the user showed a non-default choice** (not merely "professional" for a work email — that is usually entailed)
 - Structural patterns (how they like to open/close, paragraph length preferences)
 - Stylistic choices (active vs. passive voice, use of metaphors, sentence rhythm)
-- Recurring values (conciseness, specificity, audience awareness, storytelling)
+- Recurring values (conciseness, specificity, audience awareness, storytelling) **only when tied to user evidence**, not as filler
 - How they handle evidence, examples, and claims
 
 When the user says "make this warmer" — the rubric should capture that they prefer warm tone, not that this particular paragraph needed warming up.
@@ -666,15 +677,17 @@ When the user says "add a specific example about our product launch" — the rub
 
 ## DEFINING CRITERIA
 
-Select **4–7 criteria** with clear conversation evidence.
+Select **3–7 criteria** with **clear conversation evidence** (explicit feedback, edits, rejections, or repeated patterns — not silence alone).
 
 For each candidate, verify:
-- Did the user demonstrably care about this?
-- Can you point to specific moments?
-- Is it distinct from other criteria?
-- **Would this criterion make sense for a DIFFERENT writing task by the same user?**
+- Did the user demonstrably care about this, or is it only "reasonable to assume"?
+- Can you point to **specific messages** (e.g. Message #N) or edit patterns?
+- Is it **distinct** from other criteria and **not already entailed** by the task description?
+- **Would this criterion change** how you coach or evaluate compared to a generic assistant for the same task?
+- **Would this criterion make sense for a DIFFERENT piece of the same writing type** by the same user?
 
 **Do not include**:
+- Genre-default platitudes without user-specific evidence (see incremental value test above)
 - Generic principles without user evidence
 - Criteria that only apply to the specific content of this one piece
 
@@ -705,6 +718,7 @@ Write **1–3 sentences** per criterion that:
 ✅ Good: "Opening lines are personalized to the recipient with a specific, relevant reference — not a generic greeting."
 
 ❌ Avoid: "Writing should be clear and effective." (too generic)
+❌ Avoid: "Maintain a professional tone in emails to your manager." (usually **entailed** by the task — only include if the user showed a *specific* tonal preference that cuts against the default)
 ❌ Avoid: "The email should mention John's podcast about AI trends." (too task-specific)
 
 ---
@@ -758,6 +772,18 @@ Base rankings on:
 
 ---
 
+## CONFIDENCE LEVELS
+
+Assign a **confidence** level to each criterion: `high`, `medium`, or `low`.
+
+- **high**: The user explicitly stated this preference, or demonstrated it through multiple edits/feedback. Strong, direct evidence.
+- **medium**: Inferred from a pattern of behavior or a single clear signal. Reasonable but not confirmed by the user.
+- **low**: Inferred from thin signal — e.g., the user accepted a draft without comment, or this is extrapolated from a single data point. The user may not actually hold this preference.
+
+Be honest about confidence. If the user never commented on an aspect and you're inferring from silence or a single instance, mark it `low`. The rubric should present itself as a draft to be completed, not a finished product.
+
+---
+
 ## COACHING NOTES
 
 Provide **2–3 concise insights** about this user's writing mindset:
@@ -788,7 +814,8 @@ After your `<analysis>` block, output **only** this JSON:
           "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>"
         }
       ],
-      "priority": <unique integer 1..N where N = number of criteria, 1 = most important, no duplicates>
+      "priority": <unique integer 1..N where N = number of criteria, 1 = most important, no duplicates>,
+      "confidence": "<high|medium|low — how confident you are that this criterion reflects a real user preference based on conversation evidence>"
     }
   ],
   "coaching_notes": "<2–3 concise insights>"
@@ -812,7 +839,7 @@ Here is the previous rubric (this may be empty if you're creating a new rubric f
 {previous_rubric_json}
 </previous_rubric>
 
-Analyze the conversation and infer a rubric. Do NOT extract decision points — that will happen in a separate step. Return ONLY valid JSON matching the output format in your system instructions."""
+Analyze the conversation and infer a rubric. Apply the **zero-information** and **contrastive** rules in your system instructions: omit criteria that merely restate what the task genre already implies. Do NOT extract decision points — that will happen in a separate step. Return ONLY valid JSON matching the output format in your system instructions."""
 
 
 # ============================================================================
@@ -1063,12 +1090,18 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         {rubric_block}
         {template_guidance}
         **RUBRIC AUTHORITY:**
-        The rubric is the user's persistent writing preferences. It is your primary guide for tone, style, structure, and approach. Follow it consistently across all turns.
+        The rubric is the user's persistent writing preferences. It is your primary guide for tone, style, structure, and approach.
 
         - The rubric defines HOW to write. The user's messages define WHAT to write.
         - If the user gives a task-specific instruction (e.g., "expand this paragraph"), follow it for that request — it does not change the rubric.
         - If the user's feedback seems to contradict the rubric, ask: "Should I treat this as a one-time adjustment, or a preference you'd like going forward?"
         - Never silently deviate from the rubric. If you think a criterion is producing poor results, tell the user.
+
+        **CONFIDENCE-AWARE APPLICATION:**
+        Each criterion may have a `confidence` field (`high`, `medium`, or `low`).
+        - **high confidence**: Follow this criterion consistently — the user has clearly demonstrated this preference.
+        - **medium confidence**: Apply this criterion as a reasonable default, but be ready to adjust if the user's feedback suggests otherwise.
+        - **low confidence**: Treat this as a tentative suggestion, not a mandate. The user may not actually hold this preference — it was inferred from thin signal. Apply it lightly and be especially attentive to feedback that contradicts it.
 
         **OUTPUT FORMAT:**
         Always wrap any draft content (partial or full) in <draft></draft> tags.
@@ -2447,17 +2480,19 @@ WHY IT'S AMBIGUOUS: {uncertainty_reason}
 
 INSTRUCTIONS:
 1. Read Draft A carefully. Identify how it interprets the ambiguous criterion — what choices did it make along that dimension?
-2. Write Draft B with a CLEARLY DIFFERENT interpretation of that criterion. The difference should be OBVIOUS and felt throughout the draft — not just one swapped sentence. Let the different interpretation influence word choice, sentence structure, emphasis, and flow across MULTIPLE paragraphs/sentences. For example, if Draft A interprets "voice" as formal and authoritative, Draft B should be conversational and warm THROUGHOUT, not just in the opening line.
-3. The core content (topic, key information) should stay the same, but HOW it's expressed should feel noticeably different. A reader should be able to tell the two drafts apart within the first few sentences.
-4. Draft B should be similar in length to Draft A.
-5. Do NOT make Draft B worse — both should be good, just different on this one dimension.
-6. Do NOT mention the rubric, criteria, or that anything is being tested.
+2. Pick the SINGLE most representative paragraph or passage (3-5 sentences) from Draft A that best shows how the ambiguous criterion was applied.
+3. Rewrite ONLY that passage as Draft B, with a CLEARLY DIFFERENT interpretation of that criterion. The difference should be obvious — different word choice, sentence structure, emphasis, and flow.
+4. The core content (topic, key information) should stay the same, but HOW it's expressed should feel noticeably different.
+5. Do NOT rewrite the entire draft — only the key passage that isolates the dimension being tested.
+6. Do NOT make Draft B worse — both should be good, just different on this one dimension.
+7. Do NOT mention the rubric, criteria, or that anything is being tested.
 
 Return ONLY a JSON object (no markdown, no preamble):
 {{
   "draft_a_interpretation": "<1 sentence: how Draft A interprets the criterion>",
   "draft_b_interpretation": "<1 sentence: how Draft B interprets the criterion differently>",
-  "variant": "<the full text of Draft B>",
+  "draft_a_excerpt": "<the key passage from Draft A that best shows the criterion in action (3-5 sentences)>",
+  "variant": "<the rewritten passage for Draft B — same content, different interpretation (3-5 sentences)>",
   "dimension_varied": "<brief label for what differs, e.g. 'level of formality' or 'amount of detail'>"
 }}"""
 
@@ -2505,6 +2540,8 @@ Return ONLY a JSON object (no markdown, no preamble):
     "priority": <keep same integer>
   }}
 }}"""
+
+
 
 
 # ═════════════════════════════════════════════════════════════════════════════

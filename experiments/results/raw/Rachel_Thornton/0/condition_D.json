@@ -1,0 +1,1717 @@
+{
+  "persona": "Rachel Thornton",
+  "task_index": 0,
+  "task_description": "Help me draft an email to my team about our decision to migrate from REST to gRPC for inter-service communication — we considered GraphQL too but ruled it out.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+    "rubric": [
+      {
+        "name": "Decision Tradeoff Transparency",
+        "category": "Content",
+        "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+        "dimensions": [
+          {
+            "id": "alternatives_listed",
+            "label": "Names at least one alternative that was seriously considered"
+          },
+          {
+            "id": "rejection_rationale",
+            "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+          },
+          {
+            "id": "tradeoff_acknowledged",
+            "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+          },
+          {
+            "id": "decision_not_buried",
+            "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Link, Don't Duplicate",
+        "category": "Content",
+        "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+        "dimensions": [
+          {
+            "id": "links_to_sources",
+            "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+          },
+          {
+            "id": "no_content_duplication",
+            "label": "Does not reproduce information that's already available at a linked source"
+          },
+          {
+            "id": "link_context_sufficient",
+            "label": "Each link has enough surrounding context that the reader knows why to click it"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Scoped Review Requests",
+        "category": "Audience",
+        "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+        "dimensions": [
+          {
+            "id": "feedback_scope_stated",
+            "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+          },
+          {
+            "id": "review_deadline",
+            "label": "Includes a specific deadline or timeframe for the review"
+          },
+          {
+            "id": "out_of_scope_noted",
+            "label": "Explicitly notes what is NOT in scope for this review round"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Thread Discipline",
+        "category": "Structure",
+        "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+        "dimensions": [
+          {
+            "id": "single_topic",
+            "label": "The email addresses exactly one topic — does not bundle unrelated items"
+          },
+          {
+            "id": "subject_matches_content",
+            "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+          },
+          {
+            "id": "new_thread_for_new_topic",
+            "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Scoped Review Requests",
+        "issue": "The grader is treating this criterion as universally applicable to all emails, and rewarding elaborately scoped review sections even when the email is primarily a decision announcement, not a review request. In Round 1, the grader docked points because the feedback scope wasn't broken into named categories — but a decision announcement with a simple 'reply with concerns by [date]' is not a review request in the same sense as asking someone to review a PR or design doc. The grader is also rewarding Round 2's elaborate three-category feedback taxonomy as if more specificity is always better, when the real criterion is about preventing unbounded, undirected review requests from getting deprioritized. A decision email that says 'reply with concerns about the decision by [date]' is already scoped — the scope is 'the decision.' The grader is pattern-matching on surface features (named categories, explicit out-of-scope list) rather than the underlying problem this criterion solves.",
+        "negative_examples": [
+          "Giving a 7/10 to a decision email that includes a deadline and a clear scope ('concerns about the decision itself') just because it doesn't enumerate named feedback categories",
+          "Treating a decision announcement's feedback window as equivalent to a PR review request and grading it on the same rubric",
+          "Rewarding an elaborate three-category taxonomy as inherently better than a simpler but still scoped and deadlined request"
+        ],
+        "clarification": "This criterion exists to prevent two failure modes: (1) unbounded review requests with no deadline that get deprioritized, and (2) review requests so vague the reader doesn't know what to focus on. A decision email that says 'reply with concerns about the decision by [date]' satisfies both — it has a deadline and the scope is the decision itself. The criterion should be scored based on whether the failure modes are avoided, not on whether the email uses a specific format like named categories. Named categories are one way to scope a review request; they are not the only valid way. The criterion is most relevant and should be scored most strictly when the email is explicitly asking for a review of an artifact (PR, design doc, RFC) rather than soliciting concerns about an already-made decision.",
+        "priority_adjustment": null
+      },
+      {
+        "criterion_name": "Link, Don't Duplicate",
+        "issue": "The grader is consistently docking one point in both rounds for placeholder URLs, treating them as a minor structural gap. This is a misinterpretation. Placeholder URLs in a draft are not a failure of the 'link, don't duplicate' principle — the principle is about the decision to link rather than reproduce content inline. Whether the link resolves to a real URL is a draft artifact, not evidence that the author would have duplicated content instead of linking. The grader is penalizing the wrong thing.",
+        "negative_examples": [
+          "Docking points because 'the links are placeholder URLs' in what is explicitly a draft email",
+          "Treating an unresolved placeholder link as structurally equivalent to reproducing the linked content inline"
+        ],
+        "clarification": "The criterion is about the authorial choice to link rather than duplicate. If the email structure shows that decision — linking to a dashboard instead of pasting latency numbers, linking to a spike doc instead of reproducing benchmarks — the criterion is met. Placeholder URLs in a draft are irrelevant to whether the criterion is satisfied. A draft that links to '[latency dashboard](placeholder)' is demonstrating the correct behavior; it should not be penalized as if the author might have filled in the placeholder with inline content.",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+    "rubric": [
+      {
+        "name": "Decision Tradeoff Transparency",
+        "category": "Content",
+        "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+        "dimensions": [
+          {
+            "id": "alternatives_listed",
+            "label": "Names at least one alternative that was seriously considered"
+          },
+          {
+            "id": "rejection_rationale",
+            "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+          },
+          {
+            "id": "tradeoff_acknowledged",
+            "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+          },
+          {
+            "id": "decision_not_buried",
+            "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Link, Don't Duplicate",
+        "category": "Content",
+        "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+        "dimensions": [
+          {
+            "id": "links_to_sources",
+            "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+          },
+          {
+            "id": "no_content_duplication",
+            "label": "Does not reproduce information that's already available at a linked source"
+          },
+          {
+            "id": "link_context_sufficient",
+            "label": "Each link has enough surrounding context that the reader knows why to click it"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high",
+        "negative_examples": [
+          "Docking points because 'the links are placeholder URLs' in what is explicitly a draft email",
+          "Treating an unresolved placeholder link as structurally equivalent to reproducing the linked content inline"
+        ],
+        "clarification": "The criterion is about the authorial choice to link rather than duplicate. If the email structure shows that decision — linking to a dashboard instead of pasting latency numbers, linking to a spike doc instead of reproducing benchmarks — the criterion is met. Placeholder URLs in a draft are irrelevant to whether the criterion is satisfied. A draft that links to '[latency dashboard](placeholder)' is demonstrating the correct behavior; it should not be penalized as if the author might have filled in the placeholder with inline content."
+      },
+      {
+        "name": "Scoped Review Requests",
+        "category": "Audience",
+        "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+        "dimensions": [
+          {
+            "id": "feedback_scope_stated",
+            "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+          },
+          {
+            "id": "review_deadline",
+            "label": "Includes a specific deadline or timeframe for the review"
+          },
+          {
+            "id": "out_of_scope_noted",
+            "label": "Explicitly notes what is NOT in scope for this review round"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high",
+        "negative_examples": [
+          "Giving a 7/10 to a decision email that includes a deadline and a clear scope ('concerns about the decision itself') just because it doesn't enumerate named feedback categories",
+          "Treating a decision announcement's feedback window as equivalent to a PR review request and grading it on the same rubric",
+          "Rewarding an elaborate three-category taxonomy as inherently better than a simpler but still scoped and deadlined request"
+        ],
+        "clarification": "This criterion exists to prevent two failure modes: (1) unbounded review requests with no deadline that get deprioritized, and (2) review requests so vague the reader doesn't know what to focus on. A decision email that says 'reply with concerns about the decision by [date]' satisfies both — it has a deadline and the scope is the decision itself. The criterion should be scored based on whether the failure modes are avoided, not on whether the email uses a specific format like named categories. Named categories are one way to scope a review request; they are not the only valid way. The criterion is most relevant and should be scored most strictly when the email is explicitly asking for a review of an artifact (PR, design doc, RFC) rather than soliciting concerns about an already-made decision."
+      },
+      {
+        "name": "Thread Discipline",
+        "category": "Structure",
+        "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+        "dimensions": [
+          {
+            "id": "single_topic",
+            "label": "The email addresses exactly one topic — does not bundle unrelated items"
+          },
+          {
+            "id": "subject_matches_content",
+            "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+          },
+          {
+            "id": "new_thread_for_new_topic",
+            "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+          }
+        ],
+        "priority": 4,
+        "confidence": "medium"
+      }
+    ],
+    "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Migrating inter-service communication from REST to gRPC\n\n---\n\nHi team,\n\n**We're moving forward with gRPC for all inter-service communication, starting next sprint.** Here's the full context so you can act on this without needing a sync.\n\n---\n\n**The decision**\n\nAfter evaluating our current REST setup against two alternatives — gRPC and GraphQL — we're adopting gRPC as our inter-service transport layer.\n\n---\n\n**Why not GraphQL?**\n\nGraphQL was a serious contender, primarily because of its flexible querying and strong tooling for client-driven data fetching. We ruled it out for inter-service use for two reasons:\n\n1. **It's optimized for the wrong boundary.** GraphQL shines at the client-to-server edge where query shape flexibility matters. Between internal services, we control both ends of every call — that flexibility becomes overhead, not value.\n2. **Operational complexity.** Schema stitching and federation add maintenance burden we'd be taking on without a clear payoff in our architecture.\n\n---\n\n**Why not stay on REST?**\n\nREST works, and switching has real costs. We're making the move because our profiling data ([see the latency dashboard](https://link-to-dashboard)) showed consistent serialization overhead and schema drift across service boundaries that REST's loose contracts don't prevent. The pain is real and growing.\n\n---\n\n**Why gRPC?**\n\n- Protobuf contracts enforce schema consistency at compile time, eliminating the drift problem\n- Measurable serialization performance improvement (benchmarks in the [spike doc](https://link-to-spike-doc))\n- Bidirectional streaming unblocks two roadmap items we've been deferring\n\n**What we're giving up:** gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer. We're accepting that tradeoff. Tooling like [grpcurl](https://github.com/fullstorydev/grpcurl) and [gRPC-web](https://github.com/grpc/grpc-web) mitigates it, but it's not zero cost.\n\n---\n\n**What this means for you**\n\nThe migration plan and service prioritization are in the [RFC doc](https://link-to-rfc). Please read it before next sprint planning — it covers rollout order, the Protobuf style guide we're adopting, and the timeline for deprecating existing REST endpoints.\n\nIf you have concerns about the decision itself, reply here by **[date]** so we can address them before work begins. Once we're past that date, the decision is locked and feedback should move to implementation details.\n\n---\n\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — not vague dismissals. The tradeoff is explicitly acknowledged in the 'What we're giving up' section, which names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement) rather than hand-waving them away. This is a textbook example of decision transparency."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The latency dashboard, spike doc, RFC doc, grpcurl, and gRPC-web are all hyperlinked rather than described inline. The email does not reproduce the benchmark data or migration plan — it points to canonical sources. Each link has clear surrounding context explaining why the reader should click it. The only minor gap is that the links are placeholder URLs, but that's a draft artifact, not a structural failure."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 7,
+              "justification": "A deadline is provided ('reply here by [date]') and the scope is partially defined — concerns about 'the decision itself' are in scope, while implementation feedback is explicitly out of scope after the deadline. However, the request doesn't specify what type of feedback is most useful (e.g., architectural concerns, security implications, team capacity issues), which leaves the scope somewhat open-ended. The out-of-scope boundary is well-drawn, which partially compensates."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line precisely matches the content. There is no evidence of topic drift or continuation of an unrelated thread. The structure is clean and single-purpose throughout."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — not vague dismissals. The tradeoff is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs (no curl-friendly requests, browser proxy requirement) while noting mitigation tools. This is a textbook example of decision transparency."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The latency dashboard, spike doc, RFC doc, grpcurl, and gRPC-web are all hyperlinked rather than described inline. Each link has clear surrounding context explaining why to click it (e.g., benchmarks in the spike doc, migration plan in the RFC). The email does not reproduce content from those sources — it summarizes the decision rationale without duplicating the underlying data. Minor note: the links are placeholders, but the structure is correct."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 7,
+              "justification": "A deadline is provided ('reply here by [date]') and the scope is partially defined — concerns about 'the decision itself' are in scope, while 'implementation details' are explicitly out of scope after the deadline. However, the feedback type is not precisely specified (e.g., architectural concerns, security implications, specific service impact) — it's framed broadly as 'concerns,' which is less actionable than naming the exact kind of input sought. Still, the deadline and out-of-scope boundary are clearly stated."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic: the decision to migrate inter-service communication to gRPC. The subject line precisely matches the content. There is no bundling of unrelated items, and nothing in the email suggests it's a reply to a thread with a different subject. Thread hygiene is fully maintained."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is rejected because it's optimized for client-server boundaries and adds operational complexity, REST is rejected due to documented serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, noting debugging difficulty and browser proxy requirements with concrete specifics."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to the latency dashboard, spike doc, grpcurl, gRPC-web, and the RFC doc rather than reproducing their contents inline. Each link has clear surrounding context explaining why the reader should click it. The only minor gap is that grpcurl and gRPC-web are linked as mitigation references but are somewhat inline-described as well, though this is minimal and not duplicative of canonical docs."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 7,
+              "justification": "The email includes a specific deadline ('[date]') for concerns about the decision itself and distinguishes between decision-level feedback and implementation feedback. However, it does not explicitly scope what kind of feedback is wanted on the RFC doc — 'please read it' is not a scoped review request. There is no explicit out-of-scope statement for the RFC review, and the feedback type (architecture concerns? timeline? rollout order?) is not specified."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately and precisely describes the content. This appears to be an originating email, so new-thread discipline is not testable, but nothing in the draft violates thread hygiene."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 9.0,
+          "Scoped Review Requests": 7.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 0.91,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — not vague dismissals. The tradeoff is explicitly acknowledged in the 'What we're giving up' section, which names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement) rather than hand-waving them away. This is a textbook example of decision transparency."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The latency dashboard, spike doc, RFC doc, grpcurl, and gRPC-web are all hyperlinked rather than described inline. The email does not reproduce the benchmark data or migration plan — it points to canonical sources. Each link has clear surrounding context explaining why the reader should click it. The only minor gap is that the links are placeholder URLs, but that's a draft artifact, not a structural failure."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 7,
+                "justification": "A deadline is provided ('reply here by [date]') and the scope is partially defined — concerns about 'the decision itself' are in scope, while implementation feedback is explicitly out of scope after the deadline. However, the request doesn't specify what type of feedback is most useful (e.g., architectural concerns, security implications, team capacity issues), which leaves the scope somewhat open-ended. The out-of-scope boundary is well-drawn, which partially compensates."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line precisely matches the content. There is no evidence of topic drift or continuation of an unrelated thread. The structure is clean and single-purpose throughout."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1582,
+              "output_tokens": 492
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — not vague dismissals. The tradeoff is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs (no curl-friendly requests, browser proxy requirement) while noting mitigation tools. This is a textbook example of decision transparency."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The latency dashboard, spike doc, RFC doc, grpcurl, and gRPC-web are all hyperlinked rather than described inline. Each link has clear surrounding context explaining why to click it (e.g., benchmarks in the spike doc, migration plan in the RFC). The email does not reproduce content from those sources — it summarizes the decision rationale without duplicating the underlying data. Minor note: the links are placeholders, but the structure is correct."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 7,
+                "justification": "A deadline is provided ('reply here by [date]') and the scope is partially defined — concerns about 'the decision itself' are in scope, while 'implementation details' are explicitly out of scope after the deadline. However, the feedback type is not precisely specified (e.g., architectural concerns, security implications, specific service impact) — it's framed broadly as 'concerns,' which is less actionable than naming the exact kind of input sought. Still, the deadline and out-of-scope boundary are clearly stated."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic: the decision to migrate inter-service communication to gRPC. The subject line precisely matches the content. There is no bundling of unrelated items, and nothing in the email suggests it's a reply to a thread with a different subject. Thread hygiene is fully maintained."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1582,
+              "output_tokens": 517
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is rejected because it's optimized for client-server boundaries and adds operational complexity, REST is rejected due to documented serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, noting debugging difficulty and browser proxy requirements with concrete specifics."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to the latency dashboard, spike doc, grpcurl, gRPC-web, and the RFC doc rather than reproducing their contents inline. Each link has clear surrounding context explaining why the reader should click it. The only minor gap is that grpcurl and gRPC-web are linked as mitigation references but are somewhat inline-described as well, though this is minimal and not duplicative of canonical docs."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 7,
+                "justification": "The email includes a specific deadline ('[date]') for concerns about the decision itself and distinguishes between decision-level feedback and implementation feedback. However, it does not explicitly scope what kind of feedback is wanted on the RFC doc — 'please read it' is not a scoped review request. There is no explicit out-of-scope statement for the RFC review, and the feedback type (architecture concerns? timeline? rollout order?) is not specified."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately and precisely describes the content. This appears to be an originating email, so new-thread discipline is not testable, but nothing in the draft violates thread hygiene."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1582,
+              "output_tokens": 515
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — not vague dismissals. The tradeoff is explicitly acknowledged in the 'What we're giving up' section, which names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement) rather than hand-waving them away. This is a textbook example of decision transparency.\n- Link, Don't Duplicate: 9.0/10\n  Justification: The latency dashboard, spike doc, RFC doc, grpcurl, and gRPC-web are all hyperlinked rather than described inline. The email does not reproduce the benchmark data or migration plan — it points to canonical sources. Each link has clear surrounding context explaining why the reader should click it. The only minor gap is that the links are placeholder URLs, but that's a draft artifact, not a structural failure.\n- Scoped Review Requests: 7.0/10\n  Justification: A deadline is provided ('reply here by [date]') and the scope is partially defined — concerns about 'the decision itself' are in scope, while implementation feedback is explicitly out of scope after the deadline. However, the request doesn't specify what type of feedback is most useful (e.g., architectural concerns, security implications, team capacity issues), which leaves the scope somewhat open-ended. The out-of-scope boundary is well-drawn, which partially compensates.\n- Thread Discipline: 10.0/10\n  Justification: The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line precisely matches the content. There is no evidence of topic drift or continuation of an unrelated thread. The structure is clean and single-purpose throughout.\n\nYour weakest criteria are: Scoped Review Requests, Link, Don't Duplicate. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Migrating inter-service communication from REST to gRPC\n\n---\n\nHi team,\n\n**We're moving forward with gRPC for all inter-service communication, starting next sprint.** Here's the full context so you can act on this without needing a sync.\n\n---\n\n**The decision**\n\nAfter evaluating our current REST setup against two alternatives — gRPC and GraphQL — we're adopting gRPC as our inter-service transport layer.\n\n---\n\n**Why not GraphQL?**\n\nGraphQL was a serious contender, primarily because of its flexible querying and strong tooling for client-driven data fetching. We ruled it out for inter-service use for two reasons:\n\n1. **It's optimized for the wrong boundary.** GraphQL shines at the client-to-server edge where query shape flexibility matters. Between internal services, we control both ends of every call — that flexibility becomes overhead, not value.\n2. **Operational complexity.** Schema stitching and federation add maintenance burden we'd be taking on without a clear payoff in our architecture.\n\n---\n\n**Why not stay on REST?**\n\nREST works, and switching has real costs. We're making the move because our profiling data ([latency dashboard](https://link-to-dashboard)) showed consistent serialization overhead and schema drift across service boundaries that REST's loose contracts don't prevent. The pain is real and growing.\n\n---\n\n**Why gRPC?**\n\n- Protobuf contracts enforce schema consistency at compile time, eliminating the drift problem\n- Measurable serialization performance improvement ([spike doc](https://link-to-spike-doc) — see the benchmark results in §3)\n- Bidirectional streaming unblocks two roadmap items we've been deferring\n\n**What we're giving up:** gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer. We're accepting that tradeoff. [grpcurl](https://github.com/fullstorydev/grpcurl) and [gRPC-web](https://github.com/grpc/grpc-web) mitigate it, but it's not zero cost.\n\n---\n\n**What this means for you**\n\nThe migration plan and service prioritization are in the [RFC doc](https://link-to-rfc) — rollout order, the Protobuf style guide, and the deprecation timeline for existing REST endpoints are all covered there.\n\n---\n\n**One ask before next sprint planning**\n\nIf you have concerns about this decision, please reply to this thread by **[date]** with feedback in one of these areas:\n\n- **Architectural concerns** — something about our service topology that makes gRPC a poor fit we haven't accounted for\n- **Security implications** — TLS configuration, mTLS requirements, or anything in our threat model that needs addressing before rollout\n- **Team capacity** — if your service is sequenced in a way that conflicts with other commitments already on the board\n\nWhat's not in scope for this round: implementation details, Protobuf naming conventions, or toolchain preferences. Those belong in the RFC comments, not here.\n\nOnce we're past **[date]**, the decision is locked and further feedback should move to the RFC.\n\n---\n\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence in bold, satisfying decision_not_buried. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff is explicitly acknowledged in a dedicated 'What we're giving up' section that names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement). All four dimensions are clearly and unambiguously met."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to a latency dashboard, spike doc (with a specific section reference §3), RFC doc, grpcurl, and gRPC-web rather than reproducing their content inline. Each link has sufficient surrounding context explaining why to click it. The email does not duplicate content from those sources — it summarizes conclusions and points readers to the canonical location for details. All three dimensions are met; the only minor gap is that the links are placeholders, but that's a draft artifact, not a structural failure."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies exactly three named feedback categories (architectural concerns, security implications, team capacity) with concrete descriptions of each, satisfying feedback_scope_stated. A specific deadline ([date]) is included, satisfying review_deadline. Out-of-scope items are explicitly listed (implementation details, Protobuf naming conventions, toolchain preferences) with direction to the RFC for those, satisfying out_of_scope_noted. All three dimensions are unambiguously met."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence in bold, satisfying decision_not_buried. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff is explicitly acknowledged in a dedicated 'What we're giving up' section that names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement). All four dimensions are clearly met."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email hyperlinks to the latency dashboard, spike doc (with a specific section reference §3), RFC doc, grpcurl, and gRPC-web rather than reproducing their contents inline. Each link has sufficient surrounding context explaining why to click it. The email does not duplicate content from those sources. The only minor gap is that the RFC link's surrounding sentence is slightly brief, but it does enumerate what's covered there, which is adequate context."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies exactly three named feedback categories (architectural concerns, security implications, team capacity) with concrete descriptions of each. A specific deadline placeholder '[date]' is included twice, making the timeframe explicit. Out-of-scope items are explicitly listed (implementation details, Protobuf naming conventions, toolchain preferences) with redirection to the RFC. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. As a standalone email rather than a reply, the new-thread dimension is inherently satisfied. No issues identified; the minor deduction reflects that new_thread_for_new_topic cannot be fully verified from a single draft without thread history, but nothing in the draft violates it."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence. Both GraphQL and REST are named as seriously considered alternatives, each with specific rejection rationale (GraphQL: wrong boundary optimization and operational complexity; REST: serialization overhead and schema drift). The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, citing debugging difficulty, curl incompatibility, and browser proxy requirements — with honest admission that mitigations exist but cost is non-zero."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 9,
+              "justification": "The email links to a latency dashboard, a spike doc (with a specific section reference §3), an RFC doc, grpcurl, and gRPC-web — all hyperlinked rather than described in prose. The RFC link is used to avoid reproducing rollout order, style guide, and deprecation timeline inline. Each link has clear surrounding context explaining why to click it. Minor gap: the spike doc link could note what the benchmark results show numerically, but the section reference keeps it tight without duplicating."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies exactly three named feedback categories (architectural concerns, security implications, team capacity) with concrete sub-examples for each. A specific deadline placeholder '[date]' is included with a hard lock stated afterward. Out-of-scope items are explicitly listed (implementation details, Protobuf naming conventions, toolchain preferences) with redirection to the RFC comments — fully satisfying all three dimensions."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic: the REST-to-gRPC migration decision. The subject line accurately describes the content. There is no bundling of unrelated items. The score is not a perfect 10 only because the 'new_thread_for_new_topic' dimension cannot be fully evaluated from a single draft without thread history, but nothing in the email itself violates thread discipline."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 9.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 9.333333333333334
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.5773502691896257
+        },
+        "mean_overall": 0.9633333333333333,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence in bold, satisfying decision_not_buried. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff is explicitly acknowledged in a dedicated 'What we're giving up' section that names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement). All four dimensions are clearly and unambiguously met."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to a latency dashboard, spike doc (with a specific section reference §3), RFC doc, grpcurl, and gRPC-web rather than reproducing their content inline. Each link has sufficient surrounding context explaining why to click it. The email does not duplicate content from those sources — it summarizes conclusions and points readers to the canonical location for details. All three dimensions are met; the only minor gap is that the links are placeholders, but that's a draft artifact, not a structural failure."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies exactly three named feedback categories (architectural concerns, security implications, team capacity) with concrete descriptions of each, satisfying feedback_scope_stated. A specific deadline ([date]) is included, satisfying review_deadline. Out-of-scope items are explicitly listed (implementation details, Protobuf naming conventions, toolchain preferences) with direction to the RFC for those, satisfying out_of_scope_noted. All three dimensions are unambiguously met."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1703,
+              "output_tokens": 538
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence in bold, satisfying decision_not_buried. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff is explicitly acknowledged in a dedicated 'What we're giving up' section that names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement). All four dimensions are clearly met."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email hyperlinks to the latency dashboard, spike doc (with a specific section reference §3), RFC doc, grpcurl, and gRPC-web rather than reproducing their contents inline. Each link has sufficient surrounding context explaining why to click it. The email does not duplicate content from those sources. The only minor gap is that the RFC link's surrounding sentence is slightly brief, but it does enumerate what's covered there, which is adequate context."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies exactly three named feedback categories (architectural concerns, security implications, team capacity) with concrete descriptions of each. A specific deadline placeholder '[date]' is included twice, making the timeframe explicit. Out-of-scope items are explicitly listed (implementation details, Protobuf naming conventions, toolchain preferences) with redirection to the RFC. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. As a standalone email rather than a reply, the new-thread dimension is inherently satisfied. No issues identified; the minor deduction reflects that new_thread_for_new_topic cannot be fully verified from a single draft without thread history, but nothing in the draft violates it."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1703,
+              "output_tokens": 538
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence. Both GraphQL and REST are named as seriously considered alternatives, each with specific rejection rationale (GraphQL: wrong boundary optimization and operational complexity; REST: serialization overhead and schema drift). The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, citing debugging difficulty, curl incompatibility, and browser proxy requirements — with honest admission that mitigations exist but cost is non-zero."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 9,
+                "justification": "The email links to a latency dashboard, a spike doc (with a specific section reference §3), an RFC doc, grpcurl, and gRPC-web — all hyperlinked rather than described in prose. The RFC link is used to avoid reproducing rollout order, style guide, and deprecation timeline inline. Each link has clear surrounding context explaining why to click it. Minor gap: the spike doc link could note what the benchmark results show numerically, but the section reference keeps it tight without duplicating."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies exactly three named feedback categories (architectural concerns, security implications, team capacity) with concrete sub-examples for each. A specific deadline placeholder '[date]' is included with a hard lock stated afterward. Out-of-scope items are explicitly listed (implementation details, Protobuf naming conventions, toolchain preferences) with redirection to the RFC comments — fully satisfying all three dimensions."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic: the REST-to-gRPC migration decision. The subject line accurately describes the content. There is no bundling of unrelated items. The score is not a perfect 10 only because the 'new_thread_for_new_topic' dimension cannot be fully evaluated from a single draft without thread history, but nothing in the email itself violates thread discipline."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1703,
+              "output_tokens": 533
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision appears in the very first sentence in bold, satisfying decision_not_buried. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff is explicitly acknowledged in a dedicated 'What we're giving up' section that names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement). All four dimensions are clearly and unambiguously met.\n- Link, Don't Duplicate: 9.0/10\n  Justification: The email links to a latency dashboard, spike doc (with a specific section reference §3), RFC doc, grpcurl, and gRPC-web rather than reproducing their content inline. Each link has sufficient surrounding context explaining why to click it. The email does not duplicate content from those sources — it summarizes conclusions and points readers to the canonical location for details. All three dimensions are met; the only minor gap is that the links are placeholders, but that's a draft artifact, not a structural failure.\n- Scoped Review Requests: 10.0/10\n  Justification: The review request specifies exactly three named feedback categories (architectural concerns, security implications, team capacity) with concrete descriptions of each, satisfying feedback_scope_stated. A specific deadline ([date]) is included, satisfying review_deadline. Out-of-scope items are explicitly listed (implementation details, Protobuf naming conventions, toolchain preferences) with direction to the RFC for those, satisfying out_of_scope_noted. All three dimensions are unambiguously met.\n- Thread Discipline: 9.3/10\n  Justification: The email addresses exactly one topic — the gRPC migration decision — with no bundled unrelated items. The subject line 'Migrating inter-service communication from REST to gRPC' accurately describes the content. There is no evidence of topic drift or continuation of a mismatched thread. All three dimensions are satisfied.\n\nYour weakest criteria are: Link, Don't Duplicate, Thread Discipline. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Migrating inter-service communication from REST to gRPC\n\n---\n\nHi team,\n\n**We're moving forward with gRPC for all inter-service communication, starting next sprint.** Here's the full context so you can act on this without needing a sync.\n\n---\n\n**The decision**\n\nAfter evaluating our current REST setup against two alternatives — gRPC and GraphQL — we're adopting gRPC as our inter-service transport layer.\n\n---\n\n**Why not GraphQL?**\n\nGraphQL was a serious contender, primarily because of its flexible querying and strong tooling for client-driven data fetching. We ruled it out for inter-service use for two reasons:\n\n1. **It's optimized for the wrong boundary.** GraphQL shines at the client-to-server edge where query shape flexibility matters. Between internal services, we control both ends of every call — that flexibility becomes overhead, not value.\n2. **Operational complexity.** Schema stitching and federation add maintenance burden we'd be taking on without a clear payoff in our architecture.\n\n---\n\n**Why not stay on REST?**\n\nREST works, and switching has real costs. We're making the move because our profiling data ([latency dashboard](https://link-to-dashboard)) showed consistent serialization overhead and schema drift across service boundaries that REST's loose contracts don't prevent. The pain is real and growing.\n\n---\n\n**Why gRPC?**\n\n- Protobuf contracts enforce schema consistency at compile time, eliminating the drift problem\n- Measurable serialization performance improvement ([spike doc §3](https://link-to-spike-doc) has the benchmarks)\n- Bidirectional streaming unblocks two roadmap items we've been deferring\n\n**What we're giving up:** gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer. We're accepting that tradeoff. [grpcurl](https://github.com/fullstorydev/grpcurl) and [gRPC-web](https://github.com/grpc/grpc-web) mitigate it, but it's not zero cost.\n\n---\n\n**What this means for you**\n\nRollout order, the Protobuf style guide, and the REST endpoint deprecation timeline are all in the [RFC](https://link-to-rfc). Please read it before sprint planning.\n\n---\n\n**One ask before next sprint planning**\n\nIf you have concerns about this decision, please reply to this thread by **[date]** with feedback in one of these areas:\n\n- **Architectural concerns** — something about our service topology that makes gRPC a poor fit we haven't accounted for\n- **Security implications** — TLS configuration, mTLS requirements, or anything in our threat model that needs addressing before rollout\n- **Team capacity** — if your service is sequenced in a way that conflicts with other commitments already on the board\n\nWhat's not in scope for this round: implementation details, Protobuf naming conventions, or toolchain preferences. Those belong in the RFC comments, not here.\n\nOnce we're past **[date]**, the decision is locked and further feedback should move to the RFC.\n\n---\n\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for internal boundaries and adds operational complexity; REST fails to prevent schema drift as evidenced by profiling data. The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs (no curl-friendly requests, browser proxy requirement) and mitigation tools."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 instead of reproducing benchmarks, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling context. No canonical information is duplicated inline — the email provides just enough context to explain why each link is relevant without reproducing the linked content. Placeholder URLs are structurally correct and demonstrate the right authorial choice."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback request includes a specific deadline ('[date]'), three named categories of in-scope feedback (architectural concerns, security implications, team capacity), and an explicit out-of-scope section directing implementation details and naming conventions to the RFC. Both failure modes — unbounded requests and vague scope — are cleanly avoided. The structure is clear and actionable."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the gRPC migration decision — and the subject line accurately describes the content. There is no topic drift or bundling of unrelated items. A point is withheld only because the 'new_thread_for_new_topic' dimension cannot be fully evaluated from a single draft email, though nothing in the draft violates it."
+            }
+          ],
+          "overall_weighted_score": 0.99,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for internal boundaries and adds operational complexity; REST fails to prevent schema drift as evidenced by profiling data. The tradeoff of the chosen option is explicitly called out in a dedicated 'What we're giving up' section, acknowledging debuggability costs and browser proxy requirements. All four dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling context. No canonical information is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct authorial choices and should not be penalized per the rubric clarification."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback request includes a specific deadline ('[date]'), three named categories of in-scope feedback (architectural concerns, security implications, team capacity), and an explicit out-of-scope statement directing implementation details and naming conventions to the RFC instead. Both failure modes — unbounded requests and vague scope — are fully avoided. The structure is clear and actionable."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the gRPC migration decision — and the subject line accurately describes that content. There is no bundling of unrelated items. A point is withheld only because the 'new thread for new topic' dimension cannot be evaluated from a single draft email with no prior thread context, though nothing in the email violates that principle."
+            }
+          ],
+          "overall_weighted_score": 0.99,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for internal boundaries and adds operational complexity; REST fails to prevent schema drift as evidenced by profiling data. The tradeoff of the chosen option is explicitly called out in a dedicated 'What we're giving up' section, acknowledging debuggability costs and browser proxy requirements. All four dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email consistently links rather than reproduces: latency numbers are deferred to the latency dashboard link, benchmarks are deferred to the spike doc, and rollout/deprecation details are deferred to the RFC. Each link has clear surrounding context explaining why the reader should click it. No inline duplication of content that exists at a linked source is present. Placeholder URLs are structurally correct authorial choices and do not constitute a deficiency per the rubric clarification."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The feedback request includes a specific deadline ('[date]'), three named categories of in-scope feedback (architectural concerns, security implications, team capacity), and an explicit out-of-scope statement directing implementation details and naming conventions to the RFC instead. Both failure modes — unbounded requests and vague scope — are fully avoided. The structure is clear and actionable."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 9,
+              "justification": "The email addresses exactly one topic — the gRPC migration decision — and the subject line accurately describes that content. There is no bundling of unrelated items. A point of minor ambiguity is that the email cannot be evaluated for whether it was started as a fresh thread versus a reply to an existing one, but the subject line is precise and original, strongly suggesting correct thread hygiene. No dimension is clearly violated."
+            }
+          ],
+          "overall_weighted_score": 0.99,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 10.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 9.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 0.99,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for internal boundaries and adds operational complexity; REST fails to prevent schema drift as evidenced by profiling data. The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs (no curl-friendly requests, browser proxy requirement) and mitigation tools."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 instead of reproducing benchmarks, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling context. No canonical information is duplicated inline — the email provides just enough context to explain why each link is relevant without reproducing the linked content. Placeholder URLs are structurally correct and demonstrate the right authorial choice."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback request includes a specific deadline ('[date]'), three named categories of in-scope feedback (architectural concerns, security implications, team capacity), and an explicit out-of-scope section directing implementation details and naming conventions to the RFC. Both failure modes — unbounded requests and vague scope — are cleanly avoided. The structure is clear and actionable."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the gRPC migration decision — and the subject line accurately describes the content. There is no topic drift or bundling of unrelated items. A point is withheld only because the 'new_thread_for_new_topic' dimension cannot be fully evaluated from a single draft email, though nothing in the draft violates it."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2144,
+              "output_tokens": 502
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for internal boundaries and adds operational complexity; REST fails to prevent schema drift as evidenced by profiling data. The tradeoff of the chosen option is explicitly called out in a dedicated 'What we're giving up' section, acknowledging debuggability costs and browser proxy requirements. All four dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling context. No canonical information is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct authorial choices and should not be penalized per the rubric clarification."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback request includes a specific deadline ('[date]'), three named categories of in-scope feedback (architectural concerns, security implications, team capacity), and an explicit out-of-scope statement directing implementation details and naming conventions to the RFC instead. Both failure modes — unbounded requests and vague scope — are fully avoided. The structure is clear and actionable."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the gRPC migration decision — and the subject line accurately describes that content. There is no bundling of unrelated items. A point is withheld only because the 'new thread for new topic' dimension cannot be evaluated from a single draft email with no prior thread context, though nothing in the email violates that principle."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2144,
+              "output_tokens": 508
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for internal boundaries and adds operational complexity; REST fails to prevent schema drift as evidenced by profiling data. The tradeoff of the chosen option is explicitly called out in a dedicated 'What we're giving up' section, acknowledging debuggability costs and browser proxy requirements. All four dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email consistently links rather than reproduces: latency numbers are deferred to the latency dashboard link, benchmarks are deferred to the spike doc, and rollout/deprecation details are deferred to the RFC. Each link has clear surrounding context explaining why the reader should click it. No inline duplication of content that exists at a linked source is present. Placeholder URLs are structurally correct authorial choices and do not constitute a deficiency per the rubric clarification."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The feedback request includes a specific deadline ('[date]'), three named categories of in-scope feedback (architectural concerns, security implications, team capacity), and an explicit out-of-scope statement directing implementation details and naming conventions to the RFC instead. Both failure modes — unbounded requests and vague scope — are fully avoided. The structure is clear and actionable."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 9,
+                "justification": "The email addresses exactly one topic — the gRPC migration decision — and the subject line accurately describes that content. There is no bundling of unrelated items. A point of minor ambiguity is that the email cannot be evaluated for whether it was started as a fresh thread versus a reply to an existing one, but the subject line is precise and original, strongly suggesting correct thread hygiene. No dimension is clearly violated."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2144,
+              "output_tokens": 517
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for internal boundaries and adds operational complexity; REST fails to prevent schema drift as evidenced by profiling data. The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs (no curl-friendly requests, browser proxy requirement) and mitigation tools.\n- Link, Don't Duplicate: 10.0/10\n  Justification: The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 instead of reproducing benchmarks, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling context. No canonical information is duplicated inline — the email provides just enough context to explain why each link is relevant without reproducing the linked content. Placeholder URLs are structurally correct and demonstrate the right authorial choice.\n- Scoped Review Requests: 10.0/10\n  Justification: The feedback request includes a specific deadline ('[date]'), three named categories of in-scope feedback (architectural concerns, security implications, team capacity), and an explicit out-of-scope section directing implementation details and naming conventions to the RFC. Both failure modes — unbounded requests and vague scope — are cleanly avoided. The structure is clear and actionable.\n- Thread Discipline: 9.0/10\n  Justification: The email addresses exactly one topic — the gRPC migration decision — and the subject line accurately describes the content. There is no topic drift or bundling of unrelated items. A point is withheld only because the 'new_thread_for_new_topic' dimension cannot be fully evaluated from a single draft email, though nothing in the draft violates it.\n\nYour weakest criteria are: Thread Discipline, Decision Tradeoff Transparency. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Docking points because 'the links are placeholder URLs' in what is explicitly a draft email",
+              "Treating an unresolved placeholder link as structurally equivalent to reproducing the linked content inline"
+            ],
+            "clarification": "The criterion is about the authorial choice to link rather than duplicate. If the email structure shows that decision — linking to a dashboard instead of pasting latency numbers, linking to a spike doc instead of reproducing benchmarks — the criterion is met. Placeholder URLs in a draft are irrelevant to whether the criterion is satisfied. A draft that links to '[latency dashboard](placeholder)' is demonstrating the correct behavior; it should not be penalized as if the author might have filled in the placeholder with inline content."
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high",
+            "negative_examples": [
+              "Giving a 7/10 to a decision email that includes a deadline and a clear scope ('concerns about the decision itself') just because it doesn't enumerate named feedback categories",
+              "Treating a decision announcement's feedback window as equivalent to a PR review request and grading it on the same rubric",
+              "Rewarding an elaborate three-category taxonomy as inherently better than a simpler but still scoped and deadlined request"
+            ],
+            "clarification": "This criterion exists to prevent two failure modes: (1) unbounded review requests with no deadline that get deprioritized, and (2) review requests so vague the reader doesn't know what to focus on. A decision email that says 'reply with concerns about the decision by [date]' satisfies both — it has a deadline and the scope is the decision itself. The criterion should be scored based on whether the failure modes are avoided, not on whether the email uses a specific format like named categories. Named categories are one way to scope a review request; they are not the only valid way. The criterion is most relevant and should be scored most strictly when the email is explicitly asking for a review of an artifact (PR, design doc, RFC) rather than soliciting concerns about an already-made decision."
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Migrating inter-service communication from REST to gRPC\n\n---\n\nHi team,\n\n**We're moving forward with gRPC for all inter-service communication, starting next sprint.** Here's the full context so you can act on this without needing a sync.\n\n---\n\n**The decision**\n\nAfter evaluating our current REST setup against two alternatives — gRPC and GraphQL — we're adopting gRPC as our inter-service transport layer.\n\n---\n\n**Why not GraphQL?**\n\nGraphQL was a serious contender, primarily because of its flexible querying and strong tooling for client-driven data fetching. We ruled it out for inter-service use for two reasons:\n\n1. **It's optimized for the wrong boundary.** GraphQL shines at the client-to-server edge where query shape flexibility matters. Between internal services, we control both ends of every call — that flexibility becomes overhead, not value.\n2. **Operational complexity.** Schema stitching and federation add maintenance burden we'd be taking on without a clear payoff in our architecture.\n\n---\n\n**Why not stay on REST?**\n\nREST works, and switching has real costs. We're making the move because our profiling data ([latency dashboard](https://link-to-dashboard)) showed consistent serialization overhead and schema drift across service boundaries that REST's loose contracts don't prevent. The pain is real and growing.\n\n---\n\n**Why gRPC?**\n\n- Protobuf contracts enforce schema consistency at compile time, eliminating the drift problem\n- Measurable serialization performance improvement ([spike doc §3](https://link-to-spike-doc) has the benchmarks)\n- Bidirectional streaming unblocks two roadmap items we've been deferring\n\n**What we're giving up:** gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer. We're accepting that tradeoff. [grpcurl](https://github.com/fullstorydev/grpcurl) and [gRPC-web](https://github.com/grpc/grpc-web) mitigate it, but it's not zero cost.\n\n---\n\n**What this means for you**\n\nRollout order, the Protobuf style guide, and the REST endpoint deprecation timeline are all in the [RFC](https://link-to-rfc). Please read it before sprint planning.\n\nIf this email surfaces a separate topic — team resourcing, REST deprecation scheduling, Protobuf toolchain setup — please start a new thread rather than replying here. This thread is scoped to the migration decision itself.\n\n---\n\n**One ask before next sprint planning**\n\nIf you have concerns about this decision, please reply to this thread by **[date]** with feedback in one of these areas:\n\n- **Architectural concerns** — something about our service topology that makes gRPC a poor fit we haven't accounted for\n- **Security implications** — TLS configuration, mTLS requirements, or anything in our threat model that needs addressing before rollout\n- **Team capacity** — if your service is sequenced in a way that conflicts with other commitments already on the board\n\nWhat's not in scope for this round: implementation details, Protobuf naming conventions, or toolchain preferences. Those belong in the RFC comments, not here.\n\nOnce we're past **[date]**, the decision is locked and further feedback should move to the RFC.\n\n---\n\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs like debuggability and browser proxy requirements."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling. Each link has clear surrounding context explaining why the reader should follow it. No canonical information is duplicated inline."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request includes a specific deadline ('[date]'), three named feedback categories (architectural concerns, security implications, team capacity), and explicitly calls out what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences). Both failure modes — unbounded requests and vague scope — are cleanly avoided."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic: the gRPC migration decision. The subject line accurately matches the content. The email proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup), demonstrating explicit thread hygiene enforcement."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff of choosing gRPC is explicitly acknowledged in a dedicated 'What we're giving up' section covering debuggability, curl-friendliness, and browser proxy requirements — with mitigations noted but cost not minimized."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, and links to the RFC for rollout order, style guide, and deprecation timeline. Each link has clear surrounding context explaining why to click it. No canonical information is duplicated inline — the email describes the reasoning, not the data."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies three named feedback categories (architectural concerns, security implications, team capacity), includes a concrete deadline ('[date]'), and explicitly calls out what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences). Both failure modes — unbounded requests and vague scope — are cleanly avoided."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic: the gRPC migration decision. The subject line accurately matches the content. Notably, the email proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup), demonstrating active thread hygiene enforcement rather than just passive compliance."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL because it's optimized for client-server boundaries and adds operational complexity, REST because of measurable serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, which names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement) rather than hand-waving them away."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, and links to the RFC for rollout order, style guide, and deprecation timeline. Each link has clear surrounding context explaining why the reader should click it. No canonical information is duplicated inline. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies a concrete deadline ('[date]'), enumerates three named feedback categories (architectural concerns, security implications, team capacity), and explicitly states what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences). Both failure modes — unbounded deadline and vague scope — are fully avoided. The out-of-scope section even redirects those topics to the RFC comments, maintaining thread hygiene simultaneously."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The email addresses exactly one topic: the gRPC migration decision. The subject line accurately describes the content. The email proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup), which is an unusually strong enforcement of thread discipline built directly into the email body."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 10.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs like debuggability and browser proxy requirements."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling. Each link has clear surrounding context explaining why the reader should follow it. No canonical information is duplicated inline."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request includes a specific deadline ('[date]'), three named feedback categories (architectural concerns, security implications, team capacity), and explicitly calls out what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences). Both failure modes — unbounded requests and vague scope — are cleanly avoided."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic: the gRPC migration decision. The subject line accurately matches the content. The email proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup), demonstrating explicit thread hygiene enforcement."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2193,
+              "output_tokens": 440
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff of choosing gRPC is explicitly acknowledged in a dedicated 'What we're giving up' section covering debuggability, curl-friendliness, and browser proxy requirements — with mitigations noted but cost not minimized."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, and links to the RFC for rollout order, style guide, and deprecation timeline. Each link has clear surrounding context explaining why to click it. No canonical information is duplicated inline — the email describes the reasoning, not the data."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies three named feedback categories (architectural concerns, security implications, team capacity), includes a concrete deadline ('[date]'), and explicitly calls out what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences). Both failure modes — unbounded requests and vague scope — are cleanly avoided."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic: the gRPC migration decision. The subject line accurately matches the content. Notably, the email proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup), demonstrating active thread hygiene enforcement rather than just passive compliance."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2193,
+              "output_tokens": 466
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL because it's optimized for client-server boundaries and adds operational complexity, REST because of measurable serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, which names concrete costs (debugging difficulty, no curl-friendly requests, browser proxy requirement) rather than hand-waving them away."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, and links to the RFC for rollout order, style guide, and deprecation timeline. Each link has clear surrounding context explaining why the reader should click it. No canonical information is duplicated inline. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies a concrete deadline ('[date]'), enumerates three named feedback categories (architectural concerns, security implications, team capacity), and explicitly states what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences). Both failure modes — unbounded deadline and vague scope — are fully avoided. The out-of-scope section even redirects those topics to the RFC comments, maintaining thread hygiene simultaneously."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The email addresses exactly one topic: the gRPC migration decision. The subject line accurately describes the content. The email proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup), which is an unusually strong enforcement of thread discipline built directly into the email body."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2193,
+              "output_tokens": 514
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Decision Tradeoff Transparency: 10.0/10\n  Justification: The decision appears in the first sentence. Both GraphQL and REST are named as seriously considered alternatives with specific rejection rationale (GraphQL optimized for wrong boundary, operational complexity; REST has serialization overhead and schema drift). The tradeoff of choosing gRPC is explicitly acknowledged in the 'What we're giving up' section, naming concrete costs like debuggability and browser proxy requirements.\n- Link, Don't Duplicate: 10.0/10\n  Justification: The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, links to the RFC for rollout details, and links to grpcurl and gRPC-web for tooling. Each link has clear surrounding context explaining why the reader should follow it. No canonical information is duplicated inline.\n- Scoped Review Requests: 10.0/10\n  Justification: The review request includes a specific deadline ('[date]'), three named feedback categories (architectural concerns, security implications, team capacity), and explicitly calls out what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences). Both failure modes — unbounded requests and vague scope — are cleanly avoided.\n- Thread Discipline: 10.0/10\n  Justification: The email addresses exactly one topic: the gRPC migration decision. The subject line accurately matches the content. The email proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup), demonstrating explicit thread hygiene enforcement.\n\nYour weakest criteria are: Decision Tradeoff Transparency, Link, Don't Duplicate. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Docking points because 'the links are placeholder URLs' in what is explicitly a draft email",
+              "Treating an unresolved placeholder link as structurally equivalent to reproducing the linked content inline"
+            ],
+            "clarification": "The criterion is about the authorial choice to link rather than duplicate. If the email structure shows that decision — linking to a dashboard instead of pasting latency numbers, linking to a spike doc instead of reproducing benchmarks — the criterion is met. Placeholder URLs in a draft are irrelevant to whether the criterion is satisfied. A draft that links to '[latency dashboard](placeholder)' is demonstrating the correct behavior; it should not be penalized as if the author might have filled in the placeholder with inline content."
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high",
+            "negative_examples": [
+              "Giving a 7/10 to a decision email that includes a deadline and a clear scope ('concerns about the decision itself') just because it doesn't enumerate named feedback categories",
+              "Treating a decision announcement's feedback window as equivalent to a PR review request and grading it on the same rubric",
+              "Rewarding an elaborate three-category taxonomy as inherently better than a simpler but still scoped and deadlined request"
+            ],
+            "clarification": "This criterion exists to prevent two failure modes: (1) unbounded review requests with no deadline that get deprioritized, and (2) review requests so vague the reader doesn't know what to focus on. A decision email that says 'reply with concerns about the decision by [date]' satisfies both — it has a deadline and the scope is the decision itself. The criterion should be scored based on whether the failure modes are avoided, not on whether the email uses a specific format like named categories. Named categories are one way to scope a review request; they are not the only valid way. The criterion is most relevant and should be scored most strictly when the email is explicitly asking for a review of an artifact (PR, design doc, RFC) rather than soliciting concerns about an already-made decision."
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Migrating inter-service communication from REST to gRPC\n\n---\n\nHi team,\n\n**We're moving forward with gRPC for all inter-service communication, starting next sprint.** Here's the full context so you can act on this without needing a sync.\n\n---\n\n**The decision**\n\nAfter evaluating our current REST setup against two alternatives — gRPC and GraphQL — we're adopting gRPC as our inter-service transport layer.\n\n---\n\n**Why not GraphQL?**\n\nGraphQL was a serious contender, primarily because of its flexible querying and strong tooling for client-driven data fetching. We ruled it out for inter-service use for two reasons:\n\n1. **It's optimized for the wrong boundary.** GraphQL shines at the client-to-server edge where query shape flexibility matters. Between internal services, we control both ends of every call — that flexibility becomes overhead, not value.\n2. **Operational complexity.** Schema stitching and federation add maintenance burden we'd be taking on without a clear payoff in our architecture.\n\n---\n\n**Why not stay on REST?**\n\nREST works, and switching has real costs. We're making the move because our profiling data ([latency dashboard](https://link-to-dashboard)) showed consistent serialization overhead and schema drift across service boundaries that REST's loose contracts don't prevent. The pain is real and growing.\n\n---\n\n**Why gRPC?**\n\n- Protobuf contracts enforce schema consistency at compile time, eliminating the drift problem\n- Measurable serialization performance improvement ([spike doc §3](https://link-to-spike-doc) has the benchmarks)\n- Bidirectional streaming unblocks two roadmap items we've been deferring\n\n**What we're giving up:** gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer. We're accepting that tradeoff. [grpcurl](https://github.com/fullstorydev/grpcurl) and [gRPC-web](https://github.com/grpc/grpc-web) mitigate it, but it's not zero cost.\n\n---\n\n**What this means for you**\n\nRollout order, the Protobuf style guide, and the REST endpoint deprecation timeline are all in the [RFC](https://link-to-rfc). Please read it before sprint planning.\n\nIf this email surfaces a separate topic — team resourcing, REST deprecation scheduling, Protobuf toolchain setup — please start a new thread rather than replying here. This thread is scoped to the migration decision itself.\n\n---\n\n**One ask before next sprint planning**\n\nIf you have concerns about this decision, please reply to this thread by **[date]** with feedback in one of these areas:\n\n- **Architectural concerns** — something about our service topology that makes gRPC a poor fit we haven't accounted for\n- **Security implications** — TLS configuration, mTLS requirements, or anything in our threat model that needs addressing before rollout\n- **Team capacity** — if your service is sequenced in a way that conflicts with other commitments already on the board\n\nWhat's not in scope for this round: implementation details, Protobuf naming conventions, or toolchain preferences. Those belong in the RFC comments, not here.\n\nOnce we're past **[date]**, the decision is locked and further feedback should move to the RFC.\n\n---\n\nRachel",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the very first sentence. Two alternatives (GraphQL and REST) are named and seriously engaged with — GraphQL is rejected for being optimized for the wrong boundary and adding operational complexity, REST is rejected due to documented serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged ('gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer') with a candid admission that mitigation tools reduce but don't eliminate the cost. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, links to the RFC for rollout order and deprecation timeline, and links to grpcurl and gRPC-web for tooling context. No linked content is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies three named categories of in-scope feedback (architectural concerns, security implications, team capacity), explicitly states what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences), and includes a hard deadline ('[date]' as a placeholder, which is structurally correct for a draft). Both failure modes — unbounded requests and vague scope — are avoided. The out-of-scope note even redirects those topics to the RFC comments, maintaining thread hygiene simultaneously."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The subject line precisely matches the content (gRPC migration decision). The email addresses exactly one topic — the migration decision — and explicitly instructs readers to start new threads for adjacent topics like resourcing, deprecation scheduling, and toolchain setup. The email proactively enforces thread hygiene rather than leaving it to chance, which directly satisfies the single-topic and new-thread-for-new-topic dimensions."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for the internal boundary and adds operational complexity; REST fails on serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged in a dedicated 'What we're giving up' section, naming concrete costs (debugging friction, no curl, browser proxy requirement) and mitigation tools. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 instead of reproducing benchmarks, links to the RFC for rollout order and deprecation timeline, and links to grpcurl and gRPC-web for tooling context. No linked content is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies three named feedback categories (architectural concerns, security implications, team capacity), includes a concrete deadline ('[date]' as a placeholder, structurally correct for a draft), and explicitly calls out what is out of scope (implementation details, Protobuf naming, toolchain preferences). Both failure modes — unbounded requests and vague scope — are avoided. The out-of-scope section even redirects those topics to the RFC comments, maintaining thread hygiene simultaneously."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The subject line precisely matches the email's sole topic: the REST-to-gRPC migration decision. The email explicitly instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup) rather than replying here. No unrelated items are bundled into the email. All three dimensions are satisfied, and the email proactively enforces thread hygiene rather than just modeling it."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Decision Tradeoff Transparency",
+              "score": 10,
+              "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for the internal boundary and adds operational complexity; REST has measurable serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged ('gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer') with a clear statement that the cost is accepted but not zero. All four dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Link, Don't Duplicate",
+              "score": 10,
+              "justification": "The email links to a latency dashboard instead of pasting latency numbers, links to the spike doc for benchmarks rather than reproducing them, links to the RFC for rollout order and deprecation timeline, and links to grpcurl and gRPC-web for mitigation tooling. No linked content is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+            },
+            {
+              "criterion_name": "Scoped Review Requests",
+              "score": 10,
+              "justification": "The review request specifies three named categories of in-scope feedback (architectural concerns, security implications, team capacity), includes a concrete deadline ('[date]' as a placeholder, structurally correct for a draft), and explicitly calls out what is out of scope ('implementation details, Protobuf naming conventions, or toolchain preferences'). Both failure modes — unbounded requests and vague scope — are avoided. The out-of-scope note even redirects those items to the RFC comments, maintaining thread hygiene simultaneously."
+            },
+            {
+              "criterion_name": "Thread Discipline",
+              "score": 10,
+              "justification": "The subject line precisely matches the content. The email addresses exactly one topic: the decision to migrate to gRPC. It proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup) rather than bundling them here, and explicitly scopes the thread to 'the migration decision itself.' All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Decision Tradeoff Transparency": 10.0,
+          "Link, Don't Duplicate": 10.0,
+          "Scoped Review Requests": 10.0,
+          "Thread Discipline": 10.0
+        },
+        "std_scores": {
+          "Decision Tradeoff Transparency": 0.0,
+          "Link, Don't Duplicate": 0.0,
+          "Scoped Review Requests": 0.0,
+          "Thread Discipline": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the very first sentence. Two alternatives (GraphQL and REST) are named and seriously engaged with — GraphQL is rejected for being optimized for the wrong boundary and adding operational complexity, REST is rejected due to documented serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged ('gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer') with a candid admission that mitigation tools reduce but don't eliminate the cost. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 for benchmarks instead of reproducing them, links to the RFC for rollout order and deprecation timeline, and links to grpcurl and gRPC-web for tooling context. No linked content is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies three named categories of in-scope feedback (architectural concerns, security implications, team capacity), explicitly states what is out of scope (implementation details, Protobuf naming conventions, toolchain preferences), and includes a hard deadline ('[date]' as a placeholder, which is structurally correct for a draft). Both failure modes — unbounded requests and vague scope — are avoided. The out-of-scope note even redirects those topics to the RFC comments, maintaining thread hygiene simultaneously."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The subject line precisely matches the content (gRPC migration decision). The email addresses exactly one topic — the migration decision — and explicitly instructs readers to start new threads for adjacent topics like resourcing, deprecation scheduling, and toolchain setup. The email proactively enforces thread hygiene rather than leaving it to chance, which directly satisfies the single-topic and new-thread-for-new-topic dimensions."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2193,
+              "output_tokens": 570
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for the internal boundary and adds operational complexity; REST fails on serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged in a dedicated 'What we're giving up' section, naming concrete costs (debugging friction, no curl, browser proxy requirement) and mitigation tools. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting numbers, links to spike doc §3 instead of reproducing benchmarks, links to the RFC for rollout order and deprecation timeline, and links to grpcurl and gRPC-web for tooling context. No linked content is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies three named feedback categories (architectural concerns, security implications, team capacity), includes a concrete deadline ('[date]' as a placeholder, structurally correct for a draft), and explicitly calls out what is out of scope (implementation details, Protobuf naming, toolchain preferences). Both failure modes — unbounded requests and vague scope — are avoided. The out-of-scope section even redirects those topics to the RFC comments, maintaining thread hygiene simultaneously."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The subject line precisely matches the email's sole topic: the REST-to-gRPC migration decision. The email explicitly instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup) rather than replying here. No unrelated items are bundled into the email. All three dimensions are satisfied, and the email proactively enforces thread hygiene rather than just modeling it."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2193,
+              "output_tokens": 548
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Decision Tradeoff Transparency",
+                "score": 10,
+                "justification": "The decision appears in the first sentence. Both alternatives (GraphQL and REST) are named and rejected with specific, substantive reasoning — GraphQL is wrong for the internal boundary and adds operational complexity; REST has measurable serialization overhead and schema drift. The tradeoff of choosing gRPC is explicitly acknowledged ('gRPC is harder to debug than REST — no curl-friendly requests, and browser support requires a proxy layer') with a clear statement that the cost is accepted but not zero. All four dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Link, Don't Duplicate",
+                "score": 10,
+                "justification": "The email links to a latency dashboard instead of pasting latency numbers, links to the spike doc for benchmarks rather than reproducing them, links to the RFC for rollout order and deprecation timeline, and links to grpcurl and gRPC-web for mitigation tooling. No linked content is duplicated inline. Each link has clear surrounding context explaining why the reader should follow it. Placeholder URLs are structurally correct per the rubric clarification and should not be penalized."
+              },
+              {
+                "criterion_name": "Scoped Review Requests",
+                "score": 10,
+                "justification": "The review request specifies three named categories of in-scope feedback (architectural concerns, security implications, team capacity), includes a concrete deadline ('[date]' as a placeholder, structurally correct for a draft), and explicitly calls out what is out of scope ('implementation details, Protobuf naming conventions, or toolchain preferences'). Both failure modes — unbounded requests and vague scope — are avoided. The out-of-scope note even redirects those items to the RFC comments, maintaining thread hygiene simultaneously."
+              },
+              {
+                "criterion_name": "Thread Discipline",
+                "score": 10,
+                "justification": "The subject line precisely matches the content. The email addresses exactly one topic: the decision to migrate to gRPC. It proactively instructs readers to start new threads for adjacent topics (resourcing, deprecation scheduling, toolchain setup) rather than bundling them here, and explicitly scopes the thread to 'the migration decision itself.' All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 2193,
+              "output_tokens": 555
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes emails that eliminate the need for follow-up meetings. Every email provides enough context for the reader to understand, decide, and act asynchronously. Values decision transparency and thread hygiene.",
+        "rubric": [
+          {
+            "name": "Decision Tradeoff Transparency",
+            "category": "Content",
+            "description": "Emails about decisions include the options that were considered and why the chosen path was selected. Stating a decision without alternatives is an edict, not communication.",
+            "dimensions": [
+              {
+                "id": "alternatives_listed",
+                "label": "Names at least one alternative that was seriously considered"
+              },
+              {
+                "id": "rejection_rationale",
+                "label": "Explains why each alternative was rejected with specific reasoning, not just 'it didn't fit'"
+              },
+              {
+                "id": "tradeoff_acknowledged",
+                "label": "Acknowledges what the chosen option sacrifices compared to alternatives"
+              },
+              {
+                "id": "decision_not_buried",
+                "label": "The decision itself appears in the first two sentences, not after paragraphs of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Link, Don't Duplicate",
+            "category": "Content",
+            "description": "Links to existing documents, PRs, dashboards, or design docs replace inline explanations. If information exists somewhere canonical, the email links to it rather than creating a duplicate that will drift.",
+            "dimensions": [
+              {
+                "id": "links_to_sources",
+                "label": "References to existing docs, PRs, or dashboards are hyperlinked, not described in prose"
+              },
+              {
+                "id": "no_content_duplication",
+                "label": "Does not reproduce information that's already available at a linked source"
+              },
+              {
+                "id": "link_context_sufficient",
+                "label": "Each link has enough surrounding context that the reader knows why to click it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "Docking points because 'the links are placeholder URLs' in what is explicitly a draft email",
+              "Treating an unresolved placeholder link as structurally equivalent to reproducing the linked content inline"
+            ],
+            "clarification": "The criterion is about the authorial choice to link rather than duplicate. If the email structure shows that decision — linking to a dashboard instead of pasting latency numbers, linking to a spike doc instead of reproducing benchmarks — the criterion is met. Placeholder URLs in a draft are irrelevant to whether the criterion is satisfied. A draft that links to '[latency dashboard](placeholder)' is demonstrating the correct behavior; it should not be penalized as if the author might have filled in the placeholder with inline content."
+          },
+          {
+            "name": "Scoped Review Requests",
+            "category": "Audience",
+            "description": "Review requests specify what kind of feedback is needed and by when. 'Please review' without scope or deadline gets deprioritized — the request must tell the reader exactly what to focus on.",
+            "dimensions": [
+              {
+                "id": "feedback_scope_stated",
+                "label": "Specifies the type of feedback requested (architecture, implementation, naming, security, etc.)"
+              },
+              {
+                "id": "review_deadline",
+                "label": "Includes a specific deadline or timeframe for the review"
+              },
+              {
+                "id": "out_of_scope_noted",
+                "label": "Explicitly notes what is NOT in scope for this review round"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high",
+            "negative_examples": [
+              "Giving a 7/10 to a decision email that includes a deadline and a clear scope ('concerns about the decision itself') just because it doesn't enumerate named feedback categories",
+              "Treating a decision announcement's feedback window as equivalent to a PR review request and grading it on the same rubric",
+              "Rewarding an elaborate three-category taxonomy as inherently better than a simpler but still scoped and deadlined request"
+            ],
+            "clarification": "This criterion exists to prevent two failure modes: (1) unbounded review requests with no deadline that get deprioritized, and (2) review requests so vague the reader doesn't know what to focus on. A decision email that says 'reply with concerns about the decision by [date]' satisfies both — it has a deadline and the scope is the decision itself. The criterion should be scored based on whether the failure modes are avoided, not on whether the email uses a specific format like named categories. Named categories are one way to scope a review request; they are not the only valid way. The criterion is most relevant and should be scored most strictly when the email is explicitly asking for a review of an artifact (PR, design doc, RFC) rather than soliciting concerns about an already-made decision."
+          },
+          {
+            "name": "Thread Discipline",
+            "category": "Structure",
+            "description": "One topic per email thread. If the conversation drifts to a new topic, a new thread with a new subject line is started. Never continues a thread whose subject no longer matches the content.",
+            "dimensions": [
+              {
+                "id": "single_topic",
+                "label": "The email addresses exactly one topic — does not bundle unrelated items"
+              },
+              {
+                "id": "subject_matches_content",
+                "label": "The subject line accurately describes the current content, not a prior topic in the thread"
+              },
+              {
+                "id": "new_thread_for_new_topic",
+                "label": "When introducing a new topic, starts a fresh thread rather than replying to an existing one"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Rachel's philosophy: if someone needs a meeting after reading your email, the email failed. Non-negotiable: decisions always include what was rejected and why. Will push back hard on unbounded review requests or emails that cover multiple topics in one thread."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 10,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Options considered and why the chosen path was picked",
+        "satisfied": "yes",
+        "evidence": "The email explicitly covers three options (REST, GraphQL, gRPC) with dedicated sections explaining why each alternative was ruled out and why gRPC was chosen, including tradeoffs acknowledged ('What we're giving up')."
+      },
+      {
+        "preference": "Links to documents/PRs/dashboards replace inline explanations",
+        "satisfied": "yes",
+        "evidence": "Links to the latency dashboard, spike doc §3 for benchmarks, the RFC for rollout details, and external tools (grpcurl, gRPC-web) are provided instead of duplicating that content inline."
+      },
+      {
+        "preference": "Specifies what kind of feedback is needed and the deadline",
+        "satisfied": "yes",
+        "evidence": "Explicitly scopes feedback to three areas (architectural concerns, security implications, team capacity), explicitly excludes out-of-scope feedback ('implementation details, Protobuf naming conventions, or toolchain preferences'), and sets a deadline: 'reply to this thread by [date]'."
+      },
+      {
+        "preference": "Thread discipline: one topic per thread, new threads for new topics",
+        "satisfied": "yes",
+        "evidence": "'If this email surfaces a separate topic — team resourcing, REST deprecation scheduling, Protobuf toolchain setup — please start a new thread rather than replying here. This thread is scoped to the migration decision itself.'"
+      },
+      {
+        "preference": "Decision is not buried — stated upfront",
+        "satisfied": "yes",
+        "evidence": "The very first bolded line is the decision: 'We're moving forward with gRPC for all inter-service communication, starting next sprint.' It's at the top, not buried in context paragraphs."
+      },
+      {
+        "preference": "Async-first, full context so recipients can act without a meeting",
+        "satisfied": "yes",
+        "evidence": "Explicitly stated: 'Here's the full context so you can act on this without needing a sync.' The email is self-contained with links for deeper dives."
+      },
+      {
+        "preference": "Not a Slack-length message — substantive enough to warrant email",
+        "satisfied": "yes",
+        "evidence": "The email covers a significant architectural decision with multiple alternatives, tradeoff analysis, linked references, and structured feedback request — clearly email-appropriate content."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1189,
+      "output_tokens": 631
+    }
+  }
+}

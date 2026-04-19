@@ -1,0 +1,135 @@
+{
+  "scenario_id": "cover_letter_01",
+  "draft_id": "cover_letter_01_targeted_fail",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Anti-cliché discipline\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_motivational_filler\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft contains no phrases like 'passionate about,' 'results-driven,' or similar motivational filler throughout.\"\n        },\n        {\n          \"dimension_id\": \"no_generic_self_description\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The closest thing to self-description is 'I'd rather follow the evidence to an uncomfortable conclusion,' which is grounded in the specific story just told rather than a generic adjective.\"\n        },\n        {\n          \"dimension_id\": \"claims_backed_by_evidence\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Every claim is backed by specifics: the 22% NRR improvement, the pipeline latency reduction from four hours to under twenty minutes, and the customer satisfaction ranking shift.\"\n        },\n        {\n          \"dimension_id\": \"unique_to_writer\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The opening story about killing a 40,000 MAU feature at Cerro Systems and the Ridgeline reporting module descope are specific enough that they could not be transplanted to another applicant's letter.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Composed-but-human tone\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_overly_casual_phrasing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft uses no slang, exclamation points, or casual sentence fragments throughout.\"\n        },\n        {\n          \"dimension_id\": \"no_stiff_formality\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The letter opens with 'The last product I killed had 40,000 monthly active users' rather than any formal declaration of intent, and the inline comment flags this as a known pass.\"\n        },\n        {\n          \"dimension_id\": \"natural_sentence_rhythm\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Sentence lengths vary noticeably, from the short 'It was also the right call' to the longer compound sentences describing the cohort analysis and stakeholder constraints.\"\n        },\n        {\n          \"dimension_id\": \"confidence_without_arrogance\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Accomplishments are stated directly ('within two quarters that integration was responsible for a 22% improvement in net revenue retention') without hedging or self-congratulatory framing.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Contextualized proof points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_metrics\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Multiple quantified outcomes appear: 22% improvement in net revenue retention, pipeline latency from four hours to under twenty minutes, shipped in five months instead of twelve.\"\n        },\n        {\n          \"dimension_id\": \"method_visible\",\n          \"grade\": \"MET\",\n          \"evidence\": \"At Ridgeline, the method is explicit: 'I spent my first three weeks interviewing sixteen customers and realized the core complaint wasn't about the reports themselves — it was about the time between requesting a report and being able to act on it.'\"\n        },\n        {\n          \"dimension_id\": \"constraints_shown\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Constraints are named throughout: a shared engineering team of eleven, the 150–600 employee company range, and the twelve-month rebuild scope inherited mid-cycle.\"\n        },\n        {\n          \"dimension_id\": \"narrative_not_list\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All proof points are embedded in continuous prose paragraphs telling a story, with no bullet points or list formatting used anywhere.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Engagement-driven closing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_reference\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'Based on what I've seen publicly, you've built strong initial traction and you're now at the point where the next layer of growth probably depends less on new feature volume and more on how well the existing surface area holds together as usage patterns diversify' references the company's apparent product stage specifically.\"\n        },\n        {\n          \"dimension_id\": \"curiosity_hook\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'I have some specific thoughts on how the onboarding experience could evolve to support that — particularly around how you handle the gap between what new users expect the product to do and what power users have actually shaped it into' hints at a specific idea without fully delivering it.\"\n        },\n        {\n          \"dimension_id\": \"not_gimmicky\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The hook is grounded in a real product tension (new user expectations vs. power user behavior) that connects directly to the applicant's stated expertise, making it feel substantive rather than a sales trick.\"\n        },\n        {\n          \"dimension_id\": \"avoids_generic_availability\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The letter ends with 'I'd welcome the chance to get into the details,' which is a generic availability statement as the final impression, and the inline comment flags this explicitly.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Experience-grounded opening\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_experience\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The first sentence is 'The last product I killed had 40,000 monthly active users,' which is a specific experience rather than a statement of intent to apply.\"\n        },\n        {\n          \"dimension_id\": \"doesnt_try_too_hard\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The opening anecdote unfolds matter-of-factly with cohort analysis details and a business rationale, avoiding dramatic or strained cleverness.\"\n        },\n        {\n          \"dimension_id\": \"establishes_credibility_early\",\n          \"grade\": \"MET\",\n          \"evidence\": \"By the end of the first paragraph, the reader knows the applicant ran a product area at Cerro Systems, made a data-driven sunset decision, and drove a 22% NRR improvement — establishing distinctive relevance immediately.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2373,
+  "output_tokens": 1591,
+  "latency_ms": 20537,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Anti-cliché discipline",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_motivational_filler",
+            "grade": "MET",
+            "evidence": "The draft contains no phrases like 'passionate about,' 'results-driven,' or similar motivational filler throughout."
+          },
+          {
+            "dimension_id": "no_generic_self_description",
+            "grade": "MET",
+            "evidence": "The closest thing to self-description is 'I'd rather follow the evidence to an uncomfortable conclusion,' which is grounded in the specific story just told rather than a generic adjective."
+          },
+          {
+            "dimension_id": "claims_backed_by_evidence",
+            "grade": "MET",
+            "evidence": "Every claim is backed by specifics: the 22% NRR improvement, the pipeline latency reduction from four hours to under twenty minutes, and the customer satisfaction ranking shift."
+          },
+          {
+            "dimension_id": "unique_to_writer",
+            "grade": "MET",
+            "evidence": "The opening story about killing a 40,000 MAU feature at Cerro Systems and the Ridgeline reporting module descope are specific enough that they could not be transplanted to another applicant's letter."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Composed-but-human tone",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_overly_casual_phrasing",
+            "grade": "MET",
+            "evidence": "The draft uses no slang, exclamation points, or casual sentence fragments throughout."
+          },
+          {
+            "dimension_id": "no_stiff_formality",
+            "grade": "MET",
+            "evidence": "The letter opens with 'The last product I killed had 40,000 monthly active users' rather than any formal declaration of intent, and the inline comment flags this as a known pass."
+          },
+          {
+            "dimension_id": "natural_sentence_rhythm",
+            "grade": "MET",
+            "evidence": "Sentence lengths vary noticeably, from the short 'It was also the right call' to the longer compound sentences describing the cohort analysis and stakeholder constraints."
+          },
+          {
+            "dimension_id": "confidence_without_arrogance",
+            "grade": "MET",
+            "evidence": "Accomplishments are stated directly ('within two quarters that integration was responsible for a 22% improvement in net revenue retention') without hedging or self-congratulatory framing."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Contextualized proof points",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_metrics",
+            "grade": "MET",
+            "evidence": "Multiple quantified outcomes appear: 22% improvement in net revenue retention, pipeline latency from four hours to under twenty minutes, shipped in five months instead of twelve."
+          },
+          {
+            "dimension_id": "method_visible",
+            "grade": "MET",
+            "evidence": "At Ridgeline, the method is explicit: 'I spent my first three weeks interviewing sixteen customers and realized the core complaint wasn't about the reports themselves — it was about the time between requesting a report and being able to act on it.'"
+          },
+          {
+            "dimension_id": "constraints_shown",
+            "grade": "MET",
+            "evidence": "Constraints are named throughout: a shared engineering team of eleven, the 150–600 employee company range, and the twelve-month rebuild scope inherited mid-cycle."
+          },
+          {
+            "dimension_id": "narrative_not_list",
+            "grade": "MET",
+            "evidence": "All proof points are embedded in continuous prose paragraphs telling a story, with no bullet points or list formatting used anywhere."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Engagement-driven closing",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_reference",
+            "grade": "MET",
+            "evidence": "'Based on what I've seen publicly, you've built strong initial traction and you're now at the point where the next layer of growth probably depends less on new feature volume and more on how well the existing surface area holds together as usage patterns diversify' references the company's apparent product stage specifically."
+          },
+          {
+            "dimension_id": "curiosity_hook",
+            "grade": "MET",
+            "evidence": "'I have some specific thoughts on how the onboarding experience could evolve to support that — particularly around how you handle the gap between what new users expect the product to do and what power users have actually shaped it into' hints at a specific idea without fully delivering it."
+          },
+          {
+            "dimension_id": "not_gimmicky",
+            "grade": "MET",
+            "evidence": "The hook is grounded in a real product tension (new user expectations vs. power user behavior) that connects directly to the applicant's stated expertise, making it feel substantive rather than a sales trick."
+          },
+          {
+            "dimension_id": "avoids_generic_availability",
+            "grade": "NOT_MET",
+            "evidence": "The letter ends with 'I'd welcome the chance to get into the details,' which is a generic availability statement as the final impression, and the inline comment flags this explicitly."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Experience-grounded opening",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_experience",
+            "grade": "MET",
+            "evidence": "The first sentence is 'The last product I killed had 40,000 monthly active users,' which is a specific experience rather than a statement of intent to apply."
+          },
+          {
+            "dimension_id": "doesnt_try_too_hard",
+            "grade": "MET",
+            "evidence": "The opening anecdote unfolds matter-of-factly with cohort analysis details and a business rationale, avoiding dramatic or strained cleverness."
+          },
+          {
+            "dimension_id": "establishes_credibility_early",
+            "grade": "MET",
+            "evidence": "By the end of the first paragraph, the reader knows the applicant ran a product area at Cerro Systems, made a data-driven sunset decision, and drove a 22% NRR improvement — establishing distinctive relevance immediately."
+          }
+        ]
+      }
+    ]
+  }
+}

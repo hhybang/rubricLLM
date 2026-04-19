@@ -196,28 +196,41 @@ def logout_user(supabase: Client):
     """Log out the current user"""
     try:
         supabase.auth.sign_out()
-    except:
+    except Exception:
         pass
     st.session_state.auth_user = None
     st.session_state.auth_session = None
+
+    # Login view does not run the main app's session init; stale Streamlit widget keys
+    # from the previous session must be cleared or remounting the app can blank the UI.
+    from rubric_writer.session_reset import clear_project_data_caches, clear_project_scoped_widget_keys
+
+    clear_project_data_caches()
+    clear_project_scoped_widget_keys()
+
+    for _k in ("auth_username", "auth_name", "auth_email"):
+        st.session_state.pop(_k, None)
+
     # Clear cached client so a fresh one is created on next login
-    if '_supabase_client' in st.session_state:
+    if "_supabase_client" in st.session_state:
         del st.session_state._supabase_client
 
     # Clear all project and rubric related session state
     keys_to_clear = [
-        'current_project_id', 'current_project', 'rubric', 'active_rubric_idx',
-        'messages', 'survey_responses', 'rubric_comparison_results', 'editing_criteria',
-        'rubric_chat_messages', 'rubric_chat_suggestion', 'rubric_chat_preview_draft'
+        "current_project_id",
+        "current_project",
+        "rubric",
+        "active_rubric_idx",
+        "messages",
+        "survey_responses",
+        "rubric_comparison_results",
+        "editing_criteria",
+        "rubric_chat_messages",
+        "rubric_chat_suggestion",
+        "rubric_chat_preview_draft",
     ]
     for key in keys_to_clear:
-        if key in st.session_state:
-            del st.session_state[key]
-
-    # Clear all rubric history caches (keys starting with rubric_history_)
-    keys_to_delete = [k for k in st.session_state.keys() if k.startswith('rubric_history_')]
-    for key in keys_to_delete:
-        del st.session_state[key]
+        st.session_state.pop(key, None)
 
 
 def get_current_user() -> Optional[Dict]:
@@ -391,6 +404,82 @@ def delete_conversation(supabase: Client, conversation_id: str) -> bool:
     except Exception as e:
         st.error(f"Error deleting conversation: {e}")
         return False
+
+
+# ========================
+# Draft grades (background rubric grading)
+# ========================
+
+def insert_draft_grade(
+    supabase: Client,
+    *,
+    conversation_id: str,
+    message_id: Optional[str],
+    draft_index: int,
+    draft_text: str,
+    rubric_version: int,
+    grades_json: Dict[str, Any],
+    model_used: str,
+    latency_ms: Optional[int],
+    trigger: str,
+    drift_json: Optional[Dict[str, Any]] = None,
+) -> bool:
+    """Persist one grading result. Safe to call from a background thread (no st.*)."""
+    try:
+        row: Dict[str, Any] = {
+            "conversation_id": conversation_id,
+            "message_id": message_id,
+            "draft_index": draft_index,
+            "draft_text": draft_text,
+            "rubric_version": rubric_version,
+            "grades_json": grades_json,
+            "model_used": model_used,
+            "latency_ms": latency_ms,
+            "trigger": trigger,
+        }
+        if drift_json is not None:
+            row["drift_json"] = drift_json
+        supabase.table("draft_grades").insert(row).execute()
+        return True
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning("insert_draft_grade failed: %s", e)
+        return False
+
+
+def fetch_draft_grades_for_conversation(supabase: Client, conversation_id: str) -> List[Dict[str, Any]]:
+    """Return all draft_grades rows for a conversation, ordered by draft_index."""
+    try:
+        response = (
+            supabase.table("draft_grades")
+            .select("*")
+            .eq("conversation_id", conversation_id)
+            .order("draft_index")
+            .execute()
+        )
+        return response.data or []
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning("fetch_draft_grades_for_conversation failed: %s", e)
+        return []
+
+
+def next_draft_grade_index(supabase: Client, conversation_id: str) -> int:
+    """Next sequential draft_index for this conversation (1-based)."""
+    try:
+        response = (
+            supabase.table("draft_grades")
+            .select("draft_index")
+            .eq("conversation_id", conversation_id)
+            .order("draft_index", desc=True)
+            .limit(1)
+            .execute()
+        )
+        if response.data:
+            return int(response.data[0]["draft_index"]) + 1
+    except Exception:
+        pass
+    return 1
 
 
 # ========================
@@ -632,6 +721,63 @@ CREATE INDEX IF NOT EXISTS idx_projects_user_id ON public.projects(user_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_project_id ON public.conversations(project_id);
 CREATE INDEX IF NOT EXISTS idx_rubric_history_project_id ON public.rubric_history(project_id);
 CREATE INDEX IF NOT EXISTS idx_project_data_project_id ON public.project_data(project_id);
+
+-- Per-draft rubric grades (background Sonnet grading)
+CREATE TABLE IF NOT EXISTS public.draft_grades (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    conversation_id UUID NOT NULL REFERENCES public.conversations(id) ON DELETE CASCADE,
+    message_id TEXT,
+    draft_index INTEGER NOT NULL,
+    draft_text TEXT NOT NULL,
+    rubric_version INTEGER NOT NULL,
+    grades_json JSONB NOT NULL,
+    graded_at TIMESTAMPTZ DEFAULT NOW(),
+    model_used TEXT DEFAULT 'claude-sonnet-4-6',
+    latency_ms INTEGER,
+    trigger TEXT NOT NULL,
+    drift_json JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_draft_grades_conversation_id ON public.draft_grades(conversation_id);
+CREATE INDEX IF NOT EXISTS idx_draft_grades_message_id ON public.draft_grades(message_id);
+
+ALTER TABLE public.draft_grades ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view draft grades for own conversations" ON public.draft_grades
+    FOR SELECT USING (
+        conversation_id IN (
+            SELECT id FROM public.conversations WHERE project_id IN (
+                SELECT id FROM public.projects WHERE user_id = auth.uid()
+            )
+        )
+    );
+
+CREATE POLICY "Users can insert draft grades for own conversations" ON public.draft_grades
+    FOR INSERT WITH CHECK (
+        conversation_id IN (
+            SELECT id FROM public.conversations WHERE project_id IN (
+                SELECT id FROM public.projects WHERE user_id = auth.uid()
+            )
+        )
+    );
+
+CREATE POLICY "Users can update draft grades for own conversations" ON public.draft_grades
+    FOR UPDATE USING (
+        conversation_id IN (
+            SELECT id FROM public.conversations WHERE project_id IN (
+                SELECT id FROM public.projects WHERE user_id = auth.uid()
+            )
+        )
+    );
+
+CREATE POLICY "Users can delete draft grades for own conversations" ON public.draft_grades
+    FOR DELETE USING (
+        conversation_id IN (
+            SELECT id FROM public.conversations WHERE project_id IN (
+                SELECT id FROM public.projects WHERE user_id = auth.uid()
+            )
+        )
+    );
 """
 
 

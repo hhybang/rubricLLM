@@ -1,0 +1,338 @@
+{
+  "persona": "Miriam Osei",
+  "task_index": 0,
+  "task_description": "Help me draft an email to all employees about switching our health insurance provider next quarter — the new plan has better mental health coverage but slightly higher deductibles.",
+  "condition": "A",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes HR communications that treat employees as intelligent adults who deserve to understand why things change. Prioritizes trust-building through transparency and precision over polished corporate messaging.",
+    "rubric": [
+      {
+        "name": "Problem-First Policy Framing",
+        "category": "Structure",
+        "description": "Policy changes lead with the employee-facing problem the policy solves, not with the policy itself. The reader should understand and care about the 'why' before encountering the 'what.'",
+        "dimensions": [
+          {
+            "id": "problem_before_policy",
+            "label": "The email describes the problem or need before introducing the policy change"
+          },
+          {
+            "id": "employee_perspective_problem",
+            "label": "The problem is framed from the employee's experience, not the company's operational needs"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The rationale appears before the specific details of the change"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Decision Attribution",
+        "category": "Style",
+        "description": "Decisions are attributed to 'we' or 'the team,' never 'I decided.' The sender avoids making themselves the target by using collective framing, which channels responses toward constructive feedback rather than personal pushback.",
+        "dimensions": [
+          {
+            "id": "collective_subject",
+            "label": "Decisions use 'we' or 'the leadership team' as subject, not 'I'"
+          },
+          {
+            "id": "no_personal_authority",
+            "label": "Does not frame the change as the sender's personal choice or preference"
+          },
+          {
+            "id": "invites_input_not_appeal",
+            "label": "Questions are directed toward understanding, not appealing the decision — 'questions about how this works' not 'if you disagree'"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Named Human Contact Point",
+        "category": "Content",
+        "description": "Questions are directed to a specific named person, not a role or generic channel. 'Ask Jamal in Benefits' not 'Contact HR.' Naming the person signals accessibility and accountability.",
+        "dimensions": [
+          {
+            "id": "named_person",
+            "label": "The point of contact is a specific person's name, not a department or role title"
+          },
+          {
+            "id": "specific_channel",
+            "label": "Includes how to reach them (Slack, email, office hours) — not just 'reach out'"
+          },
+          {
+            "id": "no_generic_contact",
+            "label": "Does not use 'contact HR' or 'reach out to your manager' without a name"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Absolute Date Precision",
+        "category": "Content",
+        "description": "Any change affecting compensation, benefits, or workload includes exact dates — never relative timeframes like 'in the coming weeks' or 'soon.' People planning their lives need precision.",
+        "dimensions": [
+          {
+            "id": "exact_dates",
+            "label": "All timelines use specific dates (e.g., 'March 15') not relative terms ('next month', 'soon')"
+          },
+          {
+            "id": "effective_date_explicit",
+            "label": "The effective date of the change is stated explicitly, not implied"
+          },
+          {
+            "id": "transition_timeline",
+            "label": "If there's a transition period, both start and end dates are provided"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Miriam's non-negotiable is that employees are treated as adults who deserve the full picture. Will reject any draft that buries the 'why' or uses vague timelines. Prefers warmth but will sacrifice it for precision — never the reverse."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "**Subject: Health Insurance Update — Better Mental Health Coverage, Starting April 1**\n\n---\n\nHi everyone,\n\nOver the past year, we've heard consistently — through engagement surveys, benefits feedback forms, and direct conversations — that mental health support is a gap in our current coverage. Specifically, many of you have faced high out-of-pocket costs for therapy and psychiatric care, limited in-network providers, and reimbursement processes that are more complicated than they should be. That feedback shaped a real priority for us: find a plan that does better.\n\nWe're making a change, and we want to give you the full picture.\n\n**What's changing and when**\n\nStarting **April 1**, we'll be moving from [Current Provider] to [New Provider]. Here's an honest summary of what improves and what shifts:\n\n**Better:**\n- Mental health and therapy visits will be covered at a significantly higher rate, with more in-network providers available in most regions\n- Psychiatric care and medication management will have lower copays\n- The reimbursement process for out-of-network mental health care is simpler and faster\n\n**The tradeoff:**\n- Deductibles will be modestly higher — [individual deductible: $X → $Y; family: $X → $Y]\n- We know that's a real difference for some households, and we didn't take it lightly\n\nWe believe the mental health improvements outweigh that tradeoff for most people, but we also recognize that \"most people\" isn't everyone. If you're currently managing ongoing care under the existing plan, please read the transition details below carefully.\n\n**What you need to do before April 1**\n\n- **By March 14:** Review the full plan comparison document [linked here]\n- **By March 21:** Complete your re-enrollment if your coverage selections are changing — instructions are in the benefits portal\n- **March 22–31:** Transition window for updating any in-progress claims with [Current Provider]\n\nIf you have ongoing prescriptions or active treatment with an out-of-network provider, we recommend confirming your coverage status before April 1 so there are no surprises.\n\n**Questions?**\n\nPlease reach out to **Priya Nandakumar**, our Benefits Specialist, who has been working on this transition directly and knows the details inside and out. You can message her on Slack at **@priya.nandakumar**, email her at **priya@[company].com**, or drop into her open office hours every **Tuesday and Thursday, 12–1 pm**.\n\nWe made this change because you told us mental health coverage matters — and it does. We want to keep getting this right, so if something about the new plan raises concerns or questions, please don't hesitate to ask.\n\n—[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Problem-First Policy Framing",
+              "score": 10,
+              "justification": "The email opens with a full paragraph describing the employee-facing problem — high out-of-pocket costs, limited in-network providers, complicated reimbursement — before any mention of the policy change. The problem is framed entirely from the employee's experience ('many of you have faced'), not operational needs. The rationale ('find a plan that does better') appears before any specifics of the new plan."
+            },
+            {
+              "criterion_name": "Named Human Contact Point",
+              "score": 10,
+              "justification": "The contact is a specific named person — 'Priya Nandakumar, our Benefits Specialist' — not a department or role title alone. Three specific channels are provided: Slack handle (@priya.nandakumar), email address, and office hours with exact days and times. There is no generic 'contact HR' language anywhere in the email."
+            },
+            {
+              "criterion_name": "Decision Attribution",
+              "score": 10,
+              "justification": "All decisions use collective framing: 'we're making a change,' 'we believe,' 'we didn't take it lightly,' 'we made this change.' The sender never uses 'I decided' or frames the change as a personal choice. The closing invitation — 'if something about the new plan raises concerns or questions, please don't hesitate to ask' — directs employees toward understanding rather than appealing the decision."
+            },
+            {
+              "criterion_name": "Absolute Date Precision",
+              "score": 9,
+              "justification": "The effective date (April 1) is stated explicitly and repeatedly. The transition timeline includes specific dates: March 14 for document review, March 21 for re-enrollment, and March 22–31 for the claims transition window — all exact dates, no relative terms. The only minor gap is that deductible amounts use placeholder brackets ([X → Y]) rather than real figures, but this is a template artifact rather than a vague timeline, and all actual dates are precise."
+            }
+          ],
+          "overall_weighted_score": 0.99,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Problem-First Policy Framing",
+              "score": 10,
+              "justification": "The email opens with a full paragraph describing the employee-facing problem — high out-of-pocket costs, limited in-network providers, complicated reimbursement — before any mention of the policy change. The problem is framed entirely from the employee's experience ('many of you have faced'), not operational needs. The rationale ('find a plan that does better') appears before the 'What's changing' section, satisfying all three dimensions cleanly."
+            },
+            {
+              "criterion_name": "Named Human Contact Point",
+              "score": 10,
+              "justification": "The contact is a specific named person — Priya Nandakumar — not a department or role title. Three specific channels are provided: Slack handle (@priya.nandakumar), email address, and office hours with exact days and times. There is no generic 'contact HR' language anywhere in the email."
+            },
+            {
+              "criterion_name": "Decision Attribution",
+              "score": 10,
+              "justification": "All decisions use 'we' as the collective subject ('We're making a change,' 'We believe,' 'We made this change'). The sender never frames the change as a personal choice. The closing invitation — 'if something about the new plan raises concerns or questions, please don't hesitate to ask' — directs employees toward understanding rather than appealing the decision."
+            },
+            {
+              "criterion_name": "Absolute Date Precision",
+              "score": 9,
+              "justification": "The effective date (April 1) is stated explicitly and repeatedly. The transition timeline includes specific dates: March 14 for document review, March 21 for re-enrollment, and March 22–31 for the claims transition window. The only minor gap is that deductible amounts use placeholder brackets ([X → Y]) rather than real figures, but this is clearly a template artifact rather than a vague timeframe, and all actual dates are precise."
+            }
+          ],
+          "overall_weighted_score": 0.99,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Problem-First Policy Framing",
+              "score": 10,
+              "justification": "The email opens with a full paragraph describing the employee-facing problem — high out-of-pocket costs, limited in-network providers, complicated reimbursement — before any mention of the policy change. The problem is framed entirely from the employee's experience ('many of you have faced'), not operational needs. The rationale ('find a plan that does better') appears before any specifics of the change, satisfying all three dimensions cleanly."
+            },
+            {
+              "criterion_name": "Named Human Contact Point",
+              "score": 10,
+              "justification": "The contact is a specific named person, Priya Nandakumar, not a department or role. Three specific channels are provided: Slack handle (@priya.nandakumar), email address, and office hours with exact days and times. There is no generic 'contact HR' language anywhere in the email."
+            },
+            {
+              "criterion_name": "Decision Attribution",
+              "score": 10,
+              "justification": "All decisions use 'we' as the subject throughout ('we're making a change,' 'we believe,' 'we made this change,' 'we didn't take it lightly'). There is no 'I decided' framing anywhere. The closing invitation — 'if something about the new plan raises concerns or questions, please don't hesitate to ask' — directs employees toward understanding rather than appealing the decision."
+            },
+            {
+              "criterion_name": "Absolute Date Precision",
+              "score": 9,
+              "justification": "The effective date (April 1) is stated explicitly in the subject line and body. Action deadlines use specific dates: March 14 and March 21. The transition window is bounded by exact dates (March 22–31). The only minor gap is that deductible amounts use placeholder brackets ([X → Y]) rather than real figures, but this appears to be a template artifact rather than vague framing, and all timeline language is precise throughout."
+            }
+          ],
+          "overall_weighted_score": 0.99,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Problem-First Policy Framing": 10.0,
+          "Named Human Contact Point": 10.0,
+          "Decision Attribution": 10.0,
+          "Absolute Date Precision": 9.0
+        },
+        "std_scores": {
+          "Problem-First Policy Framing": 0.0,
+          "Named Human Contact Point": 0.0,
+          "Decision Attribution": 0.0,
+          "Absolute Date Precision": 0.0
+        },
+        "mean_overall": 0.99,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Problem-First Policy Framing",
+                "score": 10,
+                "justification": "The email opens with a full paragraph describing the employee-facing problem — high out-of-pocket costs, limited in-network providers, complicated reimbursement — before any mention of the policy change. The problem is framed entirely from the employee's experience ('many of you have faced'), not operational needs. The rationale ('find a plan that does better') appears before any specifics of the new plan."
+              },
+              {
+                "criterion_name": "Named Human Contact Point",
+                "score": 10,
+                "justification": "The contact is a specific named person — 'Priya Nandakumar, our Benefits Specialist' — not a department or role title alone. Three specific channels are provided: Slack handle (@priya.nandakumar), email address, and office hours with exact days and times. There is no generic 'contact HR' language anywhere in the email."
+              },
+              {
+                "criterion_name": "Decision Attribution",
+                "score": 10,
+                "justification": "All decisions use collective framing: 'we're making a change,' 'we believe,' 'we didn't take it lightly,' 'we made this change.' The sender never uses 'I decided' or frames the change as a personal choice. The closing invitation — 'if something about the new plan raises concerns or questions, please don't hesitate to ask' — directs employees toward understanding rather than appealing the decision."
+              },
+              {
+                "criterion_name": "Absolute Date Precision",
+                "score": 9,
+                "justification": "The effective date (April 1) is stated explicitly and repeatedly. The transition timeline includes specific dates: March 14 for document review, March 21 for re-enrollment, and March 22–31 for the claims transition window — all exact dates, no relative terms. The only minor gap is that deductible amounts use placeholder brackets ([X → Y]) rather than real figures, but this is a template artifact rather than a vague timeline, and all actual dates are precise."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1608,
+              "output_tokens": 513
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Problem-First Policy Framing",
+                "score": 10,
+                "justification": "The email opens with a full paragraph describing the employee-facing problem — high out-of-pocket costs, limited in-network providers, complicated reimbursement — before any mention of the policy change. The problem is framed entirely from the employee's experience ('many of you have faced'), not operational needs. The rationale ('find a plan that does better') appears before the 'What's changing' section, satisfying all three dimensions cleanly."
+              },
+              {
+                "criterion_name": "Named Human Contact Point",
+                "score": 10,
+                "justification": "The contact is a specific named person — Priya Nandakumar — not a department or role title. Three specific channels are provided: Slack handle (@priya.nandakumar), email address, and office hours with exact days and times. There is no generic 'contact HR' language anywhere in the email."
+              },
+              {
+                "criterion_name": "Decision Attribution",
+                "score": 10,
+                "justification": "All decisions use 'we' as the collective subject ('We're making a change,' 'We believe,' 'We made this change'). The sender never frames the change as a personal choice. The closing invitation — 'if something about the new plan raises concerns or questions, please don't hesitate to ask' — directs employees toward understanding rather than appealing the decision."
+              },
+              {
+                "criterion_name": "Absolute Date Precision",
+                "score": 9,
+                "justification": "The effective date (April 1) is stated explicitly and repeatedly. The transition timeline includes specific dates: March 14 for document review, March 21 for re-enrollment, and March 22–31 for the claims transition window. The only minor gap is that deductible amounts use placeholder brackets ([X → Y]) rather than real figures, but this is clearly a template artifact rather than a vague timeframe, and all actual dates are precise."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1608,
+              "output_tokens": 494
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Problem-First Policy Framing",
+                "score": 10,
+                "justification": "The email opens with a full paragraph describing the employee-facing problem — high out-of-pocket costs, limited in-network providers, complicated reimbursement — before any mention of the policy change. The problem is framed entirely from the employee's experience ('many of you have faced'), not operational needs. The rationale ('find a plan that does better') appears before any specifics of the change, satisfying all three dimensions cleanly."
+              },
+              {
+                "criterion_name": "Named Human Contact Point",
+                "score": 10,
+                "justification": "The contact is a specific named person, Priya Nandakumar, not a department or role. Three specific channels are provided: Slack handle (@priya.nandakumar), email address, and office hours with exact days and times. There is no generic 'contact HR' language anywhere in the email."
+              },
+              {
+                "criterion_name": "Decision Attribution",
+                "score": 10,
+                "justification": "All decisions use 'we' as the subject throughout ('we're making a change,' 'we believe,' 'we made this change,' 'we didn't take it lightly'). There is no 'I decided' framing anywhere. The closing invitation — 'if something about the new plan raises concerns or questions, please don't hesitate to ask' — directs employees toward understanding rather than appealing the decision."
+              },
+              {
+                "criterion_name": "Absolute Date Precision",
+                "score": 9,
+                "justification": "The effective date (April 1) is stated explicitly in the subject line and body. Action deadlines use specific dates: March 14 and March 21. The transition window is bounded by exact dates (March 22–31). The only minor gap is that deductible amounts use placeholder brackets ([X → Y]) rather than real figures, but this appears to be a template artifact rather than vague framing, and all timeline language is precise throughout."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1608,
+              "output_tokens": 501
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "generation_tokens": {
+        "input_tokens": 840,
+        "output_tokens": 617
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Lead with the PROBLEM from the employee's perspective, not the policy itself",
+        "satisfied": "yes",
+        "evidence": "The draft opens with 'Over the past year, we've heard consistently... that mental health support is a gap in our current coverage. Specifically, many of you have faced high out-of-pocket costs for therapy and psychiatric care, limited in-network providers, and reimbursement processes that are more complicated than they should be.' The problem is clearly framed from the employee's lived experience before any policy details."
+      },
+      {
+        "preference": "Use 'you/your' heavily but never 'I' in subject position; decisions come from 'we' or 'the team'",
+        "satisfied": "yes",
+        "evidence": "The draft consistently uses 'we' for decisions ('We're making a change,' 'We believe,' 'We made this change') and 'you/your' when addressing employees ('many of you have faced,' 'What you need to do,' 'you told us'). No instance of 'I' appears in the subject position anywhere in the draft."
+      },
+      {
+        "preference": "Provide a specific channel for questions and name the PERSON, not the role",
+        "satisfied": "yes",
+        "evidence": "'Please reach out to Priya Nandakumar, our Benefits Specialist, who has been working on this transition directly and knows the details inside and out. You can message her on Slack at @priya.nandakumar, email her at priya@[company].com, or drop into her open office hours every Tuesday and Thursday, 12–1 pm.' Named person with multiple specific contact channels."
+      },
+      {
+        "preference": "Include EXACT timeline with dates when affecting compensation or workload, never relative timeframes",
+        "satisfied": "yes",
+        "evidence": "The draft provides exact dates throughout: 'Starting April 1,' 'By March 14,' 'By March 21,' 'March 22–31,' and 'Tuesday and Thursday, 12–1 pm' for office hours. No vague 'coming weeks' language."
+      },
+      {
+        "preference": "Warm but precise tone, policy-aware without sounding legalistic",
+        "satisfied": "yes",
+        "evidence": "The tone is conversational and empathetic ('we know that's a real difference for some households, and we didn't take it lightly') while still being precise about plan details and deadlines. No legalistic hedging."
+      },
+      {
+        "preference": "No corporate euphemisms for negative changes; no 'resources' or 'headcount'",
+        "satisfied": "yes",
+        "evidence": "The deductible increase is called out directly as 'The tradeoff' with specific placeholder figures. The language is honest: 'Deductibles will be modestly higher' and 'we know that's a real difference for some households.' No euphemistic framing, no dehumanizing language."
+      },
+      {
+        "preference": "Inclusive language throughout",
+        "satisfied": "yes",
+        "evidence": "Uses 'everyone,' 'some households,' acknowledges that 'most people isn't everyone,' and addresses diverse situations like ongoing care and prescriptions. The language is consistently inclusive without being performative."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1069,
+      "output_tokens": 827
+    }
+  }
+}

@@ -1,0 +1,897 @@
+{
+  "summary": {
+    "overall_dimension_agreement_rate": 0.9682080924855492,
+    "cohens_kappa_overall": 0.9364459139030827,
+    "within_model_consistency_opus": 0.9862637362637363,
+    "within_model_consistency_sonnet": 0.9807692307692307,
+    "num_dimensions_evaluated": 346,
+    "num_disagreements": 11,
+    "latency_ms_avg_opus": 22288.283333333333,
+    "latency_ms_avg_sonnet": 22520.333333333332,
+    "tokens_opus": {
+      "in": 199170,
+      "out": 92487
+    },
+    "tokens_sonnet": {
+      "in": 192894,
+      "out": 84872
+    },
+    "estimated_cost_usd_opus": 9.924075,
+    "estimated_cost_usd_sonnet": 1.851762,
+    "pricing_assumptions_usd_per_mtok": {
+      "opus_input": 15.0,
+      "opus_output": 75.0,
+      "sonnet_input": 3.0,
+      "sonnet_output": 15.0
+    }
+  },
+  "per_criterion_agreement_rate": {
+    "Transparent intent": 1,
+    "Traction as narrative momentum": 1,
+    "Double-duty personalization": 1,
+    "Peer-to-peer framing": 1,
+    "Signal-dense subject line": 1,
+    "Unflinching honesty about wrong turns": 1,
+    "Investigation pacing with delayed reveals": 1,
+    "Concrete, non-preachy takeaways": 1,
+    "Code snippets as narrative anchors": 1,
+    "Immersive scene-setting with specific details": 0.9166666666666666,
+    "Phone-Scannable Brevity": 0.8125,
+    "Bottom-Line-Up-Front Summary": 0.9375,
+    "Calibrated Risk Framing": 0.9375,
+    "Recipient-Calibrated Register": 1,
+    "Anti-cliché discipline": 1,
+    "Composed-but-human tone": 1,
+    "Contextualized proof points": 0.9375,
+    "Engagement-driven closing": 1,
+    "Experience-grounded opening": 1,
+    "Critical decisions front-loaded in summaries": 1,
+    "Code examples as primary entry points": 0.9375,
+    "Concrete debugging artifacts in operational sections": 1,
+    "Tradeoff transparency with escape hatches": 1,
+    "Scan-optimized formatting": 0.8125
+  },
+  "per_criterion_cohens_kappa": {
+    "Transparent intent": 1.0,
+    "Traction as narrative momentum": 1.0,
+    "Double-duty personalization": 1.0,
+    "Peer-to-peer framing": 1.0,
+    "Signal-dense subject line": 1.0,
+    "Unflinching honesty about wrong turns": 1.0,
+    "Investigation pacing with delayed reveals": 1.0,
+    "Concrete, non-preachy takeaways": 1.0,
+    "Code snippets as narrative anchors": 1.0,
+    "Immersive scene-setting with specific details": 0.8235294117647058,
+    "Phone-Scannable Brevity": 0.5384615384615384,
+    "Bottom-Line-Up-Front Summary": 0.875,
+    "Calibrated Risk Framing": 0.8620689655172413,
+    "Recipient-Calibrated Register": 1.0,
+    "Anti-cliché discipline": 1.0,
+    "Composed-but-human tone": 1.0,
+    "Contextualized proof points": 0.8709677419354839,
+    "Engagement-driven closing": 1.0,
+    "Experience-grounded opening": 1.0,
+    "Critical decisions front-loaded in summaries": 1.0,
+    "Code examples as primary entry points": 0.875,
+    "Concrete debugging artifacts in operational sections": 1.0,
+    "Tradeoff transparency with escape hatches": 1.0,
+    "Scan-optimized formatting": 0.6363636363636364
+  },
+  "per_dimension_agreement": {
+    "Transparent intent :: no_false_softeners": {
+      "agree": 3,
+      "total": 3,
+      "label": "No lines that downplay the actual ask to seem lower-stakes (e.g. 'no worries if not,' 'even if this isn't a fit')",
+      "rate": 1.0
+    },
+    "Transparent intent :: explicit_ask": {
+      "agree": 3,
+      "total": 3,
+      "label": "The specific ask (meeting, intro, etc.) is stated in plain language",
+      "rate": 1.0
+    },
+    "Transparent intent :: honest_framing": {
+      "agree": 3,
+      "total": 3,
+      "label": "The framing of the relationship/opportunity is honest about what the sender wants",
+      "rate": 1.0
+    },
+    "Transparent intent :: no_trick_feel": {
+      "agree": 3,
+      "total": 3,
+      "label": "A skeptical reader would not perceive any sentence as a persuasion tactic disguised as candor",
+      "rate": 1.0
+    },
+    "Traction as narrative momentum :: temporal_arc": {
+      "agree": 3,
+      "total": 3,
+      "label": "Key metrics are placed in a time-based sequence that shows progression (e.g. 'launched X months ago → now at Y')",
+      "rate": 1.0
+    },
+    "Traction as narrative momentum :: no_bullet_stats": {
+      "agree": 3,
+      "total": 3,
+      "label": "Traction data appears in flowing prose, not as a list or series of standalone figures",
+      "rate": 1.0
+    },
+    "Traction as narrative momentum :: implied_trajectory": {
+      "agree": 3,
+      "total": 3,
+      "label": "The reader can extrapolate forward momentum without the sender explicitly claiming it",
+      "rate": 1.0
+    },
+    "Traction as narrative momentum :: organic_demand_signal": {
+      "agree": 3,
+      "total": 3,
+      "label": "At least one detail suggests demand is pulling the company forward rather than the company pushing (e.g. customer pull, surprise growth)",
+      "rate": 1.0
+    },
+    "Double-duty personalization :: specific_source": {
+      "agree": 3,
+      "total": 3,
+      "label": "References a specific piece of the recipient's thinking (talk, post, interview) rather than just a deal or title",
+      "rate": 1.0
+    },
+    "Double-duty personalization :: thesis_connection": {
+      "agree": 3,
+      "total": 3,
+      "label": "Connects the recipient's stated thesis or insight to the sender's approach or results",
+      "rate": 1.0
+    },
+    "Double-duty personalization :: proof_embedded": {
+      "agree": 3,
+      "total": 3,
+      "label": "The personalization passage includes or introduces a concrete metric or evidence point from the sender's business",
+      "rate": 1.0
+    },
+    "Double-duty personalization :: natural_integration": {
+      "agree": 3,
+      "total": 3,
+      "label": "The personalized reference flows into the email's argument rather than sitting as a separate flattery paragraph",
+      "rate": 1.0
+    },
+    "Peer-to-peer framing :: no_deference_markers": {
+      "agree": 3,
+      "total": 3,
+      "label": "No phrases that over-accommodate the recipient's schedule or importance (e.g. 'happy to work around your schedule,' 'whenever works for you')",
+      "rate": 1.0
+    },
+    "Peer-to-peer framing :: mutual_value": {
+      "agree": 3,
+      "total": 3,
+      "label": "The email implies the conversation would be interesting or valuable for both parties",
+      "rate": 1.0
+    },
+    "Peer-to-peer framing :: direct_scheduling": {
+      "agree": 3,
+      "total": 3,
+      "label": "The closing proposes a concrete time window or coordination step rather than leaving it entirely open-ended",
+      "rate": 1.0
+    },
+    "Signal-dense subject line :: credibility_upfront": {
+      "agree": 3,
+      "total": 3,
+      "label": "Subject line includes at least one concrete credibility signal (traction, role, or domain)",
+      "rate": 1.0
+    },
+    "Signal-dense subject line :: ask_visible": {
+      "agree": 3,
+      "total": 3,
+      "label": "The nature of the ask or purpose is discernible from the subject line",
+      "rate": 1.0
+    },
+    "Signal-dense subject line :: no_cleverness_tricks": {
+      "agree": 3,
+      "total": 3,
+      "label": "No intentional lowercase styling, ellipses, vague teasers, or 're:' faking to manufacture curiosity",
+      "rate": 1.0
+    },
+    "Unflinching honesty about wrong turns :: wrong_leads_shown": {
+      "agree": 4,
+      "total": 4,
+      "label": "At least one significant wrong theory or false lead is described in detail, not just mentioned",
+      "rate": 1.0
+    },
+    "Unflinching honesty about wrong turns :: personal_accountability": {
+      "agree": 4,
+      "total": 4,
+      "label": "The author takes clear ownership of mistakes rather than framing them as inevitable or blameless",
+      "rate": 1.0
+    },
+    "Unflinching honesty about wrong turns :: time_cost_visible": {
+      "agree": 4,
+      "total": 4,
+      "label": "The real time wasted on wrong paths is made explicit so readers feel the cost",
+      "rate": 1.0
+    },
+    "Unflinching honesty about wrong turns :: self_deprecating_not_flagellating": {
+      "agree": 4,
+      "total": 4,
+      "label": "Tone is self-deprecating and wry, not self-pitying or performatively humble",
+      "rate": 1.0
+    },
+    "Investigation pacing with delayed reveals :: confusion_before_clarity": {
+      "agree": 4,
+      "total": 4,
+      "label": "The author shows what the evidence looked like before they understood it, including initial misreadings",
+      "rate": 1.0
+    },
+    "Investigation pacing with delayed reveals :: progressive_narrowing": {
+      "agree": 4,
+      "total": 4,
+      "label": "Clues are revealed incrementally, with the reader's understanding building step by step",
+      "rate": 1.0
+    },
+    "Investigation pacing with delayed reveals :: reveal_earned": {
+      "agree": 4,
+      "total": 4,
+      "label": "The root cause reveal lands as a payoff after sustained tension, not as a premature summary",
+      "rate": 1.0
+    },
+    "Investigation pacing with delayed reveals :: emotional_beats_present": {
+      "agree": 4,
+      "total": 4,
+      "label": "The narrative includes the author's emotional state during the investigation (frustration, surprise, relief)",
+      "rate": 1.0
+    },
+    "Concrete, non-preachy takeaways :: actionable_practice": {
+      "agree": 4,
+      "total": 4,
+      "label": "Each takeaway names a specific behavior change or heuristic the author now follows",
+      "rate": 1.0
+    },
+    "Concrete, non-preachy takeaways :: generic_advice_rejected": {
+      "agree": 4,
+      "total": 4,
+      "label": "Obvious/universal advice is either omitted or explicitly acknowledged and moved past",
+      "rate": 1.0
+    },
+    "Concrete, non-preachy takeaways :: grounded_in_story": {
+      "agree": 4,
+      "total": 4,
+      "label": "Each takeaway connects directly to a specific moment in the narrative, not abstract reasoning",
+      "rate": 1.0
+    },
+    "Concrete, non-preachy takeaways :: peer_tone": {
+      "agree": 4,
+      "total": 4,
+      "label": "Framing treats the reader as an equal who already knows the basics, not as someone being lectured",
+      "rate": 1.0
+    },
+    "Code snippets as narrative anchors :: minimal_snippet_count": {
+      "agree": 4,
+      "total": 4,
+      "label": "Total code snippets are few and focused — each one earns its place in the narrative",
+      "rate": 1.0
+    },
+    "Code snippets as narrative anchors :: annotated_key_lines": {
+      "agree": 4,
+      "total": 4,
+      "label": "The critical line(s) in each snippet are marked with inline comments or called out in surrounding prose",
+      "rate": 1.0
+    },
+    "Code snippets as narrative anchors :: before_after_contrast": {
+      "agree": 4,
+      "total": 4,
+      "label": "Problematic code and fixed code are both shown so the reader sees the specific transformation",
+      "rate": 1.0
+    },
+    "Code snippets as narrative anchors :: prose_frames_code": {
+      "agree": 4,
+      "total": 4,
+      "label": "Surrounding prose explains what to look for before showing the snippet, so the reader knows where to focus",
+      "rate": 1.0
+    },
+    "Immersive scene-setting with specific details :: sensory_anchors": {
+      "agree": 4,
+      "total": 4,
+      "label": "Key scenes include at least one concrete sensory or environmental detail (time of day, tool UI, message text)",
+      "rate": 1.0
+    },
+    "Immersive scene-setting with specific details :: named_tools": {
+      "agree": 4,
+      "total": 4,
+      "label": "Real tool and product names are used rather than generic descriptions like 'the monitoring dashboard'",
+      "rate": 1.0
+    },
+    "Immersive scene-setting with specific details :: scene_not_summary": {
+      "agree": 3,
+      "total": 4,
+      "label": "Important moments are dramatized as scenes with action, not summarized in retrospective narration",
+      "rate": 0.75
+    },
+    "Phone-Scannable Brevity :: bullets_only": {
+      "agree": 4,
+      "total": 4,
+      "label": "All status information is conveyed through bullet points, not prose paragraphs",
+      "rate": 1.0
+    },
+    "Phone-Scannable Brevity :: one_two_line_bullets": {
+      "agree": 4,
+      "total": 4,
+      "label": "Each bullet fits in 1–2 lines and is self-contained",
+      "rate": 1.0
+    },
+    "Phone-Scannable Brevity :: no_redundancy": {
+      "agree": 2,
+      "total": 4,
+      "label": "Each piece of information appears in exactly one section — no overlap between sections",
+      "rate": 0.5
+    },
+    "Phone-Scannable Brevity :: minimal_sections": {
+      "agree": 3,
+      "total": 4,
+      "label": "Sections are consolidated to the fewest needed; no section exists that could be folded into another",
+      "rate": 0.75
+    },
+    "Bottom-Line-Up-Front Summary :: opens_with_summary": {
+      "agree": 4,
+      "total": 4,
+      "label": "The very first line after the greeting is a status summary, not context-setting",
+      "rate": 1.0
+    },
+    "Bottom-Line-Up-Front Summary :: covers_key_status": {
+      "agree": 4,
+      "total": 4,
+      "label": "Summary captures both wins and any timeline shifts in one sentence",
+      "rate": 1.0
+    },
+    "Bottom-Line-Up-Front Summary :: signals_escalation_need": {
+      "agree": 4,
+      "total": 4,
+      "label": "Summary explicitly signals whether the reader needs to act or not",
+      "rate": 1.0
+    },
+    "Bottom-Line-Up-Front Summary :: plain_label": {
+      "agree": 3,
+      "total": 4,
+      "label": "Summary line is unlabeled or uses a straightforward label — no casual shorthand like 'TL;DR'",
+      "rate": 0.75
+    },
+    "Calibrated Risk Framing :: neutral_language": {
+      "agree": 3,
+      "total": 4,
+      "label": "Blockers and challenges use neutral language (e.g., 'resolving,' 'handling') rather than alarm words ('setback,' 'failure,' 'crisis')",
+      "rate": 0.75
+    },
+    "Calibrated Risk Framing :: timeline_impact_quantified": {
+      "agree": 4,
+      "total": 4,
+      "label": "Timeline impact is stated concretely (e.g., '~1 week') rather than left vague",
+      "rate": 1.0
+    },
+    "Calibrated Risk Framing :: resolution_timeline": {
+      "agree": 4,
+      "total": 4,
+      "label": "Includes when the resolution path will be clear (e.g., 'by Wednesday')",
+      "rate": 1.0
+    },
+    "Calibrated Risk Framing :: escalation_signal": {
+      "agree": 4,
+      "total": 4,
+      "label": "Explicitly notes when something does NOT need escalation, to prevent unnecessary director intervention",
+      "rate": 1.0
+    },
+    "Recipient-Calibrated Register :: no_casual_shorthand": {
+      "agree": 4,
+      "total": 4,
+      "label": "Avoids internet-style abbreviations or labels that could read as too casual for the recipient",
+      "rate": 1.0
+    },
+    "Recipient-Calibrated Register :: direct_not_stiff": {
+      "agree": 4,
+      "total": 4,
+      "label": "Closing and framing lines are approachable ('Let me know if you want to dig into anything') rather than overly formal",
+      "rate": 1.0
+    },
+    "Recipient-Calibrated Register :: recipient_modeled": {
+      "agree": 4,
+      "total": 4,
+      "label": "Word choices reflect awareness of how the specific recipient communicates and what might land wrong",
+      "rate": 1.0
+    },
+    "Anti-cliché discipline :: no_motivational_filler": {
+      "agree": 4,
+      "total": 4,
+      "label": "No motivational filler phrases (e.g., 'passionate about,' 'results-driven,' 'gets me out of bed')",
+      "rate": 1.0
+    },
+    "Anti-cliché discipline :: no_generic_self_description": {
+      "agree": 4,
+      "total": 4,
+      "label": "Avoids generic self-describing adjectives (e.g., 'dynamic leader,' 'innovative thinker')",
+      "rate": 1.0
+    },
+    "Anti-cliché discipline :: claims_backed_by_evidence": {
+      "agree": 4,
+      "total": 4,
+      "label": "Every positive claim about the writer is supported by a specific fact, not left as an assertion",
+      "rate": 1.0
+    },
+    "Anti-cliché discipline :: unique_to_writer": {
+      "agree": 4,
+      "total": 4,
+      "label": "Key sentences could not be copy-pasted into a different applicant's letter without rewriting",
+      "rate": 1.0
+    },
+    "Composed-but-human tone :: no_overly_casual_phrasing": {
+      "agree": 4,
+      "total": 4,
+      "label": "Avoids overly casual phrasing (slang, sentence fragments used for effect, exclamation points)",
+      "rate": 1.0
+    },
+    "Composed-but-human tone :: no_stiff_formality": {
+      "agree": 4,
+      "total": 4,
+      "label": "Avoids stiff formality (e.g., 'I am writing to express my interest,' 'I would be honored')",
+      "rate": 1.0
+    },
+    "Composed-but-human tone :: natural_sentence_rhythm": {
+      "agree": 4,
+      "total": 4,
+      "label": "Sentences vary in length and read naturally aloud — not all constructed identically",
+      "rate": 1.0
+    },
+    "Composed-but-human tone :: confidence_without_arrogance": {
+      "agree": 4,
+      "total": 4,
+      "label": "States accomplishments directly without hedging or over-qualifying, but without boasting",
+      "rate": 1.0
+    },
+    "Contextualized proof points :: specific_metrics": {
+      "agree": 4,
+      "total": 4,
+      "label": "Includes at least one specific, quantified outcome",
+      "rate": 1.0
+    },
+    "Contextualized proof points :: method_visible": {
+      "agree": 4,
+      "total": 4,
+      "label": "Describes the approach or method, not just the result",
+      "rate": 1.0
+    },
+    "Contextualized proof points :: constraints_shown": {
+      "agree": 4,
+      "total": 4,
+      "label": "Mentions relevant constraints (team size, timeline, resources) that add credibility",
+      "rate": 1.0
+    },
+    "Contextualized proof points :: narrative_not_list": {
+      "agree": 3,
+      "total": 4,
+      "label": "Proof points are woven into a narrative, not presented as a bullet-point list of achievements",
+      "rate": 0.75
+    },
+    "Engagement-driven closing :: specific_reference": {
+      "agree": 4,
+      "total": 4,
+      "label": "References something specific about the company's product, strategy, or market position",
+      "rate": 1.0
+    },
+    "Engagement-driven closing :: curiosity_hook": {
+      "agree": 4,
+      "total": 4,
+      "label": "Creates a curiosity gap — hints at an idea or perspective without fully delivering it",
+      "rate": 1.0
+    },
+    "Engagement-driven closing :: not_gimmicky": {
+      "agree": 4,
+      "total": 4,
+      "label": "The hook feels substantive and relevant, not like a sales trick or forced cleverness",
+      "rate": 1.0
+    },
+    "Engagement-driven closing :: avoids_generic_availability": {
+      "agree": 4,
+      "total": 4,
+      "label": "Does not end with a generic availability statement as the final impression",
+      "rate": 1.0
+    },
+    "Experience-grounded opening :: opens_with_experience": {
+      "agree": 4,
+      "total": 4,
+      "label": "First sentence references a specific experience or observation, not a statement of intent to apply",
+      "rate": 1.0
+    },
+    "Experience-grounded opening :: doesnt_try_too_hard": {
+      "agree": 4,
+      "total": 4,
+      "label": "Opening feels natural and earned, not straining for cleverness or drama",
+      "rate": 1.0
+    },
+    "Experience-grounded opening :: establishes_credibility_early": {
+      "agree": 4,
+      "total": 4,
+      "label": "Within the first paragraph, the reader understands why this applicant is distinctively relevant",
+      "rate": 1.0
+    },
+    "Critical decisions front-loaded in summaries :: decisions_in_tldr": {
+      "agree": 4,
+      "total": 4,
+      "label": "Architectural decisions that change caller behavior are stated in the TL;DR or summary section",
+      "rate": 1.0
+    },
+    "Critical decisions front-loaded in summaries :: non_obvious_defaults_highlighted": {
+      "agree": 4,
+      "total": 4,
+      "label": "Non-obvious default behaviors (e.g., fail-open, retry semantics) are called out prominently rather than embedded in later prose",
+      "rate": 1.0
+    },
+    "Critical decisions front-loaded in summaries :: non_goals_stated": {
+      "agree": 4,
+      "total": 4,
+      "label": "Non-goals are explicitly listed to prevent scope misinterpretation",
+      "rate": 1.0
+    },
+    "Critical decisions front-loaded in summaries :: decisions_before_implementation": {
+      "agree": 4,
+      "total": 4,
+      "label": "Decisions that constrain callers appear before implementation details of those decisions",
+      "rate": 1.0
+    },
+    "Code examples as primary entry points :: caller_side_examples": {
+      "agree": 3,
+      "total": 4,
+      "label": "Major API endpoints or integration points include a caller-side code example (not just the server-side definition)",
+      "rate": 0.75
+    },
+    "Code examples as primary entry points :: realistic_production_patterns": {
+      "agree": 4,
+      "total": 4,
+      "label": "Code examples use actual client libraries, middleware patterns, or idioms teams would use in production",
+      "rate": 1.0
+    },
+    "Code examples as primary entry points :: error_handling_shown": {
+      "agree": 4,
+      "total": 4,
+      "label": "Examples demonstrate at least one key edge case or error-handling path alongside the happy path",
+      "rate": 1.0
+    },
+    "Code examples as primary entry points :: inline_annotations": {
+      "agree": 4,
+      "total": 4,
+      "label": "Non-obvious lines in code examples are annotated with inline comments explaining the 'why'",
+      "rate": 1.0
+    },
+    "Concrete debugging artifacts in operational sections :: exact_error_output": {
+      "agree": 4,
+      "total": 4,
+      "label": "Error scenarios include the exact error codes and messages a caller would see (e.g., gRPC status codes, HTTP responses)",
+      "rate": 1.0
+    },
+    "Concrete debugging artifacts in operational sections :: caller_perspective": {
+      "agree": 4,
+      "total": 4,
+      "label": "Failure modes are described from the caller's perspective, not just the server's internal behavior",
+      "rate": 1.0
+    },
+    "Concrete debugging artifacts in operational sections :: observability_signals_named": {
+      "agree": 4,
+      "total": 4,
+      "label": "Metrics, structured log fields, or tracing signals are named alongside the behaviors they track",
+      "rate": 1.0
+    },
+    "Concrete debugging artifacts in operational sections :: auth_rejection_examples": {
+      "agree": 4,
+      "total": 4,
+      "label": "Security/authorization rejection scenarios include a concrete example of the rejected request and response",
+      "rate": 1.0
+    },
+    "Tradeoff transparency with escape hatches :: tradeoff_flagged": {
+      "agree": 4,
+      "total": 4,
+      "label": "Design decisions that have a cost or constrain certain use cases are explicitly flagged as tradeoffs",
+      "rate": 1.0
+    },
+    "Tradeoff transparency with escape hatches :: affected_parties_named": {
+      "agree": 4,
+      "total": 4,
+      "label": "The teams, use cases, or workflows affected by the tradeoff are specifically identified",
+      "rate": 1.0
+    },
+    "Tradeoff transparency with escape hatches :: alternative_provided": {
+      "agree": 4,
+      "total": 4,
+      "label": "An alternative approach, workaround, or future-state solution is mentioned (even if not fully specified)",
+      "rate": 1.0
+    },
+    "Tradeoff transparency with escape hatches :: visually_distinct_callout": {
+      "agree": 4,
+      "total": 4,
+      "label": "Tradeoff callouts are visually distinct (admonition boxes, blockquotes, or similar) so they aren't missed during skimming",
+      "rate": 1.0
+    },
+    "Scan-optimized formatting :: tables_for_comparisons": {
+      "agree": 2,
+      "total": 4,
+      "label": "Structured comparisons (e.g., mitigation lists, config options, feature matrices) use tables rather than inline prose",
+      "rate": 0.5
+    },
+    "Scan-optimized formatting :: bold_key_terms": {
+      "agree": 4,
+      "total": 4,
+      "label": "Key terms, decisions, and requirements within paragraphs are bolded or emphasized for scanning",
+      "rate": 1.0
+    },
+    "Scan-optimized formatting :: sections_self_contained": {
+      "agree": 3,
+      "total": 4,
+      "label": "Sections can be read independently without requiring sequential reading of the full document",
+      "rate": 0.75
+    },
+    "Scan-optimized formatting :: admonition_boxes_for_warnings": {
+      "agree": 4,
+      "total": 4,
+      "label": "Important warnings, team-specific guidance, or caveats use callout/admonition boxes rather than inline text",
+      "rate": 1.0
+    }
+  },
+  "disagreements": [
+    {
+      "scenario_id": "blog_post_01",
+      "draft_id": "blog_post_01_targeted_fail",
+      "criterion_name": "Immersive scene-setting with specific details",
+      "dimension_id": "scene_not_summary",
+      "dimension_label": "Important moments are dramatized as scenes with action, not summarized in retrospective narration",
+      "draft_excerpt": "# The Ghost in the Heap: Hunting a Memory Leak That Wasn't Where I Thought\n\n## The Alert Nobody Wanted at 4:47 PM on a Friday\n\nI was halfway through writing a Jira ticket — the kind of meaningless ticket you write when you're trying to look productive before the weekend — when the PagerDuty notification lit up my phone. Our order-processing microservice, the one we affectionately called `order-muncher`, had tripped its memory threshold. Again.\n\nThe Datadog dashboard told a familiar story: a sawtooth pattern of memory usage that had been climbing all week, each peak a little higher than the last, each garbage collection trough a little less effective. RSS was sitting at 1.2 GB on a container with a 1.5 GB limit. We had maybe a few hours before Kubernetes started killing pods.\n\nI Slacked my team: \"order-muncher memory thing is back. I'll take a look.\" Three thumbs-up reacts. Nobody volunteered to help. I don't blame them.\n\nHere's the thing I need to admit upfront: this was the *third time* this alert had fired in two weeks, and the previous two times I'd \"fixed\" it by just bumping the container memory limit and restarting the pods. I told myself I was buying time to investigate properly. I was actually just hoping it would go away.\n\nIt did not go away.\n\n## The Obvious Suspect (That I Spent a Day and a Half On)\n\nMonday morning, I decided to actually dig in. My first theory was confident and wrong: it had to be the Redis connection pool.\n\nWe'd recently upgraded our `ioredis` client and changed the connection pool configuration. The timing lined up — sort of. If you squinted. I spent the entire morning reading ioredis source code on GitHub, convinced I'd find that the new version was holding onto connection objects differently. I even found a closed issue from 2021 that described something vaguely similar, and I felt that little dopamine hit of *I've found it*.\n\nI wrote a test harness. I simulated thousands of connections. I monitored the heap. The connections were perfectly well-behaved. Not a single byte leaked.\n\nBy Tuesday afternoon — a full day and a half in — I was still staring at Redis internals. My teammate Priya finally asked in standup what I'd found, and when I described my Redis theory out loud, I heard how thin it sounded. She asked one question: \"Did you actually take a heap snapshot?\" \n\nI had not taken a heap snapshot. I'd spent a day and a half reading library source code for a problem I hadn't even profiled yet. I'd been doing the engineering e",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "Key moments are dramatized as scenes with action: \"I was halfway through writing a Jira ticket... when the PagerDuty notification lit up my phone\" and \"Priya finally asked in standup what I'd found, and when I described my Redis theory out loud, I heard how thin it sounded.\"",
+      "sonnet_evidence": "Key investigative moments like the standup exchange with Priya and the Wednesday grep session are narrated in retrospective summary rather than dramatized as present-tense scenes with action and dialogue.",
+      "opus_runs": [
+        true,
+        true,
+        true
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        false
+      ],
+      "disagreement_classification": "judgment_call",
+      "disagreement_rationale": "The draft contains scene-like elements (present-tense action, dialogue) but also retrospective narration, making it defensible to argue either that key moments are sufficiently dramatized or that they remain too summarized."
+    },
+    {
+      "scenario_id": "manager_update_01",
+      "draft_id": "manager_update_01_good",
+      "criterion_name": "Phone-Scannable Brevity",
+      "dimension_id": "no_redundancy",
+      "dimension_label": "Each piece of information appears in exactly one section — no overlap between sections",
+      "draft_excerpt": "Subject: Weekly Status — June 12\n\nHi Maria,\n\nOverall: Auth migration is on track for the June 30 milestone; we're working through one API dependency that may shift the analytics dashboard delivery by ~1 week. No action needed from you right now.\n\n**Progress**\n- Auth migration: core service cutover complete, running parallel validation through Friday\n- User onboarding flow: QA signed off, deploying to staging Monday\n- Performance benchmarks: latency targets met across all three endpoints\n\n**In Progress**\n- Resolving a rate-limit constraint on the third-party analytics API; evaluating two workarounds with the vendor — expect a clear path by Wednesday\n- If the workaround requires schema changes, analytics dashboard delivery shifts from July 10 to ~July 17; will confirm by end of week\n- This is a routine integration issue — team is handling it, no escalation needed\n\n**Next Week**\n- Complete auth parallel validation and begin production rollout\n- Finalize analytics API approach and update the dashboard timeline if needed\n- Kick off scoping for the Q3 notification service work\n\nLet me know if you want to dig into anything.\n\nJake",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "The analytics API issue appears in 'In Progress' with details and timeline impact, and 'Next Week' only references the follow-up action ('Finalize analytics API approach'), with no duplicated information.",
+      "sonnet_evidence": "The analytics dashboard timeline shift (~1 week, July 10 to ~July 17) is mentioned in both the opening summary line and again in the 'In Progress' section bullet.",
+      "opus_runs": [
+        true,
+        true,
+        false
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        false
+      ],
+      "disagreement_classification": "judgment_call",
+      "disagreement_rationale": "Whether a brief summary mention in the opening and a detailed elaboration in a section counts as 'overlap' or acceptable layering is a defensible interpretive choice about what 'exactly one section' means for executive summaries."
+    },
+    {
+      "scenario_id": "manager_update_01",
+      "draft_id": "manager_update_01_good",
+      "criterion_name": "Phone-Scannable Brevity",
+      "dimension_id": "minimal_sections",
+      "dimension_label": "Sections are consolidated to the fewest needed; no section exists that could be folded into another",
+      "draft_excerpt": "Subject: Weekly Status — June 12\n\nHi Maria,\n\nOverall: Auth migration is on track for the June 30 milestone; we're working through one API dependency that may shift the analytics dashboard delivery by ~1 week. No action needed from you right now.\n\n**Progress**\n- Auth migration: core service cutover complete, running parallel validation through Friday\n- User onboarding flow: QA signed off, deploying to staging Monday\n- Performance benchmarks: latency targets met across all three endpoints\n\n**In Progress**\n- Resolving a rate-limit constraint on the third-party analytics API; evaluating two workarounds with the vendor — expect a clear path by Wednesday\n- If the workaround requires schema changes, analytics dashboard delivery shifts from July 10 to ~July 17; will confirm by end of week\n- This is a routine integration issue — team is handling it, no escalation needed\n\n**Next Week**\n- Complete auth parallel validation and begin production rollout\n- Finalize analytics API approach and update the dashboard timeline if needed\n- Kick off scoping for the Q3 notification service work\n\nLet me know if you want to dig into anything.\n\nJake",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "Only three sections are used (Progress, In Progress, Next Week), which are distinct in purpose and none could be reasonably folded into another.",
+      "sonnet_evidence": "The 'Progress' and 'In Progress' sections both cover current work and could reasonably be consolidated into a single section, as the distinction between completed steps and ongoing steps is thin.",
+      "opus_runs": [
+        true,
+        true,
+        false
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        false
+      ],
+      "disagreement_classification": "judgment_call",
+      "disagreement_rationale": "Both interpretations are defensible: 'Progress' (completed items) and 'In Progress' (ongoing/blocked items) serve meaningfully distinct purposes, but they also both describe current-week work and could reasonably be merged into one section."
+    },
+    {
+      "scenario_id": "manager_update_01",
+      "draft_id": "manager_update_01_targeted_fail",
+      "criterion_name": "Phone-Scannable Brevity",
+      "dimension_id": "no_redundancy",
+      "dimension_label": "Each piece of information appears in exactly one section — no overlap between sections",
+      "draft_excerpt": "Subject: Weekly Status — May 19\n\nHi Dana,\n\n**Summary:** Platform migration is on track for the June 6 milestone, and the auth service dependency we flagged last week is being handled — no action needed from you.\n\n**Progress**\n- Migration pipeline: 4 of 5 modules complete; final module (billing reconciliation) started Monday\n- Load testing on modules 1–3 passed with <2% error rate, clearing our go/no-go threshold\n- Design review for the Q3 dashboard signed off by product Thursday\n\n**Blockers**\n- Auth service team pushed their API freeze back, which is creating some complications for our integration timeline. We're not entirely sure yet how long the delay will be, but the team is looking into workarounds and we're hoping to have a better picture soon. It's possible this could shift things, though it might not — we'll keep monitoring the situation and circle back when we know more.\n\n**Next Steps**\n- Complete billing reconciliation module by Friday\n- Run full end-to-end regression suite early next week\n- Sync with auth service team Wednesday to confirm revised API freeze date\n\nLet me know if you want to dig into anything.\n\nBest,\nJordan\n\n<!-- fail: timeline_impact_quantified, resolution_timeline -->",
+      "opus_majority_met": false,
+      "sonnet_majority_met": true,
+      "opus_evidence": "The auth service dependency is mentioned in the Summary, discussed at length in Blockers, and referenced again in Next Steps ('Sync with auth service team Wednesday'), with overlapping information about the situation.",
+      "sonnet_evidence": "No information appears to be repeated across sections; the auth service issue is mentioned in the Summary and detailed only in Blockers, with the Wednesday sync appearing only in Next Steps.",
+      "opus_runs": [
+        false,
+        false,
+        false
+      ],
+      "sonnet_runs": [
+        true,
+        true,
+        true
+      ],
+      "disagreement_classification": "judgment_call",
+      "disagreement_rationale": "Whether a brief summary mention plus detailed blocker discussion plus a related next-step action constitutes 'overlap' versus appropriate cross-section referencing of the same topic is a defensible interpretive call either way."
+    },
+    {
+      "scenario_id": "manager_update_01",
+      "draft_id": "manager_update_01_targeted_fail",
+      "criterion_name": "Calibrated Risk Framing",
+      "dimension_id": "neutral_language",
+      "dimension_label": "Blockers and challenges use neutral language (e.g., 'resolving,' 'handling') rather than alarm words ('setback,' 'failure,' 'crisis')",
+      "draft_excerpt": "Subject: Weekly Status — May 19\n\nHi Dana,\n\n**Summary:** Platform migration is on track for the June 6 milestone, and the auth service dependency we flagged last week is being handled — no action needed from you.\n\n**Progress**\n- Migration pipeline: 4 of 5 modules complete; final module (billing reconciliation) started Monday\n- Load testing on modules 1–3 passed with <2% error rate, clearing our go/no-go threshold\n- Design review for the Q3 dashboard signed off by product Thursday\n\n**Blockers**\n- Auth service team pushed their API freeze back, which is creating some complications for our integration timeline. We're not entirely sure yet how long the delay will be, but the team is looking into workarounds and we're hoping to have a better picture soon. It's possible this could shift things, though it might not — we'll keep monitoring the situation and circle back when we know more.\n\n**Next Steps**\n- Complete billing reconciliation module by Friday\n- Run full end-to-end regression suite early next week\n- Sync with auth service team Wednesday to confirm revised API freeze date\n\nLet me know if you want to dig into anything.\n\nBest,\nJordan\n\n<!-- fail: timeline_impact_quantified, resolution_timeline -->",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "The summary uses 'being handled' and the blockers section uses 'creating some complications' and 'looking into workarounds' — neutral language without alarm words.",
+      "sonnet_evidence": "'creating some complications' and 'we're not entirely sure' and 'it's possible this could shift things, though it might not' use vague, hedging language rather than neutral, matter-of-fact framing.",
+      "opus_runs": [
+        true,
+        true,
+        true
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        true
+      ],
+      "disagreement_classification": "dimension_ambiguity",
+      "disagreement_rationale": "The dimension only specifies avoiding 'alarm words' but doesn't address whether vague hedging language counts as a violation, leaving graders to interpret different aspects of 'neutral language.'"
+    },
+    {
+      "scenario_id": "manager_update_01",
+      "draft_id": "manager_update_01_mediocre",
+      "criterion_name": "Bottom-Line-Up-Front Summary",
+      "dimension_id": "plain_label",
+      "dimension_label": "Summary line is unlabeled or uses a straightforward label — no casual shorthand like 'TL;DR'",
+      "draft_excerpt": "Subject: Weekly Update – June 16\n\nHi Maria,\n\nHope you had a good weekend! I wanted to give you a rundown of where things stand this week across the team's major workstreams. There's been a lot of activity and I think it's worth walking through the details so you have full context on everything.\n\n**Project Alpha**\n\nWe made solid progress on the authentication module this week. The team completed the API integration work that was originally scoped for last sprint, and QA has started their first pass. We're feeling good about the trajectory here, though there are a few things still in flight that could affect timing depending on how they shake out.\n\n**Project Beta**\n\n- Design review completed Thursday\n- Frontend scaffolding is about 60% done\n- On track for the milestone\n\n**Blockers & Risks**\n\nWe hit a pretty significant setback with the database migration tooling — turns out the vendor's latest release has a breaking change that affects our schema validation. This is a real problem and the team is scrambling to figure out a workaround. Not sure yet how long this will take to sort out, but it could potentially push things back. Will keep you posted as we learn more.\n\nAlso, there's a staffing concern — Jake is out next week for a family thing, which creates a gap on the infrastructure side. We might need to pull someone from another team but I haven't figured that out yet.\n\n**Next Steps**\n\n- Finish QA pass on Alpha auth module\n- Continue Beta frontend work\n- Resolve the database migration issue\n- Figure out coverage for Jake's absence\n- Start planning for the Q3 roadmap review\n- Schedule sync with Platform team re: shared dependencies\n- Update the project tracker with latest estimates\n\nLet me know if you have any questions or concerns about any of the above.\n\nBest regards,\nChris\n\n<!-- Targeted failures:\n- Bottom-line-up-front summary: Missing entirely. Opens with pleasantries and context-setting, no summary line, no escalation signal.\n- Phone-scannable brevity: Project Alpha section is a full narrative paragraph, not bullets. Next Steps has 7 bullets (bloated). Mixed format across sections.\n- Calibrated risk framing: Database blocker uses alarm language (\"significant setback,\" \"real problem,\" \"scrambling\"), no quantified timeline impact, no resolution date, no escalation signal — likely to trigger unnecessary director intervention.\n- Redundancy: \"Resolve the database migration issue\" and \"Figure out coverage for Jake\" appear in both Blockers and Next Steps.\n- R",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "No summary line exists at all, so this dimension cannot be considered met.",
+      "sonnet_evidence": "There is no summary line at all, so no label (plain or otherwise) is present.",
+      "opus_runs": [
+        false,
+        true,
+        true
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        false
+      ],
+      "disagreement_classification": "clear_error",
+      "disagreement_rationale": "Opus marked the dimension as MET despite acknowledging no summary line exists, which contradicts the criterion requiring a summary line with a plain label; Sonnet correctly marked it NOT_MET."
+    },
+    {
+      "scenario_id": "cover_letter_01",
+      "draft_id": "cover_letter_01_mediocre",
+      "criterion_name": "Contextualized proof points",
+      "dimension_id": "narrative_not_list",
+      "dimension_label": "Proof points are woven into a narrative, not presented as a bullet-point list of achievements",
+      "draft_excerpt": "Dear Hiring Manager,\n\nI am writing to express my interest in the Senior Product Manager position at your company. With over eight years of experience in product management, I am a passionate, results-driven leader who thrives in fast-paced environments and would love the opportunity to bring my skills to your team.\n\nThroughout my career, I have consistently delivered strong results across multiple product lines. At my current company, I led a cross-functional team to launch a new product that significantly improved key metrics and drove meaningful business impact. I'm an innovative thinker who knows how to balance user needs with business objectives, and I've been told I have a knack for turning ambiguity into clarity.\n\nPreviously, I managed a B2B SaaS product where I worked closely with engineering and design to ship features on a regular cadence. One project I'm particularly proud of involved redesigning our onboarding flow, which reduced churn by 18%. The team worked hard on that one, and it taught me a lot about the importance of listening to customers and iterating quickly.\n\nI'm also experienced in roadmap planning, stakeholder management, and data-informed decision-making. I believe that great products come from deeply understanding the people who use them, and I bring that philosophy to everything I do. Whether it's running discovery interviews or digging into analytics dashboards, I'm always looking for the insight that unlocks the next opportunity.\n\nWhat excites me most about this role is the chance to work on products that matter at a company that's clearly on an upward trajectory. I've been following your growth and I'm impressed by what the team has built so far. I think my background in scaling products from early traction to mature offerings would be a strong fit.\n\nI would welcome the opportunity to discuss how my experience aligns with your needs. I'm available for a conversation at your convenience and look forward to hearing from you.\n\nBest regards,\n[Name]\n\n<!-- Targeted weaknesses: opens with generic statement of intent (\"I am writing to express my interest\"), relies heavily on buzzwords and motivational filler (\"passionate,\" \"results-driven,\" \"innovative thinker,\" \"thrives in fast-paced environments\"), most claims are unsupported assertions without specific evidence or context, the onboarding proof point mentions a metric but lacks constraints/method/team detail, closing is entirely generic with no specific company reference or curiosity",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "The proof points are presented within flowing paragraphs rather than as a bullet-point list of achievements.",
+      "sonnet_evidence": "The fourth paragraph presents skills as a list: 'roadmap planning, stakeholder management, and data-informed decision-making,' disconnected from any narrative.",
+      "opus_runs": [
+        true,
+        true,
+        true
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        false
+      ],
+      "disagreement_classification": "judgment_call",
+      "disagreement_rationale": "Both interpretations are defensible: the draft uses paragraphs rather than bullet points (supporting Opus), but the fourth paragraph does enumerate skills in a list-like fashion disconnected from narrative context (supporting Sonnet), making the line between 'narrative' and 'implicit list' genuinely contestable."
+    },
+    {
+      "scenario_id": "technical_doc_01",
+      "draft_id": "technical_doc_01_targeted_fail",
+      "criterion_name": "Scan-optimized formatting",
+      "dimension_id": "tables_for_comparisons",
+      "dimension_label": "Structured comparisons (e.g., mitigation lists, config options, feature matrices) use tables rather than inline prose",
+      "draft_excerpt": "# Rate Limiting API — Technical Design Doc\n\n**Author:** Platform Infrastructure Team\n**Status:** Draft v0.9 — Open for Review\n**Last Updated:** 2024-12-11\n**Reviewers:** @api-gateway, @payments-eng, @search-platform, @identity\n\n---\n\n## TL;DR\n\nWe are shipping a centralized **Rate Limiting API** (codename: **Throttle**) that all product engineering teams will integrate with to enforce per-client, per-endpoint, and per-tenant rate limits.\n\n**Critical decisions that affect your integration:**\n\n1. **Fail-open by default.** If the Throttle service is unreachable, your request **will be allowed through**. This is a deliberate availability-over-correctness tradeoff. If your service requires fail-closed semantics (e.g., payments, auth), you must opt in — see [Fail-Closed Mode](#fail-closed-mode).\n2. **Synchronous sidecar model.** Throttle runs as a gRPC sidecar, not an async middleware. Every request incurs a **sub-2ms p99 local call**. You must call Throttle *before* executing business logic — there is no retroactive deduction.\n3. **Token bucket algorithm** with per-key configurable burst. Sliding window is a non-goal for v1 (see [Non-Goals](#non-goals)).\n4. **Callers must propagate `X-RateLimit-*` headers** to their downstream clients. Throttle returns the values; your service is responsible for setting them on HTTP responses.\n5. **No global rate limiting in v1.** Limits are enforced per-pod with periodic gossip synchronization (consistency window: **~500ms**). Teams needing exact global counts should see [Tradeoffs](#tradeoffs--escape-hatches).\n\n---\n\n## Non-Goals\n\n| Non-Goal | Rationale |\n|---|---|\n| Sliding window algorithm | Adds complexity; token bucket covers >90% of use cases. Will revisit in v2 if demand exists. |\n| Global exact counting | Requires centralized state with unacceptable latency/availability cost for most callers. |\n| DDoS mitigation | Throttle is an application-layer rate limiter, not a network-layer defense. Use Cloudflare/WAF for volumetric attacks. |\n| Rate limiting at the edge/CDN layer | Out of scope; this is a service-mesh-level primitive. |\n| Multi-region coordination | v1 is region-local. Cross-region limit sharing is on the v2 roadmap. |\n\n---\n\n## Architecture Overview\n\n```\n┌──────────────┐       gRPC (unix socket)       ┌──────────────────┐\n│  Your Service │ ──────────────────────────────▶ │  Throttle Sidecar │\n│  (caller)     │ ◀────────────────────────────── │  (per-pod)        │\n└──────────────┘    AllowRequest / Decision       └─",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "The doc uses tables for Non-Goals, Config Fields, Error Code Reference, Observability signals, Rollout Plan, and Client Library Versions — all structured comparisons that could have been inline prose.",
+      "sonnet_evidence": "The draft comment '<!-- fail: tables_for_comparisons -->' explicitly flags this as failing, and while some tables exist, the rollout plan and config reference use tables, but the error code reference and observability sections do use tables — however the explicit fail comment indicates the author identified a gap here.",
+      "opus_runs": [
+        true,
+        true,
+        true
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        true
+      ],
+      "disagreement_classification": "clear_error",
+      "disagreement_rationale": "Sonnet incorrectly relies on a draft comment as authoritative evidence of failure while ignoring the actual content, which clearly contains multiple tables for structured comparisons (Non-Goals, Config Fields, Error Codes, etc.), making Opus's MET assessment clearly correct."
+    },
+    {
+      "scenario_id": "technical_doc_01",
+      "draft_id": "technical_doc_01_mediocre",
+      "criterion_name": "Code examples as primary entry points",
+      "dimension_id": "caller_side_examples",
+      "dimension_label": "Major API endpoints or integration points include a caller-side code example (not just the server-side definition)",
+      "draft_excerpt": "# Rate Limiting API — Design Doc\n\n**Author:** Platform Infrastructure Team\n**Status:** Draft\n**Last Updated:** 2024-01-15\n\n---\n\n## Overview\n\nWe are building a new centralized Rate Limiting API that other engineering teams can integrate with to enforce rate limits on their services. This will replace the various ad-hoc rate limiting implementations scattered across our codebase. The API will be gRPC-based with an HTTP gateway and will use a sliding window algorithm backed by Redis.\n\nThis doc covers the architecture, API surface, and integration guidance.\n\n## Goals\n\n- Provide a single, consistent rate limiting service for all backend teams\n- Support multiple rate limiting strategies\n- Low latency (p99 < 5ms for check calls)\n- High availability\n\n## Architecture\n\nThe Rate Limiting API is a gRPC service deployed as a Kubernetes StatefulSet. It uses Redis Cluster as its backing store for counter state. The service exposes two primary RPCs: `CheckRateLimit` and `ReportUsage`.\n\n### System Diagram\n\n```\n┌──────────┐       ┌──────────────────┐       ┌─────────────┐\n│  Caller  │──────>│  Rate Limit API  │──────>│   Redis     │\n│ Service  │<──────│  (gRPC + HTTP)   │<──────│   Cluster   │\n└──────────┘       └──────────────────┘       └─────────────┘\n```\n\nThe service runs in the `platform` namespace and is accessible via the internal service mesh at `ratelimit.platform.svc.cluster.local:9090`.\n\n## API Surface\n\n### CheckRateLimit\n\nThis is the primary RPC that callers will use. It checks whether a given key has exceeded its configured rate limit.\n\n```protobuf\nservice RateLimitService {\n  rpc CheckRateLimit(CheckRateLimitRequest) returns (CheckRateLimitResponse);\n  rpc ReportUsage(ReportUsageRequest) returns (ReportUsageResponse);\n}\n\nmessage CheckRateLimitRequest {\n  string domain = 1;\n  string key = 2;\n  int32 hits = 3;\n}\n\nmessage CheckRateLimitResponse {\n  bool allowed = 1;\n  int32 remaining = 2;\n  int64 reset_at = 3;\n  int32 limit = 4;\n}\n```\n\n### Configuration\n\nRate limits are configured via YAML files in the `rate-limit-configs` repo. Each domain has its own config file.\n\n```yaml\ndomain: api-gateway\ndescriptors:\n  - key: user_id\n    rate_limit:\n      requests_per_unit: 100\n      unit: minute\n  - key: ip_address\n    rate_limit:\n      requests_per_unit: 1000\n      unit: hour\n```\n\nTeams should submit PRs to the config repo to add or modify their rate limit rules. Changes are picked up within 30 seconds via config polling.\n\n## Integration Guide\n\nTo integrate with the Rate ",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "The Integration Guide section includes a caller-side Go code example showing how to instantiate the client and call CheckRateLimit.",
+      "sonnet_evidence": "The Go example shows a basic caller-side call, but the `ReportUsage` RPC has no caller-side code example at all, and the protobuf shown is the server-side definition.",
+      "opus_runs": [
+        true,
+        true,
+        true
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        true
+      ],
+      "disagreement_classification": "clear_error",
+      "disagreement_rationale": "Opus claims a caller-side Go example exists in the Integration Guide, but the draft is truncated before any such example appears, making this assertion unsupported by the provided text."
+    },
+    {
+      "scenario_id": "technical_doc_01",
+      "draft_id": "technical_doc_01_mediocre",
+      "criterion_name": "Scan-optimized formatting",
+      "dimension_id": "tables_for_comparisons",
+      "dimension_label": "Structured comparisons (e.g., mitigation lists, config options, feature matrices) use tables rather than inline prose",
+      "draft_excerpt": "# Rate Limiting API — Design Doc\n\n**Author:** Platform Infrastructure Team\n**Status:** Draft\n**Last Updated:** 2024-01-15\n\n---\n\n## Overview\n\nWe are building a new centralized Rate Limiting API that other engineering teams can integrate with to enforce rate limits on their services. This will replace the various ad-hoc rate limiting implementations scattered across our codebase. The API will be gRPC-based with an HTTP gateway and will use a sliding window algorithm backed by Redis.\n\nThis doc covers the architecture, API surface, and integration guidance.\n\n## Goals\n\n- Provide a single, consistent rate limiting service for all backend teams\n- Support multiple rate limiting strategies\n- Low latency (p99 < 5ms for check calls)\n- High availability\n\n## Architecture\n\nThe Rate Limiting API is a gRPC service deployed as a Kubernetes StatefulSet. It uses Redis Cluster as its backing store for counter state. The service exposes two primary RPCs: `CheckRateLimit` and `ReportUsage`.\n\n### System Diagram\n\n```\n┌──────────┐       ┌──────────────────┐       ┌─────────────┐\n│  Caller  │──────>│  Rate Limit API  │──────>│   Redis     │\n│ Service  │<──────│  (gRPC + HTTP)   │<──────│   Cluster   │\n└──────────┘       └──────────────────┘       └─────────────┘\n```\n\nThe service runs in the `platform` namespace and is accessible via the internal service mesh at `ratelimit.platform.svc.cluster.local:9090`.\n\n## API Surface\n\n### CheckRateLimit\n\nThis is the primary RPC that callers will use. It checks whether a given key has exceeded its configured rate limit.\n\n```protobuf\nservice RateLimitService {\n  rpc CheckRateLimit(CheckRateLimitRequest) returns (CheckRateLimitResponse);\n  rpc ReportUsage(ReportUsageRequest) returns (ReportUsageResponse);\n}\n\nmessage CheckRateLimitRequest {\n  string domain = 1;\n  string key = 2;\n  int32 hits = 3;\n}\n\nmessage CheckRateLimitResponse {\n  bool allowed = 1;\n  int32 remaining = 2;\n  int64 reset_at = 3;\n  int32 limit = 4;\n}\n```\n\n### Configuration\n\nRate limits are configured via YAML files in the `rate-limit-configs` repo. Each domain has its own config file.\n\n```yaml\ndomain: api-gateway\ndescriptors:\n  - key: user_id\n    rate_limit:\n      requests_per_unit: 100\n      unit: minute\n  - key: ip_address\n    rate_limit:\n      requests_per_unit: 1000\n      unit: hour\n```\n\nTeams should submit PRs to the config repo to add or modify their rate limit rules. Changes are picked up within 30 seconds via config polling.\n\n## Integration Guide\n\nTo integrate with the Rate ",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "The Performance section uses a table to present latency and throughput metrics rather than inline prose.",
+      "sonnet_evidence": "The performance metrics use a table, but the algorithm comparison (sliding window vs. token bucket) and failure mode options are described in inline prose rather than a table.",
+      "opus_runs": [
+        true,
+        true,
+        true
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        true
+      ],
+      "disagreement_classification": "clear_error",
+      "disagreement_rationale": "The draft excerpt is truncated and doesn't show a Performance section with a table, algorithm comparisons, or failure mode options, so Opus is fabricating content not present in the excerpt while Sonnet's assessment is based on what's actually visible."
+    },
+    {
+      "scenario_id": "technical_doc_01",
+      "draft_id": "technical_doc_01_mediocre",
+      "criterion_name": "Scan-optimized formatting",
+      "dimension_id": "sections_self_contained",
+      "dimension_label": "Sections can be read independently without requiring sequential reading of the full document",
+      "draft_excerpt": "# Rate Limiting API — Design Doc\n\n**Author:** Platform Infrastructure Team\n**Status:** Draft\n**Last Updated:** 2024-01-15\n\n---\n\n## Overview\n\nWe are building a new centralized Rate Limiting API that other engineering teams can integrate with to enforce rate limits on their services. This will replace the various ad-hoc rate limiting implementations scattered across our codebase. The API will be gRPC-based with an HTTP gateway and will use a sliding window algorithm backed by Redis.\n\nThis doc covers the architecture, API surface, and integration guidance.\n\n## Goals\n\n- Provide a single, consistent rate limiting service for all backend teams\n- Support multiple rate limiting strategies\n- Low latency (p99 < 5ms for check calls)\n- High availability\n\n## Architecture\n\nThe Rate Limiting API is a gRPC service deployed as a Kubernetes StatefulSet. It uses Redis Cluster as its backing store for counter state. The service exposes two primary RPCs: `CheckRateLimit` and `ReportUsage`.\n\n### System Diagram\n\n```\n┌──────────┐       ┌──────────────────┐       ┌─────────────┐\n│  Caller  │──────>│  Rate Limit API  │──────>│   Redis     │\n│ Service  │<──────│  (gRPC + HTTP)   │<──────│   Cluster   │\n└──────────┘       └──────────────────┘       └─────────────┘\n```\n\nThe service runs in the `platform` namespace and is accessible via the internal service mesh at `ratelimit.platform.svc.cluster.local:9090`.\n\n## API Surface\n\n### CheckRateLimit\n\nThis is the primary RPC that callers will use. It checks whether a given key has exceeded its configured rate limit.\n\n```protobuf\nservice RateLimitService {\n  rpc CheckRateLimit(CheckRateLimitRequest) returns (CheckRateLimitResponse);\n  rpc ReportUsage(ReportUsageRequest) returns (ReportUsageResponse);\n}\n\nmessage CheckRateLimitRequest {\n  string domain = 1;\n  string key = 2;\n  int32 hits = 3;\n}\n\nmessage CheckRateLimitResponse {\n  bool allowed = 1;\n  int32 remaining = 2;\n  int64 reset_at = 3;\n  int32 limit = 4;\n}\n```\n\n### Configuration\n\nRate limits are configured via YAML files in the `rate-limit-configs` repo. Each domain has its own config file.\n\n```yaml\ndomain: api-gateway\ndescriptors:\n  - key: user_id\n    rate_limit:\n      requests_per_unit: 100\n      unit: minute\n  - key: ip_address\n    rate_limit:\n      requests_per_unit: 1000\n      unit: hour\n```\n\nTeams should submit PRs to the config repo to add or modify their rate limit rules. Changes are picked up within 30 seconds via config polling.\n\n## Integration Guide\n\nTo integrate with the Rate ",
+      "opus_majority_met": true,
+      "sonnet_majority_met": false,
+      "opus_evidence": "Sections like API Surface, Integration Guide, Performance, and Security can each be read independently without requiring sequential reading of the full document.",
+      "sonnet_evidence": "The Failure Modes section defers to 'the client library README for details' rather than being self-contained, requiring readers to go elsewhere for critical information.",
+      "opus_runs": [
+        true,
+        true,
+        false
+      ],
+      "sonnet_runs": [
+        false,
+        false,
+        false
+      ],
+      "disagreement_classification": "clear_error",
+      "disagreement_rationale": "Sonnet references a 'Failure Modes section' that doesn't appear in the provided draft excerpt, making its reasoning unverifiable and likely fabricated, while Opus's assessment of the visible sections is reasonable."
+    }
+  ],
+  "ambiguous_dimensions_flagged": [
+    "Calibrated Risk Framing — neutral_language"
+  ]
+}

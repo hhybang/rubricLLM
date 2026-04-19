@@ -1,0 +1,130 @@
+{
+  "scenario_id": "cold_email_01",
+  "draft_id": "cold_email_01_misaligned",
+  "model": "opus",
+  "run": 2,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Transparent intent\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_false_softeners\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft contains multiple false softeners: \\\"even if this isn't a fit for Gradient's current thesis,\\\" \\\"No pressure at all, and no worries if you can't make it work,\\\" and \\\"I completely understand if the timing isn't right.\\\"\"\n        },\n        {\n          \"dimension_id\": \"explicit_ask\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The ask is buried and hedged — \\\"If you'd be open to it, I'd love to set up a brief call at your convenience\\\" — and it's unclear whether the sender wants funding, feedback, or introductions.\"\n        },\n        {\n          \"dimension_id\": \"honest_framing\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The sender frames the outreach as wanting to \\\"pick your brain\\\" and seeking \\\"feedback or introductions\\\" rather than honestly stating they want a funding conversation.\"\n        },\n        {\n          \"dimension_id\": \"no_trick_feel\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"\\\"I'd genuinely value any feedback or introductions you might be willing to share\\\" reads as a classic persuasion tactic disguised as humility — pretending the ask is smaller than it is.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Traction as narrative momentum\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"temporal_arc\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The metrics are presented as a static bullet list with no time-based sequence; \\\"up 3x YoY\\\" is the only temporal reference and it lacks a progression from origin to current state.\"\n        },\n        {\n          \"dimension_id\": \"no_bullet_stats\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Traction data is presented as a formatted bullet-point list (\\\"$2.1M ARR,\\\" \\\"4,200 active enterprise accounts,\\\" etc.) rather than in flowing prose.\"\n        },\n        {\n          \"dimension_id\": \"implied_trajectory\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The isolated stats and the vague claim \\\"we're just scratching the surface\\\" do not allow the reader to naturally extrapolate forward momentum.\"\n        },\n        {\n          \"dimension_id\": \"organic_demand_signal\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No detail suggests customer pull or surprise growth; all metrics are presented without context about how or why demand emerged.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Double-duty personalization\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_source\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The P.S. references \\\"your recent tweet about fintech\\\" without citing any specific content, and the body only mentions \\\"your work at Gradient Ventures\\\" and \\\"your portfolio\\\" generically.\"\n        },\n        {\n          \"dimension_id\": \"thesis_connection\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No connection is drawn between any stated thesis or insight of the recipient and the sender's approach or results.\"\n        },\n        {\n          \"dimension_id\": \"proof_embedded\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The personalization passages (\\\"huge admirer,\\\" \\\"portfolio is truly impressive,\\\" \\\"loved your recent tweet\\\") contain no metrics or evidence from the sender's business.\"\n        },\n        {\n          \"dimension_id\": \"natural_integration\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The personalization sits in a separate opening flattery paragraph and a disconnected P.S., neither of which flows into the email's argument.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Peer-to-peer framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_deference_markers\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft contains multiple deference markers: \\\"I know you're incredibly busy,\\\" \\\"I'd be happy to work around your schedule,\\\" \\\"whenever works best for you,\\\" and \\\"I'd be so grateful.\\\"\"\n        },\n        {\n          \"dimension_id\": \"mutual_value\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The email frames the conversation as a favor from the recipient (\\\"I really appreciate you even reading this far\\\") with no implication of value for the recipient.\"\n        },\n        {\n          \"dimension_id\": \"direct_scheduling\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The closing proposes no concrete time window; instead it says \\\"at your convenience\\\" and \\\"whenever works best for you,\\\" leaving scheduling entirely open-ended.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Signal-dense subject line\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"credibility_upfront\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The subject line \\\"Quick question\\\" contains no credibility signal — no traction, role, or domain information.\"\n        },\n        {\n          \"dimension_id\": \"ask_visible\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"\\\"Quick question\\\" does not make the nature of the ask or purpose discernible.\"\n        },\n        {\n          \"dimension_id\": \"no_cleverness_tricks\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"\\\"Quick question\\\" is a vague teaser designed to manufacture curiosity and game open rates rather than conveying substance.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2279,
+  "output_tokens": 1444,
+  "latency_ms": 20375,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Transparent intent",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_false_softeners",
+            "grade": "NOT_MET",
+            "evidence": "The draft contains multiple false softeners: \"even if this isn't a fit for Gradient's current thesis,\" \"No pressure at all, and no worries if you can't make it work,\" and \"I completely understand if the timing isn't right.\""
+          },
+          {
+            "dimension_id": "explicit_ask",
+            "grade": "NOT_MET",
+            "evidence": "The ask is buried and hedged — \"If you'd be open to it, I'd love to set up a brief call at your convenience\" — and it's unclear whether the sender wants funding, feedback, or introductions."
+          },
+          {
+            "dimension_id": "honest_framing",
+            "grade": "NOT_MET",
+            "evidence": "The sender frames the outreach as wanting to \"pick your brain\" and seeking \"feedback or introductions\" rather than honestly stating they want a funding conversation."
+          },
+          {
+            "dimension_id": "no_trick_feel",
+            "grade": "NOT_MET",
+            "evidence": "\"I'd genuinely value any feedback or introductions you might be willing to share\" reads as a classic persuasion tactic disguised as humility — pretending the ask is smaller than it is."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Traction as narrative momentum",
+        "dimension_grades": [
+          {
+            "dimension_id": "temporal_arc",
+            "grade": "NOT_MET",
+            "evidence": "The metrics are presented as a static bullet list with no time-based sequence; \"up 3x YoY\" is the only temporal reference and it lacks a progression from origin to current state."
+          },
+          {
+            "dimension_id": "no_bullet_stats",
+            "grade": "NOT_MET",
+            "evidence": "Traction data is presented as a formatted bullet-point list (\"$2.1M ARR,\" \"4,200 active enterprise accounts,\" etc.) rather than in flowing prose."
+          },
+          {
+            "dimension_id": "implied_trajectory",
+            "grade": "NOT_MET",
+            "evidence": "The isolated stats and the vague claim \"we're just scratching the surface\" do not allow the reader to naturally extrapolate forward momentum."
+          },
+          {
+            "dimension_id": "organic_demand_signal",
+            "grade": "NOT_MET",
+            "evidence": "No detail suggests customer pull or surprise growth; all metrics are presented without context about how or why demand emerged."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Double-duty personalization",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_source",
+            "grade": "NOT_MET",
+            "evidence": "The P.S. references \"your recent tweet about fintech\" without citing any specific content, and the body only mentions \"your work at Gradient Ventures\" and \"your portfolio\" generically."
+          },
+          {
+            "dimension_id": "thesis_connection",
+            "grade": "NOT_MET",
+            "evidence": "No connection is drawn between any stated thesis or insight of the recipient and the sender's approach or results."
+          },
+          {
+            "dimension_id": "proof_embedded",
+            "grade": "NOT_MET",
+            "evidence": "The personalization passages (\"huge admirer,\" \"portfolio is truly impressive,\" \"loved your recent tweet\") contain no metrics or evidence from the sender's business."
+          },
+          {
+            "dimension_id": "natural_integration",
+            "grade": "NOT_MET",
+            "evidence": "The personalization sits in a separate opening flattery paragraph and a disconnected P.S., neither of which flows into the email's argument."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Peer-to-peer framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_deference_markers",
+            "grade": "NOT_MET",
+            "evidence": "The draft contains multiple deference markers: \"I know you're incredibly busy,\" \"I'd be happy to work around your schedule,\" \"whenever works best for you,\" and \"I'd be so grateful.\""
+          },
+          {
+            "dimension_id": "mutual_value",
+            "grade": "NOT_MET",
+            "evidence": "The email frames the conversation as a favor from the recipient (\"I really appreciate you even reading this far\") with no implication of value for the recipient."
+          },
+          {
+            "dimension_id": "direct_scheduling",
+            "grade": "NOT_MET",
+            "evidence": "The closing proposes no concrete time window; instead it says \"at your convenience\" and \"whenever works best for you,\" leaving scheduling entirely open-ended."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Signal-dense subject line",
+        "dimension_grades": [
+          {
+            "dimension_id": "credibility_upfront",
+            "grade": "NOT_MET",
+            "evidence": "The subject line \"Quick question\" contains no credibility signal — no traction, role, or domain information."
+          },
+          {
+            "dimension_id": "ask_visible",
+            "grade": "NOT_MET",
+            "evidence": "\"Quick question\" does not make the nature of the ask or purpose discernible."
+          },
+          {
+            "dimension_id": "no_cleverness_tricks",
+            "grade": "NOT_MET",
+            "evidence": "\"Quick question\" is a vague teaser designed to manufacture curiosity and game open rates rather than conveying substance."
+          }
+        ]
+      }
+    ]
+  }
+}

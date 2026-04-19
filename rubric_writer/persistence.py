@@ -1,0 +1,387 @@
+"""Conversations, rubric history, Supabase persistence."""
+from rubric_writer.imports import *
+
+def save_message_log(messages, rubric, analysis=None, conversation_id=None):
+    """Save conversation to Supabase database.
+
+    If conversation_id is provided, updates the existing conversation.
+    Otherwise, inserts a new one.
+    """
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
+        raise ValueError("No project selected. Please select a project first.")
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        raise ValueError("Database connection not available.")
+
+    # Save to Supabase (update if existing, insert if new)
+    conv_id = save_conversation(supabase, project_id, messages, rubric, analysis or "",
+                                conversation_id=conversation_id)
+    # Invalidate conversations cache so the list refreshes
+    cache_key = f"conversations_{project_id}"
+    if cache_key in st.session_state:
+        del st.session_state[cache_key]
+    return conv_id
+def _auto_save_conversation():
+    """Silently auto-save the current conversation.
+
+    If selected_conversation exists, updates it. Otherwise inserts a new one
+    and sets selected_conversation so future saves update the same row.
+    Does nothing if there are no messages or no project selected.
+    """
+    if not st.session_state.get("messages"):
+        # print("[AUTO-SAVE] Skipped: no messages")
+        return
+    if not st.session_state.get("current_project_id"):
+        # print("[AUTO-SAVE] Skipped: no project_id")
+        pass
+        return
+    if not st.session_state.get("supabase"):
+        # print("[AUTO-SAVE] Skipped: no supabase")
+        pass
+        return
+    try:
+        _existing_id = st.session_state.get("selected_conversation")
+        # print(f"[AUTO-SAVE] Saving... existing_id={_existing_id}, msg_count={len(st.session_state.messages)}")
+        pass
+        conv_id = save_message_log(
+            st.session_state.messages,
+            st.session_state.get("rubric", []),
+            st.session_state.get("current_analysis", ""),
+            conversation_id=_existing_id,
+        )
+        if conv_id and conv_id != _existing_id:
+            # New insert (or re-insert after stale ID) — record the ID
+            st.session_state.selected_conversation = conv_id
+            # print(f"[AUTO-SAVE] New conversation saved: {conv_id}")
+        elif conv_id:
+            # print(f"[AUTO-SAVE] Updated conversation: {conv_id}")
+            pass
+        else:
+            # print("[AUTO-SAVE] save_message_log returned None")
+            pass
+    except Exception as e:
+        # print(f"[AUTO-SAVE] ERROR: {e}")  # Log but don't interrupt the user
+
+
+        pass
+def load_rubric_history(force_reload=False):
+    """Load rubric history from Supabase database with caching"""
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
+        return []
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        return []
+
+    # Use cached version if available and not forcing reload
+    cache_key = f"rubric_history_{project_id}"
+    if not force_reload and cache_key in st.session_state:
+        return st.session_state[cache_key]
+
+    # Load from database and cache
+    history = db_load_rubric_history(supabase, project_id)
+    st.session_state[cache_key] = history
+    return history
+
+
+def invalidate_rubric_cache():
+    """Clear the rubric history cache to force reload on next access"""
+    project_id = st.session_state.get('current_project_id')
+    if project_id:
+        cache_key = f"rubric_history_{project_id}"
+        if cache_key in st.session_state:
+            del st.session_state[cache_key]
+
+def save_rubric_history(history):
+    """Save rubric history to Supabase database (saves only the latest version).
+    Returns the DB-assigned version number, or None on failure.
+    """
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
+        st.error("No project selected. Please select a project first.")
+        return None
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        st.error("Database connection not available.")
+        return None
+
+    # Save the latest rubric version
+    if history:
+        latest = history[-1]
+        result = db_save_rubric_history(supabase, project_id, latest)
+        db_version = None
+        # Update the version in the local data to match what the DB assigned
+        if result and isinstance(result, dict):
+            db_version = result["version"]
+            latest["version"] = db_version
+            latest["id"] = result["id"]
+        # Invalidate cache after saving - force reload to get the database-generated ID
+        invalidate_rubric_cache()
+        # Reload from database to get the proper IDs
+        reloaded = load_rubric_history(force_reload=True)
+        # Update active_rubric_idx to point to the newly saved version
+        if reloaded:
+            st.session_state.active_rubric_idx = len(reloaded) - 1
+        return db_version
+    return None
+
+def next_version_number():
+    """Get the next version number for a new rubric"""
+    hist = load_rubric_history()
+    if not hist:
+        return 1
+    return max(r.get("version", 1) for r in hist) + 1
+
+def load_general_rubrics():
+    """Load general rubrics from the general_rubrics folder.
+    Returns a dict mapping display names to rubric data.
+    """
+    general_rubrics_dir = Path("general_rubrics")
+    rubrics = {}
+
+    if general_rubrics_dir.exists():
+        for rubric_file in general_rubrics_dir.glob("*.json"):
+            try:
+                with open(rubric_file, 'r', encoding='utf-8') as f:
+                    rubric_data = json.load(f)
+                    # Create a friendly display name from the filename
+                    display_name = rubric_file.stem.replace('_', ' ').title()
+                    rubrics[display_name] = rubric_data
+            except Exception as e:
+                st.warning(f"Could not load {rubric_file.name}: {e}")
+
+    return rubrics
+
+def _rubric_to_json_serializable(obj):
+    """Return a deep copy of obj with sets converted to lists so it can be JSON-serialized."""
+    if isinstance(obj, set):
+        return list(obj)
+    if isinstance(obj, dict):
+        return {k: _rubric_to_json_serializable(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_rubric_to_json_serializable(v) for v in obj]
+    return obj
+
+
+def get_active_rubric():
+    """Get the active rubric and its index
+    Returns: (full_rubric_dict, active_idx, rubric_history)
+    where full_rubric_dict contains both 'version' and 'rubric' keys
+    """
+    hist = load_rubric_history()
+    if not hist:
+        return None, None, []
+
+    idx = st.session_state.get("active_rubric_idx")
+    if idx is None:
+        idx = len(hist) - 1
+    if 0 <= idx < len(hist):
+        return hist[idx], idx, hist
+    return hist[-1] if hist else None, len(hist) - 1 if hist else 0, hist
+
+def _build_conversation_text(messages):
+    """Build numbered conversation text from messages for rubric/DP prompts.
+
+    Includes rich structured data from special message types so the model
+    sees the full picture: drafts, probes, rubric changes, alignment checks,
+    user feedback, accept/revert decisions, etc.
+    """
+    conversation_text = ""
+    msg_num = 1
+    for msg in messages:
+        role = msg.get('role', 'unknown')
+        content = msg.get('content', '')
+        # Synthetic changelog messages are context-only — include but don't number
+        if msg.get('_synthetic_changelog'):
+            conversation_text += f"\n\n[Rubric Version Change]\n{content}"
+            continue
+
+        # --- Build enriched content for special message types ---
+        enriched = content
+
+        # Probe log: include probe details (why, interpretations, drafts, user choice)
+        if msg.get('is_probe_log'):
+            pld = msg.get("probe_log_data", {})
+            parts = [content]
+            if pld.get("variant_a"):
+                parts.append(f"\n[Probe Draft — Version A]\n{pld['variant_a']}")
+            if pld.get("variant_b"):
+                parts.append(f"\n[Probe Draft — Version B]\n{pld['variant_b']}")
+            enriched = "\n".join(parts)
+
+        # Rubric revision (Log Changes): include what changed, edit details, user feedback
+        elif msg.get('rubric_revision'):
+            rr = msg['rubric_revision']
+            parts = [content]
+            if rr.get('change_summary'):
+                parts.append(f"\n[Rubric Change Summary]\n{rr['change_summary']}")
+            if rr.get('annotated_changes'):
+                parts.append("\n[Edit Details]")
+                for _ac_i, _ac in enumerate(rr['annotated_changes'], 1):
+                    parts.append(f"  [{_ac_i}] {_ac.get('original_text', '')} → {_ac.get('new_text', '')}  |  Reason: {_ac.get('reason', '')}")
+            if rr.get('user_feedback'):
+                parts.append("\n[User Feedback on Edits]")
+                for _fb_key, _fb_val in rr['user_feedback'].items():
+                    if _fb_val:
+                        parts.append(f"  Edit {_fb_key}: {_fb_val}")
+            if rr.get('_decision'):
+                parts.append(f"\n[User Decision] {rr['_decision']}")
+            enriched = "\n".join(parts)
+
+        # Alignment diagnostic: include rubric suggestion and suggestion reasons
+        elif msg.get('is_alignment_diagnostic'):
+            parts = [content]
+            rs = msg.get('rubric_suggestion', {})
+            if rs:
+                if rs.get('suggestion_reasons'):
+                    parts.append("\n[Rubric Suggestion Reasons]")
+                    _sr_data = rs['suggestion_reasons']
+                    if isinstance(_sr_data, dict):
+                        for _sr_name, _sr_reason in _sr_data.items():
+                            parts.append(f"  - {_sr_name}: {_sr_reason}")
+                    elif isinstance(_sr_data, list):
+                        for _sr in _sr_data:
+                            if isinstance(_sr, dict):
+                                parts.append(f"  - {_sr.get('criterion_name', '')}: {_sr.get('reason', '')}")
+                            else:
+                                parts.append(f"  - {_sr}")
+                if rs.get('updated_rubric'):
+                    parts.append(f"\n[Suggested Rubric]\n{json.dumps(rs['updated_rubric'], ensure_ascii=False, indent=2)}")
+                if rs.get('_user_applied'):
+                    parts.append("\n[User Applied Suggestion] yes")
+                elif rs.get('_user_dismissed'):
+                    parts.append("\n[User Dismissed Suggestion]")
+                if rs.get('suggested_draft'):
+                    parts.append(f"\n[Suggested Draft from Rubric Suggestion]\n{rs['suggested_draft']}")
+                if rs.get('original_rubric_draft'):
+                    parts.append(f"\n[Original Draft Before Suggestion]\n{rs['original_rubric_draft']}")
+            # Include user feedback on suggested edits if stored on the diagnostic
+            diag = msg.get('diagnostic_data', {})
+            if diag.get('user_edit_feedback'):
+                parts.append("\n[User Feedback on Suggested Edits]")
+                for _fk, _fv in diag['user_edit_feedback'].items():
+                    if _fv:
+                        parts.append(f"  Edit {_fk}: {_fv}")
+            enriched = "\n".join(parts)
+
+        # Criteria classification log: include what was stated/real/hallucinated
+        elif msg.get('is_criteria_classification_log'):
+            cd = msg.get('classification_data', {})
+            parts = [content]
+            if cd.get('classifications'):
+                parts.append("\n[Criteria Classifications]")
+                for _cn, _cat in cd['classifications'].items():
+                    _line = f"  - {_cn}: {_cat}"
+                    if _cat == "hallucinated" and cd.get('hallucination_reasons', {}).get(_cn):
+                        _line += f" — reason: {cd['hallucination_reasons'][_cn]}"
+                    parts.append(_line)
+            enriched = "\n".join(parts)
+
+        # DP confirmation log: include decision points and rubric mappings
+        elif msg.get('is_dp_confirmation_log'):
+            dpd = msg.get('dp_data', {})
+            parts = [content]
+            if dpd.get('decision_points'):
+                parts.append("\n[Confirmed Decision Points]")
+                for _dp in dpd['decision_points']:
+                    parts.append(f"  - Message #{_dp.get('message_number', '?')}: {_dp.get('text', '')}")
+                    parts.append(f"    Criterion: {_dp.get('criterion_name', 'unmapped')}")
+                    if _dp.get('user_override'):
+                        parts.append(f"    User override: {_dp['user_override']}")
+            enriched = "\n".join(parts)
+
+        # DP review: include inferred rubric criteria
+        elif msg.get('is_dp_review'):
+            dpd = msg.get('dp_data', {})
+            parts = [content]
+            if dpd.get('rubric'):
+                parts.append(f"\n[Inferred Rubric v{dpd.get('rubric_version', '?')}]")
+                for _rc in dpd['rubric']:
+                    parts.append(f"  - {_rc.get('name', 'Unnamed')}: {_rc.get('description', '')}")
+            enriched = "\n".join(parts)
+
+        # Inline rephrase: include original/replacement text and instruction
+        elif msg.get('is_inline_rephrase'):
+            ird = msg.get('inline_rephrase_data', {})
+            parts = [content]
+            if ird:
+                parts.append(f"\n[Inline Rephrase]")
+                parts.append(f"  Original text: {ird.get('original_text', '')}")
+                parts.append(f"  Replacement: {ird.get('replacement_text', '')}")
+                parts.append(f"  Instruction: {ird.get('instruction', '')}")
+            enriched = "\n".join(parts)
+
+        # Format based on role
+        if role == 'user':
+            conversation_text += f"\n\n[Message #{msg_num}] USER:\n{enriched}"
+            msg_num += 1
+        elif role == 'assistant':
+            conversation_text += f"\n\n[Message #{msg_num}] ASSISTANT:\n{enriched}"
+            msg_num += 1
+        elif role == 'system':
+            conversation_text += f"\n\n[Message #{msg_num}] SYSTEM:\n{enriched}"
+            msg_num += 1
+    return conversation_text
+def load_conversations(force_reload=False):
+    """Load all conversations from Supabase database with caching"""
+    project_id = st.session_state.get('current_project_id')
+    if not project_id:
+        return []
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        return []
+
+    cache_key = f"conversations_{project_id}"
+    if not force_reload and cache_key in st.session_state:
+        return st.session_state[cache_key]
+
+    conversations = db_load_conversations(supabase, project_id)
+    # Add filename field for compatibility with existing code
+    for conv in conversations:
+        conv["filename"] = conv["id"]
+    st.session_state[cache_key] = conversations
+    return conversations
+
+def load_conversation_data(conversation_id):
+    """Load conversation data from Supabase database"""
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        return None
+
+    return load_conversation_by_id(supabase, conversation_id)
+
+def get_available_projects():
+    """Get list of available projects for the current user from Supabase"""
+    user_id = st.session_state.get('auth_username')
+    if not user_id:
+        return []
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        return []
+
+    projects = get_user_projects(supabase, user_id)
+    return projects  # Returns list of dicts with 'id', 'name', etc.
+
+def create_new_project(project_name):
+    """Create a new project in Supabase database"""
+    import string
+    valid_chars = string.ascii_letters + string.digits + '-_ '
+    if not all(c in valid_chars for c in project_name):
+        return False, "Project name can only contain letters, numbers, hyphens, underscores, and spaces"
+
+    user_id = st.session_state.get('auth_username')
+    if not user_id:
+        return False, "Not authenticated"
+
+    supabase = st.session_state.get('supabase')
+    if not supabase:
+        return False, "Database connection not available"
+
+    success, message, project_id = db_create_project(supabase, user_id, project_name)
+    return success, message, project_id

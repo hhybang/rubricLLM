@@ -1,0 +1,135 @@
+{
+  "scenario_id": "blog_post_01",
+  "draft_id": "blog_post_01_mediocre",
+  "model": "sonnet",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Unflinching honesty about wrong turns\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"wrong_leads_shown\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The dependency upgrade theory is mentioned briefly ('I spent some time looking through changelogs but didn't find anything suspicious') but never explored in detail — it's dismissed in one sentence with no real investigation shown.\"\n        },\n        {\n          \"dimension_id\": \"personal_accountability\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The mistake is attributed to a 'quick PR that didn't get thorough review' and deflected to 'code review matters,' rather than the author taking clear personal ownership.\"\n        },\n        {\n          \"dimension_id\": \"time_cost_visible\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No time spent on wrong paths is quantified or made explicit; the post says it 'took us a while' but never conveys how long any wrong turn actually cost the team.\"\n        },\n        {\n          \"dimension_id\": \"self_deprecating_not_flagellating\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The tone throughout is neutral and clinical ('After ruling out the dependency upgrade, I decided to take heap snapshots'), with no self-deprecating or wry voice present.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Investigation pacing with delayed reveals\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"confusion_before_clarity\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The author lists three theories and immediately moves to heap snapshots without showing any misreadings or confusion about what the evidence meant before understanding it.\"\n        },\n        {\n          \"dimension_id\": \"progressive_narrowing\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The investigation jumps from 'I took heap snapshots' directly to 'I noticed objects related to our caching layer' with no incremental clue-building in between.\"\n        },\n        {\n          \"dimension_id\": \"reveal_earned\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'The problem is pretty obvious when you see it' — the author explicitly frames the root cause as obvious rather than as a payoff after sustained tension.\"\n        },\n        {\n          \"dimension_id\": \"emotional_beats_present\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No emotional states are described at any point in the investigation; the narrative is entirely procedural with no frustration, surprise, or relief expressed.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete, non-preachy takeaways\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"actionable_practice\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Takeaways like 'Always monitor your memory usage' and 'Code review matters' are generic principles, not specific behavior changes or heuristics the author now follows.\"\n        },\n        {\n          \"dimension_id\": \"generic_advice_rejected\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The post leads with 'Always monitor your memory usage' — a universally obvious piece of advice — without acknowledging it as such or moving past it.\"\n        },\n        {\n          \"dimension_id\": \"grounded_in_story\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Takeaways like 'Keep your debugging tools ready' and 'Code review matters' are abstract and do not connect to specific moments described in the narrative.\"\n        },\n        {\n          \"dimension_id\": \"peer_tone\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'Learn to use this tool before you need it' and 'Always monitor your memory usage' are instructional and lecture the reader rather than treating them as an equal.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code snippets as narrative anchors\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"minimal_snippet_count\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The post contains exactly two focused snippets — the problematic code and the fix — which is appropriately minimal.\"\n        },\n        {\n          \"dimension_id\": \"annotated_key_lines\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The only inline comment in the snippets is `// 1 hour` and `// Clean every 5 minutes`, which are explanatory but do not direct the reader's attention to the critical lines causing the leak.\"\n        },\n        {\n          \"dimension_id\": \"before_after_contrast\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The post shows the problematic plain-object cache code and then the fixed Map-based code with TTL eviction, clearly illustrating the transformation.\"\n        },\n        {\n          \"dimension_id\": \"prose_frames_code\",\n          \"grade\": \"MET\",\n          \"evidence\": \"'Here's what the problematic code looked like' precedes the first snippet, and the surrounding prose explains the caching layer context before showing the code.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Immersive scene-setting with specific details\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"sensory_anchors\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No time of day, Slack messages, or concrete environmental details appear; the closest is 'The memory graph showed a clear upward trend,' which is a summary description, not a sensory anchor.\"\n        },\n        {\n          \"dimension_id\": \"named_tools\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The post names Chrome DevTools, Kubernetes, Express, and Redis specifically rather than using generic descriptions.\"\n        },\n        {\n          \"dimension_id\": \"scene_not_summary\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Key moments like discovering the heap snapshot results are summarized in retrospective narration ('I noticed that the number of retained objects was growing') rather than dramatized as scenes.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 3140,
+  "output_tokens": 1529,
+  "latency_ms": 27665,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Unflinching honesty about wrong turns",
+        "dimension_grades": [
+          {
+            "dimension_id": "wrong_leads_shown",
+            "grade": "NOT_MET",
+            "evidence": "The dependency upgrade theory is mentioned briefly ('I spent some time looking through changelogs but didn't find anything suspicious') but never explored in detail — it's dismissed in one sentence with no real investigation shown."
+          },
+          {
+            "dimension_id": "personal_accountability",
+            "grade": "NOT_MET",
+            "evidence": "The mistake is attributed to a 'quick PR that didn't get thorough review' and deflected to 'code review matters,' rather than the author taking clear personal ownership."
+          },
+          {
+            "dimension_id": "time_cost_visible",
+            "grade": "NOT_MET",
+            "evidence": "No time spent on wrong paths is quantified or made explicit; the post says it 'took us a while' but never conveys how long any wrong turn actually cost the team."
+          },
+          {
+            "dimension_id": "self_deprecating_not_flagellating",
+            "grade": "NOT_MET",
+            "evidence": "The tone throughout is neutral and clinical ('After ruling out the dependency upgrade, I decided to take heap snapshots'), with no self-deprecating or wry voice present."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Investigation pacing with delayed reveals",
+        "dimension_grades": [
+          {
+            "dimension_id": "confusion_before_clarity",
+            "grade": "NOT_MET",
+            "evidence": "The author lists three theories and immediately moves to heap snapshots without showing any misreadings or confusion about what the evidence meant before understanding it."
+          },
+          {
+            "dimension_id": "progressive_narrowing",
+            "grade": "NOT_MET",
+            "evidence": "The investigation jumps from 'I took heap snapshots' directly to 'I noticed objects related to our caching layer' with no incremental clue-building in between."
+          },
+          {
+            "dimension_id": "reveal_earned",
+            "grade": "NOT_MET",
+            "evidence": "'The problem is pretty obvious when you see it' — the author explicitly frames the root cause as obvious rather than as a payoff after sustained tension."
+          },
+          {
+            "dimension_id": "emotional_beats_present",
+            "grade": "NOT_MET",
+            "evidence": "No emotional states are described at any point in the investigation; the narrative is entirely procedural with no frustration, surprise, or relief expressed."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete, non-preachy takeaways",
+        "dimension_grades": [
+          {
+            "dimension_id": "actionable_practice",
+            "grade": "NOT_MET",
+            "evidence": "Takeaways like 'Always monitor your memory usage' and 'Code review matters' are generic principles, not specific behavior changes or heuristics the author now follows."
+          },
+          {
+            "dimension_id": "generic_advice_rejected",
+            "grade": "NOT_MET",
+            "evidence": "The post leads with 'Always monitor your memory usage' — a universally obvious piece of advice — without acknowledging it as such or moving past it."
+          },
+          {
+            "dimension_id": "grounded_in_story",
+            "grade": "NOT_MET",
+            "evidence": "Takeaways like 'Keep your debugging tools ready' and 'Code review matters' are abstract and do not connect to specific moments described in the narrative."
+          },
+          {
+            "dimension_id": "peer_tone",
+            "grade": "NOT_MET",
+            "evidence": "'Learn to use this tool before you need it' and 'Always monitor your memory usage' are instructional and lecture the reader rather than treating them as an equal."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code snippets as narrative anchors",
+        "dimension_grades": [
+          {
+            "dimension_id": "minimal_snippet_count",
+            "grade": "MET",
+            "evidence": "The post contains exactly two focused snippets — the problematic code and the fix — which is appropriately minimal."
+          },
+          {
+            "dimension_id": "annotated_key_lines",
+            "grade": "NOT_MET",
+            "evidence": "The only inline comment in the snippets is `// 1 hour` and `// Clean every 5 minutes`, which are explanatory but do not direct the reader's attention to the critical lines causing the leak."
+          },
+          {
+            "dimension_id": "before_after_contrast",
+            "grade": "MET",
+            "evidence": "The post shows the problematic plain-object cache code and then the fixed Map-based code with TTL eviction, clearly illustrating the transformation."
+          },
+          {
+            "dimension_id": "prose_frames_code",
+            "grade": "MET",
+            "evidence": "'Here's what the problematic code looked like' precedes the first snippet, and the surrounding prose explains the caching layer context before showing the code."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Immersive scene-setting with specific details",
+        "dimension_grades": [
+          {
+            "dimension_id": "sensory_anchors",
+            "grade": "NOT_MET",
+            "evidence": "No time of day, Slack messages, or concrete environmental details appear; the closest is 'The memory graph showed a clear upward trend,' which is a summary description, not a sensory anchor."
+          },
+          {
+            "dimension_id": "named_tools",
+            "grade": "MET",
+            "evidence": "The post names Chrome DevTools, Kubernetes, Express, and Redis specifically rather than using generic descriptions."
+          },
+          {
+            "dimension_id": "scene_not_summary",
+            "grade": "NOT_MET",
+            "evidence": "Key moments like discovering the heap snapshot results are summarized in retrospective narration ('I noticed that the number of retained objects was growing') rather than dramatized as scenes."
+          }
+        ]
+      }
+    ]
+  }
+}

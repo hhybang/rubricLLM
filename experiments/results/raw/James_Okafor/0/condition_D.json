@@ -1,0 +1,1659 @@
+{
+  "persona": "James Okafor",
+  "task_index": 0,
+  "task_description": "Help me email the front desk staff about a new patient check-in procedure using tablets instead of paper forms — the system might have connectivity issues in our older building.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+    "rubric": [
+      {
+        "name": "Patient Flow Impact First",
+        "category": "Structure",
+        "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+        "dimensions": [
+          {
+            "id": "patient_impact_leads",
+            "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+          },
+          {
+            "id": "quantified_time_impact",
+            "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+          },
+          {
+            "id": "operational_reason_follows",
+            "label": "The business or compliance reason for the change appears after the patient impact, not before"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Fallback Procedures Included",
+        "category": "Content",
+        "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+        "dimensions": [
+          {
+            "id": "fallback_stated",
+            "label": "Includes a specific 'if X fails, do Y instead' instruction"
+          },
+          {
+            "id": "fallback_is_actionable",
+            "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+          },
+          {
+            "id": "failure_scenario_named",
+            "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "No Patient Identifiers",
+        "category": "Audience",
+        "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+        "dimensions": [
+          {
+            "id": "no_patient_names",
+            "label": "Does not include any patient names, initials, or uniquely identifying information"
+          },
+          {
+            "id": "uses_neutral_references",
+            "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+          },
+          {
+            "id": "no_clinical_details",
+            "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Bounded Process Steps",
+        "category": "Structure",
+        "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+        "dimensions": [
+          {
+            "id": "numbered_steps",
+            "label": "Processes with more than two actions use numbered steps"
+          },
+          {
+            "id": "max_five_steps",
+            "label": "No process in the email exceeds 5 numbered steps"
+          },
+          {
+            "id": "complex_deferred",
+            "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Patient Flow Impact First",
+        "issue": "The grader is consistently docking a point (scoring 9 instead of 10) but the justification is vague and inconsistent across rounds. In Round 1 the grader says the time estimate is 'framed as orientation time rather than total appointment impact' — but that IS the relevant patient flow impact for a check-in change. In Round 2 the grader gives the same score of 9 with no clear deduction rationale stated, just restating that dimensions are 'clearly satisfied.' The grader appears to be applying a stricter standard than the criterion warrants, possibly expecting a broader appointment-level time impact statement when the criterion only requires specific time estimates for how the change affects appointment duration or wait times. Both drafts satisfy all three dimensions fully.",
+        "negative_examples": [
+          "The criterion does NOT require a total end-to-end appointment time impact — a check-in change only needs to quantify the check-in phase impact, which both drafts do",
+          "The criterion does NOT require the time estimate to be framed in terms of total appointment duration if the change only affects one phase of the visit",
+          "Scoring 9 when all three stated dimensions are explicitly satisfied is not internally consistent — if all dimensions are met, the score should reflect that"
+        ],
+        "clarification": "This criterion is fully satisfied when: (1) the first substantive content describes patient experience or flow impact, (2) a specific time estimate is given for the affected phase of the visit, and (3) the operational rationale is deferred to later in the email. Both drafts do all three. The grader should not penalize for framing the time impact at the phase level (check-in) rather than the total appointment level when the change only affects that phase. A score of 10 is appropriate when all three dimensions are demonstrably met.",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+    "rubric": [
+      {
+        "name": "Patient Flow Impact First",
+        "category": "Structure",
+        "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+        "dimensions": [
+          {
+            "id": "patient_impact_leads",
+            "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+          },
+          {
+            "id": "quantified_time_impact",
+            "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+          },
+          {
+            "id": "operational_reason_follows",
+            "label": "The business or compliance reason for the change appears after the patient impact, not before"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high",
+        "negative_examples": [
+          "The criterion does NOT require a total end-to-end appointment time impact — a check-in change only needs to quantify the check-in phase impact, which both drafts do",
+          "The criterion does NOT require the time estimate to be framed in terms of total appointment duration if the change only affects one phase of the visit",
+          "Scoring 9 when all three stated dimensions are explicitly satisfied is not internally consistent — if all dimensions are met, the score should reflect that"
+        ],
+        "clarification": "This criterion is fully satisfied when: (1) the first substantive content describes patient experience or flow impact, (2) a specific time estimate is given for the affected phase of the visit, and (3) the operational rationale is deferred to later in the email. Both drafts do all three. The grader should not penalize for framing the time impact at the phase level (check-in) rather than the total appointment level when the change only affects that phase. A score of 10 is appropriate when all three dimensions are demonstrably met."
+      },
+      {
+        "name": "Fallback Procedures Included",
+        "category": "Content",
+        "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+        "dimensions": [
+          {
+            "id": "fallback_stated",
+            "label": "Includes a specific 'if X fails, do Y instead' instruction"
+          },
+          {
+            "id": "fallback_is_actionable",
+            "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+          },
+          {
+            "id": "failure_scenario_named",
+            "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "No Patient Identifiers",
+        "category": "Audience",
+        "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+        "dimensions": [
+          {
+            "id": "no_patient_names",
+            "label": "Does not include any patient names, initials, or uniquely identifying information"
+          },
+          {
+            "id": "uses_neutral_references",
+            "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+          },
+          {
+            "id": "no_clinical_details",
+            "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Bounded Process Steps",
+        "category": "Structure",
+        "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+        "dimensions": [
+          {
+            "id": "numbered_steps",
+            "label": "Processes with more than two actions use numbered steps"
+          },
+          {
+            "id": "max_five_steps",
+            "label": "No process in the email exceeds 5 numbered steps"
+          },
+          {
+            "id": "complex_deferred",
+            "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "**Subject:** New Tablet Check-In Process — Effective Monday, Plus Offline Backup Procedure\n\n---\n\nHi Team,\n\nStarting Monday, patients will complete their check-in forms on tablets rather than paper. Here's what to expect at the front desk and how to handle it when the connection drops.\n\n**What Patients Will Experience**\n\nPatients arriving for their appointment will be handed a tablet at the front desk to complete their intake forms before being called back. For most patients, this adds roughly 2–3 minutes to the check-in process while they get oriented to the screen. Patients who need assistance navigating the tablet should be helped at the desk rather than in the waiting area — this keeps the flow moving and avoids a bottleneck near the entrance.\n\nRoom assignments and call-back timing are not changing. The tablet replaces the clipboard, not the workflow around it.\n\n**Standard Check-In Steps**\n\n1. Greet the patient and confirm their appointment time.\n2. Hand them a sanitized tablet with the check-in form already open.\n3. Direct them to a seat and let them know you're available if they need help.\n4. When they return the tablet, confirm submission was successful before they sit back down.\n5. Proceed with your normal call-back process.\n\n**When the Tablet System Is Down**\n\nOur building has known connectivity gaps, so please treat this as a routine situation rather than an emergency.\n\nIf the tablets show no connection or forms fail to load:\n\n1. Switch to the paper intake packets in the top drawer of each front desk station — these are stocked and ready.\n2. Collect completed paper forms as normal.\n3. Place completed forms in the designated folder labeled **\"Manual Entry — Pending Upload\"** at each station.\n4. Notify the office manager by end of shift so the forms can be entered into the system.\n\nDo not hold patients at the desk waiting for the tablet system to recover. If it isn't loading within 60 seconds, go to paper.\n\n**Why We're Making This Change**\n\nThe tablet system reduces transcription errors and speeds up records updates on the clinical side. It also reduces paper handling, which the compliance team has been working toward. That said, patient flow always comes first — the paper backup exists precisely so that a connectivity issue never slows down your line.\n\nIf you have questions before Monday, reply here or catch me before your shift. A brief walkthrough will also be available at the start of the Monday morning huddle.\n\nThanks for your flexibility on this.\n\n— [Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience — what patients do, the 2–3 minute time addition, and flow implications at the desk. The operational/compliance rationale ('reduces transcription errors,' 'compliance team') is explicitly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied; the only minor gap is that the time estimate (2–3 minutes) is framed as orientation time rather than total appointment impact, but it is specific and patient-facing."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section explicitly names the failure scenario ('tablets show no connection or forms fail to load,' referencing known building connectivity gaps), provides a concrete 4-step procedure using physical paper packets, and includes a specific decision rule ('if it isn't loading within 60 seconds, go to paper'). All three dimensions are fully satisfied — the fallback is actionable, names the failure scenario, and is not a vague 'contact IT' instruction."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are cleanly satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the offline fallback process use numbered steps, each capped at exactly 5. No process exceeds the 5-step limit. The Monday huddle walkthrough is mentioned for hands-on orientation, appropriately deferring live demonstration rather than over-documenting in the email. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience — what patients do, the 2–3 minute time addition, and flow implications at the desk. The operational/compliance rationale ('Why We're Making This Change') is explicitly deferred to the final section. All three dimensions are clearly satisfied: patient impact leads, time is quantified (2–3 minutes), and business reason follows."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section is explicit and robust. The failure scenario is named ('tablets show no connection or forms fail to load,' referencing known connectivity gaps). The fallback is a concrete 4-step procedure using paper intake packets, not a vague 'contact IT.' The 60-second threshold instruction adds further actionability. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the offline fallback use numbered steps, each capped at exactly 5. No process exceeds the 5-step limit. The Monday huddle walkthrough is offered for hands-on orientation rather than attempting to document complexity beyond what email can handle. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience — what they see, what they do, and the 2–3 minute time estimate. The operational/compliance rationale ('reduces transcription errors,' 'compliance team') is explicitly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section is explicit and concrete: if tablets show no connection or forms fail to load, staff switch to paper intake packets in a named drawer location, use a labeled folder, and notify the office manager by end of shift. The failure scenario (connectivity loss, forms failing to load) is named, and the 60-second rule gives actionable timing. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5. No process exceeds the 5-step limit. The Monday huddle walkthrough is mentioned for hands-on orientation, appropriately deferring live training rather than over-documenting in the email. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 9.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 0.96,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience — what patients do, the 2–3 minute time addition, and flow implications at the desk. The operational/compliance rationale ('reduces transcription errors,' 'compliance team') is explicitly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied; the only minor gap is that the time estimate (2–3 minutes) is framed as orientation time rather than total appointment impact, but it is specific and patient-facing."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section explicitly names the failure scenario ('tablets show no connection or forms fail to load,' referencing known building connectivity gaps), provides a concrete 4-step procedure using physical paper packets, and includes a specific decision rule ('if it isn't loading within 60 seconds, go to paper'). All three dimensions are fully satisfied — the fallback is actionable, names the failure scenario, and is not a vague 'contact IT' instruction."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are cleanly satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the offline fallback process use numbered steps, each capped at exactly 5. No process exceeds the 5-step limit. The Monday huddle walkthrough is mentioned for hands-on orientation, appropriately deferring live demonstration rather than over-documenting in the email. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1542,
+              "output_tokens": 493
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience — what patients do, the 2–3 minute time addition, and flow implications at the desk. The operational/compliance rationale ('Why We're Making This Change') is explicitly deferred to the final section. All three dimensions are clearly satisfied: patient impact leads, time is quantified (2–3 minutes), and business reason follows."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section is explicit and robust. The failure scenario is named ('tablets show no connection or forms fail to load,' referencing known connectivity gaps). The fallback is a concrete 4-step procedure using paper intake packets, not a vague 'contact IT.' The 60-second threshold instruction adds further actionability. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the offline fallback use numbered steps, each capped at exactly 5. No process exceeds the 5-step limit. The Monday huddle walkthrough is offered for hands-on orientation rather than attempting to document complexity beyond what email can handle. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1542,
+              "output_tokens": 436
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience — what they see, what they do, and the 2–3 minute time estimate. The operational/compliance rationale ('reduces transcription errors,' 'compliance team') is explicitly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section is explicit and concrete: if tablets show no connection or forms fail to load, staff switch to paper intake packets in a named drawer location, use a labeled folder, and notify the office manager by end of shift. The failure scenario (connectivity loss, forms failing to load) is named, and the 60-second rule gives actionable timing. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5. No process exceeds the 5-step limit. The Monday huddle walkthrough is mentioned for hands-on orientation, appropriately deferring live training rather than over-documenting in the email. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1542,
+              "output_tokens": 438
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First: 9.0/10\n  Justification: The first substantive paragraph ('What Patients Will Experience') leads with patient experience — what patients do, the 2–3 minute time addition, and flow implications at the desk. The operational/compliance rationale ('reduces transcription errors,' 'compliance team') is explicitly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied; the only minor gap is that the time estimate (2–3 minutes) is framed as orientation time rather than total appointment impact, but it is specific and patient-facing.\n- Fallback Procedures Included: 10.0/10\n  Justification: The fallback section explicitly names the failure scenario ('tablets show no connection or forms fail to load,' referencing known building connectivity gaps), provides a concrete 4-step procedure using physical paper packets, and includes a specific decision rule ('if it isn't loading within 60 seconds, go to paper'). All three dimensions are fully satisfied — the fallback is actionable, names the failure scenario, and is not a vague 'contact IT' instruction.\n- No Patient Identifiers: 10.0/10\n  Justification: No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are cleanly satisfied.\n- Bounded Process Steps: 10.0/10\n  Justification: Both the standard check-in process and the offline fallback process use numbered steps, each capped at exactly 5. No process exceeds the 5-step limit. The Monday huddle walkthrough is mentioned for hands-on orientation, appropriately deferring live demonstration rather than over-documenting in the email. All three dimensions are satisfied.\n\nYour weakest criteria are: Patient Flow Impact First, Bounded Process Steps. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "**Subject:** New Tablet Check-In Process — Effective Monday, Plus Offline Backup Procedure\n\n---\n\nHi Team,\n\nStarting Monday, patients will complete their check-in forms on tablets rather than paper. Here's what to expect at the front desk and how to handle it when the connection drops.\n\n**What Patients Will Experience**\n\nPatients arriving for their appointment will be handed a tablet at the front desk to complete their intake forms before being called back. Plan for approximately 2–3 additional minutes per appointment during the check-in phase while patients get oriented to the screen — this is on top of your current average check-in time, so factor it into pacing during busy morning slots. Patients who need help navigating the tablet should be assisted at the desk rather than in the waiting area to avoid a bottleneck near the entrance.\n\nRoom assignments and call-back timing are not changing. The tablet replaces the clipboard, not the workflow around it.\n\n**Standard Check-In Steps**\n\n1. Greet the patient and confirm their appointment time.\n2. Hand them a sanitized tablet with the check-in form already open.\n3. Direct them to a seat and let them know you're available if they need help.\n4. When they return the tablet, confirm submission was successful before they sit back down.\n5. Proceed with your normal call-back process.\n\n**When the Tablet System Is Down**\n\nOur building has known connectivity gaps, so please treat this as a routine situation rather than an emergency. If the tablets show no connection or forms fail to load within 60 seconds, switch immediately to paper — do not hold patients at the desk waiting for the system to recover.\n\n1. Switch to the paper intake packets in the top drawer of each front desk station — these are stocked and ready.\n2. Collect completed paper forms as normal and keep appointment pacing on schedule.\n3. Place completed forms in the folder labeled **\"Manual Entry — Pending Upload\"** at each station.\n4. Notify the office manager by end of shift so forms can be entered into the system.\n\n**Why We're Making This Change**\n\nThe tablet system reduces transcription errors and speeds up records updates on the clinical side, and supports ongoing efforts to reduce paper handling. That said, patient flow always comes first — the paper backup exists precisely so that a connectivity issue never slows down your line.\n\nA brief hands-on walkthrough will be available at the start of the Monday morning huddle. If you have questions before then, reply here or catch me before your shift.\n\nThanks for your flexibility on this.\n\n— [Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow, including a specific time estimate of '2–3 additional minutes per appointment during the check-in phase.' The operational/compliance rationale ('reduces transcription errors,' 'reduce paper handling') is correctly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('tablets show no connection or forms fail to load within 60 seconds'), states a clear trigger for switching, and provides a concrete 4-step actionable fallback using paper intake packets — not a vague 'contact IT.' All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both processes (standard check-in and offline fallback) use numbered steps and neither exceeds 5 steps — the standard process has exactly 5 and the fallback has 4. Complex orientation is handled by announcing a Monday huddle walkthrough rather than attempting to document everything in the email. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow, including a specific time estimate of '2–3 additional minutes per appointment during the check-in phase.' The operational/compliance rationale ('reduces transcription errors,' 'supports ongoing efforts to reduce paper handling') is correctly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('tablets show no connection or forms fail to load within 60 seconds'), states a clear trigger for switching, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is fully operational — staff know exactly where the paper forms are, what to do with them, and when to notify the office manager. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving') or by appointment time reference. No clinical details, diagnoses, or treatments are mentioned. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both processes — standard check-in and the offline fallback — use numbered steps and each contains exactly 5 steps or fewer (5 and 4 respectively). The email also appropriately defers hands-on training to the Monday morning huddle rather than attempting to document a more complex process in the email itself. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow, including a specific time estimate of '2–3 additional minutes per appointment during the check-in phase.' The operational/compliance rationale ('reduces transcription errors,' 'supports ongoing efforts to reduce paper handling') is correctly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section explicitly names the failure scenario ('tablets show no connection or forms fail to load within 60 seconds'), provides a concrete actionable procedure (switch to paper packets in the top drawer, use the labeled folder, notify office manager by end of shift), and does not defer to IT or management as the primary response. All three dimensions are fully and unambiguously met."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the offline fallback process use numbered steps, and neither exceeds 5 steps (exactly 5 each). The email also appropriately defers deeper training to the Monday morning huddle rather than attempting to document a complex process in full. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 9.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 0.96,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow, including a specific time estimate of '2–3 additional minutes per appointment during the check-in phase.' The operational/compliance rationale ('reduces transcription errors,' 'reduce paper handling') is correctly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('tablets show no connection or forms fail to load within 60 seconds'), states a clear trigger for switching, and provides a concrete 4-step actionable fallback using paper intake packets — not a vague 'contact IT.' All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both processes (standard check-in and offline fallback) use numbered steps and neither exceeds 5 steps — the standard process has exactly 5 and the fallback has 4. Complex orientation is handled by announcing a Monday huddle walkthrough rather than attempting to document everything in the email. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1551,
+              "output_tokens": 432
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow, including a specific time estimate of '2–3 additional minutes per appointment during the check-in phase.' The operational/compliance rationale ('reduces transcription errors,' 'supports ongoing efforts to reduce paper handling') is correctly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('tablets show no connection or forms fail to load within 60 seconds'), states a clear trigger for switching, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is fully operational — staff know exactly where the paper forms are, what to do with them, and when to notify the office manager. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving') or by appointment time reference. No clinical details, diagnoses, or treatments are mentioned. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both processes — standard check-in and the offline fallback — use numbered steps and each contains exactly 5 steps or fewer (5 and 4 respectively). The email also appropriately defers hands-on training to the Monday morning huddle rather than attempting to document a more complex process in the email itself. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1551,
+              "output_tokens": 469
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow, including a specific time estimate of '2–3 additional minutes per appointment during the check-in phase.' The operational/compliance rationale ('reduces transcription errors,' 'supports ongoing efforts to reduce paper handling') is correctly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section explicitly names the failure scenario ('tablets show no connection or forms fail to load within 60 seconds'), provides a concrete actionable procedure (switch to paper packets in the top drawer, use the labeled folder, notify office manager by end of shift), and does not defer to IT or management as the primary response. All three dimensions are fully and unambiguously met."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the offline fallback process use numbered steps, and neither exceeds 5 steps (exactly 5 each). The email also appropriately defers deeper training to the Monday morning huddle rather than attempting to document a complex process in full. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1551,
+              "output_tokens": 438
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First: 9.0/10\n  Justification: The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow, including a specific time estimate of '2–3 additional minutes per appointment during the check-in phase.' The operational/compliance rationale ('reduces transcription errors,' 'reduce paper handling') is correctly deferred to the final 'Why We're Making This Change' section. All three dimensions are clearly satisfied.\n- Fallback Procedures Included: 10.0/10\n  Justification: The 'When the Tablet System Is Down' section explicitly names the failure scenario ('tablets show no connection or forms fail to load within 60 seconds'), states a clear trigger for switching, and provides a concrete 4-step actionable fallback using paper intake packets — not a vague 'contact IT.' All three dimensions are fully satisfied.\n- No Patient Identifiers: 10.0/10\n  Justification: No patient names, initials, or identifying information appear anywhere in the email. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are clearly satisfied.\n- Bounded Process Steps: 10.0/10\n  Justification: Both processes (standard check-in and offline fallback) use numbered steps and neither exceeds 5 steps — the standard process has exactly 5 and the fallback has 4. Complex orientation is handled by announcing a Monday huddle walkthrough rather than attempting to document everything in the email. All three dimensions are satisfied.\n\nYour weakest criteria are: Patient Flow Impact First, Bounded Process Steps. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "**Subject:** New Tablet Check-In Process — Effective Monday, Plus Offline Backup Procedure\n\n---\n\nHi Team,\n\nStarting Monday, patients will complete their check-in forms on tablets rather than paper. Here's what to expect at the front desk and how to handle it when the connection drops.\n\n**What Patients Will Experience**\n\nPatients arriving for their appointment will be handed a tablet at the front desk to complete their intake forms before being called back. Based on our testing, the tablet form adds approximately 2–3 minutes to the check-in phase compared to your current paper process — budget for this during back-to-back morning appointments in particular, as it will affect pacing if the waiting area fills. Patients who need help navigating the tablet should be assisted at the desk rather than in the waiting area to prevent a bottleneck near the entrance.\n\nRoom assignments and call-back timing are not changing. The tablet replaces the clipboard, not the workflow around it.\n\n**Standard Check-In Steps**\n\n1. Greet the patient and confirm their appointment time.\n2. Hand them a sanitized tablet with the check-in form already open.\n3. Direct them to a seat and let them know you're available if they need help.\n4. When they return the tablet, confirm submission was successful before they sit back down.\n5. Proceed with your normal call-back process.\n\n**When the Tablet System Is Down**\n\nOur building has known connectivity gaps, so please treat this as a routine situation rather than an emergency. If a tablet shows no connection or a form fails to load within 60 seconds, move to paper immediately — do not hold a patient at the desk waiting for the system to recover.\n\n1. Switch to the paper intake packets in the top drawer of each front desk station — these are stocked and ready.\n2. Collect completed paper forms as normal and keep appointment pacing on schedule.\n3. Place completed forms in the folder labeled **\"Manual Entry — Pending Upload\"** at each station.\n4. Notify the office manager by end of shift so forms can be entered into the system.\n\n**Why We're Making This Change**\n\nThe tablet system reduces transcription errors and speeds up records updates on the clinical side, and supports ongoing efforts to reduce paper handling. That said, patient flow always comes first — the paper backup exists precisely so that a connectivity issue never slows your line.\n\nA brief hands-on walkthrough will be available at the start of the Monday morning huddle. If you have questions before then, reply here or catch me before your shift.\n\nThanks for your flexibility on this.\n\n— [Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is specific and operational — not 'contact IT' — and includes disposition of completed forms and end-of-shift notification. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('patients arriving,' 'the patient') or by appointment time reference. No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the offline fallback use numbered steps, each capped at exactly 5 steps. No process exceeds the 5-step limit. Complex onboarding is appropriately deferred to a Monday morning huddle walkthrough rather than attempted in the email. All three dimensions are fully met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure involving paper intake packets, a labeled folder, and end-of-shift notification. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum of 5. A training session (Monday morning huddle walkthrough) is also announced for hands-on practice, complementing rather than replacing the email documentation. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback does not defer to IT or management as the primary action — it gives staff a complete, self-sufficient procedure."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum. The email also announces a hands-on walkthrough at the Monday huddle for additional training rather than attempting to document a more complex process in email form. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 10.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is specific and operational — not 'contact IT' — and includes disposition of completed forms and end-of-shift notification. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('patients arriving,' 'the patient') or by appointment time reference. No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the offline fallback use numbered steps, each capped at exactly 5 steps. No process exceeds the 5-step limit. Complex onboarding is appropriately deferred to a Monday morning huddle walkthrough rather than attempted in the email. All three dimensions are fully met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 452
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure involving paper intake packets, a labeled folder, and end-of-shift notification. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum of 5. A training session (Monday morning huddle walkthrough) is also announced for hands-on practice, complementing rather than replacing the email documentation. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 441
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback does not defer to IT or management as the primary action — it gives staff a complete, self-sufficient procedure."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum. The email also announces a hands-on walkthrough at the Monday huddle for additional training rather than attempting to document a more complex process in email form. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 443
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First: 10.0/10\n  Justification: The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied.\n- Fallback Procedures Included: 10.0/10\n  Justification: The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is specific and operational — not 'contact IT' — and includes disposition of completed forms and end-of-shift notification. All three dimensions are fully met.\n- No Patient Identifiers: 10.0/10\n  Justification: The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('patients arriving,' 'the patient') or by appointment time reference. No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied.\n- Bounded Process Steps: 10.0/10\n  Justification: Both the standard check-in process and the offline fallback use numbered steps, each capped at exactly 5 steps. No process exceeds the 5-step limit. Complex onboarding is appropriately deferred to a Monday morning huddle walkthrough rather than attempted in the email. All three dimensions are fully met.\n\nYour weakest criteria are: Bounded Process Steps, Fallback Procedures Included. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "The criterion does NOT require a total end-to-end appointment time impact — a check-in change only needs to quantify the check-in phase impact, which both drafts do",
+              "The criterion does NOT require the time estimate to be framed in terms of total appointment duration if the change only affects one phase of the visit",
+              "Scoring 9 when all three stated dimensions are explicitly satisfied is not internally consistent — if all dimensions are met, the score should reflect that"
+            ],
+            "clarification": "This criterion is fully satisfied when: (1) the first substantive content describes patient experience or flow impact, (2) a specific time estimate is given for the affected phase of the visit, and (3) the operational rationale is deferred to later in the email. Both drafts do all three. The grader should not penalize for framing the time impact at the phase level (check-in) rather than the total appointment level when the change only affects that phase. A score of 10 is appropriate when all three dimensions are demonstrably met."
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "**Subject:** New Tablet Check-In Process — Effective Monday, Plus Offline Backup Procedure\n\n---\n\nHi Team,\n\nStarting Monday, patients will complete their check-in forms on tablets rather than paper. Here's what to expect at the front desk and how to handle it when the connection drops.\n\n**What Patients Will Experience**\n\nPatients arriving for their appointment will be handed a tablet at the front desk to complete their intake forms before being called back. Based on our testing, the tablet form adds approximately 2–3 minutes to the check-in phase compared to your current paper process — budget for this during back-to-back morning appointments in particular, as it will affect pacing if the waiting area fills. Patients who need help navigating the tablet should be assisted at the desk rather than in the waiting area to prevent a bottleneck near the entrance.\n\nRoom assignments and call-back timing are not changing. The tablet replaces the clipboard, not the workflow around it.\n\n**Standard Check-In Steps**\n\n1. Greet the patient and confirm their appointment time.\n2. Hand them a sanitized tablet with the check-in form already open.\n3. Direct them to a seat and let them know you're available if they need help.\n4. When they return the tablet, confirm submission was successful before they sit back down.\n5. Proceed with your normal call-back process.\n\n**When the Tablet System Is Down**\n\nOur building has known connectivity gaps, so please treat this as a routine situation rather than an emergency. If a tablet shows no connection or a form fails to load within 60 seconds, move to paper immediately — do not hold a patient at the desk waiting for the system to recover.\n\n1. Switch to the paper intake packets in the top drawer of each front desk station — these are stocked and ready.\n2. Collect completed paper forms as normal and keep appointment pacing on schedule.\n3. Place completed forms in the folder labeled **\"Manual Entry — Pending Upload\"** at each station.\n4. Notify the office manager by end of shift so forms can be entered into the system.\n\n**Why We're Making This Change**\n\nThe tablet system reduces transcription errors and speeds up records updates on the clinical side, and supports ongoing efforts to reduce paper handling. That said, patient flow always comes first — the paper backup exists precisely so that a connectivity issue never slows your line.\n\nA brief hands-on walkthrough will be available at the start of the Monday morning huddle. If you have questions before then, reply here or catch me before your shift.\n\nThanks for your flexibility on this.\n\n— [Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is specific and operational — not 'contact IT' — and includes where materials are stored and what to do with completed forms."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. The email fully treats the channel as non-secure."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 steps. No process exceeds the 5-step limit. The email also appropriately defers hands-on training to the Monday morning huddle rather than attempting to document a complex process in full."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback using pre-stocked paper packets. All three dimensions are fully met with no vagueness."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively. No process exceeds the 5-step limit. A training session (Monday huddle walkthrough) is also announced for hands-on practice, complementing rather than replacing the email documentation. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), provides a clear trigger condition, and gives a concrete 4-step actionable fallback (paper packets in top drawer, folder for manual entry, notify office manager). This is not a vague 'contact IT' instruction — it is a fully operational procedure staff can execute independently."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('patients arriving,' 'the patient') and by appointment time reference. No clinical details, diagnoses, or treatments are mentioned anywhere in the email."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum of 5. The email also appropriately defers hands-on complexity to a Monday morning huddle walkthrough rather than attempting to document everything in the email itself."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 10.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is specific and operational — not 'contact IT' — and includes where materials are stored and what to do with completed forms."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. The email fully treats the channel as non-secure."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 steps. No process exceeds the 5-step limit. The email also appropriately defers hands-on training to the Monday morning huddle rather than attempting to document a complex process in full."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 442
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback using pre-stocked paper packets. All three dimensions are fully met with no vagueness."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively. No process exceeds the 5-step limit. A training session (Monday huddle walkthrough) is also announced for hands-on practice, complementing rather than replacing the email documentation. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 435
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), provides a clear trigger condition, and gives a concrete 4-step actionable fallback (paper packets in top drawer, folder for manual entry, notify office manager). This is not a vague 'contact IT' instruction — it is a fully operational procedure staff can execute independently."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('patients arriving,' 'the patient') and by appointment time reference. No clinical details, diagnoses, or treatments are mentioned anywhere in the email."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum of 5. The email also appropriately defers hands-on complexity to a Monday morning huddle walkthrough rather than attempting to document everything in the email itself."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 450
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First: 10.0/10\n  Justification: The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied.\n- Fallback Procedures Included: 10.0/10\n  Justification: The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger condition, and provides a concrete 4-step actionable fallback using paper intake packets. The fallback is specific and operational — not 'contact IT' — and includes where materials are stored and what to do with completed forms.\n- No Patient Identifiers: 10.0/10\n  Justification: The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. The email fully treats the channel as non-secure.\n- Bounded Process Steps: 10.0/10\n  Justification: Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 steps. No process exceeds the 5-step limit. The email also appropriately defers hands-on training to the Monday morning huddle rather than attempting to document a complex process in full.\n\nYour weakest criteria are: Bounded Process Steps, Fallback Procedures Included. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "The criterion does NOT require a total end-to-end appointment time impact — a check-in change only needs to quantify the check-in phase impact, which both drafts do",
+              "The criterion does NOT require the time estimate to be framed in terms of total appointment duration if the change only affects one phase of the visit",
+              "Scoring 9 when all three stated dimensions are explicitly satisfied is not internally consistent — if all dimensions are met, the score should reflect that"
+            ],
+            "clarification": "This criterion is fully satisfied when: (1) the first substantive content describes patient experience or flow impact, (2) a specific time estimate is given for the affected phase of the visit, and (3) the operational rationale is deferred to later in the email. Both drafts do all three. The grader should not penalize for framing the time impact at the phase level (check-in) rather than the total appointment level when the change only affects that phase. A score of 10 is appropriate when all three dimensions are demonstrably met."
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "**Subject:** New Tablet Check-In Process — Effective Monday, Plus Offline Backup Procedure\n\n---\n\nHi Team,\n\nStarting Monday, patients will complete their check-in forms on tablets rather than paper. Here's what to expect at the front desk and how to handle it when the connection drops.\n\n**What Patients Will Experience**\n\nPatients arriving for their appointment will be handed a tablet at the front desk to complete their intake forms before being called back. Based on our testing, the tablet form adds approximately 2–3 minutes to the check-in phase compared to your current paper process — budget for this during back-to-back morning appointments in particular, as it will affect pacing if the waiting area fills. Patients who need help navigating the tablet should be assisted at the desk rather than in the waiting area to prevent a bottleneck near the entrance.\n\nRoom assignments and call-back timing are not changing. The tablet replaces the clipboard, not the workflow around it.\n\n**Standard Check-In Steps**\n\n1. Greet the patient and confirm their appointment time.\n2. Hand them a sanitized tablet with the check-in form already open.\n3. Direct them to a seat and let them know you're available if they need help.\n4. When they return the tablet, confirm submission was successful before they sit back down.\n5. Proceed with your normal call-back process.\n\n**When the Tablet System Is Down**\n\nOur building has known connectivity gaps, so please treat this as a routine situation rather than an emergency. If a tablet shows no connection or a form fails to load within 60 seconds, move to paper immediately — do not hold a patient at the desk waiting for the system to recover.\n\n1. Switch to the paper intake packets in the top drawer of each front desk station — these are stocked and ready.\n2. Collect completed paper forms as normal and keep appointment pacing on schedule.\n3. Place completed forms in the folder labeled **\"Manual Entry — Pending Upload\"** at each station.\n4. Notify the office manager by end of shift so forms can be entered into the system.\n\n**Why We're Making This Change**\n\nThe tablet system reduces transcription errors and speeds up records updates on the clinical side, and supports ongoing efforts to reduce paper handling. That said, patient flow always comes first — the paper backup exists precisely so that a connectivity issue never slows your line.\n\nA brief hands-on walkthrough will be available at the start of the Monday morning huddle. If you have questions before then, reply here or catch me before your shift.\n\nThanks for your flexibility on this.\n\n— [Your Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure involving pre-stocked paper packets, a labeled folder, and end-of-shift notification. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at 5 (exactly 5 and 4 steps respectively). No process exceeds the 5-step limit. A training session (Monday huddle walkthrough) is also announced for hands-on practice, complementing rather than replacing the email documentation. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure including where paper forms are stored, how to handle them, and end-of-shift notification. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at 5 (exactly 5 and 4 steps respectively). No process exceeds the 5-step limit, and the email also announces a hands-on walkthrough at the Monday huddle for additional training. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure involving pre-stocked paper packets, a labeled folder, and end-of-shift notification. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum. The Monday huddle walkthrough is announced for hands-on training rather than attempting to document a complex process in full. All three dimensions are met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 10.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure involving pre-stocked paper packets, a labeled folder, and end-of-shift notification. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at 5 (exactly 5 and 4 steps respectively). No process exceeds the 5-step limit. A training session (Monday huddle walkthrough) is also announced for hands-on practice, complementing rather than replacing the email documentation. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 450
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure including where paper forms are stored, how to handle them, and end-of-shift notification. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at 5 (exactly 5 and 4 steps respectively). No process exceeds the 5-step limit, and the email also announces a hands-on walkthrough at the Monday huddle for additional training. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 441
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Patients Will Experience') leads with patient experience and flow impact, including a specific time estimate of '2–3 minutes to the check-in phase.' The operational rationale (reducing transcription errors, paper handling) is explicitly deferred to the 'Why We're Making This Change' section near the end. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'When the Tablet System Is Down' section explicitly names the failure scenario ('no connection or a form fails to load within 60 seconds'), states a clear trigger ('move to paper immediately'), and provides a concrete 4-step actionable fallback procedure involving pre-stocked paper packets, a labeled folder, and end-of-shift notification. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referred to generically ('the patient,' 'patients arriving'). No clinical details, diagnoses, or treatments are mentioned. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both the standard check-in process and the fallback procedure use numbered steps, each capped at exactly 5 and 4 steps respectively — well within the maximum. The Monday huddle walkthrough is announced for hands-on training rather than attempting to document a complex process in full. All three dimensions are met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1795,
+              "output_tokens": 436
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "The criterion does NOT require a total end-to-end appointment time impact — a check-in change only needs to quantify the check-in phase impact, which both drafts do",
+              "The criterion does NOT require the time estimate to be framed in terms of total appointment duration if the change only affects one phase of the visit",
+              "Scoring 9 when all three stated dimensions are explicitly satisfied is not internally consistent — if all dimensions are met, the score should reflect that"
+            ],
+            "clarification": "This criterion is fully satisfied when: (1) the first substantive content describes patient experience or flow impact, (2) a specific time estimate is given for the affected phase of the visit, and (3) the operational rationale is deferred to later in the email. Both drafts do all three. The grader should not penalize for framing the time impact at the phase level (check-in) rather than the total appointment level when the change only affects that phase. A score of 10 is appropriate when all three dimensions are demonstrably met."
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 10,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Never names patients — uses case numbers or generic references",
+        "satisfied": "yes",
+        "evidence": "No patient names appear anywhere in the email. References are generic: 'the patient,' 'patients arriving for their appointment,' etc."
+      },
+      {
+        "preference": "Impact on patient flow communicated FIRST, before operational reasons",
+        "satisfied": "yes",
+        "evidence": "The first substantive section is 'What Patients Will Experience,' detailing the 2–3 minute addition, pacing impact on morning appointments, and waiting area flow. The operational rationale ('Why We're Making This Change') comes last."
+      },
+      {
+        "preference": "Fallback procedure included for when new process fails",
+        "satisfied": "yes",
+        "evidence": "A full dedicated section 'When the Tablet System Is Down' provides a concrete fallback with paper packets, including where they're stored, how to handle completed forms, and who to notify."
+      },
+      {
+        "preference": "Numbered steps for multi-action processes, capped at 5",
+        "satisfied": "yes",
+        "evidence": "Standard check-in steps are numbered 1–5 (exactly 5). The fallback procedure is numbered 1–4. Both are within the 5-step cap."
+      },
+      {
+        "preference": "Does not assume all recipients have the same technical literacy",
+        "satisfied": "yes",
+        "evidence": "Instructions are written plainly ('tablet shows no connection or a form fails to load within 60 seconds'), a hands-on walkthrough is offered at the Monday huddle, and the email invites questions via reply or in person — accommodating different comfort levels."
+      },
+      {
+        "preference": "Follow-up mechanism included, not communicated only once",
+        "satisfied": "yes",
+        "evidence": "'A brief hands-on walkthrough will be available at the start of the Monday morning huddle. If you have questions before then, reply here or catch me before your shift.' This provides a follow-up training touchpoint beyond the email."
+      },
+      {
+        "preference": "Balances medical staff and administrative staff as audiences",
+        "satisfied": "yes",
+        "evidence": "The email addresses front desk workflow (administrative) while noting clinical-side benefits ('speeds up records updates on the clinical side') and clarifies that 'Room assignments and call-back timing are not changing' — relevant to clinical staff."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1015,
+      "output_tokens": 620
+    }
+  }
+}

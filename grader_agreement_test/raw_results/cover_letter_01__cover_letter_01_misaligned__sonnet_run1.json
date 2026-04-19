@@ -1,0 +1,135 @@
+{
+  "scenario_id": "cover_letter_01",
+  "draft_id": "cover_letter_01_misaligned",
+  "model": "sonnet",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Anti-cliché discipline\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_motivational_filler\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft contains 'passionate about,' 'gets me out of bed every morning,' 'results-driven,' and 'laser focus on the customer' — multiple motivational filler phrases.\"\n        },\n        {\n          \"dimension_id\": \"no_generic_self_description\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft uses 'innovative thinker,' 'strategic visionary,' 'dynamic team,' and 'unique combination of technical acumen, business savvy, and emotional intelligence' as generic self-describing adjectives.\"\n        },\n        {\n          \"dimension_id\": \"claims_backed_by_evidence\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Claims like 'consistently demonstrated' and 'proven track record' are left as bare assertions with no specific facts or numbers to support them.\"\n        },\n        {\n          \"dimension_id\": \"unique_to_writer\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Sentences like 'I am equally comfortable diving deep into analytics dashboards as I am presenting to C-suite executives' could be copy-pasted into virtually any product manager's cover letter without alteration.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Composed-but-human tone\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_overly_casual_phrasing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft contains no slang, sentence fragments used for effect, or exclamation points; it errs entirely in the opposite direction.\"\n        },\n        {\n          \"dimension_id\": \"no_stiff_formality\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft opens with 'I am writing to express my sincere interest' and includes 'I would be honored' and 'esteemed organization,' all hallmarks of stiff formality.\"\n        },\n        {\n          \"dimension_id\": \"natural_sentence_rhythm\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Sentences are uniformly long and constructed with parallel clauses (e.g., 'aligning cross-functional teams…and executing with excellence at every stage'), creating a monotonous, identical rhythm throughout.\"\n        },\n        {\n          \"dimension_id\": \"confidence_without_arrogance\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Accomplishments are over-qualified with vague hedges like 'exceeded expectations' and 'delivered significant value' rather than stated directly with specific facts.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Contextualized proof points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_metrics\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'Drove substantial revenue growth' and 'delivered complex projects on time and under budget' contain no specific quantified outcomes.\"\n        },\n        {\n          \"dimension_id\": \"method_visible\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft states results like 'launched multiple products that exceeded expectations' without describing any approach or method used to achieve them.\"\n        },\n        {\n          \"dimension_id\": \"constraints_shown\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No team sizes, timelines, budgets, or other constraints are mentioned anywhere in the draft to add credibility to the claims.\"\n        },\n        {\n          \"dimension_id\": \"narrative_not_list\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft explicitly uses a bullet-point list ('Some highlights of my professional journey include:') to present accomplishments.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Engagement-driven closing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_reference\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"'I have long admired your company's commitment to innovation and customer-centricity' is entirely generic and references nothing specific about the company's product, strategy, or market position.\"\n        },\n        {\n          \"dimension_id\": \"curiosity_hook\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The closing contains no hint of an idea or perspective that would create a curiosity gap; it is a straightforward availability statement.\"\n        },\n        {\n          \"dimension_id\": \"not_gimmicky\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no hook at all in the closing, so this dimension cannot be met; the closing is purely generic rather than substantive.\"\n        },\n        {\n          \"dimension_id\": \"avoids_generic_availability\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The letter ends with 'I am available at your earliest convenience for a conversation and can be reached by phone or email anytime,' a textbook generic availability statement.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Experience-grounded opening\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_experience\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The first sentence is 'I am writing to express my sincere interest in the Senior Product Manager position,' a direct statement of intent to apply rather than any specific experience.\"\n        },\n        {\n          \"dimension_id\": \"doesnt_try_too_hard\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The opening strains for impressiveness with 'esteemed organization,' 'world-class digital products,' and 'exceptional addition,' which reads as performative rather than natural.\"\n        },\n        {\n          \"dimension_id\": \"establishes_credibility_early\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The first paragraph offers only generic self-description ('passionate, results-driven product leader') with no specific detail that would establish distinctive relevance.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2457,
+  "output_tokens": 1525,
+  "latency_ms": 18356,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Anti-cliché discipline",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_motivational_filler",
+            "grade": "NOT_MET",
+            "evidence": "The draft contains 'passionate about,' 'gets me out of bed every morning,' 'results-driven,' and 'laser focus on the customer' — multiple motivational filler phrases."
+          },
+          {
+            "dimension_id": "no_generic_self_description",
+            "grade": "NOT_MET",
+            "evidence": "The draft uses 'innovative thinker,' 'strategic visionary,' 'dynamic team,' and 'unique combination of technical acumen, business savvy, and emotional intelligence' as generic self-describing adjectives."
+          },
+          {
+            "dimension_id": "claims_backed_by_evidence",
+            "grade": "NOT_MET",
+            "evidence": "Claims like 'consistently demonstrated' and 'proven track record' are left as bare assertions with no specific facts or numbers to support them."
+          },
+          {
+            "dimension_id": "unique_to_writer",
+            "grade": "NOT_MET",
+            "evidence": "Sentences like 'I am equally comfortable diving deep into analytics dashboards as I am presenting to C-suite executives' could be copy-pasted into virtually any product manager's cover letter without alteration."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Composed-but-human tone",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_overly_casual_phrasing",
+            "grade": "MET",
+            "evidence": "The draft contains no slang, sentence fragments used for effect, or exclamation points; it errs entirely in the opposite direction."
+          },
+          {
+            "dimension_id": "no_stiff_formality",
+            "grade": "NOT_MET",
+            "evidence": "The draft opens with 'I am writing to express my sincere interest' and includes 'I would be honored' and 'esteemed organization,' all hallmarks of stiff formality."
+          },
+          {
+            "dimension_id": "natural_sentence_rhythm",
+            "grade": "NOT_MET",
+            "evidence": "Sentences are uniformly long and constructed with parallel clauses (e.g., 'aligning cross-functional teams…and executing with excellence at every stage'), creating a monotonous, identical rhythm throughout."
+          },
+          {
+            "dimension_id": "confidence_without_arrogance",
+            "grade": "NOT_MET",
+            "evidence": "Accomplishments are over-qualified with vague hedges like 'exceeded expectations' and 'delivered significant value' rather than stated directly with specific facts."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Contextualized proof points",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_metrics",
+            "grade": "NOT_MET",
+            "evidence": "'Drove substantial revenue growth' and 'delivered complex projects on time and under budget' contain no specific quantified outcomes."
+          },
+          {
+            "dimension_id": "method_visible",
+            "grade": "NOT_MET",
+            "evidence": "The draft states results like 'launched multiple products that exceeded expectations' without describing any approach or method used to achieve them."
+          },
+          {
+            "dimension_id": "constraints_shown",
+            "grade": "NOT_MET",
+            "evidence": "No team sizes, timelines, budgets, or other constraints are mentioned anywhere in the draft to add credibility to the claims."
+          },
+          {
+            "dimension_id": "narrative_not_list",
+            "grade": "NOT_MET",
+            "evidence": "The draft explicitly uses a bullet-point list ('Some highlights of my professional journey include:') to present accomplishments."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Engagement-driven closing",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_reference",
+            "grade": "NOT_MET",
+            "evidence": "'I have long admired your company's commitment to innovation and customer-centricity' is entirely generic and references nothing specific about the company's product, strategy, or market position."
+          },
+          {
+            "dimension_id": "curiosity_hook",
+            "grade": "NOT_MET",
+            "evidence": "The closing contains no hint of an idea or perspective that would create a curiosity gap; it is a straightforward availability statement."
+          },
+          {
+            "dimension_id": "not_gimmicky",
+            "grade": "NOT_MET",
+            "evidence": "There is no hook at all in the closing, so this dimension cannot be met; the closing is purely generic rather than substantive."
+          },
+          {
+            "dimension_id": "avoids_generic_availability",
+            "grade": "NOT_MET",
+            "evidence": "The letter ends with 'I am available at your earliest convenience for a conversation and can be reached by phone or email anytime,' a textbook generic availability statement."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Experience-grounded opening",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_experience",
+            "grade": "NOT_MET",
+            "evidence": "The first sentence is 'I am writing to express my sincere interest in the Senior Product Manager position,' a direct statement of intent to apply rather than any specific experience."
+          },
+          {
+            "dimension_id": "doesnt_try_too_hard",
+            "grade": "NOT_MET",
+            "evidence": "The opening strains for impressiveness with 'esteemed organization,' 'world-class digital products,' and 'exceptional addition,' which reads as performative rather than natural."
+          },
+          {
+            "dimension_id": "establishes_credibility_early",
+            "grade": "NOT_MET",
+            "evidence": "The first paragraph offers only generic self-description ('passionate, results-driven product leader') with no specific detail that would establish distinctive relevance."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "scenario_id": "manager_update_01",
+  "draft_id": "manager_update_01_good",
+  "model": "opus",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Phone-Scannable Brevity\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"bullets_only\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All status information in the Progress, In Progress, and Next Week sections is conveyed exclusively through bullet points, with no prose paragraphs.\"\n        },\n        {\n          \"dimension_id\": \"one_two_line_bullets\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each bullet is self-contained and fits within 1–2 lines, e.g., 'Auth migration: core service cutover complete, running parallel validation through Friday.'\"\n        },\n        {\n          \"dimension_id\": \"no_redundancy\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The analytics API issue appears in 'In Progress' with details and timeline impact, and 'Next Week' only references the follow-up action ('Finalize analytics API approach'), with no duplicated information.\"\n        },\n        {\n          \"dimension_id\": \"minimal_sections\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Only three sections are used (Progress, In Progress, Next Week), which are distinct in purpose and none could be reasonably folded into another.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Bottom-Line-Up-Front Summary\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_summary\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The first line after 'Hi Maria,' is 'Overall: Auth migration is on track…' — a direct status summary, not context-setting.\"\n        },\n        {\n          \"dimension_id\": \"covers_key_status\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary captures both the win ('Auth migration is on track for the June 30 milestone') and the timeline shift ('may shift the analytics dashboard delivery by ~1 week') in one sentence.\"\n        },\n        {\n          \"dimension_id\": \"signals_escalation_need\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary explicitly states 'No action needed from you right now.'\"\n        },\n        {\n          \"dimension_id\": \"plain_label\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary uses the straightforward label 'Overall:' rather than casual shorthand like 'TL;DR.'\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Calibrated Risk Framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"neutral_language\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft uses neutral language like 'Resolving a rate-limit constraint,' 'routine integration issue,' and 'team is handling it' rather than alarm words.\"\n        },\n        {\n          \"dimension_id\": \"timeline_impact_quantified\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Timeline impact is stated concretely: 'shifts from July 10 to ~July 17' and '~1 week.'\"\n        },\n        {\n          \"dimension_id\": \"resolution_timeline\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft states 'expect a clear path by Wednesday' and 'will confirm by end of week.'\"\n        },\n        {\n          \"dimension_id\": \"escalation_signal\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft explicitly states 'This is a routine integration issue — team is handling it, no escalation needed.'\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Recipient-Calibrated Register\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_casual_shorthand\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft avoids internet-style abbreviations or overly casual labels throughout; terms like 'QA,' 'API,' and 'Q3' are standard professional abbreviations.\"\n        },\n        {\n          \"dimension_id\": \"direct_not_stiff\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The closing line 'Let me know if you want to dig into anything' is approachable and direct without being overly formal.\"\n        },\n        {\n          \"dimension_id\": \"recipient_modeled\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The tone is professional yet approachable, consistent with writing to a director who reads on mobile — concise, no jargon-heavy explanations, and calibrated formality throughout.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 1634,
+  "output_tokens": 1146,
+  "latency_ms": 14153,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Phone-Scannable Brevity",
+        "dimension_grades": [
+          {
+            "dimension_id": "bullets_only",
+            "grade": "MET",
+            "evidence": "All status information in the Progress, In Progress, and Next Week sections is conveyed exclusively through bullet points, with no prose paragraphs."
+          },
+          {
+            "dimension_id": "one_two_line_bullets",
+            "grade": "MET",
+            "evidence": "Each bullet is self-contained and fits within 1–2 lines, e.g., 'Auth migration: core service cutover complete, running parallel validation through Friday.'"
+          },
+          {
+            "dimension_id": "no_redundancy",
+            "grade": "MET",
+            "evidence": "The analytics API issue appears in 'In Progress' with details and timeline impact, and 'Next Week' only references the follow-up action ('Finalize analytics API approach'), with no duplicated information."
+          },
+          {
+            "dimension_id": "minimal_sections",
+            "grade": "MET",
+            "evidence": "Only three sections are used (Progress, In Progress, Next Week), which are distinct in purpose and none could be reasonably folded into another."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Bottom-Line-Up-Front Summary",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_summary",
+            "grade": "MET",
+            "evidence": "The first line after 'Hi Maria,' is 'Overall: Auth migration is on track…' — a direct status summary, not context-setting."
+          },
+          {
+            "dimension_id": "covers_key_status",
+            "grade": "MET",
+            "evidence": "The summary captures both the win ('Auth migration is on track for the June 30 milestone') and the timeline shift ('may shift the analytics dashboard delivery by ~1 week') in one sentence."
+          },
+          {
+            "dimension_id": "signals_escalation_need",
+            "grade": "MET",
+            "evidence": "The summary explicitly states 'No action needed from you right now.'"
+          },
+          {
+            "dimension_id": "plain_label",
+            "grade": "MET",
+            "evidence": "The summary uses the straightforward label 'Overall:' rather than casual shorthand like 'TL;DR.'"
+          }
+        ]
+      },
+      {
+        "criterion_name": "Calibrated Risk Framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "neutral_language",
+            "grade": "MET",
+            "evidence": "The draft uses neutral language like 'Resolving a rate-limit constraint,' 'routine integration issue,' and 'team is handling it' rather than alarm words."
+          },
+          {
+            "dimension_id": "timeline_impact_quantified",
+            "grade": "MET",
+            "evidence": "Timeline impact is stated concretely: 'shifts from July 10 to ~July 17' and '~1 week.'"
+          },
+          {
+            "dimension_id": "resolution_timeline",
+            "grade": "MET",
+            "evidence": "The draft states 'expect a clear path by Wednesday' and 'will confirm by end of week.'"
+          },
+          {
+            "dimension_id": "escalation_signal",
+            "grade": "MET",
+            "evidence": "The draft explicitly states 'This is a routine integration issue — team is handling it, no escalation needed.'"
+          }
+        ]
+      },
+      {
+        "criterion_name": "Recipient-Calibrated Register",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_casual_shorthand",
+            "grade": "MET",
+            "evidence": "The draft avoids internet-style abbreviations or overly casual labels throughout; terms like 'QA,' 'API,' and 'Q3' are standard professional abbreviations."
+          },
+          {
+            "dimension_id": "direct_not_stiff",
+            "grade": "MET",
+            "evidence": "The closing line 'Let me know if you want to dig into anything' is approachable and direct without being overly formal."
+          },
+          {
+            "dimension_id": "recipient_modeled",
+            "grade": "MET",
+            "evidence": "The tone is professional yet approachable, consistent with writing to a director who reads on mobile — concise, no jargon-heavy explanations, and calibrated formality throughout."
+          }
+        ]
+      }
+    ]
+  }
+}

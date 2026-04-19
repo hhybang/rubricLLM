@@ -1,0 +1,110 @@
+{
+  "scenario_id": "manager_update_01",
+  "draft_id": "manager_update_01_misaligned",
+  "model": "opus",
+  "run": 2,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Phone-Scannable Brevity\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"bullets_only\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"All sections use narrative prose paragraphs rather than bullet points (e.g., 'The team has made really solid progress this week on the Atlas migration. After several productive working sessions…').\"\n        },\n        {\n          \"dimension_id\": \"one_two_line_bullets\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There are no bullet points in the draft; information is conveyed in multi-sentence paragraphs.\"\n        },\n        {\n          \"dimension_id\": \"no_redundancy\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The payment processor issue is discussed in both 'Blockers and Challenges' and again in 'Next Steps' ('continue debugging the payment processor integration'), and staffing concerns appear in 'Broader Context' as well as implicitly in 'Blockers and Challenges' ('slowed down our velocity').\"\n        },\n        {\n          \"dimension_id\": \"minimal_sections\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The 'Broader Context' section about the hiring freeze and burnout could be folded into 'Blockers and Challenges' or removed entirely, representing an unnecessary standalone section.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Bottom-Line-Up-Front Summary\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_summary\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The first line after the greeting is context-setting: 'I hope this message finds you well and that you had a great weekend. I wanted to take a few minutes to walk you through where things stand…'\"\n        },\n        {\n          \"dimension_id\": \"covers_key_status\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no upfront summary sentence capturing both wins and timeline shifts; these are spread across separate paragraphs deep in the update.\"\n        },\n        {\n          \"dimension_id\": \"signals_escalation_need\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No summary line exists that signals whether the reader needs to act; escalation is mentioned only deep in the 'Blockers and Challenges' section.\"\n        },\n        {\n          \"dimension_id\": \"plain_label\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no summary line at all, so this dimension cannot be satisfied.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Calibrated Risk Framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"neutral_language\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft uses alarm language throughout: 'significant setback,' 'serious concern,' 'scrambling,' 'failed during end-to-end testing,' and 'real headache.'\"\n        },\n        {\n          \"dimension_id\": \"timeline_impact_quantified\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Timeline impact is left vague: 'hope to have a clearer picture of the timeline impact, though it's hard to say exactly when we'll know more.'\"\n        },\n        {\n          \"dimension_id\": \"resolution_timeline\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No specific date or timeframe is given for when the resolution path will be clear; the draft says only 'it's hard to say exactly when we'll know more.'\"\n        },\n        {\n          \"dimension_id\": \"escalation_signal\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Rather than signaling no escalation is needed, the draft actively recommends escalation: 'I'd recommend we flag both of these to the VP sooner rather than later.'\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Recipient-Calibrated Register\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_casual_shorthand\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft contains no internet-style abbreviations or casual shorthand like 'TL;DR'; it errs on the side of formality throughout.\"\n        },\n        {\n          \"dimension_id\": \"direct_not_stiff\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The closing is overly formal and stiff: 'Please don't hesitate to reach out if you'd like to set up time to discuss any of this in greater detail. I'm happy to put together a more comprehensive briefing document or jump on a call at your convenience. Best regards, Sarah.'\"\n        },\n        {\n          \"dimension_id\": \"recipient_modeled\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The verbose, formal tone with pleasantries like 'I hope this message finds you well' does not reflect awareness of a director who reads on mobile between meetings and prefers ultra-concise communication.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2149,
+  "output_tokens": 1276,
+  "latency_ms": 17339,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Phone-Scannable Brevity",
+        "dimension_grades": [
+          {
+            "dimension_id": "bullets_only",
+            "grade": "NOT_MET",
+            "evidence": "All sections use narrative prose paragraphs rather than bullet points (e.g., 'The team has made really solid progress this week on the Atlas migration. After several productive working sessions…')."
+          },
+          {
+            "dimension_id": "one_two_line_bullets",
+            "grade": "NOT_MET",
+            "evidence": "There are no bullet points in the draft; information is conveyed in multi-sentence paragraphs."
+          },
+          {
+            "dimension_id": "no_redundancy",
+            "grade": "NOT_MET",
+            "evidence": "The payment processor issue is discussed in both 'Blockers and Challenges' and again in 'Next Steps' ('continue debugging the payment processor integration'), and staffing concerns appear in 'Broader Context' as well as implicitly in 'Blockers and Challenges' ('slowed down our velocity')."
+          },
+          {
+            "dimension_id": "minimal_sections",
+            "grade": "NOT_MET",
+            "evidence": "The 'Broader Context' section about the hiring freeze and burnout could be folded into 'Blockers and Challenges' or removed entirely, representing an unnecessary standalone section."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Bottom-Line-Up-Front Summary",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_summary",
+            "grade": "NOT_MET",
+            "evidence": "The first line after the greeting is context-setting: 'I hope this message finds you well and that you had a great weekend. I wanted to take a few minutes to walk you through where things stand…'"
+          },
+          {
+            "dimension_id": "covers_key_status",
+            "grade": "NOT_MET",
+            "evidence": "There is no upfront summary sentence capturing both wins and timeline shifts; these are spread across separate paragraphs deep in the update."
+          },
+          {
+            "dimension_id": "signals_escalation_need",
+            "grade": "NOT_MET",
+            "evidence": "No summary line exists that signals whether the reader needs to act; escalation is mentioned only deep in the 'Blockers and Challenges' section."
+          },
+          {
+            "dimension_id": "plain_label",
+            "grade": "NOT_MET",
+            "evidence": "There is no summary line at all, so this dimension cannot be satisfied."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Calibrated Risk Framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "neutral_language",
+            "grade": "NOT_MET",
+            "evidence": "The draft uses alarm language throughout: 'significant setback,' 'serious concern,' 'scrambling,' 'failed during end-to-end testing,' and 'real headache.'"
+          },
+          {
+            "dimension_id": "timeline_impact_quantified",
+            "grade": "NOT_MET",
+            "evidence": "Timeline impact is left vague: 'hope to have a clearer picture of the timeline impact, though it's hard to say exactly when we'll know more.'"
+          },
+          {
+            "dimension_id": "resolution_timeline",
+            "grade": "NOT_MET",
+            "evidence": "No specific date or timeframe is given for when the resolution path will be clear; the draft says only 'it's hard to say exactly when we'll know more.'"
+          },
+          {
+            "dimension_id": "escalation_signal",
+            "grade": "NOT_MET",
+            "evidence": "Rather than signaling no escalation is needed, the draft actively recommends escalation: 'I'd recommend we flag both of these to the VP sooner rather than later.'"
+          }
+        ]
+      },
+      {
+        "criterion_name": "Recipient-Calibrated Register",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_casual_shorthand",
+            "grade": "MET",
+            "evidence": "The draft contains no internet-style abbreviations or casual shorthand like 'TL;DR'; it errs on the side of formality throughout."
+          },
+          {
+            "dimension_id": "direct_not_stiff",
+            "grade": "NOT_MET",
+            "evidence": "The closing is overly formal and stiff: 'Please don't hesitate to reach out if you'd like to set up time to discuss any of this in greater detail. I'm happy to put together a more comprehensive briefing document or jump on a call at your convenience. Best regards, Sarah.'"
+          },
+          {
+            "dimension_id": "recipient_modeled",
+            "grade": "NOT_MET",
+            "evidence": "The verbose, formal tone with pleasantries like 'I hope this message finds you well' does not reflect awareness of a director who reads on mobile between meetings and prefers ultra-concise communication."
+          }
+        ]
+      }
+    ]
+  }
+}

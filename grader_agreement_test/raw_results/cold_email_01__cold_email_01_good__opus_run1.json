@@ -1,0 +1,130 @@
+{
+  "scenario_id": "cold_email_01",
+  "draft_id": "cold_email_01_good",
+  "model": "opus",
+  "run": 1,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Transparent intent\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_false_softeners\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The email contains no hedging phrases like 'no worries if not' or 'even if this isn't a fit' — it states the ask directly without downplaying it.\"\n        },\n        {\n          \"dimension_id\": \"explicit_ask\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"I'm raising a Series A for Conduit, and I want to talk to you about leading it\\\" and \\\"I'd like to spend 30 minutes walking through the unit economics and our expansion data\\\" state the ask plainly.\"\n        },\n        {\n          \"dimension_id\": \"honest_framing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The sender openly states he wants Sarah to lead his Series A and explains the reason for raising — no disguising the intent as casual advice-seeking or networking.\"\n        },\n        {\n          \"dimension_id\": \"no_trick_feel\",\n          \"grade\": \"MET\",\n          \"evidence\": \"A skeptical reader would not perceive any sentence as a disguised persuasion tactic; the flattery is tied to a specific published piece and directly connected to business evidence rather than deployed as manipulation.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Traction as narrative momentum\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"temporal_arc\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"We didn't have a sales team for the first eleven months\\\" → \\\"first design partner to $2.8M in ARR across 40 accounts in fourteen months\\\" → enterprise accounts now pushing into new territory shows clear time-based progression.\"\n        },\n        {\n          \"dimension_id\": \"no_bullet_stats\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All metrics ($2.8M ARR, 40 accounts, fourteen months, eleven months without sales) are embedded in flowing prose sentences, not listed as bullet points.\"\n        },\n        {\n          \"dimension_id\": \"implied_trajectory\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"The pull is accelerating faster than our current team can build for\\\" and the enterprise expansion detail let the reader extrapolate forward momentum without an explicit hockey-stick claim.\"\n        },\n        {\n          \"dimension_id\": \"organic_demand_signal\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"Engineers at one company would set it up, move jobs, and install it at their next company\\\" and \\\"three enterprise accounts… are pushing us into compliance and governance territory we hadn't planned to enter\\\" both signal customer pull rather than company push.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Double-duty personalization\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_source\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"Your piece in First Round Review last year\\\" references a specific published article rather than just a deal or title.\"\n        },\n        {\n          \"dimension_id\": \"thesis_connection\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The email connects Sarah's thesis that \\\"the best developer tools win by becoming invisible\\\" to Conduit's approach of hooking into existing workflows and growing through carry-along behavior.\"\n        },\n        {\n          \"dimension_id\": \"proof_embedded\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The personalization passage directly introduces the carry-along adoption metric and the $2.8M ARR / 40 accounts / no paid acquisition evidence as proof of the thesis playing out.\"\n        },\n        {\n          \"dimension_id\": \"natural_integration\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The reference to Sarah's article flows directly into the description of Conduit's growth mechanism and traction — it's not a separate flattery paragraph but the opening of the core argument.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Peer-to-peer framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_deference_markers\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The email contains no phrases like 'happy to work around your schedule' or 'whenever works for you' — it proposes specific days and asks \\\"What works?\\\"\"\n        },\n        {\n          \"dimension_id\": \"mutual_value\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"I think this is a good conversation for both of us\\\" and \\\"we're one of the clearest examples of that thesis playing out with real revenue behind it\\\" imply mutual value.\"\n        },\n        {\n          \"dimension_id\": \"direct_scheduling\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"I'm open Tuesday or Thursday afternoon next week. What works?\\\" proposes a concrete time window.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Signal-dense subject line\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"credibility_upfront\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"$2.8M ARR infrastructure startup\\\" in the subject line provides a concrete traction and domain credibility signal.\"\n        },\n        {\n          \"dimension_id\": \"ask_visible\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"Series A conversation\\\" makes the purpose of the email immediately discernible from the subject line.\"\n        },\n        {\n          \"dimension_id\": \"no_cleverness_tricks\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The subject line uses standard capitalization and plain language with no ellipses, vague teasers, fake 're:' prefixes, or intentional lowercase styling.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2069,
+  "output_tokens": 1443,
+  "latency_ms": 20295,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Transparent intent",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_false_softeners",
+            "grade": "MET",
+            "evidence": "The email contains no hedging phrases like 'no worries if not' or 'even if this isn't a fit' — it states the ask directly without downplaying it."
+          },
+          {
+            "dimension_id": "explicit_ask",
+            "grade": "MET",
+            "evidence": "\"I'm raising a Series A for Conduit, and I want to talk to you about leading it\" and \"I'd like to spend 30 minutes walking through the unit economics and our expansion data\" state the ask plainly."
+          },
+          {
+            "dimension_id": "honest_framing",
+            "grade": "MET",
+            "evidence": "The sender openly states he wants Sarah to lead his Series A and explains the reason for raising — no disguising the intent as casual advice-seeking or networking."
+          },
+          {
+            "dimension_id": "no_trick_feel",
+            "grade": "MET",
+            "evidence": "A skeptical reader would not perceive any sentence as a disguised persuasion tactic; the flattery is tied to a specific published piece and directly connected to business evidence rather than deployed as manipulation."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Traction as narrative momentum",
+        "dimension_grades": [
+          {
+            "dimension_id": "temporal_arc",
+            "grade": "MET",
+            "evidence": "\"We didn't have a sales team for the first eleven months\" → \"first design partner to $2.8M in ARR across 40 accounts in fourteen months\" → enterprise accounts now pushing into new territory shows clear time-based progression."
+          },
+          {
+            "dimension_id": "no_bullet_stats",
+            "grade": "MET",
+            "evidence": "All metrics ($2.8M ARR, 40 accounts, fourteen months, eleven months without sales) are embedded in flowing prose sentences, not listed as bullet points."
+          },
+          {
+            "dimension_id": "implied_trajectory",
+            "grade": "MET",
+            "evidence": "\"The pull is accelerating faster than our current team can build for\" and the enterprise expansion detail let the reader extrapolate forward momentum without an explicit hockey-stick claim."
+          },
+          {
+            "dimension_id": "organic_demand_signal",
+            "grade": "MET",
+            "evidence": "\"Engineers at one company would set it up, move jobs, and install it at their next company\" and \"three enterprise accounts… are pushing us into compliance and governance territory we hadn't planned to enter\" both signal customer pull rather than company push."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Double-duty personalization",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_source",
+            "grade": "MET",
+            "evidence": "\"Your piece in First Round Review last year\" references a specific published article rather than just a deal or title."
+          },
+          {
+            "dimension_id": "thesis_connection",
+            "grade": "MET",
+            "evidence": "The email connects Sarah's thesis that \"the best developer tools win by becoming invisible\" to Conduit's approach of hooking into existing workflows and growing through carry-along behavior."
+          },
+          {
+            "dimension_id": "proof_embedded",
+            "grade": "MET",
+            "evidence": "The personalization passage directly introduces the carry-along adoption metric and the $2.8M ARR / 40 accounts / no paid acquisition evidence as proof of the thesis playing out."
+          },
+          {
+            "dimension_id": "natural_integration",
+            "grade": "MET",
+            "evidence": "The reference to Sarah's article flows directly into the description of Conduit's growth mechanism and traction — it's not a separate flattery paragraph but the opening of the core argument."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Peer-to-peer framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_deference_markers",
+            "grade": "MET",
+            "evidence": "The email contains no phrases like 'happy to work around your schedule' or 'whenever works for you' — it proposes specific days and asks \"What works?\""
+          },
+          {
+            "dimension_id": "mutual_value",
+            "grade": "MET",
+            "evidence": "\"I think this is a good conversation for both of us\" and \"we're one of the clearest examples of that thesis playing out with real revenue behind it\" imply mutual value."
+          },
+          {
+            "dimension_id": "direct_scheduling",
+            "grade": "MET",
+            "evidence": "\"I'm open Tuesday or Thursday afternoon next week. What works?\" proposes a concrete time window."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Signal-dense subject line",
+        "dimension_grades": [
+          {
+            "dimension_id": "credibility_upfront",
+            "grade": "MET",
+            "evidence": "\"$2.8M ARR infrastructure startup\" in the subject line provides a concrete traction and domain credibility signal."
+          },
+          {
+            "dimension_id": "ask_visible",
+            "grade": "MET",
+            "evidence": "\"Series A conversation\" makes the purpose of the email immediately discernible from the subject line."
+          },
+          {
+            "dimension_id": "no_cleverness_tricks",
+            "grade": "MET",
+            "evidence": "The subject line uses standard capitalization and plain language with no ellipses, vague teasers, fake 're:' prefixes, or intentional lowercase styling."
+          }
+        ]
+      }
+    ]
+  }
+}

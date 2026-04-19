@@ -1,0 +1,140 @@
+{
+  "scenario_id": "technical_doc_01",
+  "draft_id": "technical_doc_01_good",
+  "model": "sonnet",
+  "run": 2,
+  "raw_response": "{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Critical decisions front-loaded in summaries\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"decisions_in_tldr\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The TL;DR explicitly lists 5 numbered architectural decisions including fail-open default, synchronous call requirement, sliding window semantics, per-key quota sharing, and no built-in retry — all of which directly shape caller integration.\"\n        },\n        {\n          \"dimension_id\": \"non_obvious_defaults_highlighted\",\n          \"grade\": \"MET\",\n          \"evidence\": \"TL;DR item 1 states 'Fail-open by default' in bold and explains the implication: 'a service outage does not cascade into a platform-wide denial of service,' with explicit opt-in instructions for fail-closed.\"\n        },\n        {\n          \"dimension_id\": \"non_goals_stated\",\n          \"grade\": \"MET\",\n          \"evidence\": \"A dedicated 'Non-Goals' subsection in the TL;DR explicitly lists four non-goals: not a WAF/DDoS layer, not a quota/billing system, not a request queue, and no per-response-body throttling.\"\n        },\n        {\n          \"dimension_id\": \"decisions_before_implementation\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All five key decisions (fail-open, synchronous call, sliding window, per-key quota, no SDK retry) are stated in the TL;DR before any implementation details appear in subsequent sections.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code examples as primary entry points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"caller_side_examples\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Integration Quick Start section provides three caller-side code examples (Go HTTP middleware, Go gRPC direct client, Python FastAPI) before the API surface definition, treating code as the primary entry point.\"\n        },\n        {\n          \"dimension_id\": \"realistic_production_patterns\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Examples use actual production idioms: Go SDK with connection pool initialization, zap structured logging, gRPC status codes, FastAPI dependency injection with `Depends(get_current_user)`, and custom denial handlers with structured JSON errors.\"\n        },\n        {\n          \"dimension_id\": \"error_handling_shown\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The gRPC example explicitly handles both `err != nil` (service failure with fail-open behavior) and `result.Decision == rlpb.Decision_DENY` (rate limited), and the Go middleware example shows a custom `OnDenied` handler.\"\n        },\n        {\n          \"dimension_id\": \"inline_annotations\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Code examples contain inline comments explaining the 'why,' such as '// Used for metrics attribution,' '// Default; explicit here for clarity,' '// cost=5 because inference requests are expensive,' and '// With fail-open, err != nil means we ALLOW the request but log the failure.'\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete debugging artifacts in operational sections\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"exact_error_output\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Failure Modes section includes exact HTTP responses (429 with full JSON body and headers, 404 with JSON) and exact gRPC status codes and message formats (RESOURCE_EXHAUSTED, NOT_FOUND, INVALID_ARGUMENT, UNAUTHENTICATED) with literal response bodies.\"\n        },\n        {\n          \"dimension_id\": \"caller_perspective\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Failure Mode Reference Table explicitly labels columns 'What Caller Sees (gRPC)' and 'What Caller Sees (HTTP),' describing each failure from the caller's perspective rather than internal server behavior.\"\n        },\n        {\n          \"dimension_id\": \"observability_signals_named\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Observability section provides a Metrics Reference table naming specific metrics (e.g., `ratelimit.check.count`, `ratelimit.fail_open.count`) with tags, types, and descriptions, plus a Structured Log Fields table with exact field names like `ratelimit.decision` and `ratelimit.window_id`.\"\n        },\n        {\n          \"dimension_id\": \"auth_rejection_examples\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Security section includes a concrete rejected request example (analytics-worker calling payments-charge-per-user) with the full HTTP request, the exact 403 JSON response body, and the gRPC PERMISSION_DENIED equivalent.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Tradeoff transparency with escape hatches\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tradeoff_flagged\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Four tradeoffs are explicitly flagged in the Tradeoffs section with '📌 Tradeoff:' headers: Fail-Open Default, Global vs. Namespaced Counters, Sliding Window vs. Fixed Window, and Synchronous Check in Request Path.\"\n        },\n        {\n          \"dimension_id\": \"affected_parties_named\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each tradeoff callout explicitly names affected teams, e.g., 'Affected teams: Payments, Identity, Trust & Safety' for fail-open, and 'Affected teams: latency-sensitive services like Search, Ads Serving' for synchronous checks.\"\n        },\n        {\n          \"dimension_id\": \"alternative_provided\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Every tradeoff section includes an 'Escape hatch' subsection with concrete alternatives, e.g., `fail_strategy: closed` for fail-open, naming convention + CI lint for counter collisions, `window_type: fixed` for sliding window, and async/local token bucket modes for synchronous checks.\"\n        },\n        {\n          \"dimension_id\": \"visually_distinct_callout\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All four tradeoff callouts use blockquote formatting with a '📌 Tradeoff:' emoji prefix, making them visually distinct from surrounding prose and scannable during skimming.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Scan-optimized formatting\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tables_for_comparisons\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The doc uses tables for the Failure Mode Reference, Configuration Options Reference, Response Headers, Metrics Reference, Structured Log Fields, Migration Plan, and Open Questions — all structured comparisons that would otherwise be inline prose.\"\n        },\n        {\n          \"dimension_id\": \"bold_key_terms\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Key terms and decisions are bolded throughout, e.g., '**Fail-open by default**,' '**Callers must call `CheckRateLimit` synchronously**,' '**If this is non-zero, the rate limit service is degraded**,' and required config fields marked '**Yes**' in tables.\"\n        },\n        {\n          \"dimension_id\": \"sections_self_contained\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Sections like 'Failure Modes & Debugging' and 'Security & Authorization' include their own complete reference tables, exact error examples, and debugging guidance without requiring the reader to have read prior sections.\"\n        },\n        {\n          \"dimension_id\": \"admonition_boxes_for_warnings\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The doc uses blockquote admonition boxes with emoji prefixes for warnings (⚠️ Key Collision Risk, ⚠️ For teams using Envoy), tips (💡 The window_id field), and tradeoff callouts (📌 Tradeoff) rather than embedding them in inline text.\"\n        }\n      ]\n    }\n  ]\n}",
+  "input_tokens": 9416,
+  "output_tokens": 2012,
+  "latency_ms": 37736,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Critical decisions front-loaded in summaries",
+        "dimension_grades": [
+          {
+            "dimension_id": "decisions_in_tldr",
+            "grade": "MET",
+            "evidence": "The TL;DR explicitly lists 5 numbered architectural decisions including fail-open default, synchronous call requirement, sliding window semantics, per-key quota sharing, and no built-in retry — all of which directly shape caller integration."
+          },
+          {
+            "dimension_id": "non_obvious_defaults_highlighted",
+            "grade": "MET",
+            "evidence": "TL;DR item 1 states 'Fail-open by default' in bold and explains the implication: 'a service outage does not cascade into a platform-wide denial of service,' with explicit opt-in instructions for fail-closed."
+          },
+          {
+            "dimension_id": "non_goals_stated",
+            "grade": "MET",
+            "evidence": "A dedicated 'Non-Goals' subsection in the TL;DR explicitly lists four non-goals: not a WAF/DDoS layer, not a quota/billing system, not a request queue, and no per-response-body throttling."
+          },
+          {
+            "dimension_id": "decisions_before_implementation",
+            "grade": "MET",
+            "evidence": "All five key decisions (fail-open, synchronous call, sliding window, per-key quota, no SDK retry) are stated in the TL;DR before any implementation details appear in subsequent sections."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code examples as primary entry points",
+        "dimension_grades": [
+          {
+            "dimension_id": "caller_side_examples",
+            "grade": "MET",
+            "evidence": "The Integration Quick Start section provides three caller-side code examples (Go HTTP middleware, Go gRPC direct client, Python FastAPI) before the API surface definition, treating code as the primary entry point."
+          },
+          {
+            "dimension_id": "realistic_production_patterns",
+            "grade": "MET",
+            "evidence": "Examples use actual production idioms: Go SDK with connection pool initialization, zap structured logging, gRPC status codes, FastAPI dependency injection with `Depends(get_current_user)`, and custom denial handlers with structured JSON errors."
+          },
+          {
+            "dimension_id": "error_handling_shown",
+            "grade": "MET",
+            "evidence": "The gRPC example explicitly handles both `err != nil` (service failure with fail-open behavior) and `result.Decision == rlpb.Decision_DENY` (rate limited), and the Go middleware example shows a custom `OnDenied` handler."
+          },
+          {
+            "dimension_id": "inline_annotations",
+            "grade": "MET",
+            "evidence": "Code examples contain inline comments explaining the 'why,' such as '// Used for metrics attribution,' '// Default; explicit here for clarity,' '// cost=5 because inference requests are expensive,' and '// With fail-open, err != nil means we ALLOW the request but log the failure.'"
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete debugging artifacts in operational sections",
+        "dimension_grades": [
+          {
+            "dimension_id": "exact_error_output",
+            "grade": "MET",
+            "evidence": "The Failure Modes section includes exact HTTP responses (429 with full JSON body and headers, 404 with JSON) and exact gRPC status codes and message formats (RESOURCE_EXHAUSTED, NOT_FOUND, INVALID_ARGUMENT, UNAUTHENTICATED) with literal response bodies."
+          },
+          {
+            "dimension_id": "caller_perspective",
+            "grade": "MET",
+            "evidence": "The Failure Mode Reference Table explicitly labels columns 'What Caller Sees (gRPC)' and 'What Caller Sees (HTTP),' describing each failure from the caller's perspective rather than internal server behavior."
+          },
+          {
+            "dimension_id": "observability_signals_named",
+            "grade": "MET",
+            "evidence": "The Observability section provides a Metrics Reference table naming specific metrics (e.g., `ratelimit.check.count`, `ratelimit.fail_open.count`) with tags, types, and descriptions, plus a Structured Log Fields table with exact field names like `ratelimit.decision` and `ratelimit.window_id`."
+          },
+          {
+            "dimension_id": "auth_rejection_examples",
+            "grade": "MET",
+            "evidence": "The Security section includes a concrete rejected request example (analytics-worker calling payments-charge-per-user) with the full HTTP request, the exact 403 JSON response body, and the gRPC PERMISSION_DENIED equivalent."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Tradeoff transparency with escape hatches",
+        "dimension_grades": [
+          {
+            "dimension_id": "tradeoff_flagged",
+            "grade": "MET",
+            "evidence": "Four tradeoffs are explicitly flagged in the Tradeoffs section with '📌 Tradeoff:' headers: Fail-Open Default, Global vs. Namespaced Counters, Sliding Window vs. Fixed Window, and Synchronous Check in Request Path."
+          },
+          {
+            "dimension_id": "affected_parties_named",
+            "grade": "MET",
+            "evidence": "Each tradeoff callout explicitly names affected teams, e.g., 'Affected teams: Payments, Identity, Trust & Safety' for fail-open, and 'Affected teams: latency-sensitive services like Search, Ads Serving' for synchronous checks."
+          },
+          {
+            "dimension_id": "alternative_provided",
+            "grade": "MET",
+            "evidence": "Every tradeoff section includes an 'Escape hatch' subsection with concrete alternatives, e.g., `fail_strategy: closed` for fail-open, naming convention + CI lint for counter collisions, `window_type: fixed` for sliding window, and async/local token bucket modes for synchronous checks."
+          },
+          {
+            "dimension_id": "visually_distinct_callout",
+            "grade": "MET",
+            "evidence": "All four tradeoff callouts use blockquote formatting with a '📌 Tradeoff:' emoji prefix, making them visually distinct from surrounding prose and scannable during skimming."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Scan-optimized formatting",
+        "dimension_grades": [
+          {
+            "dimension_id": "tables_for_comparisons",
+            "grade": "MET",
+            "evidence": "The doc uses tables for the Failure Mode Reference, Configuration Options Reference, Response Headers, Metrics Reference, Structured Log Fields, Migration Plan, and Open Questions — all structured comparisons that would otherwise be inline prose."
+          },
+          {
+            "dimension_id": "bold_key_terms",
+            "grade": "MET",
+            "evidence": "Key terms and decisions are bolded throughout, e.g., '**Fail-open by default**,' '**Callers must call `CheckRateLimit` synchronously**,' '**If this is non-zero, the rate limit service is degraded**,' and required config fields marked '**Yes**' in tables."
+          },
+          {
+            "dimension_id": "sections_self_contained",
+            "grade": "MET",
+            "evidence": "Sections like 'Failure Modes & Debugging' and 'Security & Authorization' include their own complete reference tables, exact error examples, and debugging guidance without requiring the reader to have read prior sections."
+          },
+          {
+            "dimension_id": "admonition_boxes_for_warnings",
+            "grade": "MET",
+            "evidence": "The doc uses blockquote admonition boxes with emoji prefixes for warnings (⚠️ Key Collision Risk, ⚠️ For teams using Envoy), tips (💡 The window_id field), and tradeoff callouts (📌 Tradeoff) rather than embedding them in inline text."
+          }
+        ]
+      }
+    ]
+  }
+}

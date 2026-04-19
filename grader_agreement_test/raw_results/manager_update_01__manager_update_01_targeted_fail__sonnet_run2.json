@@ -1,0 +1,110 @@
+{
+  "scenario_id": "manager_update_01",
+  "draft_id": "manager_update_01_targeted_fail",
+  "model": "sonnet",
+  "run": 2,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Phone-Scannable Brevity\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"bullets_only\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section contains a prose paragraph ('Auth service team pushed their API freeze back, which is creating some complications...') rather than bullet points.\"\n        },\n        {\n          \"dimension_id\": \"one_two_line_bullets\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers section is a multi-sentence paragraph, not a 1–2 line self-contained bullet.\"\n        },\n        {\n          \"dimension_id\": \"no_redundancy\",\n          \"grade\": \"MET\",\n          \"evidence\": \"Each piece of information (progress, blockers, next steps) appears in only one section with no overlap detected.\"\n        },\n        {\n          \"dimension_id\": \"minimal_sections\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The update uses four sections (Summary, Progress, Blockers, Next Steps) which are distinct and not obviously foldable into one another.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Bottom-Line-Up-Front Summary\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"opens_with_summary\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The very first line after the greeting is '**Summary:** Platform migration is on track for the June 6 milestone...', which is a status summary, not context-setting.\"\n        },\n        {\n          \"dimension_id\": \"covers_key_status\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary line references both the on-track milestone and the auth service dependency ('the auth service dependency we flagged last week is being handled') in one sentence.\"\n        },\n        {\n          \"dimension_id\": \"signals_escalation_need\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary explicitly states 'no action needed from you.'\"\n        },\n        {\n          \"dimension_id\": \"plain_label\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary uses the straightforward label '**Summary:**' rather than casual shorthand like 'TL;DR'.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Calibrated Risk Framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"neutral_language\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Blockers paragraph uses vague and hedging language ('creating some complications,' 'it's possible this could shift things, though it might not') rather than neutral, matter-of-fact framing.\"\n        },\n        {\n          \"dimension_id\": \"timeline_impact_quantified\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft states 'we're not entirely sure yet how long the delay will be' and 'it's possible this could shift things' — no concrete timeline impact (e.g., '~1 week') is given.\"\n        },\n        {\n          \"dimension_id\": \"resolution_timeline\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The draft says 'we're hoping to have a better picture soon' without specifying a concrete date when the resolution path will be clear.\"\n        },\n        {\n          \"dimension_id\": \"escalation_signal\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The summary line states 'no action needed from you,' explicitly signaling that escalation is not required.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Recipient-Calibrated Register\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_casual_shorthand\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The draft uses no internet-style abbreviations or casual labels; all language is professional and spelled out.\"\n        },\n        {\n          \"dimension_id\": \"direct_not_stiff\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The closing line 'Let me know if you want to dig into anything' is approachable without being overly formal.\"\n        },\n        {\n          \"dimension_id\": \"recipient_modeled\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The update uses direct, mobile-friendly structure and avoids jargon-heavy or overly technical language, reflecting awareness of a director reading on mobile between meetings.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 1658,
+  "output_tokens": 1124,
+  "latency_ms": 16479,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Phone-Scannable Brevity",
+        "dimension_grades": [
+          {
+            "dimension_id": "bullets_only",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section contains a prose paragraph ('Auth service team pushed their API freeze back, which is creating some complications...') rather than bullet points."
+          },
+          {
+            "dimension_id": "one_two_line_bullets",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers section is a multi-sentence paragraph, not a 1–2 line self-contained bullet."
+          },
+          {
+            "dimension_id": "no_redundancy",
+            "grade": "MET",
+            "evidence": "Each piece of information (progress, blockers, next steps) appears in only one section with no overlap detected."
+          },
+          {
+            "dimension_id": "minimal_sections",
+            "grade": "MET",
+            "evidence": "The update uses four sections (Summary, Progress, Blockers, Next Steps) which are distinct and not obviously foldable into one another."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Bottom-Line-Up-Front Summary",
+        "dimension_grades": [
+          {
+            "dimension_id": "opens_with_summary",
+            "grade": "MET",
+            "evidence": "The very first line after the greeting is '**Summary:** Platform migration is on track for the June 6 milestone...', which is a status summary, not context-setting."
+          },
+          {
+            "dimension_id": "covers_key_status",
+            "grade": "MET",
+            "evidence": "The summary line references both the on-track milestone and the auth service dependency ('the auth service dependency we flagged last week is being handled') in one sentence."
+          },
+          {
+            "dimension_id": "signals_escalation_need",
+            "grade": "MET",
+            "evidence": "The summary explicitly states 'no action needed from you.'"
+          },
+          {
+            "dimension_id": "plain_label",
+            "grade": "MET",
+            "evidence": "The summary uses the straightforward label '**Summary:**' rather than casual shorthand like 'TL;DR'."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Calibrated Risk Framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "neutral_language",
+            "grade": "NOT_MET",
+            "evidence": "The Blockers paragraph uses vague and hedging language ('creating some complications,' 'it's possible this could shift things, though it might not') rather than neutral, matter-of-fact framing."
+          },
+          {
+            "dimension_id": "timeline_impact_quantified",
+            "grade": "NOT_MET",
+            "evidence": "The draft states 'we're not entirely sure yet how long the delay will be' and 'it's possible this could shift things' — no concrete timeline impact (e.g., '~1 week') is given."
+          },
+          {
+            "dimension_id": "resolution_timeline",
+            "grade": "NOT_MET",
+            "evidence": "The draft says 'we're hoping to have a better picture soon' without specifying a concrete date when the resolution path will be clear."
+          },
+          {
+            "dimension_id": "escalation_signal",
+            "grade": "MET",
+            "evidence": "The summary line states 'no action needed from you,' explicitly signaling that escalation is not required."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Recipient-Calibrated Register",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_casual_shorthand",
+            "grade": "MET",
+            "evidence": "The draft uses no internet-style abbreviations or casual labels; all language is professional and spelled out."
+          },
+          {
+            "dimension_id": "direct_not_stiff",
+            "grade": "MET",
+            "evidence": "The closing line 'Let me know if you want to dig into anything' is approachable without being overly formal."
+          },
+          {
+            "dimension_id": "recipient_modeled",
+            "grade": "MET",
+            "evidence": "The update uses direct, mobile-friendly structure and avoids jargon-heavy or overly technical language, reflecting awareness of a director reading on mobile between meetings."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,333 @@
+{
+  "persona": "Kofi Mensah",
+  "task_index": 1,
+  "task_description": "I need to email a prospect who went dark after receiving our proposal two weeks ago — they were excited in the meeting but haven't responded since.",
+  "condition": "A",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes sales emails that feel like personal correspondence, not campaigns. Every email advances the relationship and the deal simultaneously. Treats email as a tool for creating conversations, never for closing them.",
+    "rubric": [
+      {
+        "name": "Specific Callback",
+        "category": "Content",
+        "description": "Every prospect email references something specific from a prior interaction — a concern they raised, a phrase they used, a goal they mentioned. Never generic callbacks like 'as we discussed' or 'following up on our meeting.'",
+        "dimensions": [
+          {
+            "id": "specific_reference",
+            "label": "References a specific comment, question, or concern the prospect raised in a prior interaction"
+          },
+          {
+            "id": "not_templateable",
+            "label": "The reference could not apply to a different prospect — it's unique to this person"
+          },
+          {
+            "id": "no_generic_callbacks",
+            "label": "Does not use 'as discussed', 'per our conversation', or 'following up on our meeting' without specifics"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "No Commercial Terms in Writing",
+        "category": "Content",
+        "description": "Price, discounts, contract terms, and commercial details are never put in email. Email establishes need and books conversations. Numbers in writing before a live discussion forfeit negotiation leverage.",
+        "dimensions": [
+          {
+            "id": "no_pricing",
+            "label": "Does not include any specific pricing, discount percentages, or contract terms"
+          },
+          {
+            "id": "drives_to_conversation",
+            "label": "Steers toward a live meeting or call for any commercial discussion"
+          },
+          {
+            "id": "value_not_cost",
+            "label": "Discusses value, outcomes, and ROI — never the cost to achieve them"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Re-engagement Over Check-ins",
+        "category": "Style",
+        "description": "Follow-ups after silence never 'just check in.' Each follow-up provides a new reason to respond — a relevant customer win, fresh data, a deadline, or a reframed value proposition.",
+        "dimensions": [
+          {
+            "id": "new_value_each_touch",
+            "label": "Each follow-up email introduces new information the prospect didn't have before"
+          },
+          {
+            "id": "no_checking_in",
+            "label": "Does not use 'just checking in', 'touching base', 'wanted to follow up', or equivalent"
+          },
+          {
+            "id": "reason_to_respond_now",
+            "label": "Creates a specific, time-relevant reason for the prospect to reply"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Risk-First Internal Updates",
+        "category": "Structure",
+        "description": "Internal deal updates lead with the risk to closing, not the opportunity. 'They're evaluating a competitor pilot' is more useful than 'great meeting, they're interested.'",
+        "dimensions": [
+          {
+            "id": "risk_leads",
+            "label": "The first substantive sentence identifies the primary risk or blocker to the deal"
+          },
+          {
+            "id": "ask_is_specific",
+            "label": "The internal email requests a specific action to mitigate the risk, not just awareness"
+          },
+          {
+            "id": "no_false_optimism",
+            "label": "Does not lead with or overweight positive signals when risks exist"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Kofi treats every prospect email as proof he was listening — specificity is his differentiator from competitors' outreach. Non-negotiable: never put pricing in email. Will reject any follow-up that doesn't give the prospect a new reason to respond."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "**Subject: The capacity question you raised**\n\nHi [Name],\n\nWhen we talked, you mentioned that your team was already stretched thin managing the current integration backlog — and that any new vendor would need to show value fast or it would just become another thing on someone's plate.\n\nThat stuck with me, because we just wrapped an implementation with [Similar Company] who had the same concern. They were live and seeing results in 19 days. I think it's worth a conversation about how that timeline compared to what your team was expecting.\n\nWould you have 20 minutes this week or next?\n\nKofi\n\n---\n\n*[Note: Replace the bracketed details with the actual capacity concern they raised, the comparable customer, and the specific timeline — the more precisely you mirror their language, the better this lands.]*",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 8,
+              "justification": "The email references a specific concern the prospect raised — being 'stretched thin managing the current integration backlog' and needing a vendor to 'show value fast.' This is not a generic callback and could not apply to most other prospects verbatim. The note at the bottom acknowledges the bracketed placeholders need real details, which slightly undermines the 'not_templateable' dimension since in its current draft form it is still partially templated. No generic phrases like 'as discussed' or 'following up on our meeting' are used."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '19 days' figure is a value/outcome metric, not a cost figure. The email explicitly steers toward a live conversation ('I think it's worth a conversation') and frames everything around outcomes and value rather than cost."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces new information — a comparable customer implementation with a specific 19-day timeline — that the prospect did not have before. There is no 'just checking in' or equivalent language. The new customer win creates a concrete, relevant reason to respond now, though the time-urgency could be slightly stronger (no deadline or expiring window is implied)."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 1,
+              "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email, not an internal update. There is no internal communication present to evaluate. The criterion cannot be satisfied by this draft as written, resulting in a minimum score by default rather than a failure of execution."
+            }
+          ],
+          "overall_weighted_score": 0.81,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 8,
+              "justification": "The email references a specific concern the prospect raised — being 'stretched thin managing the current integration backlog' and needing a vendor to 'show value fast' — which is meaningfully specific and not templateable in its current form. It avoids generic callbacks like 'as we discussed.' The bracketed note at the bottom, however, acknowledges the reference is still a placeholder, which slightly undermines the 'not_templateable' dimension since the actual specificity depends on fill-in details not yet present in the draft."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '19 days' figure is a timeline/outcome metric, not a commercial term, and it drives toward a conversation rather than closing a deal. The email focuses entirely on value (speed to results) and steers to a live meeting with a clear CTA."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 8,
+              "justification": "The email introduces new information — the comparable customer implementation and the 19-day timeline — giving the prospect a concrete reason to respond now. There is no 'just checking in' or equivalent language. The reason to respond is somewhat time-relevant ('this week or next') but the urgency is mild; a stronger deadline or expiring data point would sharpen the 'reason_to_respond_now' dimension further."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 1,
+              "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email — not an internal update. None of the three dimensions (risk_leads, ask_is_specific, no_false_optimism) are applicable or addressed, so the criterion cannot be scored meaningfully against this draft. Scored 1 to reflect that the criterion is entirely unmet by the content type submitted."
+            }
+          ],
+          "overall_weighted_score": 0.79,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 8,
+              "justification": "The email references a specific concern the prospect raised — being 'stretched thin managing the current integration backlog' and needing a vendor to 'show value fast.' This is not a generic callback and could not apply to most other prospects verbatim. However, the bracketed placeholders ([Name], [Similar Company]) and the author's own note acknowledging the details need to be filled in reveal that the specificity is partially scaffolded rather than fully realized, which slightly undermines the 'not_templateable' dimension in its current draft state."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '19 days' figure is a value/outcome metric, not a cost figure. The email drives directly toward a live conversation ('Would you have 20 minutes this week or next?') and frames everything around outcomes and ROI rather than cost."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces new information the prospect didn't have — the comparable customer implementation story and the 19-day timeline — giving a concrete reason to respond now. There is no 'just checking in' or equivalent language. The only minor gap is that the time-relevance reason to respond now is implicit (the customer win is fresh) rather than explicitly tied to a deadline or urgency trigger, but this is a minor omission."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 1,
+              "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email, not an internal update. There is no internal email component in the draft to evaluate. The criterion cannot be satisfied by this content type, so it scores at the floor."
+            }
+          ],
+          "overall_weighted_score": 0.81,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Specific Callback": 8.0,
+          "No Commercial Terms in Writing": 10.0,
+          "Re-engagement Over Check-ins": 8.666666666666666,
+          "Risk-First Internal Updates": 1.0
+        },
+        "std_scores": {
+          "Specific Callback": 0.0,
+          "No Commercial Terms in Writing": 0.0,
+          "Re-engagement Over Check-ins": 0.5773502691896257,
+          "Risk-First Internal Updates": 0.0
+        },
+        "mean_overall": 0.8033333333333332,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 8,
+                "justification": "The email references a specific concern the prospect raised — being 'stretched thin managing the current integration backlog' and needing a vendor to 'show value fast.' This is not a generic callback and could not apply to most other prospects verbatim. The note at the bottom acknowledges the bracketed placeholders need real details, which slightly undermines the 'not_templateable' dimension since in its current draft form it is still partially templated. No generic phrases like 'as discussed' or 'following up on our meeting' are used."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '19 days' figure is a value/outcome metric, not a cost figure. The email explicitly steers toward a live conversation ('I think it's worth a conversation') and frames everything around outcomes and value rather than cost."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces new information — a comparable customer implementation with a specific 19-day timeline — that the prospect did not have before. There is no 'just checking in' or equivalent language. The new customer win creates a concrete, relevant reason to respond now, though the time-urgency could be slightly stronger (no deadline or expiring window is implied)."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 1,
+                "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email, not an internal update. There is no internal communication present to evaluate. The criterion cannot be satisfied by this draft as written, resulting in a minimum score by default rather than a failure of execution."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1151,
+              "output_tokens": 467
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 8,
+                "justification": "The email references a specific concern the prospect raised — being 'stretched thin managing the current integration backlog' and needing a vendor to 'show value fast' — which is meaningfully specific and not templateable in its current form. It avoids generic callbacks like 'as we discussed.' The bracketed note at the bottom, however, acknowledges the reference is still a placeholder, which slightly undermines the 'not_templateable' dimension since the actual specificity depends on fill-in details not yet present in the draft."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '19 days' figure is a timeline/outcome metric, not a commercial term, and it drives toward a conversation rather than closing a deal. The email focuses entirely on value (speed to results) and steers to a live meeting with a clear CTA."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 8,
+                "justification": "The email introduces new information — the comparable customer implementation and the 19-day timeline — giving the prospect a concrete reason to respond now. There is no 'just checking in' or equivalent language. The reason to respond is somewhat time-relevant ('this week or next') but the urgency is mild; a stronger deadline or expiring data point would sharpen the 'reason_to_respond_now' dimension further."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 1,
+                "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email — not an internal update. None of the three dimensions (risk_leads, ask_is_specific, no_false_optimism) are applicable or addressed, so the criterion cannot be scored meaningfully against this draft. Scored 1 to reflect that the criterion is entirely unmet by the content type submitted."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1151,
+              "output_tokens": 509
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 8,
+                "justification": "The email references a specific concern the prospect raised — being 'stretched thin managing the current integration backlog' and needing a vendor to 'show value fast.' This is not a generic callback and could not apply to most other prospects verbatim. However, the bracketed placeholders ([Name], [Similar Company]) and the author's own note acknowledging the details need to be filled in reveal that the specificity is partially scaffolded rather than fully realized, which slightly undermines the 'not_templateable' dimension in its current draft state."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '19 days' figure is a value/outcome metric, not a cost figure. The email drives directly toward a live conversation ('Would you have 20 minutes this week or next?') and frames everything around outcomes and ROI rather than cost."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces new information the prospect didn't have — the comparable customer implementation story and the 19-day timeline — giving a concrete reason to respond now. There is no 'just checking in' or equivalent language. The only minor gap is that the time-relevance reason to respond now is implicit (the customer win is fresh) rather than explicitly tied to a deadline or urgency trigger, but this is a minor omission."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 1,
+                "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email, not an internal update. There is no internal email component in the draft to evaluate. The criterion cannot be satisfied by this content type, so it scores at the floor."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1151,
+              "output_tokens": 481
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "generation_tokens": {
+        "input_tokens": 825,
+        "output_tokens": 175
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Reference something SPECIFIC from a previous interaction, not generic callbacks",
+        "satisfied": "yes",
+        "evidence": "\"you mentioned that your team was already stretched thin managing the current integration backlog — and that any new vendor would need to show value fast or it would just become another thing on someone's plate.\" This is a specific concern paraphrased in detail, not a generic 'as we discussed.'"
+      },
+      {
+        "preference": "Never introduce price or commercial terms in email",
+        "satisfied": "yes",
+        "evidence": "No pricing, no commercial terms mentioned anywhere. The email focuses entirely on establishing relevance and booking a conversation."
+      },
+      {
+        "preference": "Follow-ups give a NEW reason to respond, not 'just checking in'",
+        "satisfied": "yes",
+        "evidence": "Introduces a new data point — a comparable customer who went live in 19 days — as the reason to re-engage, directly tied to their stated concern about implementation burden."
+      },
+      {
+        "preference": "Confident without arrogance, relationship-first but advancing the deal",
+        "satisfied": "yes",
+        "evidence": "Tone is warm and grounded: 'That stuck with me' shows genuine listening. 'I think it's worth a conversation' is confident but not pushy. Clear ask for 20 minutes advances the deal."
+      },
+      {
+        "preference": "Clear next steps",
+        "satisfied": "yes",
+        "evidence": "\"Would you have 20 minutes this week or next?\" — specific, low-friction, time-bound ask."
+      },
+      {
+        "preference": "Must not sound like a template",
+        "satisfied": "partially",
+        "evidence": "The body itself is well-personalized and doesn't read as a template. However, the bracketed placeholders and the coaching note at the bottom slightly undermine this — while clearly instructional, the draft as written is technically still a template framework. The actual content, if filled in, would land well."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 627,
+      "output_tokens": 526
+    }
+  }
+}

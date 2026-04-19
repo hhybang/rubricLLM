@@ -1,0 +1,67 @@
+{
+  "condition_means": {
+    "A": {
+      "rubric_score_mean": 0.8271666666666666,
+      "ground_truth_mean": 8.45,
+      "satisfaction_rate_mean": 0.9035714285714287
+    },
+    "C": {
+      "rubric_score_mean": 0.8586666666666666,
+      "ground_truth_mean": 8.35,
+      "satisfaction_rate_mean": 0.8915178571428571
+    },
+    "D": {
+      "rubric_score_mean": 0.8273333333333334,
+      "ground_truth_mean": 8.65,
+      "satisfaction_rate_mean": 0.9244047619047618
+    }
+  },
+  "pairwise_tests": {
+    "C_vs_A_ground_truth": {
+      "n": 20,
+      "median_diff": 0.0,
+      "mean_diff": -0.1,
+      "wilcoxon_statistic": 39.0,
+      "p_value": 0.643393776911056,
+      "significant_0.05": false
+    },
+    "D_vs_C_ground_truth": {
+      "n": 20,
+      "median_diff": 0.0,
+      "mean_diff": 0.3,
+      "wilcoxon_statistic": 14.0,
+      "p_value": 0.29816194814931973,
+      "significant_0.05": false
+    },
+    "D_vs_A_ground_truth": {
+      "n": 20,
+      "median_diff": 1.0,
+      "mean_diff": 0.2,
+      "wilcoxon_statistic": 39.0,
+      "p_value": 0.22047504125945416,
+      "significant_0.05": false
+    },
+    "C_vs_A_rubric": {
+      "n": 20,
+      "median_diff": 0.07333333333333325,
+      "mean_diff": 0.0315,
+      "wilcoxon_statistic": 47.0,
+      "p_value": 0.030350679270506366,
+      "significant_0.05": true
+    },
+    "C_vs_B_rubric": {
+      "error": "missing condition column",
+      "a": "C",
+      "b": "B"
+    },
+    "E_vs_C_rubric": {
+      "error": "missing condition column",
+      "a": "E",
+      "b": "C"
+    }
+  },
+  "grading_consistency": {
+    "mean_std_across_runs": 0.08173653248564273,
+    "max_std_criterion": 2.309401076758503
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "scenario_id": "technical_doc_01",
+  "draft_id": "technical_doc_01_mediocre",
+  "model": "sonnet",
+  "run": 3,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Critical decisions front-loaded in summaries\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"decisions_in_tldr\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There is no TL;DR section; the Overview only states what is being built and what the doc covers, with no architectural decisions (fail behavior, algorithm choice, required patterns) stated upfront.\"\n        },\n        {\n          \"dimension_id\": \"non_obvious_defaults_highlighted\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The default algorithm (sliding window) is buried in the 'Rate Limiting Algorithms' section, and the fail-open vs. fail-closed default is listed as an open question rather than called out prominently.\"\n        },\n        {\n          \"dimension_id\": \"non_goals_stated\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The doc has a 'Goals' section but no 'Non-Goals' section anywhere.\"\n        },\n        {\n          \"dimension_id\": \"decisions_before_implementation\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The failure behavior decision (fail-open vs. fail-closed) is deferred to an open question in the appendix area, appearing after all implementation details rather than before them.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Code examples as primary entry points\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"caller_side_examples\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Integration Guide includes a Go caller-side code example calling CheckRateLimit with a domain, key, and hits, and handling the allowed/not-allowed response.\"\n        },\n        {\n          \"dimension_id\": \"realistic_production_patterns\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Go example is bare-bones with no middleware integration, retry logic, timeout configuration, or other production idioms teams would actually use.\"\n        },\n        {\n          \"dimension_id\": \"error_handling_shown\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Go example completely ignores the `err` return value from CheckRateLimit — 'resp, err := client.CheckRateLimit(...)' — with no error handling path shown.\"\n        },\n        {\n          \"dimension_id\": \"inline_annotations\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The code examples contain no inline comments explaining the 'why' behind any of the lines.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Concrete debugging artifacts in operational sections\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"exact_error_output\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Failure Modes section says 'the service will return errors' and 'gRPC clients will get connection errors' without showing any exact gRPC status codes, HTTP status codes, or error response bodies.\"\n        },\n        {\n          \"dimension_id\": \"caller_perspective\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Failure modes are described from the server's perspective ('the service will return errors,' 'Redis cluster becomes unavailable') without showing what the caller actually receives.\"\n        },\n        {\n          \"dimension_id\": \"observability_signals_named\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Metrics like `ratelimit_redis_errors_total` are listed in the Monitoring section but are not connected to specific failure modes or behaviors they track.\"\n        },\n        {\n          \"dimension_id\": \"auth_rejection_examples\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Security section mentions mTLS and RBAC requirements but provides no concrete example of a rejected request or the response a caller would receive.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Tradeoff transparency with escape hatches\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tradeoff_flagged\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No design decisions are explicitly flagged as tradeoffs anywhere in the document; the sliding window vs. token bucket choice and fail-open vs. fail-closed are presented without acknowledging costs.\"\n        },\n        {\n          \"dimension_id\": \"affected_parties_named\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No teams, use cases, or workflows are identified as being affected by any design tradeoff.\"\n        },\n        {\n          \"dimension_id\": \"alternative_provided\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No alternatives, workarounds, or future-state solutions are mentioned for any design decision or constraint.\"\n        },\n        {\n          \"dimension_id\": \"visually_distinct_callout\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"There are no admonition boxes, blockquotes, or visually distinct callouts anywhere in the document.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Scan-optimized formatting\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"tables_for_comparisons\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The Performance section uses a table for latency and throughput metrics rather than inline prose.\"\n        },\n        {\n          \"dimension_id\": \"bold_key_terms\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"Bold is used only for algorithm names in the Rate Limiting Algorithms section; key decisions, requirements, and terms throughout the rest of the document are not bolded for scanning.\"\n        },\n        {\n          \"dimension_id\": \"sections_self_contained\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The Failure Modes section defers to 'the client library README for details' without providing the information inline, requiring readers to leave the document to understand failure behavior.\"\n        },\n        {\n          \"dimension_id\": \"admonition_boxes_for_warnings\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"No callout or admonition boxes are used anywhere; warnings about failure handling and RBAC permissions are embedded as inline prose.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 3678,
+  "output_tokens": 1556,
+  "latency_ms": 23138,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Critical decisions front-loaded in summaries",
+        "dimension_grades": [
+          {
+            "dimension_id": "decisions_in_tldr",
+            "grade": "NOT_MET",
+            "evidence": "There is no TL;DR section; the Overview only states what is being built and what the doc covers, with no architectural decisions (fail behavior, algorithm choice, required patterns) stated upfront."
+          },
+          {
+            "dimension_id": "non_obvious_defaults_highlighted",
+            "grade": "NOT_MET",
+            "evidence": "The default algorithm (sliding window) is buried in the 'Rate Limiting Algorithms' section, and the fail-open vs. fail-closed default is listed as an open question rather than called out prominently."
+          },
+          {
+            "dimension_id": "non_goals_stated",
+            "grade": "NOT_MET",
+            "evidence": "The doc has a 'Goals' section but no 'Non-Goals' section anywhere."
+          },
+          {
+            "dimension_id": "decisions_before_implementation",
+            "grade": "NOT_MET",
+            "evidence": "The failure behavior decision (fail-open vs. fail-closed) is deferred to an open question in the appendix area, appearing after all implementation details rather than before them."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Code examples as primary entry points",
+        "dimension_grades": [
+          {
+            "dimension_id": "caller_side_examples",
+            "grade": "MET",
+            "evidence": "The Integration Guide includes a Go caller-side code example calling CheckRateLimit with a domain, key, and hits, and handling the allowed/not-allowed response."
+          },
+          {
+            "dimension_id": "realistic_production_patterns",
+            "grade": "NOT_MET",
+            "evidence": "The Go example is bare-bones with no middleware integration, retry logic, timeout configuration, or other production idioms teams would actually use."
+          },
+          {
+            "dimension_id": "error_handling_shown",
+            "grade": "NOT_MET",
+            "evidence": "The Go example completely ignores the `err` return value from CheckRateLimit — 'resp, err := client.CheckRateLimit(...)' — with no error handling path shown."
+          },
+          {
+            "dimension_id": "inline_annotations",
+            "grade": "NOT_MET",
+            "evidence": "The code examples contain no inline comments explaining the 'why' behind any of the lines."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Concrete debugging artifacts in operational sections",
+        "dimension_grades": [
+          {
+            "dimension_id": "exact_error_output",
+            "grade": "NOT_MET",
+            "evidence": "The Failure Modes section says 'the service will return errors' and 'gRPC clients will get connection errors' without showing any exact gRPC status codes, HTTP status codes, or error response bodies."
+          },
+          {
+            "dimension_id": "caller_perspective",
+            "grade": "NOT_MET",
+            "evidence": "Failure modes are described from the server's perspective ('the service will return errors,' 'Redis cluster becomes unavailable') without showing what the caller actually receives."
+          },
+          {
+            "dimension_id": "observability_signals_named",
+            "grade": "NOT_MET",
+            "evidence": "Metrics like `ratelimit_redis_errors_total` are listed in the Monitoring section but are not connected to specific failure modes or behaviors they track."
+          },
+          {
+            "dimension_id": "auth_rejection_examples",
+            "grade": "NOT_MET",
+            "evidence": "The Security section mentions mTLS and RBAC requirements but provides no concrete example of a rejected request or the response a caller would receive."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Tradeoff transparency with escape hatches",
+        "dimension_grades": [
+          {
+            "dimension_id": "tradeoff_flagged",
+            "grade": "NOT_MET",
+            "evidence": "No design decisions are explicitly flagged as tradeoffs anywhere in the document; the sliding window vs. token bucket choice and fail-open vs. fail-closed are presented without acknowledging costs."
+          },
+          {
+            "dimension_id": "affected_parties_named",
+            "grade": "NOT_MET",
+            "evidence": "No teams, use cases, or workflows are identified as being affected by any design tradeoff."
+          },
+          {
+            "dimension_id": "alternative_provided",
+            "grade": "NOT_MET",
+            "evidence": "No alternatives, workarounds, or future-state solutions are mentioned for any design decision or constraint."
+          },
+          {
+            "dimension_id": "visually_distinct_callout",
+            "grade": "NOT_MET",
+            "evidence": "There are no admonition boxes, blockquotes, or visually distinct callouts anywhere in the document."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Scan-optimized formatting",
+        "dimension_grades": [
+          {
+            "dimension_id": "tables_for_comparisons",
+            "grade": "MET",
+            "evidence": "The Performance section uses a table for latency and throughput metrics rather than inline prose."
+          },
+          {
+            "dimension_id": "bold_key_terms",
+            "grade": "NOT_MET",
+            "evidence": "Bold is used only for algorithm names in the Rate Limiting Algorithms section; key decisions, requirements, and terms throughout the rest of the document are not bolded for scanning."
+          },
+          {
+            "dimension_id": "sections_self_contained",
+            "grade": "NOT_MET",
+            "evidence": "The Failure Modes section defers to 'the client library README for details' without providing the information inline, requiring readers to leave the document to understand failure behavior."
+          },
+          {
+            "dimension_id": "admonition_boxes_for_warnings",
+            "grade": "NOT_MET",
+            "evidence": "No callout or admonition boxes are used anywhere; warnings about failure handling and RBAC permissions are embedded as inline prose."
+          }
+        ]
+      }
+    ]
+  }
+}

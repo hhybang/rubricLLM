@@ -1,0 +1,212 @@
+[
+  {
+    "id": "expands_01_exception",
+    "description": "Adding an exception for technical writing",
+    "expected_scope_change": "expands",
+    "inputs": {
+      "criterion_wording": "Uses active voice throughout. All sentences should have clear, explicit subjects performing actions.",
+      "grader_verdict": "NOT_MET",
+      "grader_confidence": "high",
+      "grader_evidence": "The sentence 'The user can be authenticated by the system' uses passive voice.",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- says MET in context of technical explanation",
+      "draft_excerpt": "The user can be authenticated by the system via OAuth. Once authenticated, the user can access the dashboard."
+    }
+  },
+  {
+    "id": "expands_02_loose_threshold",
+    "description": "Loosening a numeric threshold (quantitative)",
+    "expected_scope_change": "expands",
+    "inputs": {
+      "criterion_wording": "Includes at least 3 concrete data points in the opening paragraph.",
+      "grader_verdict": "NOT_MET",
+      "grader_confidence": "high",
+      "grader_evidence": "The opening paragraph includes 2 data points: a revenue figure and a user count.",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- says 2 data points is sufficient for this context",
+      "draft_excerpt": "Revenue grew 30% last quarter. We now serve 2M users across 40 countries."
+    }
+  },
+  {
+    "id": "expands_03_alternative_form",
+    "description": "Allowing an alternative structural form",
+    "expected_scope_change": "expands",
+    "inputs": {
+      "criterion_wording": "Each paragraph opens with a topic sentence that states the main claim.",
+      "grader_verdict": "NOT_MET",
+      "grader_confidence": "medium",
+      "grader_evidence": "The third paragraph opens with a rhetorical question rather than a topic sentence: 'Why does this matter?'",
+      "grader_ambiguity_note": "Unclear whether a rhetorical question that sets up the paragraph's claim counts as a topic sentence.",
+      "user_verdict": "disagrees with grader -- rhetorical questions that set up the claim should count",
+      "draft_excerpt": "Why does this matter? Because engagement dropped 40% after the redesign, every user who abandons the flow costs us revenue."
+    }
+  },
+  {
+    "id": "expands_04_extend_applicability",
+    "description": "Extending applicability to a new content type",
+    "expected_scope_change": "expands",
+    "inputs": {
+      "criterion_wording": "Citations are required for every empirical claim about users.",
+      "grader_verdict": "NOT_MET",
+      "grader_confidence": "high",
+      "grader_evidence": "The claim 'users prefer dark mode' has no citation.",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- internal product intuition statements shouldn't require citations",
+      "draft_excerpt": "From our own product intuition, users prefer dark mode in low-light environments."
+    }
+  },
+  {
+    "id": "narrows_01_added_condition",
+    "description": "Adding a required condition",
+    "expected_scope_change": "narrows",
+    "inputs": {
+      "criterion_wording": "Opens with a compelling hook.",
+      "grader_verdict": "MET",
+      "grader_confidence": "medium",
+      "grader_evidence": "The opening 'Hello team' is a greeting, which could be called a hook.",
+      "grader_ambiguity_note": "Unclear what counts as 'compelling' -- any attention-grabbing opener, or specifically one tied to the main argument?",
+      "user_verdict": "disagrees with grader -- says NOT_MET because the hook isn't connected to the argument",
+      "draft_excerpt": "Hello team, I wanted to share an update on the Q3 roadmap."
+    }
+  },
+  {
+    "id": "narrows_02_removed_exception",
+    "description": "Removing an existing exception",
+    "expected_scope_change": "narrows",
+    "inputs": {
+      "criterion_wording": "Avoids jargon, except for industry-standard terms recognized by the target audience.",
+      "grader_verdict": "MET",
+      "grader_confidence": "high",
+      "grader_evidence": "Uses 'ARR' and 'churn', which are standard SaaS terms.",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- the audience for this piece is non-technical, so even industry-standard jargon is inappropriate",
+      "draft_excerpt": "Our ARR grew 30% year-over-year, and churn remained below 5%."
+    }
+  },
+  {
+    "id": "narrows_03_tightened_threshold",
+    "description": "Tightening a numeric threshold",
+    "expected_scope_change": "narrows",
+    "inputs": {
+      "criterion_wording": "Paragraphs are at most 6 sentences long.",
+      "grader_verdict": "MET",
+      "grader_confidence": "high",
+      "grader_evidence": "The longest paragraph is 5 sentences.",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- 5 sentences is too long for this email format; the bar should be 3",
+      "draft_excerpt": "We launched the feature last week. Early metrics look strong. Engagement is up 15%. Retention is stable. We'll share a full report next week."
+    }
+  },
+  {
+    "id": "narrows_04_restricted_applicability",
+    "description": "Restricting applicability",
+    "expected_scope_change": "narrows",
+    "inputs": {
+      "criterion_wording": "Includes a call to action at the end.",
+      "grader_verdict": "MET",
+      "grader_confidence": "medium",
+      "grader_evidence": "The draft ends with 'Let me know what you think.'",
+      "grader_ambiguity_note": "Is a generic invitation to respond a call to action, or does the CTA need to be specific?",
+      "user_verdict": "disagrees with grader -- a CTA must be specific and time-bound, not a generic 'let me know'",
+      "draft_excerpt": "Please review the attached deck. Let me know what you think."
+    }
+  },
+  {
+    "id": "reframes_01_focus_shift",
+    "description": "Shifting focus from structure to substance",
+    "expected_scope_change": "reframes",
+    "inputs": {
+      "criterion_wording": "The email has a clear subject line, greeting, body, and sign-off.",
+      "grader_verdict": "MET",
+      "grader_confidence": "high",
+      "grader_evidence": "The email has a subject 'Q3 update', greeting 'Hi team', body, and sign-off 'Thanks'.",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- the structure is there but the actual content quality is what matters; structure alone shouldn't pass",
+      "draft_excerpt": "Subject: Q3 update\nHi team,\nQ3 was fine overall. Nothing major to report.\nThanks"
+    }
+  },
+  {
+    "id": "reframes_02_unit_change",
+    "description": "Changing the unit of analysis",
+    "expected_scope_change": "reframes",
+    "inputs": {
+      "criterion_wording": "The overall tone is warm and approachable.",
+      "grader_verdict": "MET",
+      "grader_confidence": "medium",
+      "grader_evidence": "The draft uses friendly language throughout -- 'Hi there', 'hope you're well', 'thanks so much'.",
+      "grader_ambiguity_note": "'Overall tone' is vague -- averaging across the whole draft, or every sentence individually?",
+      "user_verdict": "disagrees with grader -- each paragraph needs its own warmth check, not just an overall average",
+      "draft_excerpt": "Hi there, hope you're well. Now, about the invoice: payment is overdue by 45 days and we'll need to escalate if not received by Friday. Thanks so much."
+    }
+  },
+  {
+    "id": "reframes_03_dimension_replacement",
+    "description": "Replacing one aspect of evaluation with a different one",
+    "expected_scope_change": "reframes",
+    "inputs": {
+      "criterion_wording": "Uses concrete numbers wherever possible.",
+      "grader_verdict": "MET",
+      "grader_confidence": "high",
+      "grader_evidence": "Includes 'grew 30%', '2M users', '40 countries'.",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- numbers aren't the point; I want clarity about what changed, which can be qualitative",
+      "draft_excerpt": "Revenue grew 30%. We now serve 2M users across 40 countries."
+    }
+  },
+  {
+    "id": "clarifies_01_term_disambiguation",
+    "description": "Disambiguating a vague term",
+    "expected_scope_change": "clarifies",
+    "inputs": {
+      "criterion_wording": "The writing is concise.",
+      "grader_verdict": "NOT_MET",
+      "grader_confidence": "low",
+      "grader_evidence": "Several paragraphs exceed 5 sentences.",
+      "grader_ambiguity_note": "'Concise' is not operationalized -- unclear whether it means sentence length, paragraph length, or redundancy.",
+      "user_verdict": "agrees with grader -- but the rubric's definition of concise is unclear",
+      "draft_excerpt": "We launched the feature last week, after three months of development that involved extensive user research, technical design reviews, and multiple rounds of QA testing. The results have been strong."
+    }
+  },
+  {
+    "id": "clarifies_02_added_definition",
+    "description": "Adding a definition for a key term",
+    "expected_scope_change": "clarifies",
+    "inputs": {
+      "criterion_wording": "Avoids hollow intensifiers.",
+      "grader_verdict": "NOT_MET",
+      "grader_confidence": "medium",
+      "grader_evidence": "Uses 'very exciting' and 'absolutely crucial'.",
+      "grader_ambiguity_note": "'Hollow intensifier' is not defined -- is 'very' always hollow, or only when not justified?",
+      "user_verdict": "agrees with grader -- but the rubric should define what counts as hollow",
+      "draft_excerpt": "This is a very exciting development. The partnership is absolutely crucial for our growth plans."
+    }
+  },
+  {
+    "id": "clarifies_03_sharpening",
+    "description": "Sharpening wording without changing behavior",
+    "expected_scope_change": "clarifies",
+    "inputs": {
+      "criterion_wording": "Speaks to the audience's concerns.",
+      "grader_verdict": "MET",
+      "grader_confidence": "medium",
+      "grader_evidence": "The email addresses the team's recent question about timeline.",
+      "grader_ambiguity_note": "'Concerns' is vague -- explicit questions they asked, or implicit anxieties the writer should anticipate?",
+      "user_verdict": "agrees with grader -- but the rubric's wording is ambiguous about what 'concerns' means",
+      "draft_excerpt": "I know several of you asked about timeline after Monday's meeting. Here's where we are..."
+    }
+  },
+  {
+    "id": "idiosyncratic_01",
+    "description": "User feedback is a one-off stylistic preference, not a systematic issue -- should produce clarifies with minimal edit",
+    "expected_scope_change": "clarifies",
+    "inputs": {
+      "criterion_wording": "The opening paragraph states the main point.",
+      "grader_verdict": "MET",
+      "grader_confidence": "high",
+      "grader_evidence": "The opening paragraph says 'We shipped the redesign on schedule.'",
+      "grader_ambiguity_note": "",
+      "user_verdict": "disagrees with grader -- I prefer openings that tell a story before stating the point, this time at least",
+      "draft_excerpt": "We shipped the redesign on schedule. The team hit every milestone, and the launch went smoothly."
+    }
+  }
+]

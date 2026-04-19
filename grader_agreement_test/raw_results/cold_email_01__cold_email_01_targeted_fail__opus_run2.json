@@ -1,0 +1,130 @@
+{
+  "scenario_id": "cold_email_01",
+  "draft_id": "cold_email_01_targeted_fail",
+  "model": "opus",
+  "run": 2,
+  "raw_response": "```json\n{\n  \"grades\": [\n    {\n      \"criterion_name\": \"Transparent intent\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_false_softeners\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The email contains no hedges like 'no worries if not' or 'even if this isn't a fit' — it states the goal directly without downplaying the ask.\"\n        },\n        {\n          \"dimension_id\": \"explicit_ask\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"Are you open to a 30-minute call the week of the 14th?\\\" is a plain, specific ask.\"\n        },\n        {\n          \"dimension_id\": \"honest_framing\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"I want to raise our Series A with Gradient Ventures leading. That's why I'm writing.\\\" is completely transparent about the sender's intent.\"\n        },\n        {\n          \"dimension_id\": \"no_trick_feel\",\n          \"grade\": \"MET\",\n          \"evidence\": \"No sentence reads as a persuasion tactic disguised as candor; the directness of \\\"That's why I'm writing\\\" and the straightforward narrative feel genuine rather than strategically performed.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Traction as narrative momentum\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"temporal_arc\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"When we launched eighteen months ago… three of our first ten customers… We crossed $2.1M in ARR last quarter, up from $400K twelve months prior\\\" places metrics in a clear time-based progression.\"\n        },\n        {\n          \"dimension_id\": \"no_bullet_stats\",\n          \"grade\": \"MET\",\n          \"evidence\": \"All traction data ($2.1M ARR, $400K, 145% NRR, 60% of new revenue) is embedded in flowing prose sentences, not presented as a list or standalone figures.\"\n        },\n        {\n          \"dimension_id\": \"implied_trajectory\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The 5x ARR growth in 12 months and the self-reinforcing referral loop (\\\"their next project defaults to us\\\") let the reader extrapolate continued momentum without the sender explicitly claiming future growth.\"\n        },\n        {\n          \"dimension_id\": \"organic_demand_signal\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"three of our first ten customers started pulling us into their subcontractor networks\\\" and \\\"That referral loop now accounts for 60% of new revenue\\\" clearly show demand pulling the company forward.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Double-duty personalization\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"specific_source\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"Your talk at SaaStr last October on 'workflow gravity'\\\" references a specific talk with a specific concept, not just a deal or title.\"\n        },\n        {\n          \"dimension_id\": \"thesis_connection\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The email connects Sarah's \\\"workflow gravity\\\" thesis — the system of record teams can't route around — directly to Fieldwork's dynamic where GC project networks default to their system.\"\n        },\n        {\n          \"dimension_id\": \"proof_embedded\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The personalization passage introduces concrete metrics: the referral loop accounting for 60% of new revenue and the 145% NRR as evidence of the \\\"gravity\\\" thesis playing out.\"\n        },\n        {\n          \"dimension_id\": \"natural_integration\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The reference to Sarah's talk flows directly into the narrative about Fieldwork's traction and is not a separate flattery paragraph — it opens the core argument of the email.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Peer-to-peer framing\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"no_deference_markers\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The email contains no phrases like 'happy to work around your schedule' or 'whenever works for you' — it proposes a specific time window directly.\"\n        },\n        {\n          \"dimension_id\": \"mutual_value\",\n          \"grade\": \"NOT_MET\",\n          \"evidence\": \"The email frames the conversation as \\\"I'd like to walk you through the full picture\\\" — entirely about what the sender wants to show, with no indication of why the conversation would be valuable or interesting for Sarah.\"\n        },\n        {\n          \"dimension_id\": \"direct_scheduling\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"Are you open to a 30-minute call the week of the 14th?\\\" proposes a concrete time window and duration.\"\n        }\n      ]\n    },\n    {\n      \"criterion_name\": \"Signal-dense subject line\",\n      \"dimension_grades\": [\n        {\n          \"dimension_id\": \"credibility_upfront\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"$2.1M ARR in vertical SaaS for construction\\\" includes a concrete traction signal and domain in the subject line.\"\n        },\n        {\n          \"dimension_id\": \"ask_visible\",\n          \"grade\": \"MET\",\n          \"evidence\": \"\\\"Series A conversation\\\" makes the purpose of the email immediately discernible from the subject line.\"\n        },\n        {\n          \"dimension_id\": \"no_cleverness_tricks\",\n          \"grade\": \"MET\",\n          \"evidence\": \"The subject line uses standard capitalization and plain language with no ellipses, vague teasers, or 're:' faking.\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "input_tokens": 2092,
+  "output_tokens": 1440,
+  "latency_ms": 20217,
+  "error": null,
+  "grades": {
+    "grades": [
+      {
+        "criterion_name": "Transparent intent",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_false_softeners",
+            "grade": "MET",
+            "evidence": "The email contains no hedges like 'no worries if not' or 'even if this isn't a fit' — it states the goal directly without downplaying the ask."
+          },
+          {
+            "dimension_id": "explicit_ask",
+            "grade": "MET",
+            "evidence": "\"Are you open to a 30-minute call the week of the 14th?\" is a plain, specific ask."
+          },
+          {
+            "dimension_id": "honest_framing",
+            "grade": "MET",
+            "evidence": "\"I want to raise our Series A with Gradient Ventures leading. That's why I'm writing.\" is completely transparent about the sender's intent."
+          },
+          {
+            "dimension_id": "no_trick_feel",
+            "grade": "MET",
+            "evidence": "No sentence reads as a persuasion tactic disguised as candor; the directness of \"That's why I'm writing\" and the straightforward narrative feel genuine rather than strategically performed."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Traction as narrative momentum",
+        "dimension_grades": [
+          {
+            "dimension_id": "temporal_arc",
+            "grade": "MET",
+            "evidence": "\"When we launched eighteen months ago… three of our first ten customers… We crossed $2.1M in ARR last quarter, up from $400K twelve months prior\" places metrics in a clear time-based progression."
+          },
+          {
+            "dimension_id": "no_bullet_stats",
+            "grade": "MET",
+            "evidence": "All traction data ($2.1M ARR, $400K, 145% NRR, 60% of new revenue) is embedded in flowing prose sentences, not presented as a list or standalone figures."
+          },
+          {
+            "dimension_id": "implied_trajectory",
+            "grade": "MET",
+            "evidence": "The 5x ARR growth in 12 months and the self-reinforcing referral loop (\"their next project defaults to us\") let the reader extrapolate continued momentum without the sender explicitly claiming future growth."
+          },
+          {
+            "dimension_id": "organic_demand_signal",
+            "grade": "MET",
+            "evidence": "\"three of our first ten customers started pulling us into their subcontractor networks\" and \"That referral loop now accounts for 60% of new revenue\" clearly show demand pulling the company forward."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Double-duty personalization",
+        "dimension_grades": [
+          {
+            "dimension_id": "specific_source",
+            "grade": "MET",
+            "evidence": "\"Your talk at SaaStr last October on 'workflow gravity'\" references a specific talk with a specific concept, not just a deal or title."
+          },
+          {
+            "dimension_id": "thesis_connection",
+            "grade": "MET",
+            "evidence": "The email connects Sarah's \"workflow gravity\" thesis — the system of record teams can't route around — directly to Fieldwork's dynamic where GC project networks default to their system."
+          },
+          {
+            "dimension_id": "proof_embedded",
+            "grade": "MET",
+            "evidence": "The personalization passage introduces concrete metrics: the referral loop accounting for 60% of new revenue and the 145% NRR as evidence of the \"gravity\" thesis playing out."
+          },
+          {
+            "dimension_id": "natural_integration",
+            "grade": "MET",
+            "evidence": "The reference to Sarah's talk flows directly into the narrative about Fieldwork's traction and is not a separate flattery paragraph — it opens the core argument of the email."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Peer-to-peer framing",
+        "dimension_grades": [
+          {
+            "dimension_id": "no_deference_markers",
+            "grade": "MET",
+            "evidence": "The email contains no phrases like 'happy to work around your schedule' or 'whenever works for you' — it proposes a specific time window directly."
+          },
+          {
+            "dimension_id": "mutual_value",
+            "grade": "NOT_MET",
+            "evidence": "The email frames the conversation as \"I'd like to walk you through the full picture\" — entirely about what the sender wants to show, with no indication of why the conversation would be valuable or interesting for Sarah."
+          },
+          {
+            "dimension_id": "direct_scheduling",
+            "grade": "MET",
+            "evidence": "\"Are you open to a 30-minute call the week of the 14th?\" proposes a concrete time window and duration."
+          }
+        ]
+      },
+      {
+        "criterion_name": "Signal-dense subject line",
+        "dimension_grades": [
+          {
+            "dimension_id": "credibility_upfront",
+            "grade": "MET",
+            "evidence": "\"$2.1M ARR in vertical SaaS for construction\" includes a concrete traction signal and domain in the subject line."
+          },
+          {
+            "dimension_id": "ask_visible",
+            "grade": "MET",
+            "evidence": "\"Series A conversation\" makes the purpose of the email immediately discernible from the subject line."
+          },
+          {
+            "dimension_id": "no_cleverness_tricks",
+            "grade": "MET",
+            "evidence": "The subject line uses standard capitalization and plain language with no ellipses, vague teasers, or 're:' faking."
+          }
+        ]
+      }
+    ]
+  }
+}

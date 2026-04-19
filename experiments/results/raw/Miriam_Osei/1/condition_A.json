@@ -1,0 +1,333 @@
+{
+  "persona": "Miriam Osei",
+  "task_index": 1,
+  "task_description": "I need to email managers about a new policy requiring them to document performance concerns before initiating any PIP — we've had inconsistency and some legal exposure.",
+  "condition": "A",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes HR communications that treat employees as intelligent adults who deserve to understand why things change. Prioritizes trust-building through transparency and precision over polished corporate messaging.",
+    "rubric": [
+      {
+        "name": "Problem-First Policy Framing",
+        "category": "Structure",
+        "description": "Policy changes lead with the employee-facing problem the policy solves, not with the policy itself. The reader should understand and care about the 'why' before encountering the 'what.'",
+        "dimensions": [
+          {
+            "id": "problem_before_policy",
+            "label": "The email describes the problem or need before introducing the policy change"
+          },
+          {
+            "id": "employee_perspective_problem",
+            "label": "The problem is framed from the employee's experience, not the company's operational needs"
+          },
+          {
+            "id": "why_before_what",
+            "label": "The rationale appears before the specific details of the change"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Decision Attribution",
+        "category": "Style",
+        "description": "Decisions are attributed to 'we' or 'the team,' never 'I decided.' The sender avoids making themselves the target by using collective framing, which channels responses toward constructive feedback rather than personal pushback.",
+        "dimensions": [
+          {
+            "id": "collective_subject",
+            "label": "Decisions use 'we' or 'the leadership team' as subject, not 'I'"
+          },
+          {
+            "id": "no_personal_authority",
+            "label": "Does not frame the change as the sender's personal choice or preference"
+          },
+          {
+            "id": "invites_input_not_appeal",
+            "label": "Questions are directed toward understanding, not appealing the decision — 'questions about how this works' not 'if you disagree'"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Named Human Contact Point",
+        "category": "Content",
+        "description": "Questions are directed to a specific named person, not a role or generic channel. 'Ask Jamal in Benefits' not 'Contact HR.' Naming the person signals accessibility and accountability.",
+        "dimensions": [
+          {
+            "id": "named_person",
+            "label": "The point of contact is a specific person's name, not a department or role title"
+          },
+          {
+            "id": "specific_channel",
+            "label": "Includes how to reach them (Slack, email, office hours) — not just 'reach out'"
+          },
+          {
+            "id": "no_generic_contact",
+            "label": "Does not use 'contact HR' or 'reach out to your manager' without a name"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Absolute Date Precision",
+        "category": "Content",
+        "description": "Any change affecting compensation, benefits, or workload includes exact dates — never relative timeframes like 'in the coming weeks' or 'soon.' People planning their lives need precision.",
+        "dimensions": [
+          {
+            "id": "exact_dates",
+            "label": "All timelines use specific dates (e.g., 'March 15') not relative terms ('next month', 'soon')"
+          },
+          {
+            "id": "effective_date_explicit",
+            "label": "The effective date of the change is stated explicitly, not implied"
+          },
+          {
+            "id": "transition_timeline",
+            "label": "If there's a transition period, both start and end dates are provided"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Miriam's non-negotiable is that employees are treated as adults who deserve the full picture. Will reject any draft that buries the 'why' or uses vague timelines. Prefers warmth but will sacrifice it for precision — never the reverse."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: New Step Before Starting a PIP — What's Changing and Why\n\nHi everyone,\n\nWe want to share a change to how we handle performance improvement plans, and we'd like to start with what prompted it.\n\nOver the past year, we've seen real inconsistency in how PIPs get initiated across teams. In some cases, employees have entered a formal PIP without any prior documented conversation about the concern — which isn't fair to them, and has created legal exposure for the company when those situations are later reviewed. People deserve to know a concern exists before it becomes a formal process. And when documentation is sparse, it's hard for anyone — the employee, their manager, or HR — to understand the full picture.\n\n**What's changing**\n\nStarting **February 3, 2025**, initiating a PIP will require at least one prior documented performance conversation on record. That documentation should capture the specific concern, the date of the conversation, and what was discussed in terms of expectations going forward. It doesn't need to be lengthy — a few clear sentences in the employee's file is sufficient.\n\nThis isn't a new bureaucratic hurdle. It's a floor we should already have been meeting, and formalizing it gives everyone — including you — a clearer record to stand on.\n\n**What this means for you**\n\nIf you're currently managing a performance concern and anticipate a PIP may be needed, please make sure at least one documented conversation is on file before February 3. If you're unsure whether your existing notes meet the standard, that's worth checking now rather than later.\n\nGoing forward, HR will confirm documentation is in place before countersigning any PIP.\n\n**Questions?**\n\nReach out to **Priya Anand** directly — she's the right person to talk through specific situations or edge cases. You can message her on Slack at **@priya.anand** or email her at **priya.anand@[company].com**. She's also holding open office hours on **January 22 and January 29** (10–11 a.m.) for anyone who wants to talk it through in real time.\n\nWe know this adds a step, and we appreciate you working with us to get it right. The goal is a process that's fair to employees and gives managers a solid foundation when difficult conversations are necessary.\n\nThanks,\n[Your name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Problem-First Policy Framing",
+              "score": 9,
+              "justification": "The email opens explicitly with 'we'd like to start with what prompted it' and immediately describes the employee-facing problem: people entering PIPs without prior documented conversations, which 'isn't fair to them.' The rationale (inconsistency, lack of fairness, sparse documentation) is fully developed before the 'What's changing' section introduces the policy. The problem is framed from the employee's experience ('People deserve to know a concern exists before it becomes a formal process'), not purely from operational or legal needs — though legal exposure is mentioned as a secondary point, it doesn't lead. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "Named Human Contact Point",
+              "score": 10,
+              "justification": "The contact is a specific named person (Priya Anand), with two explicit channels (Slack @priya.anand and email address), and scheduled office hours with exact dates and times (January 22 and January 29, 10–11 a.m.). There is no generic 'contact HR' language anywhere. All three dimensions are unambiguously satisfied."
+            },
+            {
+              "criterion_name": "Decision Attribution",
+              "score": 9,
+              "justification": "All decisions use 'we' as the subject ('We want to share,' 'we've seen,' 'we know this adds a step'), and the change is never framed as the sender's personal choice. The email does not invite appeals — questions are directed toward 'specific situations or edge cases,' which is constructive and operational rather than inviting disagreement. All three dimensions are clearly met."
+            },
+            {
+              "criterion_name": "Absolute Date Precision",
+              "score": 10,
+              "justification": "The effective date is stated with full precision: 'February 3, 2025.' The transition period is addressed with a clear action item ('before February 3') and the office hours are given exact dates and times. No relative timeframes like 'soon' or 'in the coming weeks' appear anywhere in the draft. All three dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Problem-First Policy Framing",
+              "score": 9,
+              "justification": "The email opens with the problem before introducing the policy: inconsistent PIP initiation, employees entering formal processes without prior documented conversations, and legal exposure. The problem is framed partly from the employee's perspective ('People deserve to know a concern exists before it becomes a formal process') and partly from the company's operational/legal needs, which slightly dilutes the employee-perspective dimension. The rationale clearly precedes the 'What's changing' section with its specific policy details."
+            },
+            {
+              "criterion_name": "Named Human Contact Point",
+              "score": 10,
+              "justification": "The contact is a specific named person (Priya Anand), with multiple specific channels provided (Slack @priya.anand, email address, and in-person office hours with exact dates and times). There is no generic 'contact HR' language anywhere in the email."
+            },
+            {
+              "criterion_name": "Decision Attribution",
+              "score": 9,
+              "justification": "The email consistently uses 'we' throughout ('We want to share,' 'we've seen,' 'we appreciate') and never attributes the decision to the sender personally. The framing positions the change as a collective recognition of an existing standard rather than a personal mandate. The closing question invitation ('questions about how this works') is appropriately directed toward understanding rather than appealing the decision."
+            },
+            {
+              "criterion_name": "Absolute Date Precision",
+              "score": 10,
+              "justification": "The effective date is stated explicitly as 'February 3, 2025.' The transition guidance for managers currently handling performance concerns references the same concrete date. Office hours are given with exact dates (January 22 and January 29) and times (10–11 a.m.). No relative timeframes like 'soon' or 'coming weeks' appear anywhere in the draft."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Problem-First Policy Framing",
+              "score": 9,
+              "justification": "The email opens with the problem before introducing the policy: inconsistent PIP initiation, employees entering formal processes without prior documented conversations, and resulting unfairness and legal exposure. The problem is partially framed from the employee's perspective ('People deserve to know a concern exists before it becomes a formal process') though it also mentions company legal exposure, which is an operational concern. The rationale clearly precedes the 'What's changing' section. Minor deduction because the employee-perspective framing shares space with company-centric reasoning rather than leading purely from the employee's experience."
+            },
+            {
+              "criterion_name": "Named Human Contact Point",
+              "score": 10,
+              "justification": "The contact is a specific named person (Priya Anand), multiple specific channels are provided (Slack @priya.anand, email address), and specific office hours with exact dates and times are included. There is no generic 'contact HR' language anywhere in the email. This dimension is fully and precisely satisfied."
+            },
+            {
+              "criterion_name": "Decision Attribution",
+              "score": 8,
+              "justification": "The email consistently uses 'we' throughout ('We want to share,' 'we've seen,' 'we appreciate') and never attributes the decision to the sender personally. The framing does not invite appeal of the decision. However, the email doesn't explicitly attribute the decision to 'the leadership team' or a named collective body, which slightly weakens accountability framing, though 'we' is used appropriately throughout. No personal authority framing appears."
+            },
+            {
+              "criterion_name": "Absolute Date Precision",
+              "score": 10,
+              "justification": "The effective date is stated explicitly as 'February 3, 2025.' The transition period is addressed with a clear action item ('before February 3'). Office hours are given with exact dates (January 22 and January 29) and times (10–11 a.m.). No relative timeframes like 'soon' or 'in the coming weeks' appear anywhere in the draft."
+            }
+          ],
+          "overall_weighted_score": 0.92,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Problem-First Policy Framing": 9.0,
+          "Named Human Contact Point": 10.0,
+          "Decision Attribution": 8.666666666666666,
+          "Absolute Date Precision": 10.0
+        },
+        "std_scores": {
+          "Problem-First Policy Framing": 0.0,
+          "Named Human Contact Point": 0.0,
+          "Decision Attribution": 0.5773502691896257,
+          "Absolute Date Precision": 0.0
+        },
+        "mean_overall": 0.9333333333333332,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Problem-First Policy Framing",
+                "score": 9,
+                "justification": "The email opens explicitly with 'we'd like to start with what prompted it' and immediately describes the employee-facing problem: people entering PIPs without prior documented conversations, which 'isn't fair to them.' The rationale (inconsistency, lack of fairness, sparse documentation) is fully developed before the 'What's changing' section introduces the policy. The problem is framed from the employee's experience ('People deserve to know a concern exists before it becomes a formal process'), not purely from operational or legal needs — though legal exposure is mentioned as a secondary point, it doesn't lead. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "Named Human Contact Point",
+                "score": 10,
+                "justification": "The contact is a specific named person (Priya Anand), with two explicit channels (Slack @priya.anand and email address), and scheduled office hours with exact dates and times (January 22 and January 29, 10–11 a.m.). There is no generic 'contact HR' language anywhere. All three dimensions are unambiguously satisfied."
+              },
+              {
+                "criterion_name": "Decision Attribution",
+                "score": 9,
+                "justification": "All decisions use 'we' as the subject ('We want to share,' 'we've seen,' 'we know this adds a step'), and the change is never framed as the sender's personal choice. The email does not invite appeals — questions are directed toward 'specific situations or edge cases,' which is constructive and operational rather than inviting disagreement. All three dimensions are clearly met."
+              },
+              {
+                "criterion_name": "Absolute Date Precision",
+                "score": 10,
+                "justification": "The effective date is stated with full precision: 'February 3, 2025.' The transition period is addressed with a clear action item ('before February 3') and the office hours are given exact dates and times. No relative timeframes like 'soon' or 'in the coming weeks' appear anywhere in the draft. All three dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 525
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Problem-First Policy Framing",
+                "score": 9,
+                "justification": "The email opens with the problem before introducing the policy: inconsistent PIP initiation, employees entering formal processes without prior documented conversations, and legal exposure. The problem is framed partly from the employee's perspective ('People deserve to know a concern exists before it becomes a formal process') and partly from the company's operational/legal needs, which slightly dilutes the employee-perspective dimension. The rationale clearly precedes the 'What's changing' section with its specific policy details."
+              },
+              {
+                "criterion_name": "Named Human Contact Point",
+                "score": 10,
+                "justification": "The contact is a specific named person (Priya Anand), with multiple specific channels provided (Slack @priya.anand, email address, and in-person office hours with exact dates and times). There is no generic 'contact HR' language anywhere in the email."
+              },
+              {
+                "criterion_name": "Decision Attribution",
+                "score": 9,
+                "justification": "The email consistently uses 'we' throughout ('We want to share,' 'we've seen,' 'we appreciate') and never attributes the decision to the sender personally. The framing positions the change as a collective recognition of an existing standard rather than a personal mandate. The closing question invitation ('questions about how this works') is appropriately directed toward understanding rather than appealing the decision."
+              },
+              {
+                "criterion_name": "Absolute Date Precision",
+                "score": 10,
+                "justification": "The effective date is stated explicitly as 'February 3, 2025.' The transition guidance for managers currently handling performance concerns references the same concrete date. Office hours are given with exact dates (January 22 and January 29) and times (10–11 a.m.). No relative timeframes like 'soon' or 'coming weeks' appear anywhere in the draft."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 472
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Problem-First Policy Framing",
+                "score": 9,
+                "justification": "The email opens with the problem before introducing the policy: inconsistent PIP initiation, employees entering formal processes without prior documented conversations, and resulting unfairness and legal exposure. The problem is partially framed from the employee's perspective ('People deserve to know a concern exists before it becomes a formal process') though it also mentions company legal exposure, which is an operational concern. The rationale clearly precedes the 'What's changing' section. Minor deduction because the employee-perspective framing shares space with company-centric reasoning rather than leading purely from the employee's experience."
+              },
+              {
+                "criterion_name": "Named Human Contact Point",
+                "score": 10,
+                "justification": "The contact is a specific named person (Priya Anand), multiple specific channels are provided (Slack @priya.anand, email address), and specific office hours with exact dates and times are included. There is no generic 'contact HR' language anywhere in the email. This dimension is fully and precisely satisfied."
+              },
+              {
+                "criterion_name": "Decision Attribution",
+                "score": 8,
+                "justification": "The email consistently uses 'we' throughout ('We want to share,' 'we've seen,' 'we appreciate') and never attributes the decision to the sender personally. The framing does not invite appeal of the decision. However, the email doesn't explicitly attribute the decision to 'the leadership team' or a named collective body, which slightly weakens accountability framing, though 'we' is used appropriately throughout. No personal authority framing appears."
+              },
+              {
+                "criterion_name": "Absolute Date Precision",
+                "score": 10,
+                "justification": "The effective date is stated explicitly as 'February 3, 2025.' The transition period is addressed with a clear action item ('before February 3'). Office hours are given with exact dates (January 22 and January 29) and times (10–11 a.m.). No relative timeframes like 'soon' or 'in the coming weeks' appear anywhere in the draft."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 521
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "generation_tokens": {
+        "input_tokens": 841,
+        "output_tokens": 514
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Lead with the PROBLEM from the employee's perspective before stating the policy",
+        "satisfied": "yes",
+        "evidence": "The second paragraph opens with the problem: 'employees have entered a formal PIP without any prior documented conversation about the concern — which isn't fair to them' — framing the issue from the employee's perspective before introducing the policy change."
+      },
+      {
+        "preference": "Use 'you/your' heavily but never 'I' in subject position; decisions come from 'we' or 'the team'",
+        "satisfied": "yes",
+        "evidence": "The draft uses 'we' throughout ('We want to share,' 'we've seen,' 'we appreciate') and 'you/your' extensively ('What this means for you,' 'If you're currently managing'). No instance of 'I' appears in the subject position."
+      },
+      {
+        "preference": "Name a specific PERSON as the contact, not a role or generic 'reach out'",
+        "satisfied": "yes",
+        "evidence": "'Reach out to Priya Anand directly — she's the right person to talk through specific situations or edge cases. You can message her on Slack at @priya.anand or email her at priya.anand@[company].com.'"
+      },
+      {
+        "preference": "Provide EXACT dates, never relative timeframes like 'in the coming weeks'",
+        "satisfied": "yes",
+        "evidence": "The draft specifies 'February 3, 2025' as the effective date and 'January 22 and January 29 (10–11 a.m.)' for office hours — all precise dates with no vague relative timeframes."
+      },
+      {
+        "preference": "Warm but precise tone, policy-aware without sounding legalistic",
+        "satisfied": "yes",
+        "evidence": "The tone is conversational and clear ('It doesn't need to be lengthy — a few clear sentences in the employee's file is sufficient') while still being precise about requirements. The one mention of 'legal exposure' is brief and contextual rather than hedging."
+      },
+      {
+        "preference": "Inclusive language, no corporate euphemisms or dehumanizing terms",
+        "satisfied": "yes",
+        "evidence": "Employees are referred to as 'people,' 'employees,' 'everyone,' and 'you' — never as 'resources' or 'headcount.' No corporate euphemisms are used to obscure the nature of the change."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 966,
+      "output_tokens": 646
+    }
+  }
+}

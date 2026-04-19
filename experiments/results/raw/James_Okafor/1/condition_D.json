@@ -1,0 +1,1697 @@
+{
+  "persona": "James Okafor",
+  "task_index": 1,
+  "task_description": "I need to email our dermatologists about a new insurance pre-authorization requirement that adds 48 hours to certain procedure approvals — it affects their scheduling.",
+  "condition": "D",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+    "rubric": [
+      {
+        "name": "Patient Flow Impact First",
+        "category": "Structure",
+        "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+        "dimensions": [
+          {
+            "id": "patient_impact_leads",
+            "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+          },
+          {
+            "id": "quantified_time_impact",
+            "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+          },
+          {
+            "id": "operational_reason_follows",
+            "label": "The business or compliance reason for the change appears after the patient impact, not before"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Fallback Procedures Included",
+        "category": "Content",
+        "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+        "dimensions": [
+          {
+            "id": "fallback_stated",
+            "label": "Includes a specific 'if X fails, do Y instead' instruction"
+          },
+          {
+            "id": "fallback_is_actionable",
+            "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+          },
+          {
+            "id": "failure_scenario_named",
+            "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "No Patient Identifiers",
+        "category": "Audience",
+        "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+        "dimensions": [
+          {
+            "id": "no_patient_names",
+            "label": "Does not include any patient names, initials, or uniquely identifying information"
+          },
+          {
+            "id": "uses_neutral_references",
+            "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+          },
+          {
+            "id": "no_clinical_details",
+            "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Bounded Process Steps",
+        "category": "Structure",
+        "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+        "dimensions": [
+          {
+            "id": "numbered_steps",
+            "label": "Processes with more than two actions use numbered steps"
+          },
+          {
+            "id": "max_five_steps",
+            "label": "No process in the email exceeds 5 numbered steps"
+          },
+          {
+            "id": "complex_deferred",
+            "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+  },
+  "corrections_applied": {
+    "corrections": [
+      {
+        "criterion_name": "Patient Flow Impact First",
+        "issue": "The grader is docking a point in both rounds for a 'minor sequencing imperfection' — the opening sentence mentions the payer requirement before diving into patient impact. But the grader is treating the subject line and framing sentence as 'operational rationale,' which they are not. A one-sentence context-setter ('Starting [date], a new pre-authorization requirement will change how certain procedures get scheduled') is not the same as leading with the business/compliance reason. The criterion is about the first SUBSTANTIVE paragraph, not the first sentence. Both drafts correctly place the full patient impact content — rescheduling risk, time estimates, rooms affected — before the payer policy explanation. The grader is applying the criterion too literally to sentence-level ordering rather than paragraph-level structure, which is what I actually care about.",
+        "negative_examples": [
+          "Penalizing a framing sentence that orients the reader to the topic as if it were 'operational rationale leading'",
+          "Requiring that the very first word of the email describe patient experience before any context is established",
+          "Treating 'Starting [date], X will change' as equivalent to 'We are making this change because of payer policy'"
+        ],
+        "clarification": "The criterion means the first substantive explanatory paragraph — the one that actually describes what is changing — must lead with patient experience and flow impact before explaining why the change is happening operationally or administratively. A brief orienting sentence that names the change without explaining the business rationale does not violate this. Both drafts satisfy this fully and should score 10, not 9.",
+        "priority_adjustment": null
+      },
+      {
+        "criterion_name": "Fallback Procedures Included",
+        "issue": "The grader scores this correctly at 10, but the justification undersells a dimension I care about that is not being tracked: the fallback must keep the clinical process running, not just document that something failed. The grader notes 'not a vague contact IT instruction' which is right, but the rubric dimension [fallback_is_actionable] should explicitly flag whether the fallback allows the workflow to CONTINUE — not just be recorded. In these drafts the fax fallback does keep the 48-hour clock running, which is the key test. The grader is not checking for this continuity requirement, only that the fallback is 'concrete.' A concrete fallback that still stops the workflow would fail my standard.",
+        "negative_examples": [
+          "A fallback that says 'document the system outage and resubmit tomorrow' without keeping the process moving",
+          "A fallback scored as actionable simply because it names a specific person to call, even if calling that person doesn't advance the workflow",
+          "Treating 'notify your manager' as actionable just because it names a role"
+        ],
+        "clarification": "The fallback must be actionable AND must allow the clinical or administrative workflow to continue without stopping. The test is: can staff complete the necessary step using the fallback, or does the fallback just create a record of failure? The rubric dimension [fallback_is_actionable] should be interpreted as 'the fallback completes the task through an alternate method,' not merely 'the fallback gives a concrete instruction.'",
+        "priority_adjustment": null
+      }
+    ]
+  },
+  "rubric_final": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+    "rubric": [
+      {
+        "name": "Patient Flow Impact First",
+        "category": "Structure",
+        "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+        "dimensions": [
+          {
+            "id": "patient_impact_leads",
+            "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+          },
+          {
+            "id": "quantified_time_impact",
+            "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+          },
+          {
+            "id": "operational_reason_follows",
+            "label": "The business or compliance reason for the change appears after the patient impact, not before"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high",
+        "negative_examples": [
+          "Penalizing a framing sentence that orients the reader to the topic as if it were 'operational rationale leading'",
+          "Requiring that the very first word of the email describe patient experience before any context is established",
+          "Treating 'Starting [date], X will change' as equivalent to 'We are making this change because of payer policy'"
+        ],
+        "clarification": "The criterion means the first substantive explanatory paragraph — the one that actually describes what is changing — must lead with patient experience and flow impact before explaining why the change is happening operationally or administratively. A brief orienting sentence that names the change without explaining the business rationale does not violate this. Both drafts satisfy this fully and should score 10, not 9."
+      },
+      {
+        "name": "Fallback Procedures Included",
+        "category": "Content",
+        "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+        "dimensions": [
+          {
+            "id": "fallback_stated",
+            "label": "Includes a specific 'if X fails, do Y instead' instruction"
+          },
+          {
+            "id": "fallback_is_actionable",
+            "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+          },
+          {
+            "id": "failure_scenario_named",
+            "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high",
+        "negative_examples": [
+          "A fallback that says 'document the system outage and resubmit tomorrow' without keeping the process moving",
+          "A fallback scored as actionable simply because it names a specific person to call, even if calling that person doesn't advance the workflow",
+          "Treating 'notify your manager' as actionable just because it names a role"
+        ],
+        "clarification": "The fallback must be actionable AND must allow the clinical or administrative workflow to continue without stopping. The test is: can staff complete the necessary step using the fallback, or does the fallback just create a record of failure? The rubric dimension [fallback_is_actionable] should be interpreted as 'the fallback completes the task through an alternate method,' not merely 'the fallback gives a concrete instruction.'"
+      },
+      {
+        "name": "No Patient Identifiers",
+        "category": "Audience",
+        "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+        "dimensions": [
+          {
+            "id": "no_patient_names",
+            "label": "Does not include any patient names, initials, or uniquely identifying information"
+          },
+          {
+            "id": "uses_neutral_references",
+            "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+          },
+          {
+            "id": "no_clinical_details",
+            "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Bounded Process Steps",
+        "category": "Structure",
+        "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+        "dimensions": [
+          {
+            "id": "numbered_steps",
+            "label": "Processes with more than two actions use numbered steps"
+          },
+          {
+            "id": "max_five_steps",
+            "label": "No process in the email exceeds 5 numbered steps"
+          },
+          {
+            "id": "complex_deferred",
+            "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "**Subject:** Pre-Authorization Requirement Update — Scheduling Impact for Certain Procedures\n\n---\n\n**To:** Dermatology Clinical Staff\n**From:** [Your Name/Department]\n**Date:** [Date]\n\n---\n\nTeam,\n\nStarting [effective date], a new pre-authorization requirement from [Payer Name] will add approximately **48 hours** to approval timelines for certain procedures. Here is what this means for your scheduling and your patients.\n\n---\n\n**Patient Flow Impact**\n\nAffected procedures will no longer be schedulable within a 48-hour window unless authorization is already confirmed. Patients arriving for these appointments without prior approval will need to be rescheduled or converted to a consultation visit, which adds an average of **10–15 minutes** to front-desk handling per affected appointment. Procedure rooms should remain available as planned — the impact is upstream, at the scheduling and intake stage, not in the exam room.\n\nAffected procedure codes are listed in the attached reference sheet. Please do not include specific case details in any reply to this email.\n\n---\n\n**New Scheduling Process**\n\nWhen booking an affected procedure:\n\n1. Verify the procedure code against the attached list before confirming the appointment.\n2. Submit the pre-authorization request at the time of scheduling, not at check-in.\n3. Confirm authorization is on file before the patient's appointment date.\n4. Flag any unresolved authorizations to the billing team by end of day, two business days before the appointment.\n5. Notify the patient that their appointment is pending insurance confirmation.\n\n---\n\n**If the Authorization Portal Is Unavailable**\n\nIf the payer portal is down at the time of scheduling, do not hold the appointment slot open without a confirmed authorization. Instead:\n\n- Submit the request by fax to [Payer Fax Number] using the paper form located in [specific location, e.g., front desk drawer / shared drive folder].\n- Note \"portal unavailable — fax submitted\" in the scheduling record with the date and time.\n- Follow up via portal the next business day to confirm receipt.\n\nThis keeps the 48-hour clock running even when the system isn't cooperating.\n\n---\n\n**Questions**\n\nFor questions about which procedures are affected, contact [Billing Contact Name/Role] at [internal extension or secure contact method]. For scheduling workflow questions, reach [Office Manager Name/Role].\n\nPlease avoid including appointment-specific or case-specific details in email replies — use your internal system for anything patient-related.\n\nThank you for your flexibility as we work through this change.\n\n[Your Name]\n[Title]\n[Clinic Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First (priority 1, category: Structure, confidence: high)",
+              "score": 9,
+              "justification": "The first substantive paragraph under 'Patient Flow Impact' clearly leads with how the change affects patients and scheduling — rescheduling, conversion to consultation visits, and the 10–15 minute front-desk handling estimate are all stated before any operational rationale. The quantified time impact (48-hour approval timeline, 10–15 minutes per affected appointment) is specific and concrete. The operational/compliance reason (payer requirement) is mentioned in the opening line but only briefly, with the patient impact section following immediately and carrying the substantive explanation — this is a minor sequencing imperfection but the structure clearly prioritizes patient flow."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included (priority 2, category: Content, confidence: high)",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. This is not a vague 'contact IT' instruction — it is a fully operational procedure that keeps the process running. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers (priority 3, category: Audience, confidence: high)",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('the patient,' 'affected appointment'). No clinical details, diagnoses, or treatments are mentioned. The email also proactively reminds staff twice not to include case-specific or appointment-specific details in replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps (priority 4, category: Structure, confidence: high)",
+              "score": 9,
+              "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback section uses bullet points rather than numbered steps, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session — which is appropriate given the process fits within the 5-step limit. All dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph under 'Patient Flow Impact' clearly leads with patient experience consequences — rescheduling, conversion to consultation visits, and the 10–15 minute front-desk handling impact. The operational/compliance reason (payer requirement) is mentioned briefly in the opening but the detailed patient impact precedes the process steps. The 48-hour timeline and 10–15 minute quantification satisfy the time-impact dimension. The operational rationale does follow the patient impact section, though the opening sentence does name the payer requirement before the impact section begins, which is a minor sequencing imperfection."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to specific number using paper form at a named location), and includes a documentation step and follow-up action. This is not a vague 'contact IT' instruction — it is a fully operational procedure staff can execute independently. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or identifying information anywhere. It refers to patients generically ('the patient,' 'patients arriving') and explicitly instructs staff not to include case-specific details in email replies. No clinical details, diagnoses, or treatments are mentioned. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process is presented as exactly 5 numbered steps, meeting the cap precisely. The fallback procedure uses bullet points for a 3-item list, which is appropriate for a shorter sub-process. No process exceeds 5 steps, and the complexity level appears manageable within the email format without requiring a deferred training session. All dimensions are satisfied."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph under 'Patient Flow Impact' clearly leads with patient experience consequences — rescheduling, conversion to consultation visits, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, authorization timelines) is introduced in the opening paragraph before the patient impact section, which slightly undercuts the 'patient impact leads' dimension, but the dedicated section does prioritize patient flow before process steps. Quantified time impact (48 hours, 10–15 minutes) is present and specific. The operational reason is largely subordinated to the patient impact discussion."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete actionable alternative (fax to a specific number using a paper form at a named location), and includes a documentation step ('note portal unavailable — fax submitted' with date and time). The fallback is not 'contact IT' — it is a self-sufficient procedure staff can execute independently. All three dimensions are clearly satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. References to patients are entirely generic ('the patient,' 'affected appointment'). No clinical details, diagnoses, or treatments are mentioned. The email also proactively instructs staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the complexity level does not appear to require deferral to a training session — the email handles it cleanly within the constraint."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First (priority 1, category: Structure, confidence: high)": 9.0,
+          "Fallback Procedures Included (priority 2, category: Content, confidence: high)": 10.0,
+          "No Patient Identifiers (priority 3, category: Audience, confidence: high)": 10.0,
+          "Bounded Process Steps (priority 4, category: Structure, confidence: high)": 9.0,
+          "Patient Flow Impact First": 9.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First (priority 1, category: Structure, confidence: high)": 0.0,
+          "Fallback Procedures Included (priority 2, category: Content, confidence: high)": 0.0,
+          "No Patient Identifiers (priority 3, category: Audience, confidence: high)": 0.0,
+          "Bounded Process Steps (priority 4, category: Structure, confidence: high)": 0.0,
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 0.96,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First (priority 1, category: Structure, confidence: high)",
+                "score": 9,
+                "justification": "The first substantive paragraph under 'Patient Flow Impact' clearly leads with how the change affects patients and scheduling — rescheduling, conversion to consultation visits, and the 10–15 minute front-desk handling estimate are all stated before any operational rationale. The quantified time impact (48-hour approval timeline, 10–15 minutes per affected appointment) is specific and concrete. The operational/compliance reason (payer requirement) is mentioned in the opening line but only briefly, with the patient impact section following immediately and carrying the substantive explanation — this is a minor sequencing imperfection but the structure clearly prioritizes patient flow."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included (priority 2, category: Content, confidence: high)",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. This is not a vague 'contact IT' instruction — it is a fully operational procedure that keeps the process running. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers (priority 3, category: Audience, confidence: high)",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('the patient,' 'affected appointment'). No clinical details, diagnoses, or treatments are mentioned. The email also proactively reminds staff twice not to include case-specific or appointment-specific details in replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps (priority 4, category: Structure, confidence: high)",
+                "score": 9,
+                "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback section uses bullet points rather than numbered steps, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session — which is appropriate given the process fits within the 5-step limit. All dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1562,
+              "output_tokens": 587
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph under 'Patient Flow Impact' clearly leads with patient experience consequences — rescheduling, conversion to consultation visits, and the 10–15 minute front-desk handling impact. The operational/compliance reason (payer requirement) is mentioned briefly in the opening but the detailed patient impact precedes the process steps. The 48-hour timeline and 10–15 minute quantification satisfy the time-impact dimension. The operational rationale does follow the patient impact section, though the opening sentence does name the payer requirement before the impact section begins, which is a minor sequencing imperfection."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to specific number using paper form at a named location), and includes a documentation step and follow-up action. This is not a vague 'contact IT' instruction — it is a fully operational procedure staff can execute independently. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or identifying information anywhere. It refers to patients generically ('the patient,' 'patients arriving') and explicitly instructs staff not to include case-specific details in email replies. No clinical details, diagnoses, or treatments are mentioned. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process is presented as exactly 5 numbered steps, meeting the cap precisely. The fallback procedure uses bullet points for a 3-item list, which is appropriate for a shorter sub-process. No process exceeds 5 steps, and the complexity level appears manageable within the email format without requiring a deferred training session. All dimensions are satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1562,
+              "output_tokens": 510
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph under 'Patient Flow Impact' clearly leads with patient experience consequences — rescheduling, conversion to consultation visits, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, authorization timelines) is introduced in the opening paragraph before the patient impact section, which slightly undercuts the 'patient impact leads' dimension, but the dedicated section does prioritize patient flow before process steps. Quantified time impact (48 hours, 10–15 minutes) is present and specific. The operational reason is largely subordinated to the patient impact discussion."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete actionable alternative (fax to a specific number using a paper form at a named location), and includes a documentation step ('note portal unavailable — fax submitted' with date and time). The fallback is not 'contact IT' — it is a self-sufficient procedure staff can execute independently. All three dimensions are clearly satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. References to patients are entirely generic ('the patient,' 'affected appointment'). No clinical details, diagnoses, or treatments are mentioned. The email also proactively instructs staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the complexity level does not appear to require deferral to a training session — the email handles it cleanly within the constraint."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1562,
+              "output_tokens": 521
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First (priority 1, category: Structure, confidence: high): 9.0/10\n  Justification: The first substantive paragraph under 'Patient Flow Impact' clearly leads with how the change affects patients and scheduling — rescheduling, conversion to consultation visits, and the 10–15 minute front-desk handling estimate are all stated before any operational rationale. The quantified time impact (48-hour approval timeline, 10–15 minutes per affected appointment) is specific and concrete. The operational/compliance reason (payer requirement) is mentioned in the opening line but only briefly, with the patient impact section following immediately and carrying the substantive explanation — this is a minor sequencing imperfection but the structure clearly prioritizes patient flow.\n- Fallback Procedures Included (priority 2, category: Content, confidence: high): 10.0/10\n  Justification: The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. This is not a vague 'contact IT' instruction — it is a fully operational procedure that keeps the process running. All three dimensions are clearly satisfied.\n- No Patient Identifiers (priority 3, category: Audience, confidence: high): 10.0/10\n  Justification: No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('the patient,' 'affected appointment'). No clinical details, diagnoses, or treatments are mentioned. The email also proactively reminds staff twice not to include case-specific or appointment-specific details in replies, reinforcing the non-secure channel treatment.\n- Bounded Process Steps (priority 4, category: Structure, confidence: high): 9.0/10\n  Justification: The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback section uses bullet points rather than numbered steps, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session — which is appropriate given the process fits within the 5-step limit. All dimensions are satisfied.\n\nYour weakest criteria are: Bounded Process Steps (priority 4, category: Structure, confidence: high), Patient Flow Impact First. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 2,
+      "draft": "**Subject:** Pre-Authorization Requirement Update — Scheduling Impact for Certain Procedures\n\n---\n\n**To:** Dermatology Clinical Staff\n**From:** [Your Name/Department]\n**Date:** [Date]\n\n---\n\nTeam,\n\nStarting [effective date], a new pre-authorization requirement from [Payer Name] will change how certain procedures get scheduled. Here is what your patients will experience differently, and what that means for your workflow.\n\n---\n\n**What Changes for Patients**\n\nPatients booking affected procedures will now need to wait for insurance confirmation before their appointment is finalized — a window of approximately **48 hours**. Any patient who arrives without a confirmed authorization will need to be rescheduled or converted to a consultation visit. Front-desk handling for those situations runs an average of **10–15 additional minutes** per appointment. Procedure rooms are not affected; the change happens entirely at the scheduling and intake stage.\n\nThis requirement is driven by a payer policy update from [Payer Name], effective [date]. The affected procedure codes are listed in the attached reference sheet.\n\nPlease do not include specific case details in any reply to this email.\n\n---\n\n**Updated Scheduling Steps**\n\nFor any appointment involving an affected procedure code:\n\n1. Check the procedure code against the attached list before confirming the appointment.\n2. Submit the pre-authorization request at the time of scheduling — not at check-in.\n3. Confirm authorization is on file at least two business days before the appointment date.\n4. Flag any unresolved authorizations to the billing team by end of day on that same two-day mark.\n5. Notify the patient that their appointment is pending insurance confirmation.\n\n---\n\n**If the Authorization Portal Is Unavailable**\n\nIf the payer portal is down when you need to submit a request, do not hold the appointment slot open without a confirmed authorization. Instead:\n\n- Submit by fax to [Payer Fax Number] using the paper form located at [specific location, e.g., front desk drawer / shared drive folder].\n- Record \"portal unavailable — fax submitted\" in the scheduling system, with the date and time.\n- Follow up via portal the next business day to confirm receipt.\n\nThis keeps the 48-hour clock running even when the system isn't.\n\n---\n\n**Questions**\n\nFor questions about which procedures are affected, contact [Billing Contact Name/Role] at [internal extension or secure contact method]. For scheduling workflow questions, reach [Office Manager Name/Role].\n\nPlease use your internal system for anything appointment- or case-specific — email is not a secure channel for those details.\n\nThank you,\n\n[Your Name]\n[Title]\n[Clinic Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads with patient experience — the 48-hour wait, rescheduling risk, and 10–15 additional minutes per appointment at intake. The operational/compliance rationale (payer policy update, affected codes) follows in the second paragraph. All three dimensions are clearly satisfied: patient impact leads, time is quantified, and business reason follows."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. All three dimensions are fully met with no vague 'contact IT' deflection."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or identifying information. Patients are referenced generically ('any patient,' 'the patient'). No clinical details, diagnoses, or case-specific information appear. The email also proactively reminds staff not to include case details in replies and to use internal systems for appointment-specific matters."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session, which is appropriate given the step count stays within bounds."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads with patient experience — the 48-hour wait, rescheduling scenarios, and 10–15 additional minutes per appointment at intake. The operational/compliance rationale (payer policy update, affected codes) follows in the second paragraph. All three dimensions are clearly satisfied: patient impact leads, time is quantified, and business reason follows."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. All three dimensions are fully met with no vagueness or deferral to IT/management."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'the patient'). No clinical details, diagnoses, or treatments are mentioned. The email also proactively reminds staff not to include case details in replies and to use internal systems for appointment-specific information."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is well within what can be communicated via email without requiring a training session."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 9,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads with patient experience — the 48-hour wait, rescheduling scenarios, and the 10–15 additional minutes per appointment at intake. The operational/compliance rationale (payer policy update, affected codes) follows in the second paragraph. All three dimensions are clearly satisfied: patient impact leads, time is quantified, and business reason follows."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. All three dimensions are fully met — the fallback is not 'contact IT' but a specific procedural alternative that keeps the process running."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'the patient'). No clinical details, diagnoses, or case-specific information are included. The email also proactively reminds staff not to include case details in replies and to use internal systems for appointment-specific information."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session — which is appropriate given the process fits within the 5-step limit."
+            }
+          ],
+          "overall_weighted_score": 0.96,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 9.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 0.96,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads with patient experience — the 48-hour wait, rescheduling risk, and 10–15 additional minutes per appointment at intake. The operational/compliance rationale (payer policy update, affected codes) follows in the second paragraph. All three dimensions are clearly satisfied: patient impact leads, time is quantified, and business reason follows."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. All three dimensions are fully met with no vague 'contact IT' deflection."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or identifying information. Patients are referenced generically ('any patient,' 'the patient'). No clinical details, diagnoses, or case-specific information appear. The email also proactively reminds staff not to include case details in replies and to use internal systems for appointment-specific matters."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session, which is appropriate given the step count stays within bounds."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1576,
+              "output_tokens": 462
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads with patient experience — the 48-hour wait, rescheduling scenarios, and 10–15 additional minutes per appointment at intake. The operational/compliance rationale (payer policy update, affected codes) follows in the second paragraph. All three dimensions are clearly satisfied: patient impact leads, time is quantified, and business reason follows."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. All three dimensions are fully met with no vagueness or deferral to IT/management."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'the patient'). No clinical details, diagnoses, or treatments are mentioned. The email also proactively reminds staff not to include case details in replies and to use internal systems for appointment-specific information."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is well within what can be communicated via email without requiring a training session."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1576,
+              "output_tokens": 455
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 9,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads with patient experience — the 48-hour wait, rescheduling scenarios, and the 10–15 additional minutes per appointment at intake. The operational/compliance rationale (payer policy update, affected codes) follows in the second paragraph. All three dimensions are clearly satisfied: patient impact leads, time is quantified, and business reason follows."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. All three dimensions are fully met — the fallback is not 'contact IT' but a specific procedural alternative that keeps the process running."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'the patient'). No clinical details, diagnoses, or case-specific information are included. The email also proactively reminds staff not to include case details in replies and to use internal systems for appointment-specific information."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session — which is appropriate given the process fits within the 5-step limit."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1576,
+              "output_tokens": 481
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First: 9.0/10\n  Justification: The first substantive paragraph ('What Changes for Patients') leads with patient experience — the 48-hour wait, rescheduling risk, and 10–15 additional minutes per appointment at intake. The operational/compliance rationale (payer policy update, affected codes) follows in the second paragraph. All three dimensions are clearly satisfied: patient impact leads, time is quantified, and business reason follows.\n- Fallback Procedures Included: 10.0/10\n  Justification: The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete actionable fallback (fax to a specific number using a paper form at a named location), and includes a documentation step and follow-up action. All three dimensions are fully met with no vague 'contact IT' deflection.\n- No Patient Identifiers: 10.0/10\n  Justification: The draft contains no patient names, initials, or identifying information. Patients are referenced generically ('any patient,' 'the patient'). No clinical details, diagnoses, or case-specific information appear. The email also proactively reminds staff not to include case details in replies and to use internal systems for appointment-specific matters.\n- Bounded Process Steps: 10.0/10\n  Justification: The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session, which is appropriate given the step count stays within bounds.\n\nYour weakest criteria are: Patient Flow Impact First, Bounded Process Steps. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 3,
+      "draft": "**Subject:** Pre-Authorization Requirement Update — Scheduling Impact for Certain Procedures\n\n---\n\n**To:** Dermatology Clinical Staff\n**From:** [Your Name/Department]\n**Date:** [Date]\n\n---\n\nTeam,\n\nStarting [effective date], certain procedures will require insurance pre-authorization before an appointment can be confirmed. Here is what that looks like for patients and for scheduling.\n\n---\n\n**What Changes for Patients**\n\nPatients booking affected procedures will need to wait for insurance confirmation before their appointment is finalized — a window of approximately **48 hours**. Any patient who arrives without a confirmed authorization will need to be rescheduled or converted to a consultation visit, which adds an average of **10–15 minutes** of front-desk handling per affected appointment. Procedure rooms are not impacted; this change is contained entirely to the scheduling and intake stage.\n\n[Payer Name] is requiring this as of [effective date]. The affected procedure codes are listed in the attached reference sheet. Please do not include case-specific details in any reply to this email.\n\n---\n\n**Updated Scheduling Steps**\n\nFor any appointment involving an affected procedure code:\n\n1. Verify the code against the attached list before confirming the appointment.\n2. Submit the pre-authorization request at the time of scheduling — not at check-in.\n3. Confirm authorization is on file at least two business days before the appointment.\n4. Flag any unresolved authorizations to the billing team by end of day on that two-day mark.\n5. Notify the patient that their appointment is pending insurance confirmation.\n\n---\n\n**If the Authorization Portal Is Unavailable**\n\nIf the payer portal is down when a request needs to be submitted, do not hold the appointment slot open without confirmed authorization. Instead:\n\n- Fax the request to [Payer Fax Number] using the paper form at [specific location, e.g., front desk drawer / shared drive folder].\n- Enter \"portal unavailable — fax submitted\" in the scheduling system, with date and time.\n- Check the portal the next business day to confirm the fax was received.\n\nThis keeps the 48-hour clock running regardless of system availability.\n\n---\n\n**Questions**\n\nFor questions about affected procedure codes, contact [Billing Contact Name/Role] at [internal extension or secure contact method]. For scheduling workflow questions, reach [Office Manager Name/Role].\n\nUse your internal system for anything appointment- or case-specific — email is not a secure channel for those details.\n\nThank you,\n\n[Your Name]\n[Title]\n[Clinic Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. A brief orienting sentence opens the email without stating business rationale, fully satisfying the clarification note."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 9,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section names the specific failure scenario (portal down), provides a concrete alternate method (fax to a specific number using a paper form at a named location), and explicitly keeps the workflow moving by noting 'this keeps the 48-hour clock running.' The fallback is actionable in that it completes the task through an alternate submission method rather than just logging a failure. Minor gap: the fax number and form location use placeholders, but structurally the fallback fully satisfies all three dimensions."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively reminds staff not to include case-specific details in replies and directs case-specific communication to the internal system."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process is presented as exactly 5 numbered steps, meeting the cap precisely. The fallback section uses a short bulleted list of 3 items rather than a numbered process, which is appropriate for its parallel-action nature. No process in the email exceeds 5 steps, and the overall complexity is well within what can be communicated via email without requiring a training session."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. Procedure room impact is also addressed. This fully satisfies all three dimensions."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 9,
+              "justification": "The fallback section explicitly names the failure scenario (payer portal unavailable), provides a concrete alternate method (fax to a specific number using a paper form at a named location), and includes a system notation step. Critically, the fallback keeps the 48-hour clock running, meaning the workflow continues rather than stalling — satisfying the 'completes the task through an alternate method' test. The only minor gap is that the fax number and form location are placeholders, but that is a drafting convention, not a structural failure. All three dimensions are met."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even explicitly reminds staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process is presented as exactly 5 numbered steps, meeting the cap precisely. The fallback uses a short bullet list of 3 items, which is appropriate for a secondary procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session, which is appropriate given the step count stays within bounds."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. Procedure room impact is also addressed. This fully satisfies all three dimensions."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 9,
+              "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete alternate method (fax to a specific number using a paper form at a named location), and includes a system notation step. Critically, the fallback keeps the 48-hour clock running, meaning the workflow continues rather than stalling — satisfying the 'completes the task through an alternate method' test. The only minor gap is that the fax number and form location are placeholders, but structurally the fallback is fully actionable and workflow-preserving."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'the patient'). There are no clinical details, diagnoses, or case-specific information. The email even explicitly reminds staff not to include case-specific details in replies and directs case-specific communication to the internal system."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session, which is appropriate given the step count stays within bounds."
+            }
+          ],
+          "overall_weighted_score": 0.97,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 10.0,
+          "Fallback Procedures Included": 9.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 0.97,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. A brief orienting sentence opens the email without stating business rationale, fully satisfying the clarification note."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 9,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section names the specific failure scenario (portal down), provides a concrete alternate method (fax to a specific number using a paper form at a named location), and explicitly keeps the workflow moving by noting 'this keeps the 48-hour clock running.' The fallback is actionable in that it completes the task through an alternate submission method rather than just logging a failure. Minor gap: the fax number and form location use placeholders, but structurally the fallback fully satisfies all three dimensions."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively reminds staff not to include case-specific details in replies and directs case-specific communication to the internal system."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process is presented as exactly 5 numbered steps, meeting the cap precisely. The fallback section uses a short bulleted list of 3 items rather than a numbered process, which is appropriate for its parallel-action nature. No process in the email exceeds 5 steps, and the overall complexity is well within what can be communicated via email without requiring a training session."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1916,
+              "output_tokens": 530
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. Procedure room impact is also addressed. This fully satisfies all three dimensions."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 9,
+                "justification": "The fallback section explicitly names the failure scenario (payer portal unavailable), provides a concrete alternate method (fax to a specific number using a paper form at a named location), and includes a system notation step. Critically, the fallback keeps the 48-hour clock running, meaning the workflow continues rather than stalling — satisfying the 'completes the task through an alternate method' test. The only minor gap is that the fax number and form location are placeholders, but that is a drafting convention, not a structural failure. All three dimensions are met."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even explicitly reminds staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process is presented as exactly 5 numbered steps, meeting the cap precisely. The fallback uses a short bullet list of 3 items, which is appropriate for a secondary procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session, which is appropriate given the step count stays within bounds."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1916,
+              "output_tokens": 521
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. Procedure room impact is also addressed. This fully satisfies all three dimensions."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 9,
+                "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete alternate method (fax to a specific number using a paper form at a named location), and includes a system notation step. Critically, the fallback keeps the 48-hour clock running, meaning the workflow continues rather than stalling — satisfying the 'completes the task through an alternate method' test. The only minor gap is that the fax number and form location are placeholders, but structurally the fallback is fully actionable and workflow-preserving."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'the patient'). There are no clinical details, diagnoses, or case-specific information. The email even explicitly reminds staff not to include case-specific details in replies and directs case-specific communication to the internal system."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "The scheduling process uses exactly 5 numbered steps, meeting the cap precisely. The fallback uses bullet points for a 3-item list, which is appropriate for a shorter parallel procedure. No process exceeds 5 steps, and the overall complexity is handled within the email without deferring to a training session, which is appropriate given the step count stays within bounds."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1916,
+              "output_tokens": 517
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First: 10.0/10\n  Justification: The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. A brief orienting sentence opens the email without stating business rationale, fully satisfying the clarification note.\n- Fallback Procedures Included: 9.0/10\n  Justification: The 'If the Authorization Portal Is Unavailable' section names the specific failure scenario (portal down), provides a concrete alternate method (fax to a specific number using a paper form at a named location), and explicitly keeps the workflow moving by noting 'this keeps the 48-hour clock running.' The fallback is actionable in that it completes the task through an alternate submission method rather than just logging a failure. Minor gap: the fax number and form location use placeholders, but structurally the fallback fully satisfies all three dimensions.\n- No Patient Identifiers: 10.0/10\n  Justification: No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively reminds staff not to include case-specific details in replies and directs case-specific communication to the internal system.\n- Bounded Process Steps: 10.0/10\n  Justification: The scheduling process is presented as exactly 5 numbered steps, meeting the cap precisely. The fallback section uses a short bulleted list of 3 items rather than a numbered process, which is appropriate for its parallel-action nature. No process in the email exceeds 5 steps, and the overall complexity is well within what can be communicated via email without requiring a training session.\n\nYour weakest criteria are: Fallback Procedures Included, Bounded Process Steps. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a framing sentence that orients the reader to the topic as if it were 'operational rationale leading'",
+              "Requiring that the very first word of the email describe patient experience before any context is established",
+              "Treating 'Starting [date], X will change' as equivalent to 'We are making this change because of payer policy'"
+            ],
+            "clarification": "The criterion means the first substantive explanatory paragraph — the one that actually describes what is changing — must lead with patient experience and flow impact before explaining why the change is happening operationally or administratively. A brief orienting sentence that names the change without explaining the business rationale does not violate this. Both drafts satisfy this fully and should score 10, not 9."
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "A fallback that says 'document the system outage and resubmit tomorrow' without keeping the process moving",
+              "A fallback scored as actionable simply because it names a specific person to call, even if calling that person doesn't advance the workflow",
+              "Treating 'notify your manager' as actionable just because it names a role"
+            ],
+            "clarification": "The fallback must be actionable AND must allow the clinical or administrative workflow to continue without stopping. The test is: can staff complete the necessary step using the fallback, or does the fallback just create a record of failure? The rubric dimension [fallback_is_actionable] should be interpreted as 'the fallback completes the task through an alternate method,' not merely 'the fallback gives a concrete instruction.'"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 4,
+      "draft": "**Subject:** Pre-Authorization Requirement Update — Scheduling Impact for Certain Procedures\n\n---\n\n**To:** Dermatology Clinical Staff\n**From:** [Your Name/Department]\n**Date:** [Date]\n\n---\n\nTeam,\n\nStarting [effective date], certain procedures will require insurance pre-authorization before an appointment can be confirmed. Here is what that looks like for patients and for scheduling.\n\n---\n\n**What Changes for Patients**\n\nPatients booking affected procedures will need to wait for insurance confirmation before their appointment is finalized — a window of approximately **48 hours**. Any patient who arrives without a confirmed authorization will need to be rescheduled or converted to a consultation visit, which adds an average of **10–15 minutes** of front-desk handling per affected appointment. Procedure rooms are not impacted; this change is contained entirely to the scheduling and intake stage.\n\n[Payer Name] is requiring this as of [effective date]. The affected procedure codes are listed in the attached reference sheet. Please do not include case-specific details in any reply to this email.\n\n---\n\n**Updated Scheduling Steps**\n\nFor any appointment involving an affected procedure code:\n\n1. Verify the code against the attached list before confirming the appointment.\n2. Submit the pre-authorization request at the time of scheduling — not at check-in.\n3. Confirm authorization is on file at least two business days before the appointment.\n4. Flag any unresolved authorizations to the billing team by end of day on that two-day mark.\n5. Notify the patient that their appointment is pending insurance confirmation.\n\n---\n\n**If the Authorization Portal Is Unavailable**\n\nIf the payer portal is down when a request needs to be submitted, use the paper fax process so the 48-hour clock keeps running:\n\n1. Fax the request to [Payer Fax Number] using the paper pre-auth form stored at [specific location, e.g., front desk drawer / shared drive folder].\n2. Enter \"portal unavailable — fax submitted\" in the scheduling system with the date and time.\n3. Check the portal the next business day to confirm receipt and pull the authorization number into the record.\n\nThis alternate path completes the submission — it does not just log the outage. The appointment can proceed to the confirmation stage as normal once the fax is sent.\n\n---\n\n**Questions**\n\nFor questions about affected procedure codes, contact [Billing Contact Name/Role] at [internal extension or secure contact method]. For scheduling workflow questions, reach [Office Manager Name/Role].\n\nUse your internal system for anything appointment- or case-specific — email is not a secure channel for those details.\n\nThank you,\n\n[Your Name]\n[Title]\n[Clinic Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. Procedure room impact is also addressed. This fully satisfies all three dimensions."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete three-step fax-based fallback, and the draft explicitly states 'This alternate path completes the submission — it does not just log the outage.' The fallback allows the workflow to continue (48-hour clock keeps running, appointment proceeds to confirmation stage), satisfying all three dimensions including the actionability requirement."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or treatments are mentioned. The draft even proactively reminds staff not to include case-specific details in email replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback procedure has exactly 3 steps. Neither list exceeds the 5-step cap. The processes are appropriately scoped for email communication and no complex process is attempted without a training referral."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling/conversion scenario, and the 10–15 minute front-desk handling impact. The operational rationale (payer requirement, effective date) appears only after this patient impact section. The brief orienting sentence ('Starting [effective date], certain procedures will require...') names the change without explaining business rationale, fully consistent with the clarification."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete alternate method (fax to specific number using paper form), and explicitly states the fallback completes the submission so the appointment can proceed — not merely logging the outage. The draft even includes the clarifying sentence 'This alternate path completes the submission — it does not just log the outage,' directly satisfying the actionability requirement."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or treatments are mentioned. The draft also proactively reminds staff not to include case-specific details in replies and to use internal systems for appointment- or case-specific information."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both multi-step processes (the scheduling steps and the fallback fax process) use numbered steps. The scheduling process has exactly 5 steps and the fallback has 3 steps — neither exceeds the 5-step cap. No process is complex enough to require deferral to training, and the email does not attempt to over-document beyond what fits cleanly within the structure."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling/conversion scenario, and the 10–15 minute front-desk handling impact. The operational rationale (payer requirement, effective date) appears afterward in a separate paragraph. The brief orienting sentence ('Starting [effective date], certain procedures will require...') names the change without explaining business rationale, fully consistent with the clarification."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete alternate method (fax to specific number using paper form at a named location), and the draft explicitly states 'This alternate path completes the submission — it does not just log the outage.' The fallback allows the workflow to continue — the 48-hour clock keeps running and the appointment proceeds to confirmation — satisfying the actionability requirement fully."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively instructs staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback procedure has exactly 3 steps, both within the 5-step cap. No process attempts to document complexity beyond what email can handle; the content is appropriately scoped for email communication without deferring to training, as the processes are simple enough to fit within the constraint."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 10.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. Procedure room impact is also addressed. This fully satisfies all three dimensions."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete three-step fax-based fallback, and the draft explicitly states 'This alternate path completes the submission — it does not just log the outage.' The fallback allows the workflow to continue (48-hour clock keeps running, appointment proceeds to confirmation stage), satisfying all three dimensions including the actionability requirement."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or treatments are mentioned. The draft even proactively reminds staff not to include case-specific details in email replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback procedure has exactly 3 steps. Neither list exceeds the 5-step cap. The processes are appropriately scoped for email communication and no complex process is attempted without a training referral."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1950,
+              "output_tokens": 477
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling/conversion scenario, and the 10–15 minute front-desk handling impact. The operational rationale (payer requirement, effective date) appears only after this patient impact section. The brief orienting sentence ('Starting [effective date], certain procedures will require...') names the change without explaining business rationale, fully consistent with the clarification."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete alternate method (fax to specific number using paper form), and explicitly states the fallback completes the submission so the appointment can proceed — not merely logging the outage. The draft even includes the clarifying sentence 'This alternate path completes the submission — it does not just log the outage,' directly satisfying the actionability requirement."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or treatments are mentioned. The draft also proactively reminds staff not to include case-specific details in replies and to use internal systems for appointment- or case-specific information."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both multi-step processes (the scheduling steps and the fallback fax process) use numbered steps. The scheduling process has exactly 5 steps and the fallback has 3 steps — neither exceeds the 5-step cap. No process is complex enough to require deferral to training, and the email does not attempt to over-document beyond what fits cleanly within the structure."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1950,
+              "output_tokens": 513
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling/conversion scenario, and the 10–15 minute front-desk handling impact. The operational rationale (payer requirement, effective date) appears afterward in a separate paragraph. The brief orienting sentence ('Starting [effective date], certain procedures will require...') names the change without explaining business rationale, fully consistent with the clarification."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete alternate method (fax to specific number using paper form at a named location), and the draft explicitly states 'This alternate path completes the submission — it does not just log the outage.' The fallback allows the workflow to continue — the 48-hour clock keeps running and the appointment proceeds to confirmation — satisfying the actionability requirement fully."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively instructs staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback procedure has exactly 3 steps, both within the 5-step cap. No process attempts to document complexity beyond what email can handle; the content is appropriately scoped for email communication without deferring to training, as the processes are simple enough to fit within the constraint."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1950,
+              "output_tokens": 511
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Patient Flow Impact First: 10.0/10\n  Justification: The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. Procedure room impact is also addressed. This fully satisfies all three dimensions.\n- Fallback Procedures Included: 10.0/10\n  Justification: The 'If the Authorization Portal Is Unavailable' section explicitly names the failure scenario (portal down), provides a concrete three-step fax-based fallback, and the draft explicitly states 'This alternate path completes the submission — it does not just log the outage.' The fallback allows the workflow to continue (48-hour clock keeps running, appointment proceeds to confirmation stage), satisfying all three dimensions including the actionability requirement.\n- No Patient Identifiers: 10.0/10\n  Justification: No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or treatments are mentioned. The draft even proactively reminds staff not to include case-specific details in email replies, reinforcing the non-secure channel treatment.\n- Bounded Process Steps: 10.0/10\n  Justification: Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback procedure has exactly 3 steps. Neither list exceeds the 5-step cap. The processes are appropriately scoped for email communication and no complex process is attempted without a training referral.\n\nYour weakest criteria are: Bounded Process Steps, Fallback Procedures Included. Focus your revision on improving these.",
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a framing sentence that orients the reader to the topic as if it were 'operational rationale leading'",
+              "Requiring that the very first word of the email describe patient experience before any context is established",
+              "Treating 'Starting [date], X will change' as equivalent to 'We are making this change because of payer policy'"
+            ],
+            "clarification": "The criterion means the first substantive explanatory paragraph — the one that actually describes what is changing — must lead with patient experience and flow impact before explaining why the change is happening operationally or administratively. A brief orienting sentence that names the change without explaining the business rationale does not violate this. Both drafts satisfy this fully and should score 10, not 9."
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "A fallback that says 'document the system outage and resubmit tomorrow' without keeping the process moving",
+              "A fallback scored as actionable simply because it names a specific person to call, even if calling that person doesn't advance the workflow",
+              "Treating 'notify your manager' as actionable just because it names a role"
+            ],
+            "clarification": "The fallback must be actionable AND must allow the clinical or administrative workflow to continue without stopping. The test is: can staff complete the necessary step using the fallback, or does the fallback just create a record of failure? The rubric dimension [fallback_is_actionable] should be interpreted as 'the fallback completes the task through an alternate method,' not merely 'the fallback gives a concrete instruction.'"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    },
+    {
+      "round": 5,
+      "draft": "**Subject:** Pre-Authorization Requirement Update — Scheduling Impact for Certain Procedures\n\n---\n\n**To:** Dermatology Clinical Staff\n**From:** [Your Name/Department]\n**Date:** [Date]\n\n---\n\nTeam,\n\nStarting [effective date], certain procedures will require insurance pre-authorization before an appointment can be confirmed. Here is what that looks like for patients and for scheduling.\n\n---\n\n**What Changes for Patients**\n\nPatients booking affected procedures will need to wait for insurance confirmation before their appointment is finalized — a window of approximately **48 hours**. Any patient who arrives without a confirmed authorization will need to be rescheduled or converted to a consultation visit, which adds an average of **10–15 minutes** of front-desk handling per affected appointment. Procedure rooms are not impacted; this change is contained entirely to the scheduling and intake stage.\n\n[Payer Name] is requiring this as of [effective date]. The affected procedure codes are listed in the attached reference sheet. Please do not include case-specific details in any reply to this email.\n\n---\n\n**Updated Scheduling Steps**\n\nFor any appointment involving an affected procedure code:\n\n1. Verify the code against the attached list before confirming the appointment.\n2. Submit the pre-authorization request at the time of scheduling — not at check-in.\n3. Confirm authorization is on file at least two business days before the appointment.\n4. Flag any unresolved authorizations to the billing team by end of day on that two-day mark.\n5. Notify the patient that their appointment is pending insurance confirmation.\n\n---\n\n**If the Authorization Portal Is Unavailable**\n\nIf the payer portal is down when a request needs to be submitted, the fax process below completes the submission fully — the 48-hour clock starts from the fax timestamp, and the appointment can advance to the confirmation stage as normal:\n\n1. Fax the request to [Payer Fax Number] using the paper pre-auth form stored at [specific location, e.g., front desk drawer / shared drive folder].\n2. Enter \"portal unavailable — fax submitted\" in the scheduling system with the date and time.\n3. Check the portal the next business day to confirm receipt and pull the authorization number into the record.\n\nThis is a complete alternate submission path, not a holding pattern. Staff do not need to wait for the portal to come back online before moving the appointment forward.\n\n---\n\n**Questions**\n\nFor questions about affected procedure codes, contact [Billing Contact Name/Role] at [internal extension or secure contact method]. For scheduling workflow questions, reach [Office Manager Name/Role].\n\nUse your internal system for anything appointment- or case-specific — email is not a secure channel for those details.\n\nThank you,\n\n[Your Name]\n[Title]\n[Clinic Name]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact section. A brief orienting sentence opens the email without stating business rationale, fully satisfying the clarification note."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete alternate submission path via fax with a specific location for the paper form, and explicitly states that the 48-hour clock starts from the fax timestamp so the appointment can advance normally. The draft even clarifies 'This is a complete alternate submission path, not a holding pattern,' directly addressing the rubric's test of whether the fallback completes the task rather than just recording failure. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively instructs recipients not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback fax process has exactly 3 steps, both within the 5-step cap. Neither process exceeds the limit, and neither process is complex enough to require deferral to training. All three dimensions are fully satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. A brief orienting sentence opens the email without stating business rationale, fully satisfying the clarification note."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete alternate submission path via fax with a specific location for the paper form, and explicitly states that the 48-hour clock starts from the fax timestamp so the appointment can advance normally. The draft even clarifies 'This is a complete alternate submission path, not a holding pattern,' directly addressing the rubric's test of whether the fallback completes the task rather than just recording failure. All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively reminds staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback fax procedure has exactly 3 steps, both within the 5-step cap. Neither process exceeds the limit, and neither process is complex enough to require deferral to training. All three dimensions are fully satisfied."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Patient Flow Impact First",
+              "score": 10,
+              "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or conversion to consultation visit, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears only after this patient impact section. The brief orienting sentence ('Starting [effective date], certain procedures will require...') names the change without explaining business rationale, fully consistent with the clarification."
+            },
+            {
+              "criterion_name": "Fallback Procedures Included",
+              "score": 10,
+              "justification": "The fallback section explicitly names the failure scenario ('If the Authorization Portal Is Unavailable'), provides a concrete 3-step fax-based alternate submission path, and explicitly states the workflow continues without interruption ('the 48-hour clock starts from the fax timestamp, and the appointment can advance to the confirmation stage as normal'). The fallback is not a holding pattern or an escalation — it completes the task through an alternate method, satisfying all three dimensions including actionability."
+            },
+            {
+              "criterion_name": "No Patient Identifiers",
+              "score": 10,
+              "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or treatments are mentioned. The email even proactively reminds recipients not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+            },
+            {
+              "criterion_name": "Bounded Process Steps",
+              "score": 10,
+              "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback has 3 steps, both within the cap. No process exceeds 5 numbered steps. The processes are appropriately scoped for email communication rather than deferred to training, and the complexity level is well-matched to the 5-step format."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Patient Flow Impact First": 10.0,
+          "Fallback Procedures Included": 10.0,
+          "No Patient Identifiers": 10.0,
+          "Bounded Process Steps": 10.0
+        },
+        "std_scores": {
+          "Patient Flow Impact First": 0.0,
+          "Fallback Procedures Included": 0.0,
+          "No Patient Identifiers": 0.0,
+          "Bounded Process Steps": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact section. A brief orienting sentence opens the email without stating business rationale, fully satisfying the clarification note."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete alternate submission path via fax with a specific location for the paper form, and explicitly states that the 48-hour clock starts from the fax timestamp so the appointment can advance normally. The draft even clarifies 'This is a complete alternate submission path, not a holding pattern,' directly addressing the rubric's test of whether the fallback completes the task rather than just recording failure. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively instructs recipients not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback fax process has exactly 3 steps, both within the 5-step cap. Neither process exceeds the limit, and neither process is complex enough to require deferral to training. All three dimensions are fully satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1968,
+              "output_tokens": 507
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or consultation conversion scenario, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears in the following paragraph, clearly after the patient impact. A brief orienting sentence opens the email without stating business rationale, fully satisfying the clarification note."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section explicitly names the failure scenario ('payer portal is down'), provides a concrete alternate submission path via fax with a specific location for the paper form, and explicitly states that the 48-hour clock starts from the fax timestamp so the appointment can advance normally. The draft even clarifies 'This is a complete alternate submission path, not a holding pattern,' directly addressing the rubric's test of whether the fallback completes the task rather than just recording failure. All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "No patient names, initials, or identifying information appear anywhere in the draft. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or case-specific information are included. The email even proactively reminds staff not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback fax procedure has exactly 3 steps, both within the 5-step cap. Neither process exceeds the limit, and neither process is complex enough to require deferral to training. All three dimensions are fully satisfied."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1968,
+              "output_tokens": 506
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Patient Flow Impact First",
+                "score": 10,
+                "justification": "The first substantive paragraph ('What Changes for Patients') leads directly with patient experience: the 48-hour wait for confirmation, the rescheduling or conversion to consultation visit, and the 10–15 minute front-desk handling impact. The operational/compliance rationale (payer requirement, effective date) appears only after this patient impact section. The brief orienting sentence ('Starting [effective date], certain procedures will require...') names the change without explaining business rationale, fully consistent with the clarification."
+              },
+              {
+                "criterion_name": "Fallback Procedures Included",
+                "score": 10,
+                "justification": "The fallback section explicitly names the failure scenario ('If the Authorization Portal Is Unavailable'), provides a concrete 3-step fax-based alternate submission path, and explicitly states the workflow continues without interruption ('the 48-hour clock starts from the fax timestamp, and the appointment can advance to the confirmation stage as normal'). The fallback is not a holding pattern or an escalation — it completes the task through an alternate method, satisfying all three dimensions including actionability."
+              },
+              {
+                "criterion_name": "No Patient Identifiers",
+                "score": 10,
+                "justification": "The draft contains no patient names, initials, or uniquely identifying information. Patients are referenced generically ('any patient,' 'patients booking affected procedures'). No clinical details, diagnoses, or treatments are mentioned. The email even proactively reminds recipients not to include case-specific details in replies, reinforcing the non-secure channel treatment."
+              },
+              {
+                "criterion_name": "Bounded Process Steps",
+                "score": 10,
+                "justification": "Both multi-step processes use numbered steps: the scheduling workflow has exactly 5 steps and the fallback has 3 steps, both within the cap. No process exceeds 5 numbered steps. The processes are appropriately scoped for email communication rather than deferred to training, and the complexity level is well-matched to the 5-step format."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1968,
+              "output_tokens": 514
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null,
+      "rubric_snapshot": {
+        "version": 1,
+        "writing_type": "professional emails",
+        "user_goals_summary": "Writes clinic communications that prioritize patient safety and workflow continuity. Every process change is communicated with both the ideal flow and the fallback when things break. Treats email as a non-secure channel at all times.",
+        "rubric": [
+          {
+            "name": "Patient Flow Impact First",
+            "category": "Structure",
+            "description": "Changes are explained through their impact on patient experience and flow before the operational rationale. How many extra minutes per appointment, which rooms are affected, what the patient sees differently.",
+            "dimensions": [
+              {
+                "id": "patient_impact_leads",
+                "label": "The first substantive paragraph describes how the change affects patient experience or flow"
+              },
+              {
+                "id": "quantified_time_impact",
+                "label": "Includes specific time estimates for how the change affects appointment duration or wait times"
+              },
+              {
+                "id": "operational_reason_follows",
+                "label": "The business or compliance reason for the change appears after the patient impact, not before"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high",
+            "negative_examples": [
+              "Penalizing a framing sentence that orients the reader to the topic as if it were 'operational rationale leading'",
+              "Requiring that the very first word of the email describe patient experience before any context is established",
+              "Treating 'Starting [date], X will change' as equivalent to 'We are making this change because of payer policy'"
+            ],
+            "clarification": "The criterion means the first substantive explanatory paragraph — the one that actually describes what is changing — must lead with patient experience and flow impact before explaining why the change is happening operationally or administratively. A brief orienting sentence that names the change without explaining the business rationale does not violate this. Both drafts satisfy this fully and should score 10, not 9."
+          },
+          {
+            "name": "Fallback Procedures Included",
+            "category": "Content",
+            "description": "Every new process includes an explicit fallback for when the primary method fails. Clinical settings can't pause when technology breaks — staff need to know what to do when the system is down.",
+            "dimensions": [
+              {
+                "id": "fallback_stated",
+                "label": "Includes a specific 'if X fails, do Y instead' instruction"
+              },
+              {
+                "id": "fallback_is_actionable",
+                "label": "The fallback is a concrete procedure, not 'contact IT' or 'notify your manager'"
+              },
+              {
+                "id": "failure_scenario_named",
+                "label": "Names the specific failure scenario the fallback addresses (system down, connectivity loss, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high",
+            "negative_examples": [
+              "A fallback that says 'document the system outage and resubmit tomorrow' without keeping the process moving",
+              "A fallback scored as actionable simply because it names a specific person to call, even if calling that person doesn't advance the workflow",
+              "Treating 'notify your manager' as actionable just because it names a role"
+            ],
+            "clarification": "The fallback must be actionable AND must allow the clinical or administrative workflow to continue without stopping. The test is: can staff complete the necessary step using the fallback, or does the fallback just create a record of failure? The rubric dimension [fallback_is_actionable] should be interpreted as 'the fallback completes the task through an alternate method,' not merely 'the fallback gives a concrete instruction.'"
+          },
+          {
+            "name": "No Patient Identifiers",
+            "category": "Audience",
+            "description": "Never references patients by name in any email, even internal ones. Uses case numbers, room references, or appointment times. Email is treated as a non-secure channel regardless of policy.",
+            "dimensions": [
+              {
+                "id": "no_patient_names",
+                "label": "Does not include any patient names, initials, or uniquely identifying information"
+              },
+              {
+                "id": "uses_neutral_references",
+                "label": "Refers to patients by case number, room number, appointment time, or generic reference"
+              },
+              {
+                "id": "no_clinical_details",
+                "label": "Does not include specific diagnoses, treatments, or medical details that could identify a patient in context"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Bounded Process Steps",
+            "category": "Structure",
+            "description": "Multi-step processes use numbered steps, capped at 5. If a process needs more than 5 steps to explain in email, it needs a training session — the email should announce the training, not attempt to replace it.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Processes with more than two actions use numbered steps"
+              },
+              {
+                "id": "max_five_steps",
+                "label": "No process in the email exceeds 5 numbered steps"
+              },
+              {
+                "id": "complex_deferred",
+                "label": "If a process is too complex for 5 steps, the email schedules training instead of attempting full documentation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "James's non-negotiable: every new process has a fallback. In clinical settings, 'the system is down' is not an edge case, it's a Tuesday. Will reject any email that names a patient or introduces a process without explaining what to do when it breaks."
+      }
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 9,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Never names patients — uses case numbers or generic references; treats email as insecure",
+        "satisfied": "yes",
+        "evidence": "No patient names appear anywhere. The email explicitly states 'Please do not include case-specific details in any reply to this email' and 'email is not a secure channel for those details.'"
+      },
+      {
+        "preference": "Impact on patient flow presented FIRST — before operational reasons",
+        "satisfied": "yes",
+        "evidence": "The 'What Changes for Patients' section leads the email, detailing the 48-hour wait, 10–15 extra minutes of front-desk handling, and room impact ('Procedure rooms are not impacted') before explaining the payer requirement."
+      },
+      {
+        "preference": "Fallback procedures included for when technology/new process fails",
+        "satisfied": "yes",
+        "evidence": "A dedicated 'If the Authorization Portal Is Unavailable' section provides a complete fax-based alternate path, explicitly noted as 'a complete alternate submission path, not a holding pattern.'"
+      },
+      {
+        "preference": "Numbered steps for multi-action processes, capped at 5 steps",
+        "satisfied": "yes",
+        "evidence": "The main scheduling steps are numbered 1–5 (exactly at the cap). The fallback fax process is numbered 1–3. Neither exceeds 5."
+      },
+      {
+        "preference": "Does not assume all recipients have the same technical literacy",
+        "satisfied": "yes",
+        "evidence": "The email explains concepts plainly (e.g., '48-hour clock starts from the fax timestamp'), specifies where paper forms are stored, and separates billing vs. scheduling contacts for different question types."
+      },
+      {
+        "preference": "Process changes not communicated only once — includes follow-up mechanism",
+        "satisfied": "partially",
+        "evidence": "The email provides contact points for questions and an attached reference sheet, but does not explicitly mention a follow-up communication, training session, or check-in date to revisit the new process."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 1064,
+      "output_tokens": 543
+    }
+  }
+}

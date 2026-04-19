@@ -1,0 +1,1070 @@
+{
+  "persona": "Lin Zhang",
+  "task_index": 1,
+  "task_description": "I need to email a professor whose travel reimbursement request exceeds the approved budget — they requested $3,200 but the department can only cover $2,400 due to a college-wide cap.",
+  "condition": "C",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes academic administrative emails that respect faculty autonomy while still achieving compliance. Positions requirements as institutional obligations rather than personal requests, and always provides concrete resources rather than sending people to 'check' things.",
+    "rubric": [
+      {
+        "name": "External Constraint Framing",
+        "category": "Audience",
+        "description": "Requirements and deadlines are attributed to the institutional source (dean's office, accreditation body, provost) rather than presented as the administrator's own ask. Faculty respond to institutional obligations differently than to administrative requests.",
+        "dimensions": [
+          {
+            "id": "source_attributed",
+            "label": "The deadline or requirement names the specific office, body, or regulation it comes from"
+          },
+          {
+            "id": "admin_not_enforcer",
+            "label": "The email positions the administrator as relaying or facilitating the requirement, not imposing it"
+          },
+          {
+            "id": "institutional_language",
+            "label": "Uses 'the provost's office requires' or 'accreditation standards mandate' rather than 'I need you to' or 'please make sure to'"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "Budget Gap Transparency",
+        "category": "Content",
+        "description": "Budget communications include what was requested, what was approved, and why the gap exists. Faculty who understand the constraint accept the outcome better than faculty who just see a number.",
+        "dimensions": [
+          {
+            "id": "requested_vs_approved",
+            "label": "States both the requested amount and the approved amount"
+          },
+          {
+            "id": "gap_reason_stated",
+            "label": "Explains the specific constraint causing the gap (college cap, policy limit, fund depletion)"
+          },
+          {
+            "id": "not_apologetic",
+            "label": "Presents the gap as a factual constraint, not an apology — does not use 'unfortunately' or 'I wish I could'"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Direct Resource Provision",
+        "category": "Content",
+        "description": "Emails about processes include the specific form, link, contact, or resource needed — never tells the reader to 'check the website' or 'refer to the handbook.' Especially critical for graduate students navigating bureaucracy.",
+        "dimensions": [
+          {
+            "id": "specific_link_or_form",
+            "label": "Includes a direct link to the form, portal, or resource — not a generic website URL"
+          },
+          {
+            "id": "no_check_the_website",
+            "label": "Does not tell the reader to find information on their own when the sender could provide it directly"
+          },
+          {
+            "id": "step_by_step_if_complex",
+            "label": "If the process has multiple steps, provides them in order rather than pointing to a general resource"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Transparent CC Purpose",
+        "category": "Audience",
+        "description": "When CC'ing a chair, dean, or other authority, the email explicitly states why they're copied ('copying Dr. X for awareness') to prevent the CC from being misread as escalation or threat.",
+        "dimensions": [
+          {
+            "id": "cc_reason_stated",
+            "label": "The email includes a phrase like 'copying X for awareness' or 'cc'ing X as this relates to their area'"
+          },
+          {
+            "id": "cc_not_escalation",
+            "label": "The CC is framed as informational, not as implicit pressure on the recipient"
+          },
+          {
+            "id": "tone_unchanged_by_cc",
+            "label": "The email reads the same way whether or not the CC'd person was included — no performative language for the CC audience"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Lin operates in a context where faculty are peers, not subordinates, and the administrator's authority is relational, not hierarchical. Non-negotiable: never position yourself as the enforcer. Will reject any email that CC's a dean without stating why, or that tells a student to 'check the website' when a direct link exists."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "Subject: Travel Reimbursement — Approved Amount for [Conference Name]\n\nDear Professor [Last Name],\n\nI'm writing to follow up on your travel reimbursement request for [conference name/dates]. The College of [X] has a per-faculty travel cap of $2,400 for the current fiscal year, which applies across all departments in the college. Based on that cap, the approved amount for your reimbursement is $2,400 of the $3,200 requested.\n\nTo submit your reimbursement for the approved amount, please use the travel reimbursement portal directly: [direct link to portal]. You'll need to attach your receipts and enter $2,400 as the reimbursement total. If your receipts total more than that, you only need to submit receipts up to the approved amount.\n\nA couple of options that may be worth exploring for the remaining $800:\n\n- **Research account funding** — If you have an active grant or research account, those funds can sometimes cover conference travel. [Name of grants administrator] in the department can confirm whether your account has eligible funds; they're reachable at [email/phone].\n- **Professional development funds** — The Graduate School/College of [X] administers a supplemental travel fund for faculty. Applications are accepted on a rolling basis through [link to fund application].\n\nPlease let me know if you have questions about the reimbursement process or if anything is unclear about the approved amount.\n\nBest,\n[Your Name]\n[Title]\n[Department]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 7,
+              "justification": "The email attributes the cap to 'The College of [X]' and explains it 'applies across all departments,' which partially satisfies source attribution and institutional language. However, it does not name a specific office (e.g., dean's office, provost) as the source of the policy, and the administrator is not explicitly positioned as relaying the requirement — the framing is factual but neutral rather than clearly facilitative. 'I'm writing to follow up' slightly centers the administrator rather than the institution."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 9,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint (per-faculty college-wide travel cap of $2,400). The tone is factual and matter-of-fact — no 'unfortunately' or apologetic language appears. This criterion is nearly fully satisfied; the only minor gap is that the cap policy source could be slightly more specific."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the travel reimbursement portal, a named grants administrator with contact information, and a direct link to the supplemental travel fund application. It does not tell the reader to 'check the website' or 'refer to the handbook.' Step-by-step instructions are included for the portal submission process. This criterion is very well satisfied."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 6,
+              "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric treats this criterion as important and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC is not a problem — but the criterion cannot be scored highly when it simply doesn't apply. Score reflects neutral non-application rather than a failure."
+            }
+          ],
+          "overall_weighted_score": 0.79,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 7,
+              "justification": "The email attributes the cap to 'The College of [X]' and frames it as a policy that 'applies across all departments,' which partially satisfies institutional attribution. However, it does not name a specific office (e.g., dean's office, provost) as the source, and the administrator's role as a facilitator rather than enforcer is implied but not explicitly stated. The language avoids 'I need you to' constructions, but never uses formulations like 'the dean's office requires' or 'college policy mandates.'"
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 9,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint — a per-faculty college-wide travel cap of $2,400. The gap is presented as a factual institutional constraint without apologetic language; 'unfortunately' and 'I wish I could' are absent. This is a strong execution of the criterion."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 8,
+              "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental travel fund application, satisfying the no-generic-website requirement. It also provides step-by-step instructions for portal submission (attach receipts, enter $2,400). The grants administrator contact is named with reachable contact info. Minor gap: the grants administrator option says they 'can confirm' rather than providing a direct answer, but this is appropriate given account variability."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 6,
+              "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric flags CC transparency as a non-negotiable concern and the draft simply omits any CC, this criterion is technically not triggered — but the score reflects that the draft neither demonstrates nor fails the behavior, leaving it unaddressed rather than exemplified."
+            }
+          ],
+          "overall_weighted_score": 0.77,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 7,
+              "justification": "The email attributes the cap to 'The College of [X]' and explains it 'applies across all departments,' which partially satisfies source attribution and institutional language. However, it doesn't name a specific office (e.g., 'the Dean's Office of the College of X') and the administrator is not explicitly positioned as a relay — the framing is factual but neutral rather than clearly 'the college requires' vs. 'I need.' The phrase 'I'm writing to follow up' slightly centers the administrator, though it avoids 'I need you to' language throughout."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 9,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint (per-faculty college-wide travel cap of $2,400). The tone is factual and matter-of-fact with no apologetic language — 'unfortunately' and 'I wish' are absent. This criterion is nearly fully satisfied across all three dimensions."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 8,
+              "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying the no-generic-website rule. Step-by-step instructions are included for the portal submission. The one minor gap is that the grants administrator contact is described as confirmatory ('can confirm') rather than providing a direct path, but a name and contact info are given, which is substantially better than 'check with your department.'"
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 6,
+              "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric treats this as a high-priority criterion and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC means the criterion is simply not applicable — but the score reflects that the draft neither demonstrates the positive behavior nor fails it, landing in the middle."
+            }
+          ],
+          "overall_weighted_score": 0.77,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 7.0,
+          "Budget Gap Transparency": 9.0,
+          "Direct Resource Provision": 8.333333333333334,
+          "Transparent CC Purpose": 6.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.5773502691896257,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 0.7766666666666667,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 7,
+                "justification": "The email attributes the cap to 'The College of [X]' and explains it 'applies across all departments,' which partially satisfies source attribution and institutional language. However, it does not name a specific office (e.g., dean's office, provost) as the source of the policy, and the administrator is not explicitly positioned as relaying the requirement — the framing is factual but neutral rather than clearly facilitative. 'I'm writing to follow up' slightly centers the administrator rather than the institution."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 9,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint (per-faculty college-wide travel cap of $2,400). The tone is factual and matter-of-fact — no 'unfortunately' or apologetic language appears. This criterion is nearly fully satisfied; the only minor gap is that the cap policy source could be slightly more specific."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the travel reimbursement portal, a named grants administrator with contact information, and a direct link to the supplemental travel fund application. It does not tell the reader to 'check the website' or 'refer to the handbook.' Step-by-step instructions are included for the portal submission process. This criterion is very well satisfied."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 6,
+                "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric treats this criterion as important and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC is not a problem — but the criterion cannot be scored highly when it simply doesn't apply. Score reflects neutral non-application rather than a failure."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1407,
+              "output_tokens": 535
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 7,
+                "justification": "The email attributes the cap to 'The College of [X]' and frames it as a policy that 'applies across all departments,' which partially satisfies institutional attribution. However, it does not name a specific office (e.g., dean's office, provost) as the source, and the administrator's role as a facilitator rather than enforcer is implied but not explicitly stated. The language avoids 'I need you to' constructions, but never uses formulations like 'the dean's office requires' or 'college policy mandates.'"
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 9,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint — a per-faculty college-wide travel cap of $2,400. The gap is presented as a factual institutional constraint without apologetic language; 'unfortunately' and 'I wish I could' are absent. This is a strong execution of the criterion."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 8,
+                "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental travel fund application, satisfying the no-generic-website requirement. It also provides step-by-step instructions for portal submission (attach receipts, enter $2,400). The grants administrator contact is named with reachable contact info. Minor gap: the grants administrator option says they 'can confirm' rather than providing a direct answer, but this is appropriate given account variability."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 6,
+                "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric flags CC transparency as a non-negotiable concern and the draft simply omits any CC, this criterion is technically not triggered — but the score reflects that the draft neither demonstrates nor fails the behavior, leaving it unaddressed rather than exemplified."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1407,
+              "output_tokens": 558
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 7,
+                "justification": "The email attributes the cap to 'The College of [X]' and explains it 'applies across all departments,' which partially satisfies source attribution and institutional language. However, it doesn't name a specific office (e.g., 'the Dean's Office of the College of X') and the administrator is not explicitly positioned as a relay — the framing is factual but neutral rather than clearly 'the college requires' vs. 'I need.' The phrase 'I'm writing to follow up' slightly centers the administrator, though it avoids 'I need you to' language throughout."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 9,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint (per-faculty college-wide travel cap of $2,400). The tone is factual and matter-of-fact with no apologetic language — 'unfortunately' and 'I wish' are absent. This criterion is nearly fully satisfied across all three dimensions."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 8,
+                "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying the no-generic-website rule. Step-by-step instructions are included for the portal submission. The one minor gap is that the grants administrator contact is described as confirmatory ('can confirm') rather than providing a direct path, but a name and contact info are given, which is substantially better than 'check with your department.'"
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 6,
+                "justification": "The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric treats this as a high-priority criterion and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC means the criterion is simply not applicable — but the score reflects that the draft neither demonstrates the positive behavior nor fails it, landing in the middle."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1407,
+              "output_tokens": 569
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 7.0/10\n  Justification: The email attributes the cap to 'The College of [X]' and explains it 'applies across all departments,' which partially satisfies source attribution and institutional language. However, it does not name a specific office (e.g., dean's office, provost) as the source of the policy, and the administrator is not explicitly positioned as relaying the requirement — the framing is factual but neutral rather than clearly facilitative. 'I'm writing to follow up' slightly centers the administrator rather than the institution.\n- Budget Gap Transparency: 9.0/10\n  Justification: The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint (per-faculty college-wide travel cap of $2,400). The tone is factual and matter-of-fact — no 'unfortunately' or apologetic language appears. This criterion is nearly fully satisfied; the only minor gap is that the cap policy source could be slightly more specific.\n- Direct Resource Provision: 8.3/10\n  Justification: The email provides a direct link to the travel reimbursement portal, a named grants administrator with contact information, and a direct link to the supplemental travel fund application. It does not tell the reader to 'check the website' or 'refer to the handbook.' Step-by-step instructions are included for the portal submission process. This criterion is very well satisfied.\n- Transparent CC Purpose: 6.0/10\n  Justification: The draft does not include any CC at all, so the CC-related dimensions (cc_reason_stated, cc_not_escalation, tone_unchanged_by_cc) are neither satisfied nor violated. Since the rubric treats this criterion as important and the coaching notes flag CC without explanation as a non-negotiable failure, the absence of a CC is not a problem — but the criterion cannot be scored highly when it simply doesn't apply. Score reflects neutral non-application rather than a failure.\n\nYour weakest criteria are: Transparent CC Purpose, External Constraint Framing. Focus your revision on improving these."
+    },
+    {
+      "round": 2,
+      "draft": "Subject: Travel Reimbursement — Approved Amount for [Conference Name]\n\nDear Professor [Last Name],\n\nI'm reaching out regarding your travel reimbursement request for [conference name/dates]. The Dean's Office has set a per-faculty travel cap of $2,400 for the current fiscal year, applied uniformly across all departments in the college. Under that policy, the approved amount for your reimbursement is $2,400 of the $3,200 requested — I'm passing that determination along so we can get your reimbursement processed.\n\nTo submit for the approved amount, please use the travel reimbursement portal directly: [direct link to portal]. You'll need to attach your receipts and enter $2,400 as the reimbursement total. If your receipts exceed that amount, you only need to submit receipts up to the approved figure.\n\nFor the remaining $800, there are a couple of avenues that may be worth exploring:\n\n- **Research account funding** — If you have an active grant or research account, conference travel is often an allowable expense. [Name of grants administrator] can confirm whether your account has eligible funds; they're reachable at [email/phone].\n- **College supplemental travel fund** — The Dean's Office administers a supplemental faculty travel fund, with applications accepted on a rolling basis. The application is here: [direct link to fund application].\n\nI'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.\n\nPlease don't hesitate to reach out if you have questions about the reimbursement process or the approved amount.\n\nBest,\n[Your Name]\n[Title]\n[Department]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the cap to 'The Dean's Office' and its policy ('applied uniformly across all departments in the college'), satisfying source_attributed and institutional_language. The administrator explicitly frames their role as 'passing that determination along,' which positions them as a facilitator rather than enforcer. The only minor gap is that the language could be slightly more explicit about the policy name or document, but overall this is very strong."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email states both the requested amount ($3,200) and the approved amount ($2,400) clearly. The gap reason is explicitly stated as the Dean's Office per-faculty travel cap applied uniformly. The tone is entirely factual — no 'unfortunately,' no apology, no 'I wish I could do more.' The gap is presented as a straightforward institutional constraint."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying specific_link_or_form. It includes step-by-step instructions for portal submission (attach receipts, enter $2,400, only submit receipts up to approved figure). There is no 'check the website' language. The only minor gap is that the grants administrator contact is a placeholder, but the structure correctly names a specific person and contact method rather than directing the faculty member to find it themselves."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated and cc_not_escalation. The CC is framed as purely informational with a clear rationale. The tone of the email does not shift or become performative in any way that suggests the CC is being used as implicit pressure."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the cap to 'The Dean's Office has set a per-faculty travel cap of $2,400' and frames the administrator as 'passing that determination along' rather than imposing it personally. Institutional language is used throughout ('applied uniformly across all departments in the college'). The only minor gap is that the phrase 'I'm passing that determination along' is slightly informal, but it still positions the administrator as a relay rather than an enforcer."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), and clearly names the specific constraint causing the gap ('per-faculty travel cap of $2,400 for the current fiscal year, applied uniformly across all departments'). The gap is presented as a factual institutional policy with no apologetic language — 'unfortunately' and 'I wish I could' are absent entirely."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying the no-generic-website requirement. Step-by-step instructions are included for the portal submission. The grants administrator is named with contact information. The only minor gap is that the links are placeholders ('[direct link]'), but this is appropriate for a template draft and the structure is correct."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview' — this directly satisfies the cc_reason_stated and cc_not_escalation dimensions. The CC explanation is informational and does not alter the tone of the rest of the email, which reads consistently throughout without any performative language directed at the CC'd party."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the cap to 'The Dean's Office' and specifies it as a college-wide policy applied uniformly, satisfying source_attributed and institutional_language. The administrator explicitly frames their role as 'passing that determination along,' positioning themselves as a facilitator rather than enforcer. The only minor gap is that the language could be slightly more explicit about the policy name or document, but overall the framing is strong and consistent throughout."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email states both the requested amount ($3,200) and the approved amount ($2,400) clearly. The gap reason is explicitly identified as the Dean's Office per-faculty travel cap applied uniformly across departments. The tone is entirely factual — no 'unfortunately,' no apology, no hedging — presenting the constraint as a straightforward institutional determination."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying specific_link_or_form and no_check_the_website. Step-by-step instructions are included for the portal submission (attach receipts, enter $2,400, receipt guidance). The grants administrator contact is named with contact info rather than directing the faculty member to find it themselves. Placeholder brackets indicate where links go, which is appropriate for a template."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated and cc_not_escalation. The CC is framed as purely informational with a clear rationale. The tone of the email does not shift or become performative in response to the CC — the message reads consistently throughout."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 9.0,
+          "Budget Gap Transparency": 10.0,
+          "Direct Resource Provision": 9.0,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.0,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 0.94,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the cap to 'The Dean's Office' and its policy ('applied uniformly across all departments in the college'), satisfying source_attributed and institutional_language. The administrator explicitly frames their role as 'passing that determination along,' which positions them as a facilitator rather than enforcer. The only minor gap is that the language could be slightly more explicit about the policy name or document, but overall this is very strong."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email states both the requested amount ($3,200) and the approved amount ($2,400) clearly. The gap reason is explicitly stated as the Dean's Office per-faculty travel cap applied uniformly. The tone is entirely factual — no 'unfortunately,' no apology, no 'I wish I could do more.' The gap is presented as a straightforward institutional constraint."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying specific_link_or_form. It includes step-by-step instructions for portal submission (attach receipts, enter $2,400, only submit receipts up to approved figure). There is no 'check the website' language. The only minor gap is that the grants administrator contact is a placeholder, but the structure correctly names a specific person and contact method rather than directing the faculty member to find it themselves."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated and cc_not_escalation. The CC is framed as purely informational with a clear rationale. The tone of the email does not shift or become performative in any way that suggests the CC is being used as implicit pressure."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1444,
+              "output_tokens": 524
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the cap to 'The Dean's Office has set a per-faculty travel cap of $2,400' and frames the administrator as 'passing that determination along' rather than imposing it personally. Institutional language is used throughout ('applied uniformly across all departments in the college'). The only minor gap is that the phrase 'I'm passing that determination along' is slightly informal, but it still positions the administrator as a relay rather than an enforcer."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), and clearly names the specific constraint causing the gap ('per-faculty travel cap of $2,400 for the current fiscal year, applied uniformly across all departments'). The gap is presented as a factual institutional policy with no apologetic language — 'unfortunately' and 'I wish I could' are absent entirely."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying the no-generic-website requirement. Step-by-step instructions are included for the portal submission. The grants administrator is named with contact information. The only minor gap is that the links are placeholders ('[direct link]'), but this is appropriate for a template draft and the structure is correct."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview' — this directly satisfies the cc_reason_stated and cc_not_escalation dimensions. The CC explanation is informational and does not alter the tone of the rest of the email, which reads consistently throughout without any performative language directed at the CC'd party."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1444,
+              "output_tokens": 516
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the cap to 'The Dean's Office' and specifies it as a college-wide policy applied uniformly, satisfying source_attributed and institutional_language. The administrator explicitly frames their role as 'passing that determination along,' positioning themselves as a facilitator rather than enforcer. The only minor gap is that the language could be slightly more explicit about the policy name or document, but overall the framing is strong and consistent throughout."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email states both the requested amount ($3,200) and the approved amount ($2,400) clearly. The gap reason is explicitly identified as the Dean's Office per-faculty travel cap applied uniformly across departments. The tone is entirely factual — no 'unfortunately,' no apology, no hedging — presenting the constraint as a straightforward institutional determination."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying specific_link_or_form and no_check_the_website. Step-by-step instructions are included for the portal submission (attach receipts, enter $2,400, receipt guidance). The grants administrator contact is named with contact info rather than directing the faculty member to find it themselves. Placeholder brackets indicate where links go, which is appropriate for a template."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated and cc_not_escalation. The CC is framed as purely informational with a clear rationale. The tone of the email does not shift or become performative in response to the CC — the message reads consistently throughout."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1444,
+              "output_tokens": 511
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 9.0/10\n  Justification: The email clearly attributes the cap to 'The Dean's Office' and its policy ('applied uniformly across all departments in the college'), satisfying source_attributed and institutional_language. The administrator explicitly frames their role as 'passing that determination along,' which positions them as a facilitator rather than enforcer. The only minor gap is that the language could be slightly more explicit about the policy name or document, but overall this is very strong.\n- Budget Gap Transparency: 10.0/10\n  Justification: The email states both the requested amount ($3,200) and the approved amount ($2,400) clearly. The gap reason is explicitly stated as the Dean's Office per-faculty travel cap applied uniformly. The tone is entirely factual — no 'unfortunately,' no apology, no 'I wish I could do more.' The gap is presented as a straightforward institutional constraint.\n- Direct Resource Provision: 9.0/10\n  Justification: The email provides a direct link to the travel reimbursement portal and a direct link to the supplemental fund application, satisfying specific_link_or_form. It includes step-by-step instructions for portal submission (attach receipts, enter $2,400, only submit receipts up to approved figure). There is no 'check the website' language. The only minor gap is that the grants administrator contact is a placeholder, but the structure correctly names a specific person and contact method rather than directing the faculty member to find it themselves.\n- Transparent CC Purpose: 10.0/10\n  Justification: The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated and cc_not_escalation. The CC is framed as purely informational with a clear rationale. The tone of the email does not shift or become performative in any way that suggests the CC is being used as implicit pressure.\n\nYour weakest criteria are: Direct Resource Provision, External Constraint Framing. Focus your revision on improving these."
+    },
+    {
+      "round": 3,
+      "draft": "Subject: Travel Reimbursement — Approved Amount for [Conference Name]\n\nDear Professor [Last Name],\n\nI'm reaching out regarding your travel reimbursement request for [conference name/dates]. Under the Dean's Office Faculty Travel Policy (FY[XX]-[XX]), a per-faculty reimbursement cap of $2,400 applies uniformly across all departments in the college for the current fiscal year. Under that policy, the approved amount for your reimbursement is $2,400 of the $3,200 requested — I'm passing that determination along so we can get your reimbursement processed promptly.\n\nTo submit for the approved amount, please use the travel reimbursement portal at [direct URL to portal]. The steps are:\n\n1. Log in with your university credentials\n2. Select \"New Reimbursement Request\" and choose \"Conference Travel\"\n3. Enter $2,400 as the reimbursement total\n4. Attach receipts up to the approved amount — you do not need to submit receipts beyond $2,400\n5. Submit for departmental approval\n\nFor the remaining $800, two options may be worth exploring:\n\n- **Research account funding** — Conference travel is frequently an allowable expense on active grants or research accounts. [Name of grants administrator], our departmental grants contact, can check your account eligibility; they're reachable at [email] or [phone number].\n- **College Supplemental Faculty Travel Fund** — The Dean's Office administers this fund separately from departmental budgets, with rolling applications. The application form is available directly at [direct URL to supplemental fund application].\n\nI'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.\n\nPlease feel free to reach out if you have any questions about the process or the approved amount.\n\nBest,\n[Your Name]\n[Title]\n[Department]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the cap to 'the Dean's Office Faculty Travel Policy (FY[XX]-[XX])' with a specific policy citation, satisfying source_attributed. The phrase 'I'm passing that determination along' positions the administrator as a relay, not an enforcer, satisfying admin_not_enforcer. Institutional language ('Under the Dean's Office Faculty Travel Policy... a per-faculty reimbursement cap... applies uniformly') is used throughout rather than 'I need you to' framing. Minor deduction only because 'I'm reaching out' opens with a first-person frame before pivoting to institutional attribution, but this is negligible."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is clearly explained as a uniform per-faculty college cap under a named policy, satisfying gap_reason_stated. The email uses no apologetic language — no 'unfortunately' or 'I wish I could' — presenting the gap as a factual policy constraint, satisfying not_apologetic. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct URL to the travel reimbursement portal and a direct URL to the supplemental fund application, satisfying specific_link_or_form. It never tells the reader to 'check the website' or 'refer to the handbook,' satisfying no_check_the_website. The five-step submission process is laid out in order, satisfying step_by_step_if_complex. The only minor gap is that the grants administrator option says they 'can check your account eligibility' rather than providing a direct link or form, but this is a human contact rather than a web resource, which is appropriate."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with a clear rationale, not implicit pressure, satisfying cc_not_escalation. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit, satisfying tone_unchanged_by_cc. All three dimensions are fully met."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the cap to 'the Dean's Office Faculty Travel Policy (FY[XX]-[XX])' with a specific policy citation, satisfying source_attributed. The administrator frames themselves as 'passing that determination along,' not imposing it, satisfying admin_not_enforcer. Institutional language ('Under that policy, the approved amount') is used throughout rather than 'I need you to.' Minor deduction: 'I'm reaching out' opens with a first-person framing before pivoting to institutional attribution, but this is a minor stylistic issue that doesn't undermine the overall framing."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is clearly explained as a 'per-faculty reimbursement cap of $2,400 applies uniformly across all departments,' satisfying gap_reason_stated. The email presents the gap as a factual policy constraint without using 'unfortunately' or apologetic language, satisfying not_apologetic. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct URL to the travel reimbursement portal and a direct URL to the supplemental fund application, satisfying specific_link_or_form. It never tells the reader to 'check the website,' satisfying no_check_the_website. A clear five-step numbered process is provided for the portal submission, satisfying step_by_step_if_complex. The grants administrator contact is also provided with email and phone. All dimensions are fully met with no gaps."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The CC is framed as purely informational and tied to the chair's functional role, not as implicit pressure, satisfying cc_not_escalation. The tone of the email is consistent and collegial throughout with no performative language directed at the CC'd audience, satisfying tone_unchanged_by_cc."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 9,
+              "justification": "The email clearly attributes the cap to 'the Dean's Office Faculty Travel Policy (FY[XX]-[XX])' with a specific policy citation, satisfying source_attributed. The phrase 'I'm passing that determination along' positions the administrator as a relay, not an enforcer, satisfying admin_not_enforcer. Institutional language ('Under the Dean's Office Faculty Travel Policy... a per-faculty reimbursement cap... applies uniformly') is used throughout rather than 'I need you to' framing. Minor deduction: 'I'm reaching out' in the opener is slightly personal in tone, but it does not undermine the overall institutional framing."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is clearly explained as a uniform per-faculty college cap under a named policy, satisfying gap_reason_stated. The email presents the gap as a factual policy constraint with no apologetic language — 'unfortunately' and 'I wish I could' are absent — satisfying not_apologetic. All three dimensions are fully met."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 9,
+              "justification": "The email provides a direct URL to the travel reimbursement portal and a direct URL to the supplemental fund application, satisfying specific_link_or_form. There is no instruction to 'check the website,' satisfying no_check_the_website. A clear five-step numbered process is provided for the portal submission, satisfying step_by_step_if_complex. The grants administrator contact is also provided with email and phone. Minor deduction only for placeholder URLs, but these are clearly intended to be filled in."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with no implicit pressure, satisfying cc_not_escalation. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit, satisfying tone_unchanged_by_cc. All three dimensions are fully met."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 9.0,
+          "Budget Gap Transparency": 10.0,
+          "Direct Resource Provision": 9.0,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.0,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 0.94,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the cap to 'the Dean's Office Faculty Travel Policy (FY[XX]-[XX])' with a specific policy citation, satisfying source_attributed. The phrase 'I'm passing that determination along' positions the administrator as a relay, not an enforcer, satisfying admin_not_enforcer. Institutional language ('Under the Dean's Office Faculty Travel Policy... a per-faculty reimbursement cap... applies uniformly') is used throughout rather than 'I need you to' framing. Minor deduction only because 'I'm reaching out' opens with a first-person frame before pivoting to institutional attribution, but this is negligible."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is clearly explained as a uniform per-faculty college cap under a named policy, satisfying gap_reason_stated. The email uses no apologetic language — no 'unfortunately' or 'I wish I could' — presenting the gap as a factual policy constraint, satisfying not_apologetic. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct URL to the travel reimbursement portal and a direct URL to the supplemental fund application, satisfying specific_link_or_form. It never tells the reader to 'check the website' or 'refer to the handbook,' satisfying no_check_the_website. The five-step submission process is laid out in order, satisfying step_by_step_if_complex. The only minor gap is that the grants administrator option says they 'can check your account eligibility' rather than providing a direct link or form, but this is a human contact rather than a web resource, which is appropriate."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with a clear rationale, not implicit pressure, satisfying cc_not_escalation. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit, satisfying tone_unchanged_by_cc. All three dimensions are fully met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1492,
+              "output_tokens": 640
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the cap to 'the Dean's Office Faculty Travel Policy (FY[XX]-[XX])' with a specific policy citation, satisfying source_attributed. The administrator frames themselves as 'passing that determination along,' not imposing it, satisfying admin_not_enforcer. Institutional language ('Under that policy, the approved amount') is used throughout rather than 'I need you to.' Minor deduction: 'I'm reaching out' opens with a first-person framing before pivoting to institutional attribution, but this is a minor stylistic issue that doesn't undermine the overall framing."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is clearly explained as a 'per-faculty reimbursement cap of $2,400 applies uniformly across all departments,' satisfying gap_reason_stated. The email presents the gap as a factual policy constraint without using 'unfortunately' or apologetic language, satisfying not_apologetic. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct URL to the travel reimbursement portal and a direct URL to the supplemental fund application, satisfying specific_link_or_form. It never tells the reader to 'check the website,' satisfying no_check_the_website. A clear five-step numbered process is provided for the portal submission, satisfying step_by_step_if_complex. The grants administrator contact is also provided with email and phone. All dimensions are fully met with no gaps."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The CC is framed as purely informational and tied to the chair's functional role, not as implicit pressure, satisfying cc_not_escalation. The tone of the email is consistent and collegial throughout with no performative language directed at the CC'd audience, satisfying tone_unchanged_by_cc."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1492,
+              "output_tokens": 598
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 9,
+                "justification": "The email clearly attributes the cap to 'the Dean's Office Faculty Travel Policy (FY[XX]-[XX])' with a specific policy citation, satisfying source_attributed. The phrase 'I'm passing that determination along' positions the administrator as a relay, not an enforcer, satisfying admin_not_enforcer. Institutional language ('Under the Dean's Office Faculty Travel Policy... a per-faculty reimbursement cap... applies uniformly') is used throughout rather than 'I need you to' framing. Minor deduction: 'I'm reaching out' in the opener is slightly personal in tone, but it does not undermine the overall institutional framing."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is clearly explained as a uniform per-faculty college cap under a named policy, satisfying gap_reason_stated. The email presents the gap as a factual policy constraint with no apologetic language — 'unfortunately' and 'I wish I could' are absent — satisfying not_apologetic. All three dimensions are fully met."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 9,
+                "justification": "The email provides a direct URL to the travel reimbursement portal and a direct URL to the supplemental fund application, satisfying specific_link_or_form. There is no instruction to 'check the website,' satisfying no_check_the_website. A clear five-step numbered process is provided for the portal submission, satisfying step_by_step_if_complex. The grants administrator contact is also provided with email and phone. Minor deduction only for placeholder URLs, but these are clearly intended to be filled in."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with no implicit pressure, satisfying cc_not_escalation. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit, satisfying tone_unchanged_by_cc. All three dimensions are fully met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1492,
+              "output_tokens": 612
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 9.0/10\n  Justification: The email clearly attributes the cap to 'the Dean's Office Faculty Travel Policy (FY[XX]-[XX])' with a specific policy citation, satisfying source_attributed. The phrase 'I'm passing that determination along' positions the administrator as a relay, not an enforcer, satisfying admin_not_enforcer. Institutional language ('Under the Dean's Office Faculty Travel Policy... a per-faculty reimbursement cap... applies uniformly') is used throughout rather than 'I need you to' framing. Minor deduction only because 'I'm reaching out' opens with a first-person frame before pivoting to institutional attribution, but this is negligible.\n- Budget Gap Transparency: 10.0/10\n  Justification: The email explicitly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is clearly explained as a uniform per-faculty college cap under a named policy, satisfying gap_reason_stated. The email uses no apologetic language — no 'unfortunately' or 'I wish I could' — presenting the gap as a factual policy constraint, satisfying not_apologetic. All three dimensions are fully met.\n- Direct Resource Provision: 9.0/10\n  Justification: The email provides a direct URL to the travel reimbursement portal and a direct URL to the supplemental fund application, satisfying specific_link_or_form. It never tells the reader to 'check the website' or 'refer to the handbook,' satisfying no_check_the_website. The five-step submission process is laid out in order, satisfying step_by_step_if_complex. The only minor gap is that the grants administrator option says they 'can check your account eligibility' rather than providing a direct link or form, but this is a human contact rather than a web resource, which is appropriate.\n- Transparent CC Purpose: 10.0/10\n  Justification: The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with a clear rationale, not implicit pressure, satisfying cc_not_escalation. The tone of the email is consistent throughout and does not shift to performative language for the CC audience's benefit, satisfying tone_unchanged_by_cc. All three dimensions are fully met.\n\nYour weakest criteria are: Direct Resource Provision, External Constraint Framing. Focus your revision on improving these."
+    },
+    {
+      "round": 4,
+      "draft": "Subject: Travel Reimbursement — Approved Amount for [Conference Name]\n\nDear Professor [Last Name],\n\nThe Dean's Office Faculty Travel Policy (FY[XX]-[XX]) sets a per-faculty reimbursement cap of $2,400, applied uniformly across all departments in the college for the current fiscal year. Under that policy, the approved amount for your reimbursement request for [conference name/dates] is $2,400 of the $3,200 requested. I'm passing that determination along so we can move your reimbursement forward.\n\nTo submit for the approved amount, please use the travel reimbursement portal at [direct URL to portal]. The steps are:\n\n1. Log in with your university credentials\n2. Select \"New Reimbursement Request\" and choose \"Conference Travel\"\n3. Enter $2,400 as the reimbursement total\n4. Attach receipts up to the approved amount — you do not need to include receipts beyond $2,400\n5. Submit for departmental approval\n\nFor the remaining $800, two options may be worth exploring:\n\n- **Research account funding** — Conference travel is frequently an allowable expense on active grants or research accounts. [Name of grants administrator], our departmental grants contact, can confirm your account eligibility at [email] or [phone]. If eligible, the expense transfer form is at [direct URL to expense transfer form].\n- **College Supplemental Faculty Travel Fund** — The Dean's Office administers this fund separately from departmental budgets, with rolling applications accepted throughout the fiscal year. The application form is at [direct URL to supplemental fund application], and the fund guidelines are at [direct URL to fund guidelines page].\n\nI'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.\n\nPlease feel free to reach out if you have questions about the process or the approved amount.\n\nBest,\n[Your Name]\n[Title]\n[Department]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email explicitly names 'The Dean's Office Faculty Travel Policy (FY[XX]-[XX])' as the source of the cap, satisfying source_attributed. The administrator frames themselves as 'passing that determination along,' not imposing it, satisfying admin_not_enforcer. Language like 'the policy sets a cap' and 'the approved amount' uses institutional framing throughout rather than 'I need' or 'please make sure,' satisfying institutional_language."
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is explicitly stated as a 'per-faculty reimbursement cap of $2,400, applied uniformly across all departments,' satisfying gap_reason_stated. The email uses no apologetic language — no 'unfortunately' or 'I wish I could' — presenting the gap as a factual policy constraint, satisfying not_apologetic."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "The email provides direct URLs for the travel reimbursement portal, the expense transfer form, the supplemental fund application, and the fund guidelines page, satisfying specific_link_or_form. There is no instruction to 'check the website' or find information independently, satisfying no_check_the_website. The reimbursement process is broken into five numbered sequential steps, satisfying step_by_step_if_complex."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with a clear rationale, not implied pressure, satisfying cc_not_escalation. The tone and content of the email are consistent throughout and do not shift register or become performative in response to the CC audience, satisfying tone_unchanged_by_cc."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy, not to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400) in the same sentence. The specific constraint — a per-faculty cap of $2,400 applied uniformly across all departments — is named as the reason for the gap. The email presents this as a factual policy determination with no apologetic language; 'unfortunately' and 'I wish' are absent."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "Every resource is provided as a direct URL placeholder rather than a generic website reference or instruction to 'check' anything. The reimbursement process is broken into five numbered steps in sequence. Additional resources for the $800 gap — grants administrator contact info, expense transfer form, supplemental fund application, and fund guidelines — are all provided as direct links or named contacts."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and tied to a specific jurisdictional reason, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language in the final paragraph where the CC is mentioned."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy rather than to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400) in the same sentence. The specific constraint — a per-faculty cap of $2,400 applied uniformly across all departments — is explained as the reason for the gap. The email presents this as a factual policy determination with no apologetic language; 'unfortunately' and 'I wish' are absent."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "Every resource is provided as a direct URL placeholder rather than directing the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. Additional resources for the $800 gap — grants administrator contact info, expense transfer form URL, supplemental fund application URL, and fund guidelines URL — are all provided directly rather than referenced generically."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and jurisdictionally relevant, not as pressure or escalation. The tone of the email is consistent throughout and does not shift to performative language in the final paragraph where the CC is mentioned."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 10.0,
+          "Budget Gap Transparency": 10.0,
+          "Direct Resource Provision": 10.0,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.0,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email explicitly names 'The Dean's Office Faculty Travel Policy (FY[XX]-[XX])' as the source of the cap, satisfying source_attributed. The administrator frames themselves as 'passing that determination along,' not imposing it, satisfying admin_not_enforcer. Language like 'the policy sets a cap' and 'the approved amount' uses institutional framing throughout rather than 'I need' or 'please make sure,' satisfying institutional_language."
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is explicitly stated as a 'per-faculty reimbursement cap of $2,400, applied uniformly across all departments,' satisfying gap_reason_stated. The email uses no apologetic language — no 'unfortunately' or 'I wish I could' — presenting the gap as a factual policy constraint, satisfying not_apologetic."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "The email provides direct URLs for the travel reimbursement portal, the expense transfer form, the supplemental fund application, and the fund guidelines page, satisfying specific_link_or_form. There is no instruction to 'check the website' or find information independently, satisfying no_check_the_website. The reimbursement process is broken into five numbered sequential steps, satisfying step_by_step_if_complex."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with a clear rationale, not implied pressure, satisfying cc_not_escalation. The tone and content of the email are consistent throughout and do not shift register or become performative in response to the CC audience, satisfying tone_unchanged_by_cc."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 559
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy, not to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400) in the same sentence. The specific constraint — a per-faculty cap of $2,400 applied uniformly across all departments — is named as the reason for the gap. The email presents this as a factual policy determination with no apologetic language; 'unfortunately' and 'I wish' are absent."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "Every resource is provided as a direct URL placeholder rather than a generic website reference or instruction to 'check' anything. The reimbursement process is broken into five numbered steps in sequence. Additional resources for the $800 gap — grants administrator contact info, expense transfer form, supplemental fund application, and fund guidelines — are all provided as direct links or named contacts."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and tied to a specific jurisdictional reason, not as implicit pressure. The tone of the email is consistent throughout and does not shift to performative language in the final paragraph where the CC is mentioned."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 495
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy rather than to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400) in the same sentence. The specific constraint — a per-faculty cap of $2,400 applied uniformly across all departments — is explained as the reason for the gap. The email presents this as a factual policy determination with no apologetic language; 'unfortunately' and 'I wish' are absent."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "Every resource is provided as a direct URL placeholder rather than directing the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. Additional resources for the $800 gap — grants administrator contact info, expense transfer form URL, supplemental fund application URL, and fund guidelines URL — are all provided directly rather than referenced generically."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and jurisdictionally relevant, not as pressure or escalation. The tone of the email is consistent throughout and does not shift to performative language in the final paragraph where the CC is mentioned."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 493
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- External Constraint Framing: 10.0/10\n  Justification: The email explicitly names 'The Dean's Office Faculty Travel Policy (FY[XX]-[XX])' as the source of the cap, satisfying source_attributed. The administrator frames themselves as 'passing that determination along,' not imposing it, satisfying admin_not_enforcer. Language like 'the policy sets a cap' and 'the approved amount' uses institutional framing throughout rather than 'I need' or 'please make sure,' satisfying institutional_language.\n- Budget Gap Transparency: 10.0/10\n  Justification: The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), satisfying requested_vs_approved. The gap reason is explicitly stated as a 'per-faculty reimbursement cap of $2,400, applied uniformly across all departments,' satisfying gap_reason_stated. The email uses no apologetic language — no 'unfortunately' or 'I wish I could' — presenting the gap as a factual policy constraint, satisfying not_apologetic.\n- Direct Resource Provision: 10.0/10\n  Justification: The email provides direct URLs for the travel reimbursement portal, the expense transfer form, the supplemental fund application, and the fund guidelines page, satisfying specific_link_or_form. There is no instruction to 'check the website' or find information independently, satisfying no_check_the_website. The reimbursement process is broken into five numbered sequential steps, satisfying step_by_step_if_complex.\n- Transparent CC Purpose: 10.0/10\n  Justification: The email explicitly states 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview,' satisfying cc_reason_stated. The framing is purely informational with a clear rationale, not implied pressure, satisfying cc_not_escalation. The tone and content of the email are consistent throughout and do not shift register or become performative in response to the CC audience, satisfying tone_unchanged_by_cc.\n\nYour weakest criteria are: Budget Gap Transparency, Direct Resource Provision. Focus your revision on improving these."
+    },
+    {
+      "round": 5,
+      "draft": "Subject: Travel Reimbursement — Approved Amount for [Conference Name]\n\nDear Professor [Last Name],\n\nThe Dean's Office Faculty Travel Policy (FY[XX]-[XX]) sets a per-faculty reimbursement cap of $2,400, applied uniformly across all departments in the college for the current fiscal year. Under that policy, the approved amount for your reimbursement request for [conference name/dates] is $2,400 of the $3,200 requested. I'm passing that determination along so we can move your reimbursement forward.\n\nTo submit for the approved amount, please use the travel reimbursement portal at [direct URL to portal]. The steps are:\n\n1. Log in with your university credentials\n2. Select \"New Reimbursement Request\" and choose \"Conference Travel\"\n3. Enter $2,400 as the reimbursement total\n4. Attach receipts up to the approved amount — you do not need to include receipts beyond $2,400\n5. Submit for departmental approval\n\nFor the remaining $800, two options may be worth exploring:\n\n- **Research account funding** — Conference travel is frequently an allowable expense on active grants or research accounts. [Name of grants administrator], our departmental grants contact, can confirm your account eligibility at [email] or [phone]. If eligible, the expense transfer form is at [direct URL to expense transfer form].\n- **College Supplemental Faculty Travel Fund** — The Dean's Office administers this fund separately from departmental budgets, with rolling applications accepted throughout the fiscal year. The application form is at [direct URL to supplemental fund application], and the fund guidelines are at [direct URL to fund guidelines page].\n\nI'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.\n\nPlease feel free to reach out if you have questions about the process or the approved amount.\n\nBest,\n[Your Name]\n[Title]\n[Department]",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy, not to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint causing the gap (a per-faculty cap of $2,400 applied uniformly across the college). The gap is presented as a factual policy outcome with no apologetic language — 'unfortunately' and 'I wish' are absent, and the tone is matter-of-fact throughout."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "Every resource is provided as a direct link placeholder ([direct URL to portal], [direct URL to expense transfer form], [direct URL to supplemental fund application], [direct URL to fund guidelines page]) rather than directing the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. The grants administrator is named with contact details, and the supplemental fund is described with its own direct links — no vague referrals anywhere."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as purely informational and tied to a specific jurisdictional reason, not as implicit pressure. The rest of the email's tone is collegial and unchanged by the CC's presence — there is no performative language directed at the chair."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy rather than to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400) in the same sentence. The specific constraint — a per-faculty cap of $2,400 applied uniformly across all departments — is named as the reason for the gap. The tone is factual and matter-of-fact; there is no 'unfortunately' or apologetic framing anywhere in the message."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "Every resource is provided as a direct URL placeholder rather than a generic website reference, and the email never tells the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. Even the supplemental options include direct links to the application form and fund guidelines, and a named grants contact with both email and phone."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and tied to a specific jurisdictional reason, not as implicit pressure. The overall tone of the email is collegial and unchanged by the presence of the CC — there is no performative language directed at the chair."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "External Constraint Framing",
+              "score": 10,
+              "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy, not to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'Under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+            },
+            {
+              "criterion_name": "Budget Gap Transparency",
+              "score": 10,
+              "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint causing the gap (a per-faculty cap of $2,400 applied uniformly across the college). The gap is presented as a factual policy outcome with no apologetic language — 'unfortunately' and 'I wish' are absent, and the tone is matter-of-fact throughout."
+            },
+            {
+              "criterion_name": "Direct Resource Provision",
+              "score": 10,
+              "justification": "Every resource is provided as a direct URL placeholder rather than a generic website reference, and the email never tells the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. Even the supplemental fund options include direct links to both the application form and the guidelines page, and a named grants contact with email and phone is provided for the research account option."
+            },
+            {
+              "criterion_name": "Transparent CC Purpose",
+              "score": 10,
+              "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and jurisdictionally relevant, not as pressure or escalation. The surrounding tone is collegial and unchanged by the CC's presence — there is no performative language directed at the chair."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "External Constraint Framing": 10.0,
+          "Budget Gap Transparency": 10.0,
+          "Direct Resource Provision": 10.0,
+          "Transparent CC Purpose": 10.0
+        },
+        "std_scores": {
+          "External Constraint Framing": 0.0,
+          "Budget Gap Transparency": 0.0,
+          "Direct Resource Provision": 0.0,
+          "Transparent CC Purpose": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy, not to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint causing the gap (a per-faculty cap of $2,400 applied uniformly across the college). The gap is presented as a factual policy outcome with no apologetic language — 'unfortunately' and 'I wish' are absent, and the tone is matter-of-fact throughout."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "Every resource is provided as a direct link placeholder ([direct URL to portal], [direct URL to expense transfer form], [direct URL to supplemental fund application], [direct URL to fund guidelines page]) rather than directing the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. The grants administrator is named with contact details, and the supplemental fund is described with its own direct links — no vague referrals anywhere."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as purely informational and tied to a specific jurisdictional reason, not as implicit pressure. The rest of the email's tone is collegial and unchanged by the CC's presence — there is no performative language directed at the chair."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 522
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy rather than to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400) in the same sentence. The specific constraint — a per-faculty cap of $2,400 applied uniformly across all departments — is named as the reason for the gap. The tone is factual and matter-of-fact; there is no 'unfortunately' or apologetic framing anywhere in the message."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "Every resource is provided as a direct URL placeholder rather than a generic website reference, and the email never tells the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. Even the supplemental options include direct links to the application form and fund guidelines, and a named grants contact with both email and phone."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and tied to a specific jurisdictional reason, not as implicit pressure. The overall tone of the email is collegial and unchanged by the presence of the CC — there is no performative language directed at the chair."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 494
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "External Constraint Framing",
+                "score": 10,
+                "justification": "The email opens by naming the specific policy source ('Dean's Office Faculty Travel Policy (FY[XX]-[XX])') and attributes the cap to that policy, not to the administrator. The phrase 'I'm passing that determination along' explicitly positions the administrator as a relay, not an enforcer. Language like 'the approved amount' and 'Under that policy' consistently uses institutional framing rather than 'I need' or 'please make sure.'"
+              },
+              {
+                "criterion_name": "Budget Gap Transparency",
+                "score": 10,
+                "justification": "The email clearly states both the requested amount ($3,200) and the approved amount ($2,400), and explains the specific constraint causing the gap (a per-faculty cap of $2,400 applied uniformly across the college). The gap is presented as a factual policy outcome with no apologetic language — 'unfortunately' and 'I wish' are absent, and the tone is matter-of-fact throughout."
+              },
+              {
+                "criterion_name": "Direct Resource Provision",
+                "score": 10,
+                "justification": "Every resource is provided as a direct URL placeholder rather than a generic website reference, and the email never tells the reader to 'check the website.' The reimbursement process is broken into five numbered steps in sequence. Even the supplemental fund options include direct links to both the application form and the guidelines page, and a named grants contact with email and phone is provided for the research account option."
+              },
+              {
+                "criterion_name": "Transparent CC Purpose",
+                "score": 10,
+                "justification": "The CC is explicitly explained: 'I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.' This frames the CC as informational and jurisdictionally relevant, not as pressure or escalation. The surrounding tone is collegial and unchanged by the CC's presence — there is no performative language directed at the chair."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1505,
+              "output_tokens": 499
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 10,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Frame deadlines/requirements as external constraints, not personal asks",
+        "satisfied": "yes",
+        "evidence": "\"The Dean's Office Faculty Travel Policy (FY[XX]-[XX]) sets a per-faculty reimbursement cap of $2,400, applied uniformly across all departments\" — the constraint is attributed entirely to the Dean's Office policy, and the admin positions themselves as merely \"passing that determination along.\""
+      },
+      {
+        "preference": "Budget emails include what was ASKED FOR vs. what was APPROVED and why the gap exists",
+        "satisfied": "yes",
+        "evidence": "\"the approved amount for your reimbursement request for [conference name/dates] is $2,400 of the $3,200 requested\" — clearly states both figures, and the gap is explained by the uniform per-faculty cap policy."
+      },
+      {
+        "preference": "CC'ing a chair/dean always explicitly states it's for awareness, not escalation",
+        "satisfied": "yes",
+        "evidence": "\"I'm copying [Chair's Name] on this message for awareness, as department travel budgets fall within their purview.\" — explicitly states the reason and frames it as informational."
+      },
+      {
+        "preference": "Provide specific forms, links, and resources — never say 'check the website'",
+        "satisfied": "yes",
+        "evidence": "The email includes direct URLs to the travel reimbursement portal, expense transfer form, supplemental fund application, and fund guidelines, plus step-by-step instructions and a specific grants administrator contact with email and phone."
+      },
+      {
+        "preference": "Admin never positioned as the enforcer/authority over faculty",
+        "satisfied": "yes",
+        "evidence": "The admin frames themselves as a facilitator: \"I'm passing that determination along so we can move your reimbursement forward\" and \"Please feel free to reach out if you have questions.\" The policy is the authority, not the admin."
+      },
+      {
+        "preference": "No academic hierarchy language making staff feel subordinate to faculty",
+        "satisfied": "yes",
+        "evidence": "The tone is collegial and professional throughout. The admin speaks as a knowledgeable peer helping navigate process, not as a subordinate. Language like \"two options may be worth exploring\" positions the admin as a resourceful advisor."
+      },
+      {
+        "preference": "Policy-aware but human; respectful of faculty autonomy",
+        "satisfied": "yes",
+        "evidence": "The email proactively offers two alternative funding paths for the $800 gap rather than just delivering a reduced number, showing care for the faculty member's situation while respecting their autonomy to choose how to proceed."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 928,
+      "output_tokens": 682
+    }
+  }
+}

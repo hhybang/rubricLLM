@@ -1,0 +1,1070 @@
+{
+  "persona": "Kofi Mensah",
+  "task_index": 1,
+  "task_description": "I need to email a prospect who went dark after receiving our proposal two weeks ago — they were excited in the meeting but haven't responded since.",
+  "condition": "C",
+  "rubric_used": {
+    "version": 1,
+    "writing_type": "professional emails",
+    "user_goals_summary": "Writes sales emails that feel like personal correspondence, not campaigns. Every email advances the relationship and the deal simultaneously. Treats email as a tool for creating conversations, never for closing them.",
+    "rubric": [
+      {
+        "name": "Specific Callback",
+        "category": "Content",
+        "description": "Every prospect email references something specific from a prior interaction — a concern they raised, a phrase they used, a goal they mentioned. Never generic callbacks like 'as we discussed' or 'following up on our meeting.'",
+        "dimensions": [
+          {
+            "id": "specific_reference",
+            "label": "References a specific comment, question, or concern the prospect raised in a prior interaction"
+          },
+          {
+            "id": "not_templateable",
+            "label": "The reference could not apply to a different prospect — it's unique to this person"
+          },
+          {
+            "id": "no_generic_callbacks",
+            "label": "Does not use 'as discussed', 'per our conversation', or 'following up on our meeting' without specifics"
+          }
+        ],
+        "priority": 1,
+        "confidence": "high"
+      },
+      {
+        "name": "No Commercial Terms in Writing",
+        "category": "Content",
+        "description": "Price, discounts, contract terms, and commercial details are never put in email. Email establishes need and books conversations. Numbers in writing before a live discussion forfeit negotiation leverage.",
+        "dimensions": [
+          {
+            "id": "no_pricing",
+            "label": "Does not include any specific pricing, discount percentages, or contract terms"
+          },
+          {
+            "id": "drives_to_conversation",
+            "label": "Steers toward a live meeting or call for any commercial discussion"
+          },
+          {
+            "id": "value_not_cost",
+            "label": "Discusses value, outcomes, and ROI — never the cost to achieve them"
+          }
+        ],
+        "priority": 2,
+        "confidence": "high"
+      },
+      {
+        "name": "Re-engagement Over Check-ins",
+        "category": "Style",
+        "description": "Follow-ups after silence never 'just check in.' Each follow-up provides a new reason to respond — a relevant customer win, fresh data, a deadline, or a reframed value proposition.",
+        "dimensions": [
+          {
+            "id": "new_value_each_touch",
+            "label": "Each follow-up email introduces new information the prospect didn't have before"
+          },
+          {
+            "id": "no_checking_in",
+            "label": "Does not use 'just checking in', 'touching base', 'wanted to follow up', or equivalent"
+          },
+          {
+            "id": "reason_to_respond_now",
+            "label": "Creates a specific, time-relevant reason for the prospect to reply"
+          }
+        ],
+        "priority": 3,
+        "confidence": "high"
+      },
+      {
+        "name": "Risk-First Internal Updates",
+        "category": "Structure",
+        "description": "Internal deal updates lead with the risk to closing, not the opportunity. 'They're evaluating a competitor pilot' is more useful than 'great meeting, they're interested.'",
+        "dimensions": [
+          {
+            "id": "risk_leads",
+            "label": "The first substantive sentence identifies the primary risk or blocker to the deal"
+          },
+          {
+            "id": "ask_is_specific",
+            "label": "The internal email requests a specific action to mitigate the risk, not just awareness"
+          },
+          {
+            "id": "no_false_optimism",
+            "label": "Does not lead with or overweight positive signals when risks exist"
+          }
+        ],
+        "priority": 4,
+        "confidence": "high"
+      }
+    ],
+    "coaching_notes": "Kofi treats every prospect email as proof he was listening — specificity is his differentiator from competitors' outreach. Non-negotiable: never put pricing in email. Will reject any follow-up that doesn't give the prospect a new reason to respond."
+  },
+  "corrections_applied": null,
+  "rubric_final": null,
+  "rounds": [
+    {
+      "round": 1,
+      "draft": "**Subject: The inventory visibility piece**\n\nHi [Name],\n\nOne thing stuck with me after our conversation — when you mentioned that your team doesn't know stock levels are off until a customer calls to complain. That's the kind of problem that gets worse quietly, and I wanted to share something relevant.\n\nA retailer we work with, similar size to [Company], had the same dynamic. Their ops lead described it almost identically: \"we're always finding out too late.\" Within the first quarter of going live, they'd cut those reactive firefighting situations by about 60% — and more importantly, their team stopped dreading Mondays.\n\nI don't want to assume I know where your head is on the proposal. But if something in it gave you pause — the scope, the approach, a concern you didn't get to raise — I'd rather hear that directly than have you sitting on something that doesn't quite fit.\n\nWorth 20 minutes this week to talk through it?\n\nKofi",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback: 'your team doesn't know stock levels are off until a customer calls to complain' — this is a verbatim-style recollection of a concern the prospect raised, not a generic phrase. It could not apply to a different prospect without rewriting. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the callback is paraphrased rather than a direct quote, but it reads as uniquely theirs."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 9,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction figure is an outcome/ROI metric, not a cost figure. The email steers toward a live conversation ('Worth 20 minutes this week') for any commercial discussion. The reference to 'the proposal' is slightly risky as it implies a written commercial document exists, but no terms are disclosed in the email itself."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 8,
+              "justification": "The email introduces a new customer win (the retailer case study with the 60% reduction) that the prospect didn't have before, giving a genuine reason to re-engage. There is no 'just checking in' or 'touching base' language. The reason to respond now is somewhat soft — it's framed as an open invitation rather than a time-sensitive trigger — which slightly weakens the urgency dimension, but the new information and direct question create a credible reason to reply."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal updates, but the draft is a prospect-facing email, not an internal update. There is no internal email component to evaluate. Scoring reflects that the criterion is simply not applicable to this draft rather than a failure of execution — the draft does not attempt to be an internal update at all."
+            }
+          ],
+          "overall_weighted_score": 0.84,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback: 'your team doesn't know stock levels are off until a customer calls to complain' — this is a verbatim-style recollection of a concern the prospect raised, not a generic reference. The phrase 'we're always finding out too late' reinforces that the callback is tied to this prospect's specific language and situation. No generic phrases like 'as discussed' or 'following up on our meeting' appear. The only minor gap is that the reference, while specific, could theoretically apply to other retailers in the same vertical — but the framing is personal enough to pass the not-templateable test."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 8,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '60%' figure references a customer outcome (value/ROI), not a cost, which is appropriate. The email steers toward a live conversation ('Worth 20 minutes this week') for any further discussion. The mention of 'the proposal' is slightly risky as it implies a written commercial document exists, but the email itself contains no commercial terms and actively invites a call to address concerns rather than resolving them in writing."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 7,
+              "justification": "The email introduces a new piece of information — the customer win with the 60% reduction in reactive firefighting — which gives the prospect something they didn't have before. There is no 'just checking in' or 'touching base' language. However, the reason to respond now is somewhat soft; there's no deadline, urgency signal, or time-sensitive hook beyond 'this week.' The re-engagement is value-driven but lacks a crisp, time-relevant reason to reply immediately rather than later."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email — so it cannot fully satisfy the internal-update structure. The draft does implicitly acknowledge deal risk ('I don't want to assume I know where your head is on the proposal... a concern you didn't get to raise') but this is framed for the prospect, not an internal audience. Since the draft is not an internal email, it cannot lead with risk for an internal reader or request a specific internal action to mitigate that risk, resulting in a mid-range score by default."
+            }
+          ],
+          "overall_weighted_score": 0.79,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback: 'your team doesn't know stock levels are off until a customer calls to complain' — this is a verbatim-style recollection of a concern the prospect raised, not a generic reference. The phrase 'we're always finding out too late' reinforces that the callback is tied to this prospect's specific language and situation. No generic phrases like 'as discussed' or 'following up on our meeting' appear. The only minor gap is that the reference, while specific, could theoretically apply to other retailers in the same vertical — but the framing is personal enough to satisfy the 'not_templateable' dimension in practice."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 9,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '60%' figure references an outcome metric (reduction in reactive situations), not a cost or price point, which keeps the focus on value. The email explicitly steers toward a live conversation ('Worth 20 minutes this week to talk through it?'). The mention of 'the proposal' is a slight flag — it acknowledges a commercial document exists — but it doesn't reveal any terms and actually redirects to a conversation, so it doesn't forfeit leverage."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 8,
+              "justification": "The email introduces new information the prospect didn't have before — the customer win with the 60% reduction in reactive firefighting situations. There are no 'just checking in' or 'touching base' phrases. The reason to respond is somewhat time-relevant ('this week') and emotionally resonant ('stopped dreading Mondays'), though the urgency is soft rather than deadline-driven or data-fresh. The reframe of 'I'd rather hear that directly than have you sitting on something' creates a conversational pull, but a sharper time-bound hook would strengthen the 'reason_to_respond_now' dimension."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email — so it cannot fully satisfy the internal-facing dimensions. There is no internal email present in the draft to evaluate. Scoring reflects that the criterion is simply not applicable to this piece of writing rather than a failure of execution; a mid-range score reflects the absence of the required content type rather than a quality judgment."
+            }
+          ],
+          "overall_weighted_score": 0.84,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Specific Callback": 9.0,
+          "No Commercial Terms in Writing": 8.666666666666666,
+          "Re-engagement Over Check-ins": 7.666666666666667,
+          "Risk-First Internal Updates": 5.0
+        },
+        "std_scores": {
+          "Specific Callback": 0.0,
+          "No Commercial Terms in Writing": 0.5773502691896257,
+          "Re-engagement Over Check-ins": 0.5773502691896257,
+          "Risk-First Internal Updates": 0.0
+        },
+        "mean_overall": 0.8233333333333333,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback: 'your team doesn't know stock levels are off until a customer calls to complain' — this is a verbatim-style recollection of a concern the prospect raised, not a generic phrase. It could not apply to a different prospect without rewriting. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the callback is paraphrased rather than a direct quote, but it reads as uniquely theirs."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 9,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction figure is an outcome/ROI metric, not a cost figure. The email steers toward a live conversation ('Worth 20 minutes this week') for any commercial discussion. The reference to 'the proposal' is slightly risky as it implies a written commercial document exists, but no terms are disclosed in the email itself."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 8,
+                "justification": "The email introduces a new customer win (the retailer case study with the 60% reduction) that the prospect didn't have before, giving a genuine reason to re-engage. There is no 'just checking in' or 'touching base' language. The reason to respond now is somewhat soft — it's framed as an open invitation rather than a time-sensitive trigger — which slightly weakens the urgency dimension, but the new information and direct question create a credible reason to reply."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal updates, but the draft is a prospect-facing email, not an internal update. There is no internal email component to evaluate. Scoring reflects that the criterion is simply not applicable to this draft rather than a failure of execution — the draft does not attempt to be an internal update at all."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1190,
+              "output_tokens": 524
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback: 'your team doesn't know stock levels are off until a customer calls to complain' — this is a verbatim-style recollection of a concern the prospect raised, not a generic reference. The phrase 'we're always finding out too late' reinforces that the callback is tied to this prospect's specific language and situation. No generic phrases like 'as discussed' or 'following up on our meeting' appear. The only minor gap is that the reference, while specific, could theoretically apply to other retailers in the same vertical — but the framing is personal enough to pass the not-templateable test."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 8,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '60%' figure references a customer outcome (value/ROI), not a cost, which is appropriate. The email steers toward a live conversation ('Worth 20 minutes this week') for any further discussion. The mention of 'the proposal' is slightly risky as it implies a written commercial document exists, but the email itself contains no commercial terms and actively invites a call to address concerns rather than resolving them in writing."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 7,
+                "justification": "The email introduces a new piece of information — the customer win with the 60% reduction in reactive firefighting — which gives the prospect something they didn't have before. There is no 'just checking in' or 'touching base' language. However, the reason to respond now is somewhat soft; there's no deadline, urgency signal, or time-sensitive hook beyond 'this week.' The re-engagement is value-driven but lacks a crisp, time-relevant reason to reply immediately rather than later."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email — so it cannot fully satisfy the internal-update structure. The draft does implicitly acknowledge deal risk ('I don't want to assume I know where your head is on the proposal... a concern you didn't get to raise') but this is framed for the prospect, not an internal audience. Since the draft is not an internal email, it cannot lead with risk for an internal reader or request a specific internal action to mitigate that risk, resulting in a mid-range score by default."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1190,
+              "output_tokens": 634
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback: 'your team doesn't know stock levels are off until a customer calls to complain' — this is a verbatim-style recollection of a concern the prospect raised, not a generic reference. The phrase 'we're always finding out too late' reinforces that the callback is tied to this prospect's specific language and situation. No generic phrases like 'as discussed' or 'following up on our meeting' appear. The only minor gap is that the reference, while specific, could theoretically apply to other retailers in the same vertical — but the framing is personal enough to satisfy the 'not_templateable' dimension in practice."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 9,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The '60%' figure references an outcome metric (reduction in reactive situations), not a cost or price point, which keeps the focus on value. The email explicitly steers toward a live conversation ('Worth 20 minutes this week to talk through it?'). The mention of 'the proposal' is a slight flag — it acknowledges a commercial document exists — but it doesn't reveal any terms and actually redirects to a conversation, so it doesn't forfeit leverage."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 8,
+                "justification": "The email introduces new information the prospect didn't have before — the customer win with the 60% reduction in reactive firefighting situations. There are no 'just checking in' or 'touching base' phrases. The reason to respond is somewhat time-relevant ('this week') and emotionally resonant ('stopped dreading Mondays'), though the urgency is soft rather than deadline-driven or data-fresh. The reframe of 'I'd rather hear that directly than have you sitting on something' creates a conversational pull, but a sharper time-bound hook would strengthen the 'reason_to_respond_now' dimension."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal update emails, and the draft is a prospect-facing email — so it cannot fully satisfy the internal-facing dimensions. There is no internal email present in the draft to evaluate. Scoring reflects that the criterion is simply not applicable to this piece of writing rather than a failure of execution; a mid-range score reflects the absence of the required content type rather than a quality judgment."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1190,
+              "output_tokens": 636
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Specific Callback: 9.0/10\n  Justification: The email opens with a highly specific callback: 'your team doesn't know stock levels are off until a customer calls to complain' — this is a verbatim-style recollection of a concern the prospect raised, not a generic phrase. It could not apply to a different prospect without rewriting. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the callback is paraphrased rather than a direct quote, but it reads as uniquely theirs.\n- No Commercial Terms in Writing: 8.7/10\n  Justification: No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction figure is an outcome/ROI metric, not a cost figure. The email steers toward a live conversation ('Worth 20 minutes this week') for any commercial discussion. The reference to 'the proposal' is slightly risky as it implies a written commercial document exists, but no terms are disclosed in the email itself.\n- Re-engagement Over Check-ins: 7.7/10\n  Justification: The email introduces a new customer win (the retailer case study with the 60% reduction) that the prospect didn't have before, giving a genuine reason to re-engage. There is no 'just checking in' or 'touching base' language. The reason to respond now is somewhat soft — it's framed as an open invitation rather than a time-sensitive trigger — which slightly weakens the urgency dimension, but the new information and direct question create a credible reason to reply.\n- Risk-First Internal Updates: 5.0/10\n  Justification: This criterion applies to internal deal updates, but the draft is a prospect-facing email, not an internal update. There is no internal email component to evaluate. Scoring reflects that the criterion is simply not applicable to this draft rather than a failure of execution — the draft does not attempt to be an internal update at all.\n\nYour weakest criteria are: Risk-First Internal Updates, Re-engagement Over Check-ins. Focus your revision on improving these."
+    },
+    {
+      "round": 2,
+      "draft": "**Subject: The inventory visibility piece**\n\nHi [Name],\n\nOne thing stuck with me after our conversation — when you mentioned that your team doesn't know stock levels are off until a customer calls to complain. That's the kind of problem that compounds quietly, and I wanted to put something concrete in front of you.\n\nA retailer we work with, similar profile to [Company], described the same dynamic almost word for word. They went live at the start of Q4 — intentionally, so they'd have the system stable before their peak season. Their ops lead told us last week that they'd cut reactive customer escalations by about 60% in the first 90 days. The timing mattered as much as the outcome.\n\nWhich is actually why I'm reaching out now. If you're thinking about having anything in place before your own busy stretch, the window to make that realistic is shorter than it looks from here.\n\nI don't want to assume I know where your head is on the proposal. If something in it gave you pause — the scope, the sequencing, a concern you didn't get to raise — I'd rather hear that directly than have you sitting on something that doesn't quite fit.\n\nWorth 20 minutes this week?\n\nKofi",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is not templateable; it's a verbatim paraphrase of something only this prospect said. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the phrase 'after our conversation' is slightly generic as a framing device, but it's immediately followed by a specific detail that rescues it."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and deliberately so — it invites a conversation rather than restating terms. The email discusses outcomes (60% reduction in reactive escalations, timing before peak season) without attaching any cost to them. The close drives toward a live 20-minute conversation, not a written decision."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces genuinely new information — a specific customer win with a quantified outcome (60% reduction in escalations) reported 'last week,' giving it freshness. There is no 'just checking in' or equivalent language. The urgency around the pre-peak-season window creates a time-relevant reason to respond now. The only slight softness is that the urgency framing ('the window is shorter than it looks') is somewhat common in sales emails, but it's grounded in the specific customer story rather than being abstract."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal updates, and this draft is a prospect-facing email, not an internal update. The criterion cannot be fully evaluated against this draft. Scoring at 5 reflects that the draft neither satisfies nor violates the criterion — it simply doesn't apply to this email type, so a neutral mid-range score is appropriate rather than penalizing or rewarding the draft for something outside its scope."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is not templateable; it's a verbatim paraphrase of something the prospect said. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that it doesn't reference a specific phrase the prospect used verbatim, but the paraphrase is close enough to be clearly unique to this person."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and explicitly deferred to a live conversation. The email focuses entirely on outcomes (60% reduction in reactive escalations, timing before peak season) and steers toward a 20-minute call. Value is discussed without any cost framing."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces genuinely new information — a specific customer win with a quantified outcome (60% reduction in escalations) and a time-sensitive framing tied to the prospect's own peak season window. There is no 'just checking in' or equivalent language. The urgency around the implementation timeline creates a credible, specific reason to respond now. The only slight softness is that 'the window to make that realistic is shorter than it looks' is slightly vague, but it's grounded in the Q4 go-live example."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal updates, and this draft is a prospect-facing email, not an internal update. The criterion cannot be fully evaluated against this draft. The score reflects that the draft does not violate the principle (it doesn't exhibit false optimism in an internal context) but also doesn't demonstrate the risk-first internal framing the rubric requires, simply because it's the wrong email type."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is not templateable; it's a verbatim paraphrase of something the prospect said. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that it doesn't reference a specific phrase the prospect used verbatim, but the paraphrase is close enough to be clearly unique to this person."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and explicitly deferred to a live conversation. The email focuses entirely on outcomes (60% reduction in reactive escalations, timing before peak season) and steers toward a 20-minute call. Value is discussed without any cost framing."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces genuinely new information — a specific customer win with a quantified outcome (60% reduction in escalations) and a time-sensitive framing tied to the prospect's own peak season window. There is no 'just checking in' or equivalent language. The urgency around the implementation timeline creates a credible, specific reason to respond now. The only slight softness is that 'the window to make that realistic is shorter than it looks' is slightly vague, but it's grounded in the Q4 go-live example."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 5,
+              "justification": "This criterion applies to internal deal updates, and this draft is a prospect-facing email, not an internal update. The criterion cannot be fully evaluated against this draft. The score reflects that the draft does not violate the principle (it doesn't exhibit false optimism in an internal context) but also doesn't demonstrate the risk-first internal framing the rubric requires, simply because it's the wrong email type."
+            }
+          ],
+          "overall_weighted_score": 0.89,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Specific Callback": 9.0,
+          "No Commercial Terms in Writing": 10.0,
+          "Re-engagement Over Check-ins": 9.0,
+          "Risk-First Internal Updates": 5.0
+        },
+        "std_scores": {
+          "Specific Callback": 0.0,
+          "No Commercial Terms in Writing": 0.0,
+          "Re-engagement Over Check-ins": 0.0,
+          "Risk-First Internal Updates": 0.0
+        },
+        "mean_overall": 0.89,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is not templateable; it's a verbatim paraphrase of something only this prospect said. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the phrase 'after our conversation' is slightly generic as a framing device, but it's immediately followed by a specific detail that rescues it."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and deliberately so — it invites a conversation rather than restating terms. The email discusses outcomes (60% reduction in reactive escalations, timing before peak season) without attaching any cost to them. The close drives toward a live 20-minute conversation, not a written decision."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces genuinely new information — a specific customer win with a quantified outcome (60% reduction in escalations) reported 'last week,' giving it freshness. There is no 'just checking in' or equivalent language. The urgency around the pre-peak-season window creates a time-relevant reason to respond now. The only slight softness is that the urgency framing ('the window is shorter than it looks') is somewhat common in sales emails, but it's grounded in the specific customer story rather than being abstract."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal updates, and this draft is a prospect-facing email, not an internal update. The criterion cannot be fully evaluated against this draft. Scoring at 5 reflects that the draft neither satisfies nor violates the criterion — it simply doesn't apply to this email type, so a neutral mid-range score is appropriate rather than penalizing or rewarding the draft for something outside its scope."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1244,
+              "output_tokens": 554
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is not templateable; it's a verbatim paraphrase of something the prospect said. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that it doesn't reference a specific phrase the prospect used verbatim, but the paraphrase is close enough to be clearly unique to this person."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and explicitly deferred to a live conversation. The email focuses entirely on outcomes (60% reduction in reactive escalations, timing before peak season) and steers toward a 20-minute call. Value is discussed without any cost framing."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces genuinely new information — a specific customer win with a quantified outcome (60% reduction in escalations) and a time-sensitive framing tied to the prospect's own peak season window. There is no 'just checking in' or equivalent language. The urgency around the implementation timeline creates a credible, specific reason to respond now. The only slight softness is that 'the window to make that realistic is shorter than it looks' is slightly vague, but it's grounded in the Q4 go-live example."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal updates, and this draft is a prospect-facing email, not an internal update. The criterion cannot be fully evaluated against this draft. The score reflects that the draft does not violate the principle (it doesn't exhibit false optimism in an internal context) but also doesn't demonstrate the risk-first internal framing the rubric requires, simply because it's the wrong email type."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1244,
+              "output_tokens": 541
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is not templateable; it's a verbatim paraphrase of something the prospect said. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that it doesn't reference a specific phrase the prospect used verbatim, but the paraphrase is close enough to be clearly unique to this person."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and explicitly deferred to a live conversation. The email focuses entirely on outcomes (60% reduction in reactive escalations, timing before peak season) and steers toward a 20-minute call. Value is discussed without any cost framing."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces genuinely new information — a specific customer win with a quantified outcome (60% reduction in escalations) and a time-sensitive framing tied to the prospect's own peak season window. There is no 'just checking in' or equivalent language. The urgency around the implementation timeline creates a credible, specific reason to respond now. The only slight softness is that 'the window to make that realistic is shorter than it looks' is slightly vague, but it's grounded in the Q4 go-live example."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 5,
+                "justification": "This criterion applies to internal deal updates, and this draft is a prospect-facing email, not an internal update. The criterion cannot be fully evaluated against this draft. The score reflects that the draft does not violate the principle (it doesn't exhibit false optimism in an internal context) but also doesn't demonstrate the risk-first internal framing the rubric requires, simply because it's the wrong email type."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1244,
+              "output_tokens": 541
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Specific Callback: 9.0/10\n  Justification: The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is not templateable; it's a verbatim paraphrase of something only this prospect said. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the phrase 'after our conversation' is slightly generic as a framing device, but it's immediately followed by a specific detail that rescues it.\n- No Commercial Terms in Writing: 10.0/10\n  Justification: No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and deliberately so — it invites a conversation rather than restating terms. The email discusses outcomes (60% reduction in reactive escalations, timing before peak season) without attaching any cost to them. The close drives toward a live 20-minute conversation, not a written decision.\n- Re-engagement Over Check-ins: 9.0/10\n  Justification: The email introduces genuinely new information — a specific customer win with a quantified outcome (60% reduction in escalations) reported 'last week,' giving it freshness. There is no 'just checking in' or equivalent language. The urgency around the pre-peak-season window creates a time-relevant reason to respond now. The only slight softness is that the urgency framing ('the window is shorter than it looks') is somewhat common in sales emails, but it's grounded in the specific customer story rather than being abstract.\n- Risk-First Internal Updates: 5.0/10\n  Justification: This criterion applies to internal deal updates, and this draft is a prospect-facing email, not an internal update. The criterion cannot be fully evaluated against this draft. Scoring at 5 reflects that the draft neither satisfies nor violates the criterion — it simply doesn't apply to this email type, so a neutral mid-range score is appropriate rather than penalizing or rewarding the draft for something outside its scope.\n\nYour weakest criteria are: Risk-First Internal Updates, Re-engagement Over Check-ins. Focus your revision on improving these."
+    },
+    {
+      "round": 3,
+      "draft": "Write both the prospect email and a brief internal deal update to Kofi's manager summarizing where this deal stands.\n\n---\n\n**PROSPECT EMAIL**\n\n**Subject: The inventory visibility piece**\n\nHi [Name],\n\nOne thing stuck with me after our conversation — when you mentioned that your team doesn't know stock levels are off until a customer calls to complain. That's the kind of problem that compounds quietly, and I wanted to put something concrete in front of you.\n\nA retailer we work with, similar profile to [Company], described the same dynamic almost word for word. They went live at the start of Q4 — intentionally, so they'd have the system stable before their peak season. Their ops lead told us last week that they'd cut reactive customer escalations by about 60% in the first 90 days. The timing mattered as much as the outcome.\n\nWhich is actually why I'm reaching out now. If you're thinking about having anything in place before your own busy stretch, the window to make that realistic is shorter than it looks from here.\n\nIf something in the proposal gave you pause — the scope, the sequencing, a concern you didn't get to raise — I'd rather hear that directly than have you sitting on something that doesn't quite fit.\n\nWorth 20 minutes this week?\n\nKofi\n\n---\n\n**INTERNAL UPDATE TO MANAGER**\n\n**Subject: [Company] — went dark two weeks post-proposal, re-engaging now**\n\nPrimary risk: prospect has gone silent for two weeks after a meeting where they were verbally enthusiastic. No stated objection on record, which means we don't know if this is budget, internal alignment, a competitor, or cold feet — and we're flying blind until we get them back on the phone.\n\nSent a re-engagement email today anchored to their specific inventory visibility concern and a fresh customer win with a Q4 timing angle. If no response in 48 hours, I need one thing from you: do we have any executive relationship at [Company] above my contact that you could activate for a soft nudge? A lateral reach-in may be the only way to surface what's actually blocking this if they stay quiet.\n\nWill update after any response.",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 10,
+              "justification": "The prospect email opens with a verbatim-quality paraphrase of what the prospect said — 'your team doesn't know stock levels are off until a customer calls to complain' — which is unmistakably unique to this person and conversation. It could not be templated for another prospect. There are zero generic callbacks like 'as we discussed' or 'following up on our meeting'; the reference is the entire anchor of the email."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The email steers toward a 20-minute call and frames value through a customer outcome (60% reduction in reactive escalations) rather than cost. The internal update also contains no commercial figures. All commercial discussion is deferred to a live conversation."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 10,
+              "justification": "The follow-up introduces genuinely new information — a specific customer win with a quantified outcome and a Q4 timing angle — that the prospect did not have before. There is no 'just checking in' or equivalent language anywhere. The timing urgency ('the window to make that realistic is shorter than it looks') creates a concrete, time-relevant reason to respond now rather than later."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record, meaning the team is 'flying blind.' It does not open with positive signals. The ask is highly specific — activate an executive relationship above the current contact within 48 hours if silence continues — not a vague request for awareness."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 10,
+              "justification": "The prospect email opens with a verbatim-quality paraphrase of what the prospect said — 'your team doesn't know stock levels are off until a customer calls to complain' — which is unmistakably unique to this person and this conversation. It could not be templated for another prospect. There are zero generic callbacks like 'as we discussed' or 'following up on our meeting.' All three dimensions are fully satisfied."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The email steers toward a 20-minute call and frames value entirely through the customer outcome (60% reduction in reactive escalations) without mentioning cost. The internal update also contains no commercial figures. All three dimensions are cleanly met."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 10,
+              "justification": "The follow-up introduces genuinely new information — a specific customer win with a Q4 timing data point the prospect did not have before. There is no 'just checking in,' 'touching base,' or equivalent language anywhere. The Q4 timing angle creates a concrete, time-relevant reason to respond now rather than later. All three dimensions are satisfied."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is specific and actionable — a named request for executive relationship activation within a 48-hour window. There is no false optimism; the positive signal (verbal enthusiasm) is mentioned only as context for why the silence is concerning, not as reassurance. All three dimensions are fully met."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 10,
+              "justification": "The prospect email opens with a verbatim-quality paraphrase of what the prospect said — 'your team doesn't know stock levels are off until a customer calls to complain' — which is unmistakably unique to this person and conversation. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The reference could not be transplanted to a different prospect without rewriting the entire email."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The only near-commercial reference is 'the proposal,' which is mentioned only to invite the prospect to raise concerns — not to restate terms. The email drives toward a 20-minute call, and value is framed entirely through the customer outcome (60% reduction in escalations) rather than cost."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 10,
+              "justification": "The follow-up introduces genuinely new information the prospect didn't have before: a specific customer win with a quantified outcome and a Q4 timing angle that creates urgency. There is no 'just checking in' or equivalent language. The timing argument — 'the window to make that realistic is shorter than it looks' — creates a concrete, time-relevant reason to respond now."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. It explicitly names the uncertainty ('flying blind') without false optimism. The ask is specific and actionable — a named request for executive relationship activation within a defined 48-hour window — not a vague request for awareness."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Specific Callback": 10.0,
+          "No Commercial Terms in Writing": 10.0,
+          "Re-engagement Over Check-ins": 10.0,
+          "Risk-First Internal Updates": 10.0
+        },
+        "std_scores": {
+          "Specific Callback": 0.0,
+          "No Commercial Terms in Writing": 0.0,
+          "Re-engagement Over Check-ins": 0.0,
+          "Risk-First Internal Updates": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 10,
+                "justification": "The prospect email opens with a verbatim-quality paraphrase of what the prospect said — 'your team doesn't know stock levels are off until a customer calls to complain' — which is unmistakably unique to this person and conversation. It could not be templated for another prospect. There are zero generic callbacks like 'as we discussed' or 'following up on our meeting'; the reference is the entire anchor of the email."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The email steers toward a 20-minute call and frames value through a customer outcome (60% reduction in reactive escalations) rather than cost. The internal update also contains no commercial figures. All commercial discussion is deferred to a live conversation."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 10,
+                "justification": "The follow-up introduces genuinely new information — a specific customer win with a quantified outcome and a Q4 timing angle — that the prospect did not have before. There is no 'just checking in' or equivalent language anywhere. The timing urgency ('the window to make that realistic is shorter than it looks') creates a concrete, time-relevant reason to respond now rather than later."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record, meaning the team is 'flying blind.' It does not open with positive signals. The ask is highly specific — activate an executive relationship above the current contact within 48 hours if silence continues — not a vague request for awareness."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1456,
+              "output_tokens": 477
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 10,
+                "justification": "The prospect email opens with a verbatim-quality paraphrase of what the prospect said — 'your team doesn't know stock levels are off until a customer calls to complain' — which is unmistakably unique to this person and this conversation. It could not be templated for another prospect. There are zero generic callbacks like 'as we discussed' or 'following up on our meeting.' All three dimensions are fully satisfied."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The email steers toward a 20-minute call and frames value entirely through the customer outcome (60% reduction in reactive escalations) without mentioning cost. The internal update also contains no commercial figures. All three dimensions are cleanly met."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 10,
+                "justification": "The follow-up introduces genuinely new information — a specific customer win with a Q4 timing data point the prospect did not have before. There is no 'just checking in,' 'touching base,' or equivalent language anywhere. The Q4 timing angle creates a concrete, time-relevant reason to respond now rather than later. All three dimensions are satisfied."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is specific and actionable — a named request for executive relationship activation within a 48-hour window. There is no false optimism; the positive signal (verbal enthusiasm) is mentioned only as context for why the silence is concerning, not as reassurance. All three dimensions are fully met."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1456,
+              "output_tokens": 481
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 10,
+                "justification": "The prospect email opens with a verbatim-quality paraphrase of what the prospect said — 'your team doesn't know stock levels are off until a customer calls to complain' — which is unmistakably unique to this person and conversation. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The reference could not be transplanted to a different prospect without rewriting the entire email."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The only near-commercial reference is 'the proposal,' which is mentioned only to invite the prospect to raise concerns — not to restate terms. The email drives toward a 20-minute call, and value is framed entirely through the customer outcome (60% reduction in escalations) rather than cost."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 10,
+                "justification": "The follow-up introduces genuinely new information the prospect didn't have before: a specific customer win with a quantified outcome and a Q4 timing angle that creates urgency. There is no 'just checking in' or equivalent language. The timing argument — 'the window to make that realistic is shorter than it looks' — creates a concrete, time-relevant reason to respond now."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. It explicitly names the uncertainty ('flying blind') without false optimism. The ask is specific and actionable — a named request for executive relationship activation within a defined 48-hour window — not a vague request for awareness."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1456,
+              "output_tokens": 484
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Specific Callback: 10.0/10\n  Justification: The prospect email opens with a verbatim-quality paraphrase of what the prospect said — 'your team doesn't know stock levels are off until a customer calls to complain' — which is unmistakably unique to this person and conversation. It could not be templated for another prospect. There are zero generic callbacks like 'as we discussed' or 'following up on our meeting'; the reference is the entire anchor of the email.\n- No Commercial Terms in Writing: 10.0/10\n  Justification: No pricing, discounts, or contract terms appear anywhere in the prospect email. The email steers toward a 20-minute call and frames value through a customer outcome (60% reduction in reactive escalations) rather than cost. The internal update also contains no commercial figures. All commercial discussion is deferred to a live conversation.\n- Re-engagement Over Check-ins: 10.0/10\n  Justification: The follow-up introduces genuinely new information — a specific customer win with a quantified outcome and a Q4 timing angle — that the prospect did not have before. There is no 'just checking in' or equivalent language anywhere. The timing urgency ('the window to make that realistic is shorter than it looks') creates a concrete, time-relevant reason to respond now rather than later.\n- Risk-First Internal Updates: 10.0/10\n  Justification: The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record, meaning the team is 'flying blind.' It does not open with positive signals. The ask is highly specific — activate an executive relationship above the current contact within 48 hours if silence continues — not a vague request for awareness.\n\nYour weakest criteria are: No Commercial Terms in Writing, Re-engagement Over Check-ins. Focus your revision on improving these."
+    },
+    {
+      "round": 4,
+      "draft": "**PROSPECT EMAIL**\n\n**Subject: The inventory visibility piece**\n\nHi [Name],\n\nOne thing stuck with me after our conversation — when you mentioned that your team doesn't know stock levels are off until a customer calls to complain. That's the kind of problem that compounds quietly, and I wanted to put something concrete in front of you.\n\nA retailer we work with, similar profile to [Company], described the same dynamic almost word for word. They went live at the start of Q4 — intentionally, so they'd have the system stable before their peak season. Their ops lead told us last week that they'd cut reactive customer escalations by about 60% in the first 90 days. The timing mattered as much as the outcome.\n\nWhich is actually why I'm reaching out now. If you're thinking about having anything in place before your own busy stretch, the window to make that realistic is shorter than it looks from here.\n\nIf something in the proposal gave you pause — the scope, the sequencing, a concern you didn't get to raise — I'd rather hear that directly than have you sitting on something that doesn't quite fit.\n\nWorth 20 minutes this week?\n\nKofi\n\n---\n\n**INTERNAL UPDATE TO MANAGER**\n\n**Subject: [Company] — went dark two weeks post-proposal, re-engaging now**\n\nPrimary risk: prospect has gone silent for two weeks after a meeting where they were verbally enthusiastic. No stated objection on record, which means we don't know if this is budget, internal alignment, a competitor, or cold feet — and we're flying blind until we get them back on the phone.\n\nSent a re-engagement email today anchored to their specific inventory visibility concern and a fresh customer win with a Q4 timing angle. If no response in 48 hours, I need one thing from you: do we have any executive relationship at [Company] above my contact that you could activate for a soft nudge? A lateral reach-in may be the only way to surface what's actually blocking this if they stay quiet.\n\nWill update after any response.",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is a verbatim-style reference that could not apply to a generic prospect. The phrase 'described the same dynamic almost word for word' reinforces that the rep was listening. No generic callbacks like 'as we discussed' appear anywhere in the email."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 9,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction in escalations is an outcome metric, not a cost figure. The email steers toward a 20-minute call rather than attempting to resolve commercial questions in writing. The phrase 'if something in the proposal gave you pause — the scope, the sequencing' gestures at commercial concerns without naming any terms, appropriately deferring those to a live conversation."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The follow-up introduces genuinely new information — a specific customer win with a Q4 timing angle that the prospect did not have before. There is no 'just checking in' or 'touching base' language anywhere. The timing urgency ('the window to make that realistic is shorter than it looks from here') creates a concrete, time-relevant reason to respond now rather than later."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is highly specific — a request for an executive relationship above the current contact who could do a soft nudge within 48 hours. There is no false optimism; the positive signal (verbal enthusiasm) is explicitly reframed as a liability because it produced no follow-through."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback — 'your team doesn't know stock levels are off until a customer calls to complain' — which is clearly a phrase or concern the prospect raised, not a generic summary. This reference is unique to this person's operational pain and could not be templated to another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that we don't see the exact phrase attributed to the prospect, but the specificity is strong enough to satisfy all three dimensions."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction in customer escalations is an outcome metric, not a cost figure. The email steers toward a 20-minute call and explicitly invites the prospect to raise concerns about 'scope' or 'sequencing' in conversation rather than resolving them in writing. Value and outcomes are the only currency used."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The follow-up introduces genuinely new information — a fresh customer win with a specific Q4 timing outcome reported 'last week' — giving the prospect something they didn't have before. There is no 'just checking in' or 'touching base' language. The timing angle ('the window to make that realistic is shorter than it looks') creates a specific, time-relevant reason to respond now. The only slight softness is that the urgency framing is somewhat implied rather than tied to a hard external deadline, but it is still concrete and credible."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is specific and actionable — 'do we have any executive relationship at [Company] above my contact that you could activate for a soft nudge?' — not a vague request for awareness. There is no false optimism; the positive signal (verbal enthusiasm) is mentioned only to frame why the silence is concerning, not to reassure."
+            }
+          ],
+          "overall_weighted_score": 0.94,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 9,
+              "justification": "The email opens with a highly specific callback — 'your team doesn't know stock levels are off until a customer calls to complain' — which is clearly a phrase or concern the prospect raised, not a generic summary. This reference is unique to this prospect's situation and could not be templated to another contact. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the phrase is paraphrased rather than quoted verbatim, but it reads as genuinely recalled, not reconstructed."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 9,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and does not disclose any commercial specifics. The email steers toward a live conversation ('Worth 20 minutes this week?') and discusses value through the customer outcome story (60% reduction in escalations). The phrase 'something in the proposal gave you pause' is the closest thing to a commercial reference, but it invites dialogue rather than restating terms — this is appropriate and does not forfeit leverage."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 9,
+              "justification": "The email introduces genuinely new information — a specific customer win with a Q4 timing angle — that the prospect did not have before. There is no 'just checking in,' 'touching base,' or equivalent language. The timing urgency ('the window to make that realistic is shorter than it looks from here') creates a concrete, time-relevant reason to respond now. The only slight softness is that the urgency is implied rather than anchored to a hard external deadline, but it is specific enough to avoid feeling manufactured."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal update leads immediately and explicitly with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is specific and actionable — a named request for executive relationship activation within a 48-hour window if silence continues. There is no false optimism; the positive signal (verbal enthusiasm) is mentioned only to frame why the silence is concerning, not to suggest the deal is healthy."
+            }
+          ],
+          "overall_weighted_score": 0.91,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Specific Callback": 9.0,
+          "No Commercial Terms in Writing": 9.333333333333334,
+          "Re-engagement Over Check-ins": 9.0,
+          "Risk-First Internal Updates": 10.0
+        },
+        "std_scores": {
+          "Specific Callback": 0.0,
+          "No Commercial Terms in Writing": 0.5773502691896257,
+          "Re-engagement Over Check-ins": 0.0,
+          "Risk-First Internal Updates": 0.0
+        },
+        "mean_overall": 0.92,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is a verbatim-style reference that could not apply to a generic prospect. The phrase 'described the same dynamic almost word for word' reinforces that the rep was listening. No generic callbacks like 'as we discussed' appear anywhere in the email."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 9,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction in escalations is an outcome metric, not a cost figure. The email steers toward a 20-minute call rather than attempting to resolve commercial questions in writing. The phrase 'if something in the proposal gave you pause — the scope, the sequencing' gestures at commercial concerns without naming any terms, appropriately deferring those to a live conversation."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The follow-up introduces genuinely new information — a specific customer win with a Q4 timing angle that the prospect did not have before. There is no 'just checking in' or 'touching base' language anywhere. The timing urgency ('the window to make that realistic is shorter than it looks from here') creates a concrete, time-relevant reason to respond now rather than later."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is highly specific — a request for an executive relationship above the current contact who could do a soft nudge within 48 hours. There is no false optimism; the positive signal (verbal enthusiasm) is explicitly reframed as a liability because it produced no follow-through."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1429,
+              "output_tokens": 506
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback — 'your team doesn't know stock levels are off until a customer calls to complain' — which is clearly a phrase or concern the prospect raised, not a generic summary. This reference is unique to this person's operational pain and could not be templated to another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that we don't see the exact phrase attributed to the prospect, but the specificity is strong enough to satisfy all three dimensions."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction in customer escalations is an outcome metric, not a cost figure. The email steers toward a 20-minute call and explicitly invites the prospect to raise concerns about 'scope' or 'sequencing' in conversation rather than resolving them in writing. Value and outcomes are the only currency used."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The follow-up introduces genuinely new information — a fresh customer win with a specific Q4 timing outcome reported 'last week' — giving the prospect something they didn't have before. There is no 'just checking in' or 'touching base' language. The timing angle ('the window to make that realistic is shorter than it looks') creates a specific, time-relevant reason to respond now. The only slight softness is that the urgency framing is somewhat implied rather than tied to a hard external deadline, but it is still concrete and credible."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is specific and actionable — 'do we have any executive relationship at [Company] above my contact that you could activate for a soft nudge?' — not a vague request for awareness. There is no false optimism; the positive signal (verbal enthusiasm) is mentioned only to frame why the silence is concerning, not to reassure."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1429,
+              "output_tokens": 577
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 9,
+                "justification": "The email opens with a highly specific callback — 'your team doesn't know stock levels are off until a customer calls to complain' — which is clearly a phrase or concern the prospect raised, not a generic summary. This reference is unique to this prospect's situation and could not be templated to another contact. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The only minor gap is that the phrase is paraphrased rather than quoted verbatim, but it reads as genuinely recalled, not reconstructed."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 9,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the email. The reference to 'the proposal' is vague and does not disclose any commercial specifics. The email steers toward a live conversation ('Worth 20 minutes this week?') and discusses value through the customer outcome story (60% reduction in escalations). The phrase 'something in the proposal gave you pause' is the closest thing to a commercial reference, but it invites dialogue rather than restating terms — this is appropriate and does not forfeit leverage."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 9,
+                "justification": "The email introduces genuinely new information — a specific customer win with a Q4 timing angle — that the prospect did not have before. There is no 'just checking in,' 'touching base,' or equivalent language. The timing urgency ('the window to make that realistic is shorter than it looks from here') creates a concrete, time-relevant reason to respond now. The only slight softness is that the urgency is implied rather than anchored to a hard external deadline, but it is specific enough to avoid feeling manufactured."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal update leads immediately and explicitly with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is specific and actionable — a named request for executive relationship activation within a 48-hour window if silence continues. There is no false optimism; the positive signal (verbal enthusiasm) is mentioned only to frame why the silence is concerning, not to suggest the deal is healthy."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1429,
+              "output_tokens": 586
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": "SCORES:\n- Specific Callback: 9.0/10\n  Justification: The email opens with a highly specific callback — the prospect's own description of not knowing stock levels are off until a customer calls to complain. This is a verbatim-style reference that could not apply to a generic prospect. The phrase 'described the same dynamic almost word for word' reinforces that the rep was listening. No generic callbacks like 'as we discussed' appear anywhere in the email.\n- No Commercial Terms in Writing: 9.3/10\n  Justification: No pricing, discounts, or contract terms appear anywhere in the email. The 60% reduction in escalations is an outcome metric, not a cost figure. The email steers toward a 20-minute call rather than attempting to resolve commercial questions in writing. The phrase 'if something in the proposal gave you pause — the scope, the sequencing' gestures at commercial concerns without naming any terms, appropriately deferring those to a live conversation.\n- Re-engagement Over Check-ins: 9.0/10\n  Justification: The follow-up introduces genuinely new information — a specific customer win with a Q4 timing angle that the prospect did not have before. There is no 'just checking in' or 'touching base' language anywhere. The timing urgency ('the window to make that realistic is shorter than it looks from here') creates a concrete, time-relevant reason to respond now rather than later.\n- Risk-First Internal Updates: 10.0/10\n  Justification: The internal update leads immediately with the primary risk: two weeks of silence after verbal enthusiasm, with no stated objection on record. The ask is highly specific — a request for an executive relationship above the current contact who could do a soft nudge within 48 hours. There is no false optimism; the positive signal (verbal enthusiasm) is explicitly reframed as a liability because it produced no follow-through.\n\nYour weakest criteria are: Re-engagement Over Check-ins, Specific Callback. Focus your revision on improving these."
+    },
+    {
+      "round": 5,
+      "draft": "**PROSPECT EMAIL**\n\n**Subject: The inventory visibility piece**\n\nHi [Name],\n\nYou used a phrase in our meeting that I haven't been able to shake — that your team is \"always finding out too late.\" I've been thinking about it because it's exactly what a customer of ours said before things got worse for them, not better.\n\nThey're a similar-sized retailer. Same dynamic: problems surfacing through customer complaints rather than internal visibility. They made a deliberate call to go live before Q4 so the system was stable heading into peak season. Their ops lead shared results with us last week — reactive escalations down about 60% in the first 90 days. The before-peak timing was the whole reason it worked.\n\nThat's the part I wanted to flag for you directly. If having something in place before your own busy period is on the table, the planning window for that is now, not after you've decided.\n\nIf something in the proposal landed wrong — the scope, the sequencing, anything you didn't get to say in the room — I'd rather hear it than not. A bad fit is worth knowing about.\n\n20 minutes this week?\n\nKofi\n\n---\n\n**INTERNAL UPDATE TO MANAGER**\n\n**Subject: [Company] — silent two weeks post-proposal, no objection on record**\n\nPrimary risk: we have a prospect who was visibly enthusiastic in the meeting and has not responded to the proposal in two weeks. No stated concern, no pushback, no timeline question — which is often worse than a clear objection because we have nothing to work with.\n\nRe-engagement email went out today using a direct quote from the meeting and a fresh customer result with a Q4 urgency angle. If we don't get a response in 48 hours, I need one specific thing from you: is there an executive contact at [Company] above [Name] that you or someone on the team has a relationship with? A reach-in from a different direction may be the only way to find out what's actually stalled this before we lose the window entirely.\n\nWill update you the moment anything moves.",
+      "grading": {
+        "run_1": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 10,
+              "justification": "The prospect email opens with a direct quote — 'always finding out too late' — attributed explicitly to the prospect's own words in the meeting. This reference is entirely unique to this person and could not be transplanted to another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting' anywhere in the email."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "The email contains zero pricing, discount percentages, or contract terms. The only numbers present are the customer outcome stat (60% reduction in escalations), which is value-framing, not cost. The email explicitly steers toward a live conversation ('20 minutes this week?') and the mention of 'the proposal' is used only to invite objection-surfacing, not to renegotiate terms in writing."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 10,
+              "justification": "The follow-up introduces genuinely new information — a fresh customer result shared 'last week' with a specific outcome metric — that the prospect did not have before. There is no 'just checking in' or equivalent language anywhere. The Q4 timing angle creates a concrete, time-sensitive reason to respond now rather than later."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal email leads immediately with the risk: two weeks of silence post-proposal with no stated objection, and explicitly notes this is 'often worse than a clear objection.' There is no false optimism — the prior enthusiasm is mentioned only to contextualize the strangeness of the silence, not to reassure. The ask is highly specific: identify an executive contact above the named prospect for a potential reach-in."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_2": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 10,
+              "justification": "The email opens with a verbatim quote from the prospect — 'always finding out too late' — which is unmistakably unique to this individual and could not be templated for another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The internal update also explicitly references the direct quote as the re-engagement mechanism, confirming the specificity is intentional and structural."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The email references 'the proposal' but steers toward a live conversation ('20 minutes this week?') rather than restating commercial details. Value is communicated through the customer outcome (60% reduction in reactive escalations), not cost."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 10,
+              "justification": "The email introduces genuinely new information — a fresh customer result shared 'last week' with a specific metric — that the prospect did not have before. There is no 'just checking in' or equivalent language. The Q4 timing angle creates a concrete, time-sensitive reason to respond now rather than later."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal update leads immediately with the risk: two weeks of silence post-proposal with no stated objection, which is framed as potentially worse than a clear objection. The ask is specific — identify an executive contact above the named prospect for a potential reach-in — not a vague request for awareness. There is no false optimism; the prior enthusiasm is mentioned only to contextualize why the silence is concerning, not to reassure."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "run_3": {
+          "criteria": [
+            {
+              "criterion_name": "Specific Callback",
+              "score": 10,
+              "justification": "The email opens with a verbatim quote from the prospect — 'always finding out too late' — which is unmistakably unique to this individual and could not be templated for another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The internal update also explicitly references the direct quote as the re-engagement mechanism, confirming intentionality."
+            },
+            {
+              "criterion_name": "No Commercial Terms in Writing",
+              "score": 10,
+              "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The 60% reduction in reactive escalations is framed as a customer outcome (value), not a cost figure. The email steers toward a live conversation ('20 minutes this week?') and references 'the proposal' only to invite dialogue about fit, not to renegotiate terms in writing."
+            },
+            {
+              "criterion_name": "Re-engagement Over Check-ins",
+              "score": 10,
+              "justification": "The follow-up introduces genuinely new information — a fresh customer result shared 'last week' with a specific metric (60% reduction in escalations) — that the prospect did not have before. There is no 'just checking in' or equivalent language. The Q4 timing angle ('the planning window for that is now, not after you've decided') creates a concrete, time-relevant reason to respond immediately."
+            },
+            {
+              "criterion_name": "Risk-First Internal Updates",
+              "score": 10,
+              "justification": "The internal email leads immediately with the risk: two weeks of silence post-proposal with no stated objection, explicitly framed as potentially worse than a clear objection. The ask is highly specific — identify an executive contact above the named prospect for a potential reach-in — not a vague request for awareness. There is no false optimism; the prior enthusiasm is mentioned only to contextualize why the silence is concerning, not to reassure."
+            }
+          ],
+          "overall_weighted_score": 1.0,
+          "parse_error": null
+        },
+        "mean_scores": {
+          "Specific Callback": 10.0,
+          "No Commercial Terms in Writing": 10.0,
+          "Re-engagement Over Check-ins": 10.0,
+          "Risk-First Internal Updates": 10.0
+        },
+        "std_scores": {
+          "Specific Callback": 0.0,
+          "No Commercial Terms in Writing": 0.0,
+          "Re-engagement Over Check-ins": 0.0,
+          "Risk-First Internal Updates": 0.0
+        },
+        "mean_overall": 1.0,
+        "runs_raw": [
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 10,
+                "justification": "The prospect email opens with a direct quote — 'always finding out too late' — attributed explicitly to the prospect's own words in the meeting. This reference is entirely unique to this person and could not be transplanted to another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting' anywhere in the email."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "The email contains zero pricing, discount percentages, or contract terms. The only numbers present are the customer outcome stat (60% reduction in escalations), which is value-framing, not cost. The email explicitly steers toward a live conversation ('20 minutes this week?') and the mention of 'the proposal' is used only to invite objection-surfacing, not to renegotiate terms in writing."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 10,
+                "justification": "The follow-up introduces genuinely new information — a fresh customer result shared 'last week' with a specific outcome metric — that the prospect did not have before. There is no 'just checking in' or equivalent language anywhere. The Q4 timing angle creates a concrete, time-sensitive reason to respond now rather than later."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal email leads immediately with the risk: two weeks of silence post-proposal with no stated objection, and explicitly notes this is 'often worse than a clear objection.' There is no false optimism — the prior enthusiasm is mentioned only to contextualize the strangeness of the silence, not to reassure. The ask is highly specific: identify an executive contact above the named prospect for a potential reach-in."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1436,
+              "output_tokens": 475
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 10,
+                "justification": "The email opens with a verbatim quote from the prospect — 'always finding out too late' — which is unmistakably unique to this individual and could not be templated for another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The internal update also explicitly references the direct quote as the re-engagement mechanism, confirming the specificity is intentional and structural."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The email references 'the proposal' but steers toward a live conversation ('20 minutes this week?') rather than restating commercial details. Value is communicated through the customer outcome (60% reduction in reactive escalations), not cost."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 10,
+                "justification": "The email introduces genuinely new information — a fresh customer result shared 'last week' with a specific metric — that the prospect did not have before. There is no 'just checking in' or equivalent language. The Q4 timing angle creates a concrete, time-sensitive reason to respond now rather than later."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal update leads immediately with the risk: two weeks of silence post-proposal with no stated objection, which is framed as potentially worse than a clear objection. The ask is specific — identify an executive contact above the named prospect for a potential reach-in — not a vague request for awareness. There is no false optimism; the prior enthusiasm is mentioned only to contextualize why the silence is concerning, not to reassure."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1436,
+              "output_tokens": 473
+            }
+          },
+          {
+            "criteria": [
+              {
+                "criterion_name": "Specific Callback",
+                "score": 10,
+                "justification": "The email opens with a verbatim quote from the prospect — 'always finding out too late' — which is unmistakably unique to this individual and could not be templated for another prospect. There are no generic callbacks like 'as we discussed' or 'following up on our meeting.' The internal update also explicitly references the direct quote as the re-engagement mechanism, confirming intentionality."
+              },
+              {
+                "criterion_name": "No Commercial Terms in Writing",
+                "score": 10,
+                "justification": "No pricing, discounts, or contract terms appear anywhere in the prospect email. The 60% reduction in reactive escalations is framed as a customer outcome (value), not a cost figure. The email steers toward a live conversation ('20 minutes this week?') and references 'the proposal' only to invite dialogue about fit, not to renegotiate terms in writing."
+              },
+              {
+                "criterion_name": "Re-engagement Over Check-ins",
+                "score": 10,
+                "justification": "The follow-up introduces genuinely new information — a fresh customer result shared 'last week' with a specific metric (60% reduction in escalations) — that the prospect did not have before. There is no 'just checking in' or equivalent language. The Q4 timing angle ('the planning window for that is now, not after you've decided') creates a concrete, time-relevant reason to respond immediately."
+              },
+              {
+                "criterion_name": "Risk-First Internal Updates",
+                "score": 10,
+                "justification": "The internal email leads immediately with the risk: two weeks of silence post-proposal with no stated objection, explicitly framed as potentially worse than a clear objection. The ask is highly specific — identify an executive contact above the named prospect for a potential reach-in — not a vague request for awareness. There is no false optimism; the prior enthusiasm is mentioned only to contextualize why the silence is concerning, not to reassure."
+              }
+            ],
+            "_tokens": {
+              "input_tokens": 1436,
+              "output_tokens": 504
+            }
+          }
+        ]
+      },
+      "feedback_sent_to_model": null
+    }
+  ],
+  "candidates": null,
+  "selected_index": null,
+  "selected_draft": null,
+  "ground_truth_eval": {
+    "overall_alignment": 10,
+    "dealbreaker_violations": [],
+    "hidden_pref_satisfaction": [
+      {
+        "preference": "Reference something SPECIFIC from a previous interaction, not a generic callback",
+        "satisfied": "yes",
+        "evidence": "\"You used a phrase in our meeting that I haven't been able to shake — that your team is 'always finding out too late.'\" — a direct quote from the prospect, not a vague 'as we discussed.'"
+      },
+      {
+        "preference": "Never introduce price or commercial terms in email",
+        "satisfied": "yes",
+        "evidence": "No pricing, no numbers, no commercial terms anywhere in the prospect email. The email focuses on establishing urgency and booking a conversation."
+      },
+      {
+        "preference": "Follow-ups after silence must reframe value with a NEW reason to respond, never 'just checking in'",
+        "satisfied": "yes",
+        "evidence": "The email introduces a fresh customer result (\"reactive escalations down about 60% in the first 90 days\") and a time-sensitive urgency angle around going live before peak season — two new reasons to respond rather than a generic nudge."
+      },
+      {
+        "preference": "Internal emails lead with RISK to closing, not opportunity",
+        "satisfied": "yes",
+        "evidence": "\"Primary risk: we have a prospect who was visibly enthusiastic in the meeting and has not responded to the proposal in two weeks. No stated concern, no pushback, no timeline question — which is often worse than a clear objection because we have nothing to work with.\""
+      },
+      {
+        "preference": "Confident without arrogance, relationship-first but advancing the deal",
+        "satisfied": "yes",
+        "evidence": "\"If something in the proposal landed wrong — the scope, the sequencing, anything you didn't get to say in the room — I'd rather hear it than not. A bad fit is worth knowing about.\" This is confident and direct while being genuinely open, and the email still advances toward a meeting: \"20 minutes this week?\""
+      },
+      {
+        "preference": "Clear next steps",
+        "satisfied": "yes",
+        "evidence": "Prospect email ends with \"20 minutes this week?\" Internal email has a specific 48-hour deadline and a concrete ask for an executive contact."
+      },
+      {
+        "preference": "Emails must not sound like templates",
+        "satisfied": "yes",
+        "evidence": "The prospect email is deeply personalized — quoting the prospect's own language, referencing a specific analogous customer story, and addressing the prospect's specific timing situation. The internal email is equally situation-specific with tactical detail."
+      }
+    ],
+    "_ground_truth_tokens": {
+      "input_tokens": 912,
+      "output_tokens": 650
+    }
+  }
+}
