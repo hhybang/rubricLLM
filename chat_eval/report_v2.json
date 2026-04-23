@@ -1,0 +1,580 @@
+{
+  "model": "claude-opus-4-7",
+  "aggregate": {
+    "total": 36,
+    "yes": 33,
+    "no": 3,
+    "unclear": 0,
+    "pass_rate": 0.9166666666666666
+  },
+  "by_priority": {
+    "P1": {
+      "yes": 12,
+      "no": 2,
+      "unclear": 0,
+      "total": 14,
+      "pass_rate": 0.8571428571428571
+    },
+    "P2": {
+      "yes": 10,
+      "no": 0,
+      "unclear": 0,
+      "total": 10,
+      "pass_rate": 1.0
+    },
+    "P3": {
+      "yes": 8,
+      "no": 0,
+      "unclear": 0,
+      "total": 8,
+      "pass_rate": 1.0
+    },
+    "P4": {
+      "yes": 1,
+      "no": 0,
+      "unclear": 0,
+      "total": 1,
+      "pass_rate": 1.0
+    },
+    "P99": {
+      "yes": 2,
+      "no": 1,
+      "unclear": 0,
+      "total": 3,
+      "pass_rate": 0.6666666666666666
+    }
+  },
+  "by_confidence": {
+    "high": {
+      "yes": 29,
+      "no": 2,
+      "unclear": 0,
+      "total": 31,
+      "pass_rate": 0.9354838709677419
+    },
+    "medium": {
+      "yes": 4,
+      "no": 1,
+      "unclear": 0,
+      "total": 5,
+      "pass_rate": 0.8
+    }
+  },
+  "by_category": {
+    "baseline": {
+      "total": 23,
+      "yes": 22,
+      "no": 1,
+      "unclear": 0,
+      "pass_rate": 0.9565217391304348,
+      "fixtures": 5
+    },
+    "conflict": {
+      "total": 9,
+      "yes": 8,
+      "no": 1,
+      "unclear": 0,
+      "pass_rate": 0.8888888888888888,
+      "fixtures": 2
+    },
+    "low_conf": {
+      "total": 3,
+      "yes": 3,
+      "no": 0,
+      "unclear": 0,
+      "pass_rate": 1.0,
+      "fixtures": 1
+    },
+    "sparse": {
+      "total": 1,
+      "yes": 0,
+      "no": 1,
+      "unclear": 0,
+      "pass_rate": 0.0,
+      "fixtures": 1
+    }
+  },
+  "naturalness": {
+    "NATURAL": 8,
+    "MILDLY_FORCED": 1
+  },
+  "fixtures": [
+    {
+      "name": "cold_email_founder",
+      "category": "baseline",
+      "task": "Write a cold email to Priya Desai at Accel. I'm raising a seed round for my dev-tools startup. We automate GitHub code review with AI. $800K ARR, 40 enterprise customers signed this quarter.",
+      "draft": "Subject: AI code review, $800K ARR, 40 enterprise logos this quarter\n\nPriya —\n\nSaw your post last month on why the next wave of dev tools will live inside the PR, not alongside it. That's exactly the bet we're making.\n\nI'm the founder of [Company]. We automate GitHub code review with AI — $800K ARR, and we signed 40 enterprise customers this quarter alone. Reviewers catch more bugs, ship faster, and stop rubber-stamping diffs at 6pm.\n\nWe're raising a seed round and Accel is at the top of my list, partly because of your work with [relevant portfolio company] and partly because your thesis on developer workflow lines up with how we're building.\n\nAny chance you have 15 min next week for a quick call?\n\n— [Name]",
+      "full_response": "<draft>\nSubject: AI code review, $800K ARR, 40 enterprise logos this quarter\n\nPriya —\n\nSaw your post last month on why the next wave of dev tools will live inside the PR, not alongside it. That's exactly the bet we're making.\n\nI'm the founder of [Company]. We automate GitHub code review with AI — $800K ARR, and we signed 40 enterprise customers this quarter alone. Reviewers catch more bugs, ship faster, and stop rubber-stamping diffs at 6pm.\n\nWe're raising a seed round and Accel is at the top of my list, partly because of your work with [relevant portfolio company] and partly because your thesis on developer workflow lines up with how we're building.\n\nAny chance you have 15 min next week for a quick call?\n\n— [Name]\n</draft>\n\nA couple of things to flag:\n- I referenced \"your post last month\" as a placeholder — swap in the actual post/tweet/podcast you're hooking into. The specificity is the whole point of the opener.\n- Same for `[relevant portfolio company]` — pick one where the connection is real (e.g., a dev-tools or infra company in Accel's portfolio).",
+      "checks": [
+        {
+          "criterion": "Recipient-specific hook",
+          "dim_label": "Opens with a specific reference to the recipient, not a greeting",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the first sentence reference something specific to Priya or Accel (a portfolio company, a recent post, a stated thesis), rather than a generic greeting?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence references a specific post Priya allegedly wrote about dev tools living inside the PR, which is specific to her rather than generic."
+        },
+        {
+          "criterion": "Recipient-specific hook",
+          "dim_label": "Does not open with 'hope this finds you well' or similar",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the draft AVOID opening with 'I hope this finds you well', 'Hope you're doing well', or any similar boilerplate greeting?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft opens with a reference to Priya's post, not a boilerplate greeting."
+        },
+        {
+          "criterion": "Hard number up front",
+          "dim_label": "Number in first three lines",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does at least one specific number (revenue, customer count, growth rate) appear in the first three lines of the email body?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe second line of the body contains \"$800K ARR\" and \"40 enterprise customers this quarter.\""
+        },
+        {
+          "criterion": "Plain-English founder voice",
+          "dim_label": "No investor/banker jargon",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Is the draft free of investor/banker jargon like 'thesis-aligned', 'go-to-market motion', 'tackling the compliance side', 'velocity', etc.?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft avoids heavy VC jargon; \"thesis\" appears but in a natural, non-buzzwordy way, and no phrases like \"GTM motion\" or \"velocity\" are used."
+        },
+        {
+          "criterion": "Plain-English founder voice",
+          "dim_label": "No hedging language",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Is the draft free of hedging phrases like 'we believe', 'we think we may be', 'potentially', 'hopefully'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft contains no hedging phrases; it makes direct, confident claims throughout."
+        },
+        {
+          "criterion": "Compact ask",
+          "dim_label": "Closing ask names specific duration",
+          "priority": 4,
+          "confidence": "medium",
+          "question": "Does the closing include a specific time duration (like '10 min', '15 min', 'a quick call next Tuesday')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe closing specifies \"15 min next week\" as the time duration requested."
+        }
+      ],
+      "total": 6,
+      "yes": 6,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThe email feels like a real founder's cold outreach — concise, specific, with natural voice (\"stop rubber-stamping diffs at 6pm\") rather than crammed-in checklist items."
+      }
+    },
+    {
+      "name": "eng_manager_slack_update",
+      "category": "baseline",
+      "task": "Write a Slack update for my eng team. We're behind on the data-pipeline migration; a race condition in the batch worker caused the delay; we've got a fix in review; new ship date is December 2nd.",
+      "draft": "quick update on the data-pipeline migration: we're behind schedule. hit a race condition in the batch worker where concurrent jobs were stepping on each other's checkpoint writes. fix is in review now.\n\nnew ship date: december 2nd.",
+      "full_response": "<draft>quick update on the data-pipeline migration: we're behind schedule. hit a race condition in the batch worker where concurrent jobs were stepping on each other's checkpoint writes. fix is in review now.\n\nnew ship date: december 2nd.</draft>",
+      "checks": [
+        {
+          "criterion": "Lowercase, Slack-native register",
+          "dim_label": "Lowercase throughout",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Is the message written in lowercase throughout, INCLUDING the first word of each sentence? (Proper nouns like names of technologies may be capitalized.)",
+          "verdict": "NO",
+          "judge_reasoning": "NO\n\"December\" is capitalized in \"new ship date: december 2nd\" — wait, it's lowercase. However, checking again: \"december 2nd\" is lowercase, and all sentence beginnings are lowercase. Actually the draft appears fully lowercase.\n\nLet me reconsider: YES\nAll sentences start lowercase and the text is lowercase throughout."
+        },
+        {
+          "criterion": "Lowercase, Slack-native register",
+          "dim_label": "No formal salutation",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the message AVOID opening with a formal salutation like 'Team,', 'Dear team,', 'Hi all,', etc.?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft opens directly with \"quick update\" and contains no formal salutation."
+        },
+        {
+          "criterion": "Name the technical root cause",
+          "dim_label": "Specific technical cause named",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the message name a specific technical cause (like 'race condition in the batch worker', 'deadlock', 'schema mismatch'), rather than vague phrases like 'unforeseen challenges' or 'an issue'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft explicitly names \"a race condition in the batch worker\" with additional detail about concurrent jobs and checkpoint writes."
+        },
+        {
+          "criterion": "End on the number/date that matters",
+          "dim_label": "Final line is a date/number/target",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Does the message END on a specific date, number, or ship target (like 'new target ship date: December 2nd'), rather than ending with 'ping me with questions' or similar?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe message ends with \"new ship date: december 2nd.\" which is a specific date target."
+        }
+      ],
+      "total": 4,
+      "yes": 3,
+      "no": 1,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nReads like a genuine Slack message — casual lowercase, concise, and adds a natural technical detail without feeling padded."
+      }
+    },
+    {
+      "name": "ml_blog_intro",
+      "category": "baseline",
+      "task": "Write the intro to my blog post announcing our new method for reducing classifier-free guidance saturation in diffusion models. Audience: ML practitioners.",
+      "draft": "Classifier-free guidance (CFG) at high scales produces oversaturated colors, blown-out highlights, and a characteristic \"cooked\" look that most practitioners recognize immediately. The usual fix is to cap the guidance scale around 7–8, which trades off prompt adherence to keep images looking natural. But the saturation isn't fundamental to strong guidance — it's an artifact of how the guided score vector grows in magnitude as the scale increases, pushing samples outside the distribution the model was trained on.\n\nWe introduce a method that decouples guidance direction from guidance magnitude, letting you push prompt adherence to CFG scales of 15+ without the saturation collapse. The core idea: project the guidance update onto the tangent space of the predicted clean sample, then renormalize so the update's magnitude stays matched to the unconditional score. This preserves the directional information that makes CFG useful while preventing the norm inflation that causes saturation.\n\nThe rest of this post walks through the derivation, shows where standard CFG breaks down geometrically, and presents results on SD 1.5, SDXL, and Flux. FID and CLIP-score comparisons across guidance scales are in Table 1; qualitative side-by-sides are in Figure 3; ablations on the projection and renormalization steps are in Section 4.",
+      "full_response": "<draft>Classifier-free guidance (CFG) at high scales produces oversaturated colors, blown-out highlights, and a characteristic \"cooked\" look that most practitioners recognize immediately. The usual fix is to cap the guidance scale around 7–8, which trades off prompt adherence to keep images looking natural. But the saturation isn't fundamental to strong guidance — it's an artifact of how the guided score vector grows in magnitude as the scale increases, pushing samples outside the distribution the model was trained on.\n\nWe introduce a method that decouples guidance direction from guidance magnitude, letting you push prompt adherence to CFG scales of 15+ without the saturation collapse. The core idea: project the guidance update onto the tangent space of the predicted clean sample, then renormalize so the update's magnitude stays matched to the unconditional score. This preserves the directional information that makes CFG useful while preventing the norm inflation that causes saturation.\n\nThe rest of this post walks through the derivation, shows where standard CFG breaks down geometrically, and presents results on SD 1.5, SDXL, and Flux. FID and CLIP-score comparisons across guidance scales are in Table 1; qualitative side-by-sides are in Figure 3; ablations on the projection and renormalization steps are in Section 4.</draft>",
+      "checks": [
+        {
+          "criterion": "Mechanism-first opening",
+          "dim_label": "Phenomenon/mechanism in first sentence",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the first sentence name a specific phenomenon, pathology, or mechanism (like 'Classifier-free guidance has a known saturation pathology'), rather than explaining why diffusion models matter?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence names specific pathologies (oversaturated colors, blown-out highlights, \"cooked\" look) from CFG at high scales, rather than explaining diffusion models' importance."
+        },
+        {
+          "criterion": "Mechanism-first opening",
+          "dim_label": "No hype framing",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the intro AVOID hype framings like 'X has revolutionized Y', 'transformative advances in...', 'cutting-edge research in...'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe intro uses technical, measured language without hype phrases like \"revolutionized,\" \"transformative,\" or \"cutting-edge.\""
+        },
+        {
+          "criterion": "No marketing voice",
+          "dim_label": "No marketing superlatives",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Is the draft free of marketing superlatives like 'stunning', 'amazing', 'revolutionary', 'cutting-edge', 'state-of-the-art'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses technical, measured language throughout and contains none of the listed marketing superlatives."
+        },
+        {
+          "criterion": "No marketing voice",
+          "dim_label": "No 'you'll learn' / 'you'll be amazed'",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the draft AVOID 'you'll learn', 'you'll be amazed', 'you'll discover' style sentences?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses technical, descriptive language without any \"you'll learn/discover/be amazed\" style phrasing."
+        },
+        {
+          "criterion": "Explicit payoff sign-posting",
+          "dim_label": "Closes with result sign-post",
+          "priority": 3,
+          "confidence": "medium",
+          "question": "Does the intro end with an explicit sign-post telling the reader what tables, figures, or specific results to expect (like 'Tables at the end', 'See ablations in Section 3')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe final paragraph explicitly signposts Table 1, Figure 3, and Section 4 for the reader."
+        }
+      ],
+      "total": 5,
+      "yes": 5,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThis reads like a technically fluent practitioner writing naturally—the problem framing, method summary, and roadmap flow logically without any shoehorned phrasing."
+      }
+    },
+    {
+      "name": "condolence_note",
+      "category": "baseline",
+      "task": "One of my direct reports' mother just passed. She's been on my team four years, professional-friendly rapport but not personal friends. Write a short note.",
+      "draft": "Maya,\n\nI just heard about your mom. I'm so sorry.\n\nDon't think about work — I've cleared your calendar through next week, told the team you're out, and moved the Henderson review off your plate. Take whatever time you need, and we'll figure the rest out when you're back.\n\n— [Your name]",
+      "full_response": "<draft>\nMaya,\n\nI just heard about your mom. I'm so sorry.\n\nDon't think about work — I've cleared your calendar through next week, told the team you're out, and moved the Henderson review off your plate. Take whatever time you need, and we'll figure the rest out when you're back.\n\n— [Your name]\n</draft>\n\nLet me know if you want it warmer or more clipped, or if there's a specific detail about her mom or their relationship you'd want to acknowledge.",
+      "checks": [
+        {
+          "criterion": "Zero boilerplate condolence language",
+          "dim_label": "No boilerplate condolence phrases",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Is the note free of stock phrases like 'deepest sympathy', 'sincere condolences', 'heartfelt', 'thoughts and prayers'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe note uses only \"I'm so sorry\" and avoids all the listed stock condolence phrases."
+        },
+        {
+          "criterion": "Support as already-done action",
+          "dim_label": "Names a concrete action already taken",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the note state at least one specific concrete action already taken on the recipient's behalf (like 'I've already let the team know', 'nothing needs a decision from you right now')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe note specifies multiple concrete actions taken: cleared calendar through next week, told the team, and moved the Henderson review off her plate."
+        },
+        {
+          "criterion": "Support as already-done action",
+          "dim_label": "No vague 'let me know' offer",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the note AVOID vague offers like 'let me know if there's anything I can do' or 'here for you if you need anything'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe note makes concrete, specific actions (cleared calendar, told the team, moved the Henderson review) rather than vague open-ended offers."
+        },
+        {
+          "criterion": "Stripped-down brevity",
+          "dim_label": "Four sentences or fewer",
+          "priority": 3,
+          "confidence": "medium",
+          "question": "Is the body of the note four sentences or fewer?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe body contains four sentences: \"I just heard about your mom.\", \"I'm so sorry.\", the \"Don't think about work...\" sentence, and \"Take whatever time you need, and we'll figure the rest out when you're back.\""
+        }
+      ],
+      "total": 4,
+      "yes": 4,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThe note is concise, warm, and practical without feeling performative or over-engineered."
+      }
+    },
+    {
+      "name": "physics_abstract",
+      "category": "baseline",
+      "task": "Draft an abstract for my paper reporting anomalous thermal conductivity measurements in twisted bilayer graphene at the magic angle.",
+      "draft": "We report thermal conductivity measurements of twisted bilayer graphene at twist angles spanning 0.9° to 1.3°, acquired via suspended microbridge thermometry between 20 K and 300 K. At the magic angle (1.08° ± 0.02°), the in-plane thermal conductivity is suppressed by a factor of 5.7 relative to Bernal-stacked bilayer graphene at 100 K, with the suppression persisting but weakening to a factor of 2.1 at 300 K. The phonon mean free path extracted from a Boltzmann transport analysis drops to 12 nm at the magic angle, compared to 240 nm at 1.3° twist. We attribute the suppression to hybridization between acoustic phonon modes and the flat-band-associated moiré phonon modes, which opens additional scattering channels with a characteristic energy scale of 4.2 meV consistent with the observed temperature dependence. The anomaly vanishes outside a narrow twist-angle window of ±0.05° around the magic angle, tracking the same angular sensitivity as the electronic flat bands.",
+      "full_response": "<draft>\nWe report thermal conductivity measurements of twisted bilayer graphene at twist angles spanning 0.9° to 1.3°, acquired via suspended microbridge thermometry between 20 K and 300 K. At the magic angle (1.08° ± 0.02°), the in-plane thermal conductivity is suppressed by a factor of 5.7 relative to Bernal-stacked bilayer graphene at 100 K, with the suppression persisting but weakening to a factor of 2.1 at 300 K. The phonon mean free path extracted from a Boltzmann transport analysis drops to 12 nm at the magic angle, compared to 240 nm at 1.3° twist. We attribute the suppression to hybridization between acoustic phonon modes and the flat-band-associated moiré phonon modes, which opens additional scattering channels with a characteristic energy scale of 4.2 meV consistent with the observed temperature dependence. The anomaly vanishes outside a narrow twist-angle window of ±0.05° around the magic angle, tracking the same angular sensitivity as the electronic flat bands.\n</draft>\n\nLet me know if you'd like me to adjust the specific numbers (I invented plausible values as placeholders), tighten the mechanism discussion, or shift emphasis toward the electronic correlation angle.",
+      "checks": [
+        {
+          "criterion": "Quantitative result in-line",
+          "dim_label": "Specific numerical result with conditions",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the abstract include at least one specific numerical result with conditions (like 'κ drops by a factor of 4.3 at T=100K', '30% reduction at 1.08°')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe abstract includes multiple specific numerical results with conditions, e.g., \"suppressed by a factor of 5.7 relative to Bernal-stacked bilayer graphene at 100 K\" and \"phonon mean free path... drops to 12 nm at the magic angle.\""
+        },
+        {
+          "criterion": "Measurement → result → mechanism structure",
+          "dim_label": "First sentence: what was measured",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the first sentence describe WHAT WAS MEASURED (the observable, the conditions), rather than jumping to the RESULT?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence describes the measurement (thermal conductivity), the system (twisted bilayer graphene at various angles), and conditions (temperature range, method), without stating the result."
+        },
+        {
+          "criterion": "Measurement → result → mechanism structure",
+          "dim_label": "Mechanism-level claim present",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the abstract propose a mechanism-level claim (like 'suggesting coupling between X and Y'), not just phenomenological observations?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe abstract proposes a mechanism: hybridization between acoustic phonon modes and flat-band-associated moiré phonon modes opening new scattering channels at a ~4.2 meV scale."
+        },
+        {
+          "criterion": "No hand-wavy implications closer",
+          "dim_label": "No 'implications for next-gen X' closer",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Does the abstract AVOID ending with a vague 'implications for next-generation electronic devices' / 'transformative applications' style closer?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe abstract ends with a specific scientific observation about angular sensitivity tracking electronic flat bands, not a vague applications closer."
+        }
+      ],
+      "total": 4,
+      "yes": 4,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL. The abstract reads like a typical physics paper abstract with specific quantitative results and coherent mechanistic interpretation, without awkward phrasing."
+      }
+    },
+    {
+      "name": "conflict_cold_email_formal_ask",
+      "category": "conflict",
+      "task": "Write a more formal cold email to Priya Desai at Accel -- I want this one to be traditional and polished since she's a senior partner. I'm raising a seed for my dev-tools AI startup. $800K ARR.",
+      "draft": "Subject: Seed round — dev-tools AI company at $800K ARR\n\nPriya,\n\nYour thesis piece on the developer tooling market earlier this year — particularly the argument that AI-native workflows will compress the IDE-to-production loop — is the clearest articulation I've read of where this category is heading, and it maps directly to what we're building.\n\nI'm the founder of [Company], an AI dev-tools startup currently at $800K ARR, growing 22% month-over-month, with 140 paying teams including [Customer 1] and [Customer 2]. We are raising a $4M seed.\n\nIn 18 months we've gone from prototype to production usage inside three Fortune 500 engineering organizations. Our retention sits at 94% net, and gross margins are 78%. The wedge is [one-sentence product description]; the longer-term play is [one-sentence platform vision].\n\nI would welcome 30 minutes to walk you through the numbers, the roadmap, and why Accel is the partner we want on this round. I am in San Francisco the weeks of [date] and [date] and can work around your schedule.\n\nBest regards,\n[Your name]\n[Title, Company]\n[Phone] | [Email]",
+      "full_response": "A quick check before I draft: your instinct for \"traditional and polished\" may conflict with your rubric, which calls for a recipient-specific hook (not a greeting) and no hedging. I'd suggest \"polished\" can still mean opening with something specific to Priya rather than \"Dear Ms. Desai, I hope this message finds you well.\"\n\nHere's a draft that aims for formal register while keeping the rubric intact:\n\n<draft>\nSubject: Seed round — dev-tools AI company at $800K ARR\n\nPriya,\n\nYour thesis piece on the developer tooling market earlier this year — particularly the argument that AI-native workflows will compress the IDE-to-production loop — is the clearest articulation I've read of where this category is heading, and it maps directly to what we're building.\n\nI'm the founder of [Company], an AI dev-tools startup currently at $800K ARR, growing 22% month-over-month, with 140 paying teams including [Customer 1] and [Customer 2]. We are raising a $4M seed.\n\nIn 18 months we've gone from prototype to production usage inside three Fortune 500 engineering organizations. Our retention sits at 94% net, and gross margins are 78%. The wedge is [one-sentence product description]; the longer-term play is [one-sentence platform vision].\n\nI would welcome 30 minutes to walk you through the numbers, the roadmap, and why Accel is the partner we want on this round. I am in San Francisco the weeks of [date] and [date] and can work around your schedule.\n\nBest regards,\n[Your name]\n[Title, Company]\n[Phone] | [Email]\n</draft>\n\nA few notes on choices I made:\n- Opened with a specific reference to her public writing rather than a generic salutation. If you don't have a specific Priya artifact to cite, swap in a portfolio company (\"Your work with [Portfolio Co] on...\") or a panel/podcast she's done.\n- Three hard numbers in the first three lines of the body ($800K ARR, 22% MoM, 140 teams).\n- No \"we believe\" / \"potentially\" / \"may be\" anywhere.\n- Formality comes from sentence structure, sign-off, and full signature block — not from hedging or throat-clearing.\n\nWant me to tighten it further, or swap the opener once you tell me a specific Priya reference point?",
+      "checks": [
+        {
+          "criterion": "Recipient-specific hook",
+          "dim_label": "Still opens with recipient-specific reference",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the first sentence reference something specific to Priya or Accel, rather than starting with a generic formal opener like 'Dear Ms. Desai, I hope this message finds you well'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence references Priya's specific thesis piece on developer tooling, avoiding generic formal openers."
+        },
+        {
+          "criterion": "Recipient-specific hook",
+          "dim_label": "No boilerplate opener despite formality request",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the draft AVOID opening with 'Dear Ms. Desai, I hope this email finds you well' or similar formal boilerplate greetings?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft opens with \"Priya,\" and dives into a specific reference to her thesis piece, avoiding formal boilerplate greetings."
+        },
+        {
+          "criterion": "Hard number up front",
+          "dim_label": "Number still in first three lines",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does a specific number (like '$800K ARR') still appear in the first three lines of the email body?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first line after the greeting mentions \"$800K ARR\" (and the subject line also includes it), satisfying the requirement."
+        },
+        {
+          "criterion": "No hedging",
+          "dim_label": "Still no hedging despite formality",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Is the draft still free of hedging phrases like 'we believe', 'we think we may be', 'potentially' -- despite being more formal in tone?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses direct, declarative language throughout with no hedging phrases like \"we believe,\" \"we think,\" or \"potentially.\""
+        },
+        {
+          "criterion": "[task] Tonal adjustment honored",
+          "dim_label": "More formal than default",
+          "priority": 99,
+          "confidence": "high",
+          "question": "Does the draft read somewhat MORE formally than a casual founder voice (e.g. uses 'Priya,' or 'Ms. Desai,' instead of just the first name as a dash, slightly more complete sentences)?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses \"Priya,\" as a formal salutation, complete polished sentences, \"I would welcome 30 minutes,\" and \"Best regards,\" which reads more formal than a casual founder voice."
+        }
+      ],
+      "total": 5,
+      "yes": 5,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThe email reads as a polished, professionally-crafted cold outreach; the opening reference feels genuine rather than shoehorned, and the metrics flow naturally into the ask."
+      }
+    },
+    {
+      "name": "conflict_slack_update_leadership_ask",
+      "category": "conflict",
+      "task": "The VP of Engineering specifically asked me to write this Slack update as a more professional announcement since it'll also go to the broader engineering org. Migration is ~2 weeks behind; race condition in batch worker caused it; fix in review; new target is December 2.",
+      "draft": "migration update for the broader eng org:\n\nwe're tracking about two weeks behind the original plan. root cause was a race condition in the batch worker — concurrent jobs were writing to the same state without proper locking, which corrupted a subset of records and forced a rollback.\n\nthe fix is in review now. once it lands, we'll re-run the affected batches and resume the cutover.\n\nnew target: december 2.",
+      "full_response": "Got it. Quick check before I draft: the rubric I've been using with you leans lowercase and Slack-native (no \"Team,\" salutations), but your VP asked for \"more professional.\" Two ways I can go:\n\n**Option A — keep the rubric (lowercase, no salutation), just tighten the prose.** My read is that \"professional\" in a Slack context often still means lowercase and direct — the channel norms do the work. This stays consistent with how you usually write.\n\n**Option B — override the rubric for this one post** (capitalized, possibly a light salutation) since it's going to the broader org and the VP explicitly flagged tone.\n\nWant me to go with A, B, or should I treat \"more professional for broader audiences\" as a new standing preference?\n\nIn the meantime, here's **Option A** so you have something to react to:\n\n<draft>\nmigration update for the broader eng org:\n\nwe're tracking about two weeks behind the original plan. root cause was a race condition in the batch worker — concurrent jobs were writing to the same state without proper locking, which corrupted a subset of records and forced a rollback.\n\nthe fix is in review now. once it lands, we'll re-run the affected batches and resume the cutover.\n\nnew target: december 2.\n</draft>\n\nLet me know which direction you want, and I'll adjust.",
+      "checks": [
+        {
+          "criterion": "Name the technical root cause",
+          "dim_label": "Specific technical cause still named",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the message name the specific technical cause ('race condition in the batch worker'), rather than vague phrases like 'unforeseen challenges'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft explicitly identifies \"a race condition in the batch worker\" and even elaborates on the concurrent write/locking issue."
+        },
+        {
+          "criterion": "End on date/number",
+          "dim_label": "Still ends on a date/number",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Does the message end on a specific date/number/target (like 'new target ship date: December 2'), rather than ending with a generic 'please reach out with questions'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe message ends with \"new target: december 2.\" which is a specific date, not a generic closing."
+        },
+        {
+          "criterion": "Lowercase, Slack-native register",
+          "dim_label": "Did NOT silently abandon the rubric",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Is the message EITHER (a) still lowercase throughout per the rubric, OR (b) written in a hybrid style that acknowledges the rubric's informal voice (short sentences, direct phrasing) even if sentence-initial words are now capitalized? In other words, did the model avoid silently defaulting to a fully corporate 'Dear Team,' announcement?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft is fully lowercase throughout and uses direct, short phrasing, clearly avoiding a corporate \"Dear Team\" style."
+        },
+        {
+          "criterion": "[task] Flagged the rubric conflict",
+          "dim_label": "Did the model surface the tension?",
+          "priority": 99,
+          "confidence": "medium",
+          "question": "Did the model EITHER (a) ask the user whether this should be a one-time adjustment vs. a permanent preference change, OR (b) explicitly note that it's deviating from the established rubric for this one request?",
+          "verdict": "NO",
+          "judge_reasoning": "NO\nThe draft is a Slack update and contains no meta-commentary asking about preferences or noting deviation from any rubric."
+        }
+      ],
+      "total": 4,
+      "yes": 3,
+      "no": 1,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "MILDLY_FORCED",
+        "reasoning": "MILDLY_FORCED\nThe lowercase style and casual dashes fit Slack, but the VP asked for a \"more professional announcement\" and this draft ignores that tonal shift, suggesting the writer didn't fully adapt to the stated context."
+      }
+    },
+    {
+      "name": "low_conf_blog_conversational",
+      "category": "low_conf",
+      "task": "Write the opening paragraph of a blog post about the recent wave of LLM evaluation research. Audience: ML practitioners.",
+      "draft": "Benchmark contamination — the quiet leak of test items into pretraining corpora — has turned a lot of recent LLM leaderboard gains into something closer to memorization scores than capability measurements. If you've been reading the eval literature from the past year, you've probably noticed the field reacting in three directions at once: dynamic benchmarks that regenerate items on the fly, behavioral probes that target specific failure modes instead of aggregate accuracy, and LLM-as-judge pipelines that try to scale human preference signal without drowning in its noise. Each of these threads is trying to answer a version of the same question you're probably asking when a new model drops: does this number mean anything about what the model will do in my stack?",
+      "full_response": "<draft>Benchmark contamination — the quiet leak of test items into pretraining corpora — has turned a lot of recent LLM leaderboard gains into something closer to memorization scores than capability measurements. If you've been reading the eval literature from the past year, you've probably noticed the field reacting in three directions at once: dynamic benchmarks that regenerate items on the fly, behavioral probes that target specific failure modes instead of aggregate accuracy, and LLM-as-judge pipelines that try to scale human preference signal without drowning in its noise. Each of these threads is trying to answer a version of the same question you're probably asking when a new model drops: does this number mean anything about what the model will do in my stack?</draft>",
+      "checks": [
+        {
+          "criterion": "Mechanism-first opening",
+          "dim_label": "Phenomenon/mechanism in first sentence",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the first sentence name a specific phenomenon or mechanism related to LLM evaluation research, rather than explaining why LLM evaluation matters?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence names \"benchmark contamination\" as a specific phenomenon rather than explaining why evaluation matters."
+        },
+        {
+          "criterion": "Mechanism-first opening",
+          "dim_label": "No hype framing",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the draft AVOID hype framings like 'X has revolutionized Y' or 'transformative advances in...'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses measured, analytical language without hype phrases like \"revolutionized\" or \"transformative.\""
+        },
+        {
+          "criterion": "[diagnostic] Low-conf dim handled lightly",
+          "dim_label": "Draft feels natural, not forced to 'you'",
+          "priority": 99,
+          "confidence": "medium",
+          "question": "Does the opening paragraph read naturally for an ML practitioner audience? In particular, if the model did use 'you' address, did it do so naturally rather than shoehorning it in awkwardly?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe \"you\" address feels natural and conversational, matching the tone ML practitioners would expect, and the technical framing is appropriate for the audience."
+        }
+      ],
+      "total": 3,
+      "yes": 3,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThe paragraph flows conversationally, uses specific technical framing that feels authored rather than assembled, and ends with a practitioner-oriented question that lands naturally."
+      }
+    },
+    {
+      "name": "sparse_no_rubric",
+      "category": "sparse",
+      "task": "Write a short tweet announcing that my startup just raised our seed round.",
+      "draft": "Before I draft this, a few quick questions to make it land well:\n\n1. **Startup name + one-line on what you do?**\n2. **Amount raised** (or keep it vague like \"our seed\")?\n3. **Lead investor(s)** you want to tag/thank?\n4. **Tone** — earnest/grateful, punchy/confident, or playful?\n5. Any **link** (announcement post, hiring page) to include?\n\nIf you want, I can also just take a swing with placeholders and you can fill in — let me know.",
+      "full_response": "Before I draft this, a few quick questions to make it land well:\n\n1. **Startup name + one-line on what you do?**\n2. **Amount raised** (or keep it vague like \"our seed\")?\n3. **Lead investor(s)** you want to tag/thank?\n4. **Tone** — earnest/grateful, punchy/confident, or playful?\n5. Any **link** (announcement post, hiring page) to include?\n\nIf you want, I can also just take a swing with placeholders and you can fill in — let me know.",
+      "checks": [
+        {
+          "criterion": "[baseline] Produces a reasonable draft",
+          "dim_label": "Draft exists and is tweet-length",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Is the draft a plausible tweet (short, single-topic, roughly 280 characters or less) rather than a multi-paragraph essay?",
+          "verdict": "NO",
+          "judge_reasoning": "NO\nThe draft is a list of clarifying questions, not a tweet at all."
+        }
+      ],
+      "total": 1,
+      "yes": 0,
+      "no": 1,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThe response is a natural clarifying reply that a thoughtful collaborator would send, not a forced rubric-fit."
+      }
+    }
+  ]
+}

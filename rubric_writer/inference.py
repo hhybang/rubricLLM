@@ -73,6 +73,33 @@ def infer_rubric_only(messages):
             rubric_data["source"] = "inferred"
             rubric_data["conversation_id"] = st.session_state.get("selected_conversation")
 
+            # Evidence-gate enforcement: drop any dimension the model explicitly
+            # marked as INSUFFICIENT_EVIDENCE, and any criterion that becomes
+            # empty as a result. The prompt offers this as an explicit escape
+            # hatch when a dim can't be grounded in concrete user interaction.
+            _dropped_dims = 0
+            _dropped_crits = 0
+            for crit in rubric_data.get("rubric") or []:
+                kept = []
+                for dim in crit.get("dimensions") or []:
+                    ev = (dim.get("evidence") or "").strip().upper()
+                    if ev == "INSUFFICIENT_EVIDENCE":
+                        _dropped_dims += 1
+                        continue
+                    kept.append(dim)
+                crit["dimensions"] = kept
+            rubric_data["rubric"] = [
+                c for c in (rubric_data.get("rubric") or []) if c.get("dimensions")
+            ]
+            _dropped_crits = max(0, len((rubric_data.get("rubric") or [])) - len(rubric_data["rubric"]))
+            if _dropped_dims or _dropped_crits:
+                import logging as _lg
+                _lg.getLogger(__name__).info(
+                    "Evidence gate: dropped %d dim(s)%s.",
+                    _dropped_dims,
+                    f" and {_dropped_crits} now-empty criterion" if _dropped_crits else "",
+                )
+
             # Normalize priorities to unique sequential 1..N
             _infer_criteria = rubric_data.get("rubric", [])
             if _infer_criteria:
@@ -257,6 +284,30 @@ def infer_final_rubric(messages, rubric_json, classification_feedback_json, corr
             rubric_data["version"] = next_version_number()
             rubric_data["source"] = "inferred_final"
             rubric_data["conversation_id"] = st.session_state.get("selected_conversation")
+
+            # Evidence-gate enforcement (same as infer_rubric_only).
+            _dropped_dims = 0
+            for crit in rubric_data.get("rubric") or []:
+                kept = []
+                for dim in crit.get("dimensions") or []:
+                    ev = (dim.get("evidence") or "").strip().upper()
+                    if ev == "INSUFFICIENT_EVIDENCE":
+                        _dropped_dims += 1
+                        continue
+                    kept.append(dim)
+                crit["dimensions"] = kept
+            _before_crit = len(rubric_data.get("rubric") or [])
+            rubric_data["rubric"] = [
+                c for c in (rubric_data.get("rubric") or []) if c.get("dimensions")
+            ]
+            _dropped_crits = _before_crit - len(rubric_data["rubric"])
+            if _dropped_dims or _dropped_crits:
+                import logging as _lg
+                _lg.getLogger(__name__).info(
+                    "Evidence gate (final): dropped %d dim(s)%s.",
+                    _dropped_dims,
+                    f" and {_dropped_crits} now-empty criterion" if _dropped_crits else "",
+                )
 
             # Normalize priorities to unique sequential 1..N
             _final_criteria = rubric_data.get("rubric", [])

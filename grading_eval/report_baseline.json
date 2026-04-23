@@ -1,0 +1,813 @@
+{
+  "model": "default (sonnet-4-6)",
+  "aggregate": {
+    "total": 36,
+    "correct": 36,
+    "accuracy": 1.0,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "missing": 0,
+    "fp_rate_of_notmet": 0.0,
+    "fn_rate_of_met": 0.0
+  },
+  "confidence_calibration": {
+    "high": {
+      "total": 34,
+      "correct": 34,
+      "accuracy": 1.0
+    },
+    "medium": {
+      "total": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    }
+  },
+  "results": [
+    {
+      "fixture": "cold_email",
+      "variant": "all_met",
+      "latency_ms": 4246,
+      "per_dim": [
+        {
+          "dim_id": "recipient_hook",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'You recently backed CompetitorX in voluntary carbon markets' directly references a specific investment action by the recipient."
+        },
+        {
+          "dim_id": "no_boilerplate",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft contains no instance of 'hope this finds you well' or 'hope you're doing well'."
+        },
+        {
+          "dim_id": "number_early",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'$2M ARR' appears in the second line of the body, which is within the first three lines."
+        },
+        {
+          "dim_id": "no_hedging",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft contains no instances of 'we believe', 'we think', 'potentially', or 'hopefully'."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Opening",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "recipient_hook",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "'You recently backed CompetitorX in voluntary carbon markets' directly references a specific investment action by the recipient."
+              },
+              {
+                "dimension_id": "no_boilerplate",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The draft contains no instance of 'hope this finds you well' or 'hope you're doing well'."
+              }
+            ],
+            "score": "2/2"
+          },
+          {
+            "criterion_name": "Substance",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "number_early",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "'$2M ARR' appears in the second line of the body, which is within the first three lines."
+              },
+              {
+                "dimension_id": "no_hedging",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The draft contains no instances of 'we believe', 'we think', 'potentially', or 'hopefully'."
+              }
+            ],
+            "score": "2/2"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "cold_email",
+      "variant": "all_violated",
+      "latency_ms": 5089,
+      "per_dim": [
+        {
+          "dim_id": "recipient_hook",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The first sentence is 'I hope this email finds you well.' — a generic greeting with no specific reference to Ms. Chen."
+        },
+        {
+          "dim_id": "no_boilerplate",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft contains the exact phrase 'I hope this email finds you well.'"
+        },
+        {
+          "dim_id": "number_early",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The first three lines of the body contain no specific numbers whatsoever."
+        },
+        {
+          "dim_id": "no_hedging",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft contains multiple hedging phrases: 'We believe', 'potentially', and 'we think' all appear in the same sentence."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Opening",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "recipient_hook",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The first sentence is 'I hope this email finds you well.' — a generic greeting with no specific reference to Ms. Chen."
+              },
+              {
+                "dimension_id": "no_boilerplate",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft contains the exact phrase 'I hope this email finds you well.'"
+              }
+            ],
+            "score": "0/2"
+          },
+          {
+            "criterion_name": "Substance",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "number_early",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The first three lines of the body contain no specific numbers whatsoever."
+              },
+              {
+                "dimension_id": "no_hedging",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft contains multiple hedging phrases: 'We believe', 'potentially', and 'we think' all appear in the same sentence."
+              }
+            ],
+            "score": "0/2"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "cold_email",
+      "variant": "mixed",
+      "latency_ms": 4912,
+      "per_dim": [
+        {
+          "dim_id": "recipient_hook",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'You recently backed CompetitorX in voluntary carbon markets' references a specific investment action by the recipient."
+        },
+        {
+          "dim_id": "no_boilerplate",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft opens with 'I hope this email finds you well,' which is explicitly listed as a disallowed phrase."
+        },
+        {
+          "dim_id": "number_early",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'$2M ARR' appears in the first paragraph (within the first three lines of the body), satisfying the requirement for a specific number early."
+        },
+        {
+          "dim_id": "no_hedging",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft contains 'we think we may be doing something complementary,' which includes the hedging phrase 'we think' as well as the hedging word 'may'."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Opening",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "recipient_hook",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "'You recently backed CompetitorX in voluntary carbon markets' references a specific investment action by the recipient."
+              },
+              {
+                "dimension_id": "no_boilerplate",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft opens with 'I hope this email finds you well,' which is explicitly listed as a disallowed phrase."
+              }
+            ],
+            "score": "1/2"
+          },
+          {
+            "criterion_name": "Substance",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "number_early",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "'$2M ARR' appears in the first paragraph (within the first three lines of the body), satisfying the requirement for a specific number early."
+              },
+              {
+                "dimension_id": "no_hedging",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft contains 'we think we may be doing something complementary,' which includes the hedging phrase 'we think' as well as the hedging word 'may'."
+              }
+            ],
+            "score": "1/2"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "slack_update",
+      "variant": "all_met",
+      "latency_ms": 4210,
+      "per_dim": [
+        {
+          "dim_id": "lowercase",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "All sentence-initial words are lowercase: 'quick update on the migration', 'we're ~2 weeks behind', 'new target ship date: december 2'."
+        },
+        {
+          "dim_id": "no_formal_salutation",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft opens with 'quick update on the migration —', which is not a formal salutation."
+        },
+        {
+          "dim_id": "root_cause",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft states 'root cause: a race condition in the batch worker where concurrent jobs stomped on shared state', naming a specific technical root cause."
+        },
+        {
+          "dim_id": "ends_on_date",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The final line is 'new target ship date: december 2', which ends on a specific date."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Register",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "lowercase",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "All sentence-initial words are lowercase: 'quick update on the migration', 'we're ~2 weeks behind', 'new target ship date: december 2'."
+              },
+              {
+                "dimension_id": "no_formal_salutation",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The draft opens with 'quick update on the migration —', which is not a formal salutation."
+              }
+            ],
+            "score": "2/2"
+          },
+          {
+            "criterion_name": "Content",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "root_cause",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The draft states 'root cause: a race condition in the batch worker where concurrent jobs stomped on shared state', naming a specific technical root cause."
+              },
+              {
+                "dimension_id": "ends_on_date",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The final line is 'new target ship date: december 2', which ends on a specific date."
+              }
+            ],
+            "score": "2/2"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "slack_update",
+      "variant": "all_violated",
+      "latency_ms": 5311,
+      "per_dim": [
+        {
+          "dim_id": "lowercase",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft opens with 'I wanted to give everyone...' and 'As you are aware...' and 'Please reach out...' — all sentence-initial words are capitalized."
+        },
+        {
+          "dim_id": "no_formal_salutation",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft opens with 'Team,' which is explicitly listed as a disallowed formal salutation."
+        },
+        {
+          "dim_id": "root_cause",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft uses 'unforeseen challenges' — the exact vague phrase the dimension flags as unacceptable — with no specific technical root cause named."
+        },
+        {
+          "dim_id": "ends_on_date",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The final line is 'Please reach out with any questions or concerns.' — no specific date, number, or target is present."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Register",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "lowercase",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft opens with 'I wanted to give everyone...' and 'As you are aware...' and 'Please reach out...' — all sentence-initial words are capitalized."
+              },
+              {
+                "dimension_id": "no_formal_salutation",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft opens with 'Team,' which is explicitly listed as a disallowed formal salutation."
+              }
+            ],
+            "score": "0/2"
+          },
+          {
+            "criterion_name": "Content",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "root_cause",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft uses 'unforeseen challenges' — the exact vague phrase the dimension flags as unacceptable — with no specific technical root cause named."
+              },
+              {
+                "dimension_id": "ends_on_date",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The final line is 'Please reach out with any questions or concerns.' — no specific date, number, or target is present."
+              }
+            ],
+            "score": "0/2"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "slack_update",
+      "variant": "mixed",
+      "latency_ms": 4097,
+      "per_dim": [
+        {
+          "dim_id": "lowercase",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft opens with 'Hi team,' where 'Hi' is capitalized at the sentence start, violating the all-lowercase rule."
+        },
+        {
+          "dim_id": "no_formal_salutation",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft opens with 'Hi team,' which is explicitly listed as a disallowed formal salutation."
+        },
+        {
+          "dim_id": "root_cause",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft states 'we hit a race condition in the batch worker that broke concurrent writes,' naming a specific technical root cause."
+        },
+        {
+          "dim_id": "ends_on_date",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The final line reads 'new target ship date: december 2,' which is a specific date."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Register",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "lowercase",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft opens with 'Hi team,' where 'Hi' is capitalized at the sentence start, violating the all-lowercase rule."
+              },
+              {
+                "dimension_id": "no_formal_salutation",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft opens with 'Hi team,' which is explicitly listed as a disallowed formal salutation."
+              }
+            ],
+            "score": "0/2"
+          },
+          {
+            "criterion_name": "Content",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "root_cause",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The draft states 'we hit a race condition in the batch worker that broke concurrent writes,' naming a specific technical root cause."
+              },
+              {
+                "dimension_id": "ends_on_date",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The final line reads 'new target ship date: december 2,' which is a specific date."
+              }
+            ],
+            "score": "2/2"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "physics_abstract",
+      "variant": "all_met",
+      "latency_ms": 8215,
+      "per_dim": [
+        {
+          "dim_id": "numerical_result",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'κ drops by a factor of 4.3 relative to monolayer graphene at T = 100 K' provides a specific numerical result with explicit measurement conditions."
+        },
+        {
+          "dim_id": "measurement_first",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The first sentence 'The in-plane thermal conductivity κ of twisted bilayer graphene is measured at twist angles 1.05°–1.15°' describes what was measured, not what was found."
+        },
+        {
+          "dim_id": "mechanism_claim",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "medium",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'suggesting a coupling between electronic correlations and heat transport' proposes a mechanism (electron-phonon/correlation coupling) rather than merely describing the phenomenological suppression."
+        },
+        {
+          "dim_id": "no_implications",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The abstract ends with 'suggesting a coupling between electronic correlations and heat transport,' which is a specific mechanistic statement, not a vague 'implications for next-generation X' or 'paves the way for' closer."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Quantitative content",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "numerical_result",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "'κ drops by a factor of 4.3 relative to monolayer graphene at T = 100 K' provides a specific numerical result with explicit measurement conditions."
+              }
+            ],
+            "score": "1/1"
+          },
+          {
+            "criterion_name": "Structure",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "measurement_first",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The first sentence 'The in-plane thermal conductivity κ of twisted bilayer graphene is measured at twist angles 1.05°–1.15°' describes what was measured, not what was found."
+              },
+              {
+                "dimension_id": "mechanism_claim",
+                "grade": "MET",
+                "confidence": "medium",
+                "evidence": "'suggesting a coupling between electronic correlations and heat transport' proposes a mechanism (electron-phonon/correlation coupling) rather than merely describing the phenomenological suppression."
+              }
+            ],
+            "score": "2/2"
+          },
+          {
+            "criterion_name": "Closing",
+            "criterion_priority": 3,
+            "dimension_grades": [
+              {
+                "dimension_id": "no_implications",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "The abstract ends with 'suggesting a coupling between electronic correlations and heat transport,' which is a specific mechanistic statement, not a vague 'implications for next-generation X' or 'paves the way for' closer."
+              }
+            ],
+            "score": "1/1"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "physics_abstract",
+      "variant": "all_violated",
+      "latency_ms": 6018,
+      "per_dim": [
+        {
+          "dim_id": "numerical_result",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft contains no numerical values whatsoever; it only states 'significant deviations from conventional phonon transport models' without any specific numbers or measurement conditions."
+        },
+        {
+          "dim_id": "measurement_first",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The first sentence 'We find anomalous thermal behavior in twisted bilayer graphene' describes a finding, not what was measured."
+        },
+        {
+          "dim_id": "mechanism_claim",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft only makes phenomenological observations ('anomalous thermal behavior,' 'deviations from conventional phonon transport models') without proposing any mechanism to explain them."
+        },
+        {
+          "dim_id": "no_implications",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft ends with 'These findings have significant implications for the design of next-generation electronic devices and pave the way for novel thermal management strategies,' which directly matches the disallowed pattern."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Quantitative content",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "numerical_result",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft contains no numerical values whatsoever; it only states 'significant deviations from conventional phonon transport models' without any specific numbers or measurement conditions."
+              }
+            ],
+            "score": "0/1"
+          },
+          {
+            "criterion_name": "Structure",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "measurement_first",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The first sentence 'We find anomalous thermal behavior in twisted bilayer graphene' describes a finding, not what was measured."
+              },
+              {
+                "dimension_id": "mechanism_claim",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft only makes phenomenological observations ('anomalous thermal behavior,' 'deviations from conventional phonon transport models') without proposing any mechanism to explain them."
+              }
+            ],
+            "score": "0/2"
+          },
+          {
+            "criterion_name": "Closing",
+            "criterion_priority": 3,
+            "dimension_grades": [
+              {
+                "dimension_id": "no_implications",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft ends with 'These findings have significant implications for the design of next-generation electronic devices and pave the way for novel thermal management strategies,' which directly matches the disallowed pattern."
+              }
+            ],
+            "score": "0/1"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "physics_abstract",
+      "variant": "mixed",
+      "latency_ms": 6954,
+      "per_dim": [
+        {
+          "dim_id": "numerical_result",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'Thermal conductivity suppression of a factor of 4.3 is observed in twisted bilayer graphene at T = 100 K' provides a specific numerical result with its measurement condition."
+        },
+        {
+          "dim_id": "measurement_first",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The first sentence 'Thermal conductivity suppression of a factor of 4.3 is observed...' reports a finding (the suppression result), not what was measured."
+        },
+        {
+          "dim_id": "mechanism_claim",
+          "truth": "MET",
+          "predicted": "MET",
+          "confidence": "medium",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "'electronic correlations couple to heat transport' proposes a mechanism-level explanation beyond mere phenomenological observation."
+        },
+        {
+          "dim_id": "no_implications",
+          "truth": "NOT_MET",
+          "predicted": "NOT_MET",
+          "confidence": "high",
+          "correct": true,
+          "fail_type": null,
+          "evidence": "The draft ends with 'These findings have significant implications for next-generation thermal management,' which is exactly the type of vague implications closer the dimension prohibits."
+        }
+      ],
+      "raw_grades": {
+        "grades": [
+          {
+            "criterion_name": "Quantitative content",
+            "criterion_priority": 1,
+            "dimension_grades": [
+              {
+                "dimension_id": "numerical_result",
+                "grade": "MET",
+                "confidence": "high",
+                "evidence": "'Thermal conductivity suppression of a factor of 4.3 is observed in twisted bilayer graphene at T = 100 K' provides a specific numerical result with its measurement condition."
+              }
+            ],
+            "score": "1/1"
+          },
+          {
+            "criterion_name": "Structure",
+            "criterion_priority": 2,
+            "dimension_grades": [
+              {
+                "dimension_id": "measurement_first",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The first sentence 'Thermal conductivity suppression of a factor of 4.3 is observed...' reports a finding (the suppression result), not what was measured."
+              },
+              {
+                "dimension_id": "mechanism_claim",
+                "grade": "MET",
+                "confidence": "medium",
+                "evidence": "'electronic correlations couple to heat transport' proposes a mechanism-level explanation beyond mere phenomenological observation."
+              }
+            ],
+            "score": "1/2"
+          },
+          {
+            "criterion_name": "Closing",
+            "criterion_priority": 3,
+            "dimension_grades": [
+              {
+                "dimension_id": "no_implications",
+                "grade": "NOT_MET",
+                "confidence": "high",
+                "evidence": "The draft ends with 'These findings have significant implications for next-generation thermal management,' which is exactly the type of vague implications closer the dimension prohibits."
+              }
+            ],
+            "score": "0/1"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -27,7 +27,12 @@ def display_rubric_criteria(rubric_data, container, comparison_rubric_data=None)
         container.warning("No rubric data available")
         return
 
-    rubric_list = rubric_data.get('rubric', [])
+    # Deep-copy so this display function never mutates the caller's rubric.
+    # Previously we attached a `_diff` key with set() values directly to each
+    # criterion dict in rubric_data, which leaked into st.session_state and
+    # blew up json.dumps the next time the rubric got saved.
+    import copy as _copy
+    rubric_list = _copy.deepcopy(rubric_data.get('rubric', []))
 
     if not rubric_list:
         container.info("No criteria defined")

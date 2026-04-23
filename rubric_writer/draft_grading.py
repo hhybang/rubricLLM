@@ -518,12 +518,22 @@ def merge_draft_grades_into_messages(
     that have never been graded yet) get fresh drift computation. This keeps
     past interactions as stable logs even when the rubric changes.
     """
+    # Pick the EARLIEST grade row for each message_id. Past drafts are
+    # historical records -- their grade is a fact about the draft at the time
+    # it was written, judged against the rubric in force then. If the same
+    # draft was accidentally re-graded later (different rubric version, or a
+    # duplicate insertion), the original row wins so past dots stay frozen.
+    # `rows` comes back from the DB ordered by draft_index ascending, so we
+    # just need to skip writes after the first for each mid.
     by_mid: dict[str, dict[str, Any]] = {}
     for r in rows:
         mid = r.get("message_id")
         if not mid:
             continue
-        by_mid[str(mid)] = r
+        key = str(mid)
+        if key in by_mid:
+            continue  # keep the earliest (original) grade
+        by_mid[key] = r
 
     # Identify the latest graded draft -- only it (and any ungraded-yet drafts)
     # should have drift recomputed. Earlier drafts stay frozen.
@@ -566,30 +576,57 @@ def merge_draft_grades_into_messages(
                 }
                 has_draft = bool(extract_primary_draft_text(m.get("content") or ""))
                 if cfg["show_drift_panels"] and has_draft:
-                    # Freeze past drafts' drift panels as historical records.
-                    # Only recompute for: (a) the latest draft, or (b) a draft
-                    # that has never been assigned a drift bundle before.
-                    is_latest = (mid == latest_draft_mid)
-                    has_existing_drift = bool(m.get("draft_drift"))
-                    existing_drift = m.get("draft_drift") or {}
-
-                    if existing_drift.get("kind") == "spot_check":
-                        # Preserve spot_check to avoid re-randomizing on rerun
-                        drift = existing_drift
-                    elif not is_latest and has_existing_drift:
-                        # Past draft with existing drift -- freeze it
-                        drift = existing_drift
+                    # PERSISTED drift wins: under Option B, drift is computed
+                    # once in the background grading thread and stored in the
+                    # DB row's drift_json column. If present, use it and never
+                    # recompute -- the dots and panels become immutable once
+                    # grading completes. This eliminates the "dots changed
+                    # color" bug where drift could be recomputed differently
+                    # across reruns.
+                    persisted_drift = None
+                    raw_drift = row.get("drift_json")
+                    if raw_drift is not None:
+                        try:
+                            persisted_drift = (
+                                json.loads(raw_drift)
+                                if isinstance(raw_drift, str)
+                                else raw_drift
+                            )
+                        except json.JSONDecodeError:
+                            persisted_drift = None
+                    if isinstance(persisted_drift, dict) and persisted_drift:
+                        drift = persisted_drift
                     else:
-                        same_rubric = prev_rv == row.get("rubric_version")
-                        drift = compute_drift_bundle(
-                            gj,
-                            prev_payload if same_rubric else None,
-                            cfg,
-                            dim_grade_history=dim_grade_history,
-                            draft_index=row.get("draft_index"),
-                            trigger=row.get("trigger"),
-                            dims_already_surfaced=dims_already_surfaced,
-                        )
+                        # Legacy fallback: row has no persisted drift (either a
+                        # legacy row from before Option B, or the thread's
+                        # drift computation failed).
+                        is_latest = (mid == latest_draft_mid)
+                        has_existing_drift = bool(m.get("draft_drift"))
+                        existing_drift = m.get("draft_drift") or {}
+
+                        if existing_drift.get("kind") == "spot_check":
+                            # Preserve spot_check to avoid re-randomizing on rerun
+                            drift = existing_drift
+                        elif not is_latest:
+                            # PAST DRAFTS MUST NEVER GROW NEW DRIFT SIGNALS.
+                            # If we already have drift in memory for this past
+                            # draft, keep it. Otherwise freeze at "none" --
+                            # do NOT recompute spot_check retroactively, which
+                            # would make past drafts sprout new Quick-check
+                            # panels (with different dims each render since
+                            # spot_check samples randomly).
+                            drift = existing_drift if has_existing_drift else {"kind": "none"}
+                        else:
+                            same_rubric = prev_rv == row.get("rubric_version")
+                            drift = compute_drift_bundle(
+                                gj,
+                                prev_payload if same_rubric else None,
+                                cfg,
+                                dim_grade_history=dim_grade_history,
+                                draft_index=row.get("draft_index"),
+                                trigger=row.get("trigger"),
+                                dims_already_surfaced=dims_already_surfaced,
+                            )
                     m["draft_drift"] = drift
                     # Log fire rate (Metric 4)
                     try:
@@ -749,6 +786,104 @@ def run_draft_grade_poll_fragment() -> None:
 
 
 
+def _compute_drift_for_persist(
+    *,
+    supabase: Any,
+    conversation_id: str,
+    current_grades: dict[str, Any],
+    current_rubric_version: int,
+    current_draft_index: int,
+    trigger: str | None,
+    fetch_fn,
+) -> dict[str, Any] | None:
+    """Compute a drift bundle for a just-graded draft using prior rows in the
+    same conversation. Runs in the background grading thread (no Streamlit).
+
+    Previous-draft data is reconstructed from `draft_grades` rows with lower
+    draft_index. dim_grade_history and dims_already_surfaced are built from
+    the full history so drift detection sees the same context the UI would
+    have computed on its own.
+
+    Returns a drift dict or None on any error -- None means we fall back to
+    on-render computation (legacy behavior)."""
+    try:
+        cfg = load_grading_config()
+        if not cfg.get("show_drift_panels"):
+            return None
+
+        rows = fetch_fn(supabase, conversation_id) or []
+        # Only consider rows strictly before this draft and on the SAME rubric
+        # version -- drift comparisons across rubric versions are meaningless.
+        prior_rows = [
+            r for r in rows
+            if (r.get("draft_index") or 0) < current_draft_index
+            and r.get("rubric_version") == current_rubric_version
+        ]
+
+        prev_payload = None
+        if prior_rows:
+            latest_prior = prior_rows[-1]
+            gj = latest_prior.get("grades_json")
+            if isinstance(gj, str):
+                try:
+                    gj = json.loads(gj)
+                except json.JSONDecodeError:
+                    gj = None
+            if isinstance(gj, dict):
+                prev_payload = gj
+
+        # Rebuild dim_grade_history across all same-rubric prior rows
+        # (earliest to latest).
+        dim_grade_history: dict[str, list[str]] = {}
+        dims_already_surfaced: set[str] = set()
+        for r in prior_rows:
+            gj = r.get("grades_json")
+            if isinstance(gj, str):
+                try:
+                    gj = json.loads(gj)
+                except json.JSONDecodeError:
+                    continue
+            if not isinstance(gj, dict):
+                continue
+            for c in gj.get("grades") or []:
+                for d in c.get("dimension_grades") or []:
+                    did = (d.get("dimension_id") or "").strip()
+                    if did:
+                        dim_grade_history.setdefault(did, []).append(
+                            (d.get("grade") or "").upper()
+                        )
+            # Track dims that were already surfaced in past drafts so
+            # spot_check avoids re-picking them.
+            drift = r.get("drift_json")
+            if isinstance(drift, str):
+                try:
+                    drift = json.loads(drift)
+                except json.JSONDecodeError:
+                    drift = None
+            if isinstance(drift, dict):
+                for lc in drift.get("low_confidence_dims") or []:
+                    dims_already_surfaced.add(lc.get("dimension_id", ""))
+                for o in drift.get("oscillations") or []:
+                    dims_already_surfaced.add(o.get("dimension_id", ""))
+                for p in drift.get("persistent_failure") or []:
+                    dims_already_surfaced.add(p.get("dimension_id", ""))
+                for sc in drift.get("spot_check_dims") or []:
+                    dims_already_surfaced.add(sc.get("dimension_id", ""))
+
+        return compute_drift_bundle(
+            current_grades,
+            prev_payload,
+            cfg,
+            dim_grade_history=dim_grade_history,
+            draft_index=current_draft_index,
+            trigger=trigger,
+            dims_already_surfaced=dims_already_surfaced,
+        )
+    except Exception as e:
+        _log.warning("_compute_drift_for_persist failed: %s", e)
+        return None
+
+
 def schedule_background_grade(
     *,
     supabase: Any,
@@ -786,11 +921,49 @@ def schedule_background_grade(
 
     _model = cfg["model"]
     _temp = cfg["temperature"]
-    _rubric = json.loads(json.dumps(rubric_dict))  # detach
+    # Detach by deep-serializing. The display layer has historically attached
+    # a `_diff` key with set() values to criteria; json.dumps chokes on sets.
+    # Strip `_diff` and coerce any stray set() to a list before serializing.
+    def _sanitize(x):
+        if isinstance(x, dict):
+            return {k: _sanitize(v) for k, v in x.items() if k != "_diff"}
+        if isinstance(x, list):
+            return [_sanitize(v) for v in x]
+        if isinstance(x, set):
+            return sorted(x)
+        return x
+    _rubric = json.loads(json.dumps(_sanitize(rubric_dict)))  # detach
 
     def _run():
         try:
-            from auth_supabase import insert_draft_grade, next_draft_grade_index
+            from auth_supabase import (
+                insert_draft_grade, next_draft_grade_index,
+                fetch_draft_grades_for_conversation,
+            )
+
+            # Belt-and-suspenders freeze: once a draft has a row in the DB,
+            # we NEVER grade it again. The in-memory `_inflight_message_ids`
+            # set only covers the current process; a DB check guarantees
+            # immutability across sessions, reloads, and re-entrant calls.
+            # This is what keeps past drafts' grades/dots frozen.
+            try:
+                existing_rows = fetch_draft_grades_for_conversation(
+                    supabase, conversation_id
+                ) or []
+                if any(
+                    str(r.get("message_id")) == str(message_id)
+                    for r in existing_rows
+                ):
+                    _log.info(
+                        "schedule_background_grade: message_id=%s already "
+                        "has a grade row; skipping re-grade.", message_id,
+                    )
+                    return
+            except Exception as e:
+                _log.warning(
+                    "schedule_background_grade: existing-row check failed "
+                    "(%s); proceeding with grade.", e,
+                )
 
             grades, latency_ms, err = grade_draft_sync(
                 rubric_dict=_rubric,
@@ -801,6 +974,20 @@ def schedule_background_grade(
             if err or not grades:
                 return
             d_idx = next_draft_grade_index(supabase, conversation_id)
+
+            # Option B: compute drift ONCE at grading time and persist it to
+            # the DB so the UI never has to recompute. Inputs are reconstructed
+            # from prior rows in this conversation's draft_grades table.
+            drift_json = _compute_drift_for_persist(
+                supabase=supabase,
+                conversation_id=conversation_id,
+                current_grades=grades,
+                current_rubric_version=_rv,
+                current_draft_index=d_idx,
+                trigger=trigger,
+                fetch_fn=fetch_draft_grades_for_conversation,
+            )
+
             insert_draft_grade(
                 supabase,
                 conversation_id=conversation_id,
@@ -812,7 +999,7 @@ def schedule_background_grade(
                 model_used=_model,
                 latency_ms=latency_ms,
                 trigger=trigger,
-                drift_json=None,
+                drift_json=drift_json,
             )
         except Exception as e:
             _log.warning("background grade thread: %s", e)

@@ -1,0 +1,769 @@
+{
+  "model": "claude-opus-4-7",
+  "aggregate": {
+    "total": 23,
+    "specific": 22,
+    "generic": 1,
+    "pass_rate": 0.9565217391304348
+  },
+  "fixtures": [
+    {
+      "name": "cold_email_founder",
+      "genre": "cold outreach email (founder to investor)",
+      "criteria": [
+        {
+          "name": "Recipient-specific opening hook",
+          "description": "The email opens with something concrete about the specific recipient — a recent investment, public statement, or thesis — not a generic greeting or self-introduction. Establishes relevance before asking for anything.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM cold emails to investors typically open with pleasantries or self-introduction rather than a concrete, researched reference to the specific recipient's work tied to the sender's thesis."
+        },
+        {
+          "name": "Hard number in first three lines",
+          "description": "At least one concrete, verifiable metric (ARR, contracts signed, users, growth rate) appears within the first three lines. Numbers do the selling; adjectives don't.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically open cold investor emails with introductions and context before metrics; demanding a hard number within the first three lines is a distinctive stylistic constraint."
+        },
+        {
+          "name": "No hedging or vague alignment claims",
+          "description": "Cuts hedging language and abstract claims of 'alignment' or 'fit'. The user treats phrases like 'I believe your thesis aligns with our mission' as instant tune-out material.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs routinely include hedging verbs and \"alignment with your thesis\" language in investor outreach, so explicitly banning these is a distinctive user preference."
+        },
+        {
+          "name": "Plain-English founder voice",
+          "description": "Sounds like a founder explaining their business to a smart human, not a banker or consultant. Industry and finance jargon get swapped for concrete mechanics of what the company does.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically default to polished business/consultant phrasing with jargon like \"go-to-market\" in investor outreach, so explicitly demanding plain founder voice with concrete mechanics meaningfully changes the output."
+        },
+        {
+          "name": "Direct address and compact ask",
+          "description": "Addresses the recipient by first name, keeps the whole email scannable in seconds, and ends with a specific, low-friction ask (short meeting with a proposed time).",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM cold outreach emails tend to be longer, often use \"Dear [Name]\" or more formal openings, and usually end with open-ended asks rather than specifying a 10-15 minute meeting with a proposed time."
+        }
+      ],
+      "total": 5,
+      "specific": 5,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "cold outreach emails to investors",
+        "user_goals_summary": "The user writes founder-to-VC cold emails that sound like a direct human, not a template. They prize a recipient-specific hook, hard numbers up front, plain English over finance/industry jargon, and zero hedging or filler pleasantries.",
+        "rubric": [
+          {
+            "name": "Recipient-specific opening hook",
+            "category": "Content",
+            "description": "The email opens with something concrete about the specific recipient — a recent investment, public statement, or thesis — not a generic greeting or self-introduction. Establishes relevance before asking for anything.",
+            "dimensions": [
+              {
+                "id": "specific_reference",
+                "label": "First line references something specific the recipient has done, said, or invested in"
+              },
+              {
+                "id": "no_pleasantry_opener",
+                "label": "Does not open with filler pleasantries like 'hope this finds you well' or 'I hope you're doing well'"
+              },
+              {
+                "id": "no_generic_self_intro",
+                "label": "Does not lead with a generic self-introduction ('I'm reaching out to introduce...')"
+              },
+              {
+                "id": "connects_to_sender",
+                "label": "The hook connects logically to what the sender is building, not just flattery"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Hard number in first three lines",
+            "category": "Content",
+            "description": "At least one concrete, verifiable metric (ARR, contracts signed, users, growth rate) appears within the first three lines. Numbers do the selling; adjectives don't.",
+            "dimensions": [
+              {
+                "id": "number_early",
+                "label": "At least one hard number appears within the first three lines of the body"
+              },
+              {
+                "id": "number_is_traction",
+                "label": "The number reflects real traction (revenue, contracts, customers, growth), not vanity"
+              },
+              {
+                "id": "multiple_proof_points",
+                "label": "Includes more than one concrete data point when available"
+              },
+              {
+                "id": "no_adjective_substitutes",
+                "label": "Avoids vague substitutes like 'significant traction' or 'strong growth' in place of numbers"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No hedging or vague alignment claims",
+            "category": "Style",
+            "description": "Cuts hedging language and abstract claims of 'alignment' or 'fit'. The user treats phrases like 'I believe your thesis aligns with our mission' as instant tune-out material.",
+            "dimensions": [
+              {
+                "id": "no_hedges",
+                "label": "No hedging verbs like 'I believe', 'I think', 'it seems', 'perhaps', 'might be'"
+              },
+              {
+                "id": "no_thesis_alignment_claim",
+                "label": "Does not make vague claims about thesis/mission alignment"
+              },
+              {
+                "id": "declarative_voice",
+                "label": "Claims are stated declaratively, not softened"
+              },
+              {
+                "id": "no_filler_phrases",
+                "label": "No filler like 'just wanted to reach out', 'quick question', 'if possible'"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Plain-English founder voice",
+            "category": "Style",
+            "description": "Sounds like a founder explaining their business to a smart human, not a banker or consultant. Industry and finance jargon get swapped for concrete mechanics of what the company does.",
+            "dimensions": [
+              {
+                "id": "no_jargon",
+                "label": "Avoids banker/consultant jargon (e.g., 'tackling the compliance side', 'go-to-market motion', 'synergies')"
+              },
+              {
+                "id": "mechanics_explained",
+                "label": "Describes the business in terms of who does what — customer, product, why they pay"
+              },
+              {
+                "id": "short_declarative",
+                "label": "Uses short, declarative sentences rather than nested clauses"
+              },
+              {
+                "id": "human_tone",
+                "label": "Reads aloud like a person talking, not a document"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          },
+          {
+            "name": "Direct address and compact ask",
+            "category": "Structure",
+            "description": "Addresses the recipient by first name, keeps the whole email scannable in seconds, and ends with a specific, low-friction ask (short meeting with a proposed time).",
+            "dimensions": [
+              {
+                "id": "first_name_address",
+                "label": "Opens with the recipient's first name, not 'Ms./Mr. [Lastname]' or 'Dear [Title]'"
+              },
+              {
+                "id": "short_body",
+                "label": "Body is roughly 4-6 lines; no unnecessary paragraphs"
+              },
+              {
+                "id": "specific_ask",
+                "label": "Ends with a specific ask that includes a duration and/or proposed time"
+              },
+              {
+                "id": "low_friction_ask",
+                "label": "The ask is small (10-15 minutes) rather than an open-ended request"
+              }
+            ],
+            "priority": 5,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Non-negotiables: a recipient-specific hook and a hard number within the first three lines; no hedging, no pleasantry openers, no 'thesis alignment' claims. This user iterates toward shorter and more direct — when in doubt, cut a line rather than add one. They want founder voice, so translate any finance/consulting phrasing into plain mechanics of the business before showing a draft."
+      }
+    },
+    {
+      "name": "blog_intro_ml_researcher",
+      "genre": "technical blog post introduction (ML research)",
+      "criteria": [
+        {
+          "name": "No marketing/hype voice",
+          "description": "The intro must sound like a researcher, not a marketing team. Hype verbs ('revolutionized'), reader-flattery ('you'll be amazed'), and promotional framing are tells that disqualify the intro regardless of technical content.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs frequently use mild hype verbs and promotional framing (\"groundbreaking\", \"transformative\") even in technical contexts, and explicitly banning self-praise framing is a distinctive constraint."
+        },
+        {
+          "name": "Mechanism-first opening",
+          "description": "The first sentence names the specific technical mechanism, method, or object the paper addresses — not the broader field or its importance. Skip the ramp-up.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically open technical blog posts with a broad framing sentence about the field's importance or recent progress before narrowing to the specific mechanism, so requiring a mechanism-named first sentence is a distinctive preference."
+        },
+        {
+          "name": "Phenomenon-then-explanation order",
+          "description": "Structure the intro so the observed phenomenon or pathology comes first, then the mechanistic explanation or fix. Don't invert this — the reader needs to see what's being explained before the explanation lands.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM intros for ML research often lead with motivation, background, or the proposed method/contribution upfront; enforcing strict phenomenon→mechanism→fix ordering is a distinctive structural choice."
+        },
+        {
+          "name": "Audience-calibrated — no over-explanation",
+          "description": "The audience is ML practitioners. Do not define or motivate concepts they already know. Treat shared background as shared; use the space saved for specificity.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically over-explain and motivate topics for broader accessibility; explicitly skipping definitions and field-level justification is a distinctive calibration."
+        },
+        {
+          "name": "Explicit payoff sign-posting",
+          "description": "The intro tells the reader what concrete artifacts (tables, figures, results) to expect and where. Short, flat sign-posts like 'Tables at the end' are preferred over narrative teasers.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM intros typically use narrative teasers (\"we show that...\") rather than flat, matter-of-fact sign-posts like \"Tables at the end,\" making this a distinctive stylistic preference."
+        }
+      ],
+      "total": 5,
+      "specific": 5,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "technical blog post intros for ML research papers (audience: ML practitioners)",
+        "user_goals_summary": "The user writes blog intros for technical peers who already understand the field. They want intros that sound like the researcher who did the work — mechanism-first, phenomenon-before-explanation, with explicit sign-posting of what's in the post. Marketing voice and general-audience framing are disqualifying.",
+        "rubric": [
+          {
+            "name": "No marketing/hype voice",
+            "category": "Style",
+            "description": "The intro must sound like a researcher, not a marketing team. Hype verbs ('revolutionized'), reader-flattery ('you'll be amazed'), and promotional framing are tells that disqualify the intro regardless of technical content.",
+            "dimensions": [
+              {
+                "id": "no_hype_verbs",
+                "label": "Avoids hype verbs like 'revolutionized', 'transformed', 'groundbreaking'"
+              },
+              {
+                "id": "no_reader_flattery",
+                "label": "No reader-flattery or teaser phrases ('you'll be amazed', 'wait until you see')"
+              },
+              {
+                "id": "no_promotional_framing",
+                "label": "Does not frame the work as impressive or important — lets the technical content speak"
+              },
+              {
+                "id": "researcher_first_person",
+                "label": "Voice reads as the person who did the work, not a third-party promoter"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Mechanism-first opening",
+            "category": "Structure",
+            "description": "The first sentence names the specific technical mechanism, method, or object the paper addresses — not the broader field or its importance. Skip the ramp-up.",
+            "dimensions": [
+              {
+                "id": "specific_mechanism_in_opener",
+                "label": "Opening sentence names a specific mechanism, method, or technical object (not a field or trend)"
+              },
+              {
+                "id": "no_field_level_throat_clearing",
+                "label": "No opening sentence describing the field's importance or recent progress"
+              },
+              {
+                "id": "immediate_technical_specificity",
+                "label": "Reader is oriented to the paper's specific subject within the first sentence"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Phenomenon-then-explanation order",
+            "category": "Structure",
+            "description": "Structure the intro so the observed phenomenon or pathology comes first, then the mechanistic explanation or fix. Don't invert this — the reader needs to see what's being explained before the explanation lands.",
+            "dimensions": [
+              {
+                "id": "phenomenon_stated_first",
+                "label": "The observed behavior, pathology, or empirical phenomenon is stated before any mechanistic account"
+              },
+              {
+                "id": "explanation_follows",
+                "label": "The trace/cause/mechanism is introduced after the phenomenon, not before it"
+              },
+              {
+                "id": "fix_or_contribution_last",
+                "label": "The proposed fix or contribution appears after both phenomenon and explanation"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Audience-calibrated — no over-explanation",
+            "category": "Audience",
+            "description": "The audience is ML practitioners. Do not define or motivate concepts they already know. Treat shared background as shared; use the space saved for specificity.",
+            "dimensions": [
+              {
+                "id": "no_defining_known_terms",
+                "label": "Does not define or gloss concepts that practitioners already know"
+              },
+              {
+                "id": "no_importance_justification",
+                "label": "Does not justify why the general topic matters to the field"
+              },
+              {
+                "id": "assumes_technical_fluency",
+                "label": "Uses domain terminology directly without softening or translation"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          },
+          {
+            "name": "Explicit payoff sign-posting",
+            "category": "Structure",
+            "description": "The intro tells the reader what concrete artifacts (tables, figures, results) to expect and where. Short, flat sign-posts like 'Tables at the end' are preferred over narrative teasers.",
+            "dimensions": [
+              {
+                "id": "names_concrete_artifacts",
+                "label": "References specific artifacts the reader will find (tables, figures, results, code)"
+              },
+              {
+                "id": "flat_not_teased",
+                "label": "Sign-posts are matter-of-fact, not framed as teasers or hype"
+              },
+              {
+                "id": "located_at_intro_end",
+                "label": "Sign-posting appears at the end of the intro, after phenomenon/explanation/fix"
+              }
+            ],
+            "priority": 5,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Non-negotiable: anti-hype. Any whiff of marketing voice ('revolutionized', 'amazed', 'stunning') is a hard reject, even if the rest is technically sound. Preferred trade-off: terseness and specificity over accessibility — assume the reader is a peer and skip the ramp-up. Structural habit: phenomenon → explanation → fix → sign-post-to-artifacts, in that order."
+      }
+    },
+    {
+      "name": "slack_update_eng_manager",
+      "genre": "Slack status update (engineering manager to team)",
+      "criteria": [
+        {
+          "name": "Ends on the number or date that matters",
+          "description": "The final line of the update is the single piece of information the team needs to walk away with — typically a target date, a metric, or a concrete number. No sign-off, no 'let me know if questions,' no pleasantries after it.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically close Slack updates with a sign-off or \"let me know if you have questions\"; ending deliberately on a concrete date/number with no follow-up pleasantries is a distinctive stylistic choice."
+        },
+        {
+          "name": "Names the technical root cause",
+          "description": "When explaining a delay or problem, the update identifies the actual engineering mechanism — the specific bug, system, or condition — not a generic 'we hit challenges.' The team is technical and expects technical specificity.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM status updates often default to vague phrasing like \"ran into some issues\" or \"unforeseen challenges\"; requiring a named technical mechanism and concrete fix status is a distinctive specificity bar."
+        },
+        {
+          "name": "Lowercase, Slack-native register",
+          "description": "The update reads like a Slack message from a peer, not a memo. Lowercase throughout, no capitalized sentence starts, no greeting/sign-off block, no press-release phrases like 'leadership remains committed' or 'I wanted to give you a comprehensive update.'",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs default to capitalized sentences, include greetings/sign-offs, and use formal transitions even in Slack contexts, so an all-lowercase peer-style register is a distinctive user preference."
+        },
+        {
+          "name": "Assumes shared context",
+          "description": "The update does not re-explain what the team already knows. Projects are referred to by the shorthand the team uses, not by formal names, and there is no setup paragraph re-establishing background.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically add framing/background context and use formal project names; explicitly skipping setup and using team shorthand is a distinctive preference."
+        }
+      ],
+      "total": 4,
+      "specific": 4,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "Slack status updates to an engineering team",
+        "user_goals_summary": "The user writes terse, lowercase Slack updates that respect their team's time and technical literacy. They want the actual engineering root cause named, corporate filler stripped out, and the message structured so the single most important datum (date or number) is the last thing readers see.",
+        "rubric": [
+          {
+            "name": "Ends on the number or date that matters",
+            "category": "Structure",
+            "description": "The final line of the update is the single piece of information the team needs to walk away with — typically a target date, a metric, or a concrete number. No sign-off, no 'let me know if questions,' no pleasantries after it.",
+            "dimensions": [
+              {
+                "id": "last_line_is_key_datum",
+                "label": "The final line is a specific date, number, or concrete deliverable"
+              },
+              {
+                "id": "no_trailing_pleasantries",
+                "label": "No 'ping me,' 'thanks,' sign-off, or filler follows the key datum"
+              },
+              {
+                "id": "key_datum_is_specific",
+                "label": "The closing datum is concrete (e.g. 'nov 14') rather than vague ('soon,' 'next sprint')"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Names the technical root cause",
+            "category": "Content",
+            "description": "When explaining a delay or problem, the update identifies the actual engineering mechanism — the specific bug, system, or condition — not a generic 'we hit challenges.' The team is technical and expects technical specificity.",
+            "dimensions": [
+              {
+                "id": "specific_mechanism_named",
+                "label": "A specific technical cause is named (e.g. 'race condition in the batch worker')"
+              },
+              {
+                "id": "no_vague_challenges",
+                "label": "Avoids generic phrasing like 'unforeseen challenges' or 'some issues'"
+              },
+              {
+                "id": "fix_status_concrete",
+                "label": "If a fix is mentioned, its status is concrete (in review, landing Friday, etc.)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Lowercase, Slack-native register",
+            "category": "Style",
+            "description": "The update reads like a Slack message from a peer, not a memo. Lowercase throughout, no capitalized sentence starts, no greeting/sign-off block, no press-release phrases like 'leadership remains committed' or 'I wanted to give you a comprehensive update.'",
+            "dimensions": [
+              {
+                "id": "lowercase_throughout",
+                "label": "Message is lowercase (including sentence starts; proper-noun exceptions acceptable)"
+              },
+              {
+                "id": "no_greeting_or_signoff_block",
+                "label": "No 'Team,' opener or 'Thanks, [name]' closer"
+              },
+              {
+                "id": "no_corporate_phrases",
+                "label": "No press-release or town-hall phrasing (e.g. 'fully committed,' 'actively working on solutions')"
+              },
+              {
+                "id": "conversational_connectors",
+                "label": "Uses short connectors like 'root cause:' or em-dashes rather than formal transitions"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Assumes shared context",
+            "category": "Audience",
+            "description": "The update does not re-explain what the team already knows. Projects are referred to by the shorthand the team uses, not by formal names, and there is no setup paragraph re-establishing background.",
+            "dimensions": [
+              {
+                "id": "shorthand_naming",
+                "label": "Refers to the work by team shorthand (e.g. 'the migration'), not a formal title"
+              },
+              {
+                "id": "no_preamble",
+                "label": "No framing sentence like 'as you are aware' or 'I wanted to update you on...'"
+              },
+              {
+                "id": "no_restated_background",
+                "label": "Does not re-explain project purpose or history the team already lived through"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Non-negotiable: every update ends on the single most important number or date — never on a pleasantry. When in doubt, cut. The user treats Slack as a peer-to-peer medium, so anything that would fit in a town-hall or all-hands email is wrong register. Trust the reader's context; if the team lived through it, don't re-explain it."
+      }
+    },
+    {
+      "name": "paper_abstract_physicist",
+      "genre": "physics paper abstract",
+      "criteria": [
+        {
+          "name": "Quantitative result stated explicitly",
+          "description": "The abstract must name the actual measured numbers — the quantity, its value or magnitude of effect, and the conditions (temperature, field, parameter value) under which it was measured. If a reader cannot tell what number was obtained, the abstract has failed.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM abstracts often describe results qualitatively (\"we observe enhanced conductivity\") without committing to specific numeric values, symbols, and full experimental conditions; requiring explicit numbers and parameter ranges is a distinctive bar."
+        },
+        {
+          "name": "No hand-wavy implications closer",
+          "description": "The abstract does not end with generic forward-looking statements about 'implications for next-generation devices,' 'broad relevance,' or similar vague significance claims. Physicists skip these, and the user cuts them on sight.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs routinely end abstracts with vague forward-looking significance statements, so explicitly banning them and requiring a technical closer is a distinctive user preference."
+        },
+        {
+          "name": "Measurement → result → mechanism structure",
+          "description": "The abstract follows a fixed three-part order: what was measured, the quantitative finding, and the proposed mechanism or interpretation. This order is non-negotiable across all the user's abstracts.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM physics abstracts typically open with broad motivation/background rather than leading directly with the measurement, so this strict three-part order is a distinctive user preference."
+        },
+        {
+          "name": "Mechanism claim, not just phenomenology",
+          "description": "The abstract articulates a physical mechanism or connection to underlying physics — e.g. coupling to electronic correlations, band structure, scattering channel — rather than stopping at 'we observe anomalous behavior.' The mechanism should be tied to specific evidence.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM abstracts often stop at describing observed phenomena or vaguely attributing them to \"interesting physics\"; demanding a named mechanism tied to specific evidence and contrasted with a conventional model is a distinctive rigor requirement."
+        },
+        {
+          "name": "Passive voice and physics-abstract conventions",
+          "description": "Uses passive voice ('is measured,' 'is observed') rather than 'we measure' constructions, consistent with physics abstract conventions. Technical symbols and units are used directly without over-explanation.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs frequently use \"we measure/we report\" active voice in physics abstracts (which is actually common in modern physics writing), so mandating passive voice is a distinctive stylistic preference."
+        }
+      ],
+      "total": 5,
+      "specific": 5,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "physics paper abstracts (experimental condensed matter)",
+        "user_goals_summary": "The user writes abstracts for experimental physics papers and expects them to communicate precisely what was measured, what the number was, and what it implies mechanistically — in that order, in passive voice, with no generic closing flourish. They want the abstract to function as a quantitative summary, not a pitch.",
+        "rubric": [
+          {
+            "name": "Quantitative result stated explicitly",
+            "category": "Content",
+            "description": "The abstract must name the actual measured numbers — the quantity, its value or magnitude of effect, and the conditions (temperature, field, parameter value) under which it was measured. If a reader cannot tell what number was obtained, the abstract has failed.",
+            "dimensions": [
+              {
+                "id": "names_measured_quantity",
+                "label": "Names the specific physical quantity that was measured (with symbol where appropriate)"
+              },
+              {
+                "id": "reports_numeric_value",
+                "label": "Reports a concrete numeric value or magnitude of effect (e.g. factor, ratio, percentage)"
+              },
+              {
+                "id": "specifies_conditions",
+                "label": "Specifies the conditions under which the result was obtained (T, field, angle, doping, etc.)"
+              },
+              {
+                "id": "gives_parameter_range",
+                "label": "States the parameter range explored, not just a single point"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "No hand-wavy implications closer",
+            "category": "Style",
+            "description": "The abstract does not end with generic forward-looking statements about 'implications for next-generation devices,' 'broad relevance,' or similar vague significance claims. Physicists skip these, and the user cuts them on sight.",
+            "dimensions": [
+              {
+                "id": "no_device_implications_closer",
+                "label": "Does not close with claims about applications or device implications unsupported by the paper's actual results"
+              },
+              {
+                "id": "no_generic_significance",
+                "label": "Avoids phrases like 'significant implications,' 'broad relevance,' 'opens new avenues'"
+              },
+              {
+                "id": "final_sentence_substantive",
+                "label": "Final sentence carries specific technical content (mechanism, interpretation, or quantitative comparison)"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Measurement → result → mechanism structure",
+            "category": "Structure",
+            "description": "The abstract follows a fixed three-part order: what was measured, the quantitative finding, and the proposed mechanism or interpretation. This order is non-negotiable across all the user's abstracts.",
+            "dimensions": [
+              {
+                "id": "opens_with_measurement",
+                "label": "Opens by identifying the measurement/experiment and system"
+              },
+              {
+                "id": "middle_states_result",
+                "label": "States the quantitative result in the middle, with comparison to a baseline or prediction"
+              },
+              {
+                "id": "closes_with_mechanism",
+                "label": "Closes with a mechanism or interpretation claim tied to the data"
+              },
+              {
+                "id": "no_order_inversions",
+                "label": "Does not invert the order (e.g. leading with motivation or mechanism speculation)"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Mechanism claim, not just phenomenology",
+            "category": "Content",
+            "description": "The abstract articulates a physical mechanism or connection to underlying physics — e.g. coupling to electronic correlations, band structure, scattering channel — rather than stopping at 'we observe anomalous behavior.' The mechanism should be tied to specific evidence.",
+            "dimensions": [
+              {
+                "id": "names_mechanism",
+                "label": "Names a specific physical mechanism or correlation, not just 'anomalous' behavior"
+              },
+              {
+                "id": "contrasts_with_conventional",
+                "label": "Contrasts the result against a conventional model or prediction the data exceeds"
+              },
+              {
+                "id": "mechanism_linked_to_evidence",
+                "label": "Connects the mechanism claim to specific evidence (a measured quantity, a separate experiment, a scaling)"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          },
+          {
+            "name": "Passive voice and physics-abstract conventions",
+            "category": "Style",
+            "description": "Uses passive voice ('is measured,' 'is observed') rather than 'we measure' constructions, consistent with physics abstract conventions. Technical symbols and units are used directly without over-explanation.",
+            "dimensions": [
+              {
+                "id": "passive_voice_main_verbs",
+                "label": "Main measurement/result verbs are in passive voice, not 'we measure/report/find'"
+              },
+              {
+                "id": "uses_symbols_and_units",
+                "label": "Uses standard physics symbols (κ, T, etc.) and SI units directly"
+              },
+              {
+                "id": "no_informal_hedges",
+                "label": "Avoids informal hedging or narrative voice inappropriate to a physics abstract"
+              }
+            ],
+            "priority": 5,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Non-negotiables: the abstract must name the actual measured number with conditions, and must follow measurement → result → mechanism order. Drop any generic 'implications for devices' closer without asking — the user treats it as a failure mode, not a stylistic choice. Default to passive voice; 'we measure' is a tell that the draft hasn't been adapted to physics conventions."
+      }
+    },
+    {
+      "name": "condolence_note_manager",
+      "genre": "condolence note (manager to direct report)",
+      "criteria": [
+        {
+          "name": "Zero boilerplate condolence language",
+          "description": "Avoids the stock phrases that make condolence notes read like a greeting card. No 'deeply saddened,' 'sincere condolences,' 'deepest sympathy,' 'thoughts are with you,' or similar formulas. Sympathy is expressed in plain, direct language.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs routinely default to phrases like \"deepest sympathy\" and \"thoughts are with you\" in condolence notes, so explicitly banning these formulas is a distinctive user preference."
+        },
+        {
+          "name": "Support expressed as an already-done action",
+          "description": "Any offer of help is stated as something the user has already handled on the recipient's behalf, not as a generic 'let me know if you need anything' or a logistics list. The action should remove work from the recipient rather than describe managing their calendar.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs almost always close condolence notes with \"let me know if you need anything\"; proactively stating already-completed support actions is a distinctive user habit."
+        },
+        {
+          "name": "Stripped-down brevity",
+          "description": "The note is short and lean — a few sentences at most. No filler, no repeated sentiment, no layered reassurances that restate each other.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically produce longer condolence notes with layered reassurances and multiple restatements of sympathy; enforcing 3-5 lean sentences with sympathy expressed only once is a distinctive constraint."
+        },
+        {
+          "name": "Real but not over-familiar tone",
+          "description": "The note reads as genuinely human while respecting the working-relationship boundary — warm without performing closeness the user doesn't actually have with the recipient.",
+          "verdict": "GENERIC",
+          "judge_reasoning": "GENERIC\nA competent LLM drafting a manager-to-report condolence note would default to warm first-person language while maintaining professional boundaries, avoiding both HR-speak and presumed intimacy."
+        }
+      ],
+      "total": 4,
+      "specific": 3,
+      "generic": 1,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "short condolence/personal notes from manager to direct report",
+        "user_goals_summary": "The user writes brief, human condolence notes to team members navigating personal hardship. They want the note to feel real and uncliched while staying calibrated to a professional (not close-friend) relationship, and they want any offer of support to take the form of a concrete action they've already taken — not a generic offer or a calendar-management sentence.",
+        "rubric": [
+          {
+            "name": "Zero boilerplate condolence language",
+            "category": "Style",
+            "description": "Avoids the stock phrases that make condolence notes read like a greeting card. No 'deeply saddened,' 'sincere condolences,' 'deepest sympathy,' 'thoughts are with you,' or similar formulas. Sympathy is expressed in plain, direct language.",
+            "dimensions": [
+              {
+                "id": "no_stock_sympathy_phrases",
+                "label": "Contains none of the classic condolence cliches (deeply saddened, sincere/deepest condolences/sympathy, thoughts and prayers, etc.)"
+              },
+              {
+                "id": "plain_acknowledgment",
+                "label": "Acknowledges the loss in plain, direct words (e.g., 'I'm so sorry')"
+              },
+              {
+                "id": "no_formal_sign_off_cliches",
+                "label": "Sign-off avoids formulaic closers like 'With deepest sympathy'"
+              },
+              {
+                "id": "no_greeting_card_register",
+                "label": "Overall prose does not read as interchangeable with a pre-printed card"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Support expressed as an already-done action",
+            "category": "Content",
+            "description": "Any offer of help is stated as something the user has already handled on the recipient's behalf, not as a generic 'let me know if you need anything' or a logistics list. The action should remove work from the recipient rather than describe managing their calendar.",
+            "dimensions": [
+              {
+                "id": "concrete_action_already_taken",
+                "label": "Names at least one specific thing the user has already done so the recipient doesn't have to"
+              },
+              {
+                "id": "no_generic_help_offer",
+                "label": "Does not end with an open-ended 'reach out if you need anything' style offer"
+              },
+              {
+                "id": "not_transactional",
+                "label": "Avoids task/calendar-management phrasing that reads like the user is running their logistics"
+              },
+              {
+                "id": "removes_cognitive_load",
+                "label": "Framing signals the recipient doesn't need to decide, respond, or manage anything right now"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Stripped-down brevity",
+            "category": "Structure",
+            "description": "The note is short and lean — a few sentences at most. No filler, no repeated sentiment, no layered reassurances that restate each other.",
+            "dimensions": [
+              {
+                "id": "short_length",
+                "label": "Note is roughly 3–5 short sentences"
+              },
+              {
+                "id": "no_redundant_sentiment",
+                "label": "Sympathy is expressed once, not restated in multiple ways"
+              },
+              {
+                "id": "no_filler_sentences",
+                "label": "Every sentence carries distinct weight; no throat-clearing or padding"
+              },
+              {
+                "id": "tight_sentences",
+                "label": "Individual sentences are short and direct rather than compound/qualified"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Real but not over-familiar tone",
+            "category": "Audience",
+            "description": "The note reads as genuinely human while respecting the working-relationship boundary — warm without performing closeness the user doesn't actually have with the recipient.",
+            "dimensions": [
+              {
+                "id": "first_person_direct",
+                "label": "Uses direct first-person language ('I heard,' 'I'm sorry') rather than institutional phrasing"
+              },
+              {
+                "id": "no_forced_intimacy",
+                "label": "Avoids language that presumes closeness (pet names, emotional overclaims, 'I can only imagine what you're going through')"
+              },
+              {
+                "id": "no_corporate_distance",
+                "label": "Avoids HR-style or institutional register ('the company is here to support you')"
+              },
+              {
+                "id": "respects_relationship_scale",
+                "label": "Tone fits a respectful manager–report relationship, not a close friendship"
+              }
+            ],
+            "priority": 4,
+            "confidence": "medium"
+          }
+        ],
+        "coaching_notes": "Non-negotiable: no cliched condolence phrases, ever — the user treats these as a failure mode. When offering support, always convert a generic offer into a specific action already taken, and frame it so the recipient doesn't have to make any decision. The user iterates toward shorter and more concrete with each pass — default to lean drafts and expect cuts rather than additions."
+      }
+    }
+  ]
+}

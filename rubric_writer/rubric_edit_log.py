@@ -77,8 +77,21 @@ def format_edit_log_message(edit_classification, old_version, new_version, sourc
     """
     Format a rubric edit classification into a conversation log message.
     Contains both human-readable text and a machine-parseable HTML comment.
+
+    source values:
+      "editing"    -> staged edits, no new version saved yet (temporary)
+      "edited"     -> committed as a new rubric version
+      "draft_edit" -> edits inferred from a draft rewrite, auto-committed
     """
-    lines = [f"📋 **(Temporary) Rubric Changes have been made:**"]
+    if source == "editing":
+        header = "📋 **(Temporary) Rubric changes staged:**"
+    elif source == "edited":
+        header = f"📋 **Rubric saved as v{new_version}:**"
+    elif source == "draft_edit":
+        header = f"📋 **Rubric updated to v{new_version} from draft edits:**"
+    else:
+        header = "📋 **Rubric changes:**"
+    lines = [header]
 
     edits = edit_classification
     if edits["added"]:

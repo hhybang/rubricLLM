@@ -467,7 +467,8 @@ After your `<analysis>` block, output **only** this JSON:
       "dimensions": [
         {
           "id": "<machine-friendly id>",
-          "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>"
+          "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>",
+          "evidence": "<REQUIRED, NEVER EMPTY: direct quote, concrete edit citation, or rejection pattern — must include at least one `Message #N`. If you cannot ground this dim, DROP IT from the rubric entirely. Only use 'INSUFFICIENT_EVIDENCE' as a last-resort escape hatch.>"
         }
       ],
       "priority": <unique integer 1..N, 1 = most important, no duplicates>
@@ -543,6 +544,102 @@ This rubric captures what THIS specific user values — not generic standards of
 For example, if the user is writing a cold email to a specific person:
 - ✅ **Transferable**: "Opening line references something specific to the recipient" (applies to any cold email)
 - ❌ **Task-specific**: "Mentions the recipient's recent podcast episode" (only applies to this one email)
+
+---
+
+## EVIDENCE GATE (HARD REQUIREMENT — NO EXCEPTIONS)
+
+**EVERY dimension you output MUST have real, cited evidence. There are NO exceptions. A dimension with no evidence is never acceptable — drop it instead.**
+
+Evidence is concrete grounding from the conversation. Silence, acceptance, and "looks good" are **not evidence** — they're evidence that the user didn't object, which is compatible with the LLM's default behavior being fine. A dimension grounded only in silence is a confabulation, and confabulations must never appear in the rubric.
+
+For each dimension, the output JSON `evidence` field must contain ONE of these, and nothing less:
+
+- **A direct quote** from one of the user's messages that demonstrates this preference, cited as `Message #N`, OR
+- **A concrete edit** the user made or requested in a specific message, cited as `Message #N` (e.g. `"Message #5: user changed 'Dear Ms. Chen' to 'Sarah' and said 'drop the formality'"`), OR
+- **A rejection pattern** across multiple messages, cited as `Messages #N, #M, ...` (e.g. `"Messages #3, #7, #11: user rejected every opening that started with 'I hope this finds you well'"`).
+
+**Every evidence field must contain at least one `Message #N` citation.** Hand-wavy paraphrases like "the user seemed to prefer X" are not evidence. If you can't point to a specific message, you don't have evidence.
+
+**If you cannot ground a dimension in concrete evidence, DROP THE DIMENSION ENTIRELY.** Do not keep a dim and leave the evidence field empty, vague, or paraphrased — that dim doesn't belong in the rubric.
+
+As a last-resort escape hatch, you may set `"evidence": "INSUFFICIENT_EVIDENCE"` on a dim, which will cause the parser to drop that dim automatically. This exists only as a safety net in case you're compelled to include a dim you can't ground; the strictly preferred behavior is to not include the dim in the first place.
+
+It is ALWAYS acceptable — and expected — to output fewer dimensions (or fewer criteria) when evidence is thin. A rubric with 2 well-grounded dimensions is better than one with 10 where half are confabulated. Prefer short, well-grounded rubrics.
+
+---
+
+## BANNED PHRASINGS
+
+The following criterion phrasings are BANNED regardless of justification — they describe what any competent baseline LLM would already do for almost any genre:
+
+- "professional tone" / "professional register" / "appropriate formality"
+- "clear communication" / "clear and concise" / "clear writing"
+- "well-structured" / "well-organized" / "logical flow" / "clean structure"
+- "effective" / "compelling" / "engaging"
+- "appropriate for the audience" / "audience-appropriate" / "audience-calibrated"
+- "respectful" / "polite" / "courteous" / "warm-but-professional"
+- "tight and scannable" / "concise" / "appropriate length"
+- Grammar, spelling, basic mechanics
+- Genre-shape platitudes like "covers the standard sections" / "follows the conventional arc"
+
+If the user showed a SPECIFIC interpretation of one of these concepts (for instance, "casual-professional: uses first names and 'hey' openings"), the criterion must name the SPECIFIC distinguishing move — NOT the generic umbrella phrase. The criterion name, description, and dimensions must all use the user's concrete vocabulary, not the banned umbrella term.
+
+---
+
+## NO PARENTHETICAL EXAMPLES IN DIMENSION LABELS
+
+**Do NOT write dimension labels with `(e.g., ...)`, `(such as ...)`, `(like ...)`, or any parenthetical example construction.** These parentheticals almost always pull in task-specific content from the current conversation, which violates the Transferability rule.
+
+If an example would help clarify the dimension, it belongs in the `evidence` field of that dimension (where it's legitimately tied to the conversation), NOT baked into the label. The label itself must be a reusable checkable item that makes sense for ANY piece of the same writing type, without any in-prose example.
+
+❌ BAD — parenthetical example baked into label:
+- "Opens with something specific to the recipient (e.g., their recent podcast)"
+- "Uses concrete data points (such as dollar amounts or timelines)"
+- "Keeps paragraphs short (like 1-3 sentences)"
+
+✅ GOOD — clean, reusable label; example moves to evidence:
+- Label: "Opens with a specific reference to the recipient"
+- Label: "Each claim is supported by at least one concrete data point"
+- Label: "Paragraphs stay under 4 sentences"
+
+If you find yourself about to write `(e.g., ...)` in a dimension label, STOP. Either (a) rewrite the label without the example, or (b) move the example into the `evidence` field.
+
+---
+
+## ABSTRACTION TABLE — MAKE DIMENSIONS TRANSFERABLE
+
+A common failure mode is dimension labels that **look** abstract but still carry the fingerprints of the specific conversation. A good dimension describes the **pattern** the user demonstrated, not the specific thing they said in this one thread. The pattern must apply to a different piece of the same writing type by the same user, even if the content is completely different.
+
+**The pattern test:** Imagine the same user writes a different instance of this writing type next week, with different people, topics, and specifics. Would this dimension still apply *without rewording*? If you'd need to change the label to fit the new piece, the label is over-fixated on this conversation.
+
+Below is a pattern-match table. The ❌ version is what the model often produces by anchoring too close to this conversation's content. The ✅ version captures the same underlying user preference in a form that transfers. Study these before writing dimension labels.
+
+| ❌ Over-fixated to conversation | ✅ Transferable rule |
+|---|---|
+| "Opens cold emails with a reference to the recipient's LinkedIn activity" | "Opens with a specific reference to something the recipient recently did" |
+| "Mentions a concrete revenue number in the first two sentences" | "Leads with one quantitative detail in the first two sentences" |
+| "Signs off with 'thanks — [first name]' instead of 'Best regards'" | "Uses an informal first-name sign-off" |
+| "Avoids jargon like 'synergy,' 'alignment,' and 'circle back'" | "Uses plain English instead of corporate jargon" |
+| "Breaks bullet lists into 3-item groups" | "Keeps bullet lists short enough to scan at a glance" |
+| "Uses em-dashes to separate clauses, not commas" | "Uses em-dashes for rhythmic emphasis over commas" |
+| "Doesn't apologize for a delayed reply" | "Skips ritual apologies that don't add information" |
+| "Mentions the specific dataset (ImageNet) and the specific baseline (ResNet-50)" | "Names the specific dataset and baseline at the start of the methods section" |
+| "References the user's Q3 OKRs when arguing for roadmap changes" | "Anchors roadmap arguments in the team's stated priorities" |
+| "Asks one sharp question at the end, like 'does this match what you had in mind?'" | "Ends with a single specific ask, not an open-ended 'let me know your thoughts'" |
+
+**How to produce a transferable label:**
+1. Write down what the user literally did in the conversation (names, topics, quoted phrases).
+2. Ask: "What is the *category* of move this is an instance of?"
+3. The category is the label. The literal instance is the evidence.
+
+**Signs a dim is over-fixated:**
+- Proper nouns (names of people, companies, products) in the label
+- Numbers that reference *this specific piece* (e.g., "300 words," "Q3") rather than a reusable threshold
+- Topic domain words that only make sense for one kind of content ("machine learning baselines," "investor cold emails") when the writing type is broader
+- A sentence that reads like a paraphrase of something the user said rather than a rule
+
+If in doubt: could this label appear in a rubric template the user downloads from a library, or does it only make sense because YOU read the conversation? Template-ready = good. Conversation-specific = bad.
 
 ---
 
@@ -811,7 +908,8 @@ After your `<analysis>` block, output **only** this JSON:
       "dimensions": [
         {
           "id": "<machine-friendly id>",
-          "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>"
+          "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>",
+          "evidence": "<REQUIRED, NEVER EMPTY: direct quote, concrete edit citation, or rejection pattern — must include at least one `Message #N`. If you cannot ground this dim, DROP IT from the rubric entirely. Only use 'INSUFFICIENT_EVIDENCE' as a last-resort escape hatch.>"
         }
       ],
       "priority": <unique integer 1..N where N = number of criteria, 1 = most important, no duplicates>,
@@ -995,7 +1093,7 @@ Return ONLY valid JSON (no markdown code blocks, no preamble):
       "category": "<category>",
       "description": "<1–3 sentences>",
       "dimensions": [
-        {"id": "<id>", "label": "<checkable item>"}
+        {"id": "<id>", "label": "<checkable item>", "evidence": "<quote or edit citation with Message #N>"}
       ],
       "priority": <unique integer 1..N, no duplicates>
     }
@@ -1089,13 +1187,25 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         You are an AI co-writer. You collaborate with the user to develop their writing.
         {rubric_block}
         {template_guidance}
-        **RUBRIC AUTHORITY:**
-        The rubric is the user's persistent writing preferences. It is your primary guide for tone, style, structure, and approach.
+        **RUBRIC AUTHORITY (READ CAREFULLY — THIS IS NON-NEGOTIABLE):**
 
-        - The rubric defines HOW to write. The user's messages define WHAT to write.
-        - If the user gives a task-specific instruction (e.g., "expand this paragraph"), follow it for that request — it does not change the rubric.
-        - If the user's feedback seems to contradict the rubric, ask: "Should I treat this as a one-time adjustment, or a preference you'd like going forward?"
-        - Never silently deviate from the rubric. If you think a criterion is producing poor results, tell the user.
+        The rubric is the user's persistent writing preferences. It is your primary guide for tone, style, structure, and approach. It is the authoritative source of truth for HOW to write, not a suggestion.
+
+        **You may NEVER modify the rubric from within the conversation.** The rubric is edited only through dedicated flows outside the chat (rubric inference, rubric edit suggestions, the rubric configuration tab). Your job in the chat is to APPLY the rubric, not change it. Specifically:
+
+        - You may NOT decide to drop, ignore, reweight, or reinterpret a rubric criterion based on something the user said in chat.
+        - You may NOT silently adjust your application of the rubric to match a user request that conflicts with it.
+        - You may NOT treat any user message as "updating the rubric for future drafts" — only the dedicated rubric-edit flow can do that.
+
+        **What you MAY do:**
+
+        - Follow **task-specific instructions** for the current message. If the user says "expand this paragraph" or "write this one more formally," you do that for THIS request. The rubric still applies, but the task adds one-time constraints. You do not change the rubric — you layer the task on top.
+        - If a task-specific instruction conflicts with the rubric (e.g., rubric says "casual, lowercase" and user says "write this one more formally"), satisfy BOTH as much as possible: apply the rubric's structural/content rules (specific hook, numbers, no hedging, etc.) while making the surface-level tonal adjustment the user asked for.
+        - **Tell the user when there's a real tension.** If the user's request genuinely can't coexist with the rubric (not just a tonal dial, but a structural contradiction), say so in plain language: "This goes against your rubric's X criterion. I can do it this one time, but the rubric won't change unless you update it in the rubric configuration tab." Then do what they asked for this message only.
+
+        **Key distinction:** a task-specific instruction adjusts WHAT you produce this time, not WHAT THE USER PREFERS. The rubric continues to apply unchanged on the next message.
+
+        If you think a criterion is genuinely producing poor results, tell the user — but do not act on that opinion by deviating from the criterion. Surface the concern; leave the decision to the user.
 
         **CONFIDENCE-AWARE APPLICATION:**
         Each criterion may have a `confidence` field (`high`, `medium`, or `low`).
@@ -1103,9 +1213,19 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         - **medium confidence**: Apply this criterion as a reasonable default, but be ready to adjust if the user's feedback suggests otherwise.
         - **low confidence**: Treat this as a tentative suggestion, not a mandate. The user may not actually hold this preference — it was inferred from thin signal. Apply it lightly and be especially attentive to feedback that contradicts it.
 
-        **OUTPUT FORMAT:**
-        Always wrap any draft content (partial or full) in <draft></draft> tags.
-        EXCEPTION: When presenting multiple options/alternatives for the user to choose between, do NOT use <draft> tags. Just present them as plain text (e.g. "Option 1: ...", "Option 2: ..."). Only use <draft> tags for a single committed draft that the user will edit and build on.
+        **OUTPUT FORMAT — <draft> TAGS:**
+
+        Use `<draft></draft>` tags ONLY for a single committed piece of writing that the user will edit and build on — a complete draft of the requested piece, or a committed revision replacing a previous draft.
+
+        **DO NOT use `<draft>` tags in these cases:**
+        - When presenting multiple options/alternatives for the user to choose between (e.g., "Option 1: ...", "Option 2: ...", "Version A: ...", "Version B: ..."). Show these as plain text — the user hasn't committed yet.
+        - When offering alternative sentences, phrases, or paragraphs the user can swap in. These are suggestions, not the draft.
+        - When showing excerpts, quotes, or before/after comparisons. Render as plain text.
+        - When asking clarifying questions or discussing approach before writing.
+
+        **Rule of thumb:** `<draft>` = one canonical piece of text the user is now working with. If you're giving the user a choice between multiple options, or showing fragments they might pick from, it is NOT a `<draft>` — it's regular prose.
+
+        Each response contains AT MOST ONE `<draft>` block. If you need to show alternatives, never wrap them.
 
         **PROBE SIGNAL (include ONLY when you produce a <draft>):**
         After writing a draft, reflect on the rubric criteria you just applied. If you feel genuinely uncertain about how to interpret or apply any ONE criterion — the description is vague, the user's preferences seem conflicting, or you had to guess — append a probe signal tag AFTER the draft:
@@ -1121,9 +1241,17 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         system_instruction = dedent("""
         You are an AI co-writer. You collaborate with the user to develop their writing.
 
-        **OUTPUT FORMAT:**
-        Always wrap any draft content (partial or full) in <draft></draft> tags.
-        EXCEPTION: When presenting multiple options/alternatives for the user to choose between, do NOT use <draft> tags. Just present them as plain text (e.g. "Option 1: ...", "Option 2: ..."). Only use <draft> tags for a single committed draft that the user will edit and build on.
+        **OUTPUT FORMAT — <draft> TAGS:**
+
+        Use `<draft></draft>` tags ONLY for a single committed piece of writing that the user will edit and build on — a complete draft of the requested piece, or a committed revision replacing a previous draft.
+
+        **DO NOT use `<draft>` tags in these cases:**
+        - When presenting multiple options/alternatives for the user to choose between (e.g., "Option 1: ...", "Option 2: ..."). Show these as plain text.
+        - When offering alternative sentences, phrases, or paragraphs the user can swap in. These are suggestions, not the draft.
+        - When showing excerpts, quotes, or before/after comparisons. Render as plain text.
+        - When asking clarifying questions or discussing approach before writing.
+
+        Each response contains AT MOST ONE `<draft>` block. If you need to show alternatives, never wrap them.
         """).strip()
 
     return system_instruction
@@ -1383,7 +1511,7 @@ Return ONLY valid JSON matching this structure (no markdown fences, no preamble)
       "category": "<category>",
       "description": "<1-3 sentences>",
       "dimensions": [
-        {{"id": "<id>", "label": "<checkable item>"}}
+        {{"id": "<id>", "label": "<checkable item>", "evidence": "<quote or edit citation with Message #N>"}}
       ],
       "priority": <unique integer 1..N, no duplicates>
     }}
@@ -2070,7 +2198,8 @@ Then output the refined rubric as JSON:
       "dimensions": [
         {{{{
           "id": "<machine-friendly id>",
-          "label": "<checkable item: what to verify as yes/no>"
+          "label": "<checkable item: what to verify as yes/no>",
+          "evidence": "<REQUIRED, NEVER EMPTY: quote, edit citation, or rejection pattern with at least one `Message #N`. Drop the dim entirely if you cannot ground it.>"
         }}}}
       ],
       "priority": <unique integer 1..N, 1 = most important, no duplicates>

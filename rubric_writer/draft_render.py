@@ -9,11 +9,36 @@ from rubric_writer.draft_rubric_llm import regenerate_selected_text
 from rubric_writer.persistence import get_active_rubric, _auto_save_conversation
 from rubric_writer import draft_grading as _draft_grading
 
-def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expander: bool = False, editable: bool = True):
+
+def compute_draft_number(messages: list, target_message_id: str) -> int | None:
+    """Return the 1-based draft position of `target_message_id` among graded
+    assistant drafts in `messages`, matching the enumeration used by
+    render_rubric_scores_panel (which iterates `[m for m in messages if
+    m["role"] == "assistant" and m.get("draft_grade")]` and calls the last
+    one "draft {len(graded)}"). Returns None if the target isn't a graded
+    draft (grading still pending, or not a draft message).
+
+    Keeping the numbering rule in one place ensures the "Draft N" label on
+    the conversation panel always matches the "draft N" in the scorecard."""
+    n = 0
+    for m in messages or []:
+        if m.get("role") != "assistant":
+            continue
+        if not m.get("draft_grade"):
+            continue
+        n += 1
+        if str(m.get("message_id") or "") == str(target_message_id):
+            return n
+    return None
+
+
+def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expander: bool = False, editable: bool = True, draft_number: int | None = None):
     """
     Render a message that may contain <draft> tags.
     Draft sections are rendered as editable text areas (when editable=True) or read-only text (when editable=False).
     If wrap_draft_in_expander is True, the draft (editable) section is shown inside a collapsed expander.
+    draft_number (1-based) is displayed in the draft label so users can cross-reference with the Rubric Scores
+    panel's "Latest draft scorecard (draft N)" caption.
     Returns True if the message contained drafts and was rendered, False otherwise.
     """
     draft_parts = parse_draft_content(content)
@@ -70,10 +95,11 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                 st.session_state[reset_counter_key] += 1
 
             # Create a container for the draft with visual styling (optionally in expander when message has rubric_revision)
+            _draft_num_prefix = f"Draft {draft_number} — " if draft_number is not None else ""
             if editable:
-                _draft_label = "📝 **Your Draft** — edit directly, or select sentences below to rephrase with AI"
+                _draft_label = f"📝 **{_draft_num_prefix}Your Draft** — edit directly, or select sentences below to rephrase with AI"
             else:
-                _draft_label = "📝 **Draft Preview**"
+                _draft_label = f"📝 **{_draft_num_prefix}Draft Preview**"
             draft_container = st.expander(_draft_label, expanded=not wrap_draft_in_expander) if wrap_draft_in_expander else st.container()
             with draft_container:
                 if not wrap_draft_in_expander:

@@ -1,6 +1,7 @@
 """Tab UI — extracted from git HEAD app.py (monolith)."""
 from rubric_writer.ui._deps import *
 from rubric_writer.persistence import _auto_save_conversation, _rubric_to_json_serializable
+from rubric_writer.rubric_display import _build_rubric_version_changelog
 from rubric_writer.session_reset import reset_evaluate_tab_workflow_state
 from rubric_writer.widget_keys import project_scoped_key
 from rubric_writer import draft_grading as _draft_grading
@@ -367,6 +368,10 @@ def render_chat_panel():
                     )
                     st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": None, "not_in_rubric": True, "not_in_rubric_reason": reason}
 
+    # Anchor at the top of the chat scroll area so the floating "scroll to
+    # top" button has somewhere to land.
+    st.markdown('<div id="chat-top"></div>', unsafe_allow_html=True)
+
     # Display chat messages
     _chat_msg_num = 0  # Track message number matching _build_conversation_text numbering
     _dp_intro_shown = False  # Show DP explanation once before first card
@@ -413,8 +418,10 @@ def render_chat_panel():
                         st.session_state.messages_to_delete.discard(idx)
                 with col_msg_sys:
                     if display_content:
+                        st.caption(f"#{_chat_msg_num}")
                         st.info(display_content)
             elif display_content:
+                st.caption(f"#{_chat_msg_num}")
                 st.info(display_content)
             # Show refinement details expander if available
             _ref_detail = message.get("refinement_detail")
@@ -457,6 +464,7 @@ def render_chat_panel():
                         st.session_state.messages_to_delete.discard(idx)
                 with col_msg:
                     with st.chat_message(message['role']):
+                        st.caption(f"#{_chat_msg_num}")
                         message_id = message.get('message_id', f"{message['role']}_{idx}")
                         safe_msg_id = re.sub(r'[^a-zA-Z0-9_-]', '_', str(message_id))
                         if message['role'] == 'user':
@@ -987,7 +995,9 @@ def render_chat_panel():
                             else:
                                 # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
                                 _draft_source = message.get('content', content_to_display)
-                                has_draft = render_message_with_draft(_draft_source, message_id, editable=True)
+                                from rubric_writer.draft_render import compute_draft_number as _compute_draft_number
+                                _draft_num = _compute_draft_number(st.session_state.get("messages", []), message_id)
+                                has_draft = render_message_with_draft(_draft_source, message_id, editable=True, draft_number=_draft_num)
                                 if has_draft:
                                     _draft_grading_ui.render_draft_grading_chrome(message)
                                     _draft_grading_ui.render_drift_panel(message, safe_msg_id)
@@ -1027,6 +1037,7 @@ def render_chat_panel():
                             _render_dp_card(_dp_item)
             else:
                 with st.chat_message(message['role']):
+                    st.caption(f"#{_chat_msg_num}")
                     message_id = message.get('message_id', f"{message['role']}_{idx}")
                     safe_msg_id = re.sub(r'[^a-zA-Z0-9_-]', '_', str(message_id))
                     if message['role'] == 'user':
@@ -1556,7 +1567,9 @@ def render_chat_panel():
                         else:
                             # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
                             _draft_source2 = message.get('content', content_to_display)
-                            has_draft = render_message_with_draft(_draft_source2, message_id, editable=True)
+                            from rubric_writer.draft_render import compute_draft_number as _compute_draft_number
+                            _draft_num2 = _compute_draft_number(st.session_state.get("messages", []), message_id)
+                            has_draft = render_message_with_draft(_draft_source2, message_id, editable=True, draft_number=_draft_num2)
                             if has_draft:
                                 _draft_grading_ui.render_draft_grading_chrome(message)
                                 _draft_grading_ui.render_drift_panel(message, safe_msg_id)
@@ -2889,6 +2902,57 @@ def render_chat_panel():
 
     if _no_project:
         st.info("Create a project first to start writing. Use the **sidebar** to create a new project.")
+
+    # Anchor at the bottom of the chat stream (just above the chat input) so
+    # the floating "scroll to bottom" button has somewhere to land.
+    st.markdown('<div id="chat-bottom"></div>', unsafe_allow_html=True)
+
+    # Floating up/down nav in the lower-right corner. Uses plain anchor links
+    # so the browser handles scrolling natively -- no JS, works regardless of
+    # whether Streamlit renders in an iframe or the main document.
+    st.markdown(
+        """
+<style>
+.chat-nav-floater {
+    position: fixed;
+    right: 24px;
+    bottom: 96px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.chat-nav-floater a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #d0d0d0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+}
+.chat-nav-floater a:hover {
+    background: #f0f0f0;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: #000;
+}
+</style>
+<div class="chat-nav-floater">
+    <a href="#chat-top" title="Scroll to top">↑</a>
+    <a href="#chat-bottom" title="Scroll to bottom">↓</a>
+</div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     prompt = st.chat_input("Type your message here...", disabled=_chat_blocked)
     if prompt and not _chat_blocked:
         # Clear comparison when starting a new message
@@ -3890,6 +3954,9 @@ def render_chat_sidebar():
 
     _draft_grading_ui.render_rubric_edit_suggestions()
 
+    with st.expander("📊 Rubric Scores", expanded=False):
+        _draft_grading_ui.render_rubric_scores_panel(st.session_state.get("messages", []))
+
     st.header("📋 Rubric Configuration")
 
     # Get active rubric
@@ -4149,6 +4216,23 @@ def render_chat_sidebar():
 
         has_changes = has_rubric_changes()
 
+        # Warn the user that unsaved edits are NOT applied in chat. The
+        # generator only sees the saved version (via get_active_rubric), so
+        # typing edits in the Configuration UI without clicking Save Version
+        # leaves the chat using the old rubric -- which can be confusing.
+        # This keeps the invariant: "the rubric the chat sees is exactly the
+        # one the user can see has been saved."
+        if has_changes:
+            _active_ver_for_warning = (
+                rubric_history[active_idx].get("version", active_idx + 1)
+                if rubric_history and active_idx is not None else "?"
+            )
+            st.warning(
+                f"⚠️ **Unsaved rubric edits.** The chat is still using the saved "
+                f"rubric (**v{_active_ver_for_warning}**) — your edits here won't "
+                f"affect draft generation until you click **Save Version**."
+            )
+
         # Show any draft regeneration error from a previous Log Changes attempt
         if st.session_state.get("draft_regeneration_error"):
             st.error("Draft regeneration failed: " + st.session_state.draft_regeneration_error)
@@ -4278,12 +4362,13 @@ def render_chat_sidebar():
                     if db_version is not None:
                         new_version = db_version
 
-                    # Sync version selectbox widget (otherwise it keeps the previous selection)
+                    # Clear the version-selectbox widget key so the selectbox
+                    # re-initializes from `index=active_idx` on the next
+                    # render. Setting the key directly raises
+                    # StreamlitAPIException because the selectbox was already
+                    # instantiated earlier in this run; popping is safe.
                     _rvk_save = project_scoped_key("rubric_version_selector")
-                    if db_version is not None:
-                        st.session_state[_rvk_save] = f"v{new_version}"
-                    else:
-                        st.session_state.pop(_rvk_save, None)
+                    st.session_state.pop(_rvk_save, None)
 
                     # Log edit to conversation
                     old_version_num = rubric_history[active_idx].get("version", active_idx + 1) if rubric_history and active_idx is not None else 0

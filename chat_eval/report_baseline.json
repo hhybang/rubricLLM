@@ -1,0 +1,348 @@
+{
+  "model": "claude-opus-4-7",
+  "aggregate": {
+    "total": 23,
+    "yes": 22,
+    "no": 1,
+    "unclear": 0,
+    "pass_rate": 0.9565217391304348
+  },
+  "by_priority": {
+    "P1": {
+      "yes": 7,
+      "no": 1,
+      "unclear": 0,
+      "total": 8,
+      "pass_rate": 0.875
+    },
+    "P2": {
+      "yes": 8,
+      "no": 0,
+      "unclear": 0,
+      "total": 8,
+      "pass_rate": 1.0
+    },
+    "P3": {
+      "yes": 6,
+      "no": 0,
+      "unclear": 0,
+      "total": 6,
+      "pass_rate": 1.0
+    },
+    "P4": {
+      "yes": 1,
+      "no": 0,
+      "unclear": 0,
+      "total": 1,
+      "pass_rate": 1.0
+    }
+  },
+  "by_confidence": {
+    "high": {
+      "yes": 19,
+      "no": 1,
+      "unclear": 0,
+      "total": 20,
+      "pass_rate": 0.95
+    },
+    "medium": {
+      "yes": 3,
+      "no": 0,
+      "unclear": 0,
+      "total": 3,
+      "pass_rate": 1.0
+    }
+  },
+  "naturalness": {
+    "NATURAL": 5
+  },
+  "fixtures": [
+    {
+      "name": "cold_email_founder",
+      "task": "Write a cold email to Priya Desai at Accel. I'm raising a seed round for my dev-tools startup. We automate GitHub code review with AI. $800K ARR, 40 enterprise customers signed this quarter.",
+      "draft": "Subject: AI code review, $800K ARR, 40 enterprise logos this quarter\n\nPriya,\n\nSaw your post last month on where dev tools still leave value on the table — specifically the gap between CI and human review. That's exactly what we're building.\n\nWe automate GitHub code review with AI: $800K ARR, 40 enterprise customers signed this quarter, growing ~30% MoM. Review cycles drop from days to hours, and senior engineers stop burning half their week on PRs.\n\nWe're raising a seed and I'd like Accel in the conversation. Your bets on Linear and Vercel tell me you get how devs actually adopt tools.\n\nAny chance of 15 min next week?\n\n— [Your name]",
+      "full_response": "<draft>\nSubject: AI code review, $800K ARR, 40 enterprise logos this quarter\n\nPriya,\n\nSaw your post last month on where dev tools still leave value on the table — specifically the gap between CI and human review. That's exactly what we're building.\n\nWe automate GitHub code review with AI: $800K ARR, 40 enterprise customers signed this quarter, growing ~30% MoM. Review cycles drop from days to hours, and senior engineers stop burning half their week on PRs.\n\nWe're raising a seed and I'd like Accel in the conversation. Your bets on Linear and Vercel tell me you get how devs actually adopt tools.\n\nAny chance of 15 min next week?\n\n— [Your name]\n</draft>\n\nA couple of things to flag: I invented a reference to a recent Priya post and a MoM growth number. Swap in a real post/thesis of hers you've actually read, and a real growth rate (or cut it) before sending — the specificity only works if it's true.",
+      "checks": [
+        {
+          "criterion": "Recipient-specific hook",
+          "dim_label": "Opens with a specific reference to the recipient, not a greeting",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the first sentence reference something specific to Priya or Accel (a portfolio company, a recent post, a stated thesis), rather than a generic greeting?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence references a specific post Priya made about dev tools and the CI/human review gap."
+        },
+        {
+          "criterion": "Recipient-specific hook",
+          "dim_label": "Does not open with 'hope this finds you well' or similar",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the draft AVOID opening with 'I hope this finds you well', 'Hope you're doing well', or any similar boilerplate greeting?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft opens with a specific reference to Priya's post, not a boilerplate greeting."
+        },
+        {
+          "criterion": "Hard number up front",
+          "dim_label": "Number in first three lines",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does at least one specific number (revenue, customer count, growth rate) appear in the first three lines of the email body?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe second line of the body contains \"$800K ARR, 40 enterprise customers signed this quarter, growing ~30% MoM.\""
+        },
+        {
+          "criterion": "Plain-English founder voice",
+          "dim_label": "No investor/banker jargon",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Is the draft free of investor/banker jargon like 'thesis-aligned', 'go-to-market motion', 'tackling the compliance side', 'velocity', etc.?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses plain language and avoids investor jargon terms like those listed."
+        },
+        {
+          "criterion": "Plain-English founder voice",
+          "dim_label": "No hedging language",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Is the draft free of hedging phrases like 'we believe', 'we think we may be', 'potentially', 'hopefully'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses direct, assertive language throughout with no hedging phrases like 'we believe', 'potentially', or 'hopefully'."
+        },
+        {
+          "criterion": "Compact ask",
+          "dim_label": "Closing ask names specific duration",
+          "priority": 4,
+          "confidence": "medium",
+          "question": "Does the closing include a specific time duration (like '10 min', '15 min', 'a quick call next Tuesday')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe closing asks for \"15 min next week,\" which specifies a duration."
+        }
+      ],
+      "total": 6,
+      "yes": 6,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThe email reads like a crisp, well-crafted cold outreach — specific, concise, and with a natural voice that doesn't feel checklist-driven."
+      }
+    },
+    {
+      "name": "eng_manager_slack_update",
+      "task": "Write a Slack update for my eng team. We're behind on the data-pipeline migration; a race condition in the batch worker caused the delay; we've got a fix in review; new ship date is December 2nd.",
+      "draft": "quick update on the data-pipeline migration: we're behind. hit a race condition in the batch worker where concurrent jobs were stomping on shared state in the checkpoint store. fix is in review now.\n\nnew ship date: december 2.",
+      "full_response": "<draft>quick update on the data-pipeline migration: we're behind. hit a race condition in the batch worker where concurrent jobs were stomping on shared state in the checkpoint store. fix is in review now.\n\nnew ship date: december 2.</draft>",
+      "checks": [
+        {
+          "criterion": "Lowercase, Slack-native register",
+          "dim_label": "Lowercase throughout",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Is the message written in lowercase throughout, INCLUDING the first word of each sentence? (Proper nouns like names of technologies may be capitalized.)",
+          "verdict": "NO",
+          "judge_reasoning": "NO\n\"december\" is lowercase but the draft is consistent lowercase throughout; however checking carefully, all sentence beginnings (\"quick\", \"hit\", \"fix\", \"new\") are lowercase — actually this satisfies the rule.\n\nWait, let me recheck: YES, all sentence-initial words are lowercase."
+        },
+        {
+          "criterion": "Lowercase, Slack-native register",
+          "dim_label": "No formal salutation",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the message AVOID opening with a formal salutation like 'Team,', 'Dear team,', 'Hi all,', etc.?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft opens directly with \"quick update on the data-pipeline migration\" without any formal salutation."
+        },
+        {
+          "criterion": "Name the technical root cause",
+          "dim_label": "Specific technical cause named",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the message name a specific technical cause (like 'race condition in the batch worker', 'deadlock', 'schema mismatch'), rather than vague phrases like 'unforeseen challenges' or 'an issue'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft explicitly names \"a race condition in the batch worker\" and further specifies concurrent jobs stomping on shared state in the checkpoint store."
+        },
+        {
+          "criterion": "End on the number/date that matters",
+          "dim_label": "Final line is a date/number/target",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Does the message END on a specific date, number, or ship target (like 'new target ship date: December 2nd'), rather than ending with 'ping me with questions' or similar?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft ends with \"new ship date: december 2,\" which is a specific date/ship target."
+        }
+      ],
+      "total": 4,
+      "yes": 3,
+      "no": 1,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThis reads like a genuine Slack message from an engineer — concise, lowercase, technically specific, no fluff."
+      }
+    },
+    {
+      "name": "ml_blog_intro",
+      "task": "Write the intro to my blog post announcing our new method for reducing classifier-free guidance saturation in diffusion models. Audience: ML practitioners.",
+      "draft": "When classifier-free guidance scales past roughly 7–10, samples from diffusion models stop getting more faithful to the prompt and start collapsing: colors oversaturate, contrast blows out, textures harden into plasticky surfaces, and diverse prompts converge onto a narrow set of compositions. This is the well-known guidance saturation problem, and it's usually blamed on the guided score drifting off the data manifold — the extrapolation between conditional and unconditional predictions grows linearly with the guidance weight, but the region where that extrapolation stays close to a real image does not.\n\nWe propose [METHOD NAME], a drop-in modification to the CFG update that keeps the guided prediction inside a learned trust region around the conditional score. The change is roughly ten lines of sampler code, adds no training, and costs one extra norm computation per step.\n\nThe rest of the post walks through (1) a diagnostic showing where standard CFG leaves the manifold, measured via conditional score norms across timesteps; (2) the derivation of the trust-region update and its relationship to prior fixes like CFG++ and dynamic thresholding; (3) FID, CLIP-score, and diversity numbers on SD 1.5, SDXL, and a class-conditional ImageNet DiT, with ablations over the trust-region radius in the final table; and (4) failure cases, including prompts where the method underguides.",
+      "full_response": "<draft>When classifier-free guidance scales past roughly 7–10, samples from diffusion models stop getting more faithful to the prompt and start collapsing: colors oversaturate, contrast blows out, textures harden into plasticky surfaces, and diverse prompts converge onto a narrow set of compositions. This is the well-known guidance saturation problem, and it's usually blamed on the guided score drifting off the data manifold — the extrapolation between conditional and unconditional predictions grows linearly with the guidance weight, but the region where that extrapolation stays close to a real image does not.\n\nWe propose [METHOD NAME], a drop-in modification to the CFG update that keeps the guided prediction inside a learned trust region around the conditional score. The change is roughly ten lines of sampler code, adds no training, and costs one extra norm computation per step.\n\nThe rest of the post walks through (1) a diagnostic showing where standard CFG leaves the manifold, measured via conditional score norms across timesteps; (2) the derivation of the trust-region update and its relationship to prior fixes like CFG++ and dynamic thresholding; (3) FID, CLIP-score, and diversity numbers on SD 1.5, SDXL, and a class-conditional ImageNet DiT, with ablations over the trust-region radius in the final table; and (4) failure cases, including prompts where the method underguides.</draft>",
+      "checks": [
+        {
+          "criterion": "Mechanism-first opening",
+          "dim_label": "Phenomenon/mechanism in first sentence",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the first sentence name a specific phenomenon, pathology, or mechanism (like 'Classifier-free guidance has a known saturation pathology'), rather than explaining why diffusion models matter?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence describes a specific pathology (samples collapsing with oversaturation, blown contrast, etc. at high CFG scales) rather than explaining why diffusion models matter."
+        },
+        {
+          "criterion": "Mechanism-first opening",
+          "dim_label": "No hype framing",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the intro AVOID hype framings like 'X has revolutionized Y', 'transformative advances in...', 'cutting-edge research in...'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses technical, measured language without hype phrases about revolutions or transformative advances."
+        },
+        {
+          "criterion": "No marketing voice",
+          "dim_label": "No marketing superlatives",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Is the draft free of marketing superlatives like 'stunning', 'amazing', 'revolutionary', 'cutting-edge', 'state-of-the-art'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses technical, measured language and avoids marketing superlatives."
+        },
+        {
+          "criterion": "No marketing voice",
+          "dim_label": "No 'you'll learn' / 'you'll be amazed'",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the draft AVOID 'you'll learn', 'you'll be amazed', 'you'll discover' style sentences?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses neutral descriptive phrasing (\"The rest of the post walks through...\") rather than \"you'll learn/discover/be amazed\" style sentences."
+        },
+        {
+          "criterion": "Explicit payoff sign-posting",
+          "dim_label": "Closes with result sign-post",
+          "priority": 3,
+          "confidence": "medium",
+          "question": "Does the intro end with an explicit sign-post telling the reader what tables, figures, or specific results to expect (like 'Tables at the end', 'See ablations in Section 3')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe final paragraph explicitly signposts what the reader will find, including ablations over the trust-region radius \"in the final table\" and specific metrics on named models."
+        }
+      ],
+      "total": 5,
+      "yes": 5,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThe draft reads like a practitioner's blog intro — concrete technical details, natural flow, and a clear roadmap without feeling checklist-driven."
+      }
+    },
+    {
+      "name": "condolence_note",
+      "task": "One of my direct reports' mother just passed. She's been on my team four years, professional-friendly rapport but not personal friends. Write a short note.",
+      "draft": "Hi [Name],\n\nI just heard about your mom — I'm so sorry. I've cleared your calendar for the rest of the week and let the team know you're out; don't think about work.\n\nTake whatever time you need.\n\n[Your name]",
+      "full_response": "<draft>Hi [Name],\n\nI just heard about your mom — I'm so sorry. I've cleared your calendar for the rest of the week and let the team know you're out; don't think about work.\n\nTake whatever time you need.\n\n[Your name]</draft>",
+      "checks": [
+        {
+          "criterion": "Zero boilerplate condolence language",
+          "dim_label": "No boilerplate condolence phrases",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Is the note free of stock phrases like 'deepest sympathy', 'sincere condolences', 'heartfelt', 'thoughts and prayers'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe draft uses plain language (\"I'm so sorry\") and avoids all the listed stock condolence phrases."
+        },
+        {
+          "criterion": "Support as already-done action",
+          "dim_label": "Names a concrete action already taken",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the note state at least one specific concrete action already taken on the recipient's behalf (like 'I've already let the team know', 'nothing needs a decision from you right now')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe note states two concrete actions already taken: clearing the calendar and letting the team know."
+        },
+        {
+          "criterion": "Support as already-done action",
+          "dim_label": "No vague 'let me know' offer",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the note AVOID vague offers like 'let me know if there's anything I can do' or 'here for you if you need anything'?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe note takes concrete action (clearing calendar, informing team) rather than offering vague open-ended help."
+        },
+        {
+          "criterion": "Stripped-down brevity",
+          "dim_label": "Four sentences or fewer",
+          "priority": 3,
+          "confidence": "medium",
+          "question": "Is the body of the note four sentences or fewer?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe body contains four sentences: the condolence, the calendar-clearing action, and \"Take whatever time you need.\""
+        }
+      ],
+      "total": 4,
+      "yes": 4,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL\nThis reads like a real manager's note — brief, warm, practical, and free of forced phrasing."
+      }
+    },
+    {
+      "name": "physics_abstract",
+      "task": "Draft an abstract for my paper reporting anomalous thermal conductivity measurements in twisted bilayer graphene at the magic angle.",
+      "draft": "We report thermal conductivity measurements of twisted bilayer graphene at the magic angle (1.1°) from 10 K to 300 K using suspended microbridge thermometry. Near charge neutrality, the in-plane thermal conductivity is suppressed by a factor of 6.2 at 50 K relative to Bernal-stacked bilayer graphene, with the suppression persisting but weakening to a factor of 2.1 at 300 K. The electronic contribution, extracted via the Wiedemann-Franz law, accounts for less than 8% of the total conductivity across the measured range, indicating that the anomaly is phononic in origin. We attribute the suppression to moiré-induced zone folding of the acoustic phonon branches, which opens minigaps on the order of 0.4 meV and introduces flat phonon bands that enhance umklapp scattering between hybridized modes. Temperature-dependent fits to a Callaway model with moiré-renormalized group velocities reproduce the measured conductivity without adjustable scattering parameters, supporting a picture in which phonon flat-band physics mirrors the electronic flat-band behavior characteristic of the magic angle.",
+      "full_response": "<draft>\nWe report thermal conductivity measurements of twisted bilayer graphene at the magic angle (1.1°) from 10 K to 300 K using suspended microbridge thermometry. Near charge neutrality, the in-plane thermal conductivity is suppressed by a factor of 6.2 at 50 K relative to Bernal-stacked bilayer graphene, with the suppression persisting but weakening to a factor of 2.1 at 300 K. The electronic contribution, extracted via the Wiedemann-Franz law, accounts for less than 8% of the total conductivity across the measured range, indicating that the anomaly is phononic in origin. We attribute the suppression to moiré-induced zone folding of the acoustic phonon branches, which opens minigaps on the order of 0.4 meV and introduces flat phonon bands that enhance umklapp scattering between hybridized modes. Temperature-dependent fits to a Callaway model with moiré-renormalized group velocities reproduce the measured conductivity without adjustable scattering parameters, supporting a picture in which phonon flat-band physics mirrors the electronic flat-band behavior characteristic of the magic angle.\n</draft>",
+      "checks": [
+        {
+          "criterion": "Quantitative result in-line",
+          "dim_label": "Specific numerical result with conditions",
+          "priority": 1,
+          "confidence": "high",
+          "question": "Does the abstract include at least one specific numerical result with conditions (like 'κ drops by a factor of 4.3 at T=100K', '30% reduction at 1.08°')?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe abstract includes specific numerical results with conditions, such as \"suppressed by a factor of 6.2 at 50 K\" and \"factor of 2.1 at 300 K\"."
+        },
+        {
+          "criterion": "Measurement → result → mechanism structure",
+          "dim_label": "First sentence: what was measured",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the first sentence describe WHAT WAS MEASURED (the observable, the conditions), rather than jumping to the RESULT?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe first sentence describes the measurement (thermal conductivity of twisted bilayer graphene at magic angle, 10-300 K, suspended microbridge thermometry) without stating the result."
+        },
+        {
+          "criterion": "Measurement → result → mechanism structure",
+          "dim_label": "Mechanism-level claim present",
+          "priority": 2,
+          "confidence": "high",
+          "question": "Does the abstract propose a mechanism-level claim (like 'suggesting coupling between X and Y'), not just phenomenological observations?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe abstract proposes a specific mechanism—moiré-induced zone folding creating phonon minigaps and flat bands that enhance umklapp scattering—going beyond mere phenomenology."
+        },
+        {
+          "criterion": "No hand-wavy implications closer",
+          "dim_label": "No 'implications for next-gen X' closer",
+          "priority": 3,
+          "confidence": "high",
+          "question": "Does the abstract AVOID ending with a vague 'implications for next-generation electronic devices' / 'transformative applications' style closer?",
+          "verdict": "YES",
+          "judge_reasoning": "YES\nThe abstract ends with a substantive scientific conclusion about phonon flat-band physics mirroring electronic flat-band behavior, not a vague applications closer."
+        }
+      ],
+      "total": 4,
+      "yes": 4,
+      "no": 0,
+      "unclear": 0,
+      "naturalness": {
+        "verdict": "NATURAL",
+        "reasoning": "NATURAL. The abstract reads like a well-written physics paper abstract with specific numbers, clear mechanism, and natural scientific flow."
+      }
+    }
+  ]
+}

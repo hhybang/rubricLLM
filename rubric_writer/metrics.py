@@ -118,6 +118,42 @@ def log_pairwise_preference(
     })
 
 
+def log_threeway_preference(
+    *,
+    task: str,
+    early_rubric_version: int | None,
+    late_rubric_version: int | None,
+    label_to_arm: dict[str, str],   # e.g. {"A": "none", "B": "early", "C": "late"}
+    best_label: str | None,          # "A" | "B" | "C" | None (if tie)
+    worst_label: str | None,         # "A" | "B" | "C" | None (if tie)
+    best_arm: str | None,            # "none" | "early" | "late" | None
+    worst_arm: str | None,
+    all_same: bool,
+    user_reason: str = "",
+) -> None:
+    """Three-way blind preference: no-rubric vs first-inferred vs current-refined.
+
+    `label_to_arm` records which draft label got which arm so we can decode
+    position effects at analysis time. `best_label`/`worst_label` let us
+    compute both (a) whether having any rubric helps (none vs others) and
+    (b) whether refinement adds value (early vs late)."""
+    _save_metric("rq2_threeway", {
+        "session_id": _get_session_id(),
+        "timestamp": datetime.now().isoformat(),
+        "phase": "rq2_threeway",
+        "task": task,
+        "early_rubric_version": early_rubric_version,
+        "late_rubric_version": late_rubric_version,
+        "label_to_arm": label_to_arm,
+        "best_label": best_label,
+        "worst_label": worst_label,
+        "best_arm": best_arm,
+        "worst_arm": worst_arm,
+        "all_same": all_same,
+        "user_reason": user_reason,
+    })
+
+
 # ---------------------------------------------------------------------------
 # Spot-check injection for Metric 3
 # ---------------------------------------------------------------------------
@@ -263,6 +299,7 @@ def render_dimension_recognition(rubric_dict: dict[str, Any]) -> None:
                 "criterion": cname,
                 "id": dim.get("id", ""),
                 "label": dim.get("label") or dim.get("description") or dim.get("id", ""),
+                "evidence": (dim.get("evidence") or "").strip(),
             })
 
     if not all_dims:
@@ -277,7 +314,11 @@ def render_dimension_recognition(rubric_dict: dict[str, Any]) -> None:
         # Already persisted as a system message -- nothing to render here
         return
 
-    st.caption("We inferred these dimensions from your conversation. Click ❌ on any that are not your preference:")
+    st.caption(
+        "We inferred these dimensions from your conversation. "
+        "**Click a dimension** to see the evidence we used to infer it. "
+        "Click ❌ on any that are not your preference."
+    )
 
     # Group dimensions by criterion
     from collections import OrderedDict
@@ -295,10 +336,26 @@ def render_dimension_recognition(rubric_dict: dict[str, Any]) -> None:
             with col_icon:
                 st.markdown("❌" if rejected else "✅")
             with col_text:
-                if rejected:
-                    st.caption(f"~~{dim['label']}~~")
+                _ev = dim.get("evidence", "")
+                # The dim label itself is the expander title -- click the dim
+                # to reveal the inferrer's evidence. For rejected dims we
+                # prefix the title so it's visually distinct and keep the
+                # evidence available (user can still double-check why we
+                # inferred the dim even after rejecting it).
+                _title = (f"(rejected) {dim['label']}"
+                          if rejected else dim["label"])
+                if _ev:
+                    with st.expander(_title, expanded=False):
+                        st.caption(_ev)
                 else:
-                    st.markdown(dim["label"])
+                    # Legacy rubric with no evidence -- render the label as
+                    # plain text so the row layout stays consistent. New
+                    # rubrics always have evidence (enforced by the prompt
+                    # + parser-level INSUFFICIENT_EVIDENCE reject).
+                    if rejected:
+                        st.caption(f"~~{dim['label']}~~")
+                    else:
+                        st.markdown(dim["label"])
             with col_btn:
                 if rejected:
                     if st.button("🔁", key=f"recog_undo_{i}"):
@@ -325,58 +382,116 @@ def render_dimension_recognition(rubric_dict: dict[str, Any]) -> None:
             if results.get(f"{dim['criterion']}::{dim['id']}") == "not_my_preference"
         }
 
-        # Remove rejected dimensions from rubric and save as new version
+        # Remove rejected dimensions from rubric and save as new version.
+        saved_version: int | None = None
+        current_version: int | None = None
         if rejected_ids:
-            from rubric_writer.persistence import get_active_rubric, load_rubric_history, save_rubric_history, invalidate_rubric_cache
+            from rubric_writer.persistence import (
+                get_active_rubric, load_rubric_history, save_rubric_history,
+                invalidate_rubric_cache,
+            )
             import copy
 
             rubric_dict_current, _, rubric_history = get_active_rubric()
             if rubric_dict_current and rubric_dict_current.get("rubric"):
                 new_rubric = copy.deepcopy(rubric_dict_current)
+                # Strip metadata that the DB assigns on save.
+                new_rubric.pop("id", None)
+                new_rubric.pop("version", None)
+                new_rubric.pop("created_at", None)
                 for crit in new_rubric.get("rubric") or []:
                     crit["dimensions"] = [
                         d for d in (crit.get("dimensions") or [])
                         if (d.get("id") or "").strip() not in rejected_ids
                     ]
-                # Remove criteria with no dimensions left
                 new_rubric["rubric"] = [
                     c for c in new_rubric["rubric"]
                     if c.get("dimensions")
                 ]
-                from rubric_writer.persistence import next_version_number
-                new_rubric["version"] = next_version_number()
                 new_rubric["source"] = "user_validated"
                 rubric_history.append(new_rubric)
-                save_rubric_history(rubric_history)
-                st.session_state.active_rubric_idx = len(rubric_history) - 1
+                saved_version = save_rubric_history(rubric_history)
                 invalidate_rubric_cache()
 
-        # Build summary and persist as system message
-        confirmed = sum(1 for v in results.values() if v == "preference")
-        total = len(results)
-
-        lines = ["**Rubric Validation Results**\n"]
-        current_crit = ""
-        for dim in all_dims:
-            if dim["criterion"] != current_crit:
-                current_crit = dim["criterion"]
-                lines.append(f"\n**_{current_crit}_**")
-            dim_key = f"{dim['criterion']}::{dim['id']}"
-            result = results.get(dim_key, "")
-            icon = "✅" if result == "preference" else "❌"
-            lines.append(f"{icon} {dim['label']}")
-        if rejected_ids:
-            lines.append(f"\n{confirmed}/{total} dimensions confirmed. {len(rejected_ids)} removed. New rubric version saved.")
+                # Refresh the shadow state the rubric configuration UI reads
+                # from. Without this, the config tab keeps showing the OLD
+                # version's dimensions until the page is reloaded.
+                reloaded = load_rubric_history(force_reload=True)
+                if reloaded:
+                    new_active = reloaded[-1]
+                    new_criteria = new_active.get("rubric", [])
+                    st.session_state.rubric = new_criteria
+                    try:
+                        st.session_state.editing_criteria = copy.deepcopy(new_criteria)
+                        st.session_state["editing_criteria_ui_version"] = (
+                            st.session_state.get("editing_criteria_ui_version", 0) + 1
+                        )
+                    except Exception:
+                        pass
+                    st.session_state.active_rubric_idx = len(reloaded) - 1
+                    if saved_version is None:
+                        # Fall back to whatever the DB shows as the latest
+                        # version number if save_rubric_history didn't return one.
+                        saved_version = new_active.get("version")
+                    # CLEAR the version-selector widget key. The selectbox will
+                    # re-initialize on the next render using `index=active_idx`,
+                    # which we just set to the new version's index. Setting the
+                    # widget key directly is fragile -- Streamlit can raise
+                    # StreamlitAPIException if the widget has already been
+                    # instantiated in this session. Popping the key and letting
+                    # the widget re-hydrate from `index` is more reliable.
+                    try:
+                        from rubric_writer.widget_keys import project_scoped_key
+                        _rvk = project_scoped_key("rubric_version_selector")
+                        st.session_state.pop(_rvk, None)
+                    except Exception:
+                        pass
         else:
-            lines.append(f"\n{confirmed}/{total} dimensions confirmed as your preferences.")
+            # No rejections — report the current rubric's version.
+            try:
+                from rubric_writer.persistence import get_active_rubric
+                current_dict, _, _ = get_active_rubric()
+                if current_dict:
+                    current_version = current_dict.get("version")
+            except Exception:
+                current_version = None
+
+        # Build compact system message
+        if rejected_ids and saved_version is not None:
+            content = (
+                f"**Confirmed dimensions.** "
+                f"Removed {len(rejected_ids)} dimension(s) you marked as not your "
+                f"preference — new rubric **v{saved_version}** saved."
+            )
+        elif rejected_ids:
+            content = (
+                f"**Confirmed dimensions.** "
+                f"Removed {len(rejected_ids)} dimension(s), but the new version "
+                "couldn't be saved. Please try again."
+            )
+        else:
+            ver_str = f"v{current_version}" if current_version is not None else "current version"
+            content = (
+                f"**Confirmed dimensions.** Everything was validated — "
+                f"keeping the {ver_str} rubric as is."
+            )
 
         import time as _time
         st.session_state.messages.append({
             "role": "system",
-            "content": "\n".join(lines),
+            "content": content,
             "message_id": f"dim_recog_{int(_time.time() * 1000000)}",
             "is_system_generated": True,
         })
+
+        # Persist immediately so the system message survives a reload. Without
+        # this, the message lives only in-memory until something else triggers
+        # an auto-save, and a page refresh before that point loses it.
+        try:
+            from rubric_writer.persistence import _auto_save_conversation
+            _auto_save_conversation()
+        except Exception as e:
+            _log.warning("auto-save after dim-recognition system message failed: %s", e)
 
         st.session_state.dim_recognition_done = True
         st.rerun()

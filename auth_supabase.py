@@ -22,32 +22,86 @@ import streamlit as st
 from supabase import create_client, Client
 import os
 import json
+import logging
+import time as _auth_time
 from datetime import datetime
 from typing import Optional, Dict, List, Any, Tuple
+
+_auth_log = logging.getLogger(__name__)
+
+# Refresh the session only if the access token expires within this many
+# seconds. Supabase access tokens default to 1 hour (3600s); we refresh
+# when there's less than 5 minutes left so a long in-flight request
+# doesn't hit the boundary.
+_TOKEN_REFRESH_BUFFER_SECONDS = 300
+
+
+def _token_needs_refresh(session) -> bool:
+    """Return True iff the session's access token is expired or expiring soon.
+
+    We avoid refreshing unnecessarily: the previous behavior called
+    `set_session` on every page render, which meant a long-running LLM
+    stream could race with a token-refresh failure and log the user out.
+    Only refresh when actually needed."""
+    if session is None:
+        return False
+    expires_at = getattr(session, "expires_at", None)
+    if expires_at is None:
+        # Unknown expiry -- don't proactively refresh; trust the cached session.
+        return False
+    try:
+        now = _auth_time.time()
+        return (float(expires_at) - now) < _TOKEN_REFRESH_BUFFER_SECONDS
+    except (TypeError, ValueError):
+        return False
+
+
+def _safe_refresh_session(client, session) -> None:
+    """Attempt to refresh the session. On transient failure, keep the existing
+    session rather than nulling it out -- a network hiccup during a long LLM
+    stream shouldn't log the user out.
+
+    Only truly-invalid-token errors should clear the session, and we detect
+    those by inspecting the exception message. Any other failure is logged
+    and ignored; the next call will retry."""
+    refresh_token = getattr(session, "refresh_token", None)
+    if not refresh_token:
+        return
+    try:
+        refresh_response = client.auth.refresh_session(refresh_token)
+        if refresh_response and getattr(refresh_response, "session", None):
+            st.session_state.auth_session = refresh_response.session
+            return
+        # refresh returned no new session but didn't raise -- likely transient
+        _auth_log.info("Supabase session refresh returned no new session; keeping current session.")
+    except Exception as e:
+        msg = str(e).lower()
+        if any(s in msg for s in ("invalid refresh", "refresh_token_not_found",
+                                   "token has expired", "refresh_token expired")):
+            _auth_log.warning("Supabase refresh token is truly invalid; clearing session: %s", e)
+            st.session_state.auth_session = None
+            st.session_state.auth_user = None
+        else:
+            # Transient failure (network, rate limit, etc.) -- keep the
+            # existing session so the user isn't logged out mid-request.
+            _auth_log.warning("Supabase refresh failed transiently, keeping existing session: %s", e)
 
 
 def get_supabase_client() -> Optional[Client]:
     """Get Supabase client using credentials from secrets or environment.
 
     Caches the client in session state to avoid creating too many connections.
-    """
+    Only refreshes the session when the access token is actually expiring --
+    previously this was called on every Streamlit rerun, which produced a
+    race where a token refresh during a long LLM stream could null out the
+    session and log the user out mid-generation."""
     # Return cached client if available
     if '_supabase_client' in st.session_state and st.session_state._supabase_client is not None:
         client = st.session_state._supabase_client
 
-        # Just update the session on the existing client if needed
         session = st.session_state.get('auth_session')
-        if session:
-            try:
-                client.auth.set_session(session.access_token, session.refresh_token)
-            except Exception:
-                try:
-                    refresh_response = client.auth.refresh_session(session.refresh_token)
-                    if refresh_response and refresh_response.session:
-                        st.session_state.auth_session = refresh_response.session
-                except Exception:
-                    st.session_state.auth_session = None
-                    st.session_state.auth_user = None
+        if session and _token_needs_refresh(session):
+            _safe_refresh_session(client, session)
 
         return client
 
@@ -65,23 +119,21 @@ def get_supabase_client() -> Optional[Client]:
         # Cache the client
         st.session_state._supabase_client = client
 
-        # If we have a stored session, restore it on the client
+        # If we have a stored session, restore it on the client. This path
+        # only runs on first client creation (once per Streamlit session),
+        # so the initial `set_session` is safe here.
         session = st.session_state.get('auth_session')
         if session:
             try:
-                # Try to set the session using the stored tokens
                 client.auth.set_session(session.access_token, session.refresh_token)
-            except Exception:
-                # If that fails, try refreshing the session
-                try:
-                    refresh_response = client.auth.refresh_session(session.refresh_token)
-                    # Save the new session back to session state
-                    if refresh_response and refresh_response.session:
-                        st.session_state.auth_session = refresh_response.session
-                except Exception:
-                    # Session is truly invalid, clear it
-                    st.session_state.auth_session = None
-                    st.session_state.auth_user = None
+            except Exception as e:
+                msg = str(e).lower()
+                if any(s in msg for s in ("invalid refresh", "refresh_token_not_found",
+                                           "token has expired", "refresh_token expired")):
+                    # Try to refresh; if that also fails, clear the session.
+                    _safe_refresh_session(client, session)
+                else:
+                    _auth_log.warning("set_session failed on fresh client, keeping session: %s", e)
 
         return client
     except Exception as e:
@@ -307,19 +359,29 @@ def save_conversation(supabase: Client, project_id: str, messages: List[Dict],
     Otherwise, inserts a new row.
     """
     try:
+        # Same sanitizer as save_rubric_history: strip display-only `_diff`
+        # keys and coerce any stray set() to a list so json.dumps doesn't
+        # crash on sets that leaked in from the display layer.
+        def _sanitize(x):
+            if isinstance(x, dict):
+                return {k: _sanitize(v) for k, v in x.items() if k != "_diff"}
+            if isinstance(x, list):
+                return [_sanitize(v) for v in x]
+            if isinstance(x, set):
+                return sorted(x)
+            return x
         data = {
             "project_id": project_id,
-            "messages": json.dumps(messages),
-            "rubric": json.dumps(rubric) if rubric else None,
+            "messages": json.dumps(_sanitize(messages)),
+            "rubric": json.dumps(_sanitize(rubric)) if rubric else None,
             "analysis": analysis,
         }
         if conversation_id:
             # Delete + re-insert (no UPDATE RLS policy exists, so update silently fails)
             try:
                 supabase.table("conversations").delete().eq("id", conversation_id).execute()
-                print(f"[SAVE] Deleted old row id={conversation_id} for re-insert")
             except Exception:
-                print(f"[SAVE] Delete failed for id={conversation_id}, will insert as new")
+                pass
 
         # Insert conversation (new or replacement)
         data["created_at"] = datetime.now().isoformat()
@@ -328,7 +390,6 @@ def save_conversation(supabase: Client, project_id: str, messages: List[Dict],
         response = supabase.table("conversations").insert(data).execute()
         if response.data:
             new_id = response.data[0]["id"]
-            print(f"[SAVE] {'Re-inserted' if conversation_id else 'Inserted new'} conversation: {new_id}")
             return new_id
         return None
     except Exception as e:
@@ -495,10 +556,24 @@ def save_rubric_history(supabase: Client, project_id: str, rubric_data: Dict) ->
         if existing.data:
             next_version = existing.data[0]["version"] + 1
 
+        # Sanitize the rubric for JSON serialization. The display layer used
+        # to write a `_diff` key on criteria that contained set() values;
+        # json.dumps refuses sets. Strip `_diff` on its way out, and convert
+        # any stray set() anywhere in the tree to a list as a safety net.
+        def _sanitize(x):
+            if isinstance(x, dict):
+                return {k: _sanitize(v) for k, v in x.items() if k != "_diff"}
+            if isinstance(x, list):
+                return [_sanitize(v) for v in x]
+            if isinstance(x, set):
+                return sorted(x)
+            return x
+        _clean = _sanitize(rubric_data)
+
         response = supabase.table("rubric_history").insert({
             "project_id": project_id,
             "version": next_version,
-            "rubric_data": json.dumps(rubric_data),
+            "rubric_data": json.dumps(_clean),
             "created_at": datetime.now().isoformat()
         }).execute()
 

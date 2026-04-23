@@ -634,8 +634,13 @@ def _queue_verified_suggestion(
     conv_id = st.session_state.get("selected_conversation", "")
     suggestions_ref = st.session_state.setdefault("rubric_edit_suggestions", [])
 
-    suggestion.setdefault("criterion_name", inputs["criterion_name"])
-    suggestion.setdefault("dimension_id", inputs["dimension_id"])
+    # FORCE the criterion_name and dimension_id to our canonical inputs, not
+    # whatever the refiner echoed back. The refiner occasionally hallucinates
+    # a plausible-looking dim_id that doesn't exist in the rubric (e.g.
+    # `claim_before_system_name` when the real id was `claim_first_framing`),
+    # which leads to silent Apply failures downstream.
+    suggestion["criterion_name"] = inputs["criterion_name"]
+    suggestion["dimension_id"] = inputs["dimension_id"]
     suggestion["feedback_text"] = feedback_text
     suggestion["drift_kind"] = drift_kind
     suggestion["timestamp"] = datetime.now().isoformat()
@@ -685,24 +690,62 @@ def _queue_pending_feedback(
     })
 
 
+def _is_remove_feedback(feedback_text: str) -> bool:
+    fl = (feedback_text or "").lower()
+    return "user wants to remove" in fl or "user says remove" in fl
+
+
 def _flush_pending_feedback(panel_id: str) -> None:
     """Process queued feedback for the panel.
 
-    For 1-2 dimensions: per-dim refiner calls (each independent).
-    For 3+ dimensions: single combined refiner call so the model can see
-    cross-dimension nuance (tradeoffs, related signals from the same draft)
-    and produce coordinated edits."""
+    Remove-dimension actions are handled first as a single batch (one new
+    rubric version with all removals applied), because they're structural
+    changes that don't go through the refiner. Any remaining non-remove
+    items then follow the normal refiner path:
+
+      For 1-2 dims: per-dim refiner calls (each independent).
+      For 3+ dims: single combined refiner call for cross-dim nuance."""
     pending = st.session_state.get("_pending_rubric_feedback") or {}
     items = pending.pop(panel_id, [])
     st.session_state["_pending_rubric_feedback"] = pending
     if not items:
         return
-    total = len(items)
+
+    # Split into remove-actions and everything else.
+    remove_items = [i for i in items if _is_remove_feedback(i.get("feedback_text", ""))]
+    other_items = [i for i in items if not _is_remove_feedback(i.get("feedback_text", ""))]
+
+    if remove_items:
+        # Resolve each remove item to (criterion_name, dimension_id) via the
+        # same input resolver the refiner uses, so we can delete by id.
+        from rubric_writer.persistence import get_active_rubric
+        rubric_dict, _, _ = get_active_rubric()
+        removals: list[dict[str, str]] = []
+        for item in remove_items:
+            ri = _resolve_refiner_inputs(
+                item["feedback_text"], item["draft_grade"], rubric_dict or {},
+            )
+            if not ri:
+                continue
+            removals.append({
+                "criterion_name": ri["criterion_name"],
+                "dimension_id": ri["dimension_id"],
+                "feedback_text": item["feedback_text"],
+            })
+        if removals:
+            if len(removals) > 1:
+                st.caption(f"Removing {len(removals)} dimensions in a single version...")
+            _remove_dimensions_and_save(removals=removals)
+
+    if not other_items:
+        return
+
+    total = len(other_items)
     if total >= 3:
         st.caption(f"Processing {total} dimensions together for coordinated edits...")
-        _schedule_multi_feedback_rubric_refinement(items=items)
+        _schedule_multi_feedback_rubric_refinement(items=other_items)
         return
-    for idx, item in enumerate(items, start=1):
+    for idx, item in enumerate(other_items, start=1):
         if total > 1:
             st.caption(f"Processing feedback {idx}/{total}...")
         _schedule_feedback_rubric_refinement(
@@ -733,6 +776,18 @@ def _schedule_feedback_rubric_refinement(
     inputs = _resolve_refiner_inputs(feedback_text, draft_grade, rubric_dict)
     if not inputs:
         _log.info("Rubric refinement: could not resolve refiner inputs for %s", drift_kind)
+        return
+
+    # Short-circuit: "remove" is a structural change, not a wording change.
+    # The refiner generates `after_wording` edits, which doesn't apply here.
+    # Delete the dim directly and save a new rubric version.
+    fl = (feedback_text or "").lower()
+    if "user wants to remove" in fl or "user says remove" in fl:
+        _remove_dimension_and_save(
+            criterion_name=inputs["criterion_name"],
+            dimension_id=inputs["dimension_id"],
+            feedback_text=feedback_text,
+        )
         return
 
     # Find the latest draft text for verification
@@ -791,8 +846,13 @@ def _schedule_feedback_rubric_refinement(
             parse_status = parse_status_ob
 
     # Attach minimal metadata needed for verification
-    suggestion.setdefault("criterion_name", inputs["criterion_name"])
-    suggestion.setdefault("dimension_id", inputs["dimension_id"])
+    # FORCE the criterion_name and dimension_id to our canonical inputs, not
+    # whatever the refiner echoed back. The refiner occasionally hallucinates
+    # a plausible-looking dim_id that doesn't exist in the rubric (e.g.
+    # `claim_before_system_name` when the real id was `claim_first_framing`),
+    # which leads to silent Apply failures downstream.
+    suggestion["criterion_name"] = inputs["criterion_name"]
+    suggestion["dimension_id"] = inputs["dimension_id"]
     suggestion["feedback_text"] = feedback_text
     suggestion["grader_verdict"] = inputs["grader_verdict"]
     suggestion["drift_kind"] = drift_kind  # needed for verification's low-confidence check
@@ -1191,9 +1251,28 @@ def _dot_row_for_grade(grade_payload: dict[str, Any] | None, drift: dict[str, An
         return ""
     parts = []
     d_obj = drift or {}
-    trade = bool(d_obj.get("tradeoff_improvements")) and bool(d_obj.get("tradeoff_drops"))
-    oscillating_dims = {o.get("dimension_id") for o in d_obj.get("oscillations") or []}
-    persistent_dims = {p.get("dimension_id") for p in d_obj.get("persistent_failure") or []}
+    # Tradeoff pulse fires ONLY when the drift panel is actually showing a
+    # tradeoff. Previously we pulsed whenever tradeoff_improvements AND
+    # tradeoff_drops were non-empty, but those arrays get populated on every
+    # draft that has any criterion improve+drop pair -- even when the drift
+    # panel decides to show a higher-priority panel (low_confidence,
+    # oscillation, persistent_failure) OR suppresses drift entirely (early
+    # drafts, user edits, small rubrics). Result: dots pulsed with no panel
+    # to explain what the pulse meant. Now the dots only pulse when the
+    # tradeoff is the kind that actually renders.
+    trade = (d_obj.get("kind") == "tradeoff")
+    # Normalize dim_ids to lowercase-stripped so they match the per-criterion
+    # NOT_MET lookup below (which also strips). Without this, a persistent dim
+    # with trailing whitespace or differing case silently fails the set
+    # intersection and its criterion doesn't show the `!` badge.
+    oscillating_dims = {
+        (o.get("dimension_id") or "").strip().lower()
+        for o in d_obj.get("oscillations") or []
+    }
+    persistent_dims = {
+        (p.get("dimension_id") or "").strip().lower()
+        for p in d_obj.get("persistent_failure") or []
+    }
     has_low_conf = {
         lc.get("criterion")
         for lc in d_obj.get("low_confidence_dims") or []
@@ -1221,9 +1300,10 @@ def _dot_row_for_grade(grade_payload: dict[str, Any] | None, drift: dict[str, An
         pulse = " animation:pulse 1.2s ease-in-out infinite;" if trade else ""
 
         # --- Determine delta arrow ---
-        # Only flag dimensions that are currently NOT_MET
+        # Only flag dimensions that are currently NOT_MET. Case-insensitive
+        # strip to match oscillating_dims / persistent_dims normalization.
         crit_not_met_ids = {
-            (d.get("dimension_id") or "").strip()
+            (d.get("dimension_id") or "").strip().lower()
             for d in c.get("dimension_grades") or []
             if (d.get("grade") or "").upper() == "NOT_MET"
         }
@@ -1401,22 +1481,57 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
     if ek not in st.session_state:
         st.session_state[ek] = True
 
-    title = {
-        "low_confidence": "🔍 System uncertain on {n} dimension(s)",
-        "oscillation": "〰️ {n} dimension(s) oscillating",
-        "persistent_failure": "🔄 {n} dimension(s) consistently not met",
-        "tradeoff": "⚖️ Rubric tradeoff detected",
-        "spot_check": "✅ Quick check: {n} dimension(s)",
-    }.get(kind, "Rubric drift")
+    # Each drift kind has a title template. Counts are computed against the
+    # dimension list AND the distinct criteria those dimensions span, because
+    # the `!` dots in the scoring row are one-per-criterion (if a criterion
+    # has 2 NOT_MET dims, it still shows a single `!`). Without showing the
+    # criterion count, users see "3 dimensions" in the panel title and 2
+    # dots and think the UI is miscounting.
+    _dim_entries_by_kind = {
+        "low_confidence": drift.get("low_confidence_dims") or [],
+        "spot_check": drift.get("spot_check_dims") or [],
+        "oscillation": drift.get("oscillations") or [],
+        "persistent_failure": drift.get("persistent_failure") or [],
+    }
+    _entries = _dim_entries_by_kind.get(kind, [])
+    _n_dims = len(_entries)
+    # Oscillations don't carry a `criterion` field directly -- they're indexed
+    # by dimension_id and the criterion is looked up from the draft_grade.
+    # For all other kinds, the detector output includes `criterion`.
+    _crit_set: set[str] = set()
+    if kind == "oscillation":
+        dg = message.get("draft_grade") or {}
+        dim_to_crit: dict[str, str] = {}
+        for c in dg.get("grades") or []:
+            cname = (c.get("criterion_name") or "").strip()
+            for d in c.get("dimension_grades") or []:
+                did = (d.get("dimension_id") or "").strip()
+                if did:
+                    dim_to_crit[did] = cname
+        for e in _entries:
+            _crit_set.add(dim_to_crit.get(e.get("dimension_id", ""), ""))
+    else:
+        for e in _entries:
+            _crit_set.add((e.get("criterion") or "").strip())
+    _crit_set.discard("")
+    _n_crits = len(_crit_set)
 
-    if "{n}" in title:
-        count_map = {
-            "low_confidence": len(drift.get("low_confidence_dims") or []),
-            "spot_check": len(drift.get("spot_check_dims") or []),
-            "oscillation": len(drift.get("oscillations") or []),
-            "persistent_failure": len(drift.get("persistent_failure") or []),
-        }
-        title = title.format(n=count_map.get(kind, 0))
+    def _dim_crit_label(n_dims: int, n_crits: int) -> str:
+        """Render count as 'N dimension(s)' or 'N dimensions across C criteria'."""
+        dim_word = "dimension" if n_dims == 1 else "dimensions"
+        crit_word = "criterion" if n_crits == 1 else "criteria"
+        if n_crits and n_crits != n_dims:
+            return f"{n_dims} {dim_word} across {n_crits} {crit_word}"
+        return f"{n_dims} {dim_word}"
+
+    _count_label = _dim_crit_label(_n_dims, _n_crits)
+    title = {
+        "low_confidence": f"🔍 System uncertain on {_count_label}",
+        "oscillation": f"〰️ {_count_label} oscillating",
+        "persistent_failure": f"🔄 {_count_label} consistently not met",
+        "tradeoff": "⚖️ Rubric tradeoff detected",
+        "spot_check": f"✅ Quick check: {_count_label}",
+    }.get(kind, "Rubric drift")
 
     with st.expander(title, expanded=st.session_state.get(ek, True)):
 
@@ -1534,6 +1649,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
             for j, dim_info in enumerate(dims):
                 did = dim_info.get("dimension_id", "")
                 crit = dim_info.get("criterion", "")
+                streak = dim_info.get("streak", 0)
                 dim_desc = _lookup_dimension_description(did, crit)
                 dim_label = dim_desc if dim_desc else did
 
@@ -2165,87 +2281,183 @@ def _render_low_confidence_clarifications(
 
 
 def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
+    """Line graph of each criterion's score (% dimensions met) across drafts.
+
+    X-axis: draft index (1-based, chronological).
+    Y-axis: 0-100 % dimensions met.
+    One line per criterion; hover to see the name + score."""
     cfg = load_grading_config()
     if not cfg["enabled"]:
         st.caption("Background rubric grading is disabled.")
         return
+
     graded = [m for m in messages if m.get("role") == "assistant" and m.get("draft_grade")]
     if not graded:
         st.info("No rubric scores yet. Scores appear after drafts are graded in the background.")
         return
-    latest = graded[-1]
-    st.subheader("Latest draft scorecard")
-    dg = latest.get("draft_grade") or {}
-    for c in sorted(
-        dg.get("grades") or [],
-        key=lambda x: (x.get("criterion_priority", 99), x.get("criterion_name") or ""),
-    ):
-        name = c.get("criterion_name") or ""
-        sc = c.get("score") or ""
-        st.markdown(f"**{html_lib.escape(name)}** (priority {c.get('criterion_priority', '?')}) — `{sc}`")
-        for d in c.get("dimension_grades") or []:
-            g = (d.get("grade") or "").upper()
-            conf = d.get("confidence", "high")
-            mark = "✓" if g == "MET" else "✗"
-            conf_badge = ""
-            if conf == "low":
-                conf_badge = " ⚠️ _low confidence_"
-                note = d.get("ambiguity_note", "")
-                if note:
-                    conf_badge += f" — {note}"
-            elif conf == "medium":
-                conf_badge = " 🔸 _medium confidence_"
-            st.caption(f"{mark} `{d.get('dimension_id')}` — {d.get('evidence', '')}{conf_badge}")
 
-    pairs = _aggregate_tradeoff_pairs(messages)
-    if pairs:
-        st.subheader("Tradeoff alerts")
-        for (imp, worse), drafts in sorted(pairs.items(), key=lambda x: (-len(x[1]), x[0][0])):
-            ds = ", ".join(str(d) for d in drafts)
-            st.info(
-                f"Across revisions, **{html_lib.escape(imp)}** improved while "
-                f"**{html_lib.escape(worse)}** slipped — seen at draft(s) **{ds}**. "
-                "Consider clarifying priorities in your rubric or asking the model to preserve both."
-            )
+    # Build a long-format table: one row per (draft_index, criterion, score%).
+    rows: list[dict[str, Any]] = []
+    for i, m in enumerate(graded, start=1):
+        dg = m.get("draft_grade") or {}
+        for c in dg.get("grades") or []:
+            name = (c.get("criterion_name") or "").strip()
+            if not name:
+                continue
+            pct = parse_score_pct(c.get("score"))
+            if pct is None:
+                continue
+            rows.append({
+                "Draft": i,
+                "Criterion": name,
+                "Score (%)": round(pct * 100, 1),
+            })
 
-    if len(graded) >= 2:
-        st.subheader("Score heatmap")
-        render_heatmap_grid(messages)
+    if not rows:
+        st.info("No parseable scores to plot yet.")
+        return
 
-        st.subheader("Score trajectory")
-        crit_names: list[str] = []
-        for m in graded:
-            for c in (m.get("draft_grade") or {}).get("grades") or []:
-                n = (c.get("criterion_name") or "").strip()
-                if n and n not in crit_names:
-                    crit_names.append(n)
-        draft_labels = list(range(1, len(graded) + 1))
+    # One draft isn't enough for a line — fall back to a horizontal bar view.
+    n_drafts = len(graded)
+    if n_drafts == 1:
+        import pandas as _pd
+        df = _pd.DataFrame(rows).set_index("Criterion")["Score (%)"]
+        st.bar_chart(df)
+        return
+
+    # Plotly line graph with its built-in legend DISABLED. Streamlit's sidebar
+    # is narrow enough that Plotly's legend (horizontal or vertical) clips the
+    # criterion names no matter how we position it. Instead we render a
+    # custom color-key below the chart as markdown, which wraps cleanly.
+    import pandas as _pd
+    df = _pd.DataFrame(rows)
+    wide = df.pivot(index="Draft", columns="Criterion", values="Score (%)")
+
+    # Try plotly first (gives us full control over the legend). If it fails,
+    # use altair as a second option (also supports disabled legends and
+    # per-series color). st.line_chart is the last resort and DOES show its
+    # own legend in-chart which will clip in the sidebar -- but at least the
+    # graph renders.
+    _PALETTE = [
+        "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
+        "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf",
+    ]
+    # Stable column order (deterministic across runs) so legend colors match
+    # the chart lines.
+    columns = list(wide.columns)
+    crit_colors: dict[str, str] = {
+        cn: _PALETTE[i % len(_PALETTE)] for i, cn in enumerate(columns)
+    }
+
+    rendered = False
+    # --- Attempt 1: Plotly -------------------------------------------------
+    try:
+        import plotly.graph_objects as go
+
+        fig = go.Figure()
+        for cn in columns:
+            fig.add_trace(go.Scatter(
+                x=wide.index.tolist(),
+                y=wide[cn].tolist(),
+                mode="lines+markers",
+                name=cn,
+                line=dict(color=crit_colors[cn]),
+                marker=dict(color=crit_colors[cn]),
+                hovertemplate="<b>%{fullData.name}</b><br>Draft %{x}: %{y:.1f}%<extra></extra>",
+            ))
+        fig.update_layout(
+            xaxis_title="Draft",
+            yaxis_title="% dimensions met",
+            yaxis=dict(range=[0, 105]),
+            xaxis=dict(tickmode="linear", dtick=1),
+            showlegend=False,
+            margin=dict(l=10, r=10, t=10, b=40),
+            height=260,
+        )
+        st.plotly_chart(fig, use_container_width=True)
+        rendered = True
+    except Exception as _e:
+        _log.warning("Plotly rendering failed, trying altair: %s", _e)
+
+    # --- Attempt 2: Altair -------------------------------------------------
+    if not rendered:
         try:
-            import plotly.graph_objects as go
+            import altair as alt
 
-            fig = go.Figure()
-            for cn in crit_names:
-                col: list[float | None] = []
-                for m in graded:
-                    p = None
-                    for c in (m.get("draft_grade") or {}).get("grades") or []:
-                        if (c.get("criterion_name") or "").strip() == cn:
-                            pr = parse_score_pct(c.get("score"))
-                            p = pr * 100 if pr is not None else None
-                            break
-                    col.append(p)
-                fig.add_trace(
-                    go.Scatter(x=draft_labels, y=col, mode="lines+markers", name=cn[:40])
-                )
-            fig.update_layout(
-                xaxis_title="Draft #",
-                yaxis_title="Score %",
-                margin=dict(l=10, r=10, t=30, b=40),
-                height=320,
+            long_df = wide.reset_index().melt(
+                id_vars="Draft", var_name="Criterion", value_name="Score",
             )
-            st.plotly_chart(fig, use_container_width=True)
-        except Exception:
-            st.caption("Could not render trajectory chart.")
+            chart = (
+                alt.Chart(long_df)
+                .mark_line(point=True)
+                .encode(
+                    x=alt.X("Draft:Q", axis=alt.Axis(tickMinStep=1)),
+                    y=alt.Y("Score:Q", scale=alt.Scale(domain=[0, 105]),
+                            title="% dimensions met"),
+                    color=alt.Color(
+                        "Criterion:N",
+                        scale=alt.Scale(
+                            domain=columns,
+                            range=[crit_colors[c] for c in columns],
+                        ),
+                        legend=None,  # no in-chart legend
+                    ),
+                )
+                .properties(height=260)
+            )
+            st.altair_chart(chart, use_container_width=True)
+            rendered = True
+        except Exception as _e:
+            _log.warning("Altair rendering failed, falling back to st.line_chart: %s", _e)
+
+    # --- Attempt 3: st.line_chart (last resort, will show its own legend) --
+    if not rendered:
+        st.line_chart(wide, y_label="% dimensions met", x_label="Draft")
+        # With st.line_chart, Streamlit draws its OWN legend using its own
+        # palette. Skip our custom legend to avoid a color mismatch -- the
+        # built-in legend is authoritative in this fallback.
+        return
+
+    # --- Custom color key below the chart (plotly/altair path) -------------
+    legend_md_parts = []
+    for cn in columns:
+        color = crit_colors[cn]
+        legend_md_parts.append(
+            f'<span style="display:inline-flex;align-items:center;margin:2px 8px 2px 0;font-size:0.85rem;">'
+            f'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;'
+            f'background:{color};margin-right:6px;"></span>{html_lib.escape(cn)}</span>'
+        )
+    st.markdown(
+        '<div style="line-height:1.6;">' + "".join(legend_md_parts) + '</div>',
+        unsafe_allow_html=True,
+    )
+
+    # Quick scorecard for the latest draft, so users can see exactly which
+    # dimensions passed/failed on the most recent draft without scrolling
+    # through the conversation log.
+    latest = graded[-1]
+    dg = latest.get("draft_grade") or {}
+    with st.expander(f"Latest draft scorecard (draft {n_drafts})", expanded=False):
+        for c in sorted(
+            dg.get("grades") or [],
+            key=lambda x: (x.get("criterion_priority", 99), x.get("criterion_name") or ""),
+        ):
+            name = c.get("criterion_name") or ""
+            sc = c.get("score") or ""
+            st.markdown(f"**{html_lib.escape(name)}** (priority {c.get('criterion_priority', '?')}) — `{sc}`")
+            for d in c.get("dimension_grades") or []:
+                g = (d.get("grade") or "").upper()
+                conf = d.get("confidence", "high")
+                mark = "✓" if g == "MET" else "✗"
+                conf_badge = ""
+                if conf == "low":
+                    conf_badge = " ⚠️ _low confidence_"
+                    note = d.get("ambiguity_note", "")
+                    if note:
+                        conf_badge += f" — {note}"
+                elif conf == "medium":
+                    conf_badge = " 🔸 _medium confidence_"
+                st.caption(f"{mark} `{d.get('dimension_id')}` — {d.get('evidence', '')}{conf_badge}")
 
 
 # ---------------------------------------------------------------------------
@@ -2412,6 +2624,58 @@ def render_debug_drift_panel() -> None:
     st.caption("Scroll to the latest draft in the chat to see the panel.")
 
 
+def invalidate_stale_suggestions() -> int:
+    """Mark any pending rubric-edit suggestion whose target dimension no
+    longer exists in the active rubric as stale, so the Apply button can't
+    fire a silent failure. Returns the number of suggestions invalidated.
+
+    Call this after any save that mutates the rubric's dimension set --
+    dim-recognition Confirm (which may remove dims), refiner Apply (which
+    modifies wording), etc. -- so pending suggestions from before the save
+    can't be applied against a rubric that no longer matches their target."""
+    try:
+        from rubric_writer.persistence import get_active_rubric
+        rubric_dict, _, _ = get_active_rubric()
+    except Exception:
+        return 0
+    if not rubric_dict:
+        return 0
+
+    # Build the set of (criterion_name_lower, dim_id_lower) pairs currently in
+    # the rubric, plus a set of dim_ids that exist at all (for fallback check).
+    live_pairs: set[tuple[str, str]] = set()
+    live_dim_ids: set[str] = set()
+    for crit in rubric_dict.get("rubric") or []:
+        cname = (crit.get("name") or "").strip().lower()
+        for dim in crit.get("dimensions") or []:
+            did = (dim.get("id") or "").strip().lower()
+            if did:
+                live_pairs.add((cname, did))
+                live_dim_ids.add(did)
+
+    suggestions = st.session_state.get("rubric_edit_suggestions") or []
+    invalidated = 0
+    for s in suggestions:
+        if s.get("status") != "pending":
+            continue
+        sug_crit = (s.get("criterion_name") or "").strip().lower()
+        sug_dim = (s.get("dimension_id") or "").strip().lower()
+        if not sug_dim:
+            continue
+        # Match by dim_id (the stable identifier); criterion name is only a
+        # fallback disambiguator since the LLM sometimes rephrases it.
+        if sug_dim in live_dim_ids:
+            continue
+        s["status"] = "stale"
+        s["stale_reason"] = (
+            f"Dimension `{s.get('dimension_id')}` under **{s.get('criterion_name')}** "
+            "is no longer in the current rubric -- it may have been removed or renamed. "
+            "This suggestion can no longer be applied."
+        )
+        invalidated += 1
+    return invalidated
+
+
 def clear_rubric_edit_session_state() -> None:
     """Clear all rubric-edit-related session state. Call when switching
     conversations so stale suggestions from a prior conversation don't leak
@@ -2431,15 +2695,30 @@ def clear_rubric_edit_session_state() -> None:
 
 def render_rubric_edit_suggestions() -> None:
     """Sidebar panel showing pending rubric edit suggestions and verification results."""
+    # Invalidate any pending suggestions whose target dim is no longer in the
+    # active rubric. This handles the case where the user (a) rejects a dim in
+    # the recognition flow, or (b) applies a prior edit that renames a dim,
+    # and THEN tries to apply a stale suggestion that still references the
+    # old dim. Without this, Apply would silently fail with "Couldn't find
+    # dimension ..." after the user already saw it in the sidebar.
+    invalidate_stale_suggestions()
+
     suggestions = st.session_state.get("rubric_edit_suggestions") or []
     verifications = st.session_state.get("rubric_edit_verifications") or []
     pending = [s for s in suggestions if s.get("status") == "pending"]
+    stale = [s for s in suggestions if s.get("status") == "stale"]
 
     # Drain any apply-result messages that survived the rerun.
     for msg in st.session_state.pop("_rubric_apply_successes", []):
         st.success(msg)
     for msg in st.session_state.pop("_rubric_apply_warnings", []):
         st.warning(msg)
+
+    # Show any freshly-stale suggestions ONCE as a warning, then stop showing.
+    for s in stale:
+        if not s.get("_stale_shown"):
+            st.warning(s.get("stale_reason") or "A suggested rubric edit is no longer applicable.")
+            s["_stale_shown"] = True
 
     # Show verification results for recently applied edits
     if verifications:
@@ -2792,6 +3071,186 @@ def _append_rubric_edit_system_message(suggestion: dict[str, Any], decision: str
         _log.warning("auto-save after rubric edit system message failed: %s", e)
 
 
+def _remove_dimensions_and_save(
+    *,
+    removals: list[dict[str, str]],
+) -> bool:
+    """Remove MULTIPLE dimensions in a single new rubric version.
+
+    `removals` is a list of dicts with keys `criterion_name`, `dimension_id`,
+    and optional `feedback_text`. All removals are applied to ONE deep-copy
+    of the active rubric and saved as ONE new version, so a user removing
+    N dimensions in one panel gets a single version bump rather than N.
+    Returns True on success."""
+    import copy as _copy
+    from rubric_writer.persistence import (
+        load_rubric_history, save_rubric_history, invalidate_rubric_cache,
+    )
+
+    if not removals:
+        return False
+
+    rubric_history = load_rubric_history(force_reload=True)
+    if not rubric_history:
+        st.warning("No active rubric — can't remove dimensions.")
+        return False
+    rubric_dict = rubric_history[-1]
+    if not rubric_dict.get("rubric"):
+        st.warning("Active rubric has no criteria — can't remove dimensions.")
+        return False
+
+    # Normalize the target dim_ids once.
+    target_ids = {
+        (r.get("dimension_id") or "").strip().lower()
+        for r in removals
+        if (r.get("dimension_id") or "").strip()
+    }
+    if not target_ids:
+        st.warning("Missing dimension_ids — can't remove.")
+        return False
+
+    new_version = _copy.deepcopy(rubric_dict)
+    new_version.pop("id", None)
+    new_version.pop("version", None)
+    new_version.pop("created_at", None)
+
+    # Track what we actually removed for the summary message.
+    removed_display: list[tuple[str, str]] = []  # (criterion_name, dim_label)
+    for crit in new_version.get("rubric") or []:
+        cname = crit.get("name", "")
+        dims = crit.get("dimensions") or []
+        kept = []
+        for d in dims:
+            if (d.get("id") or "").strip().lower() in target_ids:
+                dim_label = d.get("label") or d.get("description") or d.get("id", "")
+                removed_display.append((cname, dim_label))
+                continue
+            kept.append(d)
+        crit["dimensions"] = kept
+    new_version["rubric"] = [c for c in new_version["rubric"] if c.get("dimensions")]
+
+    if not removed_display:
+        st.warning(
+            "Couldn't find any of the requested dimensions in the current rubric — "
+            "they may have already been removed."
+        )
+        return False
+
+    new_version["source"] = "user_removed_persistent_failure"
+    rubric_history.append(new_version)
+
+    try:
+        saved_version = save_rubric_history(rubric_history)
+    except Exception as e:
+        _log.warning("save_rubric_history (batch remove) failed: %s", e)
+        if rubric_history and rubric_history[-1] is new_version:
+            rubric_history.pop()
+        st.error(f"Couldn't save rubric after removals: {e}")
+        return False
+
+    if saved_version is None:
+        if rubric_history and rubric_history[-1] is new_version:
+            rubric_history.pop()
+        st.error("Couldn't save rubric after removals (no version returned).")
+        return False
+
+    invalidate_rubric_cache()
+
+    # Refresh shadow state.
+    reloaded = load_rubric_history(force_reload=True)
+    if reloaded:
+        new_active = reloaded[-1]
+        new_criteria = new_active.get("rubric", [])
+        st.session_state.rubric = new_criteria
+        try:
+            st.session_state.editing_criteria = _copy.deepcopy(new_criteria)
+            st.session_state["editing_criteria_ui_version"] = (
+                st.session_state.get("editing_criteria_ui_version", 0) + 1
+            )
+        except Exception:
+            pass
+        st.session_state.active_rubric_idx = len(reloaded) - 1
+        try:
+            from rubric_writer.widget_keys import project_scoped_key
+            _rvk = project_scoped_key("rubric_version_selector")
+            st.session_state.pop(_rvk, None)
+        except Exception:
+            pass
+
+    # Log one event per removed dim so analysis can count accurately.
+    sb = st.session_state.get("supabase")
+    pid = st.session_state.get("current_project_id")
+    if sb and pid:
+        for r, (cname_rm, dlabel_rm) in zip(removals, removed_display):
+            try:
+                save_project_data(sb, pid, "rubric_dimension_removed", {
+                    "timestamp": datetime.now().isoformat(),
+                    "criterion_name": cname_rm,
+                    "dimension_id": r.get("dimension_id", ""),
+                    "dimension_label": dlabel_rm,
+                    "source": "persistent_failure_remove",
+                    "feedback_text": r.get("feedback_text", ""),
+                    "new_version": saved_version,
+                    "batch_size": len(removed_display),
+                })
+            except Exception:
+                pass
+
+    # One system message summarizing the batch removal.
+    import time as _time
+    if len(removed_display) == 1:
+        cname_rm, dlabel_rm = removed_display[0]
+        content = (
+            f"🗑 **Dimension removed.** _{cname_rm}_: **{dlabel_rm}** was "
+            f"removed after being consistently not met — new rubric "
+            f"**v{saved_version}** saved."
+        )
+    else:
+        lines = [f"🗑 **{len(removed_display)} dimensions removed** — new rubric **v{saved_version}** saved."]
+        for cname_rm, dlabel_rm in removed_display:
+            lines.append(f"• _{cname_rm}_: **{dlabel_rm}**")
+        content = "\n".join(lines)
+
+    st.session_state.setdefault("messages", []).append({
+        "role": "system",
+        "content": content,
+        "message_id": f"dim_removed_{int(_time.time() * 1000000)}",
+        "is_system_generated": True,
+    })
+    try:
+        from rubric_writer.persistence import _auto_save_conversation
+        _auto_save_conversation()
+    except Exception as e:
+        _log.warning("auto-save after dim removal failed: %s", e)
+
+    if len(removed_display) == 1:
+        cname_rm, dlabel_rm = removed_display[0]
+        st.session_state.setdefault("_rubric_apply_successes", []).append(
+            f"Removed **{dlabel_rm}** from _{cname_rm}_ — new rubric v{saved_version} saved."
+        )
+    else:
+        st.session_state.setdefault("_rubric_apply_successes", []).append(
+            f"Removed {len(removed_display)} dimensions — new rubric v{saved_version} saved."
+        )
+    return True
+
+
+def _remove_dimension_and_save(
+    *,
+    criterion_name: str,
+    dimension_id: str,
+    feedback_text: str = "",
+) -> bool:
+    """Single-dim wrapper around _remove_dimensions_and_save. Kept as a
+    convenience for the 1-item case; batched removals from the panel go
+    through the plural form directly to produce a single new rubric version."""
+    return _remove_dimensions_and_save(removals=[{
+        "criterion_name": criterion_name,
+        "dimension_id": dimension_id,
+        "feedback_text": feedback_text,
+    }])
+
+
 def _apply_rubric_suggestion(suggestion: dict[str, Any]) -> bool:
     """Apply a suggested rubric edit by deep-copying the active rubric, mutating
     the copy, and appending it as a new rubric version. Returns True on success.
@@ -2919,6 +3378,16 @@ def _apply_rubric_suggestion(suggestion: dict[str, Any]) -> bool:
             _log.warning("failed to refresh editing_criteria: %s", e)
         # Make sure the active index points at the new version.
         st.session_state.active_rubric_idx = len(_verify_history) - 1
+        # CLEAR the version-selector widget key so the selectbox re-initializes
+        # from `index=active_idx` on the next render. Setting it to a specific
+        # value is fragile -- Streamlit can raise StreamlitAPIException if the
+        # widget has already been instantiated in this session.
+        try:
+            from rubric_writer.widget_keys import project_scoped_key
+            _rvk = project_scoped_key("rubric_version_selector")
+            st.session_state.pop(_rvk, None)
+        except Exception:
+            pass
 
         st.session_state.setdefault("_rubric_apply_successes", []).append(
             f"Updated **{crit_name}** -- new rubric version v{saved_version} saved."
@@ -2997,10 +3466,13 @@ def _infer_user_expected_grade(suggestion: dict[str, Any]) -> str | None:
         if grader_verdict == "MET":
             return "NOT_MET"
 
-    # Agree patterns: user wants the SAME as what the grader said
+    # Agree patterns: user wants the SAME as what the grader said. Includes
+    # the low-confidence panel's `grade_correct` action (fired when the user
+    # confirms the grader's verdict despite the low confidence).
     if ("agrees" in feedback_text or "confirms" in feedback_text
             or "working_on_it" in feedback_text or "i'm working on it" in feedback_text
-            or "is correct" in feedback_text):
+            or "is correct" in feedback_text
+            or "grade_correct" in feedback_text):
         return grader_verdict or None
 
     return None

@@ -1,0 +1,1167 @@
+{
+  "model": "claude-opus-4-7",
+  "aggregate": {
+    "total": 34,
+    "specific": 32,
+    "generic": 2,
+    "pass_rate": 0.9411764705882353
+  },
+  "by_signal": {
+    "strong": {
+      "total": 24,
+      "specific": 23,
+      "generic": 1,
+      "pass_rate": 0.9583333333333334
+    },
+    "weak": {
+      "total": 10,
+      "specific": 9,
+      "generic": 1,
+      "pass_rate": 0.9
+    }
+  },
+  "fixtures": [
+    {
+      "name": "cold_email_founder",
+      "genre": "cold outreach email (founder to investor)",
+      "signal": "strong",
+      "criteria": [
+        {
+          "name": "Recipient-specific hook in opening",
+          "description": "The first line references something concrete and specific to the recipient — a recent investment, public position, or portfolio pattern — not a generic greeting or thesis platitude.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically open cold investor emails with generic pleasantries or a thesis pitch; requiring a concrete, verifiable, recipient-specific hook tied to sender relevance is a distinctive preference."
+        },
+        {
+          "name": "Hard number in first three lines",
+          "description": "At least one concrete quantitative data point (revenue, contracts, users, growth rate) appears within the first three lines of the body.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM cold outreach drafts typically open with introductions and context before mentioning metrics, so requiring a concrete traction number in the first three lines is a distinctive constraint."
+        },
+        {
+          "name": "No hedging or filler language",
+          "description": "The email removes pleasantries, softeners, and vague alignment claims. Every sentence either delivers information or makes a direct ask.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM cold outreach emails to investors typically include polite openers, hedging language, and padded asks; explicitly stripping all of these is a distinctive user preference."
+        },
+        {
+          "name": "Plain-English founder voice",
+          "description": "The writing sounds like a founder explaining their business to a smart person, not a banker or consultant. Industry jargon is replaced with literal descriptions of what the company does and why it matters.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs tend to use polished business jargon (\"go-to-market\", \"tailwinds\", \"verticals\") in investor outreach; explicitly banning these in favor of literal plain-English descriptions is a distinctive stylistic preference."
+        },
+        {
+          "name": "First-name informality",
+          "description": "Salutation and tone treat the recipient as a peer. First-name address, no honorifics, no formal sign-offs like 'Best regards' when something leaner fits.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically default to \"Dear [Name]\" or \"Hi [Full Name]\" with \"Best regards\" sign-offs in investor outreach; first-name-only peer framing with lean sign-offs is a distinctive stylistic choice."
+        }
+      ],
+      "total": 5,
+      "specific": 5,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "cold outreach emails to investors",
+        "user_goals_summary": "The user writes cold VC emails that sound like a human founder, not a templated pitch. They want every opening to earn attention through recipient-specific relevance and hard evidence, with zero filler, hedging, or jargon.",
+        "rubric": [
+          {
+            "name": "Recipient-specific hook in opening",
+            "category": "Content",
+            "description": "The first line references something concrete and specific to the recipient — a recent investment, public position, or portfolio pattern — not a generic greeting or thesis platitude.",
+            "dimensions": [
+              {
+                "id": "opens_with_recipient_reference",
+                "label": "First sentence references something specific the recipient has done or invested in"
+              },
+              {
+                "id": "reference_is_verifiable",
+                "label": "The reference is concrete enough to be verifiable (names a company, deal, or public statement)"
+              },
+              {
+                "id": "connects_hook_to_sender",
+                "label": "The hook is tied to why the sender is relevant to that recipient specifically"
+              },
+              {
+                "id": "no_generic_opener",
+                "label": "Does not open with pleasantries like 'hope this finds you well' or 'I'm reaching out to introduce'"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Hard number in first three lines",
+            "category": "Content",
+            "description": "At least one concrete quantitative data point (revenue, contracts, users, growth rate) appears within the first three lines of the body.",
+            "dimensions": [
+              {
+                "id": "quant_metric_present",
+                "label": "Includes at least one specific number with units (dollars, contracts, customers, %)"
+              },
+              {
+                "id": "metric_within_first_three_lines",
+                "label": "The number appears within the first three lines of the body"
+              },
+              {
+                "id": "metric_supports_traction",
+                "label": "The number is a traction/proof signal, not a vanity stat"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No hedging or filler language",
+            "category": "Style",
+            "description": "The email removes pleasantries, softeners, and vague alignment claims. Every sentence either delivers information or makes a direct ask.",
+            "dimensions": [
+              {
+                "id": "no_pleasantries",
+                "label": "No 'hope this email finds you well', 'I hope you're doing well', or similar openers"
+              },
+              {
+                "id": "no_belief_softeners",
+                "label": "No 'I believe', 'I think', 'it seems', 'perhaps', 'potentially'"
+              },
+              {
+                "id": "no_vague_alignment_claims",
+                "label": "No generic 'your thesis aligns with our mission' style statements"
+              },
+              {
+                "id": "direct_ask",
+                "label": "The ask is stated directly without 'would welcome the opportunity' or similar padding"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Plain-English founder voice",
+            "category": "Style",
+            "description": "The writing sounds like a founder explaining their business to a smart person, not a banker or consultant. Industry jargon is replaced with literal descriptions of what the company does and why it matters.",
+            "dimensions": [
+              {
+                "id": "no_business_jargon",
+                "label": "Avoids terms like 'compliance side', 'tailwinds', 'verticals', 'go-to-market motion' unless unavoidable"
+              },
+              {
+                "id": "literal_description_of_what_company_does",
+                "label": "Describes what the company does in concrete, literal terms a non-expert could follow"
+              },
+              {
+                "id": "causal_mechanism_stated",
+                "label": "When relevant, names the real-world driver (e.g., 'utilities have to remove carbon by 2030') instead of abstracting it"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          },
+          {
+            "name": "First-name informality",
+            "category": "Style",
+            "description": "Salutation and tone treat the recipient as a peer. First-name address, no honorifics, no formal sign-offs like 'Best regards' when something leaner fits.",
+            "dimensions": [
+              {
+                "id": "first_name_salutation",
+                "label": "Opens with the recipient's first name only (no 'Dear', no 'Ms./Mr./Dr.')"
+              },
+              {
+                "id": "no_formal_honorifics",
+                "label": "No honorifics or last-name-only address anywhere in the email"
+              },
+              {
+                "id": "conversational_register",
+                "label": "Sentence rhythm reads conversational, not corporate (short lines, fragments OK)"
+              }
+            ],
+            "priority": 5,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Non-negotiables: specific recipient hook + one hard number in the first three lines + zero hedging. The user cuts ruthlessly — when in doubt, delete rather than soften. They want founder voice over polished template; a slightly rough but human line beats a smooth banker line every time."
+      }
+    },
+    {
+      "name": "blog_intro_ml_researcher",
+      "genre": "technical blog post introduction (ML research)",
+      "signal": "strong",
+      "criteria": [
+        {
+          "name": "No marketing fluff or hype language",
+          "description": "Avoids hype verbs ('revolutionized', 'game-changing'), second-person promises ('you'll be amazed', 'you won't believe'), and any phrasing that reads as written by marketing rather than by the researcher who did the work.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM drafts for ML blog intros frequently use \"state-of-the-art,\" \"cutting-edge,\" and similar hype filler; explicitly banning these plus second-person promises is a distinctive constraint."
+        },
+        {
+          "name": "Mechanism-specific opening",
+          "description": "The first sentence names the specific technical component, method, or object under study — not the broader field or its importance.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically open ML blog posts with broad framing about the field's importance; leading with a specific named mechanism is a distinctive stylistic constraint."
+        },
+        {
+          "name": "Phenomenon before explanation",
+          "description": "The intro states the observed phenomenon or pathology first, then the trace/explanation, then the fix. The reader learns what is happening before learning why or what to do about it.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM intros for ML research often lead with motivation, contribution, or background rather than strictly ordering phenomenon → cause → fix, so this ordering constraint is a distinctive structural preference."
+        },
+        {
+          "name": "Skips audience-known background",
+          "description": "Assumes ML practitioner readers already understand the field and its stakes. Does not define standard concepts or justify why the broader topic matters.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically include motivational framing and define key concepts even for technical audiences; explicitly skipping stakes-setting and definitions is a distinctive user preference."
+        },
+        {
+          "name": "Explicit payoff sign-posting",
+          "description": "The intro includes a terse, concrete pointer to what evidence the post will deliver — e.g. 'Tables at the end', 'Figure 3 shows the ablation' — so the reader knows what form the payoff takes.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM intros typically end with a general thesis or roadmap of topics, not a terse pointer to specific artifacts like \"Figure 3 shows the ablation.\""
+        }
+      ],
+      "total": 5,
+      "specific": 5,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "ML research blog post intros (for practitioner audiences)",
+        "user_goals_summary": "The user writes blog post intros that announce their own ML research to fellow practitioners. They want intros that sound like a researcher reporting findings — specific, mechanism-first, and free of marketing framing — with explicit sign-posts about what evidence the post will deliver.",
+        "rubric": [
+          {
+            "name": "No marketing fluff or hype language",
+            "category": "Style",
+            "description": "Avoids hype verbs ('revolutionized', 'game-changing'), second-person promises ('you'll be amazed', 'you won't believe'), and any phrasing that reads as written by marketing rather than by the researcher who did the work.",
+            "dimensions": [
+              {
+                "id": "no_hype_verbs",
+                "label": "No field-elevating hype verbs like 'revolutionized', 'transformed', 'unlocked'"
+              },
+              {
+                "id": "no_reader_hype",
+                "label": "No second-person promise phrasing ('you'll be amazed', 'get ready to', 'mind-blowing')"
+              },
+              {
+                "id": "no_superlative_claims",
+                "label": "No unqualified superlatives ('stunning', 'cutting-edge', 'state-of-the-art' as filler)"
+              },
+              {
+                "id": "researcher_voice",
+                "label": "Reads as written by the person who did the work, not by a promoter of it"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Mechanism-specific opening",
+            "category": "Structure",
+            "description": "The first sentence names the specific technical component, method, or object under study — not the broader field or its importance.",
+            "dimensions": [
+              {
+                "id": "first_sentence_names_mechanism",
+                "label": "First sentence names a specific technique, component, or algorithm (e.g. 'classifier-free guidance', 'DDIM sampling')"
+              },
+              {
+                "id": "no_field_level_framing",
+                "label": "Does not open with the broader field ('diffusion models', 'generative AI', 'LLMs')"
+              },
+              {
+                "id": "no_importance_preamble",
+                "label": "Does not lead with why the field/topic matters"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Phenomenon before explanation",
+            "category": "Structure",
+            "description": "The intro states the observed phenomenon or pathology first, then the trace/explanation, then the fix. The reader learns what is happening before learning why or what to do about it.",
+            "dimensions": [
+              {
+                "id": "phenomenon_stated_first",
+                "label": "Opening identifies an observed phenomenon, pathology, or problem before any causal explanation"
+              },
+              {
+                "id": "explanation_follows",
+                "label": "Causal trace ('we trace this to...', 'this arises because...') comes after the phenomenon"
+              },
+              {
+                "id": "fix_or_contribution_last",
+                "label": "The proposed fix or contribution appears after the phenomenon and explanation, not before"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Skips audience-known background",
+            "category": "Audience",
+            "description": "Assumes ML practitioner readers already understand the field and its stakes. Does not define standard concepts or justify why the broader topic matters.",
+            "dimensions": [
+              {
+                "id": "no_concept_definitions",
+                "label": "Does not define or explain terms a practitioner already knows"
+              },
+              {
+                "id": "no_motivation_for_field",
+                "label": "Does not argue why the broader field or topic is important"
+              },
+              {
+                "id": "assumes_prior_context",
+                "label": "Uses technical terms directly without hedging or glossing"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          },
+          {
+            "name": "Explicit payoff sign-posting",
+            "category": "Structure",
+            "description": "The intro includes a terse, concrete pointer to what evidence the post will deliver — e.g. 'Tables at the end', 'Figure 3 shows the ablation' — so the reader knows what form the payoff takes.",
+            "dimensions": [
+              {
+                "id": "names_artifact_type",
+                "label": "Explicitly names what artifact the reader should expect (tables, figures, ablations, code, benchmarks)"
+              },
+              {
+                "id": "terse_signpost",
+                "label": "The sign-post is short and matter-of-fact, not a hype pitch"
+              },
+              {
+                "id": "signpost_placement",
+                "label": "Sign-post appears at the end of the intro as a pointer, not buried mid-paragraph"
+              }
+            ],
+            "priority": 5,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Non-negotiable: anything that reads as marketing copy gets rejected — no hype verbs, no second-person promises, no field-level preambles. Preferred structure is phenomenon → trace → fix, with the first sentence naming a specific mechanism. The user values terse, concrete sign-posts about what evidence is coming (e.g. 'Tables at the end') and treats them as a positive feature, not filler."
+      }
+    },
+    {
+      "name": "slack_update_eng_manager",
+      "genre": "Slack status update (engineering manager to team)",
+      "signal": "strong",
+      "criteria": [
+        {
+          "name": "Lowercase prose",
+          "description": "The update is written in all lowercase (except where casing is semantically required, e.g., proper nouns or technical identifiers). Sentence-case capitalization reads as too formal for this channel.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs default to standard sentence-case capitalization even in Slack messages; writing everything in lowercase is a distinctive stylistic choice."
+        },
+        {
+          "name": "Names the technical root cause",
+          "description": "When reporting a delay or problem, the update names the actual mechanism — the specific bug, system, or failure mode — not a generic 'challenges' or 'issues' abstraction.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs frequently default to vague phrasing like \"ran into technical challenges\" or \"working on a fix\" in status updates; demanding mechanism-level naming and concrete fix status is a distinctive preference."
+        },
+        {
+          "name": "Ends on the number or date that matters",
+          "description": "The final line is the single most important data point the team needs to take away — typically a target date, version, or count. It does not end with a call-to-action, sign-off, or pleasantry.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically end Slack updates with a CTA like \"let me know if you have questions\" or a sign-off; ending on a bare number/date is a distinctive stylistic choice."
+        },
+        {
+          "name": "No corporate / press-release register",
+          "description": "Avoids language that sounds like an all-hands announcement or external comms: no leadership-reassurance phrasing, no 'comprehensive update,' no performative commitment statements.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs often default to semi-formal corporate phrasing with preambles and reassurance language when drafting manager-to-team updates, so explicitly banning these registers meaningfully changes the output."
+        },
+        {
+          "name": "Assumes shared team context",
+          "description": "Does not re-explain or re-label things the team already knows. Uses the team's internal shorthand (e.g., 'the migration') rather than formal project names or expository framing.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically add expository framing and expand acronyms/project names even in internal contexts; explicitly relying on team shorthand and skipping recap is a distinctive preference."
+        }
+      ],
+      "total": 5,
+      "specific": 5,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "internal Slack updates to an engineering team",
+        "user_goals_summary": "The user writes terse, insider-voice Slack updates for an engineering team. They want lowercase prose, specific technical detail, and a hard landing on the one number or date that matters. They reject any framing that sounds like corporate comms or re-explains context the team already shares.",
+        "rubric": [
+          {
+            "name": "Lowercase prose",
+            "category": "Style",
+            "description": "The update is written in all lowercase (except where casing is semantically required, e.g., proper nouns or technical identifiers). Sentence-case capitalization reads as too formal for this channel.",
+            "dimensions": [
+              {
+                "id": "lowercase_sentences",
+                "label": "Sentence starts are lowercase throughout"
+              },
+              {
+                "id": "no_title_case_headers",
+                "label": "Any headers or labels are lowercase, not title-cased"
+              },
+              {
+                "id": "casing_only_where_meaningful",
+                "label": "Capitalization is reserved for proper nouns or identifiers that require it"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Names the technical root cause",
+            "category": "Content",
+            "description": "When reporting a delay or problem, the update names the actual mechanism — the specific bug, system, or failure mode — not a generic 'challenges' or 'issues' abstraction.",
+            "dimensions": [
+              {
+                "id": "specific_mechanism",
+                "label": "The technical cause is named at the mechanism level (e.g., 'race condition in the batch worker'), not as generic 'issues' or 'challenges'"
+              },
+              {
+                "id": "concrete_system_component",
+                "label": "The relevant system/component/stage is identified by name"
+              },
+              {
+                "id": "no_vague_hedging",
+                "label": "Avoids 'unforeseen challenges,' 'technical difficulties,' or similar abstraction"
+              },
+              {
+                "id": "fix_status_specific",
+                "label": "If a fix is mentioned, its status is concrete (e.g., 'in review, lands friday') rather than 'working on it'"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Ends on the number or date that matters",
+            "category": "Structure",
+            "description": "The final line is the single most important data point the team needs to take away — typically a target date, version, or count. It does not end with a call-to-action, sign-off, or pleasantry.",
+            "dimensions": [
+              {
+                "id": "final_line_is_key_datum",
+                "label": "The last line is a specific number, date, or concrete target"
+              },
+              {
+                "id": "no_trailing_cta",
+                "label": "Does not end with 'ping me with questions,' 'let me know,' or similar CTA"
+              },
+              {
+                "id": "no_signoff",
+                "label": "Does not end with a sign-off ('thanks,' name, etc.)"
+              },
+              {
+                "id": "single_takeaway",
+                "label": "The ending datum is the one thing the team most needs to remember"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "No corporate / press-release register",
+            "category": "Style",
+            "description": "Avoids language that sounds like an all-hands announcement or external comms: no leadership-reassurance phrasing, no 'comprehensive update,' no performative commitment statements.",
+            "dimensions": [
+              {
+                "id": "no_reassurance_boilerplate",
+                "label": "No phrases like 'leadership remains committed' or 'actively working on solutions'"
+              },
+              {
+                "id": "no_meta_framing",
+                "label": "No 'I wanted to give you a comprehensive update' or similar throat-clearing"
+              },
+              {
+                "id": "no_as_you_are_aware",
+                "label": "No audience-flattering transitions ('as you know,' 'as you are aware')"
+              },
+              {
+                "id": "peer_voice",
+                "label": "Reads like a teammate posting in a channel, not a manager addressing a town hall"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          },
+          {
+            "name": "Assumes shared team context",
+            "category": "Audience",
+            "description": "Does not re-explain or re-label things the team already knows. Uses the team's internal shorthand (e.g., 'the migration') rather than formal project names or expository framing.",
+            "dimensions": [
+              {
+                "id": "internal_shorthand",
+                "label": "Refers to ongoing work by the team's shorthand, not formal/expanded names"
+              },
+              {
+                "id": "no_background_recap",
+                "label": "Does not recap context the team already has"
+              },
+              {
+                "id": "no_role_explanation",
+                "label": "Does not explain what systems/projects are or why they matter to insiders"
+              }
+            ],
+            "priority": 5,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "This user writes for insiders and treats every extra word as a tell that the author doesn't trust the reader. Default moves: strip framing, name the actual mechanism, land on the number. When in doubt, cut — especially anything that sounds like it could appear in an external announcement."
+      }
+    },
+    {
+      "name": "paper_abstract_physicist",
+      "genre": "physics paper abstract",
+      "signal": "strong",
+      "criteria": [
+        {
+          "name": "Named quantitative result",
+          "description": "The abstract must state the actual measured number(s) — with units, conditions, and comparison baseline — not just qualitative language like 'anomalous' or 'significant suppression.' If the reader can't extract the headline number from the abstract alone, it has failed.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM abstracts often rely on qualitative descriptors like \"significant\" or \"anomalous\" without committing to specific numbers, units, conditions, and a quantitative baseline comparison — this criterion enforces a stricter quantitative discipline than default."
+        },
+        {
+          "name": "Measurement → result → mechanism ordering",
+          "description": "The abstract proceeds in three explicit beats: (1) what was measured on what system, (2) the quantitative finding, (3) the proposed mechanism or physical interpretation. No motivational preamble, no impact coda.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM abstracts typically open with motivational/background framing and end with impact statements; enforcing a strict measurement→result→mechanism structure with no preamble or coda is a distinctive constraint."
+        },
+        {
+          "name": "No hand-wavy impact closer",
+          "description": "The abstract does not end with generic 'implications for next-generation devices / applications / technology' statements. Physicists skip these; the mechanism claim is the closer.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs frequently end abstracts with broad \"implications for applications/next-generation devices\" statements; explicitly forbidding this and requiring a mechanism-claim closer is a distinctive preference."
+        },
+        {
+          "name": "Passive voice convention",
+          "description": "The abstract uses passive constructions standard to physics ('the conductivity is measured,' 'the suppression is observed') rather than first-person active voice ('We measure,' 'We find').",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically default to \"We measure/We find\" in physics abstracts (which is actually the modern convention in many physics journals), so enforcing strict passive voice with no first-person is a distinctive user preference."
+        }
+      ],
+      "total": 4,
+      "specific": 4,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "physics research paper abstracts (experimental)",
+        "user_goals_summary": "The user writes abstracts for experimental condensed matter physics papers. They want abstracts that front-load specific quantitative findings, follow a strict measurement→result→mechanism structure, use passive voice, and avoid generic 'broader implications' closers that physicists dismiss as hand-wavy.",
+        "rubric": [
+          {
+            "name": "Named quantitative result",
+            "category": "Content",
+            "description": "The abstract must state the actual measured number(s) — with units, conditions, and comparison baseline — not just qualitative language like 'anomalous' or 'significant suppression.' If the reader can't extract the headline number from the abstract alone, it has failed.",
+            "dimensions": [
+              {
+                "id": "headline_number_present",
+                "label": "At least one specific numerical result (with units) is stated in the abstract"
+              },
+              {
+                "id": "measurement_conditions_specified",
+                "label": "The conditions under which the result was obtained (temperature, field, sample parameters, etc.) are named"
+              },
+              {
+                "id": "comparison_baseline_given",
+                "label": "The number is contextualized against a baseline or expected value (e.g., 'factor of X relative to...')"
+              },
+              {
+                "id": "no_qualitative_substitutes",
+                "label": "Qualitative hand-waves ('large,' 'anomalous,' 'significant') are not used in place of numbers"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Measurement → result → mechanism ordering",
+            "category": "Structure",
+            "description": "The abstract proceeds in three explicit beats: (1) what was measured on what system, (2) the quantitative finding, (3) the proposed mechanism or physical interpretation. No motivational preamble, no impact coda.",
+            "dimensions": [
+              {
+                "id": "opens_with_measurement",
+                "label": "First sentence states what quantity was measured on what system"
+              },
+              {
+                "id": "result_in_middle",
+                "label": "Quantitative result appears after the measurement setup and before the mechanism"
+              },
+              {
+                "id": "closes_on_mechanism",
+                "label": "Final sentences offer a mechanism or physical interpretation of the result"
+              },
+              {
+                "id": "no_motivational_preamble",
+                "label": "Does not open with background/motivation or field-level framing"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "No hand-wavy impact closer",
+            "category": "Content",
+            "description": "The abstract does not end with generic 'implications for next-generation devices / applications / technology' statements. Physicists skip these; the mechanism claim is the closer.",
+            "dimensions": [
+              {
+                "id": "no_generic_applications_claim",
+                "label": "No sentence about implications for devices, technology, or applications unless it is specific and technical"
+              },
+              {
+                "id": "no_broader_significance_sentence",
+                "label": "No 'these findings have significant implications for...' style closer"
+              },
+              {
+                "id": "mechanism_is_the_closer",
+                "label": "The final sentence delivers a physical mechanism or correlation claim, not a pitch"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Passive voice convention",
+            "category": "Style",
+            "description": "The abstract uses passive constructions standard to physics ('the conductivity is measured,' 'the suppression is observed') rather than first-person active voice ('We measure,' 'We find').",
+            "dimensions": [
+              {
+                "id": "no_we_measure_we_find",
+                "label": "Does not use 'We measure / We find / We report / We show' constructions"
+              },
+              {
+                "id": "passive_for_methods",
+                "label": "Measurement and observation verbs are rendered in passive voice"
+              },
+              {
+                "id": "third_person_throughout",
+                "label": "No first-person pronouns ('we', 'our') appear"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Non-negotiable: name the number. An abstract without a specific quantitative result is a failed abstract in this user's eyes. Lock the three-beat structure (measurement → quantitative result → mechanism) by default — the user explicitly said to apply it to every abstract. Default to passive voice and resist the instinct to close with a 'broader impact' sentence; the mechanism claim is the closer."
+      }
+    },
+    {
+      "name": "condolence_note_manager",
+      "genre": "condolence note (manager to direct report)",
+      "signal": "strong",
+      "criteria": [
+        {
+          "name": "No boilerplate condolence phrases",
+          "description": "Avoids stock sympathy language like 'deepest sympathy,' 'sincere condolences,' 'deeply saddened,' 'my thoughts are with you.' The note should sound like a real person wrote it, not a Hallmark card.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs routinely use phrases like \"deepest sympathy\" and \"my thoughts are with you\" in condolence notes; explicitly banning this formal register is a distinctive preference."
+        },
+        {
+          "name": "Concrete action already taken, not a generic offer",
+          "description": "When offering support, the note names a specific thing the sender has already done on the recipient's behalf — not an open-ended 'let me know if you need anything.' The burden should never land back on the grieving person.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM condolence notes almost always include open-ended \"let me know if you need anything\" offers rather than proactively naming actions already taken."
+        },
+        {
+          "name": "Removes decision burden",
+          "description": "Explicitly signals that the recipient does not need to manage, decide, or coordinate anything while they're away. Goes beyond 'take your time' to actually remove cognitive load.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically say \"take your time\" but still ask about handoffs or decisions; explicitly absorbing coverage and removing all decision-making load is a distinctive managerial stance."
+        },
+        {
+          "name": "Not transactional in tone",
+          "description": "Avoids reading like calendar management or a logistics email. Specific mentions of meetings, reviews, or scheduling items undercut the human register of the note.",
+          "verdict": "GENERIC",
+          "judge_reasoning": "GENERIC\nA baseline LLM writing a condolence note would naturally avoid listing specific meetings or scheduling logistics, as this is standard for the genre."
+        },
+        {
+          "name": "Short",
+          "description": "The note is brief — a few short sentences. Length itself communicates respect for the recipient's emotional state; long notes feel performative.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM condolence notes tend to be longer with multiple paragraphs and more elaboration; enforcing ~5 sentences in one block is a distinctive constraint."
+        }
+      ],
+      "total": 5,
+      "specific": 4,
+      "generic": 1,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "condolence notes to colleagues / direct reports",
+        "user_goals_summary": "The user wants condolence notes that feel real and personal without being over-familiar. They reject stock sympathy language and generic offers of help, preferring short notes that name a concrete action already taken on the recipient's behalf and explicitly remove any decision-making burden from them.",
+        "rubric": [
+          {
+            "name": "No boilerplate condolence phrases",
+            "category": "Style",
+            "description": "Avoids stock sympathy language like 'deepest sympathy,' 'sincere condolences,' 'deeply saddened,' 'my thoughts are with you.' The note should sound like a real person wrote it, not a Hallmark card.",
+            "dimensions": [
+              {
+                "id": "no_stock_sympathy_phrases",
+                "label": "Contains none of: 'deepest sympathy,' 'sincere condolences,' 'deeply saddened,' 'heartfelt condolences,' 'my thoughts and prayers'"
+              },
+              {
+                "id": "plain_language_acknowledgment",
+                "label": "Acknowledges the loss in plain, direct language (e.g., 'I'm so sorry') rather than formal sympathy register"
+              },
+              {
+                "id": "no_ceremonial_closing",
+                "label": "Sign-off avoids ceremonial phrases like 'With deepest sympathy' — uses a plain close"
+              }
+            ],
+            "priority": 1,
+            "confidence": "high"
+          },
+          {
+            "name": "Concrete action already taken, not a generic offer",
+            "category": "Content",
+            "description": "When offering support, the note names a specific thing the sender has already done on the recipient's behalf — not an open-ended 'let me know if you need anything.' The burden should never land back on the grieving person.",
+            "dimensions": [
+              {
+                "id": "names_specific_completed_action",
+                "label": "Names at least one concrete action the sender has already taken (e.g., informed the team, absorbed a responsibility)"
+              },
+              {
+                "id": "no_generic_offer_to_help",
+                "label": "Contains no open-ended phrases like 'let me know if there's anything I can do' or 'please reach out if you need anything'"
+              },
+              {
+                "id": "no_ask_of_recipient",
+                "label": "Does not require the recipient to respond, decide, or initiate anything"
+              }
+            ],
+            "priority": 2,
+            "confidence": "high"
+          },
+          {
+            "name": "Removes decision burden",
+            "category": "Content",
+            "description": "Explicitly signals that the recipient does not need to manage, decide, or coordinate anything while they're away. Goes beyond 'take your time' to actually remove cognitive load.",
+            "dimensions": [
+              {
+                "id": "explicit_no_decisions_needed",
+                "label": "Includes an explicit statement that nothing requires the recipient's attention or decision-making right now"
+              },
+              {
+                "id": "open_ended_time_away",
+                "label": "Frames time off as open-ended ('whatever time you need,' 'indefinitely') rather than bounded"
+              },
+              {
+                "id": "absorbs_not_delegates",
+                "label": "Frames work coverage as already absorbed, not as something awaiting instructions from the recipient"
+              }
+            ],
+            "priority": 3,
+            "confidence": "high"
+          },
+          {
+            "name": "Not transactional in tone",
+            "category": "Style",
+            "description": "Avoids reading like calendar management or a logistics email. Specific mentions of meetings, reviews, or scheduling items undercut the human register of the note.",
+            "dimensions": [
+              {
+                "id": "no_itemized_calendar_logistics",
+                "label": "Does not list specific meetings, reviews, 1:1s, or scheduling items by name"
+              },
+              {
+                "id": "coverage_framed_holistically",
+                "label": "If coverage is mentioned, it's framed at a human/team level rather than as a task list"
+              },
+              {
+                "id": "no_managerial_register",
+                "label": "Reads like a person speaking, not a manager processing an absence"
+              }
+            ],
+            "priority": 4,
+            "confidence": "high"
+          },
+          {
+            "name": "Short",
+            "category": "Structure",
+            "description": "The note is brief — a few short sentences. Length itself communicates respect for the recipient's emotional state; long notes feel performative.",
+            "dimensions": [
+              {
+                "id": "under_five_sentences",
+                "label": "Body is roughly five sentences or fewer"
+              },
+              {
+                "id": "single_short_paragraph",
+                "label": "Written as one short block, not multiple paragraphs of framing"
+              },
+              {
+                "id": "no_elaborated_sympathy",
+                "label": "Does not elaborate on the sender's own feelings about the loss beyond a brief acknowledgment"
+              }
+            ],
+            "priority": 5,
+            "confidence": "high"
+          }
+        ],
+        "coaching_notes": "Non-negotiables: no boilerplate sympathy phrases, and every offer of support must point to a concrete action already taken. The user steers hard against anything that sounds scripted or managerial — when in doubt, cut a sentence rather than add one. They respond well when the note's work is to remove burden (decisions, logistics, response obligation) rather than to express sympathy at length."
+      }
+    },
+    {
+      "name": "weak_linkedin_post",
+      "genre": "LinkedIn post announcing a job change",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Closing invites a specific audience to connect",
+          "description": "The post ends with an explicit invitation to hear from a defined type of person (e.g., people interested in a particular topic or stage) rather than a generic teaser like 'stay tuned' or 'can't wait to share what we're building.'",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM drafts of job-change posts typically end with generic excitement teasers like \"stay tuned\" or \"excited for what's next,\" not a targeted invitation to a specific audience segment."
+        }
+      ],
+      "total": 1,
+      "specific": 1,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "LinkedIn career announcement posts",
+        "user_goals_summary": "The user writes short LinkedIn posts announcing career moves. Evidence is thin — the user accepted a largely default draft with only one revision request about the ending. The single clear signal is a preference for closings that invite specific connections over generic forward-looking teasers.",
+        "rubric": [
+          {
+            "name": "Closing invites a specific audience to connect",
+            "category": "Structure",
+            "description": "The post ends with an explicit invitation to hear from a defined type of person (e.g., people interested in a particular topic or stage) rather than a generic teaser like 'stay tuned' or 'can't wait to share what we're building.'",
+            "dimensions": [
+              {
+                "id": "explicit_invitation",
+                "label": "Closing line contains an explicit invitation to reach out or engage"
+              },
+              {
+                "id": "names_audience_segment",
+                "label": "The invitation names a specific type of person or interest area (not 'anyone')"
+              },
+              {
+                "id": "avoids_generic_teaser",
+                "label": "Does not end on a generic forward-looking teaser ('stay tuned', 'exciting things ahead', 'can't wait to share what's next')"
+              }
+            ],
+            "priority": 1,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "Evidence base is very thin — only one revision request across a 7-message thread. Treat this rubric as a starting draft. The user tends to accept defaults on tone, length, and gratitude framing without comment, so future drafts should stay in the standard LinkedIn announcement shape and focus attention on crafting the closing. Probe on more future drafts to learn whether preferences exist around voice, length, or how gratitude is expressed."
+      }
+    },
+    {
+      "name": "weak_meeting_recap",
+      "genre": "internal meeting recap email",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Stays minimal — resists expansion",
+          "description": "The recap sticks to a short summary and does not pad with task lists, owner assignments, detailed next-step breakdowns, or other scaffolding the user didn't ask for. When in doubt, shorter wins.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically pad meeting recaps with action-item lists, owners, and deadlines by default, so explicitly resisting this scaffolding is a distinctive user preference."
+        },
+        {
+          "name": "Faithful to what was provided",
+          "description": "The recap reflects only the topics, decisions, and next steps the user described. It does not invent attendees, rationales, backlog items, or context that weren't given.",
+          "verdict": "GENERIC",
+          "judge_reasoning": "GENERIC\nNot fabricating content and covering what the user provided is a baseline expectation any competent LLM follows by default."
+        }
+      ],
+      "total": 2,
+      "specific": 1,
+      "generic": 1,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "internal meeting recap emails",
+        "user_goals_summary": "The user wants brief, functional meeting recaps that capture only what was discussed and decided — no invented detail, no added task lists or action-item scaffolding unless explicitly requested. Minimalism is preferred over thoroughness.",
+        "rubric": [
+          {
+            "name": "Stays minimal — resists expansion",
+            "category": "Structure",
+            "description": "The recap sticks to a short summary and does not pad with task lists, owner assignments, detailed next-step breakdowns, or other scaffolding the user didn't ask for. When in doubt, shorter wins.",
+            "dimensions": [
+              {
+                "id": "no_unrequested_task_list",
+                "label": "Does not include an action-item or task list unless the user asked for one"
+              },
+              {
+                "id": "no_owner_assignments",
+                "label": "Does not invent owners, deadlines, or assignments not provided by the user"
+              },
+              {
+                "id": "compact_body",
+                "label": "Body is roughly 3–6 short lines/bullets, not a long-form writeup"
+              },
+              {
+                "id": "one_line_next_step",
+                "label": "Next step is stated in a single line, not expanded into a plan"
+              }
+            ],
+            "priority": 1,
+            "confidence": "medium"
+          },
+          {
+            "name": "Faithful to what was provided",
+            "category": "Content",
+            "description": "The recap reflects only the topics, decisions, and next steps the user described. It does not invent attendees, rationales, backlog items, or context that weren't given.",
+            "dimensions": [
+              {
+                "id": "no_invented_details",
+                "label": "Does not fabricate specifics (names, numbers, reasoning) not present in the user's input"
+              },
+              {
+                "id": "covers_user_inputs",
+                "label": "Covers each element the user mentioned (topics discussed, decisions, next steps)"
+              },
+              {
+                "id": "no_speculative_framing",
+                "label": "Avoids speculative framing about motivations or outcomes not stated by the user"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "The strongest signal in this thread is the user declining to expand the draft when offered more content — default to brief. Only two criteria are included because evidence is thin; future drafts and edits should reveal tone, format, and structural preferences more concretely. Avoid assuming bullet-vs-prose preference, sign-off style, or audience warmth until the user demonstrates them."
+      }
+    },
+    {
+      "name": "weak_product_blurb",
+      "genre": "short product description for a landing page",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Concrete, quantified opener",
+          "description": "Leads with a specific outcome or number (e.g. '90% less time spent on X') rather than an abstract verb-phrase value prop (e.g. 'Automate your Y'). The user accepted a quantified-outcome opener as stronger than an abstract-automation opener.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically open product descriptions with abstract verb-phrase value props like \"Automate your workflow,\" so requiring a quantified, outcome-specific opener is a distinctive preference."
+        },
+        {
+          "name": "Social proof via named customers",
+          "description": "Includes named customer references to signal legitimacy, typically as a closing line like 'Used by teams at X, Y, Z'. The user accepted this element without objection in the chosen variant.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically avoid fabricating named customers in product descriptions, so explicitly requiring a \"Used by X, Y, Z\" closing line is a distinctive user preference."
+        }
+      ],
+      "total": 2,
+      "specific": 2,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "short product landing-page blurbs (dev tools / B2B SaaS)",
+        "user_goals_summary": "The user writes short marketing blurbs for technical products and seems to favor concrete, quantified hooks over abstract value-prop openers. Evidence is thin — they accepted drafts quickly and deferred final wording choices to the assistant — so this rubric is preliminary and should be refined as more feedback accumulates.",
+        "rubric": [
+          {
+            "name": "Concrete, quantified opener",
+            "category": "Style",
+            "description": "Leads with a specific outcome or number (e.g. '90% less time spent on X') rather than an abstract verb-phrase value prop (e.g. 'Automate your Y'). The user accepted a quantified-outcome opener as stronger than an abstract-automation opener.",
+            "dimensions": [
+              {
+                "id": "quantified_claim_in_opener",
+                "label": "First sentence contains a specific number, percentage, or measurable outcome"
+              },
+              {
+                "id": "not_abstract_verb_opener",
+                "label": "Opener does not begin with a generic imperative like 'Automate...', 'Streamline...', 'Transform...'"
+              },
+              {
+                "id": "outcome_not_feature",
+                "label": "Opener describes a user-visible result (faster shipping, less time, caught bugs), not an internal product capability"
+              }
+            ],
+            "priority": 1,
+            "confidence": "low"
+          },
+          {
+            "name": "Social proof via named customers",
+            "category": "Content",
+            "description": "Includes named customer references to signal legitimacy, typically as a closing line like 'Used by teams at X, Y, Z'. The user accepted this element without objection in the chosen variant.",
+            "dimensions": [
+              {
+                "id": "customer_names_present",
+                "label": "Blurb includes at least one named customer or team reference"
+              },
+              {
+                "id": "proof_line_is_brief",
+                "label": "Social proof is a short tag line, not a full sentence of narrative"
+              },
+              {
+                "id": "proof_placed_near_end",
+                "label": "Social proof appears near the end of the blurb, not as the opener"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "Evidence base is thin: the user accepted both drafts without substantive edits and asked the assistant to pick a final version. Treat this rubric as provisional. The next few tasks should probe what the user actually values — especially asking which 'parts of both' they prefer when they express partial preference, since that ambiguity was never resolved here."
+      }
+    },
+    {
+      "name": "weak_birthday_card",
+      "genre": "birthday card message for a coworker",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Stays genuinely brief",
+          "description": "Notes are kept to roughly two short sentences. The user twice confirmed brevity (initial request plus declining the offer to add more), so expansion beyond the minimum is not wanted.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically produce 3-5 sentence birthday messages with warm elaboration; a strict two-sentence cap with no filler is a distinctive user preference."
+        },
+        {
+          "name": "Restrained personalization",
+          "description": "Notes acknowledge the occasion and the working relationship without reaching for personal details, inside references, or wishes tailored to the recipient's life outside work. When offered the chance to personalize, the user declined.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically try to personalize birthday messages with warm touches or invented shared moments; explicitly restraining to work-context-only acknowledgment is a distinctive user preference."
+        },
+        {
+          "name": "Cordial-but-distant register",
+          "description": "Tone sits between stiff-formal and close-friend warmth — friendly enough to feel sincere, reserved enough to match a two-year coworker relationship that doesn't extend outside work.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically default to either effusive warmth (\"amazing coworker!\") or generic corporate phrasing for coworker birthday cards; explicitly calibrating to a middle register with these specific avoidances is a distinctive user preference."
+        }
+      ],
+      "total": 3,
+      "specific": 3,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "short personal notes to coworkers (birthdays, congratulations, thanks)",
+        "user_goals_summary": "The user wants brief, low-effort social notes for coworkers they're cordial with but don't know closely. The goal is to mark the occasion appropriately without over-investing in personalization or warmth that would feel forced given the relationship distance.",
+        "rubric": [
+          {
+            "name": "Stays genuinely brief",
+            "category": "Style",
+            "description": "Notes are kept to roughly two short sentences. The user twice confirmed brevity (initial request plus declining the offer to add more), so expansion beyond the minimum is not wanted.",
+            "dimensions": [
+              {
+                "id": "two_sentences_or_fewer",
+                "label": "Main body is two sentences or fewer (excluding greeting and sign-off)"
+              },
+              {
+                "id": "no_elaboration",
+                "label": "Avoids elaborating on wishes with extra clauses or secondary thoughts"
+              },
+              {
+                "id": "no_filler",
+                "label": "Contains no filler phrases or ceremonial throat-clearing"
+              }
+            ],
+            "priority": 1,
+            "confidence": "medium"
+          },
+          {
+            "name": "Restrained personalization",
+            "category": "Content",
+            "description": "Notes acknowledge the occasion and the working relationship without reaching for personal details, inside references, or wishes tailored to the recipient's life outside work. When offered the chance to personalize, the user declined.",
+            "dimensions": [
+              {
+                "id": "no_personal_details",
+                "label": "Avoids references to the recipient's personal life, hobbies, or interests"
+              },
+              {
+                "id": "work_relationship_frame",
+                "label": "Any relational acknowledgment stays within the work context (e.g., 'working with you')"
+              },
+              {
+                "id": "no_invented_specifics",
+                "label": "Does not invent specific memories, jokes, or shared experiences"
+              }
+            ],
+            "priority": 2,
+            "confidence": "medium"
+          },
+          {
+            "name": "Cordial-but-distant register",
+            "category": "Style",
+            "description": "Tone sits between stiff-formal and close-friend warmth — friendly enough to feel sincere, reserved enough to match a two-year coworker relationship that doesn't extend outside work.",
+            "dimensions": [
+              {
+                "id": "no_effusive_language",
+                "label": "Avoids effusive or intimate language (e.g., 'amazing,' 'my friend,' exclamation stacking)"
+              },
+              {
+                "id": "no_stiff_formality",
+                "label": "Avoids stiff corporate phrasing (e.g., 'Best wishes on the occasion of your birthday')"
+              },
+              {
+                "id": "plainspoken_warmth",
+                "label": "Uses plain, conversational warmth ('hope,' 'pleasure working with you') rather than performed emotion"
+              }
+            ],
+            "priority": 3,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "Evidence is thin — the user accepted the first draft with minimal feedback, so these criteria are provisional. The clearest signal is that when offered personalization, the user declined: default to the minimum viable note rather than pushing for warmth or specificity. If future notes involve closer coworkers, expect these preferences to shift."
+      }
+    },
+    {
+      "name": "weak_bug_report",
+      "genre": "internal bug report in a ticket tracker",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "No optional padding",
+          "description": "Stick to fields that carry real information about the bug. Avoid placeholder lines ('Screenshot: TBD', 'Assignee: TBD'), speculative root-cause sections, or priority/tag scaffolding unless the user supplies them.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically generate bug report templates with placeholder fields, speculative root-cause sections, and priority/severity scaffolding, so explicitly forbidding these is a distinctive user preference."
+        },
+        {
+          "name": "Symptom-first framing",
+          "description": "The title and summary lead with the observable user-facing symptom and the trigger, not with internal framing or speculation. Repro steps are minimal and map directly to the reported trigger.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs often include speculation, verbose impact paragraphs, and extra repro context; requiring symptom-plus-trigger titles with minimal steps and terse impact phrasing is a distinctive discipline."
+        }
+      ],
+      "total": 2,
+      "specific": 2,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "bug reports",
+        "user_goals_summary": "User wants concise, workable bug reports that capture the essentials (symptom, trigger, environment, impact) without optional padding or speculative fields. Evidence is thin — this rubric is a low-confidence starting draft.",
+        "rubric": [
+          {
+            "name": "No optional padding",
+            "category": "Content",
+            "description": "Stick to fields that carry real information about the bug. Avoid placeholder lines ('Screenshot: TBD', 'Assignee: TBD'), speculative root-cause sections, or priority/tag scaffolding unless the user supplies them.",
+            "dimensions": [
+              {
+                "id": "no_placeholder_fields",
+                "label": "Does not include empty placeholder fields (screenshot TBD, assignee TBD, related tickets: N/A, etc.)"
+              },
+              {
+                "id": "no_unrequested_metadata",
+                "label": "Does not add priority tags, labels, or ticket metadata unless the user provided them"
+              },
+              {
+                "id": "no_speculative_root_cause",
+                "label": "Does not speculate about root cause or fix direction when the user gave only symptoms"
+              },
+              {
+                "id": "every_section_earns_its_place",
+                "label": "Every included section contains concrete information drawn from the user's input"
+              }
+            ],
+            "priority": 1,
+            "confidence": "low"
+          },
+          {
+            "name": "Symptom-first framing",
+            "category": "Structure",
+            "description": "The title and summary lead with the observable user-facing symptom and the trigger, not with internal framing or speculation. Repro steps are minimal and map directly to the reported trigger.",
+            "dimensions": [
+              {
+                "id": "title_names_symptom_and_context",
+                "label": "Title names the observable symptom plus the environment or trigger in one line"
+              },
+              {
+                "id": "repro_steps_minimal",
+                "label": "Repro steps list only the actions needed to trigger the bug, no extras"
+              },
+              {
+                "id": "expected_vs_actual_present",
+                "label": "Includes a clear expected-vs-actual contrast grounded in the reported symptom"
+              },
+              {
+                "id": "impact_stated_briefly",
+                "label": "States user impact (e.g. 'blocks checkout') in one short phrase, not a paragraph"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "Evidence from this conversation is thin — the user accepted the first draft and declined optional additions. Treat this rubric as a starting draft: the only clear signal is a preference against optional scaffolding (screenshot placeholders, priority tags) when not requested. Default to a compact, symptom-first bug report and let the user pull for more detail rather than pushing it."
+      }
+    }
+  ]
+}

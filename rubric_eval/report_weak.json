@@ -1,0 +1,508 @@
+{
+  "model": "claude-opus-4-7",
+  "aggregate": {
+    "total": 14,
+    "specific": 11,
+    "generic": 3,
+    "pass_rate": 0.7857142857142857
+  },
+  "by_signal": {
+    "strong": null,
+    "weak": {
+      "total": 14,
+      "specific": 11,
+      "generic": 3,
+      "pass_rate": 0.7857142857142857
+    }
+  },
+  "fixtures": [
+    {
+      "name": "weak_linkedin_post",
+      "genre": "LinkedIn post announcing a job change",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Engagement-inviting close",
+          "description": "The final line opens a door for the reader — an invitation to connect, reach out, or engage around the new role — rather than closing with a generic 'excited for what's next' sentiment.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM drafts of job-change LinkedIn posts typically end with generic enthusiasm (\"excited for what's next\"), so an explicit targeted invitation to engage is a distinctive user preference."
+        },
+        {
+          "name": "Brevity and restraint",
+          "description": "Posts stay short and uncluttered — a single tight paragraph rather than a multi-section essay. The user accepts concise drafts without asking for expansion, accomplishment lists, or added emotional flourish.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM drafts of LinkedIn job-change posts typically include multi-paragraph structure, emoji, hashtag chains, and achievement lists — this criterion explicitly rejects those defaults."
+        },
+        {
+          "name": "Clean announcement arc",
+          "description": "The post moves through a predictable arc — brief acknowledgment of the previous role/tenure, clear statement of the new role, quick thanks to the prior team, and a forward-looking beat — without dwelling on any one section.",
+          "verdict": "GENERIC",
+          "judge_reasoning": "GENERIC\nThis arc (past role → new role → thanks → forward look) is the standard structure any competent LLM would produce for a LinkedIn job-change announcement by default."
+        }
+      ],
+      "total": 3,
+      "specific": 2,
+      "generic": 1,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "LinkedIn career announcement posts",
+        "user_goals_summary": "The user wants concise, restrained LinkedIn announcements that acknowledge the past role briefly, state the new role clearly, and close with a forward-looking hook that invites connection rather than generic enthusiasm. They lean toward short, clean posts without heavy embellishment.",
+        "rubric": [
+          {
+            "name": "Engagement-inviting close",
+            "category": "Structure",
+            "description": "The final line opens a door for the reader — an invitation to connect, reach out, or engage around the new role — rather than closing with a generic 'excited for what's next' sentiment.",
+            "dimensions": [
+              {
+                "id": "invites_response",
+                "label": "Closing line explicitly invites readers to reach out, connect, or engage"
+              },
+              {
+                "id": "names_who_should_engage",
+                "label": "Signals who the invitation is for (e.g., people interested in a specific topic, stage, or role type)"
+              },
+              {
+                "id": "avoids_generic_hype_close",
+                "label": "Does not end on a vague enthusiasm line like 'can't wait to share more' as the final beat"
+              },
+              {
+                "id": "tied_to_new_role",
+                "label": "The invitation is relevant to the new role or what the user will be working on"
+              }
+            ],
+            "priority": 1,
+            "confidence": "medium"
+          },
+          {
+            "name": "Brevity and restraint",
+            "category": "Style",
+            "description": "Posts stay short and uncluttered — a single tight paragraph rather than a multi-section essay. The user accepts concise drafts without asking for expansion, accomplishment lists, or added emotional flourish.",
+            "dimensions": [
+              {
+                "id": "single_short_paragraph",
+                "label": "Post is one compact paragraph (no multi-section structure or long lists)"
+              },
+              {
+                "id": "no_accomplishment_recap",
+                "label": "Does not enumerate past achievements or projects in detail"
+              },
+              {
+                "id": "restrained_emotion",
+                "label": "Emotional language is warm but understated (avoids superlatives stacked on superlatives)"
+              },
+              {
+                "id": "no_hashtag_clutter",
+                "label": "Avoids hashtag chains, emoji clutter, or LinkedIn-cliché formatting"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          },
+          {
+            "name": "Clean announcement arc",
+            "category": "Structure",
+            "description": "The post moves through a predictable arc — brief acknowledgment of the previous role/tenure, clear statement of the new role, quick thanks to the prior team, and a forward-looking beat — without dwelling on any one section.",
+            "dimensions": [
+              {
+                "id": "tenure_acknowledgment",
+                "label": "Opens with a brief nod to the previous role and tenure"
+              },
+              {
+                "id": "clear_new_role_statement",
+                "label": "States the new role and company clearly and early"
+              },
+              {
+                "id": "brief_thanks",
+                "label": "Includes a short thank-you to the previous team without extended tribute"
+              },
+              {
+                "id": "forward_beat",
+                "label": "Ends with a forward-looking beat rather than looking backward"
+              }
+            ],
+            "priority": 3,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "Evidence base is thin — this rubric is a starting draft and should be refined as more announcement posts are written. The strongest signal so far is the user's preference for endings that invite engagement over generic 'excited for what's next' closes. When in doubt, err toward shorter and more restrained rather than adding flourish or detail."
+      }
+    },
+    {
+      "name": "weak_meeting_recap",
+      "genre": "internal meeting recap email",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Compactness over completeness",
+          "description": "The recap stays tight and resists the pull to add task lists, owners, or deadlines unless asked. When in doubt, the user prefers less over more.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically produce meeting recaps with action items, owners, deadlines, and context paragraphs; explicitly suppressing these and enforcing tight length is a distinctive user preference."
+        },
+        {
+          "name": "Labeled-bullet structure",
+          "description": "Key takeaways are presented as short bullets prefixed with a category label (e.g., 'Decision:', 'Next step:') rather than as prose or unlabeled lists.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically produce recap emails with generic bullets or prose under headers like \"Discussion\" and \"Action Items,\" not inline category-labeled bullets like \"Decision:\" / \"Next step:\" prefixes."
+        },
+        {
+          "name": "Light close with room for correction",
+          "description": "The email ends with a brief, low-pressure invitation for teammates to flag anything missing, rather than a formal summary or call to action.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically end recap emails with explicit next steps, action items, or formal calls to action; a deliberately low-pressure \"flag anything missing\" close with no homework is a distinctive user preference."
+        }
+      ],
+      "total": 3,
+      "specific": 3,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "internal meeting recap emails",
+        "user_goals_summary": "The user wants meeting recaps to be short, scannable summaries that capture decisions and next steps without expanding into task lists or action-item tracking. They prefer a labeled-bullet structure and a light invitation for corrections over elaborate formatting or ownership detail.",
+        "rubric": [
+          {
+            "name": "Compactness over completeness",
+            "category": "Style",
+            "description": "The recap stays tight and resists the pull to add task lists, owners, or deadlines unless asked. When in doubt, the user prefers less over more.",
+            "dimensions": [
+              {
+                "id": "no_task_list_by_default",
+                "label": "Does not append an action-item/task list unless the user requested one"
+              },
+              {
+                "id": "no_owners_or_deadlines",
+                "label": "Avoids adding owners, due dates, or RACI-style detail not raised in the meeting"
+              },
+              {
+                "id": "short_body",
+                "label": "Body stays under roughly 6 bullets / ~100 words"
+              },
+              {
+                "id": "one_line_opener",
+                "label": "Opens with a single brief framing line rather than a paragraph of context"
+              }
+            ],
+            "priority": 1,
+            "confidence": "medium"
+          },
+          {
+            "name": "Labeled-bullet structure",
+            "category": "Structure",
+            "description": "Key takeaways are presented as short bullets prefixed with a category label (e.g., 'Decision:', 'Next step:') rather than as prose or unlabeled lists.",
+            "dimensions": [
+              {
+                "id": "uses_bullets",
+                "label": "Uses a bulleted list for the core content"
+              },
+              {
+                "id": "category_labels",
+                "label": "Bullets are prefixed with short category labels like Priorities / Decision / Next step"
+              },
+              {
+                "id": "covers_topic_decision_nextstep",
+                "label": "Covers the three beats typical of this user's recaps: what was discussed, what was decided, and what happens next"
+              },
+              {
+                "id": "one_idea_per_bullet",
+                "label": "Each bullet expresses a single idea in one line"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          },
+          {
+            "name": "Light close with room for correction",
+            "category": "Style",
+            "description": "The email ends with a brief, low-pressure invitation for teammates to flag anything missing, rather than a formal summary or call to action.",
+            "dimensions": [
+              {
+                "id": "invites_corrections",
+                "label": "Includes a short line like 'Let me know if I missed anything'"
+              },
+              {
+                "id": "no_hard_cta",
+                "label": "Avoids assigning follow-up homework or a hard call to action"
+              },
+              {
+                "id": "simple_signoff",
+                "label": "Uses a simple sign-off (e.g., 'Thanks,') rather than elaborate closing language"
+              }
+            ],
+            "priority": 3,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "This user treats recaps as lightweight confirmations, not project artifacts — when offered expansions (task lists, owners, timelines), they decline. Default to the shortest version that still captures discussion + decision + next step, and let teammates fill in gaps via the 'let me know if I missed anything' line. Evidence is thin (two-message acceptance), so treat these preferences as a starting hypothesis to refine."
+      }
+    },
+    {
+      "name": "weak_product_blurb",
+      "genre": "short product description for a landing page",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Concrete, quantified hook",
+          "description": "Opening line leads with a specific outcome or number (e.g., time saved, bugs caught) rather than an abstract verb phrase like 'automate X'. The user chose a '90% less time' opener over a generic 'Automate your test coverage' opener.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically open product descriptions with abstract capability verbs like \"Automate\" or \"Streamline\"; requiring a quantified outcome hook is a distinctive preference."
+        },
+        {
+          "name": "Technical credibility signals",
+          "description": "Blurb names concrete technical integration points (e.g., CI pipeline, no-config setup) so an engineering audience sees it as credible rather than marketing fluff.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLM product blurbs tend toward marketing language; explicitly requiring concrete integration points, setup-effort phrasing, and credibility markers targeted at engineers is a distinctive preference."
+        },
+        {
+          "name": "Tight, scannable length",
+          "description": "Blurb stays to roughly 2–3 sentences and ends with a short action-oriented line. Every sentence earns its place; no throat-clearing.",
+          "verdict": "GENERIC",
+          "judge_reasoning": "GENERIC\nA competent LLM asked for a short landing page product description would typically produce 2-3 tight sentences ending with a call-to-action by default."
+        }
+      ],
+      "total": 3,
+      "specific": 2,
+      "generic": 1,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "product landing page blurbs (developer tools)",
+        "user_goals_summary": "The user wants short, punchy product blurbs for a developer-focused AI tool's landing page. They lean toward concrete, quantified claims over abstract value statements, and expect technical integration details to be surfaced so engineers take the product seriously.",
+        "rubric": [
+          {
+            "name": "Concrete, quantified hook",
+            "category": "Content",
+            "description": "Opening line leads with a specific outcome or number (e.g., time saved, bugs caught) rather than an abstract verb phrase like 'automate X'. The user chose a '90% less time' opener over a generic 'Automate your test coverage' opener.",
+            "dimensions": [
+              {
+                "id": "quantified_opener",
+                "label": "First sentence contains a specific number, percentage, or measurable outcome"
+              },
+              {
+                "id": "outcome_over_feature",
+                "label": "Hook names a user-facing result, not just a product capability"
+              },
+              {
+                "id": "no_abstract_verb_lead",
+                "label": "Does not open with a generic imperative like 'Automate...', 'Streamline...', 'Transform...'"
+              }
+            ],
+            "priority": 1,
+            "confidence": "low"
+          },
+          {
+            "name": "Technical credibility signals",
+            "category": "Content",
+            "description": "Blurb names concrete technical integration points (e.g., CI pipeline, no-config setup) so an engineering audience sees it as credible rather than marketing fluff.",
+            "dimensions": [
+              {
+                "id": "integration_mention",
+                "label": "Mentions how the product fits into an existing developer workflow or toolchain"
+              },
+              {
+                "id": "setup_friction_addressed",
+                "label": "Addresses setup effort (e.g., 'no config', 'in minutes', 'works with existing X')"
+              },
+              {
+                "id": "social_proof_or_specificity",
+                "label": "Includes customer names, usage stats, or other concrete credibility markers where appropriate"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          },
+          {
+            "name": "Tight, scannable length",
+            "category": "Structure",
+            "description": "Blurb stays to roughly 2–3 sentences and ends with a short action-oriented line. Every sentence earns its place; no throat-clearing.",
+            "dimensions": [
+              {
+                "id": "length_bound",
+                "label": "Total length is roughly 2–3 sentences (or under ~50 words)"
+              },
+              {
+                "id": "closing_action_line",
+                "label": "Ends with a short CTA or concrete next-step line"
+              },
+              {
+                "id": "no_filler",
+                "label": "No sentence is purely decorative — each carries a distinct claim or signal"
+              }
+            ],
+            "priority": 3,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "Evidence is thin — the user approved quickly with minimal feedback, so these criteria are a starting hypothesis, not confirmed preferences. When the user says 'pick one,' they want a decisive choice with a one-line rationale, not another round of options. Probe on future drafts to confirm whether they truly prefer quantified hooks or whether that was just one acceptable option."
+      }
+    },
+    {
+      "name": "weak_birthday_card",
+      "genre": "birthday card message for a coworker",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Brevity over personalization",
+          "description": "Notes stay short and generic rather than reaching for personal details. When offered the chance to personalize, the user declines — brief is the target, not a compromise.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically try to personalize birthday messages and often expand to warmer, multi-threaded notes; explicitly keeping it short and generic is a distinctive user preference."
+        },
+        {
+          "name": "Coworker-appropriate distance",
+          "description": "Tone reflects a colleague you work with but aren't close to — warm enough to feel sincere, but not claiming friendship or intimacy that isn't there.",
+          "verdict": "GENERIC",
+          "judge_reasoning": "GENERIC\nA competent LLM writing a coworker birthday card would already default to warm-but-professional tone, avoid intimate language, and use conventional well-wishes."
+        }
+      ],
+      "total": 2,
+      "specific": 1,
+      "generic": 1,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "short workplace birthday notes for acquaintance-level coworkers",
+        "user_goals_summary": "The user wants quick, low-effort birthday notes for coworkers they know only through work. They favor brevity and standard warmth over personalization, and treat these notes as a courtesy rather than a creative exercise.",
+        "rubric": [
+          {
+            "name": "Brevity over personalization",
+            "category": "Style",
+            "description": "Notes stay short and generic rather than reaching for personal details. When offered the chance to personalize, the user declines — brief is the target, not a compromise.",
+            "dimensions": [
+              {
+                "id": "under_three_sentences",
+                "label": "Body of the note is no more than 2–3 short sentences"
+              },
+              {
+                "id": "no_forced_personal_details",
+                "label": "Avoids inventing or reaching for personal anecdotes, inside jokes, or specifics about the recipient"
+              },
+              {
+                "id": "single_idea",
+                "label": "Conveys one core message (birthday wishes + light workplace acknowledgment) without additional threads"
+              }
+            ],
+            "priority": 1,
+            "confidence": "medium"
+          },
+          {
+            "name": "Coworker-appropriate distance",
+            "category": "Audience",
+            "description": "Tone reflects a colleague you work with but aren't close to — warm enough to feel sincere, but not claiming friendship or intimacy that isn't there.",
+            "dimensions": [
+              {
+                "id": "no_overclaimed_closeness",
+                "label": "Avoids language implying friendship or personal closeness (e.g., 'miss you,' 'love,' 'dear friend')"
+              },
+              {
+                "id": "includes_light_work_acknowledgment",
+                "label": "Includes a brief nod to the working relationship (e.g., 'pleasure working with you')"
+              },
+              {
+                "id": "standard_well_wishes",
+                "label": "Uses conventional birthday well-wishes rather than emotionally loaded language"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "This user treats coworker birthday notes as a quick courtesy — default to short and generic, and don't pitch personalization options unless asked. When in doubt, shorter wins. Evidence base is thin (one brief exchange); revisit confidence after more examples."
+      }
+    },
+    {
+      "name": "weak_bug_report",
+      "genre": "internal bug report in a ticket tracker",
+      "signal": "weak",
+      "criteria": [
+        {
+          "name": "Minimal field set",
+          "description": "Bug reports stick to the core fields (title, summary, repro, expected/actual, severity, env) and avoid optional decorations like screenshot placeholders, tags, or priority labels unless asked. The user treats extras as noise.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically pad bug reports with extras like priority labels, tags, screenshot placeholders, and speculative \"possible cause\" sections; restricting to a minimal field set is a distinctive preference."
+        },
+        {
+          "name": "Impact-anchored severity",
+          "description": "Severity is stated with a short justification tied to concrete user impact (e.g. 'blocks checkout'), not an unexplained label.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs typically output severity as a standalone label (e.g., \"Severity: High\") without tying it to concrete user impact, so requiring an impact-anchored justification is a distinctive preference."
+        },
+        {
+          "name": "Tight, reproducible steps",
+          "description": "Repro steps are short, numbered, and contain only the actions needed to trigger the bug — no narrative framing or extraneous setup.",
+          "verdict": "SPECIFIC",
+          "judge_reasoning": "SPECIFIC\nBaseline LLMs often include narrative framing and extra context in repro steps; requiring terse action-only numbered steps with environment split out is a distinctive stylistic discipline."
+        }
+      ],
+      "total": 3,
+      "specific": 3,
+      "generic": 0,
+      "rubric_raw": {
+        "version": 1,
+        "writing_type": "bug reports",
+        "user_goals_summary": "The user wants concise, no-frills bug reports that include only the essential structured fields. They prefer severity justified by concrete user impact and resist adding optional metadata (screenshots, tags, priority labels) unless explicitly needed.",
+        "rubric": [
+          {
+            "name": "Minimal field set",
+            "category": "Structure",
+            "description": "Bug reports stick to the core fields (title, summary, repro, expected/actual, severity, env) and avoid optional decorations like screenshot placeholders, tags, or priority labels unless asked. The user treats extras as noise.",
+            "dimensions": [
+              {
+                "id": "core_fields_present",
+                "label": "Contains the core fields: title, summary, steps to reproduce, expected, actual, severity, environment"
+              },
+              {
+                "id": "no_optional_metadata",
+                "label": "Omits optional metadata fields (screenshot placeholders, tags, priority labels, assignees) unless explicitly requested"
+              },
+              {
+                "id": "no_filler_sections",
+                "label": "Does not add speculative sections like 'possible cause', 'workarounds', or 'notes' without evidence"
+              }
+            ],
+            "priority": 1,
+            "confidence": "medium"
+          },
+          {
+            "name": "Impact-anchored severity",
+            "category": "Content",
+            "description": "Severity is stated with a short justification tied to concrete user impact (e.g. 'blocks checkout'), not an unexplained label.",
+            "dimensions": [
+              {
+                "id": "severity_stated",
+                "label": "A severity level is explicitly stated"
+              },
+              {
+                "id": "impact_justification",
+                "label": "Severity is accompanied by a brief reason describing user or business impact"
+              },
+              {
+                "id": "no_arbitrary_priority",
+                "label": "Avoids arbitrary priority scores or labels not grounded in observed impact"
+              }
+            ],
+            "priority": 2,
+            "confidence": "low"
+          },
+          {
+            "name": "Tight, reproducible steps",
+            "category": "Content",
+            "description": "Repro steps are short, numbered, and contain only the actions needed to trigger the bug — no narrative framing or extraneous setup.",
+            "dimensions": [
+              {
+                "id": "numbered_steps",
+                "label": "Steps are numbered and presented as discrete actions"
+              },
+              {
+                "id": "minimal_steps",
+                "label": "No extraneous setup steps beyond what is needed to reproduce"
+              },
+              {
+                "id": "env_scoped",
+                "label": "Environment (browser, OS, version) is specified separately rather than embedded in prose"
+              }
+            ],
+            "priority": 3,
+            "confidence": "low"
+          }
+        ],
+        "coaching_notes": "User wants bug reports to stop at 'enough' — resist suggesting screenshots, tags, or priority fields unless asked. Justify severity with a short user-impact phrase rather than an unexplained label. Favor terse, scannable structure; a single 'Good' is their signal that the draft is done."
+      }
+    }
+  ]
+}
