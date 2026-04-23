@@ -317,23 +317,44 @@ def detect_low_confidence_dims(grades: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def detect_oscillation(
-    dim_history: dict[str, list[str]], min_flips: int = 2,
+    dim_history: dict[str, list[str]],
+    min_runs: int = 3,
 ) -> list[dict[str, Any]]:
     """Detect dimensions that flip MET<->NOT_MET repeatedly.
 
     dim_history: {dimension_id: [grade_str, ...]} across consecutive graded drafts.
-    A dimension oscillates when it has >= min_flips direction changes in its history.
+
+    We look at the last 6 drafts and count RUNS (contiguous same-grade blocks).
+    Oscillation requires >= min_runs distinct runs in that window. With
+    min_runs=3 that's at least TWO direction changes within the last 6
+    drafts -- dialed down from 4 (three direction changes) so the panel
+    actually has a chance to fire in short user-study sessions. Single-blip
+    sequences like [MET, MET, MET, MET, NOT_MET, MET] (3 runs total) now
+    DO fire; users can dismiss them via the "drafts varying" button if the
+    flip reflects real variation rather than a rubric flaw.
+
+    Examples (min_runs=3):
+      [MET, MET, NOT_MET]                          → 2 runs → ✗
+      [MET, MET, MET, MET, NOT_MET, MET]           → 3 runs → ✓
+      [MET, NOT_MET, MET, NOT_MET]                 → 4 runs → ✓
     """
     results: list[dict[str, Any]] = []
     for dim_id, grades in dim_history.items():
-        if len(grades) < 3:
+        if len(grades) < min_runs:
             continue
-        flips = 0
-        for i in range(1, len(grades)):
-            if grades[i] != grades[i - 1]:
-                flips += 1
-        if flips >= min_flips:
-            results.append({"dimension_id": dim_id, "flips": flips, "history": grades[-6:]})
+        window = grades[-6:]
+        runs = 0
+        prev = None
+        for g in window:
+            if g != prev:
+                runs += 1
+                prev = g
+        if runs < min_runs:
+            continue
+        # flips = transitions = runs - 1. Kept on the record for legacy
+        # compatibility, though the UI no longer displays the count.
+        flips = runs - 1
+        results.append({"dimension_id": dim_id, "flips": flips, "history": window})
     return results
 
 

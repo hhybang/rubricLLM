@@ -51,6 +51,21 @@ def _strip_draft_tags(text: str) -> str:
     return text.strip()
 
 
+# Forces the generator to produce a draft instead of asking clarifying
+# questions. Previously users saw responses like "do you have a specific
+# paper in mind?" in all three arms, which made the comparison useless --
+# there's nothing to compare if no arm produced a draft. Wrapped around the
+# user's task so it applies uniformly to all three arms (no_rubric / early /
+# late), keeping the arms apples-to-apples.
+_FORCE_DRAFT_SUFFIX = (
+    "\n\nIMPORTANT: Produce a complete draft right now inside <draft>...</draft> "
+    "tags. Do not ask clarifying questions and do not propose to write something "
+    "different. If any details are missing, make reasonable assumptions and "
+    "proceed -- the user wants to see a concrete attempt they can react to, not "
+    "a clarification request."
+)
+
+
 def _generate_draft_from_rubric(task: str, rubric_dict: dict) -> str:
     """Generate a draft using the SAME system prompt the live chat uses.
     This keeps the Comparison arms apples-to-apples with how the rubric
@@ -63,7 +78,7 @@ def _generate_draft_from_rubric(task: str, rubric_dict: dict) -> str:
         model=MODEL_PRIMARY,
         max_tokens=4000,
         system=system_prompt,
-        messages=[{"role": "user", "content": task.strip()}],
+        messages=[{"role": "user", "content": task.strip() + _FORCE_DRAFT_SUFFIX}],
     )
     full = "".join(b.text for b in resp.content if b.type == "text")
     return _strip_draft_tags(full)
@@ -81,7 +96,7 @@ def _generate_draft_no_rubric(task: str) -> str:
         model=MODEL_PRIMARY,
         max_tokens=4000,
         system=system_prompt,
-        messages=[{"role": "user", "content": task.strip()}],
+        messages=[{"role": "user", "content": task.strip() + _FORCE_DRAFT_SUFFIX}],
     )
     full = "".join(b.text for b in resp.content if b.type == "text")
     return _strip_draft_tags(full)
