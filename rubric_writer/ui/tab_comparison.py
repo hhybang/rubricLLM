@@ -12,8 +12,10 @@ Results go to the `rq2_threeway` data_type in Supabase via
 from rubric_writer.ui._deps import *
 from rubric_writer.api_client import _api_call_with_retry
 from rubric_writer.metrics import log_threeway_preference
+from prompts import CHAT_build_system_prompt
 
 import random
+import re
 
 
 _STATE_PREFIX = "cmp_tab_"
@@ -35,34 +37,54 @@ def _reset_comparison() -> None:
             del st.session_state[k]
 
 
+def _strip_draft_tags(text: str) -> str:
+    """Pull the <draft>...</draft> block out of a chat response. The chat
+    system prompt instructs the model to wrap its draft in those tags; here
+    we want just the draft text for side-by-side comparison. If no tag is
+    found, fall back to the full response stripped of any probe signal."""
+    m = re.search(r"<draft>([\s\S]*?)</draft>", text, flags=re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+    # Strip probe_signal blocks if the model emitted them without a draft
+    text = re.sub(r"<probe_signal>[\s\S]*?</probe_signal>", "", text,
+                  flags=re.IGNORECASE)
+    return text.strip()
+
+
 def _generate_draft_from_rubric(task: str, rubric_dict: dict) -> str:
-    rubric_json = json.dumps(rubric_dict.get("rubric", []), ensure_ascii=False, indent=2)
+    """Generate a draft using the SAME system prompt the live chat uses.
+    This keeps the Comparison arms apples-to-apples with how the rubric
+    actually affects generation in real sessions -- CHAT_build_system_prompt
+    includes the rubric-authority guidance, confidence-aware application,
+    and <draft> tag formatting that a raw 'write based on rubric' prompt
+    doesn't."""
+    system_prompt = CHAT_build_system_prompt(rubric_dict)
     resp = _api_call_with_retry(
         model=MODEL_PRIMARY,
         max_tokens=4000,
-        messages=[{"role": "user", "content": (
-            "Write the following based on this rubric.\n\n"
-            f"RUBRIC:\n{rubric_json}\n\n"
-            f"TASK: {task.strip()}\n\n"
-            "Write only the draft, nothing else."
-        )}],
+        system=system_prompt,
+        messages=[{"role": "user", "content": task.strip()}],
     )
-    return "".join(b.text for b in resp.content if b.type == "text")
+    full = "".join(b.text for b in resp.content if b.type == "text")
+    return _strip_draft_tags(full)
 
 
 def _generate_draft_no_rubric(task: str) -> str:
-    """Baseline: plain task prompt, no rubric, no preferences. Same model and
-    token budget as the rubric-driven generations so the only variable is the
-    presence/absence of the rubric."""
+    """Baseline: same CHAT system prompt infrastructure, but with NO rubric
+    passed in -- CHAT_build_system_prompt has a no-rubric branch that still
+    gives the model its <draft> tag format guidance without any criteria.
+    This isolates the effect of HAVING a rubric vs. not, while keeping the
+    surrounding prompt scaffolding identical."""
+    # Passing an empty list triggers the no-rubric branch in the builder.
+    system_prompt = CHAT_build_system_prompt([])
     resp = _api_call_with_retry(
         model=MODEL_PRIMARY,
         max_tokens=4000,
-        messages=[{"role": "user", "content": (
-            f"TASK: {task.strip()}\n\n"
-            "Write only the draft, nothing else."
-        )}],
+        system=system_prompt,
+        messages=[{"role": "user", "content": task.strip()}],
     )
-    return "".join(b.text for b in resp.content if b.type == "text")
+    full = "".join(b.text for b in resp.content if b.type == "text")
+    return _strip_draft_tags(full)
 
 
 def _randomize_label_to_arm() -> dict[str, str]:

@@ -390,7 +390,16 @@ def _resolve_refiner_inputs(
 
     # Parse USER_VERDICT from feedback
     fl = (feedback_text or "").lower()
-    if "disagree" in fl or "says it's met" in fl or "says it's mets" in fl:
+    if "wording_subjective" in fl or "wording is too subjective" in fl:
+        # Oscillation: user says the dim flip-flops because the wording is
+        # interpretation-dependent. Refiner should operationalize -- replace
+        # subjective language with an observable boundary.
+        user_verdict = (
+            "the dimension wording is too subjective and interpretation-dependent; "
+            "operationalize it by replacing subjective language with an observable "
+            "boundary or test"
+        )
+    elif "disagree" in fl or "says it's met" in fl or "says it's mets" in fl:
         user_verdict = "disagrees with grader"
     elif "agree" in fl or "confirms" in fl or "working_on_it" in fl:
         user_verdict = "agrees with grader"
@@ -400,6 +409,18 @@ def _resolve_refiner_inputs(
         user_verdict = "disagrees with grader (says NOT_MET)"
     else:
         user_verdict = feedback_text
+
+    # Surface the user's free-text reason, if present, by appending it to the
+    # canonical verdict label. Some drift panels (spot_check, etc.) let the
+    # user type *why* they disagree with the grader; that reasoning is the
+    # strongest signal for what the rubric edit should actually do, so we
+    # want the refiner to see it verbatim -- not just the MET/NOT_MET flip.
+    reason_match = _re.search(r"User reason:\s*(.+?)\s*$",
+                              feedback_text or "", flags=_re.DOTALL)
+    if reason_match:
+        reason_text = reason_match.group(1).strip()
+        if reason_text:
+            user_verdict = f"{user_verdict}. User's reasoning: {reason_text}"
 
     return {
         "criterion_name": target_crit_name,
@@ -593,6 +614,44 @@ def _verify_edit_against_draft(
                 break
         if chosen_d is None:
             chosen_d = matches[0][1]
+
+    # Fallback: if no exact dim_id match, try matching by criterion alone +
+    # the dim's label/description (the after_wording). The grader sometimes
+    # drops or rewrites the dim_id string (e.g. strips underscores, lowercases,
+    # or substitutes a descriptive phrase), which made verification fail
+    # spuriously even when the grader DID grade the dim -- just under a
+    # different key. This fallback recovers those cases.
+    if chosen_d is None and target_crit:
+        after_text = (suggestion.get("after_wording") or suggestion.get("new_text") or "").strip().lower()
+        for c in grades.get("grades") or []:
+            if (c.get("criterion_name") or "").strip().lower() != target_crit:
+                continue
+            for d in c.get("dimension_grades") or []:
+                label = (d.get("label") or d.get("description") or "").strip().lower()
+                if after_text and label and (label == after_text or after_text in label or label in after_text):
+                    chosen_d = d
+                    break
+            if chosen_d is None and len(c.get("dimension_grades") or []) == 1:
+                # Single-dim criterion -- unambiguous match even if ids differ.
+                chosen_d = c["dimension_grades"][0]
+            if chosen_d is not None:
+                break
+
+    # Diagnostic: if still not found, log what IS in the grader output so we
+    # can see what the grader emitted vs. what we expected. The "couldn't
+    # verify" warning in the UI is opaque on its own.
+    if chosen_d is None:
+        emitted_ids = []
+        for c in grades.get("grades") or []:
+            cname = (c.get("criterion_name") or "").strip()
+            for d in c.get("dimension_grades") or []:
+                emitted_ids.append(f"{cname}::{d.get('dimension_id') or '(no id)'}")
+        _log.warning(
+            "[verify] dim_not_found: expected dim_id=%r under crit=%r; "
+            "grader emitted: %s",
+            dim_id, crit_name, emitted_ids[:20],
+        )
+
     if chosen_d is not None:
         new_grade_val = (chosen_d.get("grade") or "").upper() or None
         new_confidence = (chosen_d.get("confidence") or "high").lower()
@@ -652,6 +711,11 @@ def _queue_verified_suggestion(
     suggestion["grader_verdict"] = inputs["grader_verdict"]
     suggestion["pre_verification"] = pre_verification
     suggestions_ref.append(suggestion)
+    _log.warning(
+        "[queue suggestion] appended suggestion id=%s dim=%s status=%s (list size=%d)",
+        suggestion.get("edit_id"), suggestion.get("dimension_id"),
+        suggestion.get("status"), len(suggestions_ref),
+    )
 
     try:
         from rubric_writer.metrics import log_edit_shown
@@ -690,9 +754,81 @@ def _queue_pending_feedback(
     })
 
 
+def _defer_flush(panel_id: str) -> None:
+    """Mark a panel as ready to flush its queued feedback on the next render
+    PASS, but only AFTER the drift expander has rendered. Running
+    `_flush_pending_feedback` directly from inside a button handler puts the
+    refiner's spinners (and any `st.caption` progress messages) INSIDE the
+    drift expander, which visually clobbers the panel while the user is
+    still looking at their resolved dims. Deferring until after the expander
+    closes keeps the panel visible and renders the refiner output below it."""
+    deferred = st.session_state.setdefault("_deferred_flush_panels", [])
+    if panel_id not in deferred:
+        deferred.append(panel_id)
+
+
+def _defer_schedule_refinement(
+    feedback_text: str,
+    drift_kind: str,
+    draft_grade: dict[str, Any] | None,
+    draft_excerpt: str,
+) -> None:
+    """Queue a direct (non-batched) refiner call to run AFTER the drift
+    expander renders. Used by tradeoff buttons, which fire one refinement
+    per click rather than batching a panel's dims. Same rationale as
+    `_defer_flush`: keeps refiner spinners out of the drift expander."""
+    queue = st.session_state.setdefault("_deferred_refinements", [])
+    queue.append({
+        "feedback_text": feedback_text,
+        "drift_kind": drift_kind,
+        "draft_grade": draft_grade,
+        "draft_excerpt": draft_excerpt,
+    })
+
+
+def run_deferred_refiner_work() -> None:
+    """Drain both deferred queues. Call from the main chat render loop AFTER
+    all messages (and therefore all drift expanders) have rendered, so any
+    spinners/captions the refiner emits appear in a stable location below
+    the conversation instead of replacing the contents of a drift expander
+    while the user is still looking at it."""
+    deferred_flushes = st.session_state.pop("_deferred_flush_panels", None) or []
+    deferred_refs = st.session_state.pop("_deferred_refinements", None) or []
+    if not deferred_flushes and not deferred_refs:
+        return
+    for panel_id in deferred_flushes:
+        try:
+            _flush_pending_feedback(panel_id)
+        except Exception as e:
+            _log.warning("deferred flush failed for %s: %s", panel_id, e)
+
+    for item in deferred_refs:
+        try:
+            _schedule_feedback_rubric_refinement(
+                feedback_text=item["feedback_text"],
+                drift_kind=item["drift_kind"],
+                draft_grade=item["draft_grade"],
+                draft_excerpt=item["draft_excerpt"],
+            )
+        except Exception as e:
+            _log.warning("deferred refinement failed: %s", e)
+
+
 def _is_remove_feedback(feedback_text: str) -> bool:
     fl = (feedback_text or "").lower()
     return "user wants to remove" in fl or "user says remove" in fl
+
+
+def _is_no_edit_feedback(feedback_text: str) -> bool:
+    """Feedback that explicitly says 'no rubric change needed' -- we should
+    not send these to the refiner even in the 3+-dim batch path.
+    Covers oscillation's `drafts_varying` and any flavor of `just_right`."""
+    fl = (feedback_text or "").lower()
+    return (
+        "says drafts_varying" in fl
+        or "drafts_varying" in fl
+        or "says just_right" in fl
+    )
 
 
 def _flush_pending_feedback(panel_id: str) -> None:
@@ -700,8 +836,10 @@ def _flush_pending_feedback(panel_id: str) -> None:
 
     Remove-dimension actions are handled first as a single batch (one new
     rubric version with all removals applied), because they're structural
-    changes that don't go through the refiner. Any remaining non-remove
-    items then follow the normal refiner path:
+    changes that don't go through the refiner. Feedback marked as "no edit
+    needed" (drafts_varying, just_right) is dropped silently -- the user
+    explicitly said they don't want a rubric change. Any remaining items
+    then follow the normal refiner path:
 
       For 1-2 dims: per-dim refiner calls (each independent).
       For 3+ dims: single combined refiner call for cross-dim nuance."""
@@ -711,9 +849,17 @@ def _flush_pending_feedback(panel_id: str) -> None:
     if not items:
         return
 
-    # Split into remove-actions and everything else.
+    # Split into remove-actions, no-edit-actions, and everything else.
     remove_items = [i for i in items if _is_remove_feedback(i.get("feedback_text", ""))]
-    other_items = [i for i in items if not _is_remove_feedback(i.get("feedback_text", ""))]
+    no_edit_items = [i for i in items
+                     if not _is_remove_feedback(i.get("feedback_text", ""))
+                     and _is_no_edit_feedback(i.get("feedback_text", ""))]
+    other_items = [i for i in items
+                   if not _is_remove_feedback(i.get("feedback_text", ""))
+                   and not _is_no_edit_feedback(i.get("feedback_text", ""))]
+    if no_edit_items:
+        _log.info("[flush] dropping %d no-edit-needed items from panel=%s",
+                  len(no_edit_items), panel_id)
 
     if remove_items:
         # Resolve each remove item to (criterion_name, dimension_id) via the
@@ -769,13 +915,100 @@ def _schedule_feedback_rubric_refinement(
     spinners so the user sees progress."""
     from rubric_writer.persistence import get_active_rubric
 
+    _log.warning(
+        "[refiner] entering for drift_kind=%s feedback=%r",
+        drift_kind, (feedback_text or "")[:120],
+    )
+
     rubric_dict, _, _ = get_active_rubric()
     if not rubric_dict or not rubric_dict.get("rubric"):
+        _log.warning("[refiner] bail: no active rubric")
+        return
+
+    # Tradeoff feedback is a CRITERION-level preference, not a dimension-level
+    # edit. The refiner generates dimension-wording edits, so funneling tradeoff
+    # feedback through it is meaningless -- `_resolve_refiner_inputs` can't
+    # find a "Dimension 'xxx'" tag in the tradeoff feedback text and falls
+    # through to "first NOT_MET" dim, which would produce an edit to a random
+    # unrelated dimension.
+    #
+    # Instead we record the preference as a system message in the conversation.
+    # System messages get picked up by `_build_conversation_text` which is what
+    # `infer_final_rubric` / `regenerate_rubric` feed to the model. That way
+    # when the user re-infers the rubric, the model sees their criterion-level
+    # priority alongside the rest of the conversation and can weight the new
+    # rubric accordingly.
+    if drift_kind == "tradeoff":
+        _log.info("[refiner] tradeoff preference -> system message: %r",
+                  (feedback_text or "")[:200])
+        sb = st.session_state.get("supabase")
+        pid = st.session_state.get("current_project_id")
+        if sb and pid:
+            try:
+                save_project_data(sb, pid, "tradeoff_preference", {
+                    "timestamp": datetime.now().isoformat(),
+                    "conversation_id": st.session_state.get("selected_conversation"),
+                    "feedback_text": feedback_text,
+                })
+            except Exception:
+                pass
+        # Append as a system message so rubric inference sees it.
+        conv_id = st.session_state.get("selected_conversation")
+        sys_content = f"User tradeoff preference: {feedback_text}"
+        already_logged = any(
+            m.get("role") == "system"
+            and m.get("is_tradeoff_preference")
+            and m.get("content") == sys_content
+            and m.get("conversation_id") == conv_id
+            for m in st.session_state.get("messages", []) or []
+        )
+        if not already_logged:
+            st.session_state.setdefault("messages", []).append({
+                "role": "system",
+                "content": sys_content,
+                "conversation_id": conv_id,
+                "is_tradeoff_preference": True,
+            })
+            try:
+                from rubric_writer.persistence import _auto_save_conversation
+                _auto_save_conversation()
+            except Exception as e:
+                _log.warning("tradeoff preference auto-save failed: %s", e)
+        st.info(
+            "Got it — noted your preference. It'll be factored into the "
+            "conversation context when you next re-infer the rubric."
+        )
+        return
+
+    # Short-circuits for feedback that explicitly says "no rubric edit needed."
+    # These are checked BEFORE the refiner LLM is called so we don't waste a
+    # call producing an unwanted suggestion.
+    #
+    # - drafts_varying (oscillation): user says the flip reflects real draft
+    #   variation, not a rubric flaw. No edit, just acknowledgement.
+    # - just_right: user endorses current wording (oscillation "just right",
+    #   calibration "just right", or low_confidence "grade_correct" implicit).
+    fl_pre = (feedback_text or "").lower()
+    if "says drafts_varying" in fl_pre or "drafts_varying" in fl_pre:
+        _log.info("[refiner] drafts_varying short-circuit: %r",
+                  (feedback_text or "")[:200])
+        st.info(
+            "Got it — we'll treat this as natural draft variation and leave "
+            "the rubric as-is."
+        )
+        return
+    if "says just_right" in fl_pre:
+        _log.info("[refiner] just_right short-circuit: %r",
+                  (feedback_text or "")[:200])
+        st.info("Got it — leaving this dimension's wording as-is.")
         return
 
     inputs = _resolve_refiner_inputs(feedback_text, draft_grade, rubric_dict)
     if not inputs:
-        _log.info("Rubric refinement: could not resolve refiner inputs for %s", drift_kind)
+        _log.warning(
+            "[refiner] bail: could not resolve inputs from feedback=%r for drift_kind=%s",
+            (feedback_text or "")[:200], drift_kind,
+        )
         return
 
     # Short-circuit: "remove" is a structural change, not a wording change.
@@ -811,7 +1044,10 @@ def _schedule_feedback_rubric_refinement(
             return
 
     if parse_status == "no_change_needed" or suggestion is None:
-        _log.info("Rubric refinement: no usable suggestion (%s)", parse_status)
+        _log.warning(
+            "[refiner] bail: no usable suggestion (parse_status=%s, suggestion=%s)",
+            parse_status, "None" if suggestion is None else "present",
+        )
         st.info("No rubric change needed based on your feedback.")
         return
 
@@ -1028,6 +1264,22 @@ def _schedule_feedback_rubric_refinement(
             f"We tried two edits but the grader is still low-confidence, meaning the "
             f"dimension will likely continue oscillating. You may need to rewrite the "
             f"dimension to replace subjective terms with observable criteria."
+        )
+    elif status_2 == "dim_not_found":
+        # The grader's output didn't include this dim_id -- usually because the
+        # grader dropped it or emitted a slightly different id string. We can't
+        # verify the edit's effect, but the suggestion is still queued so the
+        # user can review it directly.
+        st.warning(
+            f"We couldn't verify the edit: the grader didn't return a grade for "
+            f"this dimension on the re-graded draft. The suggestion is in the "
+            f"sidebar -- review the wording and Apply if it looks right."
+        )
+    elif status_2 == "error":
+        err_msg = details_2.get("error", "unknown error")
+        st.warning(
+            f"We tried two edits but the re-grading step failed ({err_msg}). "
+            f"The suggestion is in the sidebar -- review and Apply manually."
         )
     else:
         st.warning(
@@ -1261,6 +1513,20 @@ def _dot_row_for_grade(grade_payload: dict[str, Any] | None, drift: dict[str, An
     # to explain what the pulse meant. Now the dots only pulse when the
     # tradeoff is the kind that actually renders.
     trade = (d_obj.get("kind") == "tradeoff")
+    # Only the criteria that actually appear in the tradeoff (improvements or
+    # drops) should be painted orange. Previously every criterion with pct<1
+    # got orange when a tradeoff panel was open, which made a zero-score
+    # criterion (red) render the same as a genuinely-traded criterion.
+    tradeoff_crits: set[str] = set()
+    if trade:
+        for t in (d_obj.get("tradeoff_improvements") or []):
+            n = (t.get("name") or "").strip()
+            if n:
+                tradeoff_crits.add(n)
+        for t in (d_obj.get("tradeoff_drops") or []):
+            n = (t.get("name") or "").strip()
+            if n:
+                tradeoff_crits.add(n)
     # Normalize dim_ids to lowercase-stripped so they match the per-criterion
     # NOT_MET lookup below (which also strips). Without this, a persistent dim
     # with trailing whitespace or differing case silently fails the set
@@ -1286,18 +1552,25 @@ def _dot_row_for_grade(grade_payload: dict[str, Any] | None, drift: dict[str, An
         pct = parse_score_pct(c.get("score"))
 
         # --- Determine dot color ---
+        # pct is the fraction of dimensions MET for this criterion.
+        #   None       → grey (unscored / no parseable score)
+        #   >= 0.999   → green (all met)
+        #   in tradeoff→ orange (this criterion is part of the tradeoff)
+        #   == 0       → red (zero dims met — full fail, NOT "partial")
+        #   0 < p < 1  → yellow (partial)
+        in_tradeoff = trade and cname in tradeoff_crits
         if pct is None:
             color = "#9e9e9e"
         elif pct >= 0.999:
             color = "#2e7d32"
-        elif trade:
+        elif in_tradeoff:
             color = "#e65100"
-        elif pct < 1.0:
-            color = "#f9a825"
+        elif pct <= 0.001:
+            color = "#c62828"
         else:
-            color = "#2e7d32"
+            color = "#f9a825"
 
-        pulse = " animation:pulse 1.2s ease-in-out infinite;" if trade else ""
+        pulse = " animation:pulse 1.2s ease-in-out infinite;" if in_tradeoff else ""
 
         # --- Determine delta arrow ---
         # Only flag dimensions that are currently NOT_MET. Case-insensitive
@@ -1353,23 +1626,35 @@ def _dot_row_for_grade(grade_payload: dict[str, Any] | None, drift: dict[str, An
     )
 
 
+# Hover-to-reveal legend using pure CSS. Streamlit's unsafe_allow_html strips
+# <script> tags so JS positioning isn't available -- but :hover + absolutely
+# positioned popup inside the icon's wrapper works fine. The popup is
+# `position:absolute` so it's pinned to the icon's coordinates (relative to
+# the wrapper's offsetParent), not the viewport, which means no JS needed.
+# `z-index:9999` keeps it above other dots.
 _DOT_LEGEND_HTML = (
-    '<span class="dot-legend-wrap" style="position:relative;display:inline-block;margin-left:6px;cursor:pointer;">'
-    '<span class="dot-legend-icon" style="font-size:11px;color:#999;" title="Click for legend">ⓘ</span>'
-    '<span class="dot-legend-popup" style="display:none;position:absolute;left:0;top:18px;z-index:100;'
-    'background:#fff;border:1px solid #ddd;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.12);'
-    'padding:8px 12px;white-space:nowrap;font-size:10px;color:#555;line-height:1.8;">'
-    '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e7d32;vertical-align:middle;"></span> met &nbsp;&nbsp;'
+    '<style>'
+    '.dot-legend-wrap{position:relative;display:inline-block;margin-left:6px;'
+    'vertical-align:middle;}'
+    '.dot-legend-icon{font-size:11px;color:#999;cursor:help;}'
+    '.dot-legend-popup{display:none;position:absolute;left:0;top:100%;margin-top:4px;'
+    'background:#fff;border:1px solid #ddd;border-radius:6px;'
+    'box-shadow:0 4px 12px rgba(0,0,0,0.2);padding:8px 12px;font-size:10px;'
+    'color:#555;line-height:1.8;white-space:nowrap;z-index:9999;}'
+    '.dot-legend-wrap:hover .dot-legend-popup{display:block;}'
+    '</style>'
+    '<span class="dot-legend-wrap">'
+    '<span class="dot-legend-icon">ⓘ</span>'
+    '<span class="dot-legend-popup">'
+    '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e7d32;vertical-align:middle;"></span> all met &nbsp;&nbsp;'
     '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f9a825;vertical-align:middle;"></span> partial &nbsp;&nbsp;'
+    '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#c62828;vertical-align:middle;"></span> none met &nbsp;&nbsp;'
     '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#e65100;vertical-align:middle;"></span> tradeoff &nbsp;&nbsp;'
     '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9e9e9e;vertical-align:middle;"></span> n/a<br>'
     '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;border:1.5px dashed #ff9800;vertical-align:middle;"></span> low conf &nbsp;&nbsp;'
     '<b>~</b> oscillating &nbsp;<b>!</b> persistent failure'
-    '</span></span>'
-    '<style>'
-    '.dot-legend-wrap:hover .dot-legend-popup,'
-    '.dot-legend-wrap:focus-within .dot-legend-popup{display:inline-block !important;}'
-    '</style>'
+    '</span>'
+    '</span>'
 )
 
 
@@ -1431,9 +1716,14 @@ def _render_dimension_calibration_buttons(
                 if st.button(label, key=f"{btn_base}_{action}"):
                     pre_grade = json.loads(json.dumps(message.get("draft_grade"))) if message.get("draft_grade") else None
                     _store_user_verdict(message, crit, did, action)
+                    # Always use `did` (real dim_id) in the feedback text, never the
+                    # human description. `_resolve_refiner_inputs` extracts the hint
+                    # via a `Dimension '([^']+)'` regex and matches it against the
+                    # grade payload's `dimension_id` field; grader payloads don't
+                    # reliably carry `label`, so putting the description here made
+                    # the resolver fall through to "first NOT_MET" and act on the
+                    # wrong dim -- or silently no-op for remove actions.
                     feedback = f"Dimension '{did}' ({crit}): user says {action}."
-                    if dim_desc:
-                        feedback = f"Dimension '{dim_desc}' ({crit}): user says {action}."
                     # "just_right" = user confirms grader, "too_strict"/"remove" = user disagrees
                     log_confirmation(
                         source="drift_detected", draft_index=cal_meta.get("draft_index", 0),
@@ -1456,7 +1746,7 @@ def _render_dimension_calibration_buttons(
                             })
                         except Exception:
                             pass
-                    _schedule_feedback_rubric_refinement(
+                    _defer_schedule_refinement(
                         feedback_text=feedback,
                         drift_kind=drift_kind,
                         draft_grade=pre_grade,
@@ -1468,14 +1758,42 @@ def _render_dimension_calibration_buttons(
 
 def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
     """Render exactly one drift expander per draft. Four heuristics:
-    1. low_confidence  2. oscillation  3. persistent_failure  4. tradeoff"""
+    1. low_confidence  2. oscillation  3. persistent_failure  4. tradeoff
+
+    Drift panels are *anchored* to their draft: once we render one for a
+    given message_id, we stash it in session_state under `_drift_anchor_{mid}`
+    and keep rendering from that anchor even if `message["draft_drift"]`
+    gets cleared or overwritten on a later rerun (which can happen when the
+    grade-poll fragment races with a button click, or when the conversation
+    is reloaded from the DB and the row's drift_json comes back differently).
+    The anchor only clears when the user fully resolves every dimension in
+    the panel -- that's the only path that should make a drift panel vanish."""
     cfg = load_grading_config()
     if not cfg.get("show_drift_panels"):
         return
-    drift = message.get("draft_drift") or {}
-    kind = drift.get("kind") or "none"
-    if kind == "none":
-        return
+
+    anchor_key = f"_drift_anchor_{safe_msg_id}"
+    live_drift = message.get("draft_drift") or {}
+    live_kind = live_drift.get("kind") or "none"
+
+    # Anchor: prefer the session-state-stored drift over whatever's currently
+    # on the message. If the live drift has a real (non-none) kind, refresh
+    # the anchor with it so the latest computation wins. Otherwise fall back
+    # to whatever we anchored earlier.
+    if live_kind != "none":
+        st.session_state[anchor_key] = live_drift
+        drift = live_drift
+        kind = live_kind
+    else:
+        anchored = st.session_state.get(anchor_key)
+        if isinstance(anchored, dict) and (anchored.get("kind") or "none") != "none":
+            drift = anchored
+            kind = anchored.get("kind") or "none"
+            # Re-attach to the message so downstream code (button handlers,
+            # _flush_pending_feedback lookups) sees a consistent drift bundle.
+            message["draft_drift"] = drift
+        else:
+            return
 
     ek = f"drift_exp_{safe_msg_id}"
     if ek not in st.session_state:
@@ -1570,6 +1888,19 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                 f"dimension(s) to receive a rubric suggestion.** "
                 f"_({resolved_osc}/{total_osc} reviewed)_"
             )
+            # One-time legend for the four action buttons below so we can
+            # keep the button row compact (no per-button ⓘ icons).
+            st.markdown(
+                "<div style='font-size:11px;color:#666;line-height:1.5;"
+                "margin:4px 0 8px 0;padding:6px 10px;background:#f6f6f6;"
+                "border-left:3px solid #bbb;border-radius:3px;'>"
+                "<b>🔀 Subjective wording</b> — rubric language is interpretation-dependent; let's operationalize it.<br>"
+                "<b>📝 Drafts varying</b> — the flip reflects real draft variation, not a rubric flaw. No edit.<br>"
+                "<b>✅ Just right</b> — current wording is fine, dismiss.<br>"
+                "<b>🗑 Remove</b> — delete this dimension from the rubric."
+                "</div>",
+                unsafe_allow_html=True,
+            )
             for j, o in enumerate(oscs):
                 did = o.get("dimension_id", "")
                 crit = dim_to_crit.get(did, "")
@@ -1583,21 +1914,43 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     continue
 
                 st.markdown(f"_{html_lib.escape(crit)}_: **{html_lib.escape(dim_label)}**")
-                st.caption(f"{o.get('flips', 0)} flips: {hist_str}")
+                st.caption(f"Grade history: {hist_str}")
 
-                col1, col2, col3, col4 = st.columns(4)
+                # Oscillation-specific options, each with a hover-revealed ⓘ
+                # that explains the semantic. Matches the pattern we use for
+                # the rubric-score dot legend -- concise button label, full
+                # meaning available on hover.
+                #
+                # Downstream action per option:
+                #   - wording_subjective → refiner edit (operationalize wording)
+                #   - drafts_varying     → short-circuit, no rubric change
+                #   - just_right         → dismiss, no rubric change
+                #   - remove             → short-circuit, delete the dim
                 btn_base = f"osc_{safe_msg_id}_{j}"
-                for col, label, action in [
-                    (col1, "📏 Too strict", "too_strict"),
-                    (col2, "🔍 Too vague", "too_vague"),
-                    (col3, "✅ Just right", "just_right"),
-                    (col4, "🗑 Remove", "remove"),
-                ]:
+                osc_options = [
+                    ("🔀 Subjective wording",
+                     "Rubric language leaves room for interpretation — let's operationalize it.",
+                     "wording_subjective"),
+                    ("📝 Drafts varying",
+                     "The flip reflects real variation in my drafts, not a rubric flaw.",
+                     "drafts_varying"),
+                    ("✅ Just right",
+                     "Current wording is fine — dismiss.",
+                     "just_right"),
+                    ("🗑 Remove",
+                     "Delete this dimension from the rubric.",
+                     "remove"),
+                ]
+                cols = st.columns(len(osc_options))
+                for (col, (btn_label, semantic, action)) in zip(cols, osc_options):
                     with col:
-                        if st.button(label, key=f"{btn_base}_{action}"):
+                        if st.button(btn_label, key=f"{btn_base}_{action}",
+                                     use_container_width=True):
                             pre_grade = json.loads(json.dumps(message.get("draft_grade"))) if message.get("draft_grade") else None
                             _store_user_verdict(message, crit, did, action)
-                            feedback = f"Dimension '{dim_label}' ({crit}) oscillates ({o.get('flips', 0)} flips): user says {action}."
+                            # Use `did` (real dim_id), not `dim_label` -- see
+                            # the note on the persistent_failure branch.
+                            feedback = f"Dimension '{did}' ({crit}) oscillates ({o.get('flips', 0)} flips): user says {action}. {semantic}"
                             log_confirmation(
                                 source="drift_detected",
                                 draft_index=(message.get("draft_grade_meta") or {}).get("draft_index", 0),
@@ -1631,7 +1984,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                             new_resolved = sum(1 for k in range(total_osc)
                                                if st.session_state.get(f"osc_resolved_{safe_msg_id}_{k}"))
                             if new_resolved == total_osc:
-                                _flush_pending_feedback(panel_id_osc)
+                                _defer_flush(panel_id_osc)
                             st.rerun()
 
         # --- 3. Persistent failure ---
@@ -1668,7 +2021,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     new_resolved = sum(1 for k in range(total_pf)
                                        if st.session_state.get(f"pf_resolved_{safe_msg_id}_{k}"))
                     if new_resolved == total_pf:
-                        _flush_pending_feedback(panel_id_pf)
+                        _defer_flush(panel_id_pf)
 
                 with col1:
                     if st.button("👍 Agree, I'm working on it", key=f"{btn_base}_agree"):
@@ -1687,7 +2040,13 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     if st.button("❌ Disagree, I think this is met", key=f"{btn_base}_disagree"):
                         pre_grade = json.loads(json.dumps(message.get("draft_grade"))) if message.get("draft_grade") else None
                         _store_user_verdict(message, crit, did, "MET")
-                        feedback = f"Dimension '{dim_label}' ({crit}): grader says NOT_MET for {streak} drafts, user disagrees and says it's MET."
+                        # Use `did` (real dim_id), not `dim_label`. `_resolve_refiner_inputs`
+                        # extracts the hint via a `Dimension '([^']+)'` regex and matches
+                        # against the grade payload's `dimension_id` field -- grader payloads
+                        # don't reliably carry `label`, so using the human label here causes
+                        # the resolver to fall through to "first NOT_MET" and act on the
+                        # wrong dim (or fail silently).
+                        feedback = f"Dimension '{did}' ({crit}): grader says NOT_MET for {streak} drafts, user disagrees and says it's MET."
                         _queue_pending_feedback(
                             panel_id=panel_id_pf,
                             feedback_text=feedback,
@@ -1709,7 +2068,14 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     if st.button("🗑 Remove", key=f"{btn_base}_remove"):
                         pre_grade = json.loads(json.dumps(message.get("draft_grade"))) if message.get("draft_grade") else None
                         _store_user_verdict(message, crit, did, "remove")
-                        feedback = f"Dimension '{dim_label}' ({crit}): user wants to remove this dimension."
+                        # Use `did` (real dim_id). `_flush_pending_feedback` routes
+                        # removes through `_resolve_refiner_inputs` to get
+                        # (criterion_name, dimension_id), and the regex only finds
+                        # the id if we put it in the feedback text here. With
+                        # `dim_label` the resolver fell through to a different
+                        # NOT_MET dim and removed the wrong one -- or couldn't
+                        # match at all and silently no-opped the remove.
+                        feedback = f"Dimension '{did}' ({crit}): user wants to remove this dimension."
                         _queue_pending_feedback(
                             panel_id=panel_id_pf,
                             feedback_text=feedback,
@@ -1777,7 +2143,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     with col1:
                         if st.button(f"⬆ Prioritize {imp_name}", key=f"trade_imp_{safe_msg_id}_{j}"):
                             _store_user_verdict(message, drp_name, "", "deprioritize")
-                            _schedule_feedback_rubric_refinement(
+                            _defer_schedule_refinement(
                                 feedback_text=f"Tradeoff: user prioritizes '{imp_name}' over '{drp_name}'.",
                                 drift_kind="tradeoff",
                                 draft_grade=message.get("draft_grade"),
@@ -1788,7 +2154,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     with col2:
                         if st.button(f"⬆ Prioritize {drp_name}", key=f"trade_drp_{safe_msg_id}_{j}"):
                             _store_user_verdict(message, imp_name, "", "deprioritize")
-                            _schedule_feedback_rubric_refinement(
+                            _defer_schedule_refinement(
                                 feedback_text=f"Tradeoff: user prioritizes '{drp_name}' over '{imp_name}'.",
                                 drift_kind="tradeoff",
                                 draft_grade=message.get("draft_grade"),
@@ -1798,7 +2164,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                             st.rerun()
                     with col3:
                         if st.button("⚖ Both matter", key=f"trade_both_{safe_msg_id}_{j}"):
-                            _schedule_feedback_rubric_refinement(
+                            _defer_schedule_refinement(
                                 feedback_text=f"Tradeoff between '{imp_name}' and '{drp_name}': user says both matter equally.",
                                 drift_kind="tradeoff",
                                 draft_grade=message.get("draft_grade"),
@@ -1846,81 +2212,126 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     new_resolved = sum(1 for k in range(total_sc)
                                        if st.session_state.get(f"spot_resolved_{safe_msg_id}_{k}"))
                     if new_resolved == total_sc:
-                        _flush_pending_feedback(panel_id_sc)
+                        _defer_flush(panel_id_sc)
 
-                col1, col2 = st.columns(2)
-                with col1:
-                    if st.button("✅ Yes, it meets this", key=f"{btn_base}_yes"):
-                        _store_user_verdict(message, crit, did, "MET")
-                        log_confirmation(
-                            source="spot_check", draft_index=spot_meta.get("draft_index", 0),
-                            drift_type="low_confidence", dimension_id=did,
-                            dimension_text=dim_label, grader_verdict=grade,
-                            grader_confidence=sc.get("confidence", "high"),
-                            user_response_raw="yes",
-                            user_confirms_grader=(grade == "MET"),
-                        )
-                        if grade != "MET":
-                            _queue_pending_feedback(
-                                panel_id=panel_id_sc,
-                                feedback_text=f"Spot check: grader said {grade} on '{dim_label}' ({crit}), user says MET. Silent misalignment.",
-                                drift_kind="spot_check",
-                                draft_grade=message.get("draft_grade"),
-                                draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                # "No" click flow: first click stages a pending-NO state that
+                # reveals a reason text input + Submit button. Second click
+                # (Submit) actually resolves the dim and queues the feedback.
+                # Yes click resolves immediately.
+                pending_no_key = f"spot_pending_no_{safe_msg_id}_{j}"
+                reason_key = f"spot_reason_{safe_msg_id}_{j}"
+
+                pending_no = st.session_state.get(pending_no_key, False)
+
+                if not pending_no:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("✅ Yes, it meets this", key=f"{btn_base}_yes"):
+                            _store_user_verdict(message, crit, did, "MET")
+                            log_confirmation(
+                                source="spot_check", draft_index=spot_meta.get("draft_index", 0),
+                                drift_type="low_confidence", dimension_id=did,
+                                dimension_text=dim_label, grader_verdict=grade,
+                                grader_confidence=sc.get("confidence", "high"),
+                                user_response_raw="yes",
+                                user_confirms_grader=(grade == "MET"),
                             )
-                        sb = st.session_state.get("supabase")
-                        pid = st.session_state.get("current_project_id")
-                        if sb and pid:
-                            try:
-                                save_project_data(sb, pid, "spot_check_feedback", {
-                                    "timestamp": datetime.now().isoformat(),
-                                    "conversation_id": st.session_state.get("selected_conversation"),
-                                    "message_id": message.get("message_id"),
-                                    "dimension_id": did, "criterion": crit,
-                                    "grader_grade": grade, "user_grade": "MET",
-                                    "misaligned": grade != "MET",
-                                })
-                            except Exception:
-                                pass
-                        st.session_state[resolved_key] = "MET" + (" (misaligned)" if grade != "MET" else "")
-                        _sc_finalize()
-                        st.rerun()
-                with col2:
-                    if st.button("❌ No, it doesn't", key=f"{btn_base}_no"):
-                        _store_user_verdict(message, crit, did, "NOT_MET")
-                        log_confirmation(
-                            source="spot_check", draft_index=spot_meta.get("draft_index", 0),
-                            drift_type="low_confidence", dimension_id=did,
-                            dimension_text=dim_label, grader_verdict=grade,
-                            grader_confidence=sc.get("confidence", "high"),
-                            user_response_raw="no",
-                            user_confirms_grader=(grade == "NOT_MET"),
-                        )
-                        if grade != "NOT_MET":
-                            _queue_pending_feedback(
-                                panel_id=panel_id_sc,
-                                feedback_text=f"Spot check: grader said {grade} on '{dim_label}' ({crit}), user says NOT_MET. Silent misalignment.",
-                                drift_kind="spot_check",
-                                draft_grade=message.get("draft_grade"),
-                                draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                            if grade != "MET":
+                                # `_resolve_refiner_inputs` extracts the dim
+                                # identifier via a `Dimension '([^']+)'` regex
+                                # and matches against dim `id` (not label)
+                                # because grader payloads don't carry labels.
+                                # So we MUST use `did` here, not `dim_label`,
+                                # or the refiner silently bails.
+                                _queue_pending_feedback(
+                                    panel_id=panel_id_sc,
+                                    feedback_text=f"Dimension '{did}' ({crit}): spot check — grader said {grade}, user says MET. Silent misalignment.",
+                                    drift_kind="spot_check",
+                                    draft_grade=message.get("draft_grade"),
+                                    draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                                )
+                            sb = st.session_state.get("supabase")
+                            pid = st.session_state.get("current_project_id")
+                            if sb and pid:
+                                try:
+                                    save_project_data(sb, pid, "spot_check_feedback", {
+                                        "timestamp": datetime.now().isoformat(),
+                                        "conversation_id": st.session_state.get("selected_conversation"),
+                                        "message_id": message.get("message_id"),
+                                        "dimension_id": did, "criterion": crit,
+                                        "grader_grade": grade, "user_grade": "MET",
+                                        "misaligned": grade != "MET",
+                                    })
+                                except Exception:
+                                    pass
+                            st.session_state[resolved_key] = "MET" + (" (misaligned)" if grade != "MET" else "")
+                            _sc_finalize()
+                            st.rerun()
+                    with col2:
+                        if st.button("❌ No, it doesn't", key=f"{btn_base}_no"):
+                            # Don't resolve yet -- reveal the reason input.
+                            st.session_state[pending_no_key] = True
+                            st.rerun()
+                else:
+                    # Pending-NO state: show reason box + Submit / Cancel.
+                    st.text_input(
+                        "Why? (optional — your reasoning helps the refiner suggest a better rubric edit)",
+                        key=reason_key,
+                        placeholder="e.g. the draft doesn't actually explain what 'clearly' means here",
+                    )
+                    col_submit, col_cancel = st.columns(2)
+                    with col_submit:
+                        if st.button("Submit feedback", key=f"{btn_base}_no_submit", type="primary"):
+                            _store_user_verdict(message, crit, did, "NOT_MET")
+                            log_confirmation(
+                                source="spot_check", draft_index=spot_meta.get("draft_index", 0),
+                                drift_type="low_confidence", dimension_id=did,
+                                dimension_text=dim_label, grader_verdict=grade,
+                                grader_confidence=sc.get("confidence", "high"),
+                                user_response_raw="no",
+                                user_confirms_grader=(grade == "NOT_MET"),
                             )
-                        sb = st.session_state.get("supabase")
-                        pid = st.session_state.get("current_project_id")
-                        if sb and pid:
-                            try:
-                                save_project_data(sb, pid, "spot_check_feedback", {
-                                    "timestamp": datetime.now().isoformat(),
-                                    "conversation_id": st.session_state.get("selected_conversation"),
-                                    "message_id": message.get("message_id"),
-                                    "dimension_id": did, "criterion": crit,
-                                    "grader_grade": grade, "user_grade": "NOT_MET",
-                                    "misaligned": grade != "NOT_MET",
-                                })
-                            except Exception:
-                                pass
-                        st.session_state[resolved_key] = "NOT_MET" + (" (misaligned)" if grade != "NOT_MET" else "")
-                        _sc_finalize()
-                        st.rerun()
+                            user_reason = (st.session_state.get(reason_key, "") or "").strip()
+                            if grade != "NOT_MET":
+                                # Use `did` (real dim_id), not `dim_label`.
+                                # See note on the YES branch above.
+                                reason_suffix = f" User reason: {user_reason}" if user_reason else ""
+                                _queue_pending_feedback(
+                                    panel_id=panel_id_sc,
+                                    feedback_text=f"Dimension '{did}' ({crit}): spot check — grader said {grade}, user says NOT_MET. Silent misalignment.{reason_suffix}",
+                                    drift_kind="spot_check",
+                                    draft_grade=message.get("draft_grade"),
+                                    draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                                )
+                            sb = st.session_state.get("supabase")
+                            pid = st.session_state.get("current_project_id")
+                            if sb and pid:
+                                try:
+                                    save_project_data(sb, pid, "spot_check_feedback", {
+                                        "timestamp": datetime.now().isoformat(),
+                                        "conversation_id": st.session_state.get("selected_conversation"),
+                                        "message_id": message.get("message_id"),
+                                        "dimension_id": did, "criterion": crit,
+                                        "grader_grade": grade, "user_grade": "NOT_MET",
+                                        "misaligned": grade != "NOT_MET",
+                                        "user_reason": user_reason,
+                                    })
+                                except Exception:
+                                    pass
+                            st.session_state[resolved_key] = "NOT_MET" + (" (misaligned)" if grade != "NOT_MET" else "")
+                            st.session_state.pop(pending_no_key, None)
+                            _sc_finalize()
+                            st.rerun()
+                    with col_cancel:
+                        if st.button("Cancel", key=f"{btn_base}_no_cancel"):
+                            st.session_state.pop(pending_no_key, None)
+                            st.rerun()
+
+    # Deferred refiner work is NOT run here. Running it inside any single
+    # panel's expander would put spinners inside that panel, which is what
+    # we're trying to avoid. Instead, tab_chat calls `_run_deferred_refiner_work`
+    # once AFTER the whole chat message loop, so refiner output appears in a
+    # stable location below all messages.
 
 
 def _heatmap_color(pct: float | None) -> str:
@@ -2125,7 +2536,7 @@ def _save_low_confidence_feedback(
                 draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
             )
         else:
-            _schedule_feedback_rubric_refinement(
+            _defer_schedule_refinement(
                 feedback_text=correction_text,
                 drift_kind="low_confidence",
                 draft_grade=pre_override_grade,
@@ -2214,7 +2625,7 @@ def _render_low_confidence_clarifications(
         new_resolved = sum(1 for k in range(total)
                            if st.session_state.get(f"lc_resolved_{safe_msg_id}_{k}"))
         if new_resolved == total:
-            _flush_pending_feedback(panel_id_lc)
+            _defer_flush(panel_id_lc)
 
     for i, lc in enumerate(low_conf_dims):
         dim_id = lc.get("dimension_id", "")
@@ -2296,7 +2707,9 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
         st.info("No rubric scores yet. Scores appear after drafts are graded in the background.")
         return
 
-    # Build a long-format table: one row per (draft_index, criterion, score%).
+    # Build a long-format table: one row per (draft_number, criterion, score%).
+    # Draft numbering is 1-based over graded assistant drafts -- matches the
+    # "Draft N" label shown on each draft in the conversation tab.
     rows: list[dict[str, Any]] = []
     for i, m in enumerate(graded, start=1):
         dg = m.get("draft_grade") or {}
@@ -2317,12 +2730,42 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
         st.info("No parseable scores to plot yet.")
         return
 
-    # One draft isn't enough for a line — fall back to a horizontal bar view.
     n_drafts = len(graded)
+
+    def _render_latest_scorecard() -> None:
+        """Dimension-level scorecard for the latest draft. Rendered after
+        whichever chart (bar/plotly/altair/line) we end up showing, so the
+        user always sees the detailed breakdown."""
+        latest = graded[-1]
+        dg = latest.get("draft_grade") or {}
+        with st.expander(f"Latest draft scorecard (draft {n_drafts})", expanded=False):
+            for c in sorted(
+                dg.get("grades") or [],
+                key=lambda x: (x.get("criterion_priority", 99), x.get("criterion_name") or ""),
+            ):
+                name = c.get("criterion_name") or ""
+                sc = c.get("score") or ""
+                st.markdown(f"**{html_lib.escape(name)}** (priority {c.get('criterion_priority', '?')}) — `{sc}`")
+                for d in c.get("dimension_grades") or []:
+                    g = (d.get("grade") or "").upper()
+                    conf = d.get("confidence", "high")
+                    mark = "✓" if g == "MET" else "✗"
+                    conf_badge = ""
+                    if conf == "low":
+                        conf_badge = " ⚠️ _low confidence_"
+                        note = d.get("ambiguity_note", "")
+                        if note:
+                            conf_badge += f" — {note}"
+                    elif conf == "medium":
+                        conf_badge = " 🔸 _medium confidence_"
+                    st.caption(f"{mark} `{d.get('dimension_id')}` — {d.get('evidence', '')}{conf_badge}")
+
+    # One draft isn't enough for a line — fall back to a horizontal bar view.
     if n_drafts == 1:
         import pandas as _pd
         df = _pd.DataFrame(rows).set_index("Criterion")["Score (%)"]
         st.bar_chart(df)
+        _render_latest_scorecard()
         return
 
     # Plotly line graph with its built-in legend DISABLED. Streamlit's sidebar
@@ -2351,33 +2794,46 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
 
     rendered = False
     # --- Attempt 1: Plotly -------------------------------------------------
+    # Fast-path: if plotly isn't importable, skip directly to altair without
+    # a stacktrace-noisy warning. Altair is installed in every env we ship to
+    # so this is the common silent fallback on machines without plotly.
+    _plotly_available = False
     try:
-        import plotly.graph_objects as go
+        import plotly.graph_objects as go  # noqa: F401
+        _plotly_available = True
+    except ImportError:
+        _log.debug("plotly not available; using altair")
 
-        fig = go.Figure()
-        for cn in columns:
-            fig.add_trace(go.Scatter(
-                x=wide.index.tolist(),
-                y=wide[cn].tolist(),
-                mode="lines+markers",
-                name=cn,
-                line=dict(color=crit_colors[cn]),
-                marker=dict(color=crit_colors[cn]),
-                hovertemplate="<b>%{fullData.name}</b><br>Draft %{x}: %{y:.1f}%<extra></extra>",
-            ))
-        fig.update_layout(
-            xaxis_title="Draft",
-            yaxis_title="% dimensions met",
-            yaxis=dict(range=[0, 105]),
-            xaxis=dict(tickmode="linear", dtick=1),
-            showlegend=False,
-            margin=dict(l=10, r=10, t=10, b=40),
-            height=260,
-        )
-        st.plotly_chart(fig, use_container_width=True)
-        rendered = True
-    except Exception as _e:
-        _log.warning("Plotly rendering failed, trying altair: %s", _e)
+    if _plotly_available:
+        try:
+            import plotly.graph_objects as go
+
+            fig = go.Figure()
+            for cn in columns:
+                fig.add_trace(go.Scatter(
+                    x=wide.index.tolist(),
+                    y=wide[cn].tolist(),
+                    mode="lines+markers",
+                    name=cn,
+                    line=dict(color=crit_colors[cn]),
+                    marker=dict(color=crit_colors[cn]),
+                    hovertemplate="<b>%{fullData.name}</b><br>Draft %{x}: %{y:.1f}%<extra></extra>",
+                ))
+            fig.update_layout(
+                xaxis_title="Draft #",
+                yaxis_title="% dimensions met",
+                yaxis=dict(range=[0, 105]),
+                xaxis=dict(tickmode="linear", dtick=1),
+                showlegend=False,
+                margin=dict(l=10, r=10, t=10, b=40),
+                height=260,
+            )
+            st.plotly_chart(fig, use_container_width=True)
+            rendered = True
+        except Exception as _e:
+            # Plotly was importable but rendering failed -- this IS worth a
+            # warning since it means a real rendering bug.
+            _log.warning("Plotly rendering failed, trying altair: %s", _e)
 
     # --- Attempt 2: Altair -------------------------------------------------
     if not rendered:
@@ -2391,7 +2847,8 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
                 alt.Chart(long_df)
                 .mark_line(point=True)
                 .encode(
-                    x=alt.X("Draft:Q", axis=alt.Axis(tickMinStep=1)),
+                    x=alt.X("Draft:Q",
+                            axis=alt.Axis(tickMinStep=1, title="Draft #")),
                     y=alt.Y("Score:Q", scale=alt.Scale(domain=[0, 105]),
                             title="% dimensions met"),
                     color=alt.Color(
@@ -2407,15 +2864,19 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
             )
             st.altair_chart(chart, use_container_width=True)
             rendered = True
+        except ImportError:
+            _log.debug("altair not available; using st.line_chart")
         except Exception as _e:
             _log.warning("Altair rendering failed, falling back to st.line_chart: %s", _e)
 
     # --- Attempt 3: st.line_chart (last resort, will show its own legend) --
     if not rendered:
-        st.line_chart(wide, y_label="% dimensions met", x_label="Draft")
+        st.line_chart(wide, y_label="% dimensions met", x_label="Draft #")
         # With st.line_chart, Streamlit draws its OWN legend using its own
         # palette. Skip our custom legend to avoid a color mismatch -- the
-        # built-in legend is authoritative in this fallback.
+        # built-in legend is authoritative in this fallback. Still render the
+        # scorecard so the user sees dimension-level detail.
+        _render_latest_scorecard()
         return
 
     # --- Custom color key below the chart (plotly/altair path) -------------
@@ -2432,196 +2893,8 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
         unsafe_allow_html=True,
     )
 
-    # Quick scorecard for the latest draft, so users can see exactly which
-    # dimensions passed/failed on the most recent draft without scrolling
-    # through the conversation log.
-    latest = graded[-1]
-    dg = latest.get("draft_grade") or {}
-    with st.expander(f"Latest draft scorecard (draft {n_drafts})", expanded=False):
-        for c in sorted(
-            dg.get("grades") or [],
-            key=lambda x: (x.get("criterion_priority", 99), x.get("criterion_name") or ""),
-        ):
-            name = c.get("criterion_name") or ""
-            sc = c.get("score") or ""
-            st.markdown(f"**{html_lib.escape(name)}** (priority {c.get('criterion_priority', '?')}) — `{sc}`")
-            for d in c.get("dimension_grades") or []:
-                g = (d.get("grade") or "").upper()
-                conf = d.get("confidence", "high")
-                mark = "✓" if g == "MET" else "✗"
-                conf_badge = ""
-                if conf == "low":
-                    conf_badge = " ⚠️ _low confidence_"
-                    note = d.get("ambiguity_note", "")
-                    if note:
-                        conf_badge += f" — {note}"
-                elif conf == "medium":
-                    conf_badge = " 🔸 _medium confidence_"
-                st.caption(f"{mark} `{d.get('dimension_id')}` — {d.get('evidence', '')}{conf_badge}")
-
-
-# ---------------------------------------------------------------------------
-# Debug mode: force any drift kind on the most recent graded draft
-# ---------------------------------------------------------------------------
-
-def _build_debug_preset(kind: str, draft_grade: dict[str, Any] | None) -> dict[str, Any]:
-    """Build a drift preset from the actual draft grade data."""
-    import random as _rng
-
-    dims: list[dict[str, Any]] = []
-    crit_names: list[str] = []
-    if draft_grade:
-        for c in draft_grade.get("grades") or []:
-            cname = (c.get("criterion_name") or "").strip()
-            if cname:
-                crit_names.append(cname)
-            for d in c.get("dimension_grades") or []:
-                dims.append({
-                    "criterion": cname,
-                    "dimension_id": (d.get("dimension_id") or "").strip(),
-                    "grade": (d.get("grade") or "").upper(),
-                    "confidence": d.get("confidence", "high"),
-                    "evidence": d.get("evidence", ""),
-                })
-
-    if kind == "low_confidence":
-        # Pick up to 2 dims and mark as low confidence
-        sample = dims[:2] if dims else []
-        return {
-            "kind": "low_confidence",
-            "low_confidence_dims": [
-                {**d, "confidence": "low", "ambiguity_note": "Debug: simulated ambiguity for this dimension."}
-                for d in sample
-            ],
-        }
-    elif kind == "oscillation":
-        sample = dims[:2] if dims else []
-        return {
-            "kind": "oscillation",
-            "oscillations": [
-                {"dimension_id": d["dimension_id"], "flips": 4,
-                 "history": ["MET", "NOT_MET", "MET", "NOT_MET", "MET", "NOT_MET"]}
-                for d in sample
-            ],
-        }
-    elif kind == "persistent_failure":
-        not_met = [d for d in dims if d["grade"] == "NOT_MET"]
-        sample = (not_met or dims)[:2]
-        return {
-            "kind": "persistent_failure",
-            "persistent_failure": [
-                {"dimension_id": d["dimension_id"], "criterion": d["criterion"], "streak": 3}
-                for d in sample
-            ],
-        }
-    elif kind == "tradeoff":
-        if len(crit_names) >= 2:
-            imp_name, drp_name = crit_names[0], crit_names[1]
-        else:
-            imp_name, drp_name = "Criterion A", "Criterion B"
-        return {
-            "kind": "tradeoff",
-            "tradeoff_improvements": [
-                {"name": imp_name, "score_str_prev": "2/4", "score_str_curr": "4/4",
-                 "from": 0.5, "to": 1.0, "delta": 0.5},
-            ],
-            "tradeoff_drops": [
-                {"name": drp_name, "score_str_prev": "3/3", "score_str_curr": "1/3",
-                 "from": 1.0, "to": 0.33, "delta": -0.67},
-            ],
-        }
-    elif kind == "spot_check":
-        met = [d for d in dims if d["grade"] == "MET" and d["confidence"] in ("high", "medium")]
-        sample = met[:2] if met else dims[:2]
-        return {
-            "kind": "spot_check",
-            "spot_check_dims": sample,
-        }
-    return {"kind": "none"}
-
-
-_DEBUG_DRIFT_KINDS = ["low_confidence", "oscillation", "persistent_failure", "tradeoff", "spot_check"]
-
-
-def render_debug_drift_panel() -> None:
-    """Sidebar debug tool: force a drift kind on the latest graded message to preview the UI."""
-    if not st.session_state.get("_debug_drift_enabled"):
-        if st.checkbox("Enable drift debug mode", key="_debug_drift_toggle"):
-            st.session_state["_debug_drift_enabled"] = True
-            st.rerun()
-        return
-
-    if st.checkbox("Enable drift debug mode", value=True, key="_debug_drift_toggle_on"):
-        pass
-    else:
-        st.session_state["_debug_drift_enabled"] = False
-        for m in st.session_state.get("messages", []):
-            m.pop("_debug_drift_override", None)
-        st.rerun()
-        return
-
-    st.caption("Force a drift kind on the latest draft to preview the panel UI.")
-
-    kind = st.selectbox(
-        "Drift kind to preview",
-        options=["(none)"] + _DEBUG_DRIFT_KINDS,
-        key="_debug_drift_kind",
-    )
-
-    prev_kind = st.session_state.get("_debug_drift_prev_kind")
-    if kind != prev_kind:
-        st.session_state["_debug_drift_prev_kind"] = kind
-        if kind != "(none)":
-            for m in reversed(st.session_state.get("messages", [])):
-                if m.get("role") == "assistant" and extract_primary_draft_text(m.get("content") or ""):
-                    import copy as _copy
-                    draft_grade = m.get("draft_grade")
-                    preset = _build_debug_preset(kind, draft_grade)
-                    # For tradeoff debug, flip dimensions in the dropped criterion
-                    if kind == "tradeoff" and draft_grade:
-                        debug_grade = _copy.deepcopy(draft_grade)
-                        drop_names = {str(d.get("name", "")) for d in preset.get("tradeoff_drops") or []}
-                        for c in debug_grade.get("grades") or []:
-                            if (c.get("criterion_name") or "").strip() in drop_names:
-                                for d in c.get("dimension_grades") or []:
-                                    d["grade"] = "NOT_MET"
-                                met = sum(1 for d in c.get("dimension_grades") or [] if d.get("grade") == "MET")
-                                total = len(c.get("dimension_grades") or [])
-                                c["score"] = f"{met}/{total}"
-                        m["draft_grade"] = debug_grade
-                    m["draft_drift"] = preset
-                    m["_debug_drift_override"] = kind
-                    break
-        else:
-            for m in st.session_state.get("messages", []):
-                m.pop("_debug_drift_override", None)
-        st.rerun()
-
-    if kind == "(none)":
-        for m in st.session_state.get("messages", []):
-            m.pop("_debug_drift_override", None)
-        return
-
-    # Find the most recent assistant message with a draft (graded or not)
-    target = None
-    for m in reversed(st.session_state.get("messages", [])):
-        if m.get("role") == "assistant" and extract_primary_draft_text(m.get("content") or ""):
-            target = m
-            break
-
-    if not target:
-        st.warning("No drafts yet -- send a message that produces a draft first.")
-        return
-
-    if not target.get("draft_grade"):
-        st.warning("Latest draft has no grade yet -- wait for grading to complete.")
-        return
-
-    draft_grade = target.get("draft_grade")
-    target["draft_drift"] = _build_debug_preset(kind, draft_grade)
-    target["_debug_drift_override"] = kind
-    st.success(f"Previewing **{kind}** on message `{str(target.get('message_id', ''))[:12]}...`")
-    st.caption("Scroll to the latest draft in the chat to see the panel.")
+    # Dimension-level scorecard for the latest draft (plotly/altair path).
+    _render_latest_scorecard()
 
 
 def invalidate_stale_suggestions() -> int:
@@ -2687,9 +2960,17 @@ def clear_rubric_edit_session_state() -> None:
         "_rubric_apply_warnings",
         "_rubric_apply_successes",
         "rubric_update_result",
+        "_deferred_flush_panels",
+        "_deferred_refinements",
     )
     for k in keys_to_clear:
         if k in st.session_state:
+            del st.session_state[k]
+    # Drift anchors are message-id-scoped; purge them on conversation switch
+    # so the previous conversation's panels don't ghost into the new one's
+    # render if message_ids happen to collide.
+    for k in list(st.session_state.keys()):
+        if isinstance(k, str) and k.startswith("_drift_anchor_"):
             del st.session_state[k]
 
 
@@ -2707,6 +2988,16 @@ def render_rubric_edit_suggestions() -> None:
     verifications = st.session_state.get("rubric_edit_verifications") or []
     pending = [s for s in suggestions if s.get("status") == "pending"]
     stale = [s for s in suggestions if s.get("status") == "stale"]
+    # Diagnostic: surface suggestion counts so we can tell whether the sidebar
+    # sees nothing (refiner produced nothing) vs. everything got marked stale.
+    if suggestions:
+        _status_counts: dict = {}
+        for _s in suggestions:
+            _status_counts[_s.get("status", "?")] = _status_counts.get(_s.get("status", "?"), 0) + 1
+        _log.info(
+            "[rubric edit sidebar] %d suggestion(s) in session: %s",
+            len(suggestions), _status_counts,
+        )
 
     # Drain any apply-result messages that survived the rerun.
     for msg in st.session_state.pop("_rubric_apply_successes", []):
@@ -3446,6 +3737,11 @@ def _infer_user_expected_grade(suggestion: dict[str, Any]) -> str | None:
     if "just_right" in feedback_text or "just right" in feedback_text:
         return None
     if "prioritize" in feedback_text or "both matter" in feedback_text:
+        return None
+    if "wording_subjective" in feedback_text or "drafts_varying" in feedback_text:
+        # Oscillation: user complaint is about stability, not direction.
+        # Refiner's operationalization edit can't be verified against a
+        # specific expected grade -- "aligned" just means the edit ran.
         return None
 
     # Calibration: "too strict" means user thinks it should be MET, not NOT_MET

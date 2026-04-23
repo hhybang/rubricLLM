@@ -485,8 +485,37 @@ def insert_draft_grade(
     trigger: str,
     drift_json: Optional[Dict[str, Any]] = None,
 ) -> bool:
-    """Persist one grading result. Safe to call from a background thread (no st.*)."""
+    """Persist one grading result. Safe to call from a background thread (no st.*).
+
+    AUTHORITATIVE DEDUP GUARD: if a row for this (conversation_id, message_id)
+    already exists, skip the insert entirely. The process-local in-flight set
+    and the pre-grade DB check can both lose to races across threads /
+    processes; this final check before the insert closes those windows.
+    """
     try:
+        # Last-chance dedup: has this draft already been graded?
+        if message_id:
+            try:
+                existing = (
+                    supabase.table("draft_grades")
+                    .select("id")
+                    .eq("conversation_id", conversation_id)
+                    .eq("message_id", message_id)
+                    .limit(1)
+                    .execute()
+                )
+                if existing.data:
+                    import logging
+                    logging.getLogger(__name__).info(
+                        "insert_draft_grade: message_id=%s already has a row; "
+                        "skipping duplicate insert.", message_id,
+                    )
+                    return False
+            except Exception:
+                # If the pre-check fails, proceed with insert; duplicates are
+                # still handled by merge_draft_grades_into_messages dedup.
+                pass
+
         row: Dict[str, Any] = {
             "conversation_id": conversation_id,
             "message_id": message_id,
@@ -500,7 +529,13 @@ def insert_draft_grade(
         }
         if drift_json is not None:
             row["drift_json"] = drift_json
-        supabase.table("draft_grades").insert(row).execute()
+        resp = supabase.table("draft_grades").insert(row).execute()
+        import logging as _lg
+        _lg.getLogger(__name__).info(
+            "[insert_draft_grade] INSERT for mid=%s draft_idx=%s → response.data has %s rows",
+            message_id, draft_index,
+            len(resp.data) if getattr(resp, "data", None) else 0,
+        )
         return True
     except Exception as e:
         import logging
@@ -536,10 +571,18 @@ def next_draft_grade_index(supabase: Client, conversation_id: str) -> int:
             .limit(1)
             .execute()
         )
+        import logging as _lg
+        data = response.data if getattr(response, "data", None) else []
+        _lg.getLogger(__name__).info(
+            "[next_draft_grade_index] conv_id=%s → %d row(s); max_draft_index=%s",
+            conversation_id, len(data),
+            data[0].get("draft_index") if data else None,
+        )
         if response.data:
             return int(response.data[0]["draft_index"]) + 1
-    except Exception:
-        pass
+    except Exception as e:
+        import logging as _lg
+        _lg.getLogger(__name__).warning("[next_draft_grade_index] fetch failed: %s", e)
     return 1
 
 

@@ -156,6 +156,7 @@ def render_chat_panel():
     st.divider()
 
     _draft_grading.sync_draft_grades_into_session()
+    _draft_grading.flush_pending_conversation_save()
     _draft_grading.maybe_schedule_pending_grades()
     if _draft_grading.grade_poll_fragment_enabled() and _draft_grading.count_pending_draft_grades(
         st.session_state.get("messages")
@@ -2696,6 +2697,13 @@ def render_chat_panel():
             else:
                 pass  # 2-draft fallback removed — alignment check always uses 3 drafts
 
+    # Drain any refiner work queued by drift-panel button clicks. Done AFTER
+    # the message loop so spinners/captions the refiner emits appear below
+    # the conversation instead of inside the drift expander that triggered
+    # them -- which was causing the drift panel to visually "disappear"
+    # while the user was still looking at their in-progress feedback.
+    _draft_grading_ui.run_deferred_refiner_work()
+
     # Delete mode confirmation bar (shown at the bottom when in delete mode)
     if st.session_state.message_delete_mode and st.session_state.messages_to_delete:
         st.warning(f"🗑️ **{len(st.session_state.messages_to_delete)} message(s) selected for deletion**")
@@ -3948,9 +3956,6 @@ def render_chat_sidebar():
     #     st.markdown("**Export** and **Import** features coming soon for cloud storage.")
 
     st.divider()
-
-    with st.expander("🐛 Drift Debug", expanded=False):
-        _draft_grading_ui.render_debug_drift_panel()
 
     _draft_grading_ui.render_rubric_edit_suggestions()
 
