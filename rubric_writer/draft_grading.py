@@ -320,23 +320,29 @@ def detect_oscillation(
     dim_history: dict[str, list[str]],
     min_runs: int = 3,
 ) -> list[dict[str, Any]]:
-    """Detect dimensions that flip MET<->NOT_MET repeatedly.
+    """Detect dimensions that flip MET<->NOT_MET repeatedly AND are still
+    currently unstable.
 
     dim_history: {dimension_id: [grade_str, ...]} across consecutive graded drafts.
 
-    We look at the last 6 drafts and count RUNS (contiguous same-grade blocks).
-    Oscillation requires >= min_runs distinct runs in that window. With
-    min_runs=3 that's at least TWO direction changes within the last 6
-    drafts -- dialed down from 4 (three direction changes) so the panel
-    actually has a chance to fire in short user-study sessions. Single-blip
-    sequences like [MET, MET, MET, MET, NOT_MET, MET] (3 runs total) now
-    DO fire; users can dismiss them via the "drafts varying" button if the
-    flip reflects real variation rather than a rubric flaw.
+    Two requirements:
+      1. At least min_runs distinct runs in the last 6 drafts (so there's
+         been real back-and-forth, not just a single blip).
+      2. At least one flip in the last 2 transitions (so the dim is still
+         actually unstable, not recovering from earlier instability).
+
+    Without requirement 2, sequences like [NOT_MET, MET, NOT_MET, NOT_MET,
+    MET, MET] fire "oscillating" even though the last two drafts agree --
+    which reads to the user as "this is stabilizing," not "this keeps
+    flipping." We want the panel to say "the dim is unstable RIGHT NOW,"
+    not "the dim was unstable at some point."
 
     Examples (min_runs=3):
       [MET, MET, NOT_MET]                          → 2 runs → ✗
-      [MET, MET, MET, MET, NOT_MET, MET]           → 3 runs → ✓
-      [MET, NOT_MET, MET, NOT_MET]                 → 4 runs → ✓
+      [MET, MET, MET, NOT_MET, MET]                → 3 runs, last flip at -1 → ✓
+      [NOT_MET, MET, NOT_MET, MET]                 → 4 runs, flipping → ✓
+      [NOT_MET, MET, NOT_MET, NOT_MET, MET, MET]   → 4 runs BUT last 2 trans agree → ✗
+      [MET, MET, NOT_MET, MET, MET, MET]           → 3 runs BUT last 2 trans agree → ✗
     """
     results: list[dict[str, Any]] = []
     for dim_id, grades in dim_history.items():
@@ -351,8 +357,24 @@ def detect_oscillation(
                 prev = g
         if runs < min_runs:
             continue
-        # flips = transitions = runs - 1. Kept on the record for legacy
-        # compatibility, though the UI no longer displays the count.
+        # Require the last 3 grades to form a MET↔NOT_MET↔MET (or
+        # NOT_MET↔MET↔NOT_MET) pattern -- i.e. both of the last two
+        # transitions must be flips. That's the signature of "currently
+        # oscillating." Anything else (flat tail, single flip recovering
+        # from a long same-grade streak) isn't oscillation for panel
+        # purposes.
+        #
+        #   MET → NOT_MET → MET       → flip, flip   → FIRE
+        #   NOT_MET → MET → NOT_MET   → flip, flip   → FIRE
+        #   NOT_MET → NOT_MET → MET   → same, flip   → don't fire (recovering)
+        #   MET → NOT_MET → NOT_MET   → flip, same   → don't fire (stabilizing on NOT_MET)
+        #   MET → MET → MET           → same, same   → don't fire (stable)
+        if len(window) < 3:
+            continue
+        last_flip = window[-1] != window[-2]
+        prev_flip = window[-2] != window[-3]
+        if not (last_flip and prev_flip):
+            continue
         flips = runs - 1
         results.append({"dimension_id": dim_id, "flips": flips, "history": window})
     return results
@@ -640,7 +662,18 @@ def compute_drift_bundle(
             break
     perfect_streak = prior_streak + (1 if current_perfect else 0)
     # Fire on drafts 3, 6, 9, ... of the streak. Streak of 1-2 → skip.
-    streak_gate_passes = perfect_streak >= 3 and perfect_streak % 3 == 0
+    # ALSO require the current draft to be perfect -- spot_check is a probe
+    # about the CURRENT draft's dims, so firing on a non-perfect draft
+    # (where other drift signals like persistent_failure or the NOT_MET
+    # dots are already telling the user what's wrong) is redundant and
+    # confusing. Bug fix: the gate used to pass on non-perfect drafts as
+    # long as prior_streak was 3 or 6, causing spot_check to fire on
+    # drafts that had actual failures on them.
+    streak_gate_passes = (
+        current_perfect
+        and perfect_streak >= 3
+        and perfect_streak % 3 == 0
+    )
     # Always log so we can diagnose any reason spot_check doesn't fire -- not
     # just the "kind==none and not suppressed" branch. Using WARNING level
     # temporarily so the line appears in the Streamlit terminal regardless of
@@ -672,6 +705,96 @@ def compute_drift_bundle(
         if spot_check_dims:
             kind = "spot_check"
 
+    # --- P0.2b: structured per-draft heuristic diagnostic ---
+    # One structured record per heuristic per draft. Lets post-hoc analysis
+    # answer "how often did each heuristic's condition fire, and when it
+    # fired, was it shown or suppressed by priority?" without guessing from
+    # ad-hoc log lines. Attached to the returned drift bundle so
+    # schedule_background_grade can persist it alongside drift_json.
+    def _heuristic_record(name: str, condition_met: bool, shown: bool,
+                          suppressed_reason: str | None) -> dict[str, Any]:
+        return {
+            "heuristic": name,
+            "condition_met": condition_met,
+            "shown": shown,
+            "suppressed_reason": suppressed_reason,
+        }
+
+    # Priority-based "shown" determination: only the highest-priority
+    # firing heuristic appears in the panel; the rest are suppressed by it.
+    def _suppressed_by(higher: str | None) -> str | None:
+        if higher is None:
+            return "condition_not_met" if not True else None
+        return f"priority:{higher}"
+
+    heuristic_diagnostics = [
+        _heuristic_record(
+            "low_confidence",
+            condition_met=bool(low_conf),
+            shown=(kind == "low_confidence"),
+            suppressed_reason=None if bool(low_conf) == (kind == "low_confidence")
+                              else "condition_not_met" if not low_conf else f"priority:{kind}",
+        ),
+        _heuristic_record(
+            "oscillation",
+            condition_met=bool(oscillations),
+            shown=(kind == "oscillation"),
+            suppressed_reason=(
+                None if not oscillations and kind != "oscillation"
+                else None if oscillations and kind == "oscillation"
+                else ("noise_suppression" if oscillations and suppressed
+                      else f"priority:{kind}" if oscillations else "condition_not_met")
+            ),
+        ),
+        _heuristic_record(
+            "persistent_failure",
+            condition_met=bool(persistent),
+            shown=(kind == "persistent_failure"),
+            suppressed_reason=(
+                None if not persistent and kind != "persistent_failure"
+                else None if persistent and kind == "persistent_failure"
+                else ("noise_suppression" if persistent and suppressed
+                      else f"priority:{kind}" if persistent else "condition_not_met")
+            ),
+        ),
+        _heuristic_record(
+            "tradeoff",
+            condition_met=bool(tradeoff_improvements and tradeoff_drops),
+            shown=(kind == "tradeoff"),
+            suppressed_reason=(
+                None if not (tradeoff_improvements and tradeoff_drops) and kind != "tradeoff"
+                else None if tradeoff_improvements and tradeoff_drops and kind == "tradeoff"
+                else ("noise_suppression" if tradeoff_improvements and tradeoff_drops and suppressed
+                      else f"priority:{kind}" if tradeoff_improvements and tradeoff_drops
+                      else "condition_not_met")
+            ),
+        ),
+        _heuristic_record(
+            "spot_check",
+            condition_met=streak_gate_passes and not spot_check_suppressed,
+            shown=(kind == "spot_check"),
+            suppressed_reason=(
+                None if kind == "spot_check"
+                else "suppressed" if spot_check_suppressed
+                else "streak_gate" if not streak_gate_passes
+                else f"priority:{kind}" if kind != "none"
+                else "sampler_returned_empty"
+            ),
+        ),
+    ]
+
+    # Single WARNING-level log line so the outcome is visible in the terminal
+    # during live sessions without having to grep INFO output. Compact format.
+    _log.warning(
+        "[heuristic diag] draft_idx=%s trigger=%s shown_kind=%s :: %s",
+        draft_index, trigger, kind,
+        " | ".join(
+            f"{h['heuristic']}={'*' if h['shown'] else '+' if h['condition_met'] else '.'}"
+            + (f"({h['suppressed_reason']})" if h['suppressed_reason'] else "")
+            for h in heuristic_diagnostics
+        ),
+    )
+
     return {
         "kind": kind,
         "low_confidence_dims": low_conf,
@@ -681,6 +804,7 @@ def compute_drift_bundle(
         "tradeoff_drops": tradeoff_drops,
         "spot_check_dims": spot_check_dims,
         "suppressed": suppressed,
+        "heuristic_diagnostics": heuristic_diagnostics,
     }
 
 
@@ -788,13 +912,21 @@ def merge_draft_grades_into_messages(
                             persisted_drift = None
                     if isinstance(persisted_drift, dict) and persisted_drift:
                         drift = persisted_drift
-                        # EXTRA SAFETY: spot_check is a probe for the CURRENT
-                        # draft. If persisted drift says spot_check but this
-                        # draft isn't the latest anymore (newer drafts exist),
-                        # strip the spot_check so past drafts don't keep
-                        # showing "Quick check" panels they shouldn't have.
+                        # Drift panels represent actionable signals about the
+                        # CURRENT state of the rubric. Past drafts' panels are
+                        # a frozen record of what WAS true at grading time --
+                        # which is confusing when the dim has since stabilized
+                        # (e.g. oscillation panel lingers on draft #3 even
+                        # though drafts #4, #5, #6 are all MET). The colored
+                        # dots on each past draft already capture the
+                        # historical record; the panel itself only belongs on
+                        # the latest draft where the user can actually act on
+                        # it. Strip the panel from non-latest drafts for every
+                        # drift kind. This was previously only done for
+                        # spot_check; extended to all kinds for the same
+                        # reason.
                         is_latest = (mid == latest_draft_mid)
-                        if not is_latest and drift.get("kind") == "spot_check":
+                        if not is_latest and drift.get("kind") not in (None, "none"):
                             drift = {"kind": "none"}
                     else:
                         # Legacy fallback: row has no persisted drift (either a
@@ -1126,6 +1258,15 @@ def schedule_background_grade(
     except Exception:
         _auth_tokens = None
 
+    # Capture project_id so the grading thread can persist per-draft
+    # heuristic diagnostics into project_data. Thread can't access
+    # st.session_state directly.
+    _project_id_hint: str | None = None
+    try:
+        _project_id_hint = st.session_state.get("current_project_id") if hasattr(st, "session_state") else None
+    except Exception:
+        _project_id_hint = None
+
     # Compute the draft index from session-state messages (authoritative for
     # this conversation). Count assistant messages that contain a <draft>
     # block, up to and including the current message. This avoids DB reads
@@ -1241,9 +1382,25 @@ def schedule_background_grade(
             # compute (which fetches prior rows) and the insert (which
             # checks with_check) need auth.uid() to resolve to the project
             # owner for RLS to allow them.
+            #
+            # CRITICAL: `auth.set_session` updates the auth module's state,
+            # but the PostgREST client (used by `.table(...).insert(...)`)
+            # has its own Authorization header set at construction time from
+            # the anon key. Without calling `postgrest.auth(access_token)`,
+            # table inserts still send the anon key and RLS's auth.uid()
+            # resolves to NULL -- silent with_check rejection, no row
+            # written, no error raised at the API layer. This was the
+            # root cause of Session 1's empty draft_grades table despite
+            # all 12 drafts being graded successfully.
             if _auth_tokens:
                 try:
                     supabase.auth.set_session(_auth_tokens[0], _auth_tokens[1])
+                    # Propagate the access token to the PostgREST client so
+                    # REST calls carry it in Authorization: Bearer <jwt>.
+                    try:
+                        supabase.postgrest.auth(_auth_tokens[0])
+                    except Exception as _e2:
+                        _log.warning("[grade thread] postgrest.auth failed: %s", _e2)
                 except Exception as _e:
                     _log.warning("[grade thread] set_session failed: %s", _e)
 
@@ -1292,6 +1449,31 @@ def schedule_background_grade(
                     trigger=trigger,
                     drift_json=drift_json,
                 )
+
+                # P0.2b: persist the per-draft heuristic diagnostic into
+                # project_data so we can answer "across the session, how
+                # often did each heuristic fire vs. get suppressed" without
+                # grepping logs. Piggybacks on the drift_json bundle that
+                # _compute_drift_for_persist already produced.
+                try:
+                    diags = (drift_json or {}).get("heuristic_diagnostics") or []
+                    if diags and _project_id_hint:
+                        from auth_supabase import save_project_data
+                        save_project_data(
+                            supabase,
+                            _project_id_hint,
+                            "heuristic_diagnostic",
+                            {
+                                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                                "conversation_id": conversation_id,
+                                "message_id": message_id,
+                                "draft_index": d_idx,
+                                "shown_kind": (drift_json or {}).get("kind", "none"),
+                                "heuristics": diags,
+                            },
+                        )
+                except Exception as _e_diag:
+                    _log.warning("[heuristic diag persist] failed: %s", _e_diag)
                 # Mark this mid as freshly graded so the maybe_schedule_pending_grades
                 # fallback doesn't re-schedule during the DB-propagation window.
                 # (No need to bump any index counter -- draft_idx is computed

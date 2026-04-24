@@ -1227,6 +1227,12 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
 
         Each response contains AT MOST ONE `<draft>` block. If you need to show alternatives, never wrap them.
 
+        **DRAFT NUMBERING (INTERNAL TAGS — DO NOT REPLICATE):**
+
+        Prior assistant messages that contain a draft are prefixed by the SYSTEM with `[This is Draft #N.]` (e.g. `[This is Draft #3.]`). These tags are injected automatically to help you resolve references like "fix X in draft #3." Draft numbering is 1-based across the graded drafts in the conversation, in order.
+
+        **STRICT RULE:** Do NOT emit `[This is Draft #N.]` (or any `[This is Draft ...]` variation) anywhere in your own output. Your response should look exactly like a normal chat message — no system-style bracketed prefix, no restating the draft number. The system handles numbering for past drafts; your job is just to respond.
+
         **PROBE SIGNAL (include ONLY when you produce a <draft>):**
         After writing a draft, reflect on the rubric criteria you just applied. If you feel genuinely uncertain about how to interpret or apply any ONE criterion — the description is vague, the user's preferences seem conflicting, or you had to guess — append a probe signal tag AFTER the draft:
         <probe_signal>{{"criterion_name": "<exact criterion name>", "criterion_index": <0-based index>, "uncertainty_reason": "<1-2 sentence explanation of the ambiguity>"}}</probe_signal>
@@ -1252,6 +1258,10 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         - When asking clarifying questions or discussing approach before writing.
 
         Each response contains AT MOST ONE `<draft>` block. If you need to show alternatives, never wrap them.
+
+        **DRAFT NUMBERING:**
+
+        Prior assistant messages that contain a draft are prefixed with `[This is Draft #N.]` (e.g. `[This is Draft #3.]`). When the user refers to a specific draft by number, use those prefixes to resolve which content they mean. Do NOT add `[This is Draft #N.]` tags to your own new output; the system adds them for past drafts.
         """).strip()
 
     return system_instruction

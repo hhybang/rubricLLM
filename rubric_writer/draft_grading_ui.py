@@ -693,6 +693,38 @@ def _queue_verified_suggestion(
     conv_id = st.session_state.get("selected_conversation", "")
     suggestions_ref = st.session_state.setdefault("rubric_edit_suggestions", [])
 
+    # Drop suggestions whose dim/criterion didn't resolve. This happens when
+    # the refiner proposes an edit for a dim that no longer exists in the
+    # current rubric (e.g. user renamed/removed it between proposal and
+    # verification). Without this, the suggestion lands in the sidebar
+    # with an empty dim_id and Apply silently fails. Better to drop it
+    # upstream than ship a broken suggestion to the user.
+    _resolved_dim = (inputs.get("dimension_id") or "").strip()
+    _resolved_crit = (inputs.get("criterion_name") or "").strip()
+    if not _resolved_dim or not _resolved_crit:
+        _log.warning(
+            "[queue suggestion] DROPPED: unresolved inputs (dim=%r crit=%r). "
+            "Suggestion will not appear in sidebar.",
+            _resolved_dim, _resolved_crit,
+        )
+        # Still log to project_data for research, but with disposition="dropped_unresolved"
+        # so we can count how often this happens.
+        if sb and pid:
+            try:
+                save_project_data(sb, pid, "refiner_proposal", {
+                    "timestamp": datetime.now().isoformat(),
+                    "conversation_id": conv_id,
+                    "edit_id": str(_uuid.uuid4()),
+                    "drift_kind": drift_kind,
+                    "target_criterion": _resolved_crit,
+                    "target_dim_id": _resolved_dim,
+                    "disposition": "dropped_unresolved",
+                    "feedback_text": feedback_text,
+                })
+            except Exception:
+                pass
+        return
+
     # FORCE the criterion_name and dimension_id to our canonical inputs, not
     # whatever the refiner echoed back. The refiner occasionally hallucinates
     # a plausible-looking dim_id that doesn't exist in the rubric (e.g.
@@ -716,6 +748,37 @@ def _queue_verified_suggestion(
         suggestion.get("edit_id"), suggestion.get("dimension_id"),
         suggestion.get("status"), len(suggestions_ref),
     )
+
+    # P0.1: log the proposal at creation time with disposition="proposed".
+    # When the user acts on it in the sidebar, a second row is written with
+    # disposition in {"applied","dismissed"} and the same edit_id so the
+    # two can be joined. Without this, a session where the user dismisses
+    # every refiner output looks identical to one where the refiner never
+    # fired -- both show rubric_edit_applied=0.
+    if sb and pid:
+        try:
+            save_project_data(sb, pid, "refiner_proposal", {
+                "timestamp": datetime.now().isoformat(),
+                "conversation_id": conv_id,
+                "edit_id": suggestion["edit_id"],
+                "drift_kind": drift_kind,
+                "target_criterion": inputs["criterion_name"],
+                "target_dim_id": inputs["dimension_id"],
+                "proposed_edit": {
+                    "before": suggestion.get("before_wording") or suggestion.get("old_text", ""),
+                    "after": suggestion.get("after_wording") or suggestion.get("new_text", ""),
+                    "scope_change": suggestion.get("scope_change", ""),
+                    "reasoning": suggestion.get("reasoning", ""),
+                },
+                "disposition": "proposed",
+                "parse_status": parse_status,
+                "pre_verification": pre_verification,
+                "is_retry": suggestion.get("is_retry", False),
+                "is_best_attempt": suggestion.get("is_best_attempt", False),
+                "feedback_text": feedback_text,
+            })
+        except Exception as _e:
+            _log.warning("refiner_proposal log (proposed) failed: %s", _e)
 
     try:
         from rubric_writer.metrics import log_edit_shown
@@ -1766,10 +1829,33 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
     gets cleared or overwritten on a later rerun (which can happen when the
     grade-poll fragment races with a button click, or when the conversation
     is reloaded from the DB and the row's drift_json comes back differently).
-    The anchor only clears when the user fully resolves every dimension in
-    the panel -- that's the only path that should make a drift panel vanish."""
+
+    Past drafts (those that aren't the latest graded draft) never show a
+    panel -- the panel is only actionable for the current state, and a
+    stale oscillation/persistent_failure panel on an old draft is confusing
+    once the dim has stabilized. The colored dots on each past draft already
+    capture the historical record; only the latest draft owns the panel.
+    """
     cfg = load_grading_config()
     if not cfg.get("show_drift_panels"):
+        return
+
+    # Gate: only the latest graded draft may show a drift panel. If this
+    # message isn't the latest, bail -- regardless of what the anchor or
+    # live drift contain. We also wipe any stale anchor so it doesn't leak
+    # into a future render where this message becomes latest again (it
+    # won't, but be defensive).
+    messages = st.session_state.get("messages") or []
+    latest_draft_mid: str | None = None
+    for _m in reversed(messages):
+        if _m.get("role") != "assistant":
+            continue
+        if extract_primary_draft_text(_m.get("content") or ""):
+            latest_draft_mid = str(_m.get("message_id") or "")
+            break
+    this_mid = str(message.get("message_id") or "")
+    if latest_draft_mid is not None and this_mid != latest_draft_mid:
+        st.session_state.pop(f"_drift_anchor_{safe_msg_id}", None)
         return
 
     anchor_key = f"_drift_anchor_{safe_msg_id}"
@@ -1812,6 +1898,49 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
         "persistent_failure": drift.get("persistent_failure") or [],
     }
     _entries = _dim_entries_by_kind.get(kind, [])
+
+    # Pre-filter: drop entries whose dim_id no longer exists in the active
+    # rubric (the rubric may have been edited after the drift was detected
+    # and persisted). Without this, the panel title counts stale entries
+    # that the body then filters out -- producing a title like "2 dimensions
+    # oscillating" with an empty expander.
+    try:
+        from rubric_writer.persistence import get_active_rubric
+        _rb_for_filter, _, _ = get_active_rubric()
+        _live_dim_ids_pre = {
+            (d.get("id") or "").strip().lower()
+            for c in (_rb_for_filter or {}).get("rubric", []) or []
+            for d in c.get("dimensions") or []
+            if (d.get("id") or "").strip()
+        }
+    except Exception:
+        _live_dim_ids_pre = None
+    if _live_dim_ids_pre is not None and _entries:
+        _filtered_entries = [
+            e for e in _entries
+            if (e.get("dimension_id") or "").strip().lower() in _live_dim_ids_pre
+        ]
+        if len(_filtered_entries) != len(_entries):
+            _log.info(
+                "[drift panel pre-filter] %s: dropped %d stale dim(s)",
+                kind, len(_entries) - len(_filtered_entries),
+            )
+        _entries = _filtered_entries
+        # Also update the underlying drift record so downstream code in this
+        # function (button handlers, flush, etc.) sees the filtered list.
+        if kind in ("low_confidence", "spot_check", "oscillation", "persistent_failure"):
+            _drift_key = {
+                "low_confidence": "low_confidence_dims",
+                "spot_check": "spot_check_dims",
+                "oscillation": "oscillations",
+                "persistent_failure": "persistent_failure",
+            }[kind]
+            drift[_drift_key] = _entries
+        # If every entry was stale, suppress the panel entirely -- there's
+        # nothing actionable to show.
+        if not _entries:
+            return
+
     _n_dims = len(_entries)
     # Oscillations don't carry a `criterion` field directly -- they're indexed
     # by dimension_id and the criterion is looked up from the draft_grade.
@@ -1878,6 +2007,9 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     if did:
                         dim_to_crit[did] = cname
 
+            # NOTE: Stale dim_ids (dims no longer in the active rubric) are
+            # already filtered out by the pre-filter step above, before the
+            # title/count was computed. No per-kind filtering needed here.
             total_osc = len(oscs)
             resolved_osc = sum(1 for j in range(total_osc)
                                if st.session_state.get(f"osc_resolved_{safe_msg_id}_{j}"))
@@ -1904,6 +2036,25 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
             for j, o in enumerate(oscs):
                 did = o.get("dimension_id", "")
                 crit = dim_to_crit.get(did, "")
+                # If the current draft's grade doesn't have this dim
+                # (e.g. grader dropped it, or the dim was renamed in the
+                # rubric after the oscillation record was created), try
+                # the active rubric directly to find the criterion that
+                # owns this dim_id. Without this, `crit` stays empty and
+                # the panel renders `__: <raw_dim_id>`.
+                if not crit and did:
+                    try:
+                        from rubric_writer.persistence import get_active_rubric
+                        _rb, _, _ = get_active_rubric()
+                        for _c in (_rb or {}).get("rubric", []) or []:
+                            for _d in _c.get("dimensions") or []:
+                                if (_d.get("id") or "").strip() == did.strip():
+                                    crit = (_c.get("name") or "").strip()
+                                    break
+                            if crit:
+                                break
+                    except Exception:
+                        pass
                 dim_desc = _lookup_dimension_description(did, crit)
                 dim_label = dim_desc if dim_desc else did
                 hist_str = " -> ".join(o.get("history") or [])
@@ -2190,6 +2341,20 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                 crit = sc.get("criterion", "")
                 grade = sc.get("grade", "")
                 evidence = sc.get("evidence", "")
+                # If the persisted spot_check entry has an empty criterion
+                # (happens with older drift rows or when the rubric was
+                # edited after the spot_check was persisted), look it up
+                # from the live draft_grade by dim_id. Also try the active
+                # rubric as a second fallback.
+                if not crit.strip() and did:
+                    dg = message.get("draft_grade") or {}
+                    for _c in dg.get("grades") or []:
+                        for _d in _c.get("dimension_grades") or []:
+                            if (_d.get("dimension_id") or "").strip() == did.strip():
+                                crit = (_c.get("criterion_name") or "").strip()
+                                break
+                        if crit:
+                            break
                 dim_desc = _lookup_dimension_description(did, crit)
                 dim_label = dim_desc if dim_desc else did
 
@@ -2545,18 +2710,41 @@ def _save_low_confidence_feedback(
 
 
 def _lookup_dimension_description(dim_id: str, criterion_name: str) -> str:
-    """Look up a dimension's human-readable label from the active rubric."""
+    """Look up a dimension's human-readable label from the active rubric.
+
+    Resolution order (each step is case- and whitespace-insensitive):
+      1. Match on (criterion_name, dim_id) -- the clean case.
+      2. Match on dim_id alone across every criterion -- catches the case
+         where the user renamed a criterion in the Rubric Configuration
+         after a drift panel's oscillation record was created; the record's
+         cached criterion name is now stale but the dim_id is still live.
+
+    Without (2) the panel renders the raw dim_id (e.g. `claim_first_framing`)
+    after any manual criterion rename, which looks like a regression to the
+    user even though the rubric is fine."""
     try:
         from rubric_writer.persistence import get_active_rubric
         rubric_dict, _, _ = get_active_rubric()
         if not rubric_dict:
             return ""
+        target_dim = (dim_id or "").strip().lower()
+        target_crit = (criterion_name or "").strip().lower()
+
+        # Step 1: exact (crit, dim) pair.
         for crit in rubric_dict.get("rubric") or []:
-            if (crit.get("name") or "").strip() != criterion_name.strip():
+            if (crit.get("name") or "").strip().lower() != target_crit:
                 continue
             for dim in crit.get("dimensions") or []:
-                if (dim.get("id") or "").strip() == dim_id.strip():
+                if (dim.get("id") or "").strip().lower() == target_dim:
                     return dim.get("label") or dim.get("description") or ""
+
+        # Step 2: dim_id-only match. Users frequently rename criteria in the
+        # rubric config but dim_ids are the stable identifier.
+        if target_dim:
+            for crit in rubric_dict.get("rubric") or []:
+                for dim in crit.get("dimensions") or []:
+                    if (dim.get("id") or "").strip().lower() == target_dim:
+                        return dim.get("label") or dim.get("description") or ""
     except Exception:
         pass
     return ""
@@ -3289,9 +3477,12 @@ def _render_single_edit_suggestion(s: dict[str, Any], i: int) -> None:
                                       dimension_id=dim_id)
                 except Exception:
                     pass
+                # P0.1: terminal disposition for this proposal.
+                _log_proposal_disposition(s, "applied")
             else:
                 # Mark the suggestion as failed so the UI can surface a retry/edit option.
                 s["status"] = "apply_failed"
+                _log_proposal_disposition(s, "apply_failed")
             st.rerun()
     with col_dismiss:
         if st.button("✗ Dismiss", key=f"rubric_sug_dismiss_{i}"):
@@ -3304,7 +3495,29 @@ def _render_single_edit_suggestion(s: dict[str, Any], i: int) -> None:
                                   dimension_id=dim_id)
             except Exception:
                 pass
+            _log_proposal_disposition(s, "dismissed")
             st.rerun()
+
+
+def _log_proposal_disposition(suggestion: dict[str, Any], disposition: str) -> None:
+    """P0.1: write a terminal-disposition row for a refiner_proposal so the
+    proposed→applied/dismissed/etc. lifecycle is queryable post-hoc."""
+    try:
+        sb = st.session_state.get("supabase")
+        pid = st.session_state.get("current_project_id")
+        if not sb or not pid:
+            return
+        save_project_data(sb, pid, "refiner_proposal", {
+            "timestamp": datetime.now().isoformat(),
+            "conversation_id": st.session_state.get("selected_conversation"),
+            "edit_id": suggestion.get("edit_id"),
+            "drift_kind": suggestion.get("drift_kind"),
+            "target_criterion": suggestion.get("criterion_name"),
+            "target_dim_id": suggestion.get("dimension_id"),
+            "disposition": disposition,
+        })
+    except Exception as _e:
+        _log.warning("refiner_proposal log (%s) failed: %s", disposition, _e)
 
 
 def _append_rubric_edit_system_message(suggestion: dict[str, Any], decision: str) -> None:
@@ -3444,6 +3657,34 @@ def _remove_dimensions_and_save(
             rubric_history.pop()
         st.error("Couldn't save rubric after removals (no version returned).")
         return False
+
+    # P0.4: structured rubric_edit_event log. Attribute this version bump to
+    # the drift-panel Remove button, include which dims were removed, so
+    # post-hoc we can say "version v3 came from a user Remove action on
+    # persistent_failure panel, removing dims X, Y, Z" without diffing.
+    try:
+        _prev_version = rubric_dict.get("version", saved_version - 1 if saved_version else None)
+        _sb = st.session_state.get("supabase")
+        _pid = st.session_state.get("current_project_id")
+        if _sb and _pid:
+            save_project_data(_sb, _pid, "rubric_edit_event", {
+                "timestamp": datetime.now().isoformat(),
+                "conversation_id": st.session_state.get("selected_conversation"),
+                "from_version": _prev_version,
+                "to_version": saved_version,
+                "trigger": "drift_panel_remove",
+                "edit_summary": {
+                    "added_dims": [],
+                    "removed_dims": [
+                        {"criterion": c, "dim_label": lbl}
+                        for c, lbl in removed_display
+                    ],
+                    "modified_dims": [],
+                },
+                "feedback_texts": [r.get("feedback_text", "") for r in removals],
+            })
+    except Exception as _e:
+        _log.warning("rubric_edit_event log (remove) failed: %s", _e)
 
     invalidate_rubric_cache()
 
@@ -3702,6 +3943,30 @@ def _apply_rubric_suggestion(suggestion: dict[str, Any]) -> bool:
                 "is_best_attempt": suggestion.get("is_best_attempt", False),
                 "source": "scoring_feedback",
             })
+            # P0.4: parallel rubric_edit_event log with the trigger field so
+            # all version transitions can be attributed consistently (remove,
+            # refiner apply, manual config edit all write here).
+            try:
+                save_project_data(sb, pid, "rubric_edit_event", {
+                    "timestamp": datetime.now().isoformat(),
+                    "conversation_id": st.session_state.get("selected_conversation"),
+                    "from_version": rubric_dict.get("version"),
+                    "to_version": saved_version,
+                    "trigger": "refiner_proposal_applied",
+                    "proposal_id": suggestion.get("edit_id"),
+                    "edit_summary": {
+                        "added_dims": [],
+                        "removed_dims": [],
+                        "modified_dims": [{
+                            "criterion": crit_name,
+                            "dimension_id": dim_id,
+                            "before": actual_before,
+                            "after": new_text,
+                        }],
+                    },
+                })
+            except Exception as _e:
+                _log.warning("rubric_edit_event log (apply) failed: %s", _e)
         return True
     except Exception as e:
         _log.warning("save_rubric_history failed: %s", e)

@@ -97,7 +97,7 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
             # Create a container for the draft with visual styling (optionally in expander when message has rubric_revision)
             _draft_num_prefix = f"Draft {draft_number} — " if draft_number is not None else ""
             if editable:
-                _draft_label = f"📝 **{_draft_num_prefix}Your Draft** — edit directly, or select sentences below to rephrase with AI"
+                _draft_label = f"📝 **{_draft_num_prefix}Your Draft**"
             else:
                 _draft_label = f"📝 **{_draft_num_prefix}Draft Preview**"
             draft_container = st.expander(_draft_label, expanded=not wrap_draft_in_expander) if wrap_draft_in_expander else st.container()
@@ -120,6 +120,43 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                     )
                     draft_idx += 1
                     continue
+
+                # --- Preview / edit mode toggle ---
+                # Drafts render as plain prose by default so the conversation
+                # reads like a conversation. Clicking "Edit" switches this
+                # specific draft into the full editable textarea + sentence-
+                # rephrase UI (which is what used to render unconditionally).
+                # Per-draft state means editing one draft doesn't expand
+                # every draft in the thread.
+                edit_mode_key = f"draft_edit_mode_{message_id}_{draft_idx}"
+                in_edit_mode = st.session_state.get(edit_mode_key, False)
+
+                if not in_edit_mode:
+                    # Prose preview: render the draft as-if it were regular
+                    # assistant message text. Streamlit's st.markdown preserves
+                    # paragraph breaks, lists, and basic formatting, which is
+                    # what a "conversation message" should look like.
+                    st.markdown(current_value)
+                    if st.button(
+                        "✏️ Edit",
+                        key=f"enter_edit_{edit_key}",
+                        help="Open the editable view to edit the draft directly or rephrase selected sentences.",
+                    ):
+                        st.session_state[edit_mode_key] = True
+                        st.rerun()
+                    draft_idx += 1
+                    continue
+
+                # In edit mode: show a "Done editing" button at the top so
+                # the user can collapse back to the prose view. Edits persist
+                # regardless of which mode the draft is in.
+                if st.button(
+                    "✅ Done editing",
+                    key=f"exit_edit_{edit_key}",
+                    help="Collapse back to the conversation-style view. Your edits are saved.",
+                ):
+                    st.session_state[edit_mode_key] = False
+                    st.rerun()
 
                 # --- Rephrase selection state ---
                 rephrase_selected_key = f"rephrase_selected_{message_id}_{draft_idx}"

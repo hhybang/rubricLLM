@@ -531,11 +531,26 @@ def insert_draft_grade(
             row["drift_json"] = drift_json
         resp = supabase.table("draft_grades").insert(row).execute()
         import logging as _lg
+        n_rows = len(resp.data) if getattr(resp, "data", None) else 0
         _lg.getLogger(__name__).info(
             "[insert_draft_grade] INSERT for mid=%s draft_idx=%s → response.data has %s rows",
-            message_id, draft_index,
-            len(resp.data) if getattr(resp, "data", None) else 0,
+            message_id, draft_index, n_rows,
         )
+        # RLS can silently drop an insert (API returns 201 + empty data) when
+        # the with_check clause fails. That was happening in Session 1:
+        # every draft looked like it graded successfully, but zero rows
+        # landed in draft_grades. Treat empty response.data as a failure so
+        # the caller knows the grade was NOT persisted, instead of silently
+        # losing it.
+        if n_rows == 0:
+            _lg.getLogger(__name__).error(
+                "[insert_draft_grade] INSERT returned 0 rows for mid=%s "
+                "draft_idx=%s conv=%s — likely RLS with_check rejection. "
+                "Check that the grading thread's auth token is being "
+                "propagated to the PostgREST client (see draft_grading.py).",
+                message_id, draft_index, conversation_id,
+            )
+            return False
         return True
     except Exception as e:
         import logging

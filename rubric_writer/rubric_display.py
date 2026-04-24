@@ -502,11 +502,51 @@ def display_rubric_comparison(current_rubric: list, updated_rubric: list, apply_
                 new_criteria = copy.deepcopy(full_criteria)
                 hist = load_rubric_history()
                 new_version = next_version_number()
+                # Snapshot the prev version so we can compute a diff for the
+                # rubric_edit_event log below.
+                _prev_rubric_criteria = (hist[-1].get("rubric", []) if hist else [])
+                _prev_version = (hist[-1].get("version") if hist else None)
                 hist.append({"version": new_version, "rubric": copy.deepcopy(new_criteria), "source": "edit_feedback", "conversation_id": st.session_state.get("selected_conversation")})
                 db_version = save_rubric_history(hist)
                 # Use DB-assigned version (may differ from local next_version_number)
                 if db_version is not None:
                     new_version = db_version
+
+                # P0.4: rubric_edit_event with trigger="manual_config_edit"
+                # so post-hoc we can attribute every version bump to the
+                # affordance that caused it. edit_summary captures the diff
+                # between consecutive versions.
+                try:
+                    _sb = st.session_state.get("supabase")
+                    _pid = st.session_state.get("current_project_id")
+                    if _sb and _pid:
+                        from auth_supabase import save_project_data as _save_pd
+                        _prev_names = {(c.get("name") or "").strip(): c for c in _prev_rubric_criteria}
+                        _new_names = {(c.get("name") or "").strip(): c for c in new_criteria}
+                        _added = [{"criterion": n} for n in (_new_names.keys() - _prev_names.keys())]
+                        _removed = [{"criterion": n} for n in (_prev_names.keys() - _new_names.keys())]
+                        _modified = []
+                        for n in (_prev_names.keys() & _new_names.keys()):
+                            pv = _prev_names[n]
+                            nv = _new_names[n]
+                            if (pv.get("description") != nv.get("description")
+                                    or (pv.get("dimensions") or []) != (nv.get("dimensions") or [])):
+                                _modified.append({"criterion": n})
+                        from datetime import datetime as _dt
+                        _save_pd(_sb, _pid, "rubric_edit_event", {
+                            "timestamp": _dt.now().isoformat(),
+                            "conversation_id": st.session_state.get("selected_conversation"),
+                            "from_version": _prev_version,
+                            "to_version": new_version,
+                            "trigger": "manual_config_edit",
+                            "edit_summary": {
+                                "added_dims": _added,
+                                "removed_dims": _removed,
+                                "modified_dims": _modified,
+                            },
+                        })
+                except Exception:
+                    pass
                 st.session_state.rubric = new_criteria
                 st.session_state.editing_criteria = new_criteria
                 st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1

@@ -3010,6 +3010,32 @@ def render_chat_panel():
         _rubric_by_version = {r.get("version"): r.get("rubric", []) for r in _rubric_hist}
         _prev_rubric_version = None
 
+        # Pre-compute draft numbering so we can tag each assistant draft with
+        # its 1-based draft number. Users frequently say "fix X in draft #3"
+        # and the model has to figure out which assistant message that is --
+        # with interleaved user feedback, system messages, and assistant
+        # responses that aren't drafts, the counting is error-prone. Tagging
+        # each draft message with a `[This is Draft #N]` prefix before we
+        # send it removes the ambiguity.
+        #
+        # CRITICAL: the numbering MUST match what `compute_draft_number`
+        # returns, which is what the UI displays as "Draft N" on every chat
+        # panel and in the scorecard. That function counts assistant
+        # messages with a `draft_grade` attached (i.e. grading completed).
+        # We use it as the single source of truth so the user's "Draft 3"
+        # and the model's "Draft #3" are always the same message.
+        from rubric_writer.draft_render import compute_draft_number as _compute_draft_number
+        _draft_number_by_mid: dict[str, int] = {}
+        for _msg in st.session_state.messages:
+            if _msg.get('role') != 'assistant':
+                continue
+            _mid = str(_msg.get('message_id') or '')
+            if not _mid:
+                continue
+            _dn = _compute_draft_number(st.session_state.messages, _mid)
+            if _dn is not None:
+                _draft_number_by_mid[_mid] = _dn
+
         # Include main conversation messages (skip system messages)
         for msg in st.session_state.messages:
             if msg['role'] in ('user', 'assistant'):
@@ -3060,6 +3086,26 @@ def render_chat_panel():
                             extra_parts.append(f"**Rubric suggestion{applied_note}:**\n{sg_text}")
                     if extra_parts:
                         content_to_send = content_to_send + "\n\n" + "\n\n".join(extra_parts)
+
+                # Tag assistant drafts with their 1-based draft number so the
+                # model can resolve references like "draft #3" without having
+                # to count interleaved messages. The tag sits before the draft
+                # body so it's visible to the model but doesn't affect the
+                # <draft> extraction regex, which scans for `<draft>...</draft>`
+                # inside the content.
+                #
+                # `_draft_number_by_mid` already holds only the mids for
+                # graded drafts (numbering matches `compute_draft_number`,
+                # which is what the UI shows), so a hit here implies both
+                # (a) this message has a <draft> body and (b) grading is
+                # complete. Ungraded drafts get no number -- same as the UI.
+                if msg['role'] == 'assistant':
+                    _mid_str = str(msg.get('message_id') or '')
+                    _dn = _draft_number_by_mid.get(_mid_str)
+                    if _dn is not None:
+                        content_to_send = (
+                            f"[This is Draft #{_dn}.]\n\n" + content_to_send
+                        )
 
                 api_messages.append({
                     "role": msg['role'],
@@ -3141,6 +3187,19 @@ def render_chat_panel():
                                 pass
                             # Strip the probe signal from display content
                             main_content = re.sub(r'\s*<probe_signal>.*?</probe_signal>\s*', '', main_content, flags=re.DOTALL).strip()
+
+                        # --- Strip any `[This is Draft #N.]` tag the model echoed ---
+                        # These tags are injected by the system before each past
+                        # draft the model sees, so the model can resolve "draft #N"
+                        # references. The model occasionally copies the pattern
+                        # into its own output, which leaks internal context to the
+                        # user. The system prompt already tells the model NOT to
+                        # add the tag, but we strip as a belt-and-suspenders guard.
+                        main_content = re.sub(
+                            r'^\s*\[This is Draft #\d+\.\]\s*\n*',
+                            '',
+                            main_content,
+                        ).strip()
 
                         # --- Uncertainty Probe: decide whether to trigger --- [DISABLED for now]
                         has_draft_tag = bool(re.search(r'<draft>.*?</draft>', main_content, re.DOTALL))
