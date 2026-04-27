@@ -680,16 +680,16 @@ def compute_drift_bundle(
     perfect_streak = prior_streak + (1 if current_perfect else 0)
     # Two gate models, switched by the RUBRIC_SPOT_CHECK_GATE env var:
     #
-    #   "streak" (default, production heuristic):
-    #     Fire only after a clean 3-draft streak. Catches silent
-    #     misalignment when the user is happily producing perfect drafts.
-    #     Conservative; designed to not bother the user.
-    #
-    #   "scheduled" (study mode, paper §3.2):
+    #   "scheduled" (default, study mode, paper §3.2):
     #     Fire at fixed checkpoints (mid-loop, end-loop) to guarantee
     #     uncontested-dim confirmation data every session, regardless of
     #     draft quality. Removes selection bias in the §4.2 confirmation
     #     rate metric.
+    #
+    #   "streak" (production heuristic):
+    #     Fire only after a clean 3-draft streak. Catches silent
+    #     misalignment when the user is happily producing perfect drafts.
+    #     Conservative; designed to not bother the user.
     #
     # Both models still respect _should_suppress_spot_check (early drafts,
     # tiny rubrics).

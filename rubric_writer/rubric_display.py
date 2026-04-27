@@ -791,7 +791,6 @@ def display_rubric_update_result():
                             "writing_type": active_rubric_dict.get("writing_type", "Unknown") if active_rubric_dict else "Unknown",
                             "user_goals_summary": active_rubric_dict.get("user_goals_summary", "") if active_rubric_dict else "",
                             "weighting_rationale": f"Updated based on user draft edits (from v{active_rubric_dict.get('version', '?') if active_rubric_dict else '?'})",
-                            "coaching_notes": rubric_updates.get('rationale', 'Rubric updated based on draft edit analysis'),
                             "conversation_id": st.session_state.get("selected_conversation"),
                         }
 

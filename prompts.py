@@ -229,7 +229,6 @@ The rubric must be **concise, steerable, evaluable, and reusable across tasks**.
   - `description` (1–3 sentences max)
   - `dimensions` (3–5 per criterion) — these are **checkable items** that determine achievement level
   - `priority` (unique integer rank: 1 = most important, higher = less important)
-- `coaching_notes`
 
 ### ❌ DO NOT INCLUDE
 - Separate achievement level descriptions (excellent, good, fair, weak) — these are now derived from dimension counts
@@ -474,7 +473,6 @@ After your `<analysis>` block, output **only** this JSON:
       "priority": <unique integer 1..N, 1 = most important, no duplicates>
     }
   ],
-  "coaching_notes": "<2–3 concise insights>",
   "inference_decision_points": {
     "parsed_data": {
       "decision_points": [
@@ -547,42 +545,35 @@ For example, if the user is writing a cold email to a specific person:
 
 ---
 
-## CRITICAL — INTENT-INVARIANCE (NEW HARD CHECK)
+## CRITICAL — SUBJECT/INTENT-INVARIANCE (HARD CHECK)
 
-A dimension is **intent-specific** when it only applies to the particular *purpose* of the current message, not to all messages of this writing type. Such dimensions look transferable on first glance ("Proposes specific times to meet") but fail when the user later writes a different *kind* of message in the same genre (a follow-up after a meeting was declined, a thank-you note, an apology — none of which involve proposing times).
+A dimension is **subject-specific** or **intent-specific** when it only applies to the particular topic, purpose, or situation of the messages in this conversation — not to *all* future pieces of the same writing type. Such dimensions look transferable at first glance but produce silent NOT_MET cascades on the user's next piece, which is the worst kind of failure mode for the rubric.
 
-**The intent-invariance test**: For each candidate dimension, ask: "Does this still apply to messages in this writing type with **different purposes**?"
+**The invariance test**: For each candidate dimension, before keeping it, ask:
 
-For an email rubric, run through ALL of these intents:
-- Asking for something (e.g. requesting a meeting, an introduction, a favor)
-- Following up on a previous interaction
-- Declining or saying no
-- Thanking someone
-- Apologizing or correcting an error
-- Sharing an update with no specific ask
-- Saying goodbye / wrapping up a relationship
+  *"If this user wrote a different piece of this same writing type — different topic, different stance, different occasion, different audience within the same audience class — would this dimension still apply?"*
 
-If the dimension makes sense for fewer than ~5 of those intents, **it is intent-specific and DOES NOT belong in a transferable rubric**. Drop it.
+Imagine the most-different next piece the writing type could plausibly have. If you'd have to **mentally rewrite the dimension** for it to apply, the dimension is over-specific and doesn't belong in the rubric.
 
-For other writing types, run an analogous mental sweep. For thesis sections: would the dim apply to background, methods, results, discussion, conclusion? For blog posts: would it apply to a tutorial, an opinion piece, a release note, a retrospective?
+**Three failure patterns to avoid:**
 
-❌ **Intent-specific dimensions** to NEVER include (these LOOK general but only apply to one kind of message):
-- "Proposes specific meeting times" — only applies to meeting-request emails, not follow-ups, thank-yous, declines, etc.
-- "Names a clear ask" — fails on thank-you notes, updates, goodbye emails (which often have no ask).
-- "Includes a deadline" — fails on retrospective or relationship-maintenance messages.
-- "Provides logistics (time, location, attendees)" — fails on every email that isn't logistical.
-- "Closes with a question to drive a response" — fails on declines, thank-yous, FYIs.
+1. **Subject leakage**: The dim references content axes that exist for the current piece's subject but not for plausible other subjects. *Example, in any genre*: a dim like "Anchors reflection in the natural environment" looks general but fails on a piece set in a city.
 
-✅ **Intent-invariant alternatives** that ARE transferable:
-- "Closes with a single clear next-step appropriate to the message's purpose, NOT a generic 'let me know your thoughts'" — works for ask, follow-up, and update emails alike.
-- "Adapts level of formality to the recipient's relationship" — applies regardless of intent.
-- "Uses no em-dashes" — formatting preferences are intent-invariant.
+2. **Intent leakage**: The dim assumes the piece has a specific purpose (asking, declining, thanking, complaining, motivating, narrating, summarizing, etc.) and won't apply to pieces with different purposes. *Example*: "Proposes specific times" only applies to scheduling-request messages.
 
-If a preference the user demonstrated is genuinely intent-specific (the user is great at proposing meeting times in meeting-request emails, but that habit doesn't transfer to thank-you emails), **that preference does not belong in the rubric**. Either:
-1. Drop it.
-2. Reframe it to be intent-invariant (e.g. "When the email has an ask, the ask is concrete and time-bounded" — applies whenever there's an ask, neutral when there isn't).
+3. **Situation leakage**: The dim assumes a specific situation (solo, with family, indoors, formal, urgent, etc.) that won't always be true. *Example*: "Names a moment of solitude" only fits pieces where the writer was alone.
 
-When in doubt, **drop**. A rubric that produces silent NOT_MET cascades on legitimate messages because of intent-specific dims is worse than a smaller, intent-invariant rubric.
+**How to keep an over-specific dim:**
+
+If the user genuinely demonstrated the preference but it only applies to a *subset* of pieces of this type, EITHER drop it OR reframe it as a conditional that's vacuously satisfied when the condition doesn't apply:
+
+  ❌ Over-specific: "Includes a specific deadline"
+  ✅ Conditional, transferable: "When the message has a time-bounded ask, the deadline is concrete; otherwise this dimension does not apply"
+
+  ❌ Subject-leaked: "Describes physical sensation while moving through the landscape"
+  ✅ Reframed: "Renders moments of sensory experience concretely rather than abstractly" — works in any genre/subject
+
+**When in doubt, DROP.** A smaller rubric that transfers cleanly is better than a larger one that fires NOT_MET on legitimate next pieces. Output fewer dims with `confidence: "low"` rather than padding the rubric with subject-specific guesses.
 
 ---
 
@@ -705,7 +696,6 @@ The rubric must be **concise, steerable, evaluable, and reusable across tasks**.
   - `description` (1–3 sentences max)
   - `dimensions` (3–5 per criterion) — these are **checkable items** that determine achievement level
   - `priority` (unique integer rank: 1 = most important, higher = less important)
-- `coaching_notes`
 
 ### ❌ DO NOT INCLUDE
 - Separate achievement level descriptions (excellent, good, fair, weak) — these are now derived from dimension counts
@@ -954,8 +944,7 @@ After your `<analysis>` block, output **only** this JSON:
       "priority": <unique integer 1..N where N = number of criteria, 1 = most important, no duplicates>,
       "confidence": "<high|medium|low — how confident you are that this criterion reflects a real user preference based on conversation evidence>"
     }
-  ],
-  "coaching_notes": "<2–3 concise insights>"
+  ]
 }
 ```
 
@@ -1137,7 +1126,6 @@ Return ONLY valid JSON (no markdown code blocks, no preamble):
       "priority": <unique integer 1..N, no duplicates>
     }
   ],
-  "coaching_notes": "<2–3 concise insights>",
   "refinement_summary": "<1-2 sentences: what changed and why>",
   "change_explanation": "<A user-facing explanation in markdown. For EACH change, explain: (1) what triggered it (classification or DP correction), (2) what you changed, and (3) why. Use bullet points. Be specific — reference criterion names and DP numbers.>"
 }
@@ -1195,10 +1183,29 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
 
     rubric_block = ""
     if rubric:
-        # Number the criteria explicitly for clarity, stripping _diff (contains non-serializable sets)
+        # Strip the dim-level `evidence` field. Inference fills it with
+        # `Message #N: user said "..."` quotes from the original conversation
+        # so the grader/refiner can ground their judgments. But the chat
+        # generator was reading those quotes and inheriting the original
+        # task's vocabulary -- which produced Comparison-tab drafts that
+        # echoed the original conversation's subject matter even on a
+        # totally different task. The grader still gets `evidence` via its
+        # own rubric serialization path; this only strips for chat.
+        # Also strips `_diff` (display-only, contains non-serializable sets).
         numbered_rubric = []
         for idx, criterion in enumerate(rubric, start=1):
-            numbered_crit = {k: v for k, v in criterion.items() if k != '_diff'}
+            numbered_crit = {k: v for k, v in criterion.items() if k != "_diff"}
+            if isinstance(numbered_crit.get("dimensions"), list):
+                cleaned_dims = []
+                for d in numbered_crit["dimensions"]:
+                    if isinstance(d, dict):
+                        cleaned_dims.append({
+                            k: v for k, v in d.items()
+                            if k not in ("evidence", "example_annotation")
+                        })
+                    else:
+                        cleaned_dims.append(d)
+                numbered_crit["dimensions"] = cleaned_dims
             numbered_crit['index'] = idx
             numbered_rubric.append(numbered_crit)
 
@@ -1599,7 +1606,6 @@ Return ONLY valid JSON matching this structure (no markdown fences, no preamble)
       "priority": <unique integer 1..N, no duplicates>
     }}
   ],
-  "coaching_notes": "<updated if needed>",
   "refinement_summary": "<1-2 sentences: what changed and why>",
   "change_explanation": "<A user-facing explanation in markdown. For EACH change you made to the rubric, explain: (1) which DP correction triggered it, (2) what you changed (added/modified/merged criterion or dimension), and (3) why. Use bullet points. Be specific — reference criterion names and DP numbers. Example: '- **DP#3** was marked *not in rubric* because you prefer paragraph transitions over bullet lists. Added new criterion **Flow & Continuity** to capture this.\n- **DP#5** was remapped to **Tone**, so I expanded its dimensions to include emotional warmth, which your correction highlighted.' Keep it concise but informative.>"
 }}"""
@@ -2263,7 +2269,6 @@ IMPORTANT CONSTRAINTS:
 - Keep 4-7 criteria total
 - Each criterion needs: name, category, description (1-3 sentences), dimensions (3-5 checkable items), priority (unique integer rank)
 - Use the user's own vocabulary where possible (from cold-start description and behavioral evidence)
-- Include coaching_notes summarizing what changed and why
 
 First, write your analysis in <analysis> tags explaining what changes you're making and why based on the evidence.
 
@@ -2288,7 +2293,6 @@ Then output the refined rubric as JSON:
       "priority": <unique integer 1..N, 1 = most important, no duplicates>
     }}}}
   ],
-  "coaching_notes": "<2-3 concise insights about what changed and why>",
   "changes_summary": [
     {{{{
       "type": "added|removed|modified|reprioritized",

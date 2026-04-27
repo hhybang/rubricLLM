@@ -278,7 +278,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                         "version": version_counter,
                         "source": "alignment_suggestion",
                     }
-                    for key in ("writing_type", "user_goals_summary", "coaching_notes"):
+                    for key in ("writing_type", "user_goals_summary"):
                         if key in rubric_data:
                             new_rubric[key] = rubric_data[key]
 
@@ -675,7 +675,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                                         "version": version_counter,
                                         "source": "user_log_changes",
                                     }
-                                    for key in ("writing_type", "user_goals_summary", "coaching_notes"):
+                                    for key in ("writing_type", "user_goals_summary"):
                                         if key in old_rubric_data:
                                             rubric_data[key] = old_rubric_data[key]
 
@@ -895,7 +895,7 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
                 "version": version_counter,
                 "source": "criteria_classification",
             }
-            for key in ("writing_type", "user_goals_summary", "coaching_notes"):
+            for key in ("writing_type", "user_goals_summary"):
                 if key in old_rubric_data:
                     rubric_data[key] = old_rubric_data[key]
             rubric_history.append(rubric_data)
