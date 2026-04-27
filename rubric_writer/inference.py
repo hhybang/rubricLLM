@@ -10,6 +10,58 @@ from rubric_writer.persistence import (
     _build_conversation_text,
 )
 
+
+def _validate_and_filter_rubric(rubric_data, *, context_label: str) -> tuple[int, int, int]:
+    """Drop dimensions that are invalid for the drift/grading pipeline, and
+    any criterion that becomes empty as a result. Returns
+    (dropped_insufficient, dropped_empty_text, dropped_crits).
+
+    Rules, all applied in one pass:
+      - INSUFFICIENT_EVIDENCE escape hatch -> drop.
+      - Dim with neither `label` nor `description` text -> drop. The grader
+        prompt substitutes these fields into the rubric it sends to Sonnet;
+        an empty dim produces an "ambiguity note" that literally says
+        "has no label or description," triggers a low_confidence drift
+        panel, and the user sees a broken row. Validating here keeps the
+        inferred rubric clean on first render.
+      - Criterion left with zero dims -> drop.
+    """
+    dropped_insufficient = 0
+    dropped_empty_text = 0
+    for crit in rubric_data.get("rubric") or []:
+        kept = []
+        for dim in crit.get("dimensions") or []:
+            ev = (dim.get("evidence") or "").strip().upper()
+            if ev == "INSUFFICIENT_EVIDENCE":
+                dropped_insufficient += 1
+                continue
+            label = (dim.get("label") or "").strip()
+            description = (dim.get("description") or "").strip()
+            if not label and not description:
+                dropped_empty_text += 1
+                import logging as _lg
+                _lg.getLogger(__name__).warning(
+                    "[%s] dropping dim %r under crit %r: empty label + empty description",
+                    context_label, dim.get("id") or "(no id)",
+                    (crit.get("name") or "(no crit name)"),
+                )
+                continue
+            kept.append(dim)
+        crit["dimensions"] = kept
+    before_crit = len(rubric_data.get("rubric") or [])
+    rubric_data["rubric"] = [
+        c for c in (rubric_data.get("rubric") or []) if c.get("dimensions")
+    ]
+    dropped_crits = max(0, before_crit - len(rubric_data["rubric"]))
+    if dropped_insufficient or dropped_empty_text or dropped_crits:
+        import logging as _lg
+        _lg.getLogger(__name__).info(
+            "[%s] filter: dropped %d insufficient-evidence, %d empty-text dim(s)%s.",
+            context_label, dropped_insufficient, dropped_empty_text,
+            f" and {dropped_crits} now-empty criterion" if dropped_crits else "",
+        )
+    return dropped_insufficient, dropped_empty_text, dropped_crits
+
 def infer_rubric_only(messages):
     """Infer a rubric from conversation WITHOUT extracting decision points.
 
@@ -73,32 +125,10 @@ def infer_rubric_only(messages):
             rubric_data["source"] = "inferred"
             rubric_data["conversation_id"] = st.session_state.get("selected_conversation")
 
-            # Evidence-gate enforcement: drop any dimension the model explicitly
-            # marked as INSUFFICIENT_EVIDENCE, and any criterion that becomes
-            # empty as a result. The prompt offers this as an explicit escape
-            # hatch when a dim can't be grounded in concrete user interaction.
-            _dropped_dims = 0
-            _dropped_crits = 0
-            for crit in rubric_data.get("rubric") or []:
-                kept = []
-                for dim in crit.get("dimensions") or []:
-                    ev = (dim.get("evidence") or "").strip().upper()
-                    if ev == "INSUFFICIENT_EVIDENCE":
-                        _dropped_dims += 1
-                        continue
-                    kept.append(dim)
-                crit["dimensions"] = kept
-            rubric_data["rubric"] = [
-                c for c in (rubric_data.get("rubric") or []) if c.get("dimensions")
-            ]
-            _dropped_crits = max(0, len((rubric_data.get("rubric") or [])) - len(rubric_data["rubric"]))
-            if _dropped_dims or _dropped_crits:
-                import logging as _lg
-                _lg.getLogger(__name__).info(
-                    "Evidence gate: dropped %d dim(s)%s.",
-                    _dropped_dims,
-                    f" and {_dropped_crits} now-empty criterion" if _dropped_crits else "",
-                )
+            # Evidence gate + data-quality filter: drops dims marked
+            # INSUFFICIENT_EVIDENCE and any dim with empty label + empty
+            # description. See `_validate_and_filter_rubric`.
+            _validate_and_filter_rubric(rubric_data, context_label="infer")
 
             # Normalize priorities to unique sequential 1..N
             _infer_criteria = rubric_data.get("rubric", [])
@@ -285,29 +315,8 @@ def infer_final_rubric(messages, rubric_json, classification_feedback_json, corr
             rubric_data["source"] = "inferred_final"
             rubric_data["conversation_id"] = st.session_state.get("selected_conversation")
 
-            # Evidence-gate enforcement (same as infer_rubric_only).
-            _dropped_dims = 0
-            for crit in rubric_data.get("rubric") or []:
-                kept = []
-                for dim in crit.get("dimensions") or []:
-                    ev = (dim.get("evidence") or "").strip().upper()
-                    if ev == "INSUFFICIENT_EVIDENCE":
-                        _dropped_dims += 1
-                        continue
-                    kept.append(dim)
-                crit["dimensions"] = kept
-            _before_crit = len(rubric_data.get("rubric") or [])
-            rubric_data["rubric"] = [
-                c for c in (rubric_data.get("rubric") or []) if c.get("dimensions")
-            ]
-            _dropped_crits = _before_crit - len(rubric_data["rubric"])
-            if _dropped_dims or _dropped_crits:
-                import logging as _lg
-                _lg.getLogger(__name__).info(
-                    "Evidence gate (final): dropped %d dim(s)%s.",
-                    _dropped_dims,
-                    f" and {_dropped_crits} now-empty criterion" if _dropped_crits else "",
-                )
+            # Evidence gate + data-quality filter: same as infer_rubric_only.
+            _validate_and_filter_rubric(rubric_data, context_label="infer_final")
 
             # Normalize priorities to unique sequential 1..N
             _final_criteria = rubric_data.get("rubric", [])

@@ -95,7 +95,17 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                 st.session_state[reset_counter_key] += 1
 
             # Create a container for the draft with visual styling (optionally in expander when message has rubric_revision)
-            _draft_num_prefix = f"Draft {draft_number} — " if draft_number is not None else ""
+            # B2: when grading hasn't completed yet (draft_number is None
+            # because compute_draft_number only counts graded drafts), still
+            # show a label that signals "this draft exists, its number will
+            # resolve when grading lands" -- otherwise the conversation
+            # jumps from "Draft 1" to "Draft 3" with the middle one
+            # unlabeled. The "?" placeholder rerenders to the real number
+            # on the next render after grading completes.
+            if draft_number is not None:
+                _draft_num_prefix = f"Draft {draft_number} — "
+            else:
+                _draft_num_prefix = "Draft #? (grading...) — "
             if editable:
                 _draft_label = f"📝 **{_draft_num_prefix}Your Draft**"
             else:

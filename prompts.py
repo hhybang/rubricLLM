@@ -547,6 +547,45 @@ For example, if the user is writing a cold email to a specific person:
 
 ---
 
+## CRITICAL — INTENT-INVARIANCE (NEW HARD CHECK)
+
+A dimension is **intent-specific** when it only applies to the particular *purpose* of the current message, not to all messages of this writing type. Such dimensions look transferable on first glance ("Proposes specific times to meet") but fail when the user later writes a different *kind* of message in the same genre (a follow-up after a meeting was declined, a thank-you note, an apology — none of which involve proposing times).
+
+**The intent-invariance test**: For each candidate dimension, ask: "Does this still apply to messages in this writing type with **different purposes**?"
+
+For an email rubric, run through ALL of these intents:
+- Asking for something (e.g. requesting a meeting, an introduction, a favor)
+- Following up on a previous interaction
+- Declining or saying no
+- Thanking someone
+- Apologizing or correcting an error
+- Sharing an update with no specific ask
+- Saying goodbye / wrapping up a relationship
+
+If the dimension makes sense for fewer than ~5 of those intents, **it is intent-specific and DOES NOT belong in a transferable rubric**. Drop it.
+
+For other writing types, run an analogous mental sweep. For thesis sections: would the dim apply to background, methods, results, discussion, conclusion? For blog posts: would it apply to a tutorial, an opinion piece, a release note, a retrospective?
+
+❌ **Intent-specific dimensions** to NEVER include (these LOOK general but only apply to one kind of message):
+- "Proposes specific meeting times" — only applies to meeting-request emails, not follow-ups, thank-yous, declines, etc.
+- "Names a clear ask" — fails on thank-you notes, updates, goodbye emails (which often have no ask).
+- "Includes a deadline" — fails on retrospective or relationship-maintenance messages.
+- "Provides logistics (time, location, attendees)" — fails on every email that isn't logistical.
+- "Closes with a question to drive a response" — fails on declines, thank-yous, FYIs.
+
+✅ **Intent-invariant alternatives** that ARE transferable:
+- "Closes with a single clear next-step appropriate to the message's purpose, NOT a generic 'let me know your thoughts'" — works for ask, follow-up, and update emails alike.
+- "Adapts level of formality to the recipient's relationship" — applies regardless of intent.
+- "Uses no em-dashes" — formatting preferences are intent-invariant.
+
+If a preference the user demonstrated is genuinely intent-specific (the user is great at proposing meeting times in meeting-request emails, but that habit doesn't transfer to thank-you emails), **that preference does not belong in the rubric**. Either:
+1. Drop it.
+2. Reframe it to be intent-invariant (e.g. "When the email has an ask, the ask is concrete and time-bounded" — applies whenever there's an ask, neutral when there isn't).
+
+When in doubt, **drop**. A rubric that produces silent NOT_MET cascades on legitimate messages because of intent-specific dims is worse than a smaller, intent-invariant rubric.
+
+---
+
 ## EVIDENCE GATE (HARD REQUIREMENT — NO EXCEPTIONS)
 
 **EVERY dimension you output MUST have real, cited evidence. There are NO exceptions. A dimension with no evidence is never acceptable — drop it instead.**
@@ -1212,6 +1251,40 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         - **high confidence**: Follow this criterion consistently — the user has clearly demonstrated this preference.
         - **medium confidence**: Apply this criterion as a reasonable default, but be ready to adjust if the user's feedback suggests otherwise.
         - **low confidence**: Treat this as a tentative suggestion, not a mandate. The user may not actually hold this preference — it was inferred from thin signal. Apply it lightly and be especially attentive to feedback that contradicts it.
+
+        **RUBRIC-EDIT SYSTEM MESSAGES (READ CAREFULLY):**
+
+        The conversation history may contain system messages that mark when the user changed the rubric. These are NOT historical narration — they record actual changes to the rubric you must apply going forward. The RUBRIC block at the top of this prompt is ALWAYS the current rubric (already includes every applied edit), so the system messages are just timestamps for when each change happened.
+
+        **Formats you'll see:**
+
+        1. Refiner suggestion applied to one dimension's wording:
+            ✅ **Rubric edit applied**
+            _criterion_: **dimension**
+            **Before:** <old wording>
+            **After:** <new wording>
+
+        2. A dimension removed via the drift panel's "🗑 Remove" button:
+            🗑 **Dimension removed.** _criterion_: **dimension** ...
+
+        3. A rubric save (manual edits in the Rubric Configuration tab). These can include multiple changes at once. The format spells out each operation explicitly:
+            📋 **Rubric saved as v{{N}}:**
+            - **Added:** "criterion-name"            ← a NEW criterion was added
+            - **Removed:** "criterion-name"          ← an entire criterion was deleted
+            - **Reworded:** "criterion-name" description changed
+            - **Criterion:** "criterion-name"
+              - **Added dimension:** "dim-label"     ← a NEW dimension was added under this criterion
+              - **Removed dimension:** "dim-label"   ← a dimension was deleted from this criterion
+
+           When you see "Added dimension" or "Removed dimension" indented under a criterion, that means a dimension was added/removed within that criterion. The label after each is the NEW or REMOVED dimension's text, not a clarification of the criterion.
+
+        **Two rules for handling these messages:**
+
+        1. **Apply changes starting in your next draft.** If a "Rubric edit applied" or "Added dimension" message appears above and the user now asks for another draft, the current RUBRIC block is what you grade your draft against — even if your earlier drafts were written under the old wording. Do NOT keep applying the old wording out of consistency with prior drafts.
+
+        2. **For removed criteria or dimensions:** you do not need to satisfy them in any new draft. They will not appear in the RUBRIC block above. Drafts you wrote earlier may have satisfied them; that's fine, but going forward only the current rubric applies.
+
+        If the user's most recent ask is for a NEW draft (not a small fix to an existing one), you are writing under the current rubric — not the rubric that was in force when earlier drafts were generated.
 
         **OUTPUT FORMAT — <draft> TAGS:**
 

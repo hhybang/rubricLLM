@@ -523,34 +523,51 @@ def _sample_spot_check_dims(
     dims_already_surfaced: set[str],
     sample_size: int = 2,
 ) -> list[dict[str, Any]]:
-    """Randomly sample high/medium-confidence dimensions that have NOT been
-    surfaced in any drift panel. Spot-checking catches silent misalignment
-    where the grader is confident but wrong."""
+    """Sample dimensions for the spot-check probe.
+
+    Strategy: **prefer high-confidence MET dims**, then high-confidence
+    NOT_MET, then medium. The paper's framing is "silent misalignment" --
+    catch the case where the grader is confidently wrong. High-confidence
+    MET dims are the ones the grader is most sure about, so they're the
+    ones where a user disagreement would be most informative for the
+    confirmation-rate metric.
+
+    Excludes any dim already surfaced by a drift panel earlier in the
+    session (passed in via `dims_already_surfaced`), per the paper's
+    "non-drift dimensions" requirement -- otherwise we'd be re-asking
+    about contested dims and contaminating the uncontested-rate
+    denominator.
+    """
     import random
 
+    high_met: list[dict[str, Any]] = []
+    high_not_met: list[dict[str, Any]] = []
     medium: list[dict[str, Any]] = []
-    high: list[dict[str, Any]] = []
     for c in current.get("grades") or []:
         cname = (c.get("criterion_name") or "").strip()
         for d in c.get("dimension_grades") or []:
             did = (d.get("dimension_id") or "").strip()
             if not did or did in dims_already_surfaced:
                 continue
+            grade = (d.get("grade") or "").upper()
+            conf = (d.get("confidence") or "high").lower()
             entry = {
                 "criterion": cname,
                 "dimension_id": did,
-                "grade": (d.get("grade") or "").upper(),
-                "confidence": d.get("confidence", "high"),
+                "grade": grade,
+                "confidence": conf,
                 "evidence": d.get("evidence", ""),
             }
-            if d.get("confidence") == "medium":
+            if conf == "high" and grade == "MET":
+                high_met.append(entry)
+            elif conf == "high" and grade == "NOT_MET":
+                high_not_met.append(entry)
+            elif conf == "medium":
                 medium.append(entry)
-            elif d.get("confidence") == "high":
-                high.append(entry)
-    # Prioritize medium confidence — more likely to be silently misaligned
+    random.shuffle(high_met)
+    random.shuffle(high_not_met)
     random.shuffle(medium)
-    random.shuffle(high)
-    pool = medium + high
+    pool = high_met + high_not_met + medium
     if not pool:
         return []
     return pool[:sample_size]
@@ -661,34 +678,56 @@ def compute_drift_bundle(
         if not current_perfect:
             break
     perfect_streak = prior_streak + (1 if current_perfect else 0)
-    # Fire on drafts 3, 6, 9, ... of the streak. Streak of 1-2 → skip.
-    # ALSO require the current draft to be perfect -- spot_check is a probe
-    # about the CURRENT draft's dims, so firing on a non-perfect draft
-    # (where other drift signals like persistent_failure or the NOT_MET
-    # dots are already telling the user what's wrong) is redundant and
-    # confusing. Bug fix: the gate used to pass on non-perfect drafts as
-    # long as prior_streak was 3 or 6, causing spot_check to fire on
-    # drafts that had actual failures on them.
+    # Two gate models, switched by the RUBRIC_SPOT_CHECK_GATE env var:
+    #
+    #   "streak" (default, production heuristic):
+    #     Fire only after a clean 3-draft streak. Catches silent
+    #     misalignment when the user is happily producing perfect drafts.
+    #     Conservative; designed to not bother the user.
+    #
+    #   "scheduled" (study mode, paper §3.2):
+    #     Fire at fixed checkpoints (mid-loop, end-loop) to guarantee
+    #     uncontested-dim confirmation data every session, regardless of
+    #     draft quality. Removes selection bias in the §4.2 confirmation
+    #     rate metric.
+    #
+    # Both models still respect _should_suppress_spot_check (early drafts,
+    # tiny rubrics).
+    gate_model = (os.environ.get("RUBRIC_SPOT_CHECK_GATE", "scheduled") or "scheduled").strip().lower()
+    if gate_model not in ("streak", "scheduled"):
+        gate_model = "scheduled"
+
+    # Streak gate: prior production behavior.
     streak_gate_passes = (
         current_perfect
         and perfect_streak >= 3
         and perfect_streak % 3 == 0
     )
-    # Always log so we can diagnose any reason spot_check doesn't fire -- not
-    # just the "kind==none and not suppressed" branch. Using WARNING level
-    # temporarily so the line appears in the Streamlit terminal regardless of
-    # Diagnostic log for spot_check throttle. At INFO level so it's off by
-    # default; bump logging config to see when debugging.
+    # Scheduled gate: fire at draft_index in {3, 5}. These are mid-loop and
+    # end-loop checkpoints for the paper's planned 4-6 draft sessions. If a
+    # session ends before draft 5, the end-loop probe is missing data --
+    # report honestly via the audit script's gate_model partition.
+    scheduled_gate_passes = (
+        draft_index is not None and int(draft_index) in (3, 5)
+    )
+
+    if gate_model == "scheduled":
+        gate_passes = scheduled_gate_passes
+    else:
+        gate_passes = streak_gate_passes
+
     _hist_len = min([len(h) for h in (dim_grade_history or {}).values()], default=0)
     _log.info(
-        "[spot_check diag] draft_index=%s trigger=%s kind=%s sc_suppressed=%s "
-        "prior_streak=%s current_perfect=%s total_streak=%s "
-        "streak_gate_passes=%s dim_history_len=%s hist_keys=%d",
-        draft_index, trigger, kind, spot_check_suppressed,
+        "[spot_check diag] gate_model=%s draft_index=%s trigger=%s kind=%s "
+        "sc_suppressed=%s prior_streak=%s current_perfect=%s total_streak=%s "
+        "streak_gate=%s scheduled_gate=%s gate_passes=%s "
+        "dim_history_len=%s hist_keys=%d",
+        gate_model, draft_index, trigger, kind, spot_check_suppressed,
         prior_streak, current_perfect, perfect_streak,
-        streak_gate_passes, _hist_len, len(dim_grade_history or {}),
+        streak_gate_passes, scheduled_gate_passes, gate_passes,
+        _hist_len, len(dim_grade_history or {}),
     )
-    if kind == "none" and not spot_check_suppressed and streak_gate_passes:
+    if kind == "none" and not spot_check_suppressed and gate_passes:
         # Collect all dims that have been in any drift signal
         surfaced = set(dims_already_surfaced or set())
         for lc in low_conf:
@@ -699,8 +738,8 @@ def compute_drift_bundle(
             surfaced.add(p.get("dimension_id", ""))
         spot_check_dims = _sample_spot_check_dims(current, surfaced)
         _log.info(
-            "[spot_check sampler] returned %d dims (surfaced=%d, available_crits=%d)",
-            len(spot_check_dims), len(surfaced), len(current.get("grades") or []),
+            "[spot_check sampler] gate_model=%s returned %d dims (surfaced=%d, available_crits=%d)",
+            gate_model, len(spot_check_dims), len(surfaced), len(current.get("grades") or []),
         )
         if spot_check_dims:
             kind = "spot_check"
@@ -776,12 +815,18 @@ def compute_drift_bundle(
             suppressed_reason=(
                 None if kind == "spot_check"
                 else "suppressed" if spot_check_suppressed
-                else "streak_gate" if not streak_gate_passes
-                else f"priority:{kind}" if kind != "none"
-                else "sampler_returned_empty"
+                else (f"{gate_model}_gate" if not gate_passes else
+                      f"priority:{kind}" if kind != "none"
+                      else "sampler_returned_empty")
             ),
         ),
     ]
+    # Tag the spot_check diagnostic record with the gate_model in use, so
+    # the audit script can partition data by gate cleanly. Other heuristics
+    # are gate-model-agnostic, so we only tag spot_check.
+    for _h in heuristic_diagnostics:
+        if _h.get("heuristic") == "spot_check":
+            _h["gate_model"] = gate_model
 
     # Single WARNING-level log line so the outcome is visible in the terminal
     # during live sessions without having to grep INFO output. Compact format.
@@ -1268,18 +1313,23 @@ def schedule_background_grade(
         _project_id_hint = None
 
     # Compute the draft index from session-state messages (authoritative for
-    # this conversation). Count assistant messages that contain a <draft>
-    # block, up to and including the current message. This avoids DB reads
-    # that can be blocked by RLS and makes the index deterministic per
-    # conversation: draft N is always the Nth drafted assistant message.
-    # Also capture prior drafts' grade payloads + drift bundles so the
-    # background thread's drift compute doesn't need to query the DB either.
+    # this conversation). Aligned with `compute_draft_number` semantics:
+    # only count prior assistant drafts that have a `draft_grade` attached,
+    # then add 1 for the current draft we're about to grade. This keeps
+    # the schedule-gate's "draft #3" aligned with the UI's "Draft 3" label
+    # (which also only counts graded drafts) -- so spot_check fires on
+    # the same draft the user sees as draft #3, not on the third raw draft
+    # which might be the user's "draft #2" if a prior draft never got
+    # graded.
+    #
+    # Also capture prior graded drafts' grade payloads + drift bundles so
+    # the background thread's drift compute doesn't need to query the DB.
     _d_idx_hint: int = 1
     _prior_payloads: list[dict[str, Any]] = []
     _prior_drifts: list[dict[str, Any]] = []
     try:
         msgs = st.session_state.get("messages", []) or []
-        count = 0
+        graded_count = 0
         for m in msgs:
             if m.get("role") != "assistant":
                 continue
@@ -1287,22 +1337,26 @@ def schedule_background_grade(
                 continue
             if not extract_primary_draft_text(m.get("content") or ""):
                 continue
-            count += 1
-            if str(m.get("message_id") or "") == str(message_id):
-                _d_idx_hint = count
+            this_is_current = (str(m.get("message_id") or "") == str(message_id))
+            if this_is_current:
+                # This message is the one we're about to grade. It will become
+                # the (graded_count + 1)-th graded draft once grading completes.
+                _d_idx_hint = graded_count + 1
                 break
-            # This is a prior draft (not the current one). Collect its
-            # grade payload + drift bundle from session state so drift
-            # compute can see full history without DB reads.
+            # Prior draft. Only include in the count + capture its grade
+            # data if it has actually been graded already. Skip ungraded
+            # prior drafts -- they won't appear as numbered drafts in the
+            # UI yet either.
             dg = m.get("draft_grade")
             if isinstance(dg, dict):
+                graded_count += 1
                 _prior_payloads.append(dg)
-            dd = m.get("draft_drift")
-            if isinstance(dd, dict):
-                _prior_drifts.append(dd)
+                dd = m.get("draft_drift")
+                if isinstance(dd, dict):
+                    _prior_drifts.append(dd)
         else:
             # Current mid not found in messages (e.g. edit-render race).
-            _d_idx_hint = max(count + 1, 1)
+            _d_idx_hint = max(graded_count + 1, 1)
     except Exception:
         _d_idx_hint = 1
         _prior_payloads = []

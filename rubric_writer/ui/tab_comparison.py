@@ -275,6 +275,19 @@ def render_comparison_tab() -> None:
         worst = None if all_same else st.session_state[_state_key("worst")]
         best_arm = label_to_arm.get(best) if best else None
         worst_arm = label_to_arm.get(worst) if worst else None
+        # Build {arm: draft_text} from {label: draft_text} so the saved row
+        # carries the actual draft contents. Without this, post-hoc analysis
+        # only sees which arm won -- not what the user was looking at when
+        # they decided. Sessions 1+2 are missing this and the rq2_threeway
+        # rows are uninterpretable.
+        drafts_by_label = st.session_state.get(_state_key("drafts")) or {}
+        drafts_by_arm: dict[str, str] = {}
+        for label, arm in label_to_arm.items():
+            text = drafts_by_label.get(label, "") or ""
+            # Cap to keep project_data rows reasonable. ~8KB per draft is
+            # plenty for analysis and short enough to fit a 3-arm row in
+            # well under 30KB.
+            drafts_by_arm[arm] = text[:8000]
         try:
             log_threeway_preference(
                 task=st.session_state[_state_key("task")],
@@ -285,6 +298,7 @@ def render_comparison_tab() -> None:
                 best_arm=best_arm, worst_arm=worst_arm,
                 all_same=all_same,
                 user_reason=(st.session_state.get(_state_key("reason"), "") or ""),
+                drafts_by_arm=drafts_by_arm,
             )
         except Exception as e:
             st.warning(f"Couldn't log preference: {e}")

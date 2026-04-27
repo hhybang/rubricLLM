@@ -904,12 +904,11 @@ def format_edit_log_message(edit_classification: dict, old_version, new_version,
 
     if edits["dimensions_changed"]:
         for dc in edits["dimensions_changed"]:
-            parts = []
-            if dc["added_dims"]:
-                parts.append(f"+{', '.join(dc['added_dims'])}")
-            if dc["removed_dims"]:
-                parts.append(f"-{', '.join(dc['removed_dims'])}")
-            lines.append(f"- **Dimensions:** \"{dc['name']}\" ({'; '.join(parts)})")
+            lines.append(f"- **Criterion:** \"{dc['name']}\"")
+            for added in (dc.get("added_dims") or []):
+                lines.append(f"  - **Added dimension:** \"{added}\"")
+            for removed in (dc.get("removed_dims") or []):
+                lines.append(f"  - **Removed dimension:** \"{removed}\"")
 
     if not any(edits[k] for k in edits):
         lines.append("- No substantive changes detected")

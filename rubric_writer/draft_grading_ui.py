@@ -885,11 +885,15 @@ def _is_remove_feedback(feedback_text: str) -> bool:
 def _is_no_edit_feedback(feedback_text: str) -> bool:
     """Feedback that explicitly says 'no rubric change needed' -- we should
     not send these to the refiner even in the 3+-dim batch path.
-    Covers oscillation's `drafts_varying` and any flavor of `just_right`."""
+    Covers oscillation's `drafts_varying`, `rubric_fine` (replacement for
+    legacy `just_right`), and the legacy `just_right` slug for backward
+    compatibility with sessions 1+2."""
     fl = (feedback_text or "").lower()
     return (
         "says drafts_varying" in fl
         or "drafts_varying" in fl
+        or "says rubric_fine" in fl
+        or "rubric_fine" in fl
         or "says just_right" in fl
     )
 
@@ -1049,8 +1053,8 @@ def _schedule_feedback_rubric_refinement(
     #
     # - drafts_varying (oscillation): user says the flip reflects real draft
     #   variation, not a rubric flaw. No edit, just acknowledgement.
-    # - just_right: user endorses current wording (oscillation "just right",
-    #   calibration "just right", or low_confidence "grade_correct" implicit).
+    # - rubric_fine (oscillation): user endorses current wording (replaces
+    #   the legacy "just_right" slug, kept for back-compat with sessions 1+2).
     fl_pre = (feedback_text or "").lower()
     if "says drafts_varying" in fl_pre or "drafts_varying" in fl_pre:
         _log.info("[refiner] drafts_varying short-circuit: %r",
@@ -1060,8 +1064,9 @@ def _schedule_feedback_rubric_refinement(
             "the rubric as-is."
         )
         return
-    if "says just_right" in fl_pre:
-        _log.info("[refiner] just_right short-circuit: %r",
+    if ("says rubric_fine" in fl_pre or "rubric_fine" in fl_pre
+            or "says just_right" in fl_pre):
+        _log.info("[refiner] rubric-fine short-circuit: %r",
                   (feedback_text or "")[:200])
         st.info("Got it — leaving this dimension's wording as-is.")
         return
@@ -1295,8 +1300,57 @@ def _schedule_feedback_rubric_refinement(
         )
         return
 
-    # Both attempts failed verification -- pick the shorter (more generalizable)
-    # of the two so a "best attempt" doesn't ship a bloated dimension.
+    # Both attempts failed verification. Two regimes:
+    #
+    #   (a) The verifier couldn't judge (still_uncertain / still_unstable /
+    #       dim_not_found / error): we DON'T know whether the edit is bad,
+    #       only that we couldn't measure it. Ship as best-attempt so the
+    #       user can decide, with a warning.
+    #
+    #   (b) The verifier produced a concrete grade that contradicts the
+    #       user's stated expectation on BOTH attempts: the edit is
+    #       measurably wrong. Drop it rather than shipping a broken edit
+    #       as "best attempt." Silently dropping is a cleaner signal than
+    #       a sidebar suggestion the user can't trust.
+    _blocking_statuses = {"mismatch"}
+    if status_1 in _blocking_statuses and status_2 in _blocking_statuses:
+        _log.warning(
+            "[refiner] DROPPED both verification attempts returned %r; "
+            "not shipping suggestion. attempt_1_grade=%s attempt_2_grade=%s "
+            "user_expected=%s",
+            status_2, new_grade_1, new_grade_2,
+            pre_verification.get("user_expected"),
+        )
+        # Telemetry: log as a refiner_proposal with disposition="dropped_verification"
+        # so we can count how often this happens without shipping to the sidebar.
+        try:
+            sb_t = st.session_state.get("supabase")
+            pid_t = st.session_state.get("current_project_id")
+            if sb_t and pid_t:
+                import uuid as _uuid
+                save_project_data(sb_t, pid_t, "refiner_proposal", {
+                    "timestamp": datetime.now().isoformat(),
+                    "conversation_id": st.session_state.get("selected_conversation"),
+                    "edit_id": str(_uuid.uuid4()),
+                    "drift_kind": drift_kind,
+                    "target_criterion": inputs.get("criterion_name"),
+                    "target_dim_id": inputs.get("dimension_id"),
+                    "disposition": "dropped_verification",
+                    "pre_verification": pre_verification,
+                    "feedback_text": feedback_text,
+                })
+        except Exception:
+            pass
+        st.info(
+            "We couldn't find an edit that aligns with your feedback. "
+            "The dimension may need a manual rewrite — try editing it "
+            "directly in the Rubric Configuration tab."
+        )
+        return
+
+    # Otherwise: we have at least one verifier signal we can't fully trust
+    # (low-confidence, grader dropped the dim, error). Fall through to the
+    # best-attempt ship path.
     def _len_ratio(sug):
         b = (sug.get("before_wording") or "").strip()
         a = (sug.get("after_wording") or "").strip()
@@ -1753,7 +1807,7 @@ def _render_dimension_calibration_buttons(
     """Render 'Too strict / Just right / Remove' buttons for a list of dimensions."""
     for j, dim_info in enumerate(dims):
         did = dim_info.get("dimension_id", "")
-        crit = dim_info.get("criterion", "")
+        crit = _resolve_crit_for_dim(did, dim_info.get("criterion", ""), message)
         dim_desc = _lookup_dimension_description(did, crit)
         dim_label = dim_desc if dim_desc else did
 
@@ -2020,41 +2074,24 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                 f"dimension(s) to receive a rubric suggestion.** "
                 f"_({resolved_osc}/{total_osc} reviewed)_"
             )
-            # One-time legend for the four action buttons below so we can
-            # keep the button row compact (no per-button ⓘ icons).
+            # One-time legend for the three action buttons below.
             st.markdown(
                 "<div style='font-size:11px;color:#666;line-height:1.5;"
                 "margin:4px 0 8px 0;padding:6px 10px;background:#f6f6f6;"
                 "border-left:3px solid #bbb;border-radius:3px;'>"
                 "<b>🔀 Subjective wording</b> — rubric language is interpretation-dependent; let's operationalize it.<br>"
-                "<b>📝 Drafts varying</b> — the flip reflects real draft variation, not a rubric flaw. No edit.<br>"
-                "<b>✅ Just right</b> — current wording is fine, dismiss.<br>"
+                "<b>✅ No rubric change</b> — the rubric is fine; tell us why and we'll skip the edit.<br>"
                 "<b>🗑 Remove</b> — delete this dimension from the rubric."
                 "</div>",
                 unsafe_allow_html=True,
             )
             for j, o in enumerate(oscs):
                 did = o.get("dimension_id", "")
-                crit = dim_to_crit.get(did, "")
-                # If the current draft's grade doesn't have this dim
-                # (e.g. grader dropped it, or the dim was renamed in the
-                # rubric after the oscillation record was created), try
-                # the active rubric directly to find the criterion that
-                # owns this dim_id. Without this, `crit` stays empty and
-                # the panel renders `__: <raw_dim_id>`.
-                if not crit and did:
-                    try:
-                        from rubric_writer.persistence import get_active_rubric
-                        _rb, _, _ = get_active_rubric()
-                        for _c in (_rb or {}).get("rubric", []) or []:
-                            for _d in _c.get("dimensions") or []:
-                                if (_d.get("id") or "").strip() == did.strip():
-                                    crit = (_c.get("name") or "").strip()
-                                    break
-                            if crit:
-                                break
-                    except Exception:
-                        pass
+                # Resolve criterion: prefer current draft_grade's mapping,
+                # fall back to active-rubric lookup. Handles the cases
+                # where the user manually edited the rubric mid-session
+                # (added/removed dim, renamed criterion).
+                crit = _resolve_crit_for_dim(did, dim_to_crit.get(did, ""), message)
                 dim_desc = _lookup_dimension_description(did, crit)
                 dim_label = dim_desc if dim_desc else did
                 hist_str = " -> ".join(o.get("history") or [])
@@ -2067,75 +2104,141 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                 st.markdown(f"_{html_lib.escape(crit)}_: **{html_lib.escape(dim_label)}**")
                 st.caption(f"Grade history: {hist_str}")
 
-                # Oscillation-specific options, each with a hover-revealed ⓘ
-                # that explains the semantic. Matches the pattern we use for
-                # the rubric-score dot legend -- concise button label, full
-                # meaning available on hover.
+                # Oscillation buttons.
+                # Three buttons; middle one stages a sub-radio so the user
+                # can say "no rubric change needed" with a reason. Two
+                # reasons are tracked separately for §4.3 paper analysis:
+                #   - rubric_fine       (the wording is fine as-is)
+                #   - drafts_varying    (the flip reflects real draft
+                #                        variation, not a rubric flaw)
                 #
-                # Downstream action per option:
-                #   - wording_subjective → refiner edit (operationalize wording)
+                # All three buttons short-circuit the refiner except the
+                # first (Subjective wording), which queues an edit.
+                #
+                # Downstream action map (action slug → behavior):
+                #   - wording_subjective → refiner edit
+                #   - rubric_fine        → short-circuit, no rubric change
                 #   - drafts_varying     → short-circuit, no rubric change
-                #   - just_right         → dismiss, no rubric change
                 #   - remove             → short-circuit, delete the dim
                 btn_base = f"osc_{safe_msg_id}_{j}"
-                osc_options = [
-                    ("🔀 Subjective wording",
-                     "Rubric language leaves room for interpretation — let's operationalize it.",
-                     "wording_subjective"),
-                    ("📝 Drafts varying",
-                     "The flip reflects real variation in my drafts, not a rubric flaw.",
-                     "drafts_varying"),
-                    ("✅ Just right",
-                     "Current wording is fine — dismiss.",
-                     "just_right"),
-                    ("🗑 Remove",
-                     "Delete this dimension from the rubric.",
-                     "remove"),
-                ]
-                cols = st.columns(len(osc_options))
-                for (col, (btn_label, semantic, action)) in zip(cols, osc_options):
-                    with col:
-                        if st.button(btn_label, key=f"{btn_base}_{action}",
+                pending_noedit_key = f"osc_pending_noedit_{safe_msg_id}_{j}"
+                pending_noedit = st.session_state.get(pending_noedit_key, False)
+
+                # Helper to finalize an action: log telemetry, queue
+                # feedback for the refiner short-circuit / refinement
+                # path, mark resolved, flush if all dims are done.
+                def _osc_finalize_action(action: str, semantic: str) -> None:
+                    pre_grade = json.loads(json.dumps(message.get("draft_grade"))) if message.get("draft_grade") else None
+                    _store_user_verdict(message, crit, did, action)
+                    # Use `did` (real dim_id), not `dim_label` -- the
+                    # refiner-resolver regex matches against dim_id.
+                    feedback = f"Dimension '{did}' ({crit}) oscillates ({o.get('flips', 0)} flips): user says {action}. {semantic}"
+                    log_confirmation(
+                        source="drift_detected",
+                        draft_index=(message.get("draft_grade_meta") or {}).get("draft_index", 0),
+                        drift_type="oscillation", dimension_id=did,
+                        dimension_text=dim_label, grader_verdict="oscillating",
+                        grader_confidence="high", user_response_raw=action,
+                        # rubric_fine is the closest analog of the old
+                        # "just_right" → "user agrees the rubric is OK."
+                        user_confirms_grader=(action == "rubric_fine"),
+                    )
+                    _queue_pending_feedback(
+                        panel_id=panel_id_osc,
+                        feedback_text=feedback,
+                        drift_kind="oscillation",
+                        draft_grade=pre_grade,
+                        draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                    )
+                    sb = st.session_state.get("supabase")
+                    pid = st.session_state.get("current_project_id")
+                    if sb and pid:
+                        try:
+                            save_project_data(sb, pid, "oscillation_feedback", {
+                                "timestamp": datetime.now().isoformat(),
+                                "conversation_id": st.session_state.get("selected_conversation"),
+                                "message_id": message.get("message_id"),
+                                "dimension_id": did, "criterion": crit,
+                                "action": action,
+                            })
+                        except Exception:
+                            pass
+                    st.session_state[resolved_key] = action.replace("_", " ")
+                    new_resolved = sum(1 for k in range(total_osc)
+                                       if st.session_state.get(f"osc_resolved_{safe_msg_id}_{k}"))
+                    if new_resolved == total_osc:
+                        _defer_flush(panel_id_osc)
+
+                if not pending_noedit:
+                    # Three top-level buttons.
+                    cols = st.columns(3)
+                    with cols[0]:
+                        if st.button("🔀 Subjective wording",
+                                     key=f"{btn_base}_wording_subjective",
                                      use_container_width=True):
-                            pre_grade = json.loads(json.dumps(message.get("draft_grade"))) if message.get("draft_grade") else None
-                            _store_user_verdict(message, crit, did, action)
-                            # Use `did` (real dim_id), not `dim_label` -- see
-                            # the note on the persistent_failure branch.
-                            feedback = f"Dimension '{did}' ({crit}) oscillates ({o.get('flips', 0)} flips): user says {action}. {semantic}"
-                            log_confirmation(
-                                source="drift_detected",
-                                draft_index=(message.get("draft_grade_meta") or {}).get("draft_index", 0),
-                                drift_type="oscillation", dimension_id=did,
-                                dimension_text=dim_label, grader_verdict="oscillating",
-                                grader_confidence="high", user_response_raw=action,
-                                user_confirms_grader=(action == "just_right"),
+                            _osc_finalize_action(
+                                "wording_subjective",
+                                "Rubric language leaves room for interpretation — let's operationalize it.",
                             )
-                            _queue_pending_feedback(
-                                panel_id=panel_id_osc,
-                                feedback_text=feedback,
-                                drift_kind="oscillation",
-                                draft_grade=pre_grade,
-                                draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                            st.rerun()
+                    with cols[1]:
+                        if st.button("✅ No rubric change",
+                                     key=f"{btn_base}_no_change",
+                                     use_container_width=True):
+                            st.session_state[pending_noedit_key] = True
+                            st.rerun()
+                    with cols[2]:
+                        if st.button("🗑 Remove",
+                                     key=f"{btn_base}_remove",
+                                     use_container_width=True):
+                            _osc_finalize_action(
+                                "remove",
+                                "Delete this dimension from the rubric.",
                             )
-                            sb = st.session_state.get("supabase")
-                            pid = st.session_state.get("current_project_id")
-                            if sb and pid:
-                                try:
-                                    save_project_data(sb, pid, "oscillation_feedback", {
-                                        "timestamp": datetime.now().isoformat(),
-                                        "conversation_id": st.session_state.get("selected_conversation"),
-                                        "message_id": message.get("message_id"),
-                                        "dimension_id": did, "criterion": crit,
-                                        "action": action,
-                                    })
-                                except Exception:
-                                    pass
-                            st.session_state[resolved_key] = action.replace("_", " ")
-                            # If this was the last dimension, flush the batch
-                            new_resolved = sum(1 for k in range(total_osc)
-                                               if st.session_state.get(f"osc_resolved_{safe_msg_id}_{k}"))
-                            if new_resolved == total_osc:
-                                _defer_flush(panel_id_osc)
+                            st.rerun()
+                else:
+                    # Pending "no rubric change" state: radio + Submit/Cancel.
+                    # Radio answers WHY no change is needed -- this is the
+                    # paper's §4.3 reason-code distribution at point of
+                    # capture, not derived post-hoc.
+                    reason_radio_key = f"osc_noedit_reason_{safe_msg_id}_{j}"
+                    _NOEDIT_OPTIONS = [
+                        ("rubric_fine",
+                         "The rubric wording is fine — leave it as-is.",
+                         "Current wording is fine; dismiss."),
+                        ("drafts_varying",
+                         "My drafts are varying — the flip reflects real draft variation, not a rubric flaw.",
+                         "The flip reflects real variation in my drafts, not a rubric flaw."),
+                    ]
+                    _values = [v for v, _, _ in _NOEDIT_OPTIONS]
+                    _labels = [lbl for _, lbl, _ in _NOEDIT_OPTIONS]
+                    _semantics = {v: s for v, _, s in _NOEDIT_OPTIONS}
+                    _picked_label = st.radio(
+                        "Which best describes why no rubric change is needed?",
+                        options=_labels,
+                        index=None,
+                        key=reason_radio_key,
+                    )
+                    _picked_value = (_values[_labels.index(_picked_label)]
+                                     if _picked_label in _labels else None)
+                    col_sub, col_cancel = st.columns(2)
+                    with col_sub:
+                        if st.button("Submit",
+                                     key=f"{btn_base}_no_change_submit",
+                                     type="primary",
+                                     disabled=(_picked_value is None),
+                                     use_container_width=True):
+                            _osc_finalize_action(
+                                _picked_value,
+                                _semantics.get(_picked_value, ""),
+                            )
+                            st.session_state.pop(pending_noedit_key, None)
+                            st.rerun()
+                    with col_cancel:
+                        if st.button("Cancel",
+                                     key=f"{btn_base}_no_change_cancel",
+                                     use_container_width=True):
+                            st.session_state.pop(pending_noedit_key, None)
                             st.rerun()
 
         # --- 3. Persistent failure ---
@@ -2152,7 +2255,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
             )
             for j, dim_info in enumerate(dims):
                 did = dim_info.get("dimension_id", "")
-                crit = dim_info.get("criterion", "")
+                crit = _resolve_crit_for_dim(did, dim_info.get("criterion", ""), message)
                 streak = dim_info.get("streak", 0)
                 dim_desc = _lookup_dimension_description(did, crit)
                 dim_label = dim_desc if dim_desc else did
@@ -2338,23 +2441,9 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
             )
             for j, sc in enumerate(spot_dims):
                 did = sc.get("dimension_id", "")
-                crit = sc.get("criterion", "")
+                crit = _resolve_crit_for_dim(did, sc.get("criterion", ""), message)
                 grade = sc.get("grade", "")
                 evidence = sc.get("evidence", "")
-                # If the persisted spot_check entry has an empty criterion
-                # (happens with older drift rows or when the rubric was
-                # edited after the spot_check was persisted), look it up
-                # from the live draft_grade by dim_id. Also try the active
-                # rubric as a second fallback.
-                if not crit.strip() and did:
-                    dg = message.get("draft_grade") or {}
-                    for _c in dg.get("grades") or []:
-                        for _d in _c.get("dimension_grades") or []:
-                            if (_d.get("dimension_id") or "").strip() == did.strip():
-                                crit = (_c.get("criterion_name") or "").strip()
-                                break
-                        if crit:
-                            break
                 dim_desc = _lookup_dimension_description(did, crit)
                 dim_label = dim_desc if dim_desc else did
 
@@ -2438,9 +2527,49 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                             st.session_state[pending_no_key] = True
                             st.rerun()
                 else:
-                    # Pending-NO state: show reason box + Submit / Cancel.
+                    # Pending-NO state: explicit reason code radio + free-text
+                    # box + Submit / Cancel. Reason codes per paper §3.2 -
+                    # captures categorical "why" so §4.3 can report a
+                    # distribution. Spot_check NO is the case where post-hoc
+                    # button-implied reasons are weakest (the spot_check
+                    # panel doesn't have multiple buttons to discriminate),
+                    # so this is where explicit codes add the most value.
+                    reason_code_key = f"spot_reason_code_{safe_msg_id}_{j}"
+                    _SPOT_NO_REASON_OPTIONS = [
+                        ("draft_doesnt_do_this",
+                         "The draft doesn't actually do this (grader missed something present)"),
+                        ("dim_wording_confusing",
+                         "The dimension wording is confusing or ambiguous"),
+                        ("dim_not_important",
+                         "I don't really care about this dimension"),
+                        ("other",
+                         "Other (use the text box)"),
+                    ]
+                    _option_values = [v for v, _ in _SPOT_NO_REASON_OPTIONS]
+                    _option_labels = [lbl for _, lbl in _SPOT_NO_REASON_OPTIONS]
+                    _picked_label = st.radio(
+                        "Which best describes why? (helps qualitative analysis)",
+                        options=_option_labels,
+                        index=None,
+                        key=reason_code_key,
+                    )
+                    _picked_value = (_option_values[_option_labels.index(_picked_label)]
+                                     if _picked_label in _option_labels else None)
+                    # Natural-language label for the refiner (without the
+                    # parenthetical hint, which is meant for the user, not
+                    # the model). Stays as the raw code in the saved
+                    # spot_check_feedback row for clean audit-script
+                    # filtering -- only the refiner-bound feedback_text uses
+                    # the prose form.
+                    _NL_LABEL_MAP = {
+                        "draft_doesnt_do_this": "the draft doesn't actually do this; the grader missed that the dimension isn't met by the draft",
+                        "dim_wording_confusing": "the dimension wording is confusing or ambiguous",
+                        "dim_not_important": "the user doesn't care about this dimension as much",
+                        "other": "the user has a different reason; see free-text below",
+                    }
+                    _picked_natural = _NL_LABEL_MAP.get(_picked_value or "")
                     st.text_input(
-                        "Why? (optional — your reasoning helps the refiner suggest a better rubric edit)",
+                        "Anything else? (optional — your reasoning helps the refiner suggest a better rubric edit)",
                         key=reason_key,
                         placeholder="e.g. the draft doesn't actually explain what 'clearly' means here",
                     )
@@ -2460,7 +2589,19 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                             if grade != "NOT_MET":
                                 # Use `did` (real dim_id), not `dim_label`.
                                 # See note on the YES branch above.
-                                reason_suffix = f" User reason: {user_reason}" if user_reason else ""
+                                # Build a NATURAL-LANGUAGE reason for the
+                                # refiner. The raw `reason_code` slug stays
+                                # in the saved spot_check_feedback row for
+                                # audit, but the refiner sees prose.
+                                reason_parts = []
+                                if _picked_natural:
+                                    reason_parts.append(_picked_natural)
+                                if user_reason:
+                                    reason_parts.append(f"in their words: {user_reason}")
+                                reason_suffix = (
+                                    f" User reason: {'; '.join(reason_parts)}"
+                                    if reason_parts else ""
+                                )
                                 _queue_pending_feedback(
                                     panel_id=panel_id_sc,
                                     feedback_text=f"Dimension '{did}' ({crit}): spot check — grader said {grade}, user says NOT_MET. Silent misalignment.{reason_suffix}",
@@ -2480,6 +2621,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                                         "grader_grade": grade, "user_grade": "NOT_MET",
                                         "misaligned": grade != "NOT_MET",
                                         "user_reason": user_reason,
+                                        "reason_code": _picked_value,
                                     })
                                 except Exception:
                                     pass
@@ -2709,6 +2851,50 @@ def _save_low_confidence_feedback(
             )
 
 
+def _resolve_crit_for_dim(
+    dim_id: str,
+    fallback_crit: str = "",
+    message: dict | None = None,
+) -> str:
+    """Resolve a dimension's criterion name when the persisted drift bundle's
+    `criterion` field is empty or stale (e.g. user manually edited the rubric
+    mid-session: removed/added a dim, renamed a criterion). Returns the live
+    criterion name from the current active rubric, or falls back to the
+    given `fallback_crit`, or to the dim's criterion in the supplied
+    message's draft_grade payload, or `""` if nothing resolves.
+
+    The drift panel render uses this so a stale entry no longer renders as
+    `__: <raw_dim_id>` when the criterion can be re-derived.
+    """
+    target = (dim_id or "").strip().lower()
+    if not target:
+        return (fallback_crit or "").strip()
+    # 1. Active rubric (authoritative for current state).
+    try:
+        from rubric_writer.persistence import get_active_rubric
+        _rb, _, _ = get_active_rubric()
+        for _c in (_rb or {}).get("rubric", []) or []:
+            for _d in _c.get("dimensions") or []:
+                if (_d.get("id") or "").strip().lower() == target:
+                    return (_c.get("name") or "").strip()
+    except Exception:
+        pass
+    # 2. Message's draft_grade payload (was graded against the rubric at the
+    #    time of grading; criterion_name fields are usually still accurate).
+    if message:
+        try:
+            dg = message.get("draft_grade") or {}
+            for _c in dg.get("grades") or []:
+                for _d in _c.get("dimension_grades") or []:
+                    if (_d.get("dimension_id") or "").strip().lower() == target:
+                        return (_c.get("criterion_name") or "").strip()
+        except Exception:
+            pass
+    # 3. Provided fallback (the original `criterion` field on the drift
+    #    entry, if it was non-empty).
+    return (fallback_crit or "").strip()
+
+
 def _lookup_dimension_description(dim_id: str, criterion_name: str) -> str:
     """Look up a dimension's human-readable label from the active rubric.
 
@@ -2817,7 +3003,7 @@ def _render_low_confidence_clarifications(
 
     for i, lc in enumerate(low_conf_dims):
         dim_id = lc.get("dimension_id", "")
-        crit = lc.get("criterion", "")
+        crit = _resolve_crit_for_dim(dim_id, lc.get("criterion", ""), message)
         note = lc.get("ambiguity_note", "")
         grade = lc.get("grade", "")
         evidence = lc.get("evidence", "")
@@ -3999,7 +4185,11 @@ def _infer_user_expected_grade(suggestion: dict[str, Any]) -> str | None:
     # Early-return patterns that indicate we can't verify against a grade
     if "user wants to remove" in feedback_text or "user says remove" in feedback_text:
         return None
-    if "just_right" in feedback_text or "just right" in feedback_text:
+    # Both the new `rubric_fine` slug and the legacy `just_right` slug mean
+    # "user endorses current wording" -- nothing to verify against.
+    if ("rubric_fine" in feedback_text
+            or "just_right" in feedback_text
+            or "just right" in feedback_text):
         return None
     if "prioritize" in feedback_text or "both matter" in feedback_text:
         return None

@@ -108,12 +108,17 @@ def format_edit_log_message(edit_classification, old_version, new_version, sourc
             lines.append(f"- **Reworded:** \"{rw['name']}\" {rw['field']} changed")
     if edits["dimensions_changed"]:
         for dc in edits["dimensions_changed"]:
-            parts = []
-            if dc["added_dims"]:
-                parts.append(f"+{', '.join(dc['added_dims'])}")
-            if dc["removed_dims"]:
-                parts.append(f"-{', '.join(dc['removed_dims'])}")
-            lines.append(f"- **Dimensions:** \"{dc['name']}\" ({'; '.join(parts)})")
+            # Spell out add/remove explicitly. The previous format used
+            # `(+...; -...)` which is intuitive as a diff but easy for an
+            # LLM reader to misread (the `+` can look like a parenthetical
+            # clarification rather than an add marker). Multi-line is
+            # unambiguous: the labels "Added dimension" and "Removed
+            # dimension" make the operation explicit.
+            lines.append(f"- **Criterion:** \"{dc['name']}\"")
+            for added in (dc.get("added_dims") or []):
+                lines.append(f"  - **Added dimension:** \"{added}\"")
+            for removed in (dc.get("removed_dims") or []):
+                lines.append(f"  - **Removed dimension:** \"{removed}\"")
 
     if not any(edits[k] for k in edits):
         lines.append("- No substantive changes detected")

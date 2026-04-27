@@ -130,13 +130,22 @@ def log_threeway_preference(
     worst_arm: str | None,
     all_same: bool,
     user_reason: str = "",
+    drafts_by_arm: dict[str, str] | None = None,
 ) -> None:
     """Three-way blind preference: no-rubric vs first-inferred vs current-refined.
 
     `label_to_arm` records which draft label got which arm so we can decode
     position effects at analysis time. `best_label`/`worst_label` let us
     compute both (a) whether having any rubric helps (none vs others) and
-    (b) whether refinement adds value (early vs late)."""
+    (b) whether refinement adds value (early vs late).
+
+    `drafts_by_arm` (NEW) saves the actual draft text per arm so we can do
+    qualitative analysis post-hoc -- specifically, whether the three
+    generated drafts are visibly different. Sessions 1-2 didn't capture
+    this and we discovered the comparison data was uninterpretable
+    without the underlying drafts. Pass {"none": "...", "early": "...",
+    "late": "..."} (texts truncated to a reasonable length to keep the
+    project_data row manageable)."""
     _save_metric("rq2_threeway", {
         "session_id": _get_session_id(),
         "timestamp": datetime.now().isoformat(),
@@ -151,6 +160,7 @@ def log_threeway_preference(
         "worst_arm": worst_arm,
         "all_same": all_same,
         "user_reason": user_reason,
+        "drafts_by_arm": drafts_by_arm or {},
     })
 
 
