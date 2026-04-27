@@ -4079,18 +4079,25 @@ def render_chat_sidebar():
     if "editing_criteria_ui_version" not in st.session_state:
         st.session_state.editing_criteria_ui_version = 0
 
-    # Version selector
+    # Version selector. Default = highest-numbered version (active_idx, set by
+    # save_rubric_history to len(history)-1 on every save). The widget's
+    # persisted value can go stale if a new version is saved by background
+    # work (inference, draft-edit refinement) while the user has an older
+    # version selected -- in that case the persisted label still points at
+    # the old version even though active_rubric_idx has advanced. Drop the
+    # widget key when its value disagrees with active_idx so the index= kwarg
+    # takes effect and the latest version is shown selected.
     if rubric_history:
         version_options = [f"v{r.get('version', 1)}" for r in rubric_history]
         _rvk = project_scoped_key("rubric_version_selector")
         if _rvk in st.session_state:
             _rv_sel = st.session_state[_rvk]
-            if _rv_sel not in version_options:
+            _expected = version_options[active_idx] if active_idx is not None and 0 <= active_idx < len(version_options) else None
+            if _rv_sel not in version_options or (_expected is not None and _rv_sel != _expected):
                 st.session_state.pop(_rvk, None)
-        # Only set index when session state hasn't already been set by apply/save actions
         _vs_kwargs = {"key": _rvk}
         if _rvk not in st.session_state:
-            _vs_kwargs["index"] = active_idx if active_idx is not None else 0
+            _vs_kwargs["index"] = active_idx if active_idx is not None else len(version_options) - 1
         selected_version = st.selectbox(
             "Active Rubric Version:",
             options=version_options,

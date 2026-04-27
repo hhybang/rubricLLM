@@ -316,6 +316,15 @@ if 'selected_conversation' not in st.session_state:
 if 'active_rubric_idx' not in st.session_state:
     hist = load_rubric_history()
     st.session_state.active_rubric_idx = len(hist) - 1 if hist else None
+else:
+    # Existing value may be stale (e.g. history grew or shrank between reruns).
+    # Snap to last (highest version) if the index is out of range.
+    _hist = load_rubric_history()
+    _idx = st.session_state.active_rubric_idx
+    if not _hist:
+        st.session_state.active_rubric_idx = None
+    elif _idx is None or _idx < 0 or _idx >= len(_hist):
+        st.session_state.active_rubric_idx = len(_hist) - 1
 
 # Comparison mode
 if 'comparison_result' not in st.session_state:
