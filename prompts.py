@@ -255,10 +255,14 @@ Before producing the rubric, write your reasoning inside `<analysis>` tags.
 - Questions revealing values (e.g., "Is this too formal?")
 
 **Implicit signals:**
-- Patterns in repeated edits
-- What the user never comments on
-- Direction of changes (more specific vs. abstract, shorter vs. longer)
-- Trade-offs consistently accepted or rejected
+- Patterns in repeated edits the user actively makes (a single edit is weak signal; recurring edits across several drafts is strong)
+- Direction of changes (more specific vs. abstract, shorter vs. longer) when the user is the one making the changes
+- Trade-offs the user explicitly endorses or repeatedly rejects across the conversation
+
+**NOT signals (do NOT use these as evidence):**
+- What the user never comments on (silence is not endorsement — see Evidence Gate and Acceptance-Strength Classifier)
+- A single instance of the user *accepting* an assistant-proposed move without active endorsement
+- Patterns observed in the *assistant's* drafts that the user did not explicitly affirm or modify
 
 **Non-negotiables:**
 - Hard requirements (word limits, required structures, stylistic rules)
@@ -439,17 +443,6 @@ Example: If you have 5 criteria, assign ranks 1, 2, 3, 4, 5 - no ties allowed.
 
 ---
 
-## COACHING NOTES
-
-Provide **2–3 concise insights** about this user's writing mindset:
-- Non-negotiables
-- Preferred trade-offs
-- How they respond to feedback
-
-Keep actionable, not explanatory.
-
----
-
 ## OUTPUT FORMAT
 
 After your `<analysis>` block, output **only** this JSON:
@@ -599,6 +592,34 @@ It is ALWAYS acceptable — and expected — to output fewer dimensions (or fewe
 
 ---
 
+## ACCEPTANCE-STRENGTH CLASSIFIER (HARD REQUIREMENT)
+
+When your evidence relies on the user *accepting* an assistant suggestion — rather than the user's own words, edits, or rejections — you must classify the acceptance strength and **name the class explicitly in the evidence string**. There are three classes, with different evidentiary weight:
+
+**1. `active_endorsement`** — the user's own words affirm the suggestion. They pick up its framing, expand on it, give an example of it from their own experience, or state they want it. Counts as **full evidence**.
+
+  Example: assistant says "you might want X"; user replies "yes, that's exactly what I'm trying to do — X is part of why this matters to me." Evidence string: `"Message #5 active_endorsement: user replied to assistant's X suggestion with 'yes, that's exactly...'"`
+
+**2. `tacit_acceptance`** — the user proceeds without objection AND engages with downstream work that depends on the suggestion. Counts as **supporting evidence only**: the dim must ALSO have user-authored grounding (a quote, an edit, a rejection pattern, an active_endorsement of a related point). A dim grounded *purely* in tacit_acceptance is not enough — drop it.
+
+  Example: assistant proposes a sequencing rule; user says "ok, let's continue" and starts working on the next section. Evidence string must say `tacit_acceptance` AND must cite an additional user-authored signal.
+
+**3. `silent`** — the user moves on without engaging the suggestion at all. Suggestion was never explicitly evaluated by the user. **NOT evidence.** Drop the dim, or mark `"evidence": "INSUFFICIENT_EVIDENCE"`.
+
+The following phrases are red flags that you are in tacit or silent territory and may be laundering it as full evidence:
+
+- "user accepted" / "user agreed" / "user moved forward"
+- "did not push back" / "did not object" / "did not defend"
+- "consistent pattern in the draft" (descriptive observation, not preference)
+- "assistant flagged X as strength" (the assistant's opinion, not the user's)
+- "user proceeded without revising"
+
+When you see yourself about to write one of these, stop. Identify which class this is. Write the class label in the evidence string. If it's `silent`, drop the dim.
+
+The point: when the user **does** explicitly endorse a suggestion (active_endorsement), that's real preference signal we want to capture. When the user just nods along (tacit_acceptance), that's weak signal that needs corroboration. When the user is silent, that's not signal at all. The evidence string must make clear which is which, so a downstream reviewer can audit whether the dim is grounded.
+
+---
+
 ## BANNED PHRASINGS
 
 The following criterion phrasings are BANNED regardless of justification — they describe what any competent baseline LLM would already do for almost any genre:
@@ -673,6 +694,76 @@ If in doubt: could this label appear in a rubric template the user downloads fro
 
 ---
 
+## VALUES OVER RECIPES (DIM SHAPE)
+
+A frequent failure mode is producing **recipe-shaped** dimensions when the user only demonstrated a **value**. Recipe-shaped dims prescribe procedure: how often something appears, what order things go in, where in the structure something must land. Value-shaped dims describe what the writing should *hold* — a quality of judgment, voice, or content the user cares about — without dictating the mechanics.
+
+Most users (especially in interpretive genres like personal essay, memoir, or opinion writing) have clear values but no procedural opinions about their own writing process. When the inferer over-operationalizes a value into a recipe, the user rejects the recipe even though they agree with the underlying value.
+
+**Recipe-shaped dims (high-risk — usually wrong):**
+- "Mental logistics appear at least once per location section"
+- "Sensory grounding comes first, reflection second"
+- "Each encounter is anchored to one specific named object"
+- "The closing beat lands on a small physical image rather than a thesis sentence"
+- "Home content is spread across the chapter rather than clustered"
+
+**Value-shaped dims (preferred):**
+- "Hard moments are allowed to sit unresolved rather than tidied with a redemptive line"
+- "Sharp or petty observations are not softened into diplomatic neutrality"
+- "Resolutions are partially-true / partially-false rather than clean lessons"
+- "Beauty passages contain at least one honest beat about cost happening at the same time"
+
+Note the distinction: the value-shaped dim "Beauty passages contain at least one honest beat about cost..." reads close to a recipe but encodes a value (don't sanitize beauty by hiding the cost). The bad version of the same idea would be "Each beauty passage is followed within two sentences by a cost beat" — which prescribes the procedural shape rather than the value.
+
+**Diagnostic test for each candidate dim:**
+
+Before keeping a dim that prescribes:
+- **how many times** something appears ("at least N per section", "once per location")
+- the **order** of things ("X first, then Y", "before / after")
+- **where in the structure** something should land ("the closing beat", "the opening pages")
+- a **specific frequency or rhythm** ("every paragraph", "consistently throughout")
+
+ask: did the user **explicitly describe this procedural rule** (in their own words, in a quote you can cite), OR are you operationalizing a value the user only demonstrated as a value?
+
+If the procedural rule is YOUR interpretation of a user value, **drop the procedural prescription and keep the value-shaped version of the dim instead**. The grader can still check whether the value is upheld; it doesn't need a procedural recipe to do so.
+
+When in doubt, write the dim as a value, not a recipe.
+
+---
+
+## NAME THE AXIS, NOT THE SURFACE FORM (DIM AXIS-CHECK)
+
+When a dim is grounded in concrete details from the user's writing — named objects, specific words, particular phrasings, recurring brands — there is a risk of capturing the **surface form of the evidence** rather than the **underlying axis the user actually cares about**.
+
+Example: the user's writing repeatedly mentions specific gear (an arc'teryx jacket, a titanium spork, a particular wine). A naive inferer writes "Each significant encounter is anchored to a specific named object." This is grounded in real evidence — but the underlying axis the user cares about may not be **named objects**; it may be **physical-detail-as-character** or **texture-of-personhood**. Naming the surface form produces a dim the user rejects ("that's not the defining part") even though the inferer found a real preference signal.
+
+**Two-step rule for every dim grounded in concrete content:**
+
+**Step 1 — articulate the axis.** Before writing the dim label, write down (in your `<analysis>`):
+- *"What kind of move is this an instance of?"*
+- *"What is the user's underlying preference that produced this surface detail?"*
+- *"If the user wrote a different piece of the same type with completely different content, what would still be true about how they'd handle it?"*
+
+**Step 2 — write the dim as the axis, not the surface form.**
+
+❌ Surface form: "Each encounter is anchored to a specific named object (gear, garment, food)"
+✅ Axis: "People are described by something visible or tangible about them, not just by their job, origin, or personality summary"
+
+❌ Surface form: "References to home content cite specific media (newsletters, podcasts, voice memos)"
+✅ Axis: "Home content is grounded in a specific physical moment of the trip rather than treated as a thematic interlude"
+
+❌ Surface form: "Sentences about discomfort use blunt physical vocabulary ('feet hurt', 'I wanted to cry')"
+✅ Axis: "Moments of discomfort are rendered without softening or rationalization"
+
+**Signs you are naming the surface form:**
+- The dim quotes or paraphrases specific words that appear in the user's draft
+- The dim could be falsified by the user simply switching topics (different gear → same preference would still apply, but the dim wouldn't fire)
+- The evidence string and the dim label are nearly identical (the dim *is* the evidence rather than a generalization of it)
+
+If you can't articulate the underlying axis cleanly, the evidence may not actually demonstrate a transferable preference. Drop the dim or reduce confidence.
+
+---
+
 ## PURPOSE
 
 The rubric will be used to:
@@ -728,10 +819,14 @@ Before producing the rubric, write your reasoning inside `<analysis>` tags.
 - Questions revealing values (e.g., "Is this too formal?")
 
 **Implicit signals:**
-- Patterns in repeated edits
-- What the user never comments on
-- Direction of changes (more specific vs. abstract, shorter vs. longer)
-- Trade-offs consistently accepted or rejected
+- Patterns in repeated edits the user actively makes (a single edit is weak signal; recurring edits across several drafts is strong)
+- Direction of changes (more specific vs. abstract, shorter vs. longer) when the user is the one making the changes
+- Trade-offs the user explicitly endorses or repeatedly rejects across the conversation
+
+**NOT signals (do NOT use these as evidence):**
+- What the user never comments on (silence is not endorsement — see Evidence Gate and Acceptance-Strength Classifier)
+- A single instance of the user *accepting* an assistant-proposed move without active endorsement
+- Patterns observed in the *assistant's* drafts that the user did not explicitly affirm or modify
 
 **Non-negotiables:**
 - Hard requirements (word limits, required structures, stylistic rules)
@@ -906,18 +1001,7 @@ Assign a **confidence** level to each criterion: `high`, `medium`, or `low`.
 - **medium**: Inferred from a pattern of behavior or a single clear signal. Reasonable but not confirmed by the user.
 - **low**: Inferred from thin signal — e.g., the user accepted a draft without comment, or this is extrapolated from a single data point. The user may not actually hold this preference.
 
-Be honest about confidence. If the user never commented on an aspect and you're inferring from silence or a single instance, mark it `low`. The rubric should present itself as a draft to be completed, not a finished product.
-
----
-
-## COACHING NOTES
-
-Provide **2–3 concise insights** about this user's writing mindset:
-- Non-negotiables
-- Preferred trade-offs
-- How they respond to feedback
-
-Keep actionable, not explanatory.
+Be honest about confidence. If you're inferring from a single instance, mark it `low`. The rubric should present itself as a draft to be completed, not a finished product. (For evidence that relies on user acceptance specifically, follow the Acceptance-Strength Classifier rules above — silent acceptance is not evidence at all and the dim must be dropped, not merely marked `low`.)
 
 ---
 
@@ -938,7 +1022,7 @@ After your `<analysis>` block, output **only** this JSON:
         {
           "id": "<machine-friendly id>",
           "label": "<checkable item: what to verify as yes/no — must be reusable across tasks>",
-          "evidence": "<REQUIRED, NEVER EMPTY: direct quote, concrete edit citation, or rejection pattern — must include at least one `Message #N`. If you cannot ground this dim, DROP IT from the rubric entirely. Only use 'INSUFFICIENT_EVIDENCE' as a last-resort escape hatch.>"
+          "evidence": "<REQUIRED, NEVER EMPTY: direct quote, concrete edit citation, or rejection pattern — must include at least one `Message #N`. When evidence relies on user acceptance of an assistant suggestion, you MUST also include the acceptance-class label (`active_endorsement` or `tacit_acceptance`); silent acceptance is not evidence — drop the dim. If you cannot ground this dim, DROP IT from the rubric entirely. Only use 'INSUFFICIENT_EVIDENCE' as a last-resort escape hatch.>"
         }
       ],
       "priority": <unique integer 1..N where N = number of criteria, 1 = most important, no duplicates>,
@@ -1056,11 +1140,9 @@ You are producing the FINAL version of a personalized writing rubric.
 
 ## BACKGROUND
 
-You previously inferred an initial rubric from a writing conversation. Since then:
-1. The user reviewed each criterion and classified it as "stated" (they mentioned it), "real" (they care but didn't mention), or "hallucinated" (model invented it)
-2. Decision points were extracted from the conversation and the user reviewed them, potentially correcting which criterion each DP maps to or identifying preferences not captured by the rubric
+You previously inferred an initial rubric from a writing conversation. Since then, the user reviewed each criterion and classified it as "stated" (they mentioned it), "real" (they care but didn't mention), or "hallucinated" (model invented it).
 
-Your task is to produce the definitive rubric that incorporates ALL of this feedback.
+Your task is to produce the definitive rubric that incorporates this feedback.
 
 ## HOW TO INCORPORATE FEEDBACK
 
@@ -1073,14 +1155,7 @@ Your task is to produce the definitive rubric that incorporates ALL of this feed
 When merging, consolidating, or renaming criteria, ensure that ALL dimensions from the original criteria are preserved in the result. Do NOT drop a criterion classified as "stated" or "real" unless you are certain its dimensions are fully captured by another criterion. If you merge two criteria, the merged result must cover everything both originals covered — check dimension by dimension.
 
 ### Importance Ranking
-The classification feedback includes an `importance_ranking` — an ordered list of criteria from most to least important (as ranked by the user). Use this to set the `priority` field on each criterion. The user's ranking should be respected: criterion ranked #1 gets priority 1, etc. If new criteria are added (e.g. from "not_in_rubric" DPs), slot them in at a reasonable priority relative to the user's ranking.
-
-### Decision Point Corrections
-- **"correct"**: The DP's criterion mapping was right. No change needed.
-- **"incorrect"**: The user says this DP maps to a DIFFERENT criterion. Update the target criterion's description/dimensions to better capture what this DP reveals.
-- **"not_in_rubric"**: The user says this preference is NOT captured by any existing criterion. You MUST either:
-  - Add a new criterion to capture it, OR
-  - Add new dimensions to an existing criterion if it fits naturally
+The classification feedback includes an `importance_ranking` — an ordered list of criteria from most to least important (as ranked by the user). Use this to set the `priority` field on each criterion. The user's ranking should be respected: criterion ranked #1 gets priority 1, etc.
 
 ## SEPARATING STYLE FROM TASK CONTENT
 
@@ -1101,7 +1176,7 @@ When refining, check that existing criteria and any new criteria you add are **g
 
 ## RUBRIC REQUIREMENTS
 
-- **4–7 criteria** with clear conversation evidence
+- **3–7 criteria** (prefer **fewer, high-value** criteria over filling slots; **never** add a criterion solely to reach a number), each with clear conversation evidence
 - Each criterion: `name`, `category`, `description` (1-3 sentences), `dimensions` (3-5 checkable items), `priority` (unique rank)
 - Use the user's vocabulary from the conversation
 - Unique priority rankings (1 = most important)
@@ -1127,13 +1202,13 @@ Return ONLY valid JSON (no markdown code blocks, no preamble):
     }
   ],
   "refinement_summary": "<1-2 sentences: what changed and why>",
-  "change_explanation": "<A user-facing explanation in markdown. For EACH change, explain: (1) what triggered it (classification or DP correction), (2) what you changed, and (3) why. Use bullet points. Be specific — reference criterion names and DP numbers.>"
+  "change_explanation": "<A user-facing explanation in markdown. For EACH change, explain: (1) what triggered it (the classification — stated/real/hallucinated — or importance reranking), (2) what you changed, and (3) why. Use bullet points. Be specific — reference criterion names.>"
 }
 
 **NOTE**: Do NOT include `excellent`, `good`, `fair`, or `weak` fields. Achievement levels are derived from dimension counts.
 """
 
-def RUBRIC_final_infer_user_prompt(conversation_text, previous_rubric_json, classification_feedback_json, corrected_dps_json, coldstart_text=""):  # noqa: ARG001 — coldstart_text kept for backward compat but intentionally excluded from prompt
+def RUBRIC_final_infer_user_prompt(conversation_text, previous_rubric_json, classification_feedback_json, corrected_dps_json="", coldstart_text=""):  # noqa: ARG001 — corrected_dps_json/coldstart_text kept for backward compat but intentionally excluded from prompt
     return f"""Here is the conversation. Messages are numbered [Message #N].
 
 <conversation>
@@ -1152,13 +1227,7 @@ Here are the user's classification judgments for each criterion:
 {classification_feedback_json}
 </classification_feedback>
 
-Here are the user's decision point corrections:
-
-<dp_corrections>
-{corrected_dps_json}
-</dp_corrections>
-
-Produce the FINAL rubric incorporating all feedback. Return ONLY valid JSON matching the output format in your system instructions."""
+Produce the FINAL rubric incorporating this feedback. Return ONLY valid JSON matching the output format in your system instructions."""
 
 
 def CHAT_build_system_prompt(rubric_dict_or_list):
@@ -1312,16 +1381,6 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
         Prior assistant messages that contain a draft are prefixed by the SYSTEM with `[This is Draft #N.]` (e.g. `[This is Draft #3.]`). These tags are injected automatically to help you resolve references like "fix X in draft #3." Draft numbering is 1-based across the graded drafts in the conversation, in order.
 
         **STRICT RULE:** Do NOT emit `[This is Draft #N.]` (or any `[This is Draft ...]` variation) anywhere in your own output. Your response should look exactly like a normal chat message — no system-style bracketed prefix, no restating the draft number. The system handles numbering for past drafts; your job is just to respond.
-
-        **PROBE SIGNAL (include ONLY when you produce a <draft>):**
-        After writing a draft, reflect on the rubric criteria you just applied. If you feel genuinely uncertain about how to interpret or apply any ONE criterion — the description is vague, the user's preferences seem conflicting, or you had to guess — append a probe signal tag AFTER the draft:
-        <probe_signal>{{"criterion_name": "<exact criterion name>", "criterion_index": <0-based index>, "uncertainty_reason": "<1-2 sentence explanation of the ambiguity>"}}</probe_signal>
-
-        Rules for the probe signal:
-        - Only include <probe_signal> when you have REAL uncertainty, not every draft. Most drafts should NOT have one.
-        - Pick the SINGLE most ambiguous criterion, not multiple.
-        - If all criteria are clear and you feel confident, do NOT include any <probe_signal> tag.
-        - The probe signal is processed by the system and will NOT be shown to the user.
         """).strip()
     else:
         system_instruction = dedent("""
