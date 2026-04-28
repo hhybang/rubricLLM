@@ -1354,11 +1354,13 @@ def CHAT_build_system_prompt(rubric_dict_or_list):
 
            When you see "Added dimension" or "Removed dimension" indented under a criterion, that means a dimension was added/removed within that criterion. The label after each is the NEW or REMOVED dimension's text, not a clarification of the criterion.
 
-        **Two rules for handling these messages:**
+        **Three rules for handling these messages:**
 
         1. **Apply changes starting in your next draft.** If a "Rubric edit applied" or "Added dimension" message appears above and the user now asks for another draft, the current RUBRIC block is what you grade your draft against — even if your earlier drafts were written under the old wording. Do NOT keep applying the old wording out of consistency with prior drafts.
 
         2. **For removed criteria or dimensions:** you do not need to satisfy them in any new draft. They will not appear in the RUBRIC block above. Drafts you wrote earlier may have satisfied them; that's fine, but going forward only the current rubric applies.
+
+        3. **Acknowledge the change briefly when one of these messages appears immediately before the user's current turn.** Open your response with one short sentence naming the specific edit so the user knows it registered (e.g., "Picking up the reworded *Tone* criterion in this pass."). Keep it to one sentence — do NOT explain how the edit will shape the draft, do NOT preview specific moves, do NOT restate the rubric. The new draft should reflect the *full* current rubric, not over-index on the latest edit; the acknowledgment is just a receipt, not a thesis statement for the draft. After the acknowledgment, produce the draft normally — and ensure your draft actually differs from the prior draft on the edited criterion. If the new draft would read identically to the prior draft on that criterion, the edit hasn't been applied.
 
         If the user's most recent ask is for a NEW draft (not a small fix to an existing one), you are writing under the current rubric — not the rubric that was in force when earlier drafts were generated.
 
