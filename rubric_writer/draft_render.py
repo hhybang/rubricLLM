@@ -32,6 +32,27 @@ def compute_draft_number(messages: list, target_message_id: str) -> int | None:
     return None
 
 
+def _is_latest_draft_message(target_message_id: str) -> bool:
+    """Return True if `target_message_id` is the most recent assistant
+    message in session state that contains a draft. Used to decide whether
+    a "(grading...)" placeholder is plausible for an ungraded draft --
+    only the latest draft can have grading in flight; earlier ungraded
+    drafts are pre-rubric and will never be graded."""
+    try:
+        from rubric_writer.draft_text import extract_primary_draft_text
+    except Exception:
+        return False
+    messages = st.session_state.get("messages") or []
+    latest_mid: str | None = None
+    for m in messages:
+        if m.get("role") != "assistant":
+            continue
+        if not extract_primary_draft_text(m.get("content") or ""):
+            continue
+        latest_mid = str(m.get("message_id") or "")
+    return latest_mid is not None and latest_mid == str(target_message_id)
+
+
 def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expander: bool = False, editable: bool = True, draft_number: int | None = None):
     """
     Render a message that may contain <draft> tags.
@@ -102,10 +123,20 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
             # jumps from "Draft 1" to "Draft 3" with the middle one
             # unlabeled. The "?" placeholder rerenders to the real number
             # on the next render after grading completes.
+            #
+            # But: only the LATEST draft message can plausibly be mid-grading.
+            # Older ungraded drafts (e.g. drafts from before a rubric was
+            # inferred) will never be graded retroactively, so the
+            # "(grading...)" placeholder is a lie for them. Likewise, if
+            # there's no active rubric at all, no grading is in flight.
             if draft_number is not None:
                 _draft_num_prefix = f"Draft {draft_number} — "
             else:
-                _draft_num_prefix = "Draft #? (grading...) — "
+                _active_rubric, _, _ = get_active_rubric()
+                if _active_rubric is None or not _is_latest_draft_message(message_id):
+                    _draft_num_prefix = ""
+                else:
+                    _draft_num_prefix = "Draft #? (grading...) — "
             if editable:
                 _draft_label = f"📝 **{_draft_num_prefix}Your Draft**"
             else:

@@ -804,6 +804,7 @@ def _queue_pending_feedback(
     drift_kind: str,
     draft_grade: dict[str, Any] | None,
     draft_excerpt: str,
+    message_id: str | None = None,
 ) -> None:
     """Queue a single dimension's feedback for later batched processing.
     Called by each dimension's button; the actual refinement fires only when
@@ -814,6 +815,7 @@ def _queue_pending_feedback(
         "drift_kind": drift_kind,
         "draft_grade": draft_grade,
         "draft_excerpt": draft_excerpt,
+        "message_id": message_id,
     })
 
 
@@ -830,11 +832,50 @@ def _defer_flush(panel_id: str) -> None:
         deferred.append(panel_id)
 
 
+def _derive_refinement_lock_key(
+    feedback_text: str, message_id: str | None,
+) -> tuple[str, str] | None:
+    """Build the (message_id, dim_or_crit_id) key used by the in-flight lock.
+
+    Dim-level feedback strings carry `Dimension '...'`; tradeoff feedback
+    instead carries `Criterion '...'`. Returns None when neither pattern
+    matches or message_id is missing -- in that case the lock degrades to
+    a no-op rather than blocking the call.
+    """
+    if not message_id:
+        return None
+    import re as _re
+    m = _re.search(r"Dimension '([^']+)'", feedback_text or "")
+    if m:
+        return (message_id, m.group(1))
+    m = _re.search(r"Criterion '([^']+)'", feedback_text or "")
+    if m:
+        return (message_id, f"tradeoff:{m.group(1)}")
+    return None
+
+
+def _is_refinement_inflight(feedback_text: str, message_id: str | None) -> bool:
+    key = _derive_refinement_lock_key(feedback_text, message_id)
+    if not key:
+        return False
+    return key in (st.session_state.get("_dim_refinement_inflight") or set())
+
+
+def _is_dim_refinement_inflight(message_id: str | None, dim_id: str) -> bool:
+    """Variant for callers that already have message_id and dim_id and don't
+    need feedback-text parsing -- e.g. drift-panel render code wanting to
+    disable buttons for a dim that's currently being refined elsewhere."""
+    if not message_id or not dim_id:
+        return False
+    return (message_id, dim_id) in (st.session_state.get("_dim_refinement_inflight") or set())
+
+
 def _defer_schedule_refinement(
     feedback_text: str,
     drift_kind: str,
     draft_grade: dict[str, Any] | None,
     draft_excerpt: str,
+    message_id: str | None = None,
 ) -> None:
     """Queue a direct (non-batched) refiner call to run AFTER the drift
     expander renders. Used by tradeoff buttons, which fire one refinement
@@ -846,6 +887,7 @@ def _defer_schedule_refinement(
         "drift_kind": drift_kind,
         "draft_grade": draft_grade,
         "draft_excerpt": draft_excerpt,
+        "message_id": message_id,
     })
 
 
@@ -872,6 +914,7 @@ def run_deferred_refiner_work() -> None:
                 drift_kind=item["drift_kind"],
                 draft_grade=item["draft_grade"],
                 draft_excerpt=item["draft_excerpt"],
+                message_id=item.get("message_id"),
             )
         except Exception as e:
             _log.warning("deferred refinement failed: %s", e)
@@ -966,6 +1009,7 @@ def _flush_pending_feedback(panel_id: str) -> None:
             drift_kind=item["drift_kind"],
             draft_grade=item["draft_grade"],
             draft_excerpt=item["draft_excerpt"],
+            message_id=item.get("message_id"),
         )
 
 
@@ -974,12 +1018,47 @@ def _schedule_feedback_rubric_refinement(
     drift_kind: str,
     draft_grade: dict[str, Any] | None,
     draft_excerpt: str = "",
+    message_id: str | None = None,
 ) -> None:
     """Full pipeline: refiner -> verify -> retry once if misaligned -> queue.
 
     Only suggestions that verify successfully (or the best-effort attempt
     after the retry) are shown to the user. Runs synchronously with visible
-    spinners so the user sees progress."""
+    spinners so the user sees progress.
+
+    In-flight lock: same `(message_id, dim_id)` cannot fire two concurrent
+    refinements. Drift panels (in chat) and the sidebar dispute affordance
+    are independent surfaces that can both target the same dim, and rapid
+    double-clicks on the same drift panel button used to double-queue too.
+    Lock degrades to a no-op if message_id is missing or feedback_text
+    doesn't carry a `Dimension '...'` / `Criterion '...'` tag.
+    """
+    from rubric_writer.persistence import get_active_rubric
+
+    lock_key = _derive_refinement_lock_key(feedback_text, message_id)
+    inflight = st.session_state.setdefault("_dim_refinement_inflight", set())
+    if lock_key and lock_key in inflight:
+        _log.info("[refiner] skip duplicate inflight for %s", lock_key)
+        return
+    if lock_key:
+        inflight.add(lock_key)
+
+    try:
+        _schedule_feedback_rubric_refinement_impl(
+            feedback_text=feedback_text, drift_kind=drift_kind,
+            draft_grade=draft_grade, draft_excerpt=draft_excerpt,
+        )
+    finally:
+        if lock_key:
+            inflight.discard(lock_key)
+
+
+def _schedule_feedback_rubric_refinement_impl(
+    feedback_text: str,
+    drift_kind: str,
+    draft_grade: dict[str, Any] | None,
+    draft_excerpt: str = "",
+) -> None:
     from rubric_writer.persistence import get_active_rubric
 
     _log.warning(
@@ -1436,6 +1515,7 @@ def _schedule_multi_feedback_rubric_refinement(items: list[dict[str, Any]]) -> N
         _schedule_feedback_rubric_refinement(
             feedback_text=item["feedback_text"], drift_kind=item["drift_kind"],
             draft_grade=item["draft_grade"], draft_excerpt=item["draft_excerpt"],
+            message_id=item.get("message_id"),
         )
         return
 
@@ -1469,6 +1549,7 @@ def _schedule_multi_feedback_rubric_refinement(items: list[dict[str, Any]]) -> N
                 _schedule_feedback_rubric_refinement(
                     feedback_text=item["feedback_text"], drift_kind=item["drift_kind"],
                     draft_grade=item["draft_grade"], draft_excerpt=item["draft_excerpt"],
+                    message_id=item.get("message_id"),
                 )
             return
 
@@ -1479,6 +1560,7 @@ def _schedule_multi_feedback_rubric_refinement(items: list[dict[str, Any]]) -> N
             _schedule_feedback_rubric_refinement(
                 feedback_text=item["feedback_text"], drift_kind=item["drift_kind"],
                 draft_grade=item["draft_grade"], draft_excerpt=item["draft_excerpt"],
+                message_id=item.get("message_id"),
             )
         return
 
@@ -1868,6 +1950,7 @@ def _render_dimension_calibration_buttons(
                         drift_kind=drift_kind,
                         draft_grade=pre_grade,
                         draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                        message_id=message.get("message_id"),
                     )
                     st.session_state[resolved_key] = action.replace("_", " ")
                     st.rerun()
@@ -2149,6 +2232,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                         drift_kind="oscillation",
                         draft_grade=pre_grade,
                         draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                        message_id=message.get("message_id"),
                     )
                     sb = st.session_state.get("supabase")
                     pid = st.session_state.get("current_project_id")
@@ -2307,6 +2391,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                             drift_kind="persistent_failure",
                             draft_grade=pre_grade,
                             draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                            message_id=message.get("message_id"),
                         )
                         log_confirmation(
                             source="drift_detected",
@@ -2336,6 +2421,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                             drift_kind="persistent_failure",
                             draft_grade=pre_grade,
                             draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                            message_id=message.get("message_id"),
                         )
                         log_confirmation(
                             source="drift_detected",
@@ -2402,6 +2488,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                                 drift_kind="tradeoff",
                                 draft_grade=message.get("draft_grade"),
                                 draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                                message_id=message.get("message_id"),
                             )
                             st.session_state[resolved_key] = f"prioritized {imp_name}"
                             st.rerun()
@@ -2413,6 +2500,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                                 drift_kind="tradeoff",
                                 draft_grade=message.get("draft_grade"),
                                 draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                                message_id=message.get("message_id"),
                             )
                             st.session_state[resolved_key] = f"prioritized {drp_name}"
                             st.rerun()
@@ -2423,6 +2511,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                                 drift_kind="tradeoff",
                                 draft_grade=message.get("draft_grade"),
                                 draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                                message_id=message.get("message_id"),
                             )
                             st.session_state[resolved_key] = "both matter"
                             st.rerun()
@@ -2503,6 +2592,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                                     drift_kind="spot_check",
                                     draft_grade=message.get("draft_grade"),
                                     draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                                    message_id=message.get("message_id"),
                                 )
                             sb = st.session_state.get("supabase")
                             pid = st.session_state.get("current_project_id")
@@ -2608,6 +2698,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                                     drift_kind="spot_check",
                                     draft_grade=message.get("draft_grade"),
                                     draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                                    message_id=message.get("message_id"),
                                 )
                             sb = st.session_state.get("supabase")
                             pid = st.session_state.get("current_project_id")
@@ -2841,6 +2932,7 @@ def _save_low_confidence_feedback(
                 drift_kind="low_confidence",
                 draft_grade=pre_override_grade,
                 draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                message_id=message.get("message_id"),
             )
         else:
             _defer_schedule_refinement(
@@ -2848,6 +2940,7 @@ def _save_low_confidence_feedback(
                 drift_kind="low_confidence",
                 draft_grade=pre_override_grade,
                 draft_excerpt=extract_primary_draft_text(message.get("content") or "") or "",
+                message_id=message.get("message_id"),
             )
 
 
@@ -3065,6 +3158,299 @@ def _render_low_confidence_clarifications(
 
 
 
+def _save_grade_dispute(
+    message: dict[str, Any], criterion: str, dim_id: str,
+    current_grade: str, target_grade: str, reason: str,
+) -> None:
+    """Persist a user-initiated grade dispute. Stored under a distinct
+    data_type from `low_confidence_feedback` so analytics on grader
+    uncertainty stay clean -- this is the user contradicting a confident
+    grader, not the grader flagging itself."""
+    sb = st.session_state.get("supabase")
+    pid = st.session_state.get("current_project_id")
+    if not sb or not pid:
+        return
+    try:
+        save_project_data(sb, pid, "grade_dispute_feedback", {
+            "timestamp": datetime.now().isoformat(),
+            "conversation_id": st.session_state.get("selected_conversation"),
+            "message_id": message.get("message_id"),
+            "dimension_id": dim_id,
+            "criterion": criterion,
+            "current_grade": current_grade,
+            "target_grade": target_grade,
+            "reason": reason,
+            "source": "user_initiated",
+        })
+    except Exception as e:
+        _log.warning("grade_dispute_feedback save failed: %s", e)
+
+
+def _snapshot_dimension_state(
+    message: dict[str, Any], criterion: str, dim_id: str,
+) -> dict[str, Any] | None:
+    """Capture the pre-flip grade/confidence/evidence for one dimension so a
+    later Dismiss can restore it. Returns None if not found."""
+    dg = message.get("draft_grade")
+    if not dg:
+        return None
+    for c in dg.get("grades") or []:
+        if (c.get("criterion_name") or "").strip() != criterion:
+            continue
+        for d in c.get("dimension_grades") or []:
+            if (d.get("dimension_id") or "").strip() == dim_id:
+                return {
+                    "grade": d.get("grade"),
+                    "confidence": d.get("confidence"),
+                    "evidence": d.get("evidence"),
+                    "score": c.get("score"),
+                }
+    return None
+
+
+def _restore_dimension_state(
+    message: dict[str, Any], criterion: str, dim_id: str, snapshot: dict[str, Any],
+) -> None:
+    """Restore a dimension to a previously snapshotted state and recompute
+    the criterion score. Inverse of the flip done by `_flip_dimension_grade`."""
+    dg = message.get("draft_grade")
+    if not dg or not snapshot:
+        return
+    for c in dg.get("grades") or []:
+        if (c.get("criterion_name") or "").strip() != criterion:
+            continue
+        dims = c.get("dimension_grades") or []
+        met_count = 0
+        for d in dims:
+            if (d.get("dimension_id") or "").strip() == dim_id:
+                if "grade" in snapshot:
+                    d["grade"] = snapshot.get("grade")
+                if "confidence" in snapshot:
+                    d["confidence"] = snapshot.get("confidence")
+                if "evidence" in snapshot:
+                    d["evidence"] = snapshot.get("evidence")
+            if (d.get("grade") or "").upper() == "MET":
+                met_count += 1
+        if "score" in snapshot and snapshot.get("score"):
+            c["score"] = snapshot["score"]
+        elif dims:
+            c["score"] = f"{met_count}/{len(dims)}"
+        break
+
+
+def _revert_dispute_flip(suggestion: dict[str, Any]) -> bool:
+    """If this suggestion was queued from a sidebar dispute that optimistically
+    flipped a dimension grade, restore the original grade. Returns True if a
+    revert happened. Safe no-op if no flip context is present."""
+    ctx = suggestion.get("dispute_flip_context")
+    if not ctx:
+        return False
+    msg_id = ctx.get("message_id")
+    snapshot = ctx.get("original_dim_state")
+    if not msg_id or not snapshot:
+        return False
+    for m in st.session_state.get("messages") or []:
+        if str(m.get("message_id") or "") == str(msg_id):
+            _restore_dimension_state(
+                m, ctx.get("criterion_name", ""), ctx.get("dimension_id", ""),
+                snapshot,
+            )
+            # Also clear the parallel user_verdict so analytics don't keep
+            # showing a flip the user effectively walked back.
+            verdicts = m.get("user_verdicts") or {}
+            verdicts.pop(f"{ctx.get('criterion_name','')}::{ctx.get('dimension_id','')}", None)
+            if verdicts:
+                m["user_verdicts"] = verdicts
+            else:
+                m.pop("user_verdicts", None)
+            break
+    suggestion.pop("dispute_flip_context", None)
+    return True
+
+
+def _flip_dimension_grade(
+    message: dict[str, Any], criterion: str, dim_id: str, target_grade: str,
+) -> None:
+    """Mutate `message['draft_grade']` so the dot row, line graph, and
+    scorecard all reflect the user's flipped grade.
+
+    The other drift-panel feedback paths preserve grader truth and only
+    write a parallel `user_verdicts` dict -- but the sidebar dispute is
+    UX-first: the user explicitly clicked thumbs-down with a target grade,
+    they want to see the dot recolor immediately. Grader-truth analytics
+    can still recover the original from telemetry / Supabase rows; the
+    in-memory grade is now the user's verdict."""
+    dg = message.get("draft_grade")
+    if not dg:
+        return
+    for c in dg.get("grades") or []:
+        if (c.get("criterion_name") or "").strip() != criterion:
+            continue
+        dims = c.get("dimension_grades") or []
+        met_count = 0
+        for d in dims:
+            did = (d.get("dimension_id") or "").strip()
+            if did == dim_id:
+                d["grade"] = target_grade
+                d["confidence"] = "high"
+                d["evidence"] = (d.get("evidence") or "") + " [user-disputed]"
+            if (d.get("grade") or "").upper() == "MET":
+                met_count += 1
+        if dims:
+            c["score"] = f"{met_count}/{len(dims)}"
+        break
+
+
+def _render_dimension_dispute_row(
+    message: dict[str, Any], criterion: str, d: dict[str, Any], message_id: str,
+) -> None:
+    """One row per dimension in the sidebar scorecard: grade chip + 👎.
+    Click 👎 -> inline form (target-grade radio + reason) -> Submit flips
+    the grade in-message and synchronously fires the refiner. The
+    suggestion lands in the existing `rubric_edit_suggestions` panel
+    above."""
+    dim_id = (d.get("dimension_id") or "").strip()
+    g = (d.get("grade") or "").upper()
+    conf = d.get("confidence", "high")
+    mark = "✓" if g == "MET" else "✗"
+    conf_badge = ""
+    if conf == "low":
+        conf_badge = " ⚠️ _low confidence_"
+        note = d.get("ambiguity_note", "")
+        if note:
+            conf_badge += f" — {note}"
+    elif conf == "medium":
+        conf_badge = " 🔸 _medium confidence_"
+    evidence = d.get("evidence", "")
+    line = f"{mark} `{dim_id}` — {evidence}{conf_badge}"
+
+    state_key = f"_dispute_state_{message_id}_{criterion}_{dim_id}"
+    state = st.session_state.get(state_key)
+
+    # Resolved -- show strikethrough summary, no buttons.
+    if isinstance(state, dict) and state.get("resolved"):
+        from_g, to_g = state.get("from", ""), state.get("to", "")
+        suffix = state.get("suffix") or f"disputed: {from_g} → {to_g}"
+        st.caption(f"~~{mark} `{dim_id}`~~ _({suffix})_")
+        return
+
+    # If a refinement for this dim is currently running (from this surface
+    # or a drift panel), disable disputing until it completes.
+    if _is_dim_refinement_inflight(message_id, dim_id):
+        st.caption(f"{line} — _refinement in progress…_")
+        return
+
+    col_text, col_btn = st.columns([5, 1], vertical_alignment="center")
+    with col_text:
+        st.caption(line)
+    with col_btn:
+        toggle_key = f"_dispute_open_{message_id}_{criterion}_{dim_id}"
+        if st.button("👎", key=f"btn_{toggle_key}", help="Disagree with this grade"):
+            st.session_state[toggle_key] = not st.session_state.get(toggle_key, False)
+            st.rerun()
+
+    if not st.session_state.get(toggle_key):
+        return
+
+    # Inline form. Target grade defaults to the opposite of current.
+    opposite = "NOT_MET" if g == "MET" else "MET"
+    radio_key = f"_dispute_radio_{message_id}_{criterion}_{dim_id}"
+    reason_key = f"_dispute_reason_{message_id}_{criterion}_{dim_id}"
+    target = st.radio(
+        "Should be:", ["MET", "NOT_MET"],
+        index=0 if opposite == "MET" else 1,
+        key=radio_key, horizontal=True,
+    )
+    reason = st.text_area(
+        "Reason (optional)", key=reason_key, height=60,
+        placeholder="Why does the grader have this wrong?",
+    )
+
+    submit_col, cancel_col = st.columns([1, 1])
+    with submit_col:
+        submit = st.button("Submit", key=f"submit_{toggle_key}", type="primary")
+    with cancel_col:
+        cancel = st.button("Cancel", key=f"cancel_{toggle_key}")
+
+    if cancel:
+        st.session_state[toggle_key] = False
+        st.rerun()
+
+    if not submit:
+        return
+
+    # --- Submit handler ---
+    # Snapshot pre-flip dimension state so we can either (a) flip later if a
+    # verified suggestion lands, or (b) never flip at all if verification
+    # drops the suggestion / produces only a best-attempt. The grade should
+    # not flip unless there's a verified rubric edit AND the user applies it.
+    pre_grade = json.loads(json.dumps(message.get("draft_grade"))) if message.get("draft_grade") else None
+    original_dim_state = _snapshot_dimension_state(message, criterion, dim_id)
+    _store_user_verdict(message, criterion, dim_id, target)
+    _save_grade_dispute(
+        message=message, criterion=criterion, dim_id=dim_id,
+        current_grade=g, target_grade=target, reason=reason or "",
+    )
+    log_confirmation(
+        source="user_initiated",
+        draft_index=(message.get("draft_grade_meta") or {}).get("draft_index", 0),
+        drift_type="user_dispute", dimension_id=dim_id,
+        dimension_text=dim_id, grader_verdict=g,
+        grader_confidence=conf, user_response_raw=f"dispute_to_{target}",
+        user_confirms_grader=False,
+    )
+
+    reason_clause = f" User reason: {reason}" if reason else ""
+    # Phrase the verdict so `_resolve_refiner_inputs` lands on the
+    # `says met`/`says not_met` branch -- it parses the lowercase substring
+    # to decide the user's target grade.
+    feedback_text = (
+        f"Dimension '{dim_id}' ({criterion}): grader said {g} but user "
+        f"disagrees and says {target}.{reason_clause}"
+    )
+    draft_excerpt = extract_primary_draft_text(message.get("content") or "") or ""
+
+    # Synchronous: the user is waiting on this exact suggestion. No defer.
+    pre_count = len(st.session_state.get("rubric_edit_suggestions") or [])
+    _schedule_feedback_rubric_refinement(
+        feedback_text=feedback_text,
+        drift_kind="user_dispute",
+        draft_grade=pre_grade,
+        draft_excerpt=draft_excerpt,
+        message_id=message_id,
+    )
+    suggestions_after = st.session_state.get("rubric_edit_suggestions") or []
+    new_suggestion = suggestions_after[-1] if len(suggestions_after) > pre_count else None
+    suggestion_verified = bool(
+        new_suggestion is not None and not new_suggestion.get("is_best_attempt")
+    )
+
+    # Optimistic flip ONLY if a verified suggestion landed. The Apply button
+    # keeps the flip; the Dismiss button reverts it via `dispute_flip_context`.
+    if suggestion_verified:
+        _flip_dimension_grade(message, criterion, dim_id, target)
+        new_suggestion["dispute_flip_context"] = {
+            "message_id": message_id,
+            "criterion_name": criterion,
+            "dimension_id": dim_id,
+            "original_dim_state": original_dim_state,
+        }
+
+    if suggestion_verified:
+        suffix = f"disputed: {g} → {target} — see suggested edit above"
+    elif new_suggestion is not None:
+        # Best-attempt suggestion landed but didn't verify; show it for
+        # review without flipping the dot.
+        suffix = f"disputed — review suggested edit above (grade not flipped)"
+    else:
+        suffix = f"disputed — no rubric change suggested (grade not flipped)"
+    st.session_state[state_key] = {
+        "resolved": True, "from": g, "to": target, "suffix": suffix,
+    }
+    st.session_state[toggle_key] = False
+    st.rerun()
+
+
 def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
     """Line graph of each criterion's score (% dimensions met) across drafts.
 
@@ -3112,6 +3498,7 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
         user always sees the detailed breakdown."""
         latest = graded[-1]
         dg = latest.get("draft_grade") or {}
+        latest_mid = latest.get("message_id") or ""
         with st.expander(f"Latest draft scorecard (draft {n_drafts})", expanded=False):
             for c in sorted(
                 dg.get("grades") or [],
@@ -3121,18 +3508,7 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
                 sc = c.get("score") or ""
                 st.markdown(f"**{html_lib.escape(name)}** (priority {c.get('criterion_priority', '?')}) — `{sc}`")
                 for d in c.get("dimension_grades") or []:
-                    g = (d.get("grade") or "").upper()
-                    conf = d.get("confidence", "high")
-                    mark = "✓" if g == "MET" else "✗"
-                    conf_badge = ""
-                    if conf == "low":
-                        conf_badge = " ⚠️ _low confidence_"
-                        note = d.get("ambiguity_note", "")
-                        if note:
-                            conf_badge += f" — {note}"
-                    elif conf == "medium":
-                        conf_badge = " 🔸 _medium confidence_"
-                    st.caption(f"{mark} `{d.get('dimension_id')}` — {d.get('evidence', '')}{conf_badge}")
+                    _render_dimension_dispute_row(latest, name, d, latest_mid)
 
     # One draft isn't enough for a line — fall back to a horizontal bar view.
     if n_drafts == 1:
@@ -3313,6 +3689,11 @@ def invalidate_stale_suggestions() -> int:
         # fallback disambiguator since the LLM sometimes rephrases it.
         if sug_dim in live_dim_ids:
             continue
+        # The rubric edit can no longer be applied; if this suggestion came
+        # from a sidebar dispute and we optimistically flipped a grade, undo
+        # that flip so the dot stops showing a grade we can't back up with a
+        # rubric change.
+        _revert_dispute_flip(s)
         s["status"] = "stale"
         s["stale_reason"] = (
             f"Dimension `{s.get('dimension_id')}` under **{s.get('criterion_name')}** "
@@ -3654,6 +4035,9 @@ def _render_single_edit_suggestion(s: dict[str, Any], i: int) -> None:
         if st.button("✅ Apply", key=f"rubric_sug_apply_{i}", type="primary"):
             ok = _apply_rubric_suggestion(s)
             if ok:
+                # Flip is now confirmed by the applied rubric edit; drop the
+                # revert context so nothing can roll it back later.
+                s.pop("dispute_flip_context", None)
                 s["status"] = "applied"
                 _append_rubric_edit_system_message(s, decision="applied")
                 try:
@@ -3666,12 +4050,16 @@ def _render_single_edit_suggestion(s: dict[str, Any], i: int) -> None:
                 # P0.1: terminal disposition for this proposal.
                 _log_proposal_disposition(s, "applied")
             else:
+                # Apply failed -- the rubric edit didn't take, so any
+                # optimistic dispute-flip on the dot should be reverted too.
+                _revert_dispute_flip(s)
                 # Mark the suggestion as failed so the UI can surface a retry/edit option.
                 s["status"] = "apply_failed"
                 _log_proposal_disposition(s, "apply_failed")
             st.rerun()
     with col_dismiss:
         if st.button("✗ Dismiss", key=f"rubric_sug_dismiss_{i}"):
+            _revert_dispute_flip(s)
             s["status"] = "dismissed"
             _append_rubric_edit_system_message(s, decision="dismissed")
             try:

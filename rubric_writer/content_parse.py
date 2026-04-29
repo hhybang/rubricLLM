@@ -542,9 +542,20 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
     thinking_content = ""
     started_main_content = False
 
-    # Show a simple thinking indicator while thinking (no streaming of thinking content)
+    # Show a simple thinking indicator while thinking (no streaming of thinking content).
+    # Use a small CSS spinner so the icon visibly rotates while waiting,
+    # matching Streamlit's native loading affordance.
     if thinking_placeholder:
-        thinking_placeholder.markdown("🧠 *Thinking...*")
+        thinking_placeholder.markdown(
+            """
+<div style="display:flex;align-items:center;gap:8px;color:#666;font-style:italic;">
+  <div style="width:14px;height:14px;border:2px solid #d0d0d0;border-top-color:#888;border-radius:50%;animation:thinking-spin 0.8s linear infinite;"></div>
+  <span>Thinking...</span>
+</div>
+<style>@keyframes thinking-spin{to{transform:rotate(360deg);}}</style>
+""",
+            unsafe_allow_html=True,
+        )
 
     # Handle streaming with extended thinking
     for event in stream:

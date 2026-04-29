@@ -9,6 +9,7 @@ from rubric_writer.persistence import (
     get_active_rubric,
     _build_conversation_text,
 )
+from rubric_writer.widget_keys import project_scoped_key
 
 
 def _validate_and_filter_rubric(rubric_data, *, context_label: str) -> tuple[int, int, int]:
@@ -148,6 +149,7 @@ def infer_rubric_only(messages):
             rubric_list = rubric_data.get("rubric", [])
             st.session_state.rubric = rubric_list
             st.session_state.editing_criteria = copy.deepcopy(rubric_list)
+            st.session_state.pop(project_scoped_key("rubric_version_selector"), None)
 
             return rubric_data
 
@@ -340,6 +342,7 @@ def infer_final_rubric(messages, rubric_json, classification_feedback_json, corr
             rubric_list = rubric_data.get("rubric", [])
             st.session_state.rubric = rubric_list
             st.session_state.editing_criteria = copy.deepcopy(rubric_list)
+            st.session_state.pop(project_scoped_key("rubric_version_selector"), None)
 
             return rubric_data
 

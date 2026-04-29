@@ -18,7 +18,7 @@ def render_survey_tab():
     # Task selection
     survey_task = st.radio(
         "Select which survey to complete:",
-        ["Task A (without rubric)", "Task B (with rubric, visible)", "Final Review"],
+        ["Task A (without rubric)", "Task B (with rubric)", "Final Review"],
         horizontal=True,
         key=project_scoped_key("survey_task_select")
     )
@@ -95,8 +95,8 @@ def render_survey_tab():
             st.rerun()
 
     # ============ TASK B SURVEY ============
-    elif survey_task == "Task B (with rubric, visible)":
-        st.subheader("Task B: With Rubric (Visible)")
+    elif survey_task == "Task B (with rubric)":
+        st.subheader("Task B: With Rubric")
         st.markdown("*Complete this after working on a task where you could see and edit the rubric.*")
 
         task_b = st.session_state.survey_responses["task_b"]
@@ -148,23 +148,12 @@ def render_survey_tab():
         )
 
         # Q5
-        st.markdown("**Q5: Did you look at the rubric? Was it useful?**")
+        st.markdown("**Q5: Was having the rubric in the interaction useful?**")
         task_b["q5"] = st.text_area(
             "Rubric usefulness",
             value=task_b.get("q5", ""),
-            placeholder="Describe whether and how you used the rubric...",
+            placeholder="Describe whether and how the rubric was useful...",
             key=project_scoped_key("task_b_q5"),
-            label_visibility="collapsed",
-            height=100
-        )
-
-        # Q6
-        st.markdown("**Q6: Did the rubric show you anything about the model's behavior you wouldn't have noticed otherwise?**")
-        task_b["q6"] = st.text_area(
-            "Rubric insights",
-            value=task_b.get("q6", ""),
-            placeholder="Any insights or surprises from seeing the rubric...",
-            key=project_scoped_key("task_b_q6"),
             label_visibility="collapsed",
             height=100
         )
@@ -188,7 +177,6 @@ def render_survey_tab():
                             "q3": task_b.get("q3", ""),
                             "q4": task_b.get("q4", ""),
                             "q5": task_b.get("q5", ""),
-                            "q6": task_b.get("q6", ""),
                             "iteration": _rb_ver_b,
                             "timestamp": task_b["timestamp"],
                         })
@@ -221,11 +209,9 @@ def render_survey_tab():
             for i, criterion in enumerate(_fr_criteria):
                 crit_name = criterion.get("name", f"Criterion {i+1}")
                 crit_desc = criterion.get("description", "No description")
-                dims = criterion.get("dimensions", [])
-                dim_text = ", ".join(d.get("label", "") for d in dims) if dims else "none"
 
-                with st.expander(f"**{crit_name}** — {crit_desc[:80]}{'...' if len(crit_desc) > 80 else ''}", expanded=True):
-                    st.caption(f"Dimensions: {dim_text}")
+                with st.expander(f"**{crit_name}**", expanded=True):
+                    st.caption(crit_desc)
 
                     rating = criteria_ratings.setdefault(crit_name, {})
                     accuracy_options = ["Accurate", "Partially right", "Inaccurate"]
@@ -245,36 +231,34 @@ def render_survey_tab():
                         label_visibility="collapsed",
                     )
 
-            st.markdown("---")
-            st.markdown("**Q2: Is there anything here you wouldn't have thought to mention yourself?**")
-            st.caption("Did the rubric capture preferences you have but might not have articulated if asked directly?")
+            st.markdown("**Q2: Looking at the full rubric — what got captured well, and what's missing?**")
+            st.caption("Call out any preferences the rubric correctly named (especially ones you wouldn't have thought to articulate yourself) AND any preferences you care about that the rubric doesn't cover.")
             final_review["q2"] = st.text_area(
-                "Unexpected insights",
+                "What got captured / what's missing",
                 value=final_review.get("q2", ""),
-                placeholder="Any preferences the system correctly inferred that surprised you...",
+                placeholder="What the rubric got right, what it missed...",
                 key=project_scoped_key("fr_q2"),
                 label_visibility="collapsed",
-                height=100,
+                height=120,
             )
 
-            st.markdown("---")
-            st.markdown("**Q3: Are any of your preferences missing from the rubric?**")
-            st.caption("Things you care about in your writing that the rubric does NOT cover at all.")
-            final_review["q3"] = st.text_area(
-                "Missing preferences",
-                value=final_review.get("q3", ""),
-                placeholder="List any preferences the rubric missed, or 'None' if fully covered...",
-                key=project_scoped_key("fr_q3"),
-                label_visibility="collapsed",
-                height=100,
-            )
-
-            st.markdown("---")
-            st.markdown("**Q4: Did the drafts improve over the course of your conversations?**")
-            _q4_options = ["1 - No improvement", "2", "3 - Some improvement", "4", "5 - Dramatically better"]
-            _q4_current = final_review.get("q4", "3 - Some improvement")
-            final_review["q4"] = st.radio(
+            st.markdown("**Q3: Did the drafts improve over the course of your conversations?**")
+            _q3_options = ["1 - No improvement", "2", "3 - Some improvement", "4", "5 - Dramatically better"]
+            _q3_current = final_review.get("q3", "3 - Some improvement")
+            final_review["q3"] = st.radio(
                 "Draft improvement",
+                _q3_options,
+                index=_q3_options.index(_q3_current) if _q3_current in _q3_options else 2,
+                key=project_scoped_key("fr_q3"),
+                horizontal=True,
+                label_visibility="collapsed",
+            )
+
+            st.markdown("**Q4: Did working with the rubric help you get better drafts?**")
+            _q4_options = ["1 - Not at all", "2", "3 - Somewhat", "4", "5 - Very much"]
+            _q4_current = final_review.get("q4", "3 - Somewhat")
+            final_review["q4"] = st.radio(
+                "Rubric editing helped",
                 _q4_options,
                 index=_q4_options.index(_q4_current) if _q4_current in _q4_options else 2,
                 key=project_scoped_key("fr_q4"),
@@ -282,26 +266,14 @@ def render_survey_tab():
                 label_visibility="collapsed",
             )
 
-            st.markdown("**Q5: Did editing the rubric help you get better drafts?**")
-            _q5_options = ["1 - Not at all", "2", "3 - Somewhat", "4", "5 - Very much"]
-            _q5_current = final_review.get("q5", "3 - Somewhat")
+            st.markdown("**Q5: Would you use a system like this again for future writing?**")
+            _q5_options = ["1 - Definitely not", "2", "3 - Maybe", "4", "5 - Definitely yes"]
+            _q5_current = final_review.get("q5", "3 - Maybe")
             final_review["q5"] = st.radio(
-                "Rubric editing helped",
+                "Would use again",
                 _q5_options,
                 index=_q5_options.index(_q5_current) if _q5_current in _q5_options else 2,
                 key=project_scoped_key("fr_q5"),
-                horizontal=True,
-                label_visibility="collapsed",
-            )
-
-            st.markdown("**Q6: Would you use a system like this again for future writing?**")
-            _q6_options = ["1 - Definitely not", "2", "3 - Maybe", "4", "5 - Definitely yes"]
-            _q6_current = final_review.get("q6", "3 - Maybe")
-            final_review["q6"] = st.radio(
-                "Would use again",
-                _q6_options,
-                index=_q6_options.index(_q6_current) if _q6_current in _q6_options else 2,
-                key=project_scoped_key("fr_q6"),
                 horizontal=True,
                 label_visibility="collapsed",
             )
@@ -322,7 +294,6 @@ def render_survey_tab():
                                 "q3": final_review.get("q3", ""),
                                 "q4": final_review.get("q4", ""),
                                 "q5": final_review.get("q5", ""),
-                                "q6": final_review.get("q6", ""),
                                 "rubric_version": final_review["rubric_version"],
                                 "timestamp": final_review["timestamp"],
                             })

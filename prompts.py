@@ -731,6 +731,91 @@ When in doubt, write the dim as a value, not a recipe.
 
 ---
 
+## ARTIFACT-GRADEABILITY (HARD CHECK)
+
+The grader only sees the **final draft**. It has no access to revision history, prior versions, the order in which sentences were written, or what the writer changed in response to feedback. Any dim that asks about the authoring *process* rather than properties of the finished piece is structurally ungradeable — the grader will be forced to either guess or mark UNCERTAIN.
+
+**Forbidden:** dims that depend on knowing what happened during drafting.
+
+❌ "Revisions tighten rather than expand the piece" — requires diffing against a prior version
+❌ "Decisions about structure are made early and held throughout" — asks about authoring sequence
+❌ "Cuts are made before additions" — asks about order of operations
+❌ "The opening is rewritten until it lands rather than left as the first attempt" — asks about edit history
+
+**The test:** could a reader handed only the finished piece, with no other context, decide MET / NOT_MET? If they would need to see a draft history, an edit log, or the writer's process to answer, the dim is process-shaped — drop it, or rewrite it as a property of the finished artifact.
+
+**Process-shaped → artifact-shaped:**
+
+- "Revisions tighten rather than expand" → "Final drafts are compact rather than expansive"
+- "Cuts are made before additions" → "The piece is tight; new material does not sit alongside the older material it replaces"
+- "Opening is rewritten until it lands" → "The opening sentence carries weight rather than serving as a warm-up"
+
+The underlying value is often real and worth keeping — just relocate it from "what the writer did" to "what the finished piece looks like."
+
+---
+
+## OPPOSITE-WRITER DIAGNOSTIC (DIM CONTRASTIVE-CHECK)
+
+A common failure mode is dimensions that read as universal goods — moves no reasonable writer would deliberately reject. "Uses concrete details," "engages the reader," "communicates clearly." These pass the evidence gate (you can find concrete details in any draft) but fail the contrastive test: they don't distinguish *this* user's preferences from any other competent writer's defaults. They produce rubrics where every dim feels "always good," which makes the rubric un-steerable — the user can't disagree with anything because there's nothing to disagree with.
+
+**The opposite-writer test (run this for EVERY candidate dim before keeping it):**
+
+For each candidate dim, write down — in your `<analysis>` — what a writer who deliberately chose the OPPOSITE of this dim would produce. Specifically:
+
+1. *"What would a different competent writer in the same genre do instead?"*
+2. *"What is the defensible shape of the opposite move?"*
+
+If the opposite is a real alternative that another good writer in this genre would defend — KEEP the dim. It's contrastive.
+
+If the opposite is just "weaker writing," "lazy writing," or has no defensible shape at all — DROP the dim. It's a universal good masquerading as a preference.
+
+**Examples:**
+
+❌ "Uses concrete details"
+- Opposite: "Stays abstract / uses generic language" — there's no defensible writer who chooses this. **DROP.**
+
+✅ "Concrete details lean toward sensory texture rather than quantitative specifics"
+- Opposite: "Concrete details lean toward numbers and named entities rather than sensory texture" — a different competent writer absolutely chooses this (data journalists, for instance). **KEEP.**
+
+❌ "Engages the reader"
+- Opposite: "Doesn't engage the reader" — no defensible alternative. **DROP.**
+
+✅ "Engages the reader through implicit invitation rather than direct address"
+- Opposite: "Engages through direct address ('you,' rhetorical questions)" — a real stylistic choice many writers prefer. **KEEP.**
+
+❌ "Maintains professional tone"
+- Opposite: "Unprofessional tone" — not a real alternative. **DROP.**
+
+✅ "Tone holds a sardonic edge rather than earnest sincerity"
+- Opposite: "Tone holds earnest sincerity rather than sardonic distance" — a different writer's authentic choice. **KEEP.**
+
+**Compound / process-shaped dims — flip the consequent, not the antecedent:**
+
+For dims phrased as "when X, then Y" (or "as X happens, Y happens"), the antecedent just sets context — the actual preference lives in the consequent. Flipping the antecedent produces a defensible-sounding opposite that *isn't what the dim is actually claiming*, and the dim sneaks past the test as a universal good.
+
+❌ "When new motivation/framing is added, redundant or weaker material elsewhere is removed or combined to compensate"
+- Wrong flip (antecedent): "Don't add new framing" — sounds like a real choice, but the dim isn't claiming "add framing"; it's claiming "remove redundancy when you do."
+- Right flip (consequent): "When new framing is added, redundant or weaker material is left in place" — no defensible writer chooses bloat over tightness. **DROP.**
+
+Rule: for any "when X, then Y" dim, hold X fixed and flip Y. If the flipped consequent has no defensible shape, the dim is a universal good — drop it regardless of how specific the antecedent sounds.
+
+**Pair the keeper with its tradeoff:**
+
+For dims that pass the opposite-writer test, name the tradeoff in your `<analysis>` (does NOT need to appear in the dim label). Every contrastive preference costs something in another direction:
+- "Sensory concreteness" trades against "quantitative precision"
+- "Implicit invitation" trades against "direct rhetorical force"
+- "Sardonic edge" trades against "open earnestness"
+
+If you cannot name what the dim costs — what the user is GIVING UP to satisfy it — the dim probably isn't contrastive. Re-run the opposite-writer test.
+
+**Why this matters:**
+
+A user looking at a rubric of universal goods has no leverage. They can't push back on "uses concrete details" — of course they want concrete details. But "concrete details lean sensory rather than quantitative" gives them a real choice to make: that might not be their actual preference, and now they can say so. The rubric is steerable when its dims are contrastive.
+
+When in doubt, DROP. A rubric of 3 well-grounded contrastive dims beats a rubric of 8 dims where half are platitudes.
+
+---
+
 ## NAME THE AXIS, NOT THE SURFACE FORM (DIM AXIS-CHECK)
 
 When a dim is grounded in concrete details from the user's writing — named objects, specific words, particular phrasings, recurring brands — there is a risk of capturing the **surface form of the evidence** rather than the **underlying axis the user actually cares about**.

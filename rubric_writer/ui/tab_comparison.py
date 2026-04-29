@@ -111,12 +111,6 @@ def _randomize_label_to_arm() -> dict[str, str]:
 
 def render_comparison_tab() -> None:
     st.header("⚖️ Evaluate: Comparison")
-    st.markdown(
-        "Blind three-way comparison. We generate three drafts of your task: "
-        "one with **no rubric**, one with your **first inferred rubric**, one "
-        "with your **current refined rubric**. The labels A/B/C are randomized "
-        "so you don't know which is which. Pick the best and worst."
-    )
 
     hist = load_rubric_history()
     if not hist:
@@ -130,19 +124,6 @@ def render_comparison_tab() -> None:
     late_rubric = hist[-1]
     early_version = early_rubric.get("version")
     late_version = late_rubric.get("version")
-
-    # If early and late are the same version, we still do three-way because the
-    # no-rubric arm gives us information. We just note it in the caption.
-    if early_version == late_version:
-        st.caption(
-            f"Comparing **no rubric** vs **current rubric (v{late_version})**. "
-            "The inferred and refined rubrics are currently the same version."
-        )
-    else:
-        st.caption(
-            f"Comparing **no rubric** vs **first inferred (v{early_version})** "
-            f"vs **current refined (v{late_version})**. Order is randomized each time."
-        )
 
     # --- State init ---
     if _state_key("label_to_arm") not in st.session_state:
@@ -206,9 +187,8 @@ def render_comparison_tab() -> None:
 
     st.divider()
 
-    # --- Done state: show reveal + reset ---
+    # --- Done state: show acknowledgment + reset (results stay blind) ---
     if st.session_state[_state_key("done")]:
-        label_to_arm = st.session_state[_state_key("label_to_arm")]
         best = st.session_state[_state_key("best")]
         worst = st.session_state[_state_key("worst")]
         if best is None and worst is None:
@@ -216,13 +196,10 @@ def render_comparison_tab() -> None:
         else:
             parts = []
             if best:
-                parts.append(f"best = **Draft {best}** ({_ARM_HUMAN[label_to_arm[best]]})")
+                parts.append(f"best = **Draft {best}**")
             if worst:
-                parts.append(f"worst = **Draft {worst}** ({_ARM_HUMAN[label_to_arm[worst]]})")
+                parts.append(f"worst = **Draft {worst}**")
             st.success("Recorded: " + ", ".join(parts) + ".")
-        with st.expander("Reveal the arm for each draft", expanded=False):
-            for label in ("A", "B", "C"):
-                st.markdown(f"- **Draft {label}**: {_ARM_HUMAN[label_to_arm[label]]}")
         if st.button("Try another task", key=_state_key("reset_after_done")):
             _reset_comparison()
             st.rerun()

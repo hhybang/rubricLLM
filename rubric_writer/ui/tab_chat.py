@@ -4090,6 +4090,15 @@ def render_chat_sidebar():
     if rubric_history:
         version_options = [f"v{r.get('version', 1)}" for r in rubric_history]
         _rvk = project_scoped_key("rubric_version_selector")
+        # Self-healing guard: if active_rubric_idx changed since last render
+        # (e.g. background inference, drift apply, or any path that bumped the
+        # active version), drop the persisted selector value so the selectbox
+        # re-initializes from index=active_idx instead of the stale label.
+        _last_seen_idx_key = project_scoped_key("rubric_version_selector_last_idx")
+        _last_seen_idx = st.session_state.get(_last_seen_idx_key)
+        if _last_seen_idx != active_idx:
+            st.session_state.pop(_rvk, None)
+            st.session_state[_last_seen_idx_key] = active_idx
         if _rvk in st.session_state:
             _rv_sel = st.session_state[_rvk]
             _expected = version_options[active_idx] if active_idx is not None and 0 <= active_idx < len(version_options) else None
