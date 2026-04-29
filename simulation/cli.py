@@ -974,9 +974,8 @@ def run_one_user(persona: Persona, config: SimConfig, store: LocalStore) -> dict
             f"[{persona.name}] Final Review: {n_accurate} accurate, "
             f"{n_partial} partially right, {n_inaccurate} inaccurate "
             f"(out of {len(ratings)} criteria) | "
-            f"drafts_improved={final_result.get('q4')}/5, "
-            f"rubric_editing_helped={final_result.get('q5')}/5, "
-            f"would_use_again={final_result.get('q6')}/5"
+            f"rubric_editing_helped={final_result.get('q3')}/5, "
+            f"would_use_again={final_result.get('q4')}/5"
         )
 
     # ── Final summary ────────────────────────────────────────────────────

@@ -242,11 +242,11 @@ def render_survey_tab():
                 height=120,
             )
 
-            st.markdown("**Q3: Did the drafts improve over the course of your conversations?**")
-            _q3_options = ["1 - No improvement", "2", "3 - Some improvement", "4", "5 - Dramatically better"]
-            _q3_current = final_review.get("q3", "3 - Some improvement")
+            st.markdown("**Q3: Did working with the rubric help you get better drafts?**")
+            _q3_options = ["1 - Not at all", "2", "3 - Somewhat", "4", "5 - Very much"]
+            _q3_current = final_review.get("q3", "3 - Somewhat")
             final_review["q3"] = st.radio(
-                "Draft improvement",
+                "Rubric editing helped",
                 _q3_options,
                 index=_q3_options.index(_q3_current) if _q3_current in _q3_options else 2,
                 key=project_scoped_key("fr_q3"),
@@ -254,26 +254,14 @@ def render_survey_tab():
                 label_visibility="collapsed",
             )
 
-            st.markdown("**Q4: Did working with the rubric help you get better drafts?**")
-            _q4_options = ["1 - Not at all", "2", "3 - Somewhat", "4", "5 - Very much"]
-            _q4_current = final_review.get("q4", "3 - Somewhat")
+            st.markdown("**Q4: Would you use a system like this again for future writing?**")
+            _q4_options = ["1 - Definitely not", "2", "3 - Maybe", "4", "5 - Definitely yes"]
+            _q4_current = final_review.get("q4", "3 - Maybe")
             final_review["q4"] = st.radio(
-                "Rubric editing helped",
+                "Would use again",
                 _q4_options,
                 index=_q4_options.index(_q4_current) if _q4_current in _q4_options else 2,
                 key=project_scoped_key("fr_q4"),
-                horizontal=True,
-                label_visibility="collapsed",
-            )
-
-            st.markdown("**Q5: Would you use a system like this again for future writing?**")
-            _q5_options = ["1 - Definitely not", "2", "3 - Maybe", "4", "5 - Definitely yes"]
-            _q5_current = final_review.get("q5", "3 - Maybe")
-            final_review["q5"] = st.radio(
-                "Would use again",
-                _q5_options,
-                index=_q5_options.index(_q5_current) if _q5_current in _q5_options else 2,
-                key=project_scoped_key("fr_q5"),
                 horizontal=True,
                 label_visibility="collapsed",
             )
@@ -293,7 +281,6 @@ def render_survey_tab():
                                 "q2": final_review.get("q2", ""),
                                 "q3": final_review.get("q3", ""),
                                 "q4": final_review.get("q4", ""),
-                                "q5": final_review.get("q5", ""),
                                 "rubric_version": final_review["rubric_version"],
                                 "timestamp": final_review["timestamp"],
                             })
@@ -354,8 +341,6 @@ def render_survey_tab():
                                 "q2": _fr.get("q2", ""),
                                 "q3": _fr.get("q3", ""),
                                 "q4": _fr.get("q4", ""),
-                                "q5": _fr.get("q5", ""),
-                                "q6": _fr.get("q6", ""),
                                 "rubric_version": _fr.get("rubric_version", _rb_ver_all),
                                 "timestamp": _fr.get("timestamp", datetime.now().isoformat()),
                             })
