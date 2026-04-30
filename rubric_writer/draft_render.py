@@ -5,7 +5,10 @@ from rubric_writer.draft_text import (
     split_draft_into_sentences,
     replace_sentences_in_draft,
 )
-from rubric_writer.draft_rubric_llm import regenerate_selected_text
+from rubric_writer.draft_rubric_llm import (
+    regenerate_selected_text,
+    generate_edit_feedback_reply,
+)
 from rubric_writer.persistence import get_active_rubric, _auto_save_conversation
 from rubric_writer import draft_grading as _draft_grading
 
@@ -188,11 +191,8 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                     draft_idx += 1
                     continue
 
-                # In edit mode: show a "Done editing" button at the top so
-                # the user can collapse back to the prose view. Edits persist
-                # regardless of which mode the draft is in.
                 if st.button(
-                    "✅ Done editing",
+                    "↩️ Back to draft",
                     key=f"exit_edit_{edit_key}",
                     help="Collapse back to the conversation-style view. Your edits are saved.",
                 ):
@@ -326,7 +326,23 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                         if has_changes:
                             import uuid
                             new_message_id = f"assistant_{uuid.uuid4().hex[:8]}"
-                            new_message_content = f"The user has made edits to the draft. Here's the edited draft:\n\n<draft>{edited_draft}</draft>"
+                            _rb_g, _, _ = get_active_rubric()
+                            _rb_list = (_rb_g or {}).get("rubric") or []
+                            _prior_scorecard = None
+                            for _m in st.session_state.get("messages") or []:
+                                if str(_m.get("message_id") or "") == str(message_id):
+                                    _prior_scorecard = _m.get("draft_grade")
+                                    break
+                            with st.spinner("Reviewing your edits..."):
+                                _feedback_prose = generate_edit_feedback_reply(
+                                    previous_draft=original_draft,
+                                    edited_draft=edited_draft,
+                                    rubric_list=_rb_list,
+                                    prior_scorecard=_prior_scorecard,
+                                )
+                            if not _feedback_prose:
+                                _feedback_prose = "Got your edits — saving them as a new draft."
+                            new_message_content = f"{_feedback_prose}\n\n<draft>\n{edited_draft}\n</draft>"
                             st.session_state.messages.append({
                                 "role": "assistant",
                                 "content": new_message_content,
@@ -335,7 +351,6 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                             })
                             st.session_state[draft_key][edit_key] = original_draft
                             st.session_state[reset_counter_key] += 1
-                            _rb_g, _, _ = get_active_rubric()
                             if _rb_g and _rb_g.get("rubric"):
                                 _draft_grading.schedule_background_grade(
                                     supabase=st.session_state.get("supabase"),
@@ -350,7 +365,7 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
                             st.success("Draft saved as new message!")
                             st.rerun()
                 with col3:
-                    if st.button("↩️ Reset", key=f"reset_{edit_key}", disabled=not has_changes):
+                    if st.button("↩️ Reset to Original", key=f"reset_{edit_key}", disabled=not has_changes):
                         st.session_state[draft_key][edit_key] = original_draft
                         st.session_state[reset_counter_key] += 1
                         st.rerun()

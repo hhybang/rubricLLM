@@ -2159,12 +2159,12 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
             )
             # One-time legend for the three action buttons below.
             st.markdown(
-                "<div style='font-size:11px;color:#666;line-height:1.5;"
-                "margin:4px 0 8px 0;padding:6px 10px;background:#f6f6f6;"
+                "<div style='font-size:11px;color:inherit;line-height:1.5;"
+                "margin:4px 0 8px 0;padding:6px 10px;background:rgba(127,127,127,0.10);"
                 "border-left:3px solid #bbb;border-radius:3px;'>"
-                "<b>🔀 Subjective wording</b> — rubric language is interpretation-dependent; let's operationalize it.<br>"
-                "<b>✅ No rubric change</b> — the rubric is fine; tell us why and we'll skip the edit.<br>"
-                "<b>🗑 Remove</b> — delete this dimension from the rubric."
+                "<b>🔀 Rubric wording is too vague — tighten it</b> — rubric language is interpretation-dependent; let's operationalize it.<br>"
+                "<b>✅ Rubric is fine — flips reflect real draft variation</b> — tell us why and we'll skip the edit.<br>"
+                "<b>🗑 Remove this dimension from the rubric</b> — delete this dimension."
                 "</div>",
                 unsafe_allow_html=True,
             )
@@ -2186,6 +2186,9 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
 
                 st.markdown(f"_{html_lib.escape(crit)}_: **{html_lib.escape(dim_label)}**")
                 st.caption(f"Grade history: {hist_str}")
+                _osc_grade, _osc_evidence = _lookup_dim_evidence(message, did)
+                if _osc_evidence:
+                    st.caption(f"Reasoning (current draft): _{html_lib.escape(_osc_evidence)}_")
 
                 # Oscillation buttons.
                 # Three buttons; middle one stages a sub-radio so the user
@@ -2257,7 +2260,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     # Three top-level buttons.
                     cols = st.columns(3)
                     with cols[0]:
-                        if st.button("🔀 Subjective wording",
+                        if st.button("🔀 Rubric wording is too vague — tighten it",
                                      key=f"{btn_base}_wording_subjective",
                                      use_container_width=True):
                             _osc_finalize_action(
@@ -2266,13 +2269,13 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                             )
                             st.rerun()
                     with cols[1]:
-                        if st.button("✅ No rubric change",
+                        if st.button("✅ Rubric is fine — flips reflect real draft variation",
                                      key=f"{btn_base}_no_change",
                                      use_container_width=True):
                             st.session_state[pending_noedit_key] = True
                             st.rerun()
                     with cols[2]:
-                        if st.button("🗑 Remove",
+                        if st.button("🗑 Remove this dimension from the rubric",
                                      key=f"{btn_base}_remove",
                                      use_container_width=True):
                             _osc_finalize_action(
@@ -2350,6 +2353,9 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     continue
 
                 st.markdown(f"_{html_lib.escape(crit)}_: **{html_lib.escape(dim_label)}**")
+                _pf_grade, _pf_evidence = _lookup_dim_evidence(message, did)
+                if _pf_evidence:
+                    st.caption(f"Reasoning (current draft): _{html_lib.escape(_pf_evidence)}_")
 
                 col1, col2, col3 = st.columns(3)
                 btn_base = f"pf_{safe_msg_id}_{j}"
@@ -2452,6 +2458,7 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     grade = (d.get("grade") or "").upper()
                     crit_dims.setdefault(cname, []).append({
                         "label": dim_label, "grade": grade,
+                        "evidence": d.get("evidence") or "",
                     })
 
             if ti:
@@ -2462,6 +2469,8 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     for d in crit_dims.get(cname, []):
                         icon = "✅" if d["grade"] == "MET" else "❌"
                         st.caption(f"  {icon} {html_lib.escape(d['label'])}")
+                        if d.get("evidence"):
+                            st.caption(f"  &nbsp;&nbsp;&nbsp;&nbsp;_{html_lib.escape(d['evidence'])}_", unsafe_allow_html=True)
             if td:
                 st.markdown("**Slipped**")
                 for x in td:
@@ -2470,6 +2479,8 @@ def render_drift_panel(message: dict[str, Any], safe_msg_id: str) -> None:
                     for d in crit_dims.get(cname, []):
                         icon = "✅" if d["grade"] == "MET" else "❌"
                         st.caption(f"  {icon} {html_lib.escape(d['label'])}")
+                        if d.get("evidence"):
+                            st.caption(f"  &nbsp;&nbsp;&nbsp;&nbsp;_{html_lib.escape(d['evidence'])}_", unsafe_allow_html=True)
             # Pairwise priority buttons
             if ti and td:
                 for j, (imp, drp) in enumerate([(i, d) for i in ti for d in td]):
@@ -3027,6 +3038,22 @@ def _lookup_dimension_description(dim_id: str, criterion_name: str) -> str:
     except Exception:
         pass
     return ""
+
+
+def _lookup_dim_evidence(message: dict, dim_id: str) -> tuple[str, str]:
+    """Find (grade, evidence) for a dimension in the current draft's scorecard.
+
+    Returns ("", "") if not found. Used to surface scorecard reasoning in
+    drift panels so the user doesn't have to cross-reference the scorecard."""
+    target = (dim_id or "").strip().lower()
+    if not target:
+        return "", ""
+    dg = message.get("draft_grade") or {}
+    for c in dg.get("grades") or []:
+        for d in c.get("dimension_grades") or []:
+            if (d.get("dimension_id") or "").strip().lower() == target:
+                return (d.get("grade") or "").upper(), d.get("evidence") or ""
+    return "", ""
 
 
 def _lookup_dim_field_and_text(
@@ -3836,21 +3863,21 @@ def _compute_word_diff_html(before: str, after: str) -> tuple[str, str]:
             after_parts.extend(html_lib.escape(t) for t in after_tokens[j1:j2])
         elif tag == "delete":
             before_parts.extend(
-                f'<span style="background:#ffe0e0;text-decoration:line-through;color:#a02020;">{html_lib.escape(t)}</span>'
+                f'<span style="background:rgba(220,60,60,0.22);text-decoration:line-through;color:#d04545;">{html_lib.escape(t)}</span>'
                 for t in before_tokens[i1:i2]
             )
         elif tag == "insert":
             after_parts.extend(
-                f'<span style="background:#e0ffe0;color:#1e7a1e;font-weight:600;">{html_lib.escape(t)}</span>'
+                f'<span style="background:rgba(60,180,90,0.22);color:#3a9a4f;font-weight:600;">{html_lib.escape(t)}</span>'
                 for t in after_tokens[j1:j2]
             )
         elif tag == "replace":
             before_parts.extend(
-                f'<span style="background:#ffe0e0;text-decoration:line-through;color:#a02020;">{html_lib.escape(t)}</span>'
+                f'<span style="background:rgba(220,60,60,0.22);text-decoration:line-through;color:#d04545;">{html_lib.escape(t)}</span>'
                 for t in before_tokens[i1:i2]
             )
             after_parts.extend(
-                f'<span style="background:#e0ffe0;color:#1e7a1e;font-weight:600;">{html_lib.escape(t)}</span>'
+                f'<span style="background:rgba(60,180,90,0.22);color:#3a9a4f;font-weight:600;">{html_lib.escape(t)}</span>'
                 for t in after_tokens[j1:j2]
             )
     return " ".join(before_parts), " ".join(after_parts)
@@ -3984,13 +4011,15 @@ def _render_single_edit_suggestion(s: dict[str, Any], i: int) -> None:
         before_html, after_html = _compute_word_diff_html(before, after)
         st.caption("Before")
         st.markdown(
-            f'<div style="padding:6px 10px;border-left:3px solid #e0a0a0;background:#fafafa;'
+            f'<div style="padding:6px 10px;border-left:3px solid #e0a0a0;'
+            f'background:rgba(127,127,127,0.10);color:inherit;'
             f'font-size:13px;">{before_html}</div>',
             unsafe_allow_html=True,
         )
         st.caption("After")
         st.markdown(
-            f'<div style="padding:6px 10px;border-left:3px solid #80c080;background:#fafafa;'
+            f'<div style="padding:6px 10px;border-left:3px solid #80c080;'
+            f'background:rgba(127,127,127,0.10);color:inherit;'
             f'font-size:13px;">{after_html}</div>',
             unsafe_allow_html=True,
         )

@@ -1549,6 +1549,48 @@ Edited draft (after user edits):
 
 Analyze the user's edits and suggest any rubric updates that would better capture their demonstrated preferences."""
 
+
+DRAFT_EDIT_FEEDBACK_SYSTEM_PROMPT = """You are a writing collaborator. The user just directly edited their draft. Your job is to (1) acknowledge what changed in 1-2 sentences and (2) ask 1-2 short, grounded questions about WHY they made those changes — so the conversation context records their intent for future drafts.
+
+You will be given:
+- The previous draft (before this edit)
+- The edited draft (after this edit)
+- The active rubric criteria
+- The most recent grader scorecard for the previous draft (if any)
+
+Guidelines for your response:
+- Keep the whole response under ~80 words.
+- First, briefly note the most salient change(s) you observed (e.g., "You tightened the intro and dropped the third bullet.").
+- Then ask 1-2 short questions that are GROUNDED in what changed. Prefer questions that connect changes to specific rubric dimensions when relevant. Examples:
+  * "Was the bullet drop because the supporting detail felt off-rubric for the conciseness dimension, or for another reason?"
+  * "Did you rewrite the closing because the previous tone felt too informal for this audience?"
+- Do NOT propose further edits. Do NOT re-grade. Do NOT echo the entire draft back.
+- Do NOT ask generic questions like "What do you think?" or "Is this better?" — every question must reference a SPECIFIC change you observed.
+- If the diff is trivial (e.g., a typo fix), one sentence acknowledging the change with no question is fine.
+
+Output format:
+Return ONLY plain prose (no JSON, no markdown headers, no code fences). The prose will be shown directly to the user as your conversational reply."""
+
+
+def DRAFT_edit_feedback_prompt(previous_draft: str, edited_draft: str, rubric_list, prior_scorecard=None):
+    """Generate user prompt for the 'feedback on user edit' conversational reply."""
+    rubric_text = json.dumps(rubric_list or [], ensure_ascii=False, indent=2)
+    scorecard_text = json.dumps(prior_scorecard, ensure_ascii=False, indent=2) if prior_scorecard else "(no prior scorecard)"
+    return f"""Previous draft:
+{previous_draft}
+
+Edited draft:
+{edited_draft}
+
+Active rubric criteria:
+{rubric_text}
+
+Most recent scorecard for the previous draft:
+{scorecard_text}
+
+Acknowledge the user's edit and ask 1-2 grounded questions about why they made these changes. Plain prose only."""
+
+
 DRAFT_REGENERATE_SYSTEM_PROMPT = """You are a writing assistant tasked with revising a draft to better align with an updated rubric.
 
 The user has made changes to their rubric criteria, and you need to revise the existing draft to fulfill those changes.

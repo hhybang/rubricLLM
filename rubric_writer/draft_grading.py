@@ -629,8 +629,23 @@ def compute_drift_bundle(
             bundle["low_confidence_dims"] = low_conf
         return bundle
 
-    # Detect all signals
-    oscillations = detect_oscillation(dim_grade_history or {})
+    # Detect all signals.
+    # dim_grade_history holds PRIOR drafts only; for oscillation we need to
+    # include the CURRENT grade so that (a) the panel doesn't fire when the
+    # current draft already broke the flip pattern, and (b) the displayed
+    # "Grade history" ends at the user's current state instead of one draft
+    # behind. Without this, an oscillation panel can render with a history
+    # ending in NOT_MET while the scorecard for the same dim shows MET.
+    _osc_history: dict[str, list[str]] = {
+        did: list(grades) for did, grades in (dim_grade_history or {}).items()
+    }
+    for c in current.get("grades") or []:
+        for d in c.get("dimension_grades") or []:
+            _did = (d.get("dimension_id") or "").strip()
+            _g = (d.get("grade") or "").strip()
+            if _did and _g:
+                _osc_history.setdefault(_did, []).append(_g)
+    oscillations = detect_oscillation(_osc_history)
     persistent = detect_persistent_failure(dim_grade_history or {}, current)
     tradeoff_improvements, tradeoff_drops = detect_tradeoff(current, previous)
 

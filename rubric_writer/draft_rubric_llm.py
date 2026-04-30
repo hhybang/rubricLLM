@@ -158,6 +158,33 @@ def regenerate_selected_text(full_draft: str, selected_sentences: list, instruct
         return {"error": str(e)}
 
 
+def generate_edit_feedback_reply(previous_draft: str, edited_draft: str, rubric_list=None, prior_scorecard=None) -> str:
+    """Produce a short conversational reply acknowledging a direct user edit and
+    asking 1-2 grounded questions. Returns plain prose, or "" on failure."""
+    from prompts import DRAFT_EDIT_FEEDBACK_SYSTEM_PROMPT, DRAFT_edit_feedback_prompt
+
+    try:
+        user_prompt = DRAFT_edit_feedback_prompt(
+            previous_draft or "",
+            edited_draft or "",
+            _rubric_list_for_json(rubric_list or []),
+            prior_scorecard,
+        )
+        response = _api_call_with_retry(
+            max_tokens=600,
+            system=DRAFT_EDIT_FEEDBACK_SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": user_prompt}],
+            model=MODEL_PRIMARY,
+        )
+        text = ""
+        for block in response.content:
+            if block.type == "text":
+                text = block.text
+        return (text or "").strip()
+    except Exception:
+        return ""
+
+
 def get_last_draft_from_messages():
     """
     Find the last message with a <draft></draft> block and return the draft content.
