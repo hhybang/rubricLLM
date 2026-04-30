@@ -4,7 +4,6 @@ from rubric_writer.config import MODEL_PRIMARY, client
 from rubric_writer.api_client import _api_call_with_retry
 from rubric_writer.diff_html import _word_level_diff
 from rubric_writer.rubric_edit_log import classify_rubric_edits
-from rubric_writer.draft_rubric_llm import regenerate_draft_from_rubric_changes, get_last_draft_from_messages
 from rubric_writer.persistence import (
     _auto_save_conversation,
     get_active_rubric,

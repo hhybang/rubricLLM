@@ -24,8 +24,6 @@ from auth_supabase import (
 from prompts import (
     RUBRIC_COMPARE_DRAFTS_PROMPT,
     CHAT_build_system_prompt,
-    DRAFT_REVISE_AFTER_RUBRIC_CHANGE_SYSTEM_PROMPT,
-    DRAFT_revise_after_rubric_change_prompt,
     RUBRIC_compare_to_coldstart_prompt,
     GRADING_generate_draft_from_rubric_prompt,
     GRADING_judge_per_dimension_prompt,
