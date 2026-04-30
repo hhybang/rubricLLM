@@ -1,8 +1,7 @@
 """Tab UI — extracted from git HEAD app.py (monolith)."""
 from rubric_writer.ui._deps import *
-from rubric_writer.persistence import _auto_save_conversation, _rubric_to_json_serializable
+from rubric_writer.persistence import _auto_save_conversation
 from rubric_writer.rubric_display import _build_rubric_version_changelog
-from rubric_writer.session_reset import reset_evaluate_tab_workflow_state
 from rubric_writer.widget_keys import project_scoped_key
 from rubric_writer import draft_grading as _draft_grading
 from rubric_writer import draft_grading_ui as _draft_grading_ui
@@ -103,7 +102,6 @@ def render_chat_panel():
     if _user_changed:
         if selected_file is None and st.session_state.selected_conversation is not None:
             # User switched to "New Conversation"
-            # print(f"[SELECTOR] User switched to New Conversation")
             st.session_state.messages = []
             st.session_state.rubric = None
             st.session_state.current_analysis = ""
@@ -111,46 +109,20 @@ def render_chat_panel():
             st.session_state.comparison_result = None
             st.session_state.comparison_rubric_version = None
             _draft_grading_ui.clear_rubric_edit_session_state()
-            # probe_draft_counts preserved per-conversation (not reset on switch)
-            st.session_state.probe_pending = None
             st.session_state.ranking_checkpoint_pending = None
             st.session_state.ranking_checkpoint_auto_triggered = False
-            st.session_state.infer_decision_points = None
-            st.session_state.infer_dp_dimension_confirmed = False
-            st.session_state.infer_dp_user_mappings = {}
-            st.session_state.dp_refinement_result = None
-            st.session_state.chat_criteria_llm_classification = None
-            st.session_state.chat_criteria_user_classifications = {}
-            st.session_state.chat_criteria_review_active = False
-            st.session_state.chat_criteria_review_confirmed = False
-            st.session_state.chat_classification_feedback = {}
-            st.session_state.chat_criteria_hallucination_reasons = {}
-            if "chat_criteria_importance_ranks" in st.session_state:
-                del st.session_state.chat_criteria_importance_ranks
             st.session_state.alignment_check_done = False
             st.session_state.alignment_check_skipped = False
             st.rerun()
         elif selected_file and selected_file != st.session_state.selected_conversation:
             # User switched to a different conversation — load it
-            # print(f"[SELECTOR] User switched to conversation {selected_file}")
             conv_data = load_conversation_data(selected_file)
-            # print(f"[SELECTOR] Loaded conv_data: {bool(conv_data)}, msgs={len(conv_data.get('messages', [])) if conv_data else 0}")
             if conv_data:
                 st.session_state.messages = conv_data.get("messages", [])
                 st.session_state.rubric = conv_data.get("rubric", None)
                 st.session_state.current_analysis = conv_data.get("analysis", "")
                 st.session_state.selected_conversation = selected_file
                 _draft_grading_ui.clear_rubric_edit_session_state()
-                st.session_state.infer_decision_points = None
-                st.session_state.infer_dp_dimension_confirmed = False
-                st.session_state.infer_dp_user_mappings = {}
-                st.session_state.dp_refinement_result = None
-                st.session_state.chat_criteria_llm_classification = None
-                st.session_state.chat_criteria_user_classifications = {}
-                st.session_state.chat_criteria_review_active = False
-                st.session_state.chat_criteria_review_confirmed = False
-                st.session_state.chat_classification_feedback = {}
-                st.session_state.chat_criteria_hallucination_reasons = {}
                 st.rerun()
 
     st.divider()
@@ -163,219 +135,12 @@ def render_chat_panel():
     ) > 0:
         _draft_grading.run_draft_grade_poll_fragment()
 
-    # --- DP inline rendering setup --- [DISABLED: DP extraction + confirmation removed for now]
-    import html as _dp_html_lib
-    _dp_result = st.session_state.get("infer_decision_points")
-    _dp_has_review = any(m.get('is_dp_review') for m in st.session_state.messages)
-    _dp_confirmed = st.session_state.get("infer_dp_dimension_confirmed", False)
-    # Gate DP display on criteria classification being confirmed (or not applicable)
-    _cc_pending = st.session_state.chat_criteria_review_active and not st.session_state.chat_criteria_review_confirmed
-    # _dp_active = _dp_has_review and not _cc_pending
-    _dp_active = False  # [DISABLED] DP extraction + confirmation removed for now
-    _dp_list_all = []
-    _dp_by_user_msg = {}  # {user_message_num: [dp, ...]}
-    _dp_by_asst_msg = {}  # {assistant_message_num: [dp, ...]}
-    _dp_crit_names = []
-
-    if _dp_active and _dp_result:
-        _dp_parsed = _dp_result.get("parsed_data", {})
-        _dp_list_all = _dp_parsed.get("decision_points", [])
-        # Re-number DPs so IDs follow chat display order (sorted by message position)
-        _dp_list_all = sorted(_dp_list_all, key=lambda d: (d.get("user_message_num", 0), d.get("id", 0)))
-        for _i, _dp in enumerate(_dp_list_all, start=1):
-            _dp["id"] = _i
-        # Build index: which DPs attach to which message number
-        for _dp in _dp_list_all:
-            _u_num = _dp.get("user_message_num")
-            if _u_num:
-                _dp_by_user_msg.setdefault(_u_num, []).append(_dp)
-            _a_num = _dp.get("assistant_message_num")
-            if _a_num:
-                _dp_by_asst_msg.setdefault(_a_num, []).append(_dp)
-        # Build criteria list from active rubric
-        _dp_rb, _, _ = get_active_rubric()
-        if _dp_rb:
-            _dp_crit_names = [c.get("name", "") for c in _dp_rb.get("rubric", []) if c.get("name")]
-
-    _dp_highlighted_ids = set()  # Track which DP IDs actually had a quote matched in the conversation
-
-    def _highlight_dp_quotes(text, dp_list, quote_key, color):
-        """Highlight DP quotes in message text. Returns modified text with HTML highlights and visible DP badge."""
-        _dp_badge_tpl = ('<sup style="background:#1976D2;color:white;padding:0 4px;border-radius:6px;'
-                         'font-size:0.7em;font-weight:bold;margin-right:2px;">DP#{dp_id}</sup>')
-        for dp in dp_list:
-            quote = (dp.get(quote_key, '') or '').strip()
-            if not quote or len(quote) < 5:
-                continue
-            dp_id = dp.get('id', 0)
-            _badge = _dp_badge_tpl.replace('{dp_id}', str(dp_id))
-            # Try exact match first, then case-insensitive
-            if quote in text:
-                highlight = (f'<span style="background:{color};padding:1px 3px;border-radius:3px;">'
-                             f'{_badge}{_dp_html_lib.escape(quote)}</span>')
-                text = text.replace(quote, highlight, 1)
-                _dp_highlighted_ids.add(dp_id)
-            elif quote.lower() in text.lower():
-                # Case-insensitive: find the position and replace preserving original case
-                idx = text.lower().find(quote.lower())
-                original = text[idx:idx+len(quote)]
-                highlight = (f'<span style="background:{color};padding:1px 3px;border-radius:3px;">'
-                             f'{_badge}{_dp_html_lib.escape(original)}</span>')
-                text = text[:idx] + highlight + text[idx+len(quote):]
-                _dp_highlighted_ids.add(dp_id)
-        return text
-
-    def _chat_auto_match(dp):
-        suggested = dp.get("suggested_criterion_name") or dp.get("related_rubric_criterion") or ""
-        dim = dp.get("dimension", "")
-        if suggested:
-            for name in _dp_crit_names:
-                if name.lower() == suggested.lower():
-                    return name
-            for name in _dp_crit_names:
-                if name.lower() in suggested.lower() or suggested.lower() in name.lower():
-                    return name
-        for name in _dp_crit_names:
-            if name.lower() in dim.lower() or dim.lower() in name.lower():
-                return name
-        return suggested or dim or None
-
-    # Auto-map all DPs upfront so jump buttons always reflect correct state
-    if _dp_active and not _dp_confirmed:
-        for _dp in _dp_list_all:
-            _dp_id_str = str(_dp.get('id', 0))
-            if not st.session_state.infer_dp_user_mappings.get(_dp_id_str):
-                _dp_auto = _chat_auto_match(_dp)
-                if _dp_auto:
-                    st.session_state.infer_dp_user_mappings[_dp_id_str] = {"criterion": _dp_auto, "not_in_rubric": False}
-
-    def _render_dp_card(dp):
-        """Render a single DP card inline after the message it references."""
-        dp_id = dp.get('id', 0)
-        dp_id_str = str(dp_id)
-
-        if _dp_confirmed:
-            # Confirmed: compact view
-            crit = dp.get("confirmed_criterion") or ""
-            user_action = dp.get("user_action", "correct")
-            if user_action == "correct":
-                badge = f'<span style="background:#C8E6C9;padding:2px 8px;border-radius:10px;font-size:0.85em;">Confirmed: {_dp_html_lib.escape(crit)}</span>'
-                border_color = "#4CAF50"
-            elif user_action == "incorrect":
-                orig = dp.get("original_suggestion") or dp.get("dimension", "")
-                badge = f'<span style="background:#FFF9C4;padding:2px 8px;border-radius:10px;font-size:0.85em;">Remapped: {_dp_html_lib.escape(orig)} &rarr; {_dp_html_lib.escape(crit)}</span>'
-                border_color = "#FF9800"
-            elif user_action == "not_in_rubric":
-                badge = '<span style="background:#FFCDD2;padding:2px 8px;border-radius:10px;font-size:0.85em;">Not in rubric</span>'
-                border_color = "#F44336"
-            else:
-                badge = _dp_html_lib.escape(crit)
-                border_color = "#1976D2"
-            st.markdown(
-                f'<div id="dp-card-{dp_id}" style="background:linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);'
-                f'border-left:5px solid {border_color};padding:10px 14px;margin:8px 0;border-radius:6px;'
-                f'font-size:0.9em;box-shadow:0 1px 3px rgba(0,0,0,0.12);scroll-margin-top:80px;">'
-                f'<span style="background:#1976D2;color:white;padding:1px 8px;border-radius:10px;font-size:0.8em;font-weight:bold;margin-right:6px;">DP#{dp_id}</span> '
-                f'{_dp_html_lib.escape(dp.get("dimension", ""))} &mdash; {badge}'
-                f'</div>',
-                unsafe_allow_html=True
-            )
-        else:
-            # Unconfirmed: editable card with prominent styling
-            auto_matched = _chat_auto_match(dp)
-            existing_mapping = st.session_state.infer_dp_user_mappings.get(dp_id_str)
-            if not existing_mapping and auto_matched:
-                st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": auto_matched, "not_in_rubric": False}
-                existing_mapping = st.session_state.infer_dp_user_mappings[dp_id_str]
-
-            title_crit = auto_matched or dp.get("suggested_criterion_name") or "Unmatched"
-
-            # Check if this DP actually had a quote highlighted in the conversation
-            if dp_id in _dp_highlighted_ids:
-                _dp_hl_badge = ' <span style="background:#A5D6A7;color:#1B5E20;padding:1px 6px;border-radius:8px;font-size:0.75em;">highlighted above</span>'
-            else:
-                _dp_hl_badge = ' <span style="background:#EEE;color:#888;padding:1px 6px;border-radius:8px;font-size:0.75em;">no highlight</span>'
-
-            # Render a colored banner above the expander
-            st.markdown(
-                f'<div id="dp-card-{dp_id}" style="background:linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);'
-                f'border-left:5px solid #FF9800;padding:6px 14px;margin:8px 0 0 0;border-radius:6px 6px 0 0;'
-                f'font-size:0.85em;box-shadow:0 1px 3px rgba(0,0,0,0.12);scroll-margin-top:80px;">'
-                f'<span style="background:#FF9800;color:white;padding:1px 8px;border-radius:10px;font-size:0.8em;font-weight:bold;margin-right:6px;">DP#{dp_id}</span> '
-                f'<b>{_dp_html_lib.escape(dp.get("dimension", "Unknown"))}</b> &rarr; {_dp_html_lib.escape(title_crit)}'
-                f'{_dp_hl_badge}'
-                f'</div>',
-                unsafe_allow_html=True
-            )
-            with st.expander(f"Review DP#{dp_id}: {title_crit}", expanded=False):
-                st.markdown(f"**{dp.get('summary', 'N/A')}**")
-
-                # Determine default action
-                if existing_mapping:
-                    if existing_mapping.get("not_in_rubric"):
-                        default_action_idx = 2
-                    elif existing_mapping.get("criterion") != auto_matched and existing_mapping.get("criterion"):
-                        default_action_idx = 1
-                    else:
-                        default_action_idx = 0
-                else:
-                    default_action_idx = 0
-
-                action = st.radio(
-                    f"DP#{dp_id} mapping:",
-                    options=["Correct", "Incorrect", "Not in rubric"],
-                    index=default_action_idx,
-                    key=f"chat_dp_action_{dp_id}",
-                    horizontal=True,
-                    label_visibility="collapsed"
-                )
-
-                if action == "Correct":
-                    if auto_matched:
-                        st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": auto_matched, "not_in_rubric": False}
-                    else:
-                        st.caption("No auto-match found. Select 'Incorrect' to choose a criterion.")
-                elif action == "Incorrect":
-                    default_idx = 0
-                    if existing_mapping and existing_mapping.get("criterion") and existing_mapping["criterion"] in _dp_crit_names:
-                        default_idx = _dp_crit_names.index(existing_mapping["criterion"])
-                    elif auto_matched and auto_matched in _dp_crit_names:
-                        default_idx = _dp_crit_names.index(auto_matched)
-
-                    if _dp_crit_names:
-                        corrected = st.selectbox(
-                            f"Select correct criterion for DP#{dp_id}:",
-                            options=_dp_crit_names,
-                            index=default_idx,
-                            key=f"chat_dp_correct_{dp_id_str}",
-                        )
-                    else:
-                        corrected = st.text_input(
-                            f"Enter criterion name for DP#{dp_id}:",
-                            value=auto_matched or "",
-                            key=f"chat_dp_correct_{dp_id_str}",
-                        )
-                    incorrect_reason = st.text_input(
-                        f"Why is this a better match?",
-                        value=existing_mapping.get("incorrect_reason", "") if existing_mapping else "",
-                        key=f"chat_dp_incorrect_reason_{dp_id_str}",
-                    )
-                    st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": corrected, "not_in_rubric": False, "incorrect_reason": incorrect_reason}
-                elif action == "Not in rubric":
-                    reason = st.text_input(
-                        f"What preference does DP#{dp_id} reflect?",
-                        value=existing_mapping.get("not_in_rubric_reason", "") if existing_mapping else "",
-                        key=f"chat_dp_notinrubric_{dp_id_str}",
-                    )
-                    st.session_state.infer_dp_user_mappings[dp_id_str] = {"criterion": None, "not_in_rubric": True, "not_in_rubric_reason": reason}
-
     # Anchor at the top of the chat scroll area so the floating "scroll to
     # top" button has somewhere to land.
     st.markdown('<div id="chat-top"></div>', unsafe_allow_html=True)
 
     # Display chat messages
     _chat_msg_num = 0  # Track message number matching _build_conversation_text numbering
-    _dp_intro_shown = False  # Show DP explanation once before first card
     for idx, message in enumerate(st.session_state.messages):
         # Increment message counter to stay in sync with _build_conversation_text numbering.
         # _build_conversation_text numbers every message (user/assistant/system) except _synthetic_changelog.
@@ -387,20 +152,9 @@ def render_chat_panel():
         if message.get('is_assessment_message'):
             continue
 
-        # Skip the DP review marker message (DPs are now rendered inline on each message)
-        if message.get('is_dp_review'):
-            continue
-
         # Skip rubric change log messages (they are in history for LLM context only)
         if message.get('is_rubric_change_log'):
             continue
-
-        # [DISABLED] Probe A/B testing removed for now
-        # _probe_pending_data = st.session_state.get("probe_pending")
-        # if _probe_pending_data and message.get('message_id') == _probe_pending_data.get('message_id'):
-        #     with st.chat_message("assistant"):
-        #         st.markdown("*Your draft is ready — please compare the two versions below first.*")
-        #     continue
 
         if message['role'] == 'system':
             # Only show system messages that belong to the currently selected conversation
@@ -472,15 +226,6 @@ def render_chat_panel():
                             content_to_display = message['content']
                         else:
                             content_to_display = message.get('display_content', message['content'])
-                        # Highlight DP quotes in message text
-                        _dp_highlighted = False
-                        if _dp_active:
-                            if message['role'] == 'user' and _chat_msg_num in _dp_by_user_msg:
-                                content_to_display = _highlight_dp_quotes(content_to_display, _dp_by_user_msg[_chat_msg_num], 'after_quote', '#A5D6A7')
-                                _dp_highlighted = True
-                            elif message['role'] == 'assistant' and _chat_msg_num in _dp_by_asst_msg:
-                                content_to_display = _highlight_dp_quotes(content_to_display, _dp_by_asst_msg[_chat_msg_num], 'before_quote', '#FFF59D')
-                                _dp_highlighted = True
                         if message['role'] == 'assistant' and message.get('thinking'):
                             with st.expander("🧠 Thinking", expanded=False):
                                 st.markdown(message['thinking'])
@@ -992,7 +737,7 @@ def render_chat_panel():
                                 # Skip editable draft for rubric revision messages — revised draft shown in annotated view above
                                 _rr_non_draft = re.sub(r'<draft>.*?</draft>', '', content_to_display, flags=re.DOTALL).strip()
                                 if _rr_non_draft:
-                                    st.markdown(_rr_non_draft, unsafe_allow_html=_dp_highlighted)
+                                    st.markdown(_rr_non_draft, unsafe_allow_html=False)
                             else:
                                 # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
                                 _draft_source = message.get('content', content_to_display)
@@ -1003,9 +748,9 @@ def render_chat_panel():
                                     _draft_grading_ui.render_draft_grading_chrome(message)
                                     _draft_grading_ui.render_drift_panel(message, safe_msg_id)
                                 if not has_draft:
-                                    st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
+                                    st.markdown(content_to_display, unsafe_allow_html=False)
                         else:
-                            st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
+                            st.markdown(content_to_display, unsafe_allow_html=False)
                         # Show non-preferred A/B draft inline (blind labels)
                         # Backward compat: render old A/B comparison results
                         if message['role'] == 'assistant' and message.get('ab_comparison'):
@@ -1029,13 +774,6 @@ def render_chat_panel():
                             assessment = message['rubric_assessment']
                             draft_text = assessment.get('draft_text')
                             display_rubric_assessment(assessment, message_id, draft_text)
-                # Render DPs (outside chat bubble) — _chat_msg_num already set at top of loop
-                if message['role'] in ('user', 'assistant'):
-                    if _dp_active and not _dp_confirmed and _chat_msg_num in _dp_by_user_msg:
-                        if not _dp_intro_shown:
-                            _dp_intro_shown = True
-                        for _dp_item in _dp_by_user_msg[_chat_msg_num]:
-                            _render_dp_card(_dp_item)
             else:
                 with st.chat_message(message['role']):
                     st.caption(f"#{_chat_msg_num}")
@@ -1045,15 +783,6 @@ def render_chat_panel():
                         content_to_display = message['content']
                     else:
                         content_to_display = message.get('display_content', message['content'])
-                    # Highlight DP quotes in message text
-                    _dp_highlighted = False
-                    if _dp_active:
-                        if message['role'] == 'user' and _chat_msg_num in _dp_by_user_msg:
-                            content_to_display = _highlight_dp_quotes(content_to_display, _dp_by_user_msg[_chat_msg_num], 'after_quote', '#A5D6A7')
-                            _dp_highlighted = True
-                        elif message['role'] == 'assistant' and _chat_msg_num in _dp_by_asst_msg:
-                            content_to_display = _highlight_dp_quotes(content_to_display, _dp_by_asst_msg[_chat_msg_num], 'before_quote', '#FFF59D')
-                            _dp_highlighted = True
                     if message['role'] == 'assistant' and message.get('thinking'):
                         with st.expander("🧠 Thinking", expanded=False):
                             st.markdown(message['thinking'])
@@ -1564,7 +1293,7 @@ def render_chat_panel():
                             # Skip editable draft for rubric revision messages — revised draft shown in annotated view above
                             _rr_non_draft2 = re.sub(r'<draft>.*?</draft>', '', content_to_display, flags=re.DOTALL).strip()
                             if _rr_non_draft2:
-                                st.markdown(_rr_non_draft2, unsafe_allow_html=_dp_highlighted)
+                                st.markdown(_rr_non_draft2, unsafe_allow_html=False)
                         else:
                             # Always try original content for draft rendering (DP highlighting may corrupt <draft> tags)
                             _draft_source2 = message.get('content', content_to_display)
@@ -1575,9 +1304,9 @@ def render_chat_panel():
                                 _draft_grading_ui.render_draft_grading_chrome(message)
                                 _draft_grading_ui.render_drift_panel(message, safe_msg_id)
                             if not has_draft:
-                                st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
+                                st.markdown(content_to_display, unsafe_allow_html=False)
                     else:
-                        st.markdown(content_to_display, unsafe_allow_html=_dp_highlighted)
+                        st.markdown(content_to_display, unsafe_allow_html=False)
                     # Backward compat: render old A/B comparison results
                     if message['role'] == 'assistant' and message.get('ab_comparison'):
                         _abc = message['ab_comparison']
@@ -1595,772 +1324,11 @@ def render_chat_panel():
                             st.caption(f"You chose {_abc_chosen_blind}. {_abc_other_blind} is below.")
                             with st.expander(f"Show {_abc_other_blind}", expanded=False):
                                 st.markdown(strip_draft_tags_for_streaming(_abc_other))
-                    # Probe result: no longer rendered here — moved to is_probe_log message
                     if message['role'] == 'assistant' and message.get('rubric_assessment'):
                         assessment = message['rubric_assessment']
                         draft_text = assessment.get('draft_text')
                         display_rubric_assessment(assessment, message_id, draft_text)
-                # Render DPs (outside chat bubble) — _chat_msg_num already set at top of loop
-                if message['role'] in ('user', 'assistant'):
-                    if _dp_active and not _dp_confirmed and _chat_msg_num in _dp_by_user_msg:
-                        if not _dp_intro_shown:
-                            _dp_intro_shown = True
-                        for _dp_item in _dp_by_user_msg[_chat_msg_num]:
-                            _render_dp_card(_dp_item)
 
-    # --- Rubric Criteria Classification (shown before DP review) ---
-    # HUMAN_LOOP_DISABLED: criteria chips + importance ranks + confirm. Re-enable by removing `False and`.
-    if False and _dp_has_review and _cc_pending:
-        _cc_llm = st.session_state.chat_criteria_llm_classification
-        _cc_user = st.session_state.chat_criteria_user_classifications
-        if _cc_llm and _cc_user:
-            st.divider()
-
-            # st.markdown("**Rubric Criteria Classification**")
-
-            st.markdown(
-                "With your new rubric, let's make sure we're aligned on what it should capture. "
-                "For each criterion below, classify whether it's **Stated** (you mentioned it), **Real** (you care about it but didn't mention it), "
-                "or **Hallucinated** (the model made it up). \n\nFor non-hallucinated criteria, use the **Importance** number to rank how much you care about each one — "
-                "assign **1** to the criterion that matters most to your writing, **2** to the next, and so on. Each rank must be unique."
-            )
-
-            # Show user's cold-start preferences prominently for reference
-            _cs_ref_text = st.session_state.get("infer_coldstart_text", "").strip()
-            if _cs_ref_text:
-                st.info(f"**Your writing preferences** (what you described at the start):\n\n{_cs_ref_text}")
-
-            # Build a single list of all criteria, sorted by rubric priority
-            _cc_all_names = list(_cc_user.keys())
-
-            st.markdown(
-                "We compared each rubric criterion against the writing preferences you described above — please review these below."
-            )
-
-            # Build lookup for LLM reasoning per criterion
-            _cc_reasoning = {}
-            for _cc_comp in _cc_llm.get("criteria_comparison", []):
-                _cc_reasoning[_cc_comp.get("criterion_name", "")] = _cc_comp.get("match_reasoning", "")
-
-            # Initialize hallucination reasons in session state if needed
-            if 'chat_criteria_hallucination_reasons' not in st.session_state:
-                st.session_state.chat_criteria_hallucination_reasons = {}
-
-            _cc_total_criteria = len(_cc_all_names)
-
-            # Build rubric priority lookup from current rubric
-            _cc_rubric_priorities = {}
-            for _rc in (st.session_state.get("rubric") or []):
-                _rc_name = _rc.get("name", "")
-                _rc_pri = _rc.get("priority")
-                if _rc_name and _rc_pri is not None:
-                    _cc_rubric_priorities[_rc_name] = int(_rc_pri)
-
-            # Initialize importance ranks from rubric priorities only once;
-            # after that, user edits via number_input widgets are preserved.
-            if "chat_criteria_importance_ranks" not in st.session_state:
-                _cc_existing_ranks = {}
-                _cc_used_ranks = set()
-                for _cn in _cc_all_names:
-                    if _cn in _cc_rubric_priorities:
-                        _candidate_rank = _cc_rubric_priorities[_cn]
-                        if _candidate_rank not in _cc_used_ranks:
-                            _cc_existing_ranks[_cn] = _candidate_rank
-                            _cc_used_ranks.add(_candidate_rank)
-                # Fill any remaining unranked criteria with next available ranks
-                _cc_next_rank = 1
-                for _cn in _cc_all_names:
-                    if _cn not in _cc_existing_ranks:
-                        while _cc_next_rank in _cc_used_ranks:
-                            _cc_next_rank += 1
-                        _cc_existing_ranks[_cn] = _cc_next_rank
-                        _cc_used_ranks.add(_cc_next_rank)
-                        _cc_next_rank += 1
-                st.session_state.chat_criteria_importance_ranks = _cc_existing_ranks
-            _cc_existing_ranks = st.session_state.chat_criteria_importance_ranks
-
-            # Sort all criteria by their importance rank (priority order)
-            _cc_sorted_names = sorted(_cc_all_names, key=lambda n: _cc_existing_ranks.get(n, 999))
-
-            for _cr_name in _cc_sorted_names:
-                _cr_current = _cc_user.get(_cr_name, "real")
-                _cr_default_idx = {"stated": 0, "real": 1, "hallucinated": 2}.get(_cr_current, 1)
-                _cr_col_class, _cr_col_rank = st.columns([3, 1])
-                with _cr_col_class:
-                    _cr_choice = st.selectbox(
-                        _cr_name,
-                        ["Stated", "Real", "Hallucinated"],
-                        index=_cr_default_idx,
-                        key=f"cc_chip_{_cr_name}",
-                        help="Stated = you mentioned this | Real = you care but didn't mention | Hallucinated = doesn't reflect your preferences"
-                    )
-                with _cr_col_rank:
-                    if _cr_choice != "Hallucinated":
-                        _cr_cur_rank = _cc_existing_ranks.get(_cr_name, 1)
-                        _cr_rank_key = f"cc_rank_{_cr_name}"
-                        # Seed widget cache on first render to ensure it matches initialized ranks
-                        if _cr_rank_key not in st.session_state:
-                            st.session_state[_cr_rank_key] = min(_cr_cur_rank, _cc_total_criteria)
-                        _cr_new_rank = st.number_input(
-                            "Importance",
-                            min_value=1,
-                            max_value=_cc_total_criteria,
-                            step=1,
-                            key=_cr_rank_key,
-                        )
-                        st.session_state.chat_criteria_importance_ranks[_cr_name] = _cr_new_rank
-                _cc_user[_cr_name] = _cr_choice.lower()
-                if _cr_choice == "Hallucinated":
-                    _cr_reason_text = _cc_reasoning.get(_cr_name, "")
-                    if _cr_reason_text:
-                        st.caption(f"*Why we inferred this:* {_cr_reason_text}")
-                    _cr_existing_reason = st.session_state.get("chat_criteria_hallucination_reasons", {}).get(_cr_name, "")
-                    _cr_halluc_reason = st.text_input(
-                        f"Why doesn't \"{_cr_name}\" reflect your preferences?",
-                        value=_cr_existing_reason,
-                        key=f"cc_halluc_reason_{_cr_name}",
-                        placeholder="e.g., I never cared about this, the model assumed it from context"
-                    )
-                    st.session_state.chat_criteria_hallucination_reasons[_cr_name] = _cr_halluc_reason
-
-            st.session_state.chat_criteria_user_classifications = _cc_user
-
-            # Check for duplicate importance ranks
-            _cc_all_ranks = st.session_state.get("chat_criteria_importance_ranks", {})
-            _cc_non_halluc_ranks = {name: rank for name, rank in _cc_all_ranks.items() if name in _cc_user and _cc_user.get(name) != "hallucinated"}
-            _cc_rank_values = list(_cc_non_halluc_ranks.values())
-            _cc_has_duplicate_ranks = len(_cc_rank_values) != len(set(_cc_rank_values))
-
-            if _cc_has_duplicate_ranks:
-                # Find which ranks are duplicated
-                from collections import Counter
-                _cc_rank_counts = Counter(_cc_rank_values)
-                _cc_dup_ranks = sorted([r for r, c in _cc_rank_counts.items() if c > 1])
-                st.warning(f"Importance ranks must be unique. Duplicate rank(s): {', '.join(str(r) for r in _cc_dup_ranks)}")
-
-            # Confirm button
-            if st.button("Confirm Criteria Classifications", type="primary", width="stretch", key="chat_confirm_criteria_pre", disabled=_cc_has_duplicate_ranks):
-                _cc_final = st.session_state.chat_criteria_user_classifications
-                _cc_llm_data = st.session_state.chat_criteria_llm_classification
-
-                # Calculate agreement rate
-                _cc_agreements = 0
-                _cc_total = 0
-                for _cc_comp in _cc_llm_data.get("criteria_comparison", []):
-                    _cc_cname = _cc_comp.get("criterion_name", "")
-                    _cc_llm_status = _cc_comp.get("status", "unstated")
-                    _cc_user_status = _cc_final.get(_cc_cname, "unstated")
-                    _cc_total += 1
-                    if (_cc_llm_status == "stated") == (_cc_user_status == "stated"):
-                        _cc_agreements += 1
-                _cc_agreement_rate = _cc_agreements / _cc_total if _cc_total > 0 else 0
-
-                _cc_stated_count = sum(1 for v in _cc_final.values() if v == "stated")
-                _cc_real_count = sum(1 for v in _cc_final.values() if v in ("real", "latent_real", "elicited"))
-                _cc_hallucinated_count = sum(1 for v in _cc_final.values() if v == "hallucinated")
-                _cc_precision = (_cc_total - _cc_hallucinated_count) / _cc_total if _cc_total > 0 else 1.0
-
-                # Update state
-                st.session_state.chat_criteria_review_confirmed = True
-                st.session_state.chat_criteria_review_active = False
-
-                # Sync to Infer tab state
-                st.session_state.infer_user_categorizations = copy.deepcopy(_cc_final)
-                st.session_state.infer_categorizations_complete = True
-
-                # Get importance ranking from inline rank inputs
-                _cc_inline_ranks = st.session_state.get("chat_criteria_importance_ranks", {})
-                # Only include non-hallucinated criteria, sorted by rank
-                _cc_rank_map = {name: _cc_inline_ranks.get(name, 999) for name, cat in _cc_final.items() if cat != "hallucinated"}
-                _cc_importance = sorted(_cc_rank_map.keys(), key=lambda n: _cc_rank_map[n])
-
-                # Build LLM original classification map for before/after comparison
-                _cc_llm_orig = {}
-                for _cc_comp in _cc_llm_data.get("criteria_comparison", []):
-                    _cc_orig_name = _cc_comp.get("criterion_name", "")
-                    _cc_orig_status = _cc_comp.get("status", "unstated")
-                    # Normalize: LLM uses "stated"/"unstated", map unstated → "real" for comparison
-                    _cc_llm_orig[_cc_orig_name] = "stated" if _cc_orig_status == "stated" else "real"
-
-                # Detect which classifications the user changed
-                _cc_user_changes = {}
-                for _cc_cname, _cc_user_cat in _cc_final.items():
-                    _cc_llm_cat = _cc_llm_orig.get(_cc_cname, "real")
-                    if _cc_user_cat != _cc_llm_cat:
-                        _cc_user_changes[_cc_cname] = {"from": _cc_llm_cat, "to": _cc_user_cat}
-
-                # Build log message
-                _cc_halluc_reasons = st.session_state.get("chat_criteria_hallucination_reasons", {})
-                _cc_log_lines = [
-                    f"**Criteria classifications confirmed**: {_cc_stated_count} stated, {_cc_real_count} real, {_cc_hallucinated_count} hallucinated.",
-                    f"Rubric precision: {_cc_precision:.0%}",
-                    ""
-                ]
-                if _cc_user_changes:
-                    _cc_log_lines.append(f"**You changed {len(_cc_user_changes)} classification(s):**")
-                    for _cc_ch_name, _cc_ch in _cc_user_changes.items():
-                        _from_label = {"stated": "Stated", "real": "Real", "hallucinated": "Hallucinated"}.get(_cc_ch["from"], _cc_ch["from"])
-                        _to_label = {"stated": "Stated", "real": "Real", "hallucinated": "Hallucinated"}.get(_cc_ch["to"], _cc_ch["to"])
-                        _cc_log_lines.append(f"- **{_cc_ch_name}**: {_from_label} → {_to_label}")
-                    _cc_log_lines.append("")
-                # Show criteria ordered by importance rank
-                _cc_ordered = sorted(_cc_final.items(), key=lambda x: _cc_rank_map.get(x[0], 999))
-                for _cc_cname, _cc_cat in _cc_ordered:
-                    _cc_icon = {"stated": "✓", "real": "◉", "hallucinated": "✗"}.get(_cc_cat, "?")
-                    _cc_label = {"stated": "Stated", "real": "Real", "hallucinated": "Hallucinated"}.get(_cc_cat, _cc_cat)
-                    _cc_rank = _cc_rank_map.get(_cc_cname)
-                    _cc_rank_str = f"#{_cc_rank}" if _cc_rank else "—"
-                    _cc_line = f"- {_cc_rank_str} {_cc_icon} **{_cc_cname}**: {_cc_label}"
-                    if _cc_cat == "hallucinated" and _cc_halluc_reasons.get(_cc_cname):
-                        _cc_line += f" — *{_cc_halluc_reasons[_cc_cname]}*"
-                    _cc_log_lines.append(_cc_line)
-                _cc_log_content = "\n".join(_cc_log_lines)
-
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": _cc_log_content,
-                    "display_content": _cc_log_content,
-                    "is_system_generated": True,
-                    "is_criteria_classification_log": True,
-                    "classification_data": {
-                        "classifications": copy.deepcopy(_cc_final),
-                        "llm_original_classifications": copy.deepcopy(_cc_llm_orig),
-                        "user_changes": copy.deepcopy(_cc_user_changes),
-                        "hallucination_reasons": copy.deepcopy(_cc_halluc_reasons),
-                        "importance_ranking": list(_cc_importance),
-                        "llm_classification": copy.deepcopy(_cc_llm_data),
-                        "llm_user_agreement": _cc_agreement_rate,
-                        "rubric_version": None,
-                        "stated_count": _cc_stated_count,
-                        "real_count": _cc_real_count,
-                        "hallucinated_count": _cc_hallucinated_count,
-                        "precision": _cc_precision,
-                        "timestamp": datetime.now().isoformat(),
-                    },
-                    "message_id": f"criteria_class_{int(time.time() * 1000000)}"
-                })
-                _auto_save_conversation()
-
-                # Save to DB
-                _cc_save_sb = st.session_state.get('supabase')
-                _cc_save_pid = st.session_state.get('current_project_id')
-                if _cc_save_sb and _cc_save_pid:
-                    try:
-                        _cc_rb_dict, _, _ = get_active_rubric()
-                        _cc_rb_ver = _cc_rb_dict.get("version", "?") if _cc_rb_dict else "?"
-                        _cc_feedback_record = {
-                            "timestamp": datetime.now().isoformat(),
-                            "rubric_version": _cc_rb_ver,
-                            "iteration": _cc_rb_ver if isinstance(_cc_rb_ver, int) else 1,
-                            "classifications": copy.deepcopy(_cc_final),
-                            "hallucination_reasons": copy.deepcopy(_cc_halluc_reasons),
-                            "importance_ranking": list(_cc_importance),
-                            "llm_classification_summary": _cc_llm_data.get("summary", {}),
-                            "llm_user_agreement": _cc_agreement_rate,
-                            "stated_count": _cc_stated_count,
-                            "real_count": _cc_real_count,
-                            "hallucinated_count": _cc_hallucinated_count,
-                            "n_stated": _cc_stated_count,
-                            "n_real": _cc_real_count,
-                            "n_hallucinated": _cc_hallucinated_count,
-                            "n_criteria": _cc_stated_count + _cc_real_count + _cc_hallucinated_count,
-                            "precision": _cc_precision,
-                        }
-                        save_project_data(_cc_save_sb, _cc_save_pid, "criteria_classification_feedback", _cc_feedback_record)
-                    except Exception:
-                        pass
-
-                # Store classification feedback (including hallucination reasons) for DP extraction and final rubric
-                _cc_halluc_reasons = st.session_state.get("chat_criteria_hallucination_reasons", {})
-                _cc_feedback_for_dps = {
-                    "classifications": copy.deepcopy(_cc_final),
-                    "stated_count": _cc_stated_count,
-                    "real_count": _cc_real_count,
-                    "hallucinated_count": _cc_hallucinated_count,
-                    "hallucination_reasons": {
-                        name: reason for name, reason in _cc_halluc_reasons.items()
-                        if _cc_final.get(name) == "hallucinated" and reason
-                    },
-                    "importance_ranking": list(_cc_importance),
-                }
-                st.session_state.chat_classification_feedback = _cc_feedback_for_dps
-
-                # Check if rubric actually needs updating:
-                # 1. Hallucinated criteria removed, OR
-                # 2. User changed the priority/importance ordering
-                _cleanup_rb_dict, _, _ = get_active_rubric()
-                _cleanup_criteria = list(st.session_state.editing_criteria or [])
-                _cleanup_halluc_names = {name.lower().strip() for name, cat in _cc_final.items() if cat == "hallucinated"}
-
-                # Filter out hallucinated criteria
-                _cleaned_criteria = [c for c in _cleanup_criteria if c.get("name", "").lower().strip() not in _cleanup_halluc_names]
-
-                # Check if priority order changed
-                _old_priority_order = [c.get("name", "").lower().strip() for c in _cleaned_criteria]
-                if _cc_importance:
-                    _importance_order = {name.lower().strip(): idx for idx, name in enumerate(_cc_importance)}
-                    _cleaned_criteria.sort(key=lambda c: _importance_order.get(c.get("name", "").lower().strip(), 999))
-                    for _pi, _pc in enumerate(_cleaned_criteria, 1):
-                        _pc["priority"] = _pi
-                _new_priority_order = [c.get("name", "").lower().strip() for c in _cleaned_criteria]
-                _priority_changed = _old_priority_order != _new_priority_order
-
-                _has_rubric_changes = _cc_hallucinated_count > 0 or _priority_changed
-
-                if _has_rubric_changes:
-                    # Save as new rubric version
-                    _cleanup_hist = load_rubric_history()
-                    _cleanup_new_ver = next_version_number()
-                    _cleanup_hist.append({
-                        "version": _cleanup_new_ver,
-                        "rubric": copy.deepcopy(_cleaned_criteria),
-                        "source": "criteria_classification",
-                        "conversation_id": st.session_state.get("selected_conversation"),
-                    })
-                    save_rubric_history(_cleanup_hist)
-                    st.session_state.active_rubric_idx = len(_cleanup_hist) - 1
-                    st.session_state.rubric = _cleaned_criteria
-                    st.session_state.editing_criteria = _cleaned_criteria
-                    st.session_state.editing_criteria_ui_version = st.session_state.get("editing_criteria_ui_version", 0) + 1
-                    st.session_state[project_scoped_key("rubric_version_selector")] = f"v{_cleanup_new_ver}"
-
-                    # Update the classification log message with the version info
-                    for _clm in reversed(st.session_state.messages):
-                        if _clm.get("is_criteria_classification_log") and _clm.get("classification_data"):
-                            _clm["classification_data"]["rubric_version"] = _cleanup_new_ver
-                            break
-
-                    # Log what happened
-                    _cleanup_removed_names = [name for name, cat in _cc_final.items() if cat == "hallucinated"]
-                    _cleanup_summary_parts = []
-                    if _cleanup_removed_names:
-                        _cleanup_summary_parts.append(f"Removed {len(_cleanup_removed_names)} hallucinated criteria: {', '.join(_cleanup_removed_names)}")
-                    if _priority_changed:
-                        _cleanup_summary_parts.append("Re-ordered criteria by your importance ranking")
-                    _cleanup_summary_parts.append(f"Rubric saved as v{_cleanup_new_ver} with {len(_cleaned_criteria)} criteria")
-                    st.session_state.messages.append({
-                        "role": "system",
-                        "content": " | ".join(_cleanup_summary_parts),
-                        "conversation_id": st.session_state.get("selected_conversation"),
-                    })
-
-                    # Save cleanup event to DB
-                    _cleanup_sb = st.session_state.get('supabase')
-                    _cleanup_pid = st.session_state.get('current_project_id')
-                    if _cleanup_sb and _cleanup_pid:
-                        try:
-                            save_project_data(_cleanup_sb, _cleanup_pid, "rubric_classification_cleanup", {
-                                "timestamp": datetime.now().isoformat(),
-                                "removed_criteria": _cleanup_removed_names,
-                                "importance_ranking": list(_cc_importance),
-                                "priority_changed": _priority_changed,
-                                "old_version": _cleanup_rb_dict.get("version", "?") if _cleanup_rb_dict else "?",
-                                "new_version": _cleanup_new_ver,
-                                "n_remaining": len(_cleaned_criteria),
-                            })
-                        except Exception:
-                            pass
-
-                # [DISABLED] Step 3: DP extraction + confirmation removed for now
-                # _cc_conv_msgs = st.session_state.get("infer_dp_messages", [])
-                # if _cc_conv_msgs:
-                #     _dp_rb_dict, _, _ = get_active_rubric()
-                #     _dp_rubric_json = json.dumps(_dp_rb_dict.get("rubric", []), ensure_ascii=False, indent=2) if _dp_rb_dict else "[]"
-                #     with st.spinner("Extracting decision points with classification context..."):
-                #         dp_result = extract_decision_points(
-                #             _cc_conv_msgs, _dp_rubric_json, _cc_feedback_for_dps
-                #         )
-                #         if dp_result:
-                #             for dp in dp_result.get("parsed_data", {}).get("decision_points", []):
-                #                 if "related_rubric_criterion" in dp and "suggested_criterion_name" not in dp:
-                #                     dp["suggested_criterion_name"] = dp["related_rubric_criterion"]
-                #             _dp_result_store = {
-                #                 "thinking": "", "raw_response": "",
-                #                 "parsed_data": dp_result.get("parsed_data", dp_result),
-                #                 "conversation_file": "__from_infer_rubric__"
-                #             }
-                #             st.session_state.infer_decision_points = _dp_result_store
-                #             st.session_state.infer_dp_dimension_confirmed = False
-                #             st.session_state.infer_dp_user_mappings = {}
-                #             _dp_list_new = dp_result.get("parsed_data", {}).get("decision_points", [])
-                #             if _dp_list_new:
-                #                 st.session_state.infer_expanded_dp = _dp_list_new[0].get("id")
-                #             for msg in st.session_state.messages:
-                #                 if msg.get("is_dp_review"):
-                #                     msg["dp_data"]["decision_points"] = copy.deepcopy(_dp_list_new)
-                #                     _rb_v = msg["dp_data"].get("rubric_version", "?")
-                #                     msg["content"] = f"**Rubric v{_rb_v} inferred** — {len(_dp_list_new)} decision points extracted. Review each DP below."
-                #                     msg["display_content"] = msg["content"]
-                #                     if _dp_rb_dict:
-                #                         msg["dp_data"]["rubric"] = copy.deepcopy(_dp_rb_dict.get("rubric", []))
-                #                     break
-
-                st.rerun()
-
-    # --- DP Confirm button (after all messages) --- [DISABLED: commenting out DP UI]
-    if False and _dp_active and _dp_list_all and not _dp_confirmed:
-        st.divider()
-
-        # DP instruction + jump navigation
-        import streamlit.components.v1 as _dp_components
-        st.markdown(
-            "**Decision Points** are moments in the conversation where your writing choices reveal preferences. "
-            "Reviewing them helps us build a rubric that truly reflects how you write — not just what you said you want, "
-            "but what you actually chose when it mattered. Please confirm the rubric criterion each decision point maps to, or correct it."
-        )
-        st.markdown("**Jump to Decision Point:**")
-        _dp_btn_html_parts = []
-        for _dp_item in _dp_list_all:
-            _dp_jump_id = _dp_item.get('id', 0)
-            _dp_jump_id_str = str(_dp_jump_id)
-            _dp_jump_dim = _dp_item.get('dimension', '')[:30]
-            _dp_jump_mapping = st.session_state.infer_dp_user_mappings.get(_dp_jump_id_str, {})
-            _dp_jump_auto = _chat_auto_match(_dp_item)
-            if _dp_jump_mapping.get("not_in_rubric", False):
-                _bg = "#FFCDD2"; _bd = "#F44336"; _tx = "#B71C1C"; _lbl = "Not in rubric"
-            elif _dp_jump_mapping.get("criterion") and _dp_jump_mapping["criterion"] != _dp_jump_auto:
-                _bg = "#FFF9C4"; _bd = "#FF9800"; _tx = "#E65100"; _lbl = "Remapped"
-            elif _dp_jump_mapping.get("criterion"):
-                _bg = "#C8E6C9"; _bd = "#4CAF50"; _tx = "#1B5E20"; _lbl = "Correct"
-            else:
-                _bg = "#E3F2FD"; _bd = "#1976D2"; _tx = "#0D47A1"; _lbl = "Unreviewed"
-            _dp_btn_html_parts.append(
-                f'<button onclick="jumpToDP(\'DP#{_dp_jump_id}\')" '
-                f'title="{_dp_html_lib.escape(_dp_jump_dim)} — {_lbl}" '
-                f'style="background:{_bg};border:2px solid {_bd};color:{_tx};border-radius:8px;'
-                f'padding:6px 14px;cursor:pointer;font-size:0.85em;font-weight:bold;margin:3px;">'
-                f'DP#{_dp_jump_id}</button>'
-            )
-        _dp_btns_joined = "\n".join(_dp_btn_html_parts)
-        _dp_components.html(
-            f"""
-            <div style="display:flex;flex-wrap:wrap;gap:4px;padding:4px 0;">
-                {_dp_btns_joined}
-            </div>
-            <script>
-            function jumpToDP(label) {{
-                var doc = window.parent.document;
-                var spans = doc.querySelectorAll('span');
-                for (var i = 0; i < spans.length; i++) {{
-                    if (spans[i].textContent.trim() === label) {{
-                        var card = spans[i].closest('div[style*="linear-gradient"]') || spans[i].parentElement;
-                        if (card) {{
-                            card.scrollIntoView({{behavior: 'smooth', block: 'center'}});
-                            var orig = card.style.outline;
-                            card.style.outline = '3px solid #FF9800';
-                            setTimeout(function() {{ card.style.outline = orig; }}, 2000);
-                            break;
-                        }}
-                    }}
-                }}
-            }}
-            </script>
-            """,
-            height=50 + (len(_dp_list_all) // 7) * 40,
-        )
-        # st.divider()
-
-        all_mapped = len(st.session_state.infer_dp_user_mappings) >= len(_dp_list_all)
-        confirm_ok = all(
-            st.session_state.infer_dp_user_mappings.get(str(dp.get('id', 0)), {}).get("criterion") is not None
-            or st.session_state.infer_dp_user_mappings.get(str(dp.get('id', 0)), {}).get("not_in_rubric", False)
-            for dp in _dp_list_all
-        )
-
-        # Check if any DPs have corrections (incorrect or not_in_rubric)
-        _has_corrections = False
-        for dp in _dp_list_all:
-            dp_id_str = str(dp.get('id', 0))
-            mapping = st.session_state.infer_dp_user_mappings.get(dp_id_str, {})
-            auto_matched = _chat_auto_match(dp)
-            if mapping.get("not_in_rubric", False):
-                _has_corrections = True
-                break
-            if mapping.get("criterion") and mapping["criterion"] != auto_matched:
-                _has_corrections = True
-                break
-
-        _had_hallucinated = any(
-            v == "hallucinated"
-            for v in st.session_state.get("chat_classification_feedback", {}).get("classifications", {}).values()
-        )
-        # Check if user reordered importance ranking vs current rubric priority
-        _had_reranking = False
-        _rerank_list = st.session_state.get("chat_classification_feedback", {}).get("importance_ranking", [])
-        if _rerank_list:
-            _rerank_rb, _, _ = get_active_rubric()
-            if _rerank_rb:
-                _rerank_current = [c.get("name", "") for c in sorted(_rerank_rb.get("rubric", []), key=lambda c: c.get("priority", 99))]
-                if _rerank_list != _rerank_current:
-                    _had_reranking = True
-        _needs_final_rubric = _has_corrections or _had_hallucinated or _had_reranking
-        if _needs_final_rubric:
-            _confirm_label = "Confirm DPs & Infer Final Rubric"
-        else:
-            _confirm_label = "Confirm Decision Points"
-        if st.button(_confirm_label, type="primary", width="stretch", key="chat_confirm_dp_and_infer"):
-                # Capture source rubric version BEFORE any refinement
-                _source_rb_dict, _, _ = get_active_rubric()
-                _source_rubric_version = _source_rb_dict.get("version", "?") if _source_rb_dict else "?"
-
-                # Confirm DPs
-                _dp_parsed = _dp_result.get("parsed_data", {})
-                decision_points = _dp_parsed.get("decision_points", [])
-                for dp in decision_points:
-                    dp_id_str = str(dp.get('id', 0))
-                    mapping = st.session_state.infer_dp_user_mappings.get(dp_id_str, {})
-                    crit = mapping.get("criterion")
-                    original_suggestion = _chat_auto_match(dp)
-                    dp["original_suggestion"] = original_suggestion
-                    if crit:
-                        dp["confirmed_criterion"] = crit
-                        dp["is_not_in_rubric"] = False
-                        if crit == original_suggestion:
-                            dp["user_action"] = "correct"
-                        else:
-                            dp["user_action"] = "incorrect"
-                            dp["incorrect_reason"] = mapping.get("incorrect_reason", "")
-                    else:
-                        dp["confirmed_criterion"] = None
-                        dp["is_not_in_rubric"] = True
-                        dp["not_in_rubric_reason"] = mapping.get("not_in_rubric_reason", "")
-                        dp["user_action"] = "not_in_rubric"
-                _dp_parsed["decision_points"] = decision_points
-                st.session_state.infer_decision_points["parsed_data"] = _dp_parsed
-                st.session_state.infer_dp_dimension_confirmed = True
-
-                # Step 5: Final rubric inference with ALL context (if needed)
-                if _needs_final_rubric:
-                    # Build corrected DPs summary
-                    _active_rb_dict, _, _ = get_active_rubric()
-                    _active_criteria = _active_rb_dict.get("rubric", []) if _active_rb_dict else []
-                    corrected_dps = []
-                    for dp in decision_points:
-                        dp_summary = {
-                            "id": dp.get("id"),
-                            "dimension": dp.get("dimension"),
-                            "summary": dp.get("summary"),
-                            "user_action": dp.get("user_action"),
-                            "confirmed_criterion": dp.get("confirmed_criterion"),
-                        }
-                        if dp.get("user_action") == "incorrect":
-                            dp_summary["original_suggestion"] = dp.get("original_suggestion")
-                            dp_summary["incorrect_reason"] = dp.get("incorrect_reason", "")
-                        elif dp.get("user_action") == "not_in_rubric":
-                            dp_summary["not_in_rubric_reason"] = dp.get("not_in_rubric_reason", "")
-                        corrected_dps.append(dp_summary)
-
-                    corrected_json = json.dumps(corrected_dps, indent=2)
-                    current_rubric_json = json.dumps(_active_criteria, ensure_ascii=False, indent=2)
-
-                    # Gather ALL context for final rubric
-                    _final_conv_msgs = st.session_state.get("infer_dp_messages", [])
-                    _final_classification = st.session_state.get("chat_classification_feedback", {})
-                    _final_classification_json = json.dumps(_final_classification, ensure_ascii=False, indent=2)
-                    _final_coldstart = st.session_state.get("infer_coldstart_text", "").strip()
-
-                    with st.spinner("Inferring final rubric with all context..."):
-                        refined_rubric_data = infer_final_rubric(
-                            _final_conv_msgs,
-                            current_rubric_json,
-                            _final_classification_json,
-                            corrected_json,
-                            _final_coldstart
-                        )
-                        if refined_rubric_data:
-                            st.session_state.dp_refinement_result = {
-                                "change_explanation": refined_rubric_data.get("_change_explanation", ""),
-                                "refinement_summary": refined_rubric_data.get("_refinement_summary", ""),
-                                "old_rubric": _active_criteria,
-                                "old_version": _active_rb_dict.get("version", "?"),
-                                "new_rubric": refined_rubric_data.get("rubric", []),
-                                "new_version": refined_rubric_data.get("version", "?"),
-                            }
-                        else:
-                            st.warning("Final rubric inference failed — rubric unchanged.")
-
-                _cur_rb, _, _ = get_active_rubric()
-                _result_rubric_version = _cur_rb.get("version", "?") if _cur_rb else "?"
-                _infer_entry = {
-                    "messages": copy.deepcopy(st.session_state.get("infer_dp_messages", [])),
-                    "decision_points": st.session_state.get("infer_decision_points"),
-                    "timestamp": datetime.now().isoformat(),
-                    "source_rubric_version": _source_rubric_version,
-                    "result_rubric_version": _result_rubric_version,
-                    "had_corrections": _has_corrections,
-                    "had_hallucinated": _had_hallucinated,
-                    "num_messages": len(st.session_state.get("infer_dp_messages", [])),
-                    "conversation_id": st.session_state.get("selected_conversation", ""),
-                    "classification_feedback": copy.deepcopy(st.session_state.get("chat_classification_feedback", {})),
-                    "user_categorizations": copy.deepcopy(st.session_state.get("infer_user_categorizations", {})),
-                }
-                if 'infer_all_conversations' not in st.session_state:
-                    st.session_state.infer_all_conversations = []
-                st.session_state.infer_all_conversations.append(_infer_entry)
-
-                # Build explicit decision point feedback record
-                _dp_feedback_list = []
-                for dp in decision_points:
-                    _dp_entry = {
-                        "id": dp.get("id"),
-                        "title": dp.get("title", ""),
-                        "dimension": dp.get("dimension", ""),
-                        "summary": dp.get("summary", ""),
-                        "assistant_message_num": dp.get("assistant_message_num"),
-                        "user_message_num": dp.get("user_message_num"),
-                        "before_quote": dp.get("before_quote", ""),
-                        "after_quote": dp.get("after_quote", ""),
-                        "suggested_criterion_name": dp.get("suggested_criterion_name") or dp.get("related_rubric_criterion", ""),
-                        "user_action": dp.get("user_action", "unreviewed"),
-                        "confirmed_criterion": dp.get("confirmed_criterion"),
-                        "original_suggestion": dp.get("original_suggestion", ""),
-                    }
-                    if dp.get("user_action") == "incorrect":
-                        _dp_entry["incorrect_reason"] = dp.get("incorrect_reason", "")
-                    elif dp.get("user_action") == "not_in_rubric":
-                        _dp_entry["not_in_rubric_reason"] = dp.get("not_in_rubric_reason", "")
-                    _dp_feedback_list.append(_dp_entry)
-
-                _dp_feedback_record = {
-                    "timestamp": datetime.now().isoformat(),
-                    "source_rubric_version": _source_rubric_version,
-                    "result_rubric_version": _result_rubric_version,
-                    "had_corrections": _has_corrections,
-                    "num_decision_points": len(decision_points),
-                    "decision_points": _dp_feedback_list,
-                }
-
-                _save_sb = st.session_state.get('supabase')
-                _save_pid = st.session_state.get('current_project_id')
-                if _save_sb and _save_pid:
-                    try:
-                        # Save infer conversation (replace)
-                        _save_sb.table("project_data").delete().eq("project_id", _save_pid).eq("data_type", "infer_conversation").execute()
-                        _save_sb.table("project_data").insert({
-                            "project_id": _save_pid,
-                            "data_type": "infer_conversation",
-                            "data": json.dumps(st.session_state.infer_all_conversations),
-                            "created_at": datetime.now().isoformat()
-                        }).execute()
-                        # Save decision point feedback (append)
-                        save_project_data(_save_sb, _save_pid, "decision_point_feedback", _dp_feedback_record)
-                    except Exception:
-                        pass
-
-                # Log the DP confirmation + rubric inference to conversation history
-                _cur_rb_log, _, _ = get_active_rubric()
-                _dp_log_lines = []
-                # Show version transition: DPs inferred from source, rubric refined to result
-                if _needs_final_rubric and _source_rubric_version != _result_rubric_version:
-                    _dp_log_lines.append(f"**DPs inferred from v{_source_rubric_version}**, final rubric **v{_result_rubric_version}** inferred with all context ({len(decision_points)} decision points).\n")
-                else:
-                    _dp_log_lines.append(f"**DPs inferred from v{_source_rubric_version}** — {len(decision_points)} decision points confirmed (no rubric changes).\n")
-                # Summarize each DP
-                for _dp_log in decision_points:
-                    _dp_action = _dp_log.get("user_action", "unreviewed")
-                    _dp_dim = _dp_log.get("dimension", "")
-                    _dp_crit = _dp_log.get("confirmed_criterion") or _dp_log.get("original_suggestion", "—")
-                    if _dp_action == "correct":
-                        _dp_log_lines.append(f"- **DP#{_dp_log.get('id')}** {_dp_dim} → ✓ {_dp_crit}")
-                    elif _dp_action == "incorrect":
-                        _dp_orig = _dp_log.get("original_suggestion", "?")
-                        _dp_log_lines.append(f"- **DP#{_dp_log.get('id')}** {_dp_dim} → remapped from *{_dp_orig}* to **{_dp_crit}**")
-                    elif _dp_action == "not_in_rubric":
-                        _dp_log_lines.append(f"- **DP#{_dp_log.get('id')}** {_dp_dim} → not in rubric")
-                # If there were corrections, ask model to explain how they were incorporated
-                _dp_corrected = [dp for dp in decision_points if dp.get("user_action") in ("incorrect", "not_in_rubric")]
-                _dp_correction_reasoning = ""
-                if _dp_corrected and _needs_final_rubric and _cur_rb_log:
-                    try:
-                        _corr_parts = []
-                        for _cdp in _dp_corrected:
-                            _cdp_id = _cdp.get("id", "?")
-                            _cdp_dim = _cdp.get("dimension", "")
-                            _cdp_action = _cdp.get("user_action", "")
-                            _cdp_orig = _cdp.get("original_suggestion", "")
-                            _cdp_new = _cdp.get("confirmed_criterion", "")
-                            _cdp_reason = _cdp.get("user_correction_reason", "")
-                            if _cdp_action == "incorrect":
-                                _corr_parts.append(f"- DP#{_cdp_id} ({_cdp_dim}): User remapped from '{_cdp_orig}' to '{_cdp_new}'. Reason: {_cdp_reason or 'not given'}")
-                            elif _cdp_action == "not_in_rubric":
-                                _corr_parts.append(f"- DP#{_cdp_id} ({_cdp_dim}): User said this is not in the rubric. Reason: {_cdp_reason or 'not given'}")
-                        _corr_summary = "\n".join(_corr_parts)
-                        _corr_rubric_json = json.dumps(_cur_rb_log.get("rubric", []), ensure_ascii=False, indent=2)
-                        _corr_prompt = (
-                            f"The user just reviewed decision points extracted from their writing conversation. "
-                            f"Some decision points were corrected or marked as not belonging to the rubric:\n\n"
-                            f"{_corr_summary}\n\n"
-                            f"The final inferred rubric (v{_result_rubric_version}) is:\n{_corr_rubric_json}\n\n"
-                            f"For each corrected/not-in-rubric DP above, briefly explain (1-2 sentences each) how "
-                            f"this user feedback was incorporated into the final rubric. Did it cause a criterion to "
-                            f"be added, removed, merged, or refined? Be specific about which criterion was affected. "
-                            f"Do NOT include any heading or title — just start with the explanation directly."
-                        )
-                        _corr_response = _api_call_with_retry(
-                            model=MODEL_PRIMARY,
-                            max_tokens=2000,
-                            messages=[{"role": "user", "content": _corr_prompt}],
-                        )
-                        if _corr_response and _corr_response.content:
-                            _dp_correction_reasoning = _corr_response.content[0].text.strip()
-                            # Strip any leading header the model may have added despite instructions
-                            import re as _re_corr
-                            _dp_correction_reasoning = _re_corr.sub(r'^(?:\*{0,2})\s*(?:How\s+(?:your\s+)?(?:user\s+)?feedback\s+was\s+incorporated|Incorporation\s+of\s+feedback)\s*:?\s*(?:\*{0,2})\s*\n*', '', _dp_correction_reasoning, flags=_re_corr.IGNORECASE).strip()
-                    except Exception as _corr_e:
-                        # print(f"[DEBUG] Error getting correction reasoning: {_corr_e}")
-
-                        pass
-                if _dp_correction_reasoning:
-                    _dp_log_lines.append(f"\n**How your feedback was incorporated:**\n{_dp_correction_reasoning}")
-
-                _dp_log_content = "\n".join(_dp_log_lines)
-
-                # DP confirmation log message first
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": _dp_log_content,
-                    "display_content": _dp_log_content,
-                    "is_system_generated": True,
-                    "is_dp_confirmation_log": True,
-                    "dp_data": {
-                        "decision_points": copy.deepcopy(decision_points),
-                        "source_rubric_version": _source_rubric_version,
-                        "result_rubric_version": _result_rubric_version,
-                        "rubric": copy.deepcopy(_cur_rb_log.get("rubric", [])) if _cur_rb_log else [],
-                        "refinement": copy.deepcopy(st.session_state.get("dp_refinement_result")) if st.session_state.get("dp_refinement_result") else None,
-                        "correction_reasoning": _dp_correction_reasoning,
-                    },
-                    "message_id": f"dp_confirm_{int(time.time() * 1000000)}"
-                })
-
-                # System message announcing outcome
-                if _needs_final_rubric and _source_rubric_version != _result_rubric_version:
-                    _refine_data = st.session_state.get("dp_refinement_result") or {}
-                    st.session_state.messages.append({
-                        "role": "system",
-                        "content": f"Rubric **v{_result_rubric_version}** inferred from your conversation and criteria classification / decision point feedback.",
-                        "conversation_id": st.session_state.get("selected_conversation"),
-                        "refinement_detail": {
-                            "change_explanation": _refine_data.get("change_explanation", ""),
-                            "refinement_summary": _refine_data.get("refinement_summary", ""),
-                            "old_rubric": _refine_data.get("old_rubric", []),
-                            "new_rubric": _refine_data.get("new_rubric", []),
-                            "old_version": _refine_data.get("old_version", "?"),
-                            "new_version": _refine_data.get("new_version", "?"),
-                        },
-                    })
-                else:
-                    st.session_state.messages.append({
-                        "role": "system",
-                        "content": f"Decision points confirmed. Rubric **v{_source_rubric_version}** unchanged.",
-                        "conversation_id": st.session_state.get("selected_conversation"),
-                    })
-                _auto_save_conversation()
-
-                st.rerun()
-
-    elif _dp_active and _dp_confirmed:
-        pass  # DP confirmation and classification messages are now shown as conversation messages
 
     # ---- Rubric Alignment Diagnostic UI ----
     _rcp = st.session_state.get("ranking_checkpoint_pending")
@@ -2768,63 +1736,6 @@ def render_chat_panel():
                 draft_text = comparison_assessment.get('draft_text')
                 display_rubric_assessment(comparison_assessment, draft_text=draft_text)
 
-    # --- Uncertainty Probe UI ---
-    if False and st.session_state.get("probe_pending"):  # [DISABLED] Probe A/B testing removed for now
-        _prb = st.session_state.probe_pending
-        _prb_crit = _prb.get("criterion_name", "")
-        _prb_reason = _prb.get("uncertainty_reason", "")
-        _prb_dim = _prb.get("dimension_varied", "")
-
-        with st.chat_message("assistant"):
-            st.markdown(f"**I'm not sure how to apply \"{_prb_crit}\"**")
-            st.caption(_prb_reason)
-            if _prb_dim:
-                st.caption(f"These two versions differ in: *{_prb_dim}*")
-
-            _prb_col_a, _prb_col_b = st.columns(2)
-            with _prb_col_a:
-                st.markdown("**Version A**")
-                with st.container(height=300):
-                    st.markdown(_prb.get("variant_a", ""))
-            with _prb_col_b:
-                st.markdown("**Version B**")
-                with st.container(height=300):
-                    st.markdown(_prb.get("variant_b", ""))
-
-            _prb_reason_input = st.text_input(
-                "What made you prefer it? (optional)",
-                key="probe_reason_input",
-                placeholder="e.g., 'I want it more conversational, not bullet points'"
-            )
-
-            _prb_btn_a, _prb_btn_b, _prb_btn_skip = st.columns(3)
-            with _prb_btn_a:
-                if st.button("Prefer A", key="probe_prefer_a", type="primary", width="stretch"):
-                    _probe_commit_choice(_prb, "a", _prb_reason_input)
-                    # Wait for background refinement to finish so updated_criterion is available
-                    _prb_evt = st.session_state.get("_probe_refine_done_event")
-                    if _prb_evt:
-                        with st.spinner("Refining criterion..."):
-                            _prb_evt.wait(timeout=30)
-                        # Re-save conversation now that background thread has written suggested_update
-                        _auto_save_conversation()
-                    st.rerun()
-            with _prb_btn_b:
-                if st.button("Prefer B", key="probe_prefer_b", type="primary", width="stretch"):
-                    _probe_commit_choice(_prb, "b", _prb_reason_input)
-                    # Wait for background refinement to finish so updated_criterion is available
-                    _prb_evt = st.session_state.get("_probe_refine_done_event")
-                    if _prb_evt:
-                        with st.spinner("Refining criterion..."):
-                            _prb_evt.wait(timeout=30)
-                        # Re-save conversation now that background thread has written suggested_update
-                        _auto_save_conversation()
-                    st.rerun()
-            with _prb_btn_skip:
-                if st.button("Skip", key="probe_skip", width="stretch"):
-                    _probe_commit_choice(_prb, "skip")
-                    st.rerun()
-
     # --- Preference prompt: require writing preferences before first message if no rubric exists ---
     _pref_has_project = bool(st.session_state.get("current_project_id"))
     _pref_rubric_hist = load_rubric_history() if _pref_has_project else []
@@ -2883,19 +1794,11 @@ def render_chat_panel():
     _no_project = not bool(st.session_state.get("current_project_id"))
     _ac_draft_pending = any(m.get("_ac_pending_draft") for m in st.session_state.get("messages", []))
     _rcp_active = st.session_state.get("ranking_checkpoint_pending") is not None
-    _cc_review_active = st.session_state.get("chat_criteria_review_active", False) and not st.session_state.get("chat_criteria_review_confirmed", False)
-    # [DISABLED] DP review no longer blocks chat — DP extraction removed for now
-    _dp_review_pending = False
-    # _dp_review_pending = (
-    #     st.session_state.get("infer_decision_points") is not None
-    #     and any(m.get('is_dp_review') for m in st.session_state.get("messages", []))
-    #     and not st.session_state.get("infer_dp_dimension_confirmed", False)
-    # )
     _dim_recognition_pending = (
         st.session_state.get("precision_validation_pending", False)
         and not st.session_state.get("dim_recognition_done", False)
     )
-    _chat_blocked = _no_project or _pref_blocked or _alignment_check_needed or _ac_draft_pending or _rcp_active or _cc_review_active or _dp_review_pending or _dim_recognition_pending
+    _chat_blocked = _no_project or _pref_blocked or _alignment_check_needed or _ac_draft_pending or _rcp_active or _dim_recognition_pending
 
     # Render dimension recognition UI if pending (styled as system message)
     if _dim_recognition_pending:
@@ -3181,18 +2084,6 @@ def render_chat_panel():
                         active_rubric_dict, active_idx, _ = get_active_rubric()
                         rubric_version = active_rubric_dict.get('version', 1) if active_rubric_dict else None
 
-                        # --- Parse probe signal from response (piggybacked on main API call) ---
-                        _probe_signal_match = re.search(r'<probe_signal>(.*?)</probe_signal>', main_content, re.DOTALL)
-                        _probe_signal_data = None
-                        if _probe_signal_match:
-                            try:
-                                _probe_signal_data = json.loads(_probe_signal_match.group(1))
-                            except json.JSONDecodeError:
-                                # print(f"[PROBE] Failed to parse probe_signal JSON: {_probe_signal_match.group(1)}")
-                                pass
-                            # Strip the probe signal from display content
-                            main_content = re.sub(r'\s*<probe_signal>.*?</probe_signal>\s*', '', main_content, flags=re.DOTALL).strip()
-
                         # --- Strip any `[This is Draft #N.]` tag the model echoed ---
                         # These tags are injected by the system before each past
                         # draft the model sees, so the model can resolve "draft #N"
@@ -3206,36 +2097,7 @@ def render_chat_panel():
                             main_content,
                         ).strip()
 
-                        # --- Uncertainty Probe: decide whether to trigger --- [DISABLED for now]
                         has_draft_tag = bool(re.search(r'<draft>.*?</draft>', main_content, re.DOTALL))
-                        trigger_probe = False
-                        trigger_via_signal = False
-                        if False and has_draft_tag and active_rubric_list:
-                            _pdc_conv_id = st.session_state.get('selected_conversation', '_default')
-                            _pdc_counts = st.session_state.probe_draft_counts
-                            _pdc_counts[_pdc_conv_id] = _pdc_counts.get(_pdc_conv_id, 0) + 1
-                            _drafts_since = _pdc_counts[_pdc_conv_id]
-                            if _probe_signal_data and _probe_signal_data.get("criterion_name"):
-                                # Model flagged uncertainty — trigger probe using the signal
-                                trigger_probe = True
-                                trigger_via_signal = True
-                            elif _drafts_since >= PROBE_FALLBACK_INTERVAL:
-                                # Fallback: model hasn't signaled uncertainty in N drafts, force a check
-                                trigger_probe = True
-                        # Count total drafts in conversation (excluding probes)
-                        _total_drafts = sum(
-                            1 for m in st.session_state.messages
-                            if m.get('role') == 'assistant'
-                            and not m.get('is_probe_log')
-                            and not m.get('is_inline_rephrase')
-                            and re.search(r'<draft>.*?</draft>', m.get('content', ''), re.DOTALL)
-                        )
-                        # Add 1 for the current draft about to be appended
-                        if has_draft_tag:
-                            _total_drafts += 1
-                        # print(f"[DRAFT COUNT DEBUG] Total drafts in conversation (excl. probes): {_total_drafts}")
-                        _pdc_conv_id_dbg = st.session_state.get('selected_conversation', '_default')
-                        # print(f"[PROBE DEBUG] has_draft={has_draft_tag}, trigger_probe={trigger_probe}, via_signal={trigger_via_signal}, drafts_since_probe={st.session_state.probe_draft_counts.get(_pdc_conv_id_dbg, 0)}")
 
                         # Normal flow: store messages and rerun
                         message_data = {
@@ -3273,149 +2135,6 @@ def render_chat_panel():
                         # Update analysis in session state and rerun to show in sidebar
                         st.session_state.current_analysis = analysis_content
 
-                        # --- Uncertainty Probe flow (runs AFTER draft is committed) ---
-                        if trigger_probe:
-                            try:
-                                _probe_rubric_json = json.dumps(
-                                    _rubric_to_json_serializable(active_rubric_dict), indent=2
-                                ) if active_rubric_dict else ""
-                                _probe_conv_text = _build_conversation_text(st.session_state.get("messages", []))
-                                _probe_conv_text = _probe_conv_text[-3000:] if len(_probe_conv_text) > 3000 else _probe_conv_text
-
-                                _probe_id_data = None
-
-                                if trigger_via_signal:
-                                    # Use the probe signal piggybacked on the main response
-                                    _probe_id_data = {
-                                        "criterion_name": _probe_signal_data.get("criterion_name", ""),
-                                        "criterion_index": _probe_signal_data.get("criterion_index", -1),
-                                        "interpretation_a": "",
-                                        "interpretation_b": "",
-                                        "uncertainty_reason": _probe_signal_data.get("uncertainty_reason", ""),
-                                        "all_confident": False,
-                                    }
-                                    # print(f"[PROBE] Using piggybacked signal: {_probe_id_data['criterion_name']}")
-                                else:
-                                    # Fallback: separate API call for uncertainty identification
-                                    response_placeholder.markdown("*Analyzing your rubric for ambiguous criteria — you may be asked to compare two draft variants to help clarify...*")
-
-                                    # Build diagnostic priority guidance for probe
-                                    _probe_diagnostic_guidance = ""
-                                    _rk_results = st.session_state.get("ranking_checkpoint_results", [])
-                                    if _rk_results:
-                                        _latest_diag = _rk_results[-1]
-                                        _diag_criteria = _latest_diag.get("criteria_analysis", [])
-                                        if _diag_criteria:
-                                            _already_probed = set()
-                                            for _pr in st.session_state.get("probe_results", []):
-                                                _pr_name = _pr.get("criterion_name", "").lower().strip()
-                                                if _pr_name:
-                                                    _already_probed.add(_pr_name)
-                                            _priority_lines = []
-                                            for _dc in _diag_criteria:
-                                                _dc_name = _dc.get("name", "")
-                                                _dc_class = _dc.get("classification", "")
-                                                if _dc_name.lower().strip() in _already_probed:
-                                                    continue
-                                                if _dc_class == "UNDERPERFORMING":
-                                                    _priority_lines.append(
-                                                        f'- HIGH PRIORITY: "{_dc_name}" — UNDERPERFORMING '
-                                                        f'(generic draft scored better by {abs(_dc.get("gap", 0))} points). '
-                                                        f'Reason: {_dc.get("reasoning", "N/A")}'
-                                                    )
-                                                elif _dc_class == "REDUNDANT":
-                                                    _priority_lines.append(
-                                                        f'- MEDIUM PRIORITY: "{_dc_name}" — REDUNDANT '
-                                                        f'(no score difference). '
-                                                        f'Reason: {_dc.get("reasoning", "N/A")}'
-                                                    )
-                                            if _priority_lines:
-                                                _probe_diagnostic_guidance = "\n".join(_priority_lines)
-
-                                    _probe_id_prompt = PROBE_identify_uncertainty_prompt(
-                                        _probe_rubric_json, _probe_conv_text, _probe_diagnostic_guidance
-                                    )
-                                    _probe_id_resp = _api_call_with_retry(
-                                        model=MODEL_PRIMARY, max_tokens=800,
-                                        messages=[{"role": "user", "content": _probe_id_prompt}]
-                                    )
-                                    _probe_id_text = "".join(b.text for b in _probe_id_resp.content if b.type == "text")
-                                    _probe_id_match = re.search(r'\{[\s\S]*\}', _probe_id_text)
-                                    _probe_id_data = json.loads(_probe_id_match.group()) if _probe_id_match else None
-                                    # print(f"[PROBE] Fallback API call result: {_probe_id_data}")
-
-                                if _probe_id_data and not _probe_id_data.get("all_confident", False):
-                                    _probe_crit_name = _probe_id_data.get("criterion_name", "")
-                                    _probe_interp_a = _probe_id_data.get("interpretation_a", "")
-                                    _probe_interp_b = _probe_id_data.get("interpretation_b", "")
-                                    _probe_reason = _probe_id_data.get("uncertainty_reason", "")
-                                    _probe_crit_idx = _probe_id_data.get("criterion_index", -1)
-
-                                    if _probe_crit_name and _probe_reason:
-                                        # Step 2: Generate ONE alternative draft with a contrasting interpretation
-                                        response_placeholder.markdown("*Generating comparison variant...*")
-                                        # Extract the draft text from the assistant's response
-                                        _probe_draft_match = re.search(r'<draft>(.*?)</draft>', main_content, re.DOTALL)
-                                        _probe_current_draft = _probe_draft_match.group(1).strip() if _probe_draft_match else main_content[:2000]
-                                        # Let the model read draft A + rubric + criterion and figure out
-                                        # how A interpreted it, then generate B with a clearly different take
-                                        _probe_var_prompt = PROBE_generate_variant_draft_prompt(
-                                            _probe_conv_text, _probe_current_draft, _probe_rubric_json,
-                                            _probe_crit_name, _probe_reason
-                                        )
-                                        _probe_var_resp = _api_call_with_retry(
-                                            model=MODEL_PRIMARY, max_tokens=4000,
-                                            messages=[{"role": "user", "content": _probe_var_prompt}]
-                                        )
-                                        _probe_var_text = "".join(b.text for b in _probe_var_resp.content if b.type == "text")
-                                        _probe_var_match = re.search(r'\{[\s\S]*\}', _probe_var_text)
-                                        _probe_var_data = json.loads(_probe_var_match.group()) if _probe_var_match else None
-
-                                        if _probe_var_data and _probe_var_data.get("variant"):
-                                            _alt_draft = _probe_var_data["variant"]
-                                            _dim_varied = _probe_var_data.get("dimension_varied", "")
-                                            # Use model's own descriptions of how each draft interprets the criterion
-                                            _interp_a = _probe_var_data.get("draft_a_interpretation", _probe_interp_a or "")
-                                            _interp_b = _probe_var_data.get("draft_b_interpretation", _probe_interp_b or "")
-                                            # Randomly assign original vs alternative to A/B for blind comparison
-                                            if random.random() < 0.5:
-                                                _va, _vb = _probe_current_draft, _alt_draft
-                                                _orig_slot = "a"  # original is Version A
-                                            else:
-                                                _va, _vb = _alt_draft, _probe_current_draft
-                                                _orig_slot = "b"  # original is Version B
-                                            st.session_state.probe_pending = {
-                                                "criterion_name": _probe_crit_name,
-                                                "criterion_index": _probe_crit_idx,
-                                                "interpretation_a": _interp_a,
-                                                "interpretation_b": _interp_b,
-                                                "uncertainty_reason": _probe_reason,
-                                                "variant_a": _va,
-                                                "variant_b": _vb,
-                                                "original_slot": _orig_slot,
-                                                "original_draft": _probe_current_draft,
-                                                "alternative_draft": _alt_draft,
-                                                "dimension_varied": _dim_varied,
-                                                "message_id": message_id,
-                                                "rubric_version": rubric_version,
-                                            }
-                                            _pdc_conv_id_reset = st.session_state.get('selected_conversation', '_default')
-                                            st.session_state.probe_draft_counts[_pdc_conv_id_reset] = 0  # Reset counter on successful probe
-                                            # print(f"[PROBE] Probe ready: criterion='{_probe_crit_name}', original_slot='{_orig_slot}'")
-                                        else:
-                                            # print("[PROBE] Variant generation failed or empty, skipping probe")
-                                            pass
-                                    else:
-                                        # print("[PROBE] Uncertainty identification returned incomplete data, skipping")
-                                        pass
-                                else:
-                                    # print("[PROBE] Model confident about all criteria, skipping probe")
-                                    pass
-                            except Exception as _probe_err:
-                                # print(f"[PROBE] Probe flow failed: {_probe_err}")
-                                # Fall through to normal rerun
-
-                                pass
                         _auto_save_conversation()
                         st.rerun()
                         break  # Success, exit retry loop
@@ -3458,15 +2177,13 @@ def render_chat_panel():
                 if not st.session_state.messages:
                     st.error("No conversation to infer rubric from!")
                 else:
-                    # Single call: infer rubric + extract DPs together
                     # Include all visible conversation messages (user, assistant, system)
-                    # so the model sees the full picture: drafts, probes, rubric changes,
+                    # so the model sees the full picture: drafts, rubric changes,
                     # alignment checks, user feedback, accept/revert decisions, etc.
                     _infer_filtered = [
                         m for m in copy.deepcopy(st.session_state.messages)
                         if m.get('role') in ('user', 'assistant', 'system')
                         and not m.get('is_assessment_message')
-                        and not m.get('is_dp_review')
                     ]
                     # Inject rubric version changelog messages between version transitions
                     _infer_hist = load_rubric_history()
@@ -3486,28 +2203,12 @@ def render_chat_panel():
                                     conversation_for_infer.append({"role": "assistant", "content": _inf_cl, "_synthetic_changelog": True})
                             _infer_prev_v = _inf_cur_v
                         conversation_for_infer.append(_inf_msg)
-                    st.session_state.infer_dp_messages = copy.deepcopy(conversation_for_infer)
-                    st.session_state.infer_dp_conversation = "__from_infer_rubric__"
 
-                    # Step 1: Infer rubric ONLY (no DPs yet)
                     with st.spinner("Inferring rubric from conversation..."):
                         rubric_data = infer_rubric_only(conversation_for_infer)
                         if rubric_data:
                             _rb_ver = rubric_data.get("version", "?")
 
-                            # Clear stale DP state — DPs will be extracted after classification
-                            st.session_state.infer_decision_points = None
-                            st.session_state.infer_dp_dimension_confirmed = False
-                            st.session_state.infer_dp_user_mappings = {}
-                            st.session_state.chat_classification_feedback = {}
-                            st.session_state.chat_criteria_hallucination_reasons = {}
-                            if "chat_criteria_importance_ranks" in st.session_state:
-                                del st.session_state.chat_criteria_importance_ranks
-
-                            # Remove existing DP review messages
-                            st.session_state.messages = [m for m in st.session_state.messages if not m.get('is_dp_review')]
-
-                            # System message announcing the inferred rubric
                             # Mark all existing drafts as pre-rubric so they don't get graded
                             for _m in st.session_state.messages:
                                 if _m.get("role") == "assistant":
@@ -3525,124 +2226,8 @@ def render_chat_panel():
                             st.session_state.dim_recognition_done = False
                             st.session_state.dim_recognition_results = {}
 
-                            # --- HUMAN_LOOP_DISABLED: `is_dp_review` bubble + Step 1b LLM classification ---
-                            # Re-enable by uncommenting and restoring `chat_criteria_review_active = True` below.
-                            #
-                            # _rb_criteria_log = rubric_data.get("rubric", [])
-                            # _rb_review_content = f"**Rubric v{_rb_ver} inferred.** Review criteria classifications below."
-                            # st.session_state.messages.append({
-                            #     "role": "assistant",
-                            #     "content": _rb_review_content,
-                            #     "display_content": _rb_review_content,
-                            #     "is_dp_review": True,
-                            #     "is_system_generated": True,
-                            #     "message_id": f"dp_review_{int(time.time() * 1000000)}",
-                            #     "dp_data": {
-                            #         "decision_points": [],
-                            #         "rubric_version": _rb_ver,
-                            #         "rubric": copy.deepcopy(_rb_criteria_log),
-                            #     },
-                            # })
-                            #
-                            # _cs_text_infer = st.session_state.get("infer_coldstart_text", "").strip()
-                            # if _cs_text_infer and rubric_data.get("rubric"):
-                            #     _class_conv_text = _build_conversation_text(conversation_for_infer)
-                            #     with st.spinner("Classifying criteria against your writing preferences..."):
-                            #         try:
-                            #             _class_rubric_json = json.dumps(rubric_data.get("rubric", []), ensure_ascii=False, indent=2)
-                            #             _class_prompt = RUBRIC_compare_to_coldstart_prompt(_class_rubric_json, _cs_text_infer, _class_conv_text)
-                            #             _class_response = _api_call_with_retry(
-                            #                 model=MODEL_PRIMARY,
-                            #                 max_tokens=16000,
-                            #                 messages=[{"role": "user", "content": _class_prompt}],
-                            #                 thinking={"type": "adaptive"},
-                            #             )
-                            #             _class_text = ""
-                            #             for block in _class_response.content:
-                            #                 if block.type == "text":
-                            #                     _class_text += block.text
-                            #             _class_json_match = re.search(r"\{[\s\S]*\}", _class_text)
-                            #             if _class_json_match:
-                            #                 _class_parsed = json.loads(_class_json_match.group())
-                            #                 st.session_state.chat_criteria_llm_classification = _class_parsed
-                            #                 _class_user = {}
-                            #                 for _cc in _class_parsed.get("criteria_comparison", []):
-                            #                     _cc_name = _cc.get("criterion_name", "")
-                            #                     _cc_status = _cc.get("status", "unstated")
-                            #                     _class_user[_cc_name] = "real" if _cc_status == "unstated" else _cc_status
-                            #                 st.session_state.chat_criteria_user_classifications = _class_user
-                            #                 st.session_state.chat_criteria_review_active = True
-                            #                 st.session_state.chat_criteria_review_confirmed = False
-                            #         except Exception:
-                            #             pass
-
                             _auto_save_conversation()
-
-                            # Synthetic “classification complete” so chat input stays unblocked and Evaluate: Infer has data.
-                            _crit_names_infer = [c.get("name", "") for c in (rubric_data.get("rubric") or []) if c.get("name")]
-                            st.session_state.chat_criteria_review_active = False
-                            st.session_state.chat_criteria_review_confirmed = True
-                            st.session_state.chat_criteria_llm_classification = None
-                            st.session_state.chat_criteria_user_classifications = {n: "real" for n in _crit_names_infer}
-                            st.session_state.infer_user_categorizations = copy.deepcopy(
-                                st.session_state.chat_criteria_user_classifications
-                            )
-                            st.session_state.infer_categorizations_complete = True
-                            _by_pri = sorted(
-                                rubric_data.get("rubric") or [],
-                                key=lambda c: (c.get("priority", 99), str(c.get("name", ""))),
-                            )
-                            _imp_rank = [c.get("name") for c in _by_pri if c.get("name")]
-                            st.session_state.chat_classification_feedback = {
-                                "classifications": {n: "real" for n in _crit_names_infer},
-                                "stated_count": 0,
-                                "real_count": len(_crit_names_infer),
-                                "hallucinated_count": 0,
-                                "hallucination_reasons": {},
-                                "importance_ranking": _imp_rank,
-                            }
-
-                            _rb_after, _, _ = get_active_rubric()
-                            _rv_after = _rb_after.get("version", _rb_ver) if _rb_after else _rb_ver
-                            _infer_sess = {
-                                "messages": copy.deepcopy(st.session_state.get("infer_dp_messages", [])),
-                                "decision_points": None,
-                                "timestamp": datetime.now().isoformat(),
-                                "source_rubric_version": _rv_after,
-                                "result_rubric_version": _rv_after,
-                                "had_corrections": False,
-                                "had_hallucinated": False,
-                                "num_messages": len(st.session_state.get("infer_dp_messages", [])),
-                                "conversation_id": st.session_state.get("selected_conversation", ""),
-                                "classification_feedback": copy.deepcopy(
-                                    st.session_state.get("chat_classification_feedback", {})
-                                ),
-                                "user_categorizations": copy.deepcopy(
-                                    st.session_state.get("infer_user_categorizations", {})
-                                ),
-                            }
-                            if "infer_all_conversations" not in st.session_state:
-                                st.session_state.infer_all_conversations = []
-                            st.session_state.infer_all_conversations.append(_infer_sess)
-                            _infer_sb = st.session_state.get("supabase")
-                            _infer_pid = st.session_state.get("current_project_id")
-                            if _infer_sb and _infer_pid:
-                                try:
-                                    _infer_sb.table("project_data").delete().eq(
-                                        "project_id", _infer_pid
-                                    ).eq("data_type", "infer_conversation").execute()
-                                    _infer_sb.table("project_data").insert({
-                                        "project_id": _infer_pid,
-                                        "data_type": "infer_conversation",
-                                        "data": json.dumps(st.session_state.infer_all_conversations),
-                                        "created_at": datetime.now().isoformat(),
-                                    }).execute()
-                                except Exception:
-                                    pass
-
-                            st.success(
-                                f"Rubric v{_rb_ver} inferred. You can keep chatting or open **Evaluate: Infer**."
-                            )
+                            st.success(f"Rubric v{_rb_ver} inferred.")
                             st.rerun()
                         else:
                             st.error("Failed to infer rubric from conversation.")
@@ -3697,8 +2282,6 @@ def render_chat_sidebar():
             # Reset session state
             st.session_state.messages = []
             st.session_state.selected_conversation = None
-            st.session_state.probe_draft_counts = {}
-            st.session_state.probe_pending = None
             _draft_grading_ui.clear_rubric_edit_session_state()
             if 'active_rubric_idx' in st.session_state:
                 del st.session_state.active_rubric_idx
@@ -3750,44 +2333,6 @@ def render_chat_sidebar():
                 except Exception:
                     pass
 
-            # Load infer conversations from database
-            if _supabase and _new_pid:
-                try:
-                    _infer_conv_raw = _supabase.table("project_data").select("data").eq("project_id", _new_pid).eq("data_type", "infer_conversation").execute()
-                    if _infer_conv_raw.data and _infer_conv_raw.data[0].get("data"):
-                        _raw_ic = _infer_conv_raw.data[0]["data"]
-                        _infer_conv_loaded = json.loads(_raw_ic) if isinstance(_raw_ic, str) else _raw_ic
-                        if isinstance(_infer_conv_loaded, str):
-                            _infer_conv_loaded = json.loads(_infer_conv_loaded)
-                        if isinstance(_infer_conv_loaded, list):
-                            # New format: list of infer conversations
-                            st.session_state.infer_all_conversations = _infer_conv_loaded
-                            # Default to the latest one
-                            if _infer_conv_loaded:
-                                _latest_conv = _infer_conv_loaded[-1]
-                                st.session_state.infer_dp_messages = _latest_conv.get("messages", [])
-                                st.session_state.infer_dp_conversation = "__from_infer_rubric__"
-                                if _latest_conv.get("decision_points"):
-                                    st.session_state.infer_decision_points = _latest_conv["decision_points"]
-                        elif isinstance(_infer_conv_loaded, dict) and "messages" in _infer_conv_loaded:
-                            # Legacy format: single conversation dict
-                            st.session_state.infer_all_conversations = [_infer_conv_loaded]
-                            st.session_state.infer_dp_messages = _infer_conv_loaded["messages"]
-                            st.session_state.infer_dp_conversation = "__from_infer_rubric__"
-                            if _infer_conv_loaded.get("decision_points"):
-                                st.session_state.infer_decision_points = _infer_conv_loaded["decision_points"]
-                        else:
-                            st.session_state.infer_all_conversations = []
-                            st.session_state.infer_dp_messages = []
-                    else:
-                        st.session_state.infer_all_conversations = []
-                        st.session_state.infer_dp_messages = []
-                except Exception:
-                    st.session_state.infer_all_conversations = []
-                    st.session_state.infer_dp_messages = []
-
-            # Load probe results, ranking checkpoint results, and judge validations from database
-            st.session_state.probe_results = []
             st.session_state.ranking_checkpoint_results = []
             st.session_state.ranking_checkpoint_pending = None
             st.session_state.ranking_checkpoint_auto_triggered = False
@@ -3795,37 +2340,12 @@ def render_chat_sidebar():
             st.session_state.alignment_check_skipped = False
             if _supabase and _new_pid:
                 try:
-                    _probe_loaded = load_project_data(_supabase, _new_pid, "probe_results")
-                    if isinstance(_probe_loaded, list):
-                        st.session_state.probe_results = _probe_loaded
-                except Exception:
-                    pass
-                try:
                     _rk_loaded = load_project_data(_supabase, _new_pid, "alignment_diagnostic")
                     if isinstance(_rk_loaded, list):
                         st.session_state.ranking_checkpoint_results = _rk_loaded
                 except Exception:
                     pass
-                try:
-                    _ge_loaded = load_project_data(_supabase, _new_pid, "grade_evaluation")
-                    if isinstance(_ge_loaded, list):
-                        st.session_state.grade_evaluation_history = _ge_loaded
-                except Exception:
-                    pass
-                try:
-                    _rt_loaded = load_project_data(_supabase, _new_pid, "grade_retest")
-                    if isinstance(_rt_loaded, list):
-                        st.session_state.grade_retest_history = _rt_loaded
-                except Exception:
-                    pass
-                try:
-                    _drt_loaded = load_project_data(_supabase, _new_pid, "diagnostic_retest")
-                    if isinstance(_drt_loaded, list):
-                        st.session_state.diagnostic_retest_history = _drt_loaded
-                except Exception:
-                    pass
 
-            reset_evaluate_tab_workflow_state(clear_infer_session=False)
             st.session_state._pending_clear_widgets_after_project_switch = True
             st.rerun()
 
@@ -3833,38 +2353,8 @@ def render_chat_sidebar():
         if st.session_state.current_project and not st.session_state.current_project_id:
             st.session_state.current_project_id = project_id_map.get(st.session_state.current_project)
 
-        # Load infer conversations from DB on startup if not already loaded
-        # (handles the case where user logs back in and project is already selected)
         _startup_pid = st.session_state.get('current_project_id')
         _startup_sb = st.session_state.get('supabase')
-        if _startup_pid and _startup_sb and not st.session_state.get('infer_all_conversations'):
-            try:
-                _startup_raw = _startup_sb.table("project_data").select("data").eq("project_id", _startup_pid).eq("data_type", "infer_conversation").execute()
-                if _startup_raw.data and _startup_raw.data[0].get("data"):
-                    _raw_data = _startup_raw.data[0]["data"]
-                    # Handle both string (text column) and already-parsed (jsonb column)
-                    if isinstance(_raw_data, str):
-                        _startup_loaded = json.loads(_raw_data)
-                    else:
-                        _startup_loaded = _raw_data
-                    # May be double-encoded: a string inside jsonb
-                    if isinstance(_startup_loaded, str):
-                        _startup_loaded = json.loads(_startup_loaded)
-                    if isinstance(_startup_loaded, list) and _startup_loaded:
-                        st.session_state.infer_all_conversations = _startup_loaded
-                        _latest = _startup_loaded[-1]
-                        st.session_state.infer_dp_messages = _latest.get("messages", [])
-                        st.session_state.infer_dp_conversation = "__from_infer_rubric__"
-                        if _latest.get("decision_points"):
-                            st.session_state.infer_decision_points = _latest["decision_points"]
-                    elif isinstance(_startup_loaded, dict) and "messages" in _startup_loaded:
-                        st.session_state.infer_all_conversations = [_startup_loaded]
-                        st.session_state.infer_dp_messages = _startup_loaded["messages"]
-                        st.session_state.infer_dp_conversation = "__from_infer_rubric__"
-                        if _startup_loaded.get("decision_points"):
-                            st.session_state.infer_decision_points = _startup_loaded["decision_points"]
-            except Exception as _e:
-                st.warning(f"Could not load infer conversations: {_e}")
 
         # Also load survey responses on startup if not already loaded
         if _startup_pid and _startup_sb and not st.session_state.get('survey_responses', {}).get('task_a', {}).get('completed'):
@@ -3878,40 +2368,11 @@ def render_chat_sidebar():
             except Exception:
                 pass
 
-        # Load probe results and ranking checkpoint results on startup if not already loaded
-        if _startup_pid and _startup_sb and not st.session_state.get('probe_results'):
-            try:
-                _probe_startup = load_project_data(_startup_sb, _startup_pid, "probe_results")
-                if isinstance(_probe_startup, list):
-                    st.session_state.probe_results = _probe_startup
-            except Exception:
-                pass
         if _startup_pid and _startup_sb and not st.session_state.get('ranking_checkpoint_results'):
             try:
                 _rk_startup = load_project_data(_startup_sb, _startup_pid, "alignment_diagnostic")
                 if isinstance(_rk_startup, list):
                     st.session_state.ranking_checkpoint_results = _rk_startup
-            except Exception:
-                pass
-        if _startup_pid and _startup_sb and not st.session_state.get('grade_evaluation_history'):
-            try:
-                _ge_startup = load_project_data(_startup_sb, _startup_pid, "grade_evaluation")
-                if isinstance(_ge_startup, list):
-                    st.session_state.grade_evaluation_history = _ge_startup
-            except Exception:
-                pass
-        if _startup_pid and _startup_sb and not st.session_state.get('grade_retest_history'):
-            try:
-                _rt_startup = load_project_data(_startup_sb, _startup_pid, "grade_retest")
-                if isinstance(_rt_startup, list):
-                    st.session_state.grade_retest_history = _rt_startup
-            except Exception:
-                pass
-        if _startup_pid and _startup_sb and not st.session_state.get('diagnostic_retest_history'):
-            try:
-                _drt_startup = load_project_data(_startup_sb, _startup_pid, "diagnostic_retest")
-                if isinstance(_drt_startup, list):
-                    st.session_state.diagnostic_retest_history = _drt_startup
             except Exception:
                 pass
     else:
@@ -3945,13 +2406,10 @@ def render_chat_sidebar():
                             st.session_state.messages = []
                             st.session_state.selected_conversation = None
                             st.session_state.survey_responses = {"task_a": {}, "task_b": {}}
-                            st.session_state.probe_draft_counts = {}
-                            st.session_state.probe_pending = None
                             if 'active_rubric_idx' in st.session_state:
                                 del st.session_state.active_rubric_idx
                             if 'delete_project_confirm' in st.session_state:
                                 del st.session_state.delete_project_confirm
-                            reset_evaluate_tab_workflow_state()
                             st.session_state._pending_clear_widgets_after_project_switch = True
                             st.rerun()
                         else:
@@ -3991,33 +2449,17 @@ def render_chat_sidebar():
                     st.session_state.messages = []
                     st.session_state.selected_conversation = None
                     st.session_state.infer_coldstart_text = ""
-                    st.session_state.probe_draft_counts = {}
-                    st.session_state.probe_pending = None
                     st.session_state.infer_coldstart_saved = False
-                    st.session_state.chat_criteria_llm_classification = None
-                    st.session_state.chat_criteria_user_classifications = {}
-                    st.session_state.chat_criteria_review_active = False
-                    st.session_state.chat_criteria_review_confirmed = False
-                    st.session_state.chat_classification_feedback = {}
-                    st.session_state.chat_criteria_hallucination_reasons = {}
-                    if "chat_criteria_importance_ranks" in st.session_state:
-                        del st.session_state.chat_criteria_importance_ranks
                     # Clear the text input and collapse expander
                     if 'new_project_name' in st.session_state:
                         del st.session_state.new_project_name
                     st.session_state.create_project_expanded = False
-                    reset_evaluate_tab_workflow_state()
                     st.session_state._pending_clear_widgets_after_project_switch = True
                     st.rerun()
                 else:
                     st.error(message)
             else:
                 st.error("Please enter a project name")
-
-    # Export/Import Project section - Note: Data is stored in cloud database
-    # with st.expander("📦 Export / Import Project"):
-    #     st.info("Your data is stored securely in the cloud and syncs automatically across devices.")
-    #     st.markdown("**Export** and **Import** features coming soon for cloud storage.")
 
     st.divider()
 

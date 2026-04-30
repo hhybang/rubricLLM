@@ -20,10 +20,6 @@ from rubric_writer.session_reset import (
 from rubric_writer.ui.tab_chat import render_chat_panel, render_chat_sidebar
 from rubric_writer.ui.tab_view_rubric import render_view_rubric_tab
 from rubric_writer.ui.tab_compare_rubrics import render_compare_rubrics_tab
-from rubric_writer.ui.tab_infer import render_infer_tab
-from rubric_writer.ui.tab_evaluate_build import render_evaluate_build_tab
-from rubric_writer.ui.tab_evaluate_grade import render_evaluate_grade_tab
-from rubric_writer.ui.tab_grading_dashboard import render_grading_dashboard_tab
 from rubric_writer.ui.tab_survey import render_survey_tab
 from rubric_writer.ui.tab_comparison import render_comparison_tab
 
@@ -342,23 +338,7 @@ if 'message_delete_mode' not in st.session_state:
 if 'messages_to_delete' not in st.session_state:
     st.session_state.messages_to_delete = set()  # Set of message indices to delete
 
-# Uncertainty probe: every N-th draft, probe a rubric criterion the model is uncertain about
-if 'probe_draft_counts' not in st.session_state:
-    st.session_state.probe_draft_counts = {}  # Per-conversation draft counts: {conv_id: int}
-if 'probe_pending' not in st.session_state:
-    st.session_state.probe_pending = None  # Dict with probe variants when triggered
-if 'probe_results' not in st.session_state:
-    st.session_state.probe_results = []  # List of completed probe results
-
-# Evaluation dashboard: grade evaluation and retest history
-if 'grade_evaluation_history' not in st.session_state:
-    st.session_state.grade_evaluation_history = []
-if 'grade_retest_history' not in st.session_state:
-    st.session_state.grade_retest_history = []
-if 'diagnostic_retest_history' not in st.session_state:
-    st.session_state.diagnostic_retest_history = []
-
-# Layer 2: Ranking checkpoint state
+# Layer 2: Ranking checkpoint state (alignment diagnostic)
 if 'ranking_checkpoint_results' not in st.session_state:
     st.session_state.ranking_checkpoint_results = []  # List of completed checkpoint results
 if 'ranking_checkpoint_pending' not in st.session_state:
@@ -370,137 +350,11 @@ if 'alignment_check_done' not in st.session_state:
 if 'alignment_check_skipped' not in st.session_state:
     st.session_state.alignment_check_skipped = False
 
-
-# Evaluate: Coverage tab state (9-step workflow)
-# Evaluate: Infer tab state (11-step workflow)
+# Cold-start preference description (still loaded into chat for context)
 if 'infer_coldstart_text' not in st.session_state:
-    st.session_state.infer_coldstart_text = ""  # Step 1: User's cold-start preference description
+    st.session_state.infer_coldstart_text = ""
 if 'infer_coldstart_saved' not in st.session_state:
-    st.session_state.infer_coldstart_saved = False  # Whether Step 1 submitted
-if 'infer_user_categorizations' not in st.session_state:
-    st.session_state.infer_user_categorizations = {}  # Steps 2-3: {"Criterion Name": "stated"|"real"|"hallucinated"}
-if 'infer_categorizations_complete' not in st.session_state:
-    st.session_state.infer_categorizations_complete = False  # Whether all criteria categorized
-if 'infer_behavioral_result' not in st.session_state:
-    st.session_state.infer_behavioral_result = None  # Step 5: LLM behavioral evidence (parsed JSON)
-if 'infer_dp_conversation' not in st.session_state:
-    st.session_state.infer_dp_conversation = None  # Step 4: Selected conversation for decision points
-if 'infer_decision_points' not in st.session_state:
-    st.session_state.infer_decision_points = None  # Step 4: Extracted decision points
-if 'infer_all_conversations' not in st.session_state:
-    st.session_state.infer_all_conversations = []  # List of {messages, decision_points, timestamp, rubric_version}
-if 'infer_expanded_dp' not in st.session_state:
-    st.session_state.infer_expanded_dp = None  # Step 5: Currently expanded decision point ID
-if 'infer_dp_dimension_confirmed' not in st.session_state:
-    st.session_state.infer_dp_dimension_confirmed = False  # Step 5: Whether user confirmed dimension mappings
-if 'infer_dp_user_mappings' not in st.session_state:
-    st.session_state.infer_dp_user_mappings = {}  # Step 5: User-confirmed dimension mappings {dp_id: {"criterion": name, "not_in_rubric_reason": str|None}}
-if 'infer_step6_generated_task' not in st.session_state:
-    st.session_state.infer_step6_generated_task = None
-if 'infer_step6_writing_task' not in st.session_state:
-    st.session_state.infer_step6_writing_task = ""
-if 'infer_step6_auto_gen_done' not in st.session_state:
-    st.session_state.infer_step6_auto_gen_done = False
-if 'infer_step6_custom_task_key_version' not in st.session_state:
-    st.session_state.infer_step6_custom_task_key_version = 0
-if 'infer_step6_drafts' not in st.session_state:
-    st.session_state.infer_step6_drafts = None  # {"r_star": str, "r1": str|None, "r0": str, "coldstart": str, "generic": str}
-if 'infer_step6_draft_labels' not in st.session_state:
-    st.session_state.infer_step6_draft_labels = None  # ordered list of source keys matching A/B/C/D/E shuffle
-if 'infer_step6_rubric_versions_used' not in st.session_state:
-    st.session_state.infer_step6_rubric_versions_used = None  # {"r_star": ver, "r1": ver|None, "r0": ver}
-if 'infer_step6_blind_ratings' not in st.session_state:
-    st.session_state.infer_step6_blind_ratings = None  # {"A": 1-5, ...}
-if 'infer_step6_user_ranking' not in st.session_state:
-    st.session_state.infer_step6_user_ranking = None  # ordered list most→least preferred
-if 'infer_step6_user_dimension_checks' not in st.session_state:
-    st.session_state.infer_step6_user_dimension_checks = None  # Only for R*, coldstart, generic
-if 'infer_step6_llm_evaluations' not in st.session_state:
-    st.session_state.infer_step6_llm_evaluations = None
-if 'infer_step6_survey' not in st.session_state:
-    st.session_state.infer_step6_survey = None  # {"accuracy": str, "rounds_needed": str}
-if 'infer_step6_claim2_metrics' not in st.session_state:
-    st.session_state.infer_step6_claim2_metrics = None
-if 'infer_step6_claim3_metrics' not in st.session_state:
-    st.session_state.infer_step6_claim3_metrics = None
-if 'infer_pending_rubric' not in st.session_state:
-    st.session_state.infer_pending_rubric = None  # Infer tab: Pending inferred rubric awaiting user review
-
-# Chat tab: Criteria classification (Steps 1+2 integrated from Infer tab)
-if 'chat_criteria_llm_classification' not in st.session_state:
-    st.session_state.chat_criteria_llm_classification = None  # LLM comparison result dict
-if 'chat_criteria_user_classifications' not in st.session_state:
-    st.session_state.chat_criteria_user_classifications = {}  # {criterion_name: "stated"|"real"|"hallucinated"}
-if 'chat_criteria_review_active' not in st.session_state:
-    st.session_state.chat_criteria_review_active = False  # True while review UI is showing
-if 'chat_criteria_review_confirmed' not in st.session_state:
-    st.session_state.chat_criteria_review_confirmed = False  # True after user confirms
-if 'chat_classification_feedback' not in st.session_state:
-    st.session_state.chat_classification_feedback = {}  # Stored after classification confirm
-if 'chat_criteria_hallucination_reasons' not in st.session_state:
-    st.session_state.chat_criteria_hallucination_reasons = {}
-
-# Evaluate: Build tab state (5-step workflow)
-if 'build_rubric_a_idx' not in st.session_state:
-    st.session_state.build_rubric_a_idx = None  # Step 1: Index of Rubric A in history
-if 'build_rubric_b_idx' not in st.session_state:
-    st.session_state.build_rubric_b_idx = None  # Step 1: Index of Rubric B in history
-if 'build_edit_classification' not in st.session_state:
-    st.session_state.build_edit_classification = None  # Step 2: Structured diff result
-if 'build_writing_task' not in st.session_state:
-    st.session_state.build_writing_task = ""  # Step 3: User's writing task description
-if 'build_draft_a' not in st.session_state:
-    st.session_state.build_draft_a = None  # Step 3: Draft from rubric A
-if 'build_draft_b' not in st.session_state:
-    st.session_state.build_draft_b = None  # Step 3: Draft from rubric B
-if 'build_draft_a_thinking' not in st.session_state:
-    st.session_state.build_draft_a_thinking = ""  # Step 3: Thinking from draft A
-if 'build_draft_b_thinking' not in st.session_state:
-    st.session_state.build_draft_b_thinking = ""  # Step 3: Thinking from draft B
-if 'build_blind_labels' not in st.session_state:
-    st.session_state.build_blind_labels = None  # Step 3: {"Draft X": "a", "Draft Y": "b"}
-if 'build_user_preference' not in st.session_state:
-    st.session_state.build_user_preference = None  # Step 3: User's blind preference + per-dimension ratings
-if 'build_llm_judge_result' not in st.session_state:
-    st.session_state.build_llm_judge_result = None  # Step 4: LLM judge per-dimension scores
-if 'build_llm_judge_thinking' not in st.session_state:
-    st.session_state.build_llm_judge_thinking = ""  # Step 4: LLM judge thinking
-if 'build_self_report' not in st.session_state:
-    st.session_state.build_self_report = {}  # Step 5: User's self-report responses
-if 'build_self_report_saved' not in st.session_state:
-    st.session_state.build_self_report_saved = False  # Step 5: Whether self-report submitted
-
-# Evaluate: Grade tab state (5-step workflow)
-if 'grade_writing_task' not in st.session_state:
-    st.session_state.grade_writing_task = ""  # Step 1: User's writing task description
-if 'grade_violated_dims' not in st.session_state:
-    st.session_state.grade_violated_dims = None  # Step 1: List of dimension names selected for violation
-if 'grade_draft_good' not in st.session_state:
-    st.session_state.grade_draft_good = None  # Step 1: Draft following full rubric
-if 'grade_draft_degraded' not in st.session_state:
-    st.session_state.grade_draft_degraded = None  # Step 1: Draft with violated dimensions
-if 'grade_draft_good_thinking' not in st.session_state:
-    st.session_state.grade_draft_good_thinking = ""  # Step 1: Thinking from good draft
-if 'grade_draft_degraded_thinking' not in st.session_state:
-    st.session_state.grade_draft_degraded_thinking = ""  # Step 1: Thinking from degraded draft
-if 'grade_blind_labels' not in st.session_state:
-    st.session_state.grade_blind_labels = None  # Step 1: {"Draft X": "good"|"degraded", ...}
-if 'grade_user_overall_pref' not in st.session_state:
-    st.session_state.grade_user_overall_pref = None  # Step 2: User's overall preference
-if 'grade_user_dim_ratings' not in st.session_state:
-    st.session_state.grade_user_dim_ratings = {}  # Step 2: Per-dimension ratings for both drafts
-if 'grade_rubric_judge_result' not in st.session_state:
-    st.session_state.grade_rubric_judge_result = None  # Step 3: Rubric-grounded judge result
-if 'grade_rubric_judge_thinking' not in st.session_state:
-    st.session_state.grade_rubric_judge_thinking = ""  # Step 3: Rubric-grounded thinking
-if 'grade_generic_judge_result' not in st.session_state:
-    st.session_state.grade_generic_judge_result = None  # Step 3: Generic judge result
-if 'grade_generic_judge_thinking' not in st.session_state:
-    st.session_state.grade_generic_judge_thinking = ""  # Step 3: Generic thinking
-if 'grade_agreement_results' not in st.session_state:
-    st.session_state.grade_agreement_results = None  # Step 4: Computed correlations
-if 'grade_saved' not in st.session_state:
-    st.session_state.grade_saved = False  # Step 5: Whether results saved
+    st.session_state.infer_coldstart_saved = False
 
 # Alignment tab state
 if 'alignment_selected_conversation' not in st.session_state:
@@ -537,32 +391,9 @@ if st.session_state.pop("_pending_clear_widgets_after_project_switch", None):
 st.title("✍️ AI-Rubric Writer")
 st.markdown("Collaborate with AI to improve your writing!")
 
-# Create tabs (Evaluate: Build, Grade, Infer, and Grading hidden)
-SHOW_BUILD_GRADE_TABS = False
-SHOW_INFER_GRADING_TABS = False
-_labels = ["💬 Chat", "📋 Evaluate: Survey"]
-if SHOW_INFER_GRADING_TABS:
-    _labels += ["🔎 Evaluate: Infer", "📊 Evaluate: Grading"]
-if SHOW_BUILD_GRADE_TABS:
-    _labels += ["🔨 Evaluate: Build", "📝 Evaluate: Grade"]
-_labels += ["⚖️ Evaluate: Comparison", "📁 View Rubric", "🔍 Compare Rubrics"]
+_labels = ["💬 Chat", "📋 Evaluate: Survey", "⚖️ Evaluate: Comparison", "📁 View Rubric", "🔍 Compare Rubrics"]
 _tabs = st.tabs(_labels)
-_idx = 0
-tab1 = _tabs[_idx]; _idx += 1
-tab_survey = _tabs[_idx]; _idx += 1
-if SHOW_INFER_GRADING_TABS:
-    tab_infer = _tabs[_idx]; _idx += 1
-    tab_grading = _tabs[_idx]; _idx += 1
-else:
-    tab_infer = tab_grading = None
-if SHOW_BUILD_GRADE_TABS:
-    tab7 = _tabs[_idx]; _idx += 1
-    tab8 = _tabs[_idx]; _idx += 1
-else:
-    tab7 = tab8 = None
-tab_comparison = _tabs[_idx]; _idx += 1
-tab3 = _tabs[_idx]; _idx += 1
-tab4 = _tabs[_idx]; _idx += 1
+tab1, tab_survey, tab_comparison, tab3, tab4 = _tabs
 
 def _safe_render(label: str, render_fn) -> None:
     """Surface exceptions in the UI instead of a blank main area."""
@@ -589,24 +420,8 @@ with tab4:
     with st.expander("Rubric A/B Comparison (Research)", expanded=False):
         render_pairwise_comparison()
 
-if SHOW_INFER_GRADING_TABS and tab_infer is not None:
-    with tab_infer:
-        _safe_render("Evaluate: Infer", render_infer_tab)
-
-if SHOW_BUILD_GRADE_TABS and tab7 is not None:
-    with tab7:
-        _safe_render("Evaluate: Build", render_evaluate_build_tab)
-
-if SHOW_BUILD_GRADE_TABS and tab8 is not None:
-    with tab8:
-        _safe_render("Evaluate: Grade", render_evaluate_grade_tab)
-
 with tab_comparison:
     _safe_render("Evaluate: Comparison", render_comparison_tab)
-
-if SHOW_INFER_GRADING_TABS and tab_grading is not None:
-    with tab_grading:
-        _safe_render("Evaluate: Grading", render_grading_dashboard_tab)
 
 with tab_survey:
     _safe_render("Evaluate: Survey", render_survey_tab)

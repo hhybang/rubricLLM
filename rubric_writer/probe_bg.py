@@ -1,75 +1,7 @@
-"""Background probe refine and grade retest."""
+"""Background grade retest for alignment diagnostic."""
 from rubric_writer.imports import *
 from rubric_writer.config import MODEL_PRIMARY
 from rubric_writer.api_client import _api_call_with_retry
-
-def _run_probe_refine_bg(args):
-    """Background-thread-safe: refine a single rubric criterion based on user's probe choice.
-    Does NOT access st.session_state. All data passed via args dict."""
-    criterion_json = args.get("criterion_json", "")
-    chosen_interpretation = args.get("chosen_interpretation", "")
-    user_reason = args.get("user_reason", "")
-    probe_state = args.get("probe_state", {})
-
-    if not criterion_json or not chosen_interpretation:
-        return
-
-    updated_criterion = None
-    try:
-        prompt = PROBE_refine_criterion_prompt(criterion_json, chosen_interpretation, user_reason)
-        resp = _api_call_with_retry(
-            model=MODEL_PRIMARY, max_tokens=1500,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        text = "".join(b.text for b in resp.content if b.type == "text")
-        js_match = re.search(r'\{[\s\S]*\}', text)
-        if js_match:
-            parsed = json.loads(js_match.group())
-            updated_criterion = parsed.get("updated_criterion")
-    except Exception as e:
-        # print(f"[PROBE] Criterion refinement failed: {e}")
-
-        pass
-    # Write updated criterion into the message's probe_result (thread-safe dict update)
-    message_data_ref = args.get("message_data_ref")
-    if message_data_ref and "probe_result" in message_data_ref:
-        message_data_ref["probe_result"]["updated_criterion"] = updated_criterion
-
-    # Also write suggestion into the probe log message for conversation persistence
-    probe_log_ref = args.get("probe_log_ref")
-    if probe_log_ref and "probe_log_data" in probe_log_ref:
-        probe_log_ref["probe_log_data"]["suggested_update"] = updated_criterion
-        if updated_criterion:
-            probe_log_ref["probe_log_data"]["suggestion_summary"] = updated_criterion.get("description", "")
-
-    # Build and persist result
-    result = {
-        "timestamp": datetime.now().isoformat(),
-        "rubric_version": args.get("rubric_version"),
-        "conversation_id": args.get("conversation_id", ""),
-        "criterion_name": probe_state.get("criterion_name", ""),
-        "criterion_index": probe_state.get("criterion_index", -1),
-        "interpretation_a": probe_state.get("interpretation_a", ""),
-        "interpretation_b": probe_state.get("interpretation_b", ""),
-        "uncertainty_reason": probe_state.get("uncertainty_reason", ""),
-        "user_choice": probe_state.get("user_choice", ""),
-        "user_reason": user_reason,
-        "updated_criterion": updated_criterion,
-        "rubric_updated": False,  # will be set to True when user clicks Apply
-    }
-
-    results_list = args.get("results_list_ref")
-    if results_list is not None:
-        results_list.append(result)
-
-    # Persist to database
-    _save_sb = args.get("supabase")
-    _save_pid = args.get("project_id")
-    if _save_sb and _save_pid:
-        try:
-            save_project_data(_save_sb, _save_pid, "probe_results", result)
-        except Exception:
-            pass
 
 
 def _run_grade_retest_bg(args):
