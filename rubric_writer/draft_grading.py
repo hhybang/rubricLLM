@@ -718,12 +718,13 @@ def compute_drift_bundle(
         and perfect_streak >= 3
         and perfect_streak % 3 == 0
     )
-    # Scheduled gate: fire at draft_index in {3, 5}. These are mid-loop and
-    # end-loop checkpoints for the paper's planned 4-6 draft sessions. If a
-    # session ends before draft 5, the end-loop probe is missing data --
-    # report honestly via the audit script's gate_model partition.
+    # Scheduled gate: fire on every odd draft from 3 onward (3, 5, 7, 9, ...).
+    # Higher-priority drift kinds (low_confidence, oscillation,
+    # persistent_failure, tradeoff) preempt spot_check via the `kind == "none"`
+    # check below, so on a draft where any of those fire, spot_check stays
+    # silent regardless of the gate.
     scheduled_gate_passes = (
-        draft_index is not None and int(draft_index) in (3, 5)
+        draft_index is not None and int(draft_index) >= 3 and int(draft_index) % 2 == 1
     )
 
     if gate_model == "scheduled":
