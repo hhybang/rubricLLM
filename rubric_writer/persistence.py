@@ -281,26 +281,6 @@ def next_version_number():
         return 1
     return max(r.get("version", 1) for r in hist) + 1
 
-def load_general_rubrics():
-    """Load general rubrics from the general_rubrics folder.
-    Returns a dict mapping display names to rubric data.
-    """
-    general_rubrics_dir = Path("general_rubrics")
-    rubrics = {}
-
-    if general_rubrics_dir.exists():
-        for rubric_file in general_rubrics_dir.glob("*.json"):
-            try:
-                with open(rubric_file, 'r', encoding='utf-8') as f:
-                    rubric_data = json.load(f)
-                    # Create a friendly display name from the filename
-                    display_name = rubric_file.stem.replace('_', ' ').title()
-                    rubrics[display_name] = rubric_data
-            except Exception as e:
-                st.warning(f"Could not load {rubric_file.name}: {e}")
-
-    return rubrics
-
 def _rubric_to_json_serializable(obj):
     """Return a deep copy of obj with sets converted to lists so it can be JSON-serialized."""
     if isinstance(obj, set):
@@ -358,7 +338,7 @@ def _build_conversation_text(messages):
                 parts.append(f"\n[Probe Draft — Version B]\n{pld['variant_b']}")
             enriched = "\n".join(parts)
 
-        # Rubric revision (Log Changes): include what changed, edit details, user feedback
+        # Rubric revision: include what changed, edit details, user feedback
         elif msg.get('rubric_revision'):
             rr = msg['rubric_revision']
             parts = [content]

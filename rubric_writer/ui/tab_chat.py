@@ -2473,48 +2473,6 @@ def render_chat_sidebar():
     # Get active rubric
     active_rubric_dict, active_idx, rubric_history = get_active_rubric()
 
-    # Show general rubric selector when no rubric history exists
-    if not rubric_history:
-        general_rubrics = load_general_rubrics()
-        if general_rubrics:
-            st.markdown("### 📚 Start with a Template Rubric")
-            st.caption("Select a pre-built rubric to get started, or have a conversation and use 'Infer Rubric' to create a custom one.")
-
-            rubric_options = ["-- Select a template --"] + list(general_rubrics.keys())
-            selected_template = st.selectbox(
-                "Choose a rubric template:",
-                options=rubric_options,
-                key=project_scoped_key("general_rubric_selector")
-            )
-
-            if selected_template and selected_template != "-- Select a template --":
-                template_data = general_rubrics[selected_template]
-
-                # Show preview of the selected rubric
-                with st.expander("📋 Preview rubric", expanded=False):
-                    writing_type = template_data.get("writing_type", "Not specified")
-                    st.markdown(f"**Writing Type:** {writing_type[:200]}..." if len(writing_type) > 200 else f"**Writing Type:** {writing_type}")
-                    rubric_list = template_data.get("rubric", [])
-                    st.markdown(f"**Criteria:** {len(rubric_list)} items")
-                    for criterion in rubric_list[:5]:  # Show first 5
-                        st.markdown(f"- {criterion.get('name', 'Unnamed')}")
-                    if len(rubric_list) > 5:
-                        st.markdown(f"*... and {len(rubric_list) - 5} more*")
-
-                if st.button("✅ Use this rubric", key="use_general_rubric", type="primary"):
-                    # Add the selected rubric to history with version 1
-                    new_rubric = template_data.copy()
-                    new_rubric["version"] = 1
-                    hist = [new_rubric]
-                    save_rubric_history(hist)
-                    st.session_state.active_rubric_idx = 0
-                    st.session_state.rubric = new_rubric.get("rubric", [])
-                    st.session_state.editing_criteria = copy.deepcopy(new_rubric.get("rubric", []))
-                    st.success(f"✓ '{selected_template}' rubric loaded!")
-                    st.rerun()
-
-            st.divider()
-
     # Initialize editing criteria if needed
     if "editing_criteria" not in st.session_state:
         if active_rubric_dict:
