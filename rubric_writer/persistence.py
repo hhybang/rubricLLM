@@ -338,25 +338,6 @@ def _build_conversation_text(messages):
                 parts.append(f"\n[Probe Draft — Version B]\n{pld['variant_b']}")
             enriched = "\n".join(parts)
 
-        # Rubric revision: include what changed, edit details, user feedback
-        elif msg.get('rubric_revision'):
-            rr = msg['rubric_revision']
-            parts = [content]
-            if rr.get('change_summary'):
-                parts.append(f"\n[Rubric Change Summary]\n{rr['change_summary']}")
-            if rr.get('annotated_changes'):
-                parts.append("\n[Edit Details]")
-                for _ac_i, _ac in enumerate(rr['annotated_changes'], 1):
-                    parts.append(f"  [{_ac_i}] {_ac.get('original_text', '')} → {_ac.get('new_text', '')}  |  Reason: {_ac.get('reason', '')}")
-            if rr.get('user_feedback'):
-                parts.append("\n[User Feedback on Edits]")
-                for _fb_key, _fb_val in rr['user_feedback'].items():
-                    if _fb_val:
-                        parts.append(f"  Edit {_fb_key}: {_fb_val}")
-            if rr.get('_decision'):
-                parts.append(f"\n[User Decision] {rr['_decision']}")
-            enriched = "\n".join(parts)
-
         # Alignment diagnostic: include rubric suggestion and suggestion reasons
         elif msg.get('is_alignment_diagnostic'):
             parts = [content]

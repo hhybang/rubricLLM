@@ -118,7 +118,7 @@ def render_message_with_draft(content: str, message_id: str, wrap_draft_in_expan
             elif content_changed:
                 st.session_state[reset_counter_key] += 1
 
-            # Create a container for the draft with visual styling (optionally in expander when message has rubric_revision)
+            # Create a container for the draft with visual styling.
             # B2: when grading hasn't completed yet (draft_number is None
             # because compute_draft_number only counts graded drafts), still
             # show a label that signals "this draft exists, its number will
