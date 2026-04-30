@@ -1023,41 +1023,26 @@ def render_chat_sidebar():
         st.session_state.editing_criteria_ui_version = 0
 
     # Version selector. Default = highest-numbered version (active_idx, set by
-    # save_rubric_history to len(history)-1 on every save). The widget's
-    # persisted value can go stale if a new version is saved by background
-    # work (inference, draft-edit refinement) while the user has an older
-    # version selected -- in that case the persisted label still points at
-    # the old version even though active_rubric_idx has advanced. Drop the
-    # widget key when its value disagrees with active_idx so the index= kwarg
-    # takes effect and the latest version is shown selected.
+    # save_rubric_history to len(history)-1 on every save).
+    #
+    # The widget key encodes active_idx and the option count, so any change to
+    # either (Save Version → active_idx bumps; Delete Version → option count
+    # drops) produces a fresh widget. Streamlit treats a new key as a brand-new
+    # widget, which means the `index=` kwarg always wins and the selector
+    # never carries a stale label across state changes. User picks still work
+    # — clicking a different version triggers the handler below, which sets
+    # active_rubric_idx and st.reruns, producing a new key on the next render.
     if rubric_history:
         version_options = [f"v{r.get('version', 1)}" for r in rubric_history]
-        _rvk = project_scoped_key("rubric_version_selector")
-        # Self-healing guard: if active_rubric_idx changed since last render
-        # (e.g. background inference, drift apply, or any path that bumped the
-        # active version), drop the persisted selector value so the selectbox
-        # re-initializes from index=active_idx instead of the stale label.
-        # Note: this guard must NOT compare the widget value against active_idx
-        # — when the user clicks a different version in the selectbox the new
-        # value lands in the widget key BEFORE the handler below has a chance
-        # to update active_idx, so a value-vs-active_idx check would
-        # mis-classify legitimate user picks as stale and snap them back.
-        _last_seen_idx_key = project_scoped_key("rubric_version_selector_last_idx")
-        _last_seen_idx = st.session_state.get(_last_seen_idx_key)
-        if _last_seen_idx != active_idx:
-            st.session_state.pop(_rvk, None)
-            st.session_state[_last_seen_idx_key] = active_idx
-        # Only drop the widget value if it points at a version that no longer
-        # exists in the options (e.g. version was deleted).
-        if _rvk in st.session_state and st.session_state[_rvk] not in version_options:
-            st.session_state.pop(_rvk, None)
-        _vs_kwargs = {"key": _rvk}
-        if _rvk not in st.session_state:
-            _vs_kwargs["index"] = active_idx if active_idx is not None else len(version_options) - 1
+        _idx_default = active_idx if active_idx is not None else len(version_options) - 1
+        _rvk = project_scoped_key(
+            f"rubric_version_selector__idx_{_idx_default}__n_{len(version_options)}"
+        )
         selected_version = st.selectbox(
             "Active Rubric Version:",
             options=version_options,
-            **_vs_kwargs
+            index=_idx_default,
+            key=_rvk,
         )
         if selected_version:
             new_idx = version_options.index(selected_version)
