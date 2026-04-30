@@ -1693,9 +1693,6 @@ def render_chat_panel():
                 st.session_state.message_delete_mode = False
                 st.rerun()
 
-    # Display rubric update analysis result if pending
-    display_rubric_update_result()
-
     # Display comparison result if it exists
     if st.session_state.comparison_result:
         st.divider()

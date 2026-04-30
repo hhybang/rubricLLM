@@ -3741,7 +3741,6 @@ def clear_rubric_edit_session_state() -> None:
         "_pending_rubric_feedback",
         "_rubric_apply_warnings",
         "_rubric_apply_successes",
-        "rubric_update_result",
         "_deferred_flush_panels",
         "_deferred_refinements",
     )
