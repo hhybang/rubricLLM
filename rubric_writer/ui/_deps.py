@@ -6,7 +6,6 @@ from rubric_writer.config import MODEL_PRIMARY, MODEL_LIGHT, client
 from rubric_writer.draft_text import *
 from rubric_writer.draft_render import render_message_with_draft
 from rubric_writer.draft_rubric_llm import *
-from rubric_writer.probe_bg import _run_grade_retest_bg
 from rubric_writer.diff_html import _annotated_diff_html, _word_level_diff
 from rubric_writer.rubric_compare import compare_rubrics
 from rubric_writer.api_client import _api_call_with_retry
