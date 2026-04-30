@@ -3160,7 +3160,12 @@ def render_chat_panel():
                             system=system_instruction,
                             messages=api_messages,
                             model=MODEL_PRIMARY,
-                            thinking={"type": "adaptive"}
+                            thinking={"type": "adaptive"},
+                            tools=[{
+                                "type": "web_search_20250305",
+                                "name": "web_search",
+                                "max_uses": 5,
+                            }],
                         ) as stream:
                             # Clear any retry status message
                             status_placeholder.empty()
@@ -4094,16 +4099,20 @@ def render_chat_sidebar():
         # (e.g. background inference, drift apply, or any path that bumped the
         # active version), drop the persisted selector value so the selectbox
         # re-initializes from index=active_idx instead of the stale label.
+        # Note: this guard must NOT compare the widget value against active_idx
+        # — when the user clicks a different version in the selectbox the new
+        # value lands in the widget key BEFORE the handler below has a chance
+        # to update active_idx, so a value-vs-active_idx check would
+        # mis-classify legitimate user picks as stale and snap them back.
         _last_seen_idx_key = project_scoped_key("rubric_version_selector_last_idx")
         _last_seen_idx = st.session_state.get(_last_seen_idx_key)
         if _last_seen_idx != active_idx:
             st.session_state.pop(_rvk, None)
             st.session_state[_last_seen_idx_key] = active_idx
-        if _rvk in st.session_state:
-            _rv_sel = st.session_state[_rvk]
-            _expected = version_options[active_idx] if active_idx is not None and 0 <= active_idx < len(version_options) else None
-            if _rv_sel not in version_options or (_expected is not None and _rv_sel != _expected):
-                st.session_state.pop(_rvk, None)
+        # Only drop the widget value if it points at a version that no longer
+        # exists in the options (e.g. version was deleted).
+        if _rvk in st.session_state and st.session_state[_rvk] not in version_options:
+            st.session_state.pop(_rvk, None)
         _vs_kwargs = {"key": _rvk}
         if _rvk not in st.session_state:
             _vs_kwargs["index"] = active_idx if active_idx is not None else len(version_options) - 1
@@ -4313,115 +4322,8 @@ def render_chat_sidebar():
                 f"affect draft generation until you click **Save Version**."
             )
 
-        # Show any draft regeneration error from a previous Log Changes attempt
-        if st.session_state.get("draft_regeneration_error"):
-            st.error("Draft regeneration failed: " + st.session_state.draft_regeneration_error)
-            del st.session_state.draft_regeneration_error
-
-        # Log Changes, Save Version, and Reset buttons
-        log_col, save_col, reset_col = st.columns(3)
-        with log_col:
-            if st.button("📝 Log Changes", width="stretch", disabled=not has_changes):
-                # Log edits to conversation WITHOUT saving a new version
-                if rubric_history and active_idx is not None:
-                    current_version_num = rubric_history[active_idx].get("version", active_idx + 1)
-                    old_rubric_for_diff = rubric_history[active_idx].get("rubric", [])
-                    edit_class = classify_rubric_edits(old_rubric_for_diff, st.session_state.editing_criteria)
-                    log_msg = format_edit_log_message(edit_class, current_version_num, f"{current_version_num}*", "editing")
-                    if st.session_state.selected_conversation is not None:
-                        st.session_state.messages.append({
-                            "role": "system",
-                            "content": log_msg,
-                            "conversation_id": st.session_state.selected_conversation,
-                        })
-                    st.session_state.rubric = copy.deepcopy(st.session_state.editing_criteria)
-
-                    draft_appended = False
-                    last_draft, _ = get_last_draft_from_messages()
-                    if last_draft:
-                        # Build conversation history for context
-                        _lc_conv_parts = []
-                        for _lc_m in st.session_state.messages:
-                            _lc_role = _lc_m.get("role", "")
-                            _lc_content = _lc_m.get("display_content") or _lc_m.get("content", "")
-                            if _lc_role in ("user", "assistant") and _lc_content:
-                                _lc_conv_parts.append(f"[{_lc_role.upper()}]: {_lc_content[:2000]}")
-                        _lc_conv_history = "\n\n".join(_lc_conv_parts[-20:]) if _lc_conv_parts else None
-
-                        regenerate_result = regenerate_draft_from_rubric_changes(
-                            old_rubric_for_diff,
-                            st.session_state.editing_criteria,
-                            last_draft,
-                            conversation_history=_lc_conv_history,
-                        )
-                        if regenerate_result and regenerate_result.get("revised_draft") and not regenerate_result.get("error"):
-                            revised_draft = regenerate_result["revised_draft"]
-                            rubric_revision = {
-                                "change_summary": regenerate_result.get("change_summary", ""),
-                                "annotated_changes": regenerate_result.get("annotated_changes", []),
-                                "revised_draft": revised_draft,
-                                "revised_draft_annotated": regenerate_result.get("revised_draft_annotated") or regenerate_result.get("revised_draft_with_markers") or revised_draft,
-                                "original_draft": last_draft,
-                                "old_rubric": copy.deepcopy(old_rubric_for_diff),
-                                "new_rubric": copy.deepcopy(list(st.session_state.editing_criteria)),
-                            }
-                            draft_msg = {
-                                "role": "assistant",
-                                "content": f"<draft>{revised_draft}</draft>\n\n*Draft updated based on rubric changes.*",
-                                "display_content": f"<draft>{revised_draft}</draft>\n\n*Draft updated based on rubric changes.*",
-                                "thinking": regenerate_result.get("thinking", ""),
-                                "rubric_revision": rubric_revision,
-                                "rubric_version": current_version_num,
-                                "is_system_generated": True,
-                            }
-                            st.session_state.messages.append(draft_msg)
-                            draft_appended = True
-                        else:
-                            err = regenerate_result.get("error", "Unknown error") if isinstance(regenerate_result, dict) else "Regeneration failed"
-                            st.session_state.draft_regeneration_error = err
-                            _auto_save_conversation()
-                            st.toast("Changes logged. Draft regeneration failed — see error above.")
-                            st.rerun()
-                    else:
-                        # No prior draft: generate a new one from the last user message and updated rubric
-                        last_user_content = None
-                        for idx in range(len(st.session_state.messages) - 1, -1, -1):
-                            m = st.session_state.messages[idx]
-                            if m.get("role") == "user":
-                                last_user_content = m.get("content") or m.get("display_content", "")
-                                break
-                        if last_user_content:
-                            try:
-                                system = CHAT_build_system_prompt(st.session_state.editing_criteria) + "\n\nWhen the user asks for a draft, output ONLY the draft text wrapped in <draft></draft>. No preamble or follow-up."
-                                req = "Write a draft for the following request. Output ONLY the draft text inside <draft></draft> tags.\n\n" + (last_user_content[:8000] or "Write a short passage.")
-                                resp = _api_call_with_retry(
-                                    model=MODEL_PRIMARY,
-                                    max_tokens=4096,
-                                    system=system,
-                                    messages=[{"role": "user", "content": req}]
-                                )
-                                raw = "".join(b.text for b in resp.content if b.type == "text")
-                                m = re.search(r"<draft>(.*?)</draft>", raw, re.DOTALL)
-                                if m:
-                                    new_draft = m.group(1).strip()
-                                    draft_msg = {
-                                        "role": "assistant",
-                                        "content": f"<draft>{new_draft}</draft>\n\n*Draft generated with updated rubric (no prior draft to revise).*",
-                                        "display_content": f"<draft>{new_draft}</draft>\n\n*Draft generated with updated rubric (no prior draft to revise).*",
-                                        "rubric_revision": {"change_summary": "Draft generated using the updated rubric.", "annotated_changes": [], "revised_draft": new_draft, "revised_draft_annotated": new_draft},
-                                        "rubric_version": current_version_num,
-                                        "is_system_generated": True,
-                                    }
-                                    st.session_state.messages.append(draft_msg)
-                                    draft_appended = True
-                            except Exception as e:
-                                _auto_save_conversation()
-                                st.toast(f"Changes logged. Could not generate draft: {str(e)}")
-                                st.rerun()
-
-                    _auto_save_conversation()
-                    st.toast("Changes logged & draft updated!" if draft_appended else "Changes logged. No draft in conversation to update — send a message in Chat and get a draft first.")
-                    st.rerun()
+        # Save Version, Revert buttons
+        save_col, reset_col = st.columns(2)
         with save_col:
             if st.button("💾 Save Version", width="stretch", type="primary", disabled=not has_changes):
                 # Save as a NEW version in rubric history

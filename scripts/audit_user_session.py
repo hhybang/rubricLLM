@@ -13,9 +13,7 @@ bypasses RLS so we can read any user's data without their password).
 
 Reports, per project and per conversation:
   - conversations row: messages with draft_grade/draft_drift/user_verdicts
-    embedded
-  - draft_grades rows: per-draft grader output + drift_json + heuristic
-    diagnostics
+    embedded (the per-draft grader output lives here)
   - rubric_history: all rubric versions with timestamps + dim counts
   - project_data rollups for:
       * drift-panel feedback (oscillation_feedback, low_confidence_feedback,
@@ -200,25 +198,12 @@ def audit_conversation(sb: Client, conv: dict) -> dict:
     user_verdict_total = sum(d["n_user_verdicts"] for d in per_draft)
     print(f"    user_verdicts across drafts: {user_verdict_total}")
 
-    # draft_grades table
-    dg_resp = sb.table("draft_grades").select("*").eq("conversation_id", conv_id).order("draft_index").execute()
-    dg_rows = dg_resp.data or []
-    print(f"  draft_grades rows: {len(dg_rows)}")
-    if dg_rows:
-        rv_counts = Counter(r.get("rubric_version") for r in dg_rows)
-        print(f"    rubric_versions graded: {dict(rv_counts)}")
-        drift_rows = sum(1 for r in dg_rows if r.get("drift_json"))
-        print(f"    rows with drift_json persisted: {drift_rows}/{len(dg_rows)}")
-        triggers = Counter(r.get("trigger") for r in dg_rows)
-        print(f"    triggers: {dict(triggers)}")
-
     return {
         "conv_id": conv_id,
         "created_at": conv.get("created_at"),
         "messages_total": len(messages),
         "role_counts": dict(role_counts),
         "drafts": per_draft,
-        "draft_grades_rows": len(dg_rows),
     }
 
 
@@ -477,6 +462,79 @@ def reason_code_rollup(raw_data: dict[str, list]) -> dict:
     }
 
 
+def user_verdicts_rollup(conv_audits: list[dict]) -> dict:
+    """Walk per-draft user_verdicts captured from conversation messages.
+
+    user_verdicts is the actual on-the-wire record of drift-panel button
+    clicks (the legacy *_feedback project_data rows are no longer written —
+    the verdict ends up embedded on the assistant message that owns the
+    panel). Each verdict has:
+      - criterion / dimension_id  : what was being judged
+      - user_grade                : the button label, e.g. MET, NOT_MET,
+                                    working_on_it, remove, wording_subjective,
+                                    drafts_varying, rubric_fine,
+                                    grade_correct, grade_flipped_to_MET, ...
+
+    We pair the verdict's user_grade with the draft's drift_kind so the same
+    post-hoc reason-code mapping (`_REASON_CODE_MAP`) that the legacy
+    feedback rows used can be applied here too.
+    """
+    by_action = Counter()
+    by_drift_kind = Counter()
+    pairs: list[tuple[str, str]] = []  # (drift_kind, user_grade)
+    items_out: list[dict] = []
+    for ca in conv_audits:
+        for d in ca.get("drafts") or []:
+            kind = d.get("drift_kind") or "none"
+            for v in d.get("user_verdicts") or []:
+                grade = (v.get("user_grade") or "").strip()
+                if not grade:
+                    continue
+                by_action[grade] += 1
+                by_drift_kind[kind] += 1
+                pairs.append((kind, grade))
+                items_out.append({
+                    "conv_id": ca.get("conv_id"),
+                    "draft_number": d.get("draft_number"),
+                    "drift_kind": kind,
+                    "criterion": v.get("criterion"),
+                    "dimension_id": v.get("dimension_id"),
+                    "user_grade": grade,
+                })
+    # Map each (drift_kind, action) to a reason code via the same table the
+    # legacy *_feedback rollup uses. The mapping keys on data_type, so
+    # synthesize one from drift_kind.
+    drift_to_dt = {
+        "oscillation": "oscillation_feedback",
+        "persistent_failure": "persistent_failure_feedback",
+        "low_confidence": "low_confidence_feedback",
+        "spot_check": "spot_check_feedback",
+    }
+    by_reason: Counter = Counter()
+    by_kind_x_reason: dict[str, Counter] = defaultdict(Counter)
+    unmapped: list[dict] = []
+    for kind, grade in pairs:
+        dt = drift_to_dt.get(kind)
+        if not dt:
+            unmapped.append({"drift_kind": kind, "action": grade})
+            continue
+        reason = _REASON_CODE_MAP.get((dt, grade))
+        if reason:
+            by_reason[reason] += 1
+            by_kind_x_reason[kind][reason] += 1
+        else:
+            unmapped.append({"drift_kind": kind, "action": grade})
+    return {
+        "total_verdicts": sum(by_action.values()),
+        "by_action": dict(by_action),
+        "by_drift_kind": dict(by_drift_kind),
+        "by_reason_code": dict(by_reason),
+        "by_drift_kind_x_reason": {k: dict(v) for k, v in by_kind_x_reason.items()},
+        "unmapped": unmapped,
+        "items": items_out,
+    }
+
+
 def heuristic_diagnostic_rollup(items: list[dict]) -> dict:
     """Aggregate heuristic_diagnostic entries across all drafts.
 
@@ -600,6 +658,7 @@ def audit_project(sb: Client, user_id: str, user_email: str) -> dict:
         prop_rollup = refiner_proposal_rollup(raw_data.get("refiner_proposal") or [])
         edit_rollup = rubric_edit_event_rollup(raw_data.get("rubric_edit_event") or [])
         heur_rollup = heuristic_diagnostic_rollup(raw_data.get("heuristic_diagnostic") or [])
+        verdict_rollup = user_verdicts_rollup(conv_audits)
         reason_rollup = reason_code_rollup(raw_data)
 
         _header(f"DERIVED ROLLUPS for {pname}", "-")
@@ -627,8 +686,20 @@ def audit_project(sb: Client, user_id: str, user_email: str) -> dict:
             for gm, gs in sorted(sc_by_gate.items()):
                 print(f"      {gm}: n_records={gs['n_records']}  "
                       f"condition_met={gs['condition_met']}  shown={gs['shown']}")
-        # Reason-code distribution (post-hoc mapping from button + drift kind)
-        print(f"  reason codes (post-hoc derived):")
+        # user_verdicts (drift-panel button clicks live on assistant messages
+        # in the conversation JSON, not in *_feedback project_data rows)
+        print(f"  user_verdicts (drift-panel clicks from conversation messages):")
+        print(f"    total: {verdict_rollup['total_verdicts']}")
+        if verdict_rollup["total_verdicts"]:
+            print(f"    by action: {verdict_rollup['by_action']}")
+            print(f"    by drift_kind: {verdict_rollup['by_drift_kind']}")
+            if verdict_rollup["by_reason_code"]:
+                print(f"    reason codes: {verdict_rollup['by_reason_code']}")
+            if verdict_rollup["unmapped"]:
+                print(f"    unmapped: {verdict_rollup['unmapped']}")
+        # Reason-code distribution (legacy: post-hoc mapping from *_feedback
+        # project_data rows; kept for back-compat with older sessions)
+        print(f"  reason codes (legacy *_feedback rows):")
         print(f"    total disagreement actions: {reason_rollup['total_disagreement_actions']}")
         if reason_rollup["by_reason_code"]:
             print(f"    by reason: {reason_rollup['by_reason_code']}")
@@ -640,23 +711,16 @@ def audit_project(sb: Client, user_id: str, user_email: str) -> dict:
 
         # Paper-readiness checklist
         _header(f"PAPER-READINESS CHECKLIST for {pname}", "=")
-        dg_total = sum(c["draft_grades_rows"] for c in conv_audits)
         n_drafts_in_convs = sum(len(c["drafts"]) for c in conv_audits)
         checks = [
             ("Rubric versions saved", len(versions)),
             ("Conversations", len(convs)),
             ("Drafts (in conversation JSON)", n_drafts_in_convs),
-            ("draft_grades table rows", dg_total),
-            ("    (drift_grades parity w/ drafts)", "OK" if dg_total >= n_drafts_in_convs else f"MISSING {n_drafts_in_convs - dg_total}"),
             ("heuristic_diagnostic rows", stats.get("heuristic_diagnostic", 0)),
             ("refiner_proposal events", stats.get("refiner_proposal", 0)),
             ("  unique proposals (edit_id)", prop_rollup["n_unique_proposals"]),
             ("rubric_edit_event rows", stats.get("rubric_edit_event", 0)),
-            ("drift-panel feedback",
-             stats.get("low_confidence_feedback", 0)
-             + stats.get("oscillation_feedback", 0)
-             + stats.get("persistent_failure_feedback", 0)
-             + stats.get("spot_check_feedback", 0)),
+            ("drift-panel verdicts (from messages)", verdict_rollup["total_verdicts"]),
             ("tradeoff_preference", stats.get("tradeoff_preference", 0)),
             ("rq2_threeway (blind comparison)", stats.get("rq2_threeway", 0)),
             ("rq1_dimension_recognition", stats.get("rq1_dimension_recognition", 0)),
@@ -685,6 +749,7 @@ def audit_project(sb: Client, user_id: str, user_email: str) -> dict:
                 "refiner_proposal": prop_rollup,
                 "rubric_edit_event": edit_rollup,
                 "heuristic_diagnostic": heur_rollup,
+                "user_verdicts": verdict_rollup,
                 "reason_codes": reason_rollup,
             },
         })
