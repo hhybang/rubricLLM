@@ -338,18 +338,6 @@ if 'message_delete_mode' not in st.session_state:
 if 'messages_to_delete' not in st.session_state:
     st.session_state.messages_to_delete = set()  # Set of message indices to delete
 
-# Layer 2: Ranking checkpoint state (alignment diagnostic)
-if 'ranking_checkpoint_results' not in st.session_state:
-    st.session_state.ranking_checkpoint_results = []  # List of completed checkpoint results
-if 'ranking_checkpoint_pending' not in st.session_state:
-    st.session_state.ranking_checkpoint_pending = None  # {step: 2|3, writing_task, drafts, shuffle_order}
-if 'ranking_checkpoint_auto_triggered' not in st.session_state:
-    st.session_state.ranking_checkpoint_auto_triggered = False
-if 'alignment_check_done' not in st.session_state:
-    st.session_state.alignment_check_done = False
-if 'alignment_check_skipped' not in st.session_state:
-    st.session_state.alignment_check_skipped = False
-
 # Cold-start preference description (still loaded into chat for context)
 if 'infer_coldstart_text' not in st.session_state:
     st.session_state.infer_coldstart_text = ""

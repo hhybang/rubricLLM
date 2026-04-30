@@ -338,42 +338,6 @@ def _build_conversation_text(messages):
                 parts.append(f"\n[Probe Draft — Version B]\n{pld['variant_b']}")
             enriched = "\n".join(parts)
 
-        # Alignment diagnostic: include rubric suggestion and suggestion reasons
-        elif msg.get('is_alignment_diagnostic'):
-            parts = [content]
-            rs = msg.get('rubric_suggestion', {})
-            if rs:
-                if rs.get('suggestion_reasons'):
-                    parts.append("\n[Rubric Suggestion Reasons]")
-                    _sr_data = rs['suggestion_reasons']
-                    if isinstance(_sr_data, dict):
-                        for _sr_name, _sr_reason in _sr_data.items():
-                            parts.append(f"  - {_sr_name}: {_sr_reason}")
-                    elif isinstance(_sr_data, list):
-                        for _sr in _sr_data:
-                            if isinstance(_sr, dict):
-                                parts.append(f"  - {_sr.get('criterion_name', '')}: {_sr.get('reason', '')}")
-                            else:
-                                parts.append(f"  - {_sr}")
-                if rs.get('updated_rubric'):
-                    parts.append(f"\n[Suggested Rubric]\n{json.dumps(rs['updated_rubric'], ensure_ascii=False, indent=2)}")
-                if rs.get('_user_applied'):
-                    parts.append("\n[User Applied Suggestion] yes")
-                elif rs.get('_user_dismissed'):
-                    parts.append("\n[User Dismissed Suggestion]")
-                if rs.get('suggested_draft'):
-                    parts.append(f"\n[Suggested Draft from Rubric Suggestion]\n{rs['suggested_draft']}")
-                if rs.get('original_rubric_draft'):
-                    parts.append(f"\n[Original Draft Before Suggestion]\n{rs['original_rubric_draft']}")
-            # Include user feedback on suggested edits if stored on the diagnostic
-            diag = msg.get('diagnostic_data', {})
-            if diag.get('user_edit_feedback'):
-                parts.append("\n[User Feedback on Suggested Edits]")
-                for _fk, _fv in diag['user_edit_feedback'].items():
-                    if _fv:
-                        parts.append(f"  Edit {_fk}: {_fv}")
-            enriched = "\n".join(parts)
-
         # Criteria classification log: include what was stated/real/hallucinated
         elif msg.get('is_criteria_classification_log'):
             cd = msg.get('classification_data', {})
