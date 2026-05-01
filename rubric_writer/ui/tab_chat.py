@@ -7,6 +7,157 @@ from rubric_writer import draft_grading as _draft_grading
 from rubric_writer import draft_grading_ui as _draft_grading_ui
 
 
+# ──────────────────────────────────────────────────────────────────────
+# Pure helpers extracted for synthetic-study parity (Capability 6).
+# ──────────────────────────────────────────────────────────────────────
+#
+# Both functions below are called by `render_chat_panel` (live UI) AND by
+# the synthetic-study pipeline (synthetic_study/parity/__init__.py).
+# Per spec §2 the two callers must share one source of truth — forking
+# the chat-prompt-building or streaming logic would invalidate the
+# field-validation claim.
+
+def build_api_messages_pure(
+    messages,
+    *,
+    alignment_pipeline_messages=(),
+    rubric_history=(),
+):
+    """Build the message list to send to the chat-agent LLM.
+
+    Mirrors the live UI's behavior at tab_chat.py:494-577 exactly:
+      - Prepend alignment_pipeline foundation messages.
+      - Walk `messages` in order; skip non-(user/assistant) roles.
+      - Inject a synthetic assistant changelog message before any
+        assistant turn whose `rubric_version` differs from the previous
+        assistant turn's `rubric_version`.
+      - Tag each graded assistant draft with `[This is Draft #N.]\\n\\n`
+        prefix so the model can resolve "draft #3" references.
+
+    Args:
+        messages: full conversation list (same shape as
+            st.session_state.messages). The CALLER is responsible for
+            appending the in-flight user message after this call —
+            mirrors live behavior.
+        alignment_pipeline_messages: list to prepend (live UI reads this
+            from st.session_state.alignment_pipeline_messages).
+        rubric_history: list of rubric versions used to build changelog
+            messages on version transitions.
+
+    Returns:
+        list of {"role": str, "content": str} dicts ready for the API.
+    """
+    from rubric_writer.draft_render import compute_draft_number as _compute_draft_number
+
+    api_messages = []
+
+    for _pm in alignment_pipeline_messages or []:
+        api_messages.append({"role": _pm["role"], "content": _pm["content"]})
+
+    rubric_by_version = {r.get("version"): r.get("rubric", []) for r in (rubric_history or [])}
+
+    # Pre-compute draft numbering — mirrors live tab_chat.py:524-533.
+    draft_number_by_mid: dict[str, int] = {}
+    for _msg in messages:
+        if _msg.get('role') != 'assistant':
+            continue
+        _mid = str(_msg.get('message_id') or '')
+        if not _mid:
+            continue
+        _dn = _compute_draft_number(messages, _mid)
+        if _dn is not None:
+            draft_number_by_mid[_mid] = _dn
+
+    prev_rubric_version = None
+    for msg in messages:
+        if msg['role'] not in ('user', 'assistant'):
+            continue
+
+        # Inject rubric version changelog on version transitions.
+        if msg['role'] == 'assistant' and msg.get('rubric_version'):
+            cur_v = msg['rubric_version']
+            if prev_rubric_version is not None and cur_v != prev_rubric_version:
+                old_list = rubric_by_version.get(prev_rubric_version, [])
+                new_list = rubric_by_version.get(cur_v, [])
+                changelog = _build_rubric_version_changelog(
+                    old_list, new_list, prev_rubric_version, cur_v
+                )
+                if changelog:
+                    api_messages.append({"role": "assistant", "content": changelog})
+            prev_rubric_version = cur_v
+
+        content_to_send = msg.get('content', msg.get('display_content', ''))
+
+        if msg['role'] == 'assistant':
+            mid_str = str(msg.get('message_id') or '')
+            dn = draft_number_by_mid.get(mid_str)
+            if dn is not None:
+                content_to_send = f"[This is Draft #{dn}.]\n\n" + content_to_send
+
+        api_messages.append({"role": msg['role'], "content": content_to_send})
+
+    return api_messages
+
+
+def chat_turn_pure(
+    api_messages,
+    system_instruction,
+    *,
+    model,
+    anthropic_client,
+    tools=None,
+    max_tokens=32000,
+    on_main_chunk=None,
+    on_thinking_start=None,
+    response_placeholder=None,
+    thinking_placeholder=None,
+):
+    """Single chat turn against the writing-agent LLM.
+
+    Streams via `client.messages.stream` (matching live behavior at
+    tab_chat.py:619-636), uses `stream_without_analysis` to filter
+    analysis/rubric_assessment tags and capture thinking, and applies
+    the `[This is Draft #N.]` echo strip from tab_chat.py:652-656.
+
+    Returns: (main_content, analysis_content, thinking_content).
+
+    The live UI passes Streamlit `st.empty()` widgets via
+    `response_placeholder` / `thinking_placeholder` so streaming chunks
+    render in place. The synthetic-study pipeline passes None for both
+    and `tools=None` for reproducibility (web_search disabled, see
+    MODEL_VERSIONS.md). Behavior is otherwise identical.
+    """
+    from rubric_writer.content_parse import stream_without_analysis
+
+    stream_kwargs = {
+        "max_tokens": max_tokens,
+        "system": system_instruction,
+        "messages": api_messages,
+        "model": model,
+        "thinking": {"type": "adaptive"},
+    }
+    if tools is not None:
+        stream_kwargs["tools"] = tools
+
+    with anthropic_client.messages.stream(**stream_kwargs) as stream:
+        main_content, analysis_content, _, thinking_content = stream_without_analysis(
+            stream,
+            response_placeholder=response_placeholder,
+            thinking_placeholder=thinking_placeholder,
+        )
+
+    # Strip any echoed `[This is Draft #N.]` tag the model may have copied
+    # from its inputs. The system prompt forbids it but we strip as
+    # belt-and-suspenders, matching the live behavior at tab_chat.py:652-656.
+    main_content = re.sub(
+        r'^\s*\[This is Draft #\d+\.\]\s*\n*',
+        '',
+        main_content,
+    ).strip()
+
+    return main_content, analysis_content, thinking_content
+
+
 def render_chat_panel():
     conversations = load_conversations()
 
@@ -490,88 +641,15 @@ def render_chat_panel():
                 else:
                     st.markdown(prompt)
 
-        # Prepare message history for API
-        api_messages = []
-
-        # Inject alignment pipeline conversation as foundation context
-        # This gives the model full context of the draft generation, scoring,
-        # rubric improvements, and verification that happened during alignment check.
-        _alignment_pipeline = st.session_state.get("alignment_pipeline_messages", [])
-        if _alignment_pipeline:
-            for _pm in _alignment_pipeline:
-                api_messages.append({"role": _pm["role"], "content": _pm["content"]})
-
-        # Build rubric version lookup for changelog injection
-        _rubric_hist = load_rubric_history()
-        _rubric_by_version = {r.get("version"): r.get("rubric", []) for r in _rubric_hist}
-        _prev_rubric_version = None
-
-        # Pre-compute draft numbering so we can tag each assistant draft with
-        # its 1-based draft number. Users frequently say "fix X in draft #3"
-        # and the model has to figure out which assistant message that is --
-        # with interleaved user feedback, system messages, and assistant
-        # responses that aren't drafts, the counting is error-prone. Tagging
-        # each draft message with a `[This is Draft #N]` prefix before we
-        # send it removes the ambiguity.
-        #
-        # CRITICAL: the numbering MUST match what `compute_draft_number`
-        # returns, which is what the UI displays as "Draft N" on every chat
-        # panel and in the scorecard. That function counts assistant
-        # messages with a `draft_grade` attached (i.e. grading completed).
-        # We use it as the single source of truth so the user's "Draft 3"
-        # and the model's "Draft #3" are always the same message.
-        from rubric_writer.draft_render import compute_draft_number as _compute_draft_number
-        _draft_number_by_mid: dict[str, int] = {}
-        for _msg in st.session_state.messages:
-            if _msg.get('role') != 'assistant':
-                continue
-            _mid = str(_msg.get('message_id') or '')
-            if not _mid:
-                continue
-            _dn = _compute_draft_number(st.session_state.messages, _mid)
-            if _dn is not None:
-                _draft_number_by_mid[_mid] = _dn
-
-        # Include main conversation messages (skip system messages)
-        for msg in st.session_state.messages:
-            if msg['role'] in ('user', 'assistant'):
-                # Inject rubric version changelog on version transitions
-                if msg['role'] == 'assistant' and msg.get('rubric_version'):
-                    _cur_v = msg['rubric_version']
-                    if _prev_rubric_version is not None and _cur_v != _prev_rubric_version:
-                        _old_list = _rubric_by_version.get(_prev_rubric_version, [])
-                        _new_list = _rubric_by_version.get(_cur_v, [])
-                        _changelog = _build_rubric_version_changelog(_old_list, _new_list, _prev_rubric_version, _cur_v)
-                        if _changelog:
-                            api_messages.append({"role": "assistant", "content": _changelog})
-                    _prev_rubric_version = _cur_v
-
-                content_to_send = msg.get('content', msg.get('display_content', ''))
-
-                # Tag assistant drafts with their 1-based draft number so the
-                # model can resolve references like "draft #3" without having
-                # to count interleaved messages. The tag sits before the draft
-                # body so it's visible to the model but doesn't affect the
-                # <draft> extraction regex, which scans for `<draft>...</draft>`
-                # inside the content.
-                #
-                # `_draft_number_by_mid` already holds only the mids for
-                # graded drafts (numbering matches `compute_draft_number`,
-                # which is what the UI shows), so a hit here implies both
-                # (a) this message has a <draft> body and (b) grading is
-                # complete. Ungraded drafts get no number -- same as the UI.
-                if msg['role'] == 'assistant':
-                    _mid_str = str(msg.get('message_id') or '')
-                    _dn = _draft_number_by_mid.get(_mid_str)
-                    if _dn is not None:
-                        content_to_send = (
-                            f"[This is Draft #{_dn}.]\n\n" + content_to_send
-                        )
-
-                api_messages.append({
-                    "role": msg['role'],
-                    "content": content_to_send
-                })
+        # Prepare message history for API.
+        # See `build_api_messages_pure` above for the alignment-pipeline,
+        # rubric-version changelog, and `[This is Draft #N.]` tagging logic
+        # — extracted so the synthetic-study pipeline can call the same code.
+        api_messages = build_api_messages_pure(
+            st.session_state.messages,
+            alignment_pipeline_messages=st.session_state.get("alignment_pipeline_messages", []),
+            rubric_history=load_rubric_history(),
+        )
 
         # Add the new user message to API messages (for the API call)
         api_messages.append({"role": "user", "content": full_message})
@@ -616,24 +694,23 @@ def render_chat_panel():
 
                 for attempt in range(max_retries):
                     try:
-                        with client.messages.stream(
-                            max_tokens=32000,
-                            system=system_instruction,
-                            messages=api_messages,
+                        # Clear any retry status message before the API call;
+                        # chat_turn_pure consumes the stream and applies the
+                        # echo-strip on the returned main_content.
+                        status_placeholder.empty()
+                        main_content, analysis_content, thinking_content = chat_turn_pure(
+                            api_messages,
+                            system_instruction,
                             model=MODEL_PRIMARY,
-                            thinking={"type": "adaptive"},
+                            anthropic_client=client,
                             tools=[{
                                 "type": "web_search_20250305",
                                 "name": "web_search",
                                 "max_uses": 5,
                             }],
-                        ) as stream:
-                            # Clear any retry status message
-                            status_placeholder.empty()
-
-                            # Stream and filter out analysis tags in real-time
-                            # Returns: (main_content without analysis, analysis_content, None for rubric_assessment, thinking_content)
-                            main_content, analysis_content, _, thinking_content = stream_without_analysis(stream, response_placeholder, message_id, thinking_placeholder)
+                            response_placeholder=response_placeholder,
+                            thinking_placeholder=thinking_placeholder,
+                        )
 
                         # Clear the thinking placeholder and show final thinking in expander
                         thinking_placeholder.empty()
@@ -641,19 +718,6 @@ def render_chat_panel():
                         # Get the currently active rubric version to store with the message
                         active_rubric_dict, active_idx, _ = get_active_rubric()
                         rubric_version = active_rubric_dict.get('version', 1) if active_rubric_dict else None
-
-                        # --- Strip any `[This is Draft #N.]` tag the model echoed ---
-                        # These tags are injected by the system before each past
-                        # draft the model sees, so the model can resolve "draft #N"
-                        # references. The model occasionally copies the pattern
-                        # into its own output, which leaks internal context to the
-                        # user. The system prompt already tells the model NOT to
-                        # add the tag, but we strip as a belt-and-suspenders guard.
-                        main_content = re.sub(
-                            r'^\s*\[This is Draft #\d+\.\]\s*\n*',
-                            '',
-                            main_content,
-                        ).strip()
 
                         has_draft_tag = bool(re.search(r'<draft>.*?</draft>', main_content, re.DOTALL))
 

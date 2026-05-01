@@ -3526,7 +3526,19 @@ def render_rubric_scores_panel(messages: list[dict[str, Any]]) -> None:
         latest = graded[-1]
         dg = latest.get("draft_grade") or {}
         latest_mid = latest.get("message_id") or ""
-        with st.expander(f"Latest draft scorecard (draft {n_drafts})", expanded=False):
+        # Keep the scorecard expanded across reruns whenever the user has
+        # an open dispute affordance for this draft. Without this, clicking
+        # 👎 / Submit / Cancel inside a dimension row triggers a rerun and
+        # the expander snaps shut (default `expanded=False`), forcing the
+        # user to re-expand on every dispute interaction.
+        has_open_dispute = any(
+            k.startswith(f"_dispute_open_{latest_mid}_") and st.session_state.get(k)
+            for k in st.session_state.keys()
+        )
+        with st.expander(
+            f"Latest draft scorecard (draft {n_drafts})",
+            expanded=has_open_dispute,
+        ):
             for c in sorted(
                 dg.get("grades") or [],
                 key=lambda x: (x.get("criterion_priority", 99), x.get("criterion_name") or ""),
@@ -4385,18 +4397,98 @@ def _remove_dimension_and_save(
     }])
 
 
+def apply_rubric_suggestion_pure(
+    active_rubric_dict: dict[str, Any],
+    suggestion: dict[str, Any],
+) -> tuple[dict[str, Any] | None, str | None, str | None]:
+    """Apply a refiner suggestion to a rubric by deep-copying, looking up the
+    target dimension, and overwriting its wording.
+
+    Pure-ish: zero Streamlit / Supabase / session_state dependencies. This is
+    the shared core of Capability 7 \u2014 the live `_apply_rubric_suggestion`
+    and the synthetic-study apply path both call this.
+
+    SIDE EFFECT (intentional, parity-preserving): stamps
+    `actual_before_wording` onto the passed-in `suggestion` dict, matching
+    live behavior at the original draft_grading_ui.py:4444. Downstream UI and
+    `rubric_edit_applied` event logs read this field. Removing the side
+    effect would break the live system. The unit test
+    `test_capability7_apply_pure_stamps_actual_before_wording` pins this down.
+
+    Why we do NOT use the LLM's `before_wording` to substring-match: the LLM
+    frequently paraphrases the stored wording when echoing it back. Instead
+    we look up the actual stored text by (criterion_name, dimension_id) and
+    overwrite the whole field with `after_wording`.
+
+    Returns:
+        (new_rubric_dict, actual_before, None) on success.
+        (None, None, error_message) on validation failure. The live wrapper
+        surfaces the error_message via st.session_state._rubric_apply_warnings;
+        the synthetic wrapper logs it. Neither path bumps the rubric version
+        nor writes a rubric_edit_applied event on failure.
+    """
+    import copy as _copy
+
+    if not active_rubric_dict or not active_rubric_dict.get("rubric"):
+        return None, None, "Active rubric has no criteria."
+
+    crit_name = (suggestion.get("criterion_name") or "").strip()
+    dim_id = (suggestion.get("dimension_id") or "").strip()
+    new_text = suggestion.get("after_wording") or suggestion.get("new_text", "")
+
+    if not new_text:
+        return None, None, (
+            f"Suggestion for **{crit_name}** is missing the new wording. "
+            "Edit not applied."
+        )
+
+    # Deep-copy so the mutation doesn't touch the existing version. The
+    # result becomes the new version the caller appends to history.
+    new_version = _copy.deepcopy(active_rubric_dict)
+    new_version.pop("id", None)
+    new_version.pop("version", None)
+    new_version.pop("created_at", None)
+
+    # Look up the actual stored wording in the COPY, then overwrite that field.
+    dim, field, actual_before = _lookup_dim_field_and_text(new_version, crit_name, dim_id)
+    if dim is None or field is None:
+        return None, None, (
+            f"Couldn't find dimension `{dim_id}` under **{crit_name}** in the "
+            "current rubric. The rubric may have changed since this suggestion "
+            "was generated. Edit not applied."
+        )
+
+    dim[field] = new_text
+    # Stamp the actual stored wording onto the suggestion so downstream UI
+    # (system message, history) shows what really got replaced -- not the LLM's
+    # paraphrased echo of the before_wording. Live parity: required by the
+    # `rubric_edit_applied` event payload that the wrapper emits.
+    suggestion["actual_before_wording"] = actual_before
+
+    # Sanity-check the in-memory mutation BEFORE returning.
+    _check_dim, _check_field, _check_text = _lookup_dim_field_and_text(
+        new_version, crit_name, dim_id,
+    )
+    if _check_text != new_text:
+        return None, None, (
+            f"Internal error: edit was not applied to the in-memory rubric "
+            f"copy for **{crit_name}**. Edit not saved."
+        )
+
+    return new_version, actual_before, None
+
+
 def _apply_rubric_suggestion(suggestion: dict[str, Any]) -> bool:
     """Apply a suggested rubric edit by deep-copying the active rubric, mutating
     the copy, and appending it as a new rubric version. Returns True on success.
 
-    Note: we do NOT use the LLM's `before_wording` to substring-match against
-    the rubric. The LLM frequently paraphrases the stored wording when echoing
-    it back, which used to cause silent apply failures. Instead we look up the
-    actual stored text by (criterion_name, dimension_id) and overwrite the
-    whole field with `after_wording`."""
-    import copy as _copy
+    Live wrapper: handles Supabase reload, persistence, round-trip verify,
+    session_state refresh, and rubric_edit_applied / rubric_edit_event
+    project_data emission. The mutation core lives in
+    `apply_rubric_suggestion_pure` (shared with the synthetic-study pipeline).
+    """
     from rubric_writer.persistence import (
-        get_active_rubric, load_rubric_history, save_rubric_history, invalidate_rubric_cache,
+        load_rubric_history, save_rubric_history, invalidate_rubric_cache,
     )
 
     # Always reload from the DB so we're editing the truly latest version, not
@@ -4406,57 +4498,21 @@ def _apply_rubric_suggestion(suggestion: dict[str, Any]) -> bool:
         st.error("No active rubric to edit.")
         return False
     rubric_dict = rubric_history[-1]
-    if not rubric_dict.get("rubric"):
-        st.error("Active rubric has no criteria.")
-        return False
 
     crit_name = (suggestion.get("criterion_name") or "").strip()
     dim_id = (suggestion.get("dimension_id") or "").strip()
+
+    new_version, actual_before, err = apply_rubric_suggestion_pure(rubric_dict, suggestion)
+    if err is not None:
+        # Match live behavior: append a warning, do NOT bump version,
+        # do NOT emit rubric_edit_applied / rubric_edit_event.
+        if "Active rubric has no criteria" in err:
+            st.error(err)
+        else:
+            st.session_state.setdefault("_rubric_apply_warnings", []).append(err)
+        return False
+
     new_text = suggestion.get("after_wording") or suggestion.get("new_text", "")
-
-    if not new_text:
-        st.session_state.setdefault("_rubric_apply_warnings", []).append(
-            f"Suggestion for **{crit_name}** is missing the new wording. Edit not applied."
-        )
-        return False
-
-    # Deep-copy so the mutation doesn't touch the existing version. The result
-    # becomes the new version we append to history.
-    new_version = _copy.deepcopy(rubric_dict)
-    new_version.pop("id", None)
-    new_version.pop("version", None)
-    new_version.pop("created_at", None)
-
-    # Look up the actual stored wording in the COPY, then overwrite that field.
-    dim, field, actual_before = _lookup_dim_field_and_text(new_version, crit_name, dim_id)
-    if dim is None or field is None:
-        st.session_state.setdefault("_rubric_apply_warnings", []).append(
-            f"Couldn't find dimension `{dim_id}` under **{crit_name}** in the "
-            "current rubric. The rubric may have changed since this suggestion "
-            "was generated. Edit not applied."
-        )
-        return False
-
-    dim[field] = new_text
-    # Stamp the actual stored wording onto the suggestion so downstream UI
-    # (system message, history) shows what really got replaced -- not the LLM's
-    # paraphrased echo of the before_wording.
-    suggestion["actual_before_wording"] = actual_before
-
-    # Sanity-check the in-memory mutation BEFORE saving.
-    _check_dim, _check_field, _check_text = _lookup_dim_field_and_text(
-        new_version, crit_name, dim_id,
-    )
-    if _check_text != new_text:
-        _log.error(
-            "_apply_rubric_suggestion: in-memory mutation didn't take. "
-            "Expected %r, got %r in field %r", new_text, _check_text, _check_field,
-        )
-        st.session_state.setdefault("_rubric_apply_warnings", []).append(
-            f"Internal error: edit was not applied to the in-memory rubric "
-            f"copy for **{crit_name}**. Edit not saved."
-        )
-        return False
 
     rubric_history.append(new_version)
     try:

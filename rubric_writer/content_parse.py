@@ -527,7 +527,7 @@ The user has provided feedback on your previous rubric assessment. Please incorp
 
     return feedback_message
 
-def stream_without_analysis(stream, response_placeholder, message_id, thinking_placeholder=None):
+def stream_without_analysis(stream, response_placeholder=None, message_id=None, thinking_placeholder=None):
     """Stream response while hiding analysis and rubric_assessment tags.
 
     Note: This function strips out any rubric_assessment tags the model may generate
@@ -537,6 +537,13 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
     With extended thinking enabled, this also captures thinking content but does NOT
     stream it - thinking is buffered silently and only shown in a collapsed expander
     after the response is complete.
+
+    Both `response_placeholder` and `thinking_placeholder` are optional. The live
+    UI passes Streamlit `st.empty()` widgets so streaming chunks render in place;
+    the synthetic-study pipeline (which has no UI) passes None and just consumes
+    the final return value. Behavior is otherwise identical: same tag stripping,
+    same final-content extraction. The only difference is whether intermediate
+    chunks are displayed.
     """
     full_response = ""
     thinking_content = ""
@@ -545,7 +552,7 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
     # Show a simple thinking indicator while thinking (no streaming of thinking content).
     # Use a small CSS spinner so the icon visibly rotates while waiting,
     # matching Streamlit's native loading affordance.
-    if thinking_placeholder:
+    if thinking_placeholder is not None:
         thinking_placeholder.markdown(
             """
 <div style="display:flex;align-items:center;gap:8px;color:#666;font-style:italic;">
@@ -564,7 +571,7 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
             if event.type == 'content_block_start':
                 if hasattr(event, 'content_block') and event.content_block.type == 'text':
                     # Clear thinking indicator when main content starts
-                    if thinking_placeholder and not started_main_content:
+                    if thinking_placeholder is not None and not started_main_content:
                         thinking_placeholder.empty()
                         started_main_content = True
             elif event.type == 'content_block_delta':
@@ -581,15 +588,17 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
                             content_before_assessment = full_response.split('<rubric_assessment>')[0]
                             _, main_content = parse_analysis_and_content(content_before_assessment)
                             # Strip draft tags for streaming display to match post-rerun appearance
-                            streaming_content = strip_draft_tags_for_streaming(main_content)
-                            response_placeholder.markdown(streaming_content)
+                            if response_placeholder is not None:
+                                streaming_content = strip_draft_tags_for_streaming(main_content)
+                                response_placeholder.markdown(streaming_content)
                             continue
 
                         # Parse the current accumulated response to filter out analysis
-                        _, main_content = parse_analysis_and_content(full_response)
-                        # Strip draft tags for streaming display to match post-rerun appearance
-                        streaming_content = strip_draft_tags_for_streaming(main_content)
-                        response_placeholder.markdown(streaming_content + "▌")
+                        if response_placeholder is not None:
+                            _, main_content = parse_analysis_and_content(full_response)
+                            # Strip draft tags for streaming display to match post-rerun appearance
+                            streaming_content = strip_draft_tags_for_streaming(main_content)
+                            response_placeholder.markdown(streaming_content + "▌")
 
     # Final parse to ensure clean output
     analysis_content, main_content = parse_analysis_and_content(full_response)
@@ -601,8 +610,9 @@ def stream_without_analysis(stream, response_placeholder, message_id, thinking_p
 
     # Display the final content (without assessment)
     # Strip draft tags for streaming display to match post-rerun appearance
-    streaming_content = strip_draft_tags_for_streaming(main_content)
-    response_placeholder.markdown(streaming_content)
+    if response_placeholder is not None:
+        streaming_content = strip_draft_tags_for_streaming(main_content)
+        response_placeholder.markdown(streaming_content)
 
     # Return the main content (without analysis or assessment), analysis, None for assessment, and thinking
     return main_content, analysis_content, None, thinking_content
